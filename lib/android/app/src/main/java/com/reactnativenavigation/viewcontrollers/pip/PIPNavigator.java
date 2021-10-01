@@ -100,7 +100,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity(), logger);
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
         floatingLayout.addView(pipView);
-        floatingLayout.setPIPListener(pipFloatingLayoutListener);
+        floatingLayout.addPIPListener(pipFloatingLayoutListener);
         getView().addView(floatingLayout);
         this.pipFloatingLayout = floatingLayout;
         if (this.childController != null) {
@@ -213,6 +213,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     private void clearPIP() {
+        PIPNavigator.this.pipFloatingLayout.removePIPListener(pipFloatingLayoutListener);
         getView().removeAllViews();
         PIPNavigator.this.childController = null;
         PIPNavigator.this.pipFloatingLayout = null;

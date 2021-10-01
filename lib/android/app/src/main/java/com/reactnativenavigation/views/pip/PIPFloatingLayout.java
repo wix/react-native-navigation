@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -26,6 +27,9 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ViewExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PIPFloatingLayout extends FrameLayout {
     private float dX, dY;
     private Activity activity;
@@ -33,7 +37,6 @@ public class PIPFloatingLayout extends FrameLayout {
     private FrameLayout.LayoutParams layoutParams;
     private PIPStates pipState = PIPStates.NOT_STARTED;
     private CustomPIPDimension pipDimension;
-    private IPIPListener pipListener;
     private AnimatorSet runningAnimation;
     private boolean mDownTouch = false;
     private int mTouchSlop;
@@ -44,6 +47,9 @@ public class PIPFloatingLayout extends FrameLayout {
     private ILogger logger;
     private PIPButtonsLayout pipButtonsLayout;
     private int statusBarHeight = 0;
+    private PipTouchHandler pipTouchHandler;
+    private List<IPIPListener> pipListeners = new ArrayList();
+    private GestureDetector mDetector;
 
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
@@ -54,6 +60,9 @@ public class PIPFloatingLayout extends FrameLayout {
         mTouchSlop = vc.getScaledTouchSlop() * 3;
         statusBarHeight = getStatusBarHeight();
         setBackgroundResource(R.drawable.pip_layout_bg);
+        pipTouchHandler = new PipTouchHandler(this);
+        mDetector = new GestureDetector(activity, new PIPGestureListener());
+        mDetector.setIsLongpressEnabled(false);
     }
 
     public PIPFloatingLayout(@NonNull Activity activity, ILogger logger) {
@@ -74,47 +83,63 @@ public class PIPFloatingLayout extends FrameLayout {
         pipButtonsLayout.setPIPHeight(UiUtils.dpToPx(activity, pipDimension.compact.height.get()));
     }
 
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        boolean shouldIntercept = false;
         if (pipButtonsLayout.isWithinBounds(event)) {
-            return shouldIntercept;
+            return false;
         }
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mPrevRawX = event.getRawX();
-                mIsMoving = false;
-                shouldIntercept = shouldInterceptTouchEvent();
-                break;
-            case MotionEvent.ACTION_UP:
-                mPrevRawX = Integer.MIN_VALUE;
-                mIsMoving = false;
-                shouldIntercept = shouldInterceptTouchEvent();
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                mPrevRawX = Integer.MIN_VALUE;
-                mIsMoving = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (mIsMoving) {
-                    shouldIntercept = true;
-                } else if (mPrevRawX != Integer.MIN_VALUE) {
-                    int xDiff = (int) (event.getRawX() - mPrevRawX);
-                    if (xDiff < 0) xDiff = -xDiff;
-                    if (xDiff > mTouchSlop) {
-                        mIsMoving = true;
-                        shouldIntercept = true;
-                    }
-                }
-                break;
-        }
-        logger.log(Log.VERBOSE, TAG, "onInterceptTouchEvent " + shouldIntercept + "PIPState " + pipState.toString() + "touchEvent " + event.getAction() + " isMoving " + mIsMoving);
-        return shouldIntercept;
+        return shouldInterceptTouchEvent();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        mDetector.onTouchEvent(event);
+        return true;
+    }
+
+    /*
+       @Override
+       public boolean onInterceptTouchEvent(MotionEvent event) {
+           boolean shouldIntercept = false;
+           if (pipButtonsLayout.isWithinBounds(event)) {
+               return false;
+           }
+          switch (event.getAction()) {
+               case MotionEvent.ACTION_DOWN:
+                   mPrevRawX = event.getRawX();
+                   mIsMoving = false;
+                   shouldIntercept = shouldInterceptTouchEvent();
+                   break;
+               case MotionEvent.ACTION_UP:
+                   mPrevRawX = Integer.MIN_VALUE;
+                   mIsMoving = false;
+                   shouldIntercept = shouldInterceptTouchEvent();
+                   break;
+               case MotionEvent.ACTION_CANCEL:
+                   mPrevRawX = Integer.MIN_VALUE;
+                   mIsMoving = false;
+                   break;
+               case MotionEvent.ACTION_MOVE:
+                   if (mIsMoving) {
+                       shouldIntercept = true;
+                   } else if (mPrevRawX != Integer.MIN_VALUE) {
+                       int xDiff = (int) (event.getRawX() - mPrevRawX);
+                       if (xDiff < 0) xDiff = -xDiff;
+                       if (xDiff > mTouchSlop) {
+                           mIsMoving = true;
+                           shouldIntercept = true;
+                       }
+                   }
+                   break;
+           }
+           logger.log(Log.VERBOSE, TAG, "onInterceptTouchEvent " + shouldIntercept + "PIPState " + pipState.toString() + "touchEvent " + event.getAction() + " isMoving " + mIsMoving);
+           return shouldInterceptTouchEvent();
+       }
+   */
+/*
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mDetector.onTouchEvent(event);
         boolean isHandled = false;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -159,8 +184,8 @@ public class PIPFloatingLayout extends FrameLayout {
                 }
                 break;
         }
-        return isHandled;
-    }
+        //return pipTouchHandler.handleTouchEvent(event);
+    }*/
 
     private void setNativePIPMode() {
         this.layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
@@ -358,9 +383,7 @@ public class PIPFloatingLayout extends FrameLayout {
                     break;
 
             }
-            if (this.pipListener != null) {
-                this.pipListener.onPIPStateChanged(oldState, pipState);
-            }
+            publishPIPStateChange(oldState, pipState);
         }
     }
 
@@ -382,8 +405,12 @@ public class PIPFloatingLayout extends FrameLayout {
         super.addView(pipButtonsLayout);
     }
 
-    public void setPIPListener(IPIPListener pipListener) {
-        this.pipListener = pipListener;
+    public void addPIPListener(IPIPListener pipListener) {
+        pipListeners.add(pipListener);
+    }
+
+    public void removePIPListener(IPIPListener pipListener) {
+        pipListeners.remove(pipListener);
     }
 
     public void cancelAnimations() {
@@ -393,20 +420,122 @@ public class PIPFloatingLayout extends FrameLayout {
         }
     }
 
+    private void publishPIPStateChange(PIPStates oldState, PIPStates newState) {
+        for (IPIPListener listener : pipListeners) {
+            listener.onPIPStateChanged(oldState, newState);
+        }
+    }
+
+    private void publishFullScreenClick() {
+        for (IPIPListener listener : pipListeners) {
+            listener.onFullScreenClick();
+        }
+    }
+
+    private void publishCloseClick() {
+        for (IPIPListener listener : pipListeners) {
+            listener.onCloseClick();
+        }
+    }
+
     private PIPButtonsLayout.IPIPButtonListener buttonListener = new PIPButtonsLayout.IPIPButtonListener() {
         @Override
         public void onFullScreenClick() {
-            if (pipListener != null) {
-                pipListener.onFullScreenClick();
-            }
+            publishFullScreenClick();
         }
 
         @Override
         public void onCloseClick() {
-            if (pipListener != null) {
-                pipListener.onCloseClick();
-            }
+            publishCloseClick();
         }
     };
+
+    public class PIPGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            logger.log(Log.VERBOSE, TAG, "onScroll");
+            move(e2);
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            logger.log(Log.VERBOSE, TAG, "onFling");
+            move(e2);
+            return true;
+        }
+
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onFling");
+            animateToExpand();
+            return true;
+        }
+
+        @Override
+        public boolean onContextClick(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onContextClick");
+            return super.onContextClick(e);
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onSingleTapUp");
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onLongPress");
+            animateToExpand();
+            super.onLongPress(e);
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onShowPress");
+            super.onShowPress(e);
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onDown");
+            return super.onDown(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onDoubleTap");
+            return super.onDoubleTap(e);
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            logger.log(Log.VERBOSE, TAG, "onDoubleTapEvent");
+            return super.onDoubleTapEvent(e);
+        }
+
+        private void move(MotionEvent event) {
+            float halfWidth = getWidth() / 2.0f;
+            float halfHeight = getHeight() / 2.0f;
+            float destX = event.getRawX() + dX - halfWidth;
+            float destY = event.getRawY() + dY - halfHeight;
+            if (destX < 0) {
+                destX = 0;
+            }
+            if ((destX + getWidth()) > UiUtils.getWindowWidth(getContext())) {
+                destX = UiUtils.getWindowWidth(getContext()) - getWidth();
+            }
+            if (destY < statusBarHeight) {
+                destY = statusBarHeight;
+            }
+            if ((destY + getHeight()) > UiUtils.getWindowHeight(getContext())) {
+                destY = UiUtils.getWindowHeight(getContext()) - getHeight();
+            }
+            animate().x(destX).y(destY).setDuration(0).start();
+        }
+    }
 
 }
