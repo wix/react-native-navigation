@@ -17,7 +17,7 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 30
-    ndkVersion "23.0.7599858"
+    ndkVersion "20.1.5948944"
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
