@@ -9,9 +9,9 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 29
+def DEFAULT_COMPILE_SDK_VERSION = 30
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 29
+def DEFAULT_TARGET_SDK_VERSION = 30
 def kotlinVersion = rootProject.ext.get("RNNKotlinVersion")
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib', 'kotlin-stdlib-jdk8')
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.31')
