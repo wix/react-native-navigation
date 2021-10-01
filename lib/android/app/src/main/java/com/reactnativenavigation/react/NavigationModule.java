@@ -89,7 +89,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
         constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
-        constants.putDouble(Constants.BOTTOM_TABS_HEIGHT_KEY, Constants.BOTTOM_TABS_HEIGHT);
+        constants.putDouble(Constants.BOTTOM_TABS_HEIGHT_KEY, pxToDp(ctx, UiUtils.getBottomTabsHeight(ctx)));
         constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, pxToDp(ctx, StatusBarUtils.getStatusBarHeight(ctx)));
         constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         return constants;

@@ -15,11 +15,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
@@ -169,15 +171,22 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+        ViewController<?> stack = tabs.get(index);
+        BottomTabOptions options = stack.resolveCurrentOptions().bottomTabOptions;
 
         eventEmitter.emitBottomTabPressed(index);
 
         if (options.selectTabOnPress.get(true)) {
             eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-            if (wasSelected) return false;
-            selectTab(index);
+            if (!wasSelected) {
+                selectTab(index);
+            }
         }
+
+        if (options.popToRoot.get(false) && wasSelected && stack instanceof StackController) {
+            ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
+        }
+
         return false;
     }
 

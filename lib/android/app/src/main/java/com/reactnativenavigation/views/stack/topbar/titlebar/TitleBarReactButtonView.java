@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.ComponentOptions;
@@ -24,7 +25,14 @@ public class TitleBarReactButtonView extends ReactView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(widthMeasureSpec, component.height));
+        
+        //This is a workaround, ReactNative throws exception when views have ids, On android MenuItems 
+        // With ActionViews like this got an id, see #7253
+        if (!this.isAttachedToWindow() || this.getReactInstanceManager() == null) {
+            this.setId(View.NO_ID);
+        }
+
+        super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(heightMeasureSpec, component.height));
     }
 
     private int createSpec(int measureSpec, Number dimension) {

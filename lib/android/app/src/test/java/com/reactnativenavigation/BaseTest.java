@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -12,12 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.Functions;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -34,8 +39,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import kotlin.Function;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
@@ -52,6 +60,20 @@ public abstract class BaseTest {
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
         when(res.getConfiguration()).thenReturn(mockConfiguration);
         when(NavigationApplication.instance.getResources()).thenReturn(res);
+        when(res.getColor(ArgumentMatchers.anyInt())).thenReturn(0x00000);
+        when(res.getColor(ArgumentMatchers.anyInt(),any())).thenReturn(0x00000);
+    }
+
+    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
+        try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeight(any());
+            }).thenReturn(statusBarHeight);
+            theMock.when(() -> {
+                StatusBarUtils.getStatusBarHeightDp(any());
+            }).thenReturn(statusBarHeightDp);
+            block.run();
+        }
     }
 
     @After
@@ -69,7 +91,7 @@ public abstract class BaseTest {
     }
 
     public void assertIsChild(ViewGroup parent, ViewController... children) {
-        forEach(Arrays.asList(children),c -> assertIsChild(parent, c.getView()));
+        forEach(Arrays.asList(children), c -> assertIsChild(parent, c.getView()));
     }
 
     public void assertIsChild(ViewGroup parent, View child) {

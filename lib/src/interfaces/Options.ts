@@ -1,9 +1,9 @@
 // tslint:disable jsdoc-format
-import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
+import { ImageRequireSource, ImageSourcePropType, Insets, OpaqueColorValue } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
-export declare type Color = string | symbol | ThemeColor | null;
+export declare type Color = string | symbol | ThemeColor | OpaqueColorValue | null;
 type FontFamily = string;
 type FontStyle = 'normal' | 'italic';
 type FontWeightIOS =
@@ -583,6 +583,7 @@ export interface OptionsSearchBar {
   backgroundColor?: Color;
   tintColor?: Color;
   placeholder?: string;
+  cancelText?: string;
 }
 
 export interface OptionsTopBar {
@@ -1004,6 +1005,11 @@ export interface OptionsBottomTab {
    * instead it will emit a bottomTabPressedEvent
    */
   selectTabOnPress?: boolean;
+  /**
+   * Pop to root of stack by tapping on already selected tab
+   * #### (Android specific)
+   */
+  popToRoot?: boolean;
 }
 
 export interface SideMenuSide {

@@ -29,7 +29,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                             hideOnScroll:(BOOL)hideOnScroll
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
-                               tintColor:(nullable UIColor *)tintColor {
+                               tintColor:(nullable UIColor *)tintColor
+                              cancelText:(NSString *)cancelText {
     if (!self.navigationItem.searchController) {
         UISearchController *search =
             [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -40,6 +41,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         search.searchBar.delegate = (id<UISearchBarDelegate>)self;
         if (placeholder) {
             search.searchBar.placeholder = placeholder;
+        }
+        if (cancelText) {
+            [search.searchBar setValue:cancelText forKey:@"cancelButtonText"];
         }
         search.hidesNavigationBarDuringPresentation = hideTopBarOnFocus;
         search.searchBar.searchBarStyle = UISearchBarStyleProminent;
@@ -94,6 +98,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     if (@available(iOS 13.0, *)) {
         self.tabBarItem.standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor =
             badgeColor;
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            self.tabBarItem.scrollEdgeAppearance.stackedLayoutAppearance.normal
+                .badgeBackgroundColor = badgeColor;
+        }
+#endif
     } else {
         self.tabBarItem.badgeColor = badgeColor;
     }
