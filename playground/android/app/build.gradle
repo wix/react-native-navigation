@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 
 def enableHermes = false
 project.ext.react = [
+        cliPath : "../../../node_modules/react-native/local-cli/cli.js",
         root     : "../../../",
         entryFile: "index.js",
         bundleAssetName: "index.android.bundle",
