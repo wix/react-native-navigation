@@ -68,7 +68,7 @@ dependencies {
 
 
 task copyDownloadableDepsToLibs(type: Copy) {
-    from configurations.compile
+    from configurations.implementation
     into 'libs'
 }
 
