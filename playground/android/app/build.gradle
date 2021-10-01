@@ -18,7 +18,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     ndkVersion "20.1.5948944"
 
     compileOptions {
@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         ndk {
