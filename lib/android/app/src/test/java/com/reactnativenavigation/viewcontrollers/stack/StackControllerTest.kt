@@ -197,6 +197,7 @@ class StackControllerTest : BaseTest() {
     fun setRoot_pushDuringSetRootAnimationShouldNotCrash() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
 
         uut.setRoot(listOf(child1), CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
@@ -281,6 +282,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter()) // Initialize stack with a child
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
         verify(child2).onViewDidAppear()
     }
 
@@ -608,8 +610,10 @@ class StackControllerTest : BaseTest() {
         assertNotChildOf(uut.view, child1.view)
         uut.push(child1, CommandListenerAdapter())
         assertIsChild(uut.view, child1.view)
+        idleMainLooper()
 
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
         assertIsChild(uut.view, child2)
         assertNotChildOf(uut.view, child1)
     }
@@ -663,6 +667,7 @@ class StackControllerTest : BaseTest() {
         val child1View: View = child1.view
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
 
         assertIsChild(uut.view, child2View)
         assertNotChildOf(uut.view, child1View)
@@ -715,6 +720,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
         uut.push(child4, CommandListenerAdapter())
+        idleMainLooper()
 
         uut.popTo(child2, Options.EMPTY, CommandListenerAdapter())
         verify(animator, never()).pop(any(), eq(child1), any(), any(), any())
@@ -729,6 +735,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, mock())
         uut.push(child2, mock())
         uut.push(child3, mock())
+        idleMainLooper()
         uut.popTo(child1, Options.EMPTY, mock())
         animator.endPushAnimation(child3)
         assertContainsOnlyId(child1.id)
@@ -759,8 +766,8 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1, child2, child3)
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
-
         uut.push(child3, CommandListenerAdapter())
+        idleMainLooper()
         uut.popToRoot(Options.EMPTY, object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 verify(animator).pop(eq(child1), eq(child3), any(), any(), any())
@@ -776,6 +783,8 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
+        idleMainLooper()
+
         uut.popToRoot(Options.EMPTY, object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 verify(child1, never()).destroy()
@@ -811,6 +820,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, mock())
         uut.push(child2, mock())
         uut.push(child3, mock())
+        idleMainLooper()
         uut.popToRoot(Options.EMPTY, mock())
         animator.endPushAnimation(child3)
         assertContainsOnlyId(child1.id)

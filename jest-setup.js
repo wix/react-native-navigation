@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler/jestSetup';
 const { mockDetox } = require('detox-testing-library-rnn-adapter');
 
 mockDetox(() => require('./playground/index'));

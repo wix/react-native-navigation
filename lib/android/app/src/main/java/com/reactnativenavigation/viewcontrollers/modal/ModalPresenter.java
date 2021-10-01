@@ -7,6 +7,8 @@ import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ScreenAnimationListener;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
@@ -45,7 +47,6 @@ public class ModalPresenter {
             listener.onError("Can not show modal before activity is created");
             return;
         }
-
         Options options = appearing.resolveCurrentOptions(defaultOptions);
 
         AnimationOptions enterAnimationOptions = options.animations.showModal.getEnter();
@@ -53,7 +54,7 @@ public class ModalPresenter {
         modalsLayout.setVisibility(View.VISIBLE);
         modalsLayout.addView(appearing.getView(), matchParentLP());
 
-        if (enterAnimationOptions.enabled.isTrueOrUndefined()) {
+        if ( enterAnimationOptions.enabled.isTrueOrUndefined()) {
             if (enterAnimationOptions.shouldWaitForRender().isTrue()) {
                 appearing.addOnAppearedListener(() -> modalAnimator.show(appearing, disappearing, options.animations.showModal, createListener(appearing, disappearing, listener)));
             } else {
@@ -90,10 +91,12 @@ public class ModalPresenter {
     }
 
     private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
-        toAdd.onViewDidAppear();
-        if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
-            toRemove.detachView();
-        }
+        toAdd.addOnAppearedListener(()->{
+            toAdd.onViewDidAppear();
+            if (toRemove != null && toAdd.resolveCurrentOptions(defaultOptions).modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
+                toRemove.detachView();
+            }
+        });
         listener.onSuccess(toAdd.getId());
     }
 

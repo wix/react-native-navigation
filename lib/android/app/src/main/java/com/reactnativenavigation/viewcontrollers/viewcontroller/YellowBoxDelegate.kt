@@ -8,11 +8,12 @@ import androidx.core.view.get
 import com.reactnativenavigation.utils.isDebug
 import java.util.*
 
-open class YellowBoxDelegate(private val context: Context, private val yellowBoxHelper: YellowBoxHelper = YellowBoxHelper()) {
-    constructor(context: Context) : this(context, YellowBoxHelper())
+
+open class YellowBoxDelegate(private val context: Context) {
 
     var parent: ViewGroup? = null
         private set
+
     @get:RestrictTo(RestrictTo.Scope.TESTS)
     val yellowBoxes: List<View>
         get() = yellowBoxViews
@@ -22,7 +23,7 @@ open class YellowBoxDelegate(private val context: Context, private val yellowBox
 
     open fun onChildViewAdded(parent: View, child: View?) {
         if (!context.isDebug()) return
-        if (yellowBoxHelper.isYellowBox(parent, child)) onYellowBoxAdded(parent)
+        if (isYellowBox(parent, child)) onYellowBoxAdded(parent)
     }
 
     fun onYellowBoxAdded(parent: View) {
@@ -38,5 +39,10 @@ open class YellowBoxDelegate(private val context: Context, private val yellowBox
     fun destroy() {
         isDestroyed = true
         if (yellowBoxViews.isNotEmpty()) yellowBoxViews.forEach { parent?.addView(it) }
+    }
+
+    fun isYellowBox(parent: View?, child: View?): Boolean {
+        return parent is ViewGroup &&
+                child is ViewGroup && parent.indexOfChild(child) >= 1
     }
 }

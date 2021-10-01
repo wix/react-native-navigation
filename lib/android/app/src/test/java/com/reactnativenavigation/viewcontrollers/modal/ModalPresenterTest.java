@@ -50,6 +50,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         Activity activity = newActivity();
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
 
@@ -177,7 +178,6 @@ public class ModalPresenterTest extends BaseTest {
     public void showModal_onViewDidAppearIsInvokedBeforeViewDisappear() {
         disableShowModalAnimation(modal1);
         root.onViewWillAppear();
-
         uut.showModal(modal1, root, new CommandListenerAdapter());
         idleMainLooper();
         InOrder inOrder = inOrder(modal1, root);
@@ -210,6 +210,7 @@ public class ModalPresenterTest extends BaseTest {
         uut.setRootLayout(spy);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        idleMainLooper();
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
 
         verify(spy).addView(root.getView(), 0);
@@ -237,6 +238,7 @@ public class ModalPresenterTest extends BaseTest {
         verify(modal1).onViewWillAppear();
 
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(modal1.getView().getParent()).isNull();
 
         Shadows.shadowOf(Looper.getMainLooper()).idle();
@@ -253,9 +255,9 @@ public class ModalPresenterTest extends BaseTest {
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(modal1.getView().getParent()).isNull();
         assertThat(root.getView().getParent()).isNull();
-
         uut.dismissModal(modal1, null, root, new CommandListenerAdapter());
         assertThat(root.getView().getParent()).isNull();
 

@@ -175,9 +175,7 @@ public class StackController extends ParentController<StackLayout> {
                         presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
                         () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
-                child.onViewDidAppear();
-                getView().removeView(toRemove.getView());
-                listener.onSuccess(child.getId());
+                onPushAnimationComplete(child, toRemove, listener);
             }
         } else {
             listener.onSuccess(child.getId());
@@ -191,8 +189,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onPushAnimationComplete(ViewController toAdd, ViewController toRemove, CommandListener listener) {
-        toAdd.onViewDidAppear();
-        if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
+        toAdd.addOnAppearedListener(() -> {
+            toAdd.onViewDidAppear();
+            if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
+        });
         listener.onSuccess(toAdd.getId());
     }
 

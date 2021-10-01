@@ -7,6 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.TransitionAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -54,6 +55,7 @@ public class ModalStackTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         root = new SimpleViewController(activity, childRegistry, "root", new Options());
@@ -91,9 +93,20 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
+    public void showModal_DidAppearEventShouldWaitForReactViewToBeShown(){
+        CommandListener listener = spy(new CommandListenerAdapter());
+        uut.showModal(modal1, root, listener);
+        verify(modal1).addOnAppearedListener(any());
+        verify(listener).onSuccess(modal1.getId());
+        idleMainLooper();
+        verify(modal1).onViewDidAppear();
+    }
+
+    @Test
     public void showModal() {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, root, listener);
+        idleMainLooper();
         verify(listener).onSuccess(modal1.getId());
         verify(modal1).onViewDidAppear();
         assertThat(uut.size()).isOne();
