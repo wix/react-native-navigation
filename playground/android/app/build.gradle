@@ -21,11 +21,6 @@ android {
     compileSdkVersion 30
     ndkVersion "23.0.7599858"
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
