@@ -16,22 +16,17 @@ project.ext.react = [
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 29
-    ndkVersion "20.1.5948944"
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+    compileSdkVersion 30
+    ndkVersion "23.0.7599858"
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86", 'x86_64'
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
 
         testBuildType System.getProperty('testBuildType', 'debug')
@@ -55,7 +50,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'

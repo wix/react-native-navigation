@@ -13,14 +13,14 @@ def safeExtGetFallbackLowerBound(prop, fallback) {
 }
 
 
-def DEFAULT_COMPILE_SDK_VERSION = 29
+def DEFAULT_COMPILE_SDK_VERSION = 30
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 29
-def DEFAULT_KOTLIN_VERSION = "1.4.32"
+def DEFAULT_TARGET_SDK_VERSION = 30
+def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
-def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.4.3')
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 
 android {
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
