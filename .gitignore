@@ -171,6 +171,7 @@ android/captures/
 
 # Intellij
 *.iml
+*.hprof
 
 # Keystore files
 *.jks
