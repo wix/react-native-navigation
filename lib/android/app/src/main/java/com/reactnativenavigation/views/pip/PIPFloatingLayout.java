@@ -85,10 +85,7 @@ public class PIPFloatingLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (pipButtonsLayout.isWithinBounds(event)) {
-            return false;
-        }
-        return shouldInterceptTouchEvent();
+        return !pipButtonsLayout.isWithinBounds(event);
     }
 
     @Override
@@ -312,6 +309,9 @@ public class PIPFloatingLayout extends FrameLayout {
     }
 
     private void animateToExpand() {
+        if (pipState == PIPStates.CUSTOM_EXPANDED) {
+            return;
+        }
         Point loc = ViewUtils.getLocationOnScreen(this);
         float targetStartX = getTargetX(pipDimension.compact.width.get(), pipDimension.expanded.width.get(), loc);
         float targetStartY = getTargetY(pipDimension.compact.height.get(), pipDimension.expanded.height.get(), loc);
@@ -469,7 +469,7 @@ public class PIPFloatingLayout extends FrameLayout {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            logger.log(Log.VERBOSE, TAG, "onFling");
+            logger.log(Log.VERBOSE, TAG, "onSingleTapConfirmed");
             animateToExpand();
             return true;
         }
@@ -489,7 +489,6 @@ public class PIPFloatingLayout extends FrameLayout {
         @Override
         public void onLongPress(MotionEvent e) {
             logger.log(Log.VERBOSE, TAG, "onLongPress");
-            animateToExpand();
             super.onLongPress(e);
         }
 
