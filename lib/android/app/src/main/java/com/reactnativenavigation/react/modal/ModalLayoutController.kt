@@ -38,7 +38,7 @@ class ModalLayoutController(
             val dispatcher = reactContext.getNativeModule(
                 UIManagerModule::class.java
             ).eventDispatcher
-            dispatcher.dispatchEvent(RequestDismissModalEvent(getHostId()))
+            dispatcher.dispatchEvent(RequestCloseModalEvent(getHostId()))
         }
     }
 

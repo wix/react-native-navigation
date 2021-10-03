@@ -3,10 +3,10 @@ package com.reactnativenavigation.react.modal
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.RCTEventEmitter
 
-open class RequestDismissModalEvent(viewTag: Int) : Event<RequestDismissModalEvent>(viewTag) {
+open class RequestCloseModalEvent(viewTag: Int) : Event<RequestCloseModalEvent>(viewTag) {
 
     companion object{
-        const val EVENT_NAME = "topRequestDismiss"
+        const val EVENT_NAME = "topRequestClose"
     }
 
     override fun getEventName(): String {

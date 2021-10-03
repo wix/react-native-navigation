@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.options.LayoutFactory
-import com.reactnativenavigation.react.modal.RNNModalViewManager
+import com.reactnativenavigation.react.modal.ModalViewManager
 
 class NavigationPackage(private val reactNativeHost: ReactNativeHost) : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
@@ -22,6 +22,6 @@ class NavigationPackage(private val reactNativeHost: ReactNativeHost) : ReactPac
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
 
-        return listOf(RNNModalViewManager((reactContext.currentActivity as NavigationActivity).navigator))
+        return listOf(ModalViewManager((reactContext.currentActivity as NavigationActivity).navigator))
     }
 }
