@@ -56,7 +56,7 @@ public class ModalStack {
     public void setDefaultOptions(Options defaultOptions) {
         presenter.setDefaultOptions(defaultOptions);
     }
-    
+
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
         ViewController toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
