@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponent, RNNModal } from 'react-native-navigation';
+import { NavigationComponent, Modal as RNNModal } from 'react-native-navigation';
 import last from 'lodash/last';
 import concat from 'lodash/concat';
 import forEach from 'lodash/forEach';
@@ -134,7 +134,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         {Platform.OS === 'android' && (
           <RNNModal
             visible={this.state.modalVisible}
-            onRequestDismiss={() => this.setState({ modalVisible: false })}
+            onRequestClose={() => this.setState({ modalVisible: false })}
           >
             <Button
               label="Dismiss declared Modal"
