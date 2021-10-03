@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  RNNModal,
   Options,
   OptionsModalPresentationStyle,
   NavigationComponent,
@@ -13,8 +12,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
-import { Modal, Text, Image, StyleSheet } from 'react-native';
-import { View } from 'react-native-ui-lib';
+import { Text } from 'react-native';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -27,8 +25,6 @@ const {
 
 interface State {
   componentDidAppear: boolean;
-  modalVisible: boolean;
-  rnModalVisibile: boolean;
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
@@ -37,8 +33,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     Navigation.events().bindComponent(this);
     this.state = {
       componentDidAppear: false,
-      modalVisible: false,
-      rnModalVisibile: false,
     };
   }
 
@@ -63,41 +57,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <RNNModal
-          visible={this.state.modalVisible}
-          onRequestDismiss={() => this.setState({ modalVisible: false })}
-        >
-          <Button label="Dismiss Our Modal" onPress={this.toggleModal} />
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: 'https://wix.github.io/react-native-navigation/img/logo.png',
-              }}
-            />
-          </View>
-        </RNNModal>
-
-        <Modal
-          visible={this.state.rnModalVisibile}
-          onRequestClose={() => this.setState({ rnModalVisibile: false })}
-        >
-          <Button label="Dismiss RN Modal" onPress={this.toggleRNModal} />
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
-              }}
-            />
-          </View>
-        </Modal>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button label="Toggle modal" onPress={this.toggleModal} />
-        <Button label="Toggle RN modal" onPress={this.toggleRNModal} />
-
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -109,8 +71,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     );
   }
 
-  toggleRNModal = () => this.setState({ rnModalVisibile: !this.state.rnModalVisibile });
-  toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () =>
@@ -216,15 +176,3 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     });
   };
 }
-const styles = StyleSheet.create({
-  logoContainer: {
-    justifyContent: 'center',
-    flex: 1,
-    flexDirection: 'row',
-  },
-  tinyLogo: {
-    justifyContent: 'center',
-    width: 128,
-    height: 128,
-  },
-});
