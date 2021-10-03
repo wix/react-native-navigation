@@ -2,13 +2,7 @@ import React from 'react';
 import { requireNativeComponent, ViewProps, StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 export interface RNNModalProps extends ViewProps {
-  // animationType?: 'none' | 'slide' | 'fade' | null;
-  // presentationStyle?: 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | null;
-  // transparent?: boolean;
-  // statusBarTranslucent?: boolean;
-  // hardwareAccelerated?: boolean;
   onShow?: () => any;
-  onDismiss?: () => any;
   onRequestDismiss: () => any;
   visible: boolean;
 }
@@ -37,11 +31,9 @@ export class RNNModal extends React.Component<RNNModalProps> {
 
 const styles = StyleSheet.create({
   modal: {
-    // backgroundColor: 'yellow',
     position: 'absolute',
   },
   container: {
-    // backgroundColor: 'red',
     top: 0,
     flex: 1,
   },

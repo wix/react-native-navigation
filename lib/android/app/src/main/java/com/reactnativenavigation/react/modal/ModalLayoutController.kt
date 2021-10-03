@@ -42,13 +42,6 @@ class ModalLayoutController(
         }
     }
 
-    fun sendDismissEvent() {
-        val dispatcher = reactContext.getNativeModule(
-            UIManagerModule::class.java
-        ).eventDispatcher
-        dispatcher.dispatchEvent(ModalDismissEvent(getHostId()))
-    }
-
     fun sendShowEvent() {
         val dispatcher = reactContext.getNativeModule(
             UIManagerModule::class.java

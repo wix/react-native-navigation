@@ -37,15 +37,7 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<M
 
     override fun onDropViewInstance(modal: ModalHostLayout) {
         super.onDropViewInstance(modal)
-        navigator.dismissModal(modal.viewController.id, CommandListenerAdapter(object : CommandListener {
-            override fun onSuccess(childId: String?) {
-                modal.viewController.sendDismissEvent()
-            }
-
-            override fun onError(message: String?) {
-            }
-
-        }))
+        navigator.dismissModal(modal.viewController.id, CommandListenerAdapter())
         modal.onDropInstance()
     }
 
@@ -65,7 +57,6 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<M
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any>? {
         return MapBuilder.builder<String, Any>()
             .put(RequestDismissModalEvent.EVENT_NAME, MapBuilder.of("registrationName", "onRequestDismiss"))
-            .put(ModalDismissEvent.EVENT_NAME, MapBuilder.of("registrationName", "onDismiss"))
             .put(ShowModalEvent.EVENT_NAME, MapBuilder.of("registrationName", "onShow"))
             .build()
     }
