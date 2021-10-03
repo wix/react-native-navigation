@@ -30,7 +30,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Nullable
     private PermissionListener mPermissionListener;
     
-    private Navigator navigator;
+    protected Navigator navigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
