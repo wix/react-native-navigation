@@ -46,7 +46,7 @@ public class BackButton extends ButtonOptions {
 
     public void mergeWith(BackButton other) {
         if (!Constants.BACK_BUTTON_ID.equals(other.id)) id = other.id;
-        if (other.accessibilityLabel.hasValue()) accessibilityLabel = other.accessibilityLabel;
+        if (other.accessibilityLabel.hasValue() && !other.accessibilityLabel.equals(new Text("Navigate Up"))) accessibilityLabel = other.accessibilityLabel;
         if (other.icon.hasValue()) icon = other.icon;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.color.hasValue()) color = other.color;
