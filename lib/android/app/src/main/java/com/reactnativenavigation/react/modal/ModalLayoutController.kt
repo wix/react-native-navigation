@@ -26,7 +26,7 @@ class ModalLayoutController(
         return isViewCreated
     }
 
-    override fun getCurrentComponentName(): String = "GenericDeclaredLayoutController"
+    override fun getCurrentComponentName(): String = "ModalLayoutController"
 
 
     override fun createView(): ModalFrameLayout {
