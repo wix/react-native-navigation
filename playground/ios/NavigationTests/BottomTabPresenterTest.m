@@ -2,13 +2,14 @@
 #import "RNNBottomTabsController+Helpers.h"
 #import "UIViewController+RNNOptions.h"
 #import <OCMock/OCMock.h>
-#import <ReactNativeNavigation/BottomTabAppearancePresenter.h>
+#import <ReactNativeNavigation/BottomTabPresenter.h>
+#import <ReactNativeNavigation/BottomTabPresenterCreator.h>
 #import <ReactNativeNavigation/RNNComponentViewController.h>
 #import <XCTest/XCTest.h>
 
 @interface RNNBottomTabPresenterTest : XCTestCase
 
-@property(nonatomic, strong) BottomTabAppearancePresenter *uut;
+@property(nonatomic, strong) BottomTabPresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) RNNBottomTabsController *boundViewController;
 @property(nonatomic, strong) RNNComponentViewController *componentViewController;
@@ -20,8 +21,8 @@
 
 - (void)setUp {
     [super setUp];
-    self.uut = [[BottomTabAppearancePresenter alloc]
-        initWithDefaultOptions:[RNNNavigationOptions emptyOptions]];
+    self.uut =
+        [BottomTabPresenterCreator createWithDefaultOptions:RNNNavigationOptions.emptyOptions];
     self.componentViewController = [RNNComponentViewController new];
     self.boundViewController =
         [RNNBottomTabsController createWithChildren:@[ self.componentViewController ]];

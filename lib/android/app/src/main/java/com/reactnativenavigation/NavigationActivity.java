@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
-    
+
     protected Navigator navigator;
 
     @Override
@@ -146,7 +146,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     protected void addDefaultSplashLayout() {
         View view = new View(this);
-        view.setBackgroundColor(Color.WHITE);
         setContentView(view);
     }
 
