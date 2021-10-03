@@ -190,6 +190,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
   showOverlay = async () => {
     await Navigation.showOverlay(Screens.OverlayAlert, {
       layout: { componentBackgroundColor: 'transparent' },
+      overlay: { interceptTouchOutside: false },
     });
   };
   toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });

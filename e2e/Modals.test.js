@@ -182,6 +182,8 @@ describe('modal', () => {
     await expect(elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON)).toBeVisible();
    
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
+    await expect(elementByLabel("Modal Lifecycle")).toBeVisible();
+
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
 
@@ -201,6 +203,6 @@ describe('modal', () => {
 
     Android.pressBack();
 
-    await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    await expect(elementByLabel("Toggle declared modal")).toBeVisible();
   });
 });
