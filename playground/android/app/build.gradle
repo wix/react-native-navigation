@@ -8,7 +8,6 @@ project.ext.react = [
         bundleInAlpha: true,
         bundleInBeta: true,
         enableHermes: enableHermes,
-        nodeExecutableAndArgs:['/usr/local/bin/node'],
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
         hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
