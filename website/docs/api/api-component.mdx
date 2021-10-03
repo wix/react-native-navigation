@@ -57,10 +57,11 @@ Navigation.setLazyComponentRegistrator((componentName) => {
 Update props of a component registered with [registerComponent](#registercomponent). Updating props triggers the component lifecycle methods related to [updating](https://reactjs.org/docs/react-component.html#updating).
 
 #### Parameters
-| Name   | Required | Type                | Description                                                                                                            |
-| ------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| componentId | Yes      | string | Unique component id |
-| options | Yes      | object | props object to pass to the component |
+| Name        | Required | Type     | Description                                                                                                            |
+| ----------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| componentId | Yes      | string   | Unique component id                                               |
+| options     | Yes      | object   | Props object to pass to the component                             |
+| callback    | No       | Function | Function that will be executed once inner `setState` is completed |
 
 #### Example
 ```js

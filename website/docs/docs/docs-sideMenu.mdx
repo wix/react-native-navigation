@@ -56,7 +56,7 @@ class SideMenuCenterScreen extends React.Component {
 
   navigationButtonPressed({ buttonId }) {
     if (buttonId === 'sideMenu') {
-      Navigation.mergeOptions(this, {
+      Navigation.mergeOptions(this.props.componentId, {
         sideMenu: {
           left: {
             visible: true

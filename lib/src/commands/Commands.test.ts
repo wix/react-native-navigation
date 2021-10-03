@@ -242,6 +242,19 @@ describe('Commands', () => {
         )
       );
     });
+
+    test('update props with callback', done => {
+      function callback () {
+        try {
+          expect(true).toBe(true);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+
+      uut.updateProps('theComponentId', { someProp: 'someValue' }, callback);
+    });
   });
 
   describe('showModal', () => {

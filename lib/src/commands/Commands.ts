@@ -85,8 +85,8 @@ export class Commands {
     this.commandsObserver.notify(CommandName.MergeOptions, { componentId, options });
   }
 
-  public updateProps(componentId: string, props: object) {
-    this.store.updateProps(componentId, props);
+  public updateProps(componentId: string, props: object, callback?: () => void) {
+    this.store.updateProps(componentId, props, callback);
     this.commandsObserver.notify(CommandName.UpdateProps, { componentId, props });
   }
 

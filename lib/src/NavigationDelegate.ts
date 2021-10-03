@@ -113,8 +113,8 @@ export class NavigationDelegate {
   /**
    * Update a mounted component's props
    */
-  public updateProps(componentId: string, props: object) {
-    this.concreteNavigation.updateProps(componentId, props);
+  public updateProps(componentId: string, props: object, callback?: () => void) {
+    this.concreteNavigation.updateProps(componentId, props, callback);
   }
 
   /**

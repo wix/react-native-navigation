@@ -3,7 +3,16 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter
+@implementation BottomTabPresenter {
+    RNNTabBarItemCreator *_tabCreator;
+}
+
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
+                            tabCreator:(RNNTabBarItemCreator *)tabCreator {
+    self = [super initWithDefaultOptions:defaultOptions];
+    _tabCreator = tabCreator;
+    return self;
+}
 
 - (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     RNNNavigationOptions *withDefault = [options withDefault:self.defaultOptions];
@@ -37,8 +46,7 @@
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    child.tabBarItem = [RNNTabBarItemCreator createTabBarItem:bottomTabOptions
-                                                    mergeItem:child.tabBarItem];
+    child.tabBarItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
 }
 
 @end
