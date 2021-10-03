@@ -2,6 +2,8 @@ import React from 'react';
 import { requireNativeComponent, ViewProps, StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 export interface RNNModalProps extends ViewProps {
+  presentationStyle: 'unspecified' | 'none' | 'overCurrentContext';
+  blurOnUnmount: boolean;
   onShow?: () => any;
   onRequestDismiss: () => any;
   visible: boolean;
@@ -10,6 +12,10 @@ export interface RNNModalProps extends ViewProps {
 const RNNModalViewManager = requireNativeComponent('RNNModalViewManager');
 
 export class RNNModal extends React.Component<RNNModalProps> {
+  static defaultProps = {
+    presentationStyle: 'unspecified',
+    blurOnUnmount: false,
+  };
   constructor(props: RNNModalProps) {
     super(props);
   }

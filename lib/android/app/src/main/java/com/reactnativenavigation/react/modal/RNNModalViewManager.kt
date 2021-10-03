@@ -11,6 +11,9 @@ import com.facebook.react.uimanager.ReactShadowNodeImpl
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.reactnativenavigation.options.ModalPresentationStyle
+import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.utils.StatusBarUtils
@@ -68,6 +71,18 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<M
         //onDropViewInstance to hide (to prevent taking space).
     }
 
+    @ReactProp(name = "blurOnUnmount")
+    fun setBlurOnUnmount(modal: ModalHostLayout, blurOnUnmount: Boolean) {
+       modal.viewController.mergeOptions(Options().apply {
+           this.modal.blurOnUnmount = Bool(blurOnUnmount)
+       })
+    }
+    @ReactProp(name = "presentationStyle")
+    fun setPresentationStyle(modal: ModalHostLayout, presentationStyle: String) {
+        modal.viewController.mergeOptions(Options().apply {
+            this.modal.presentationStyle = ModalPresentationStyle.fromString(presentationStyle)
+        })
+    }
 }
 
 private fun getModalHostSize(context: Context): Point {
