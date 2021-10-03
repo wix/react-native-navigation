@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.view.WindowManager
 import com.facebook.infer.annotation.Assertions
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.LayoutShadowNode
@@ -14,6 +15,8 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.reactnativenavigation.options.ModalPresentationStyle
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.parseTransitionAnimationOptions
+import com.reactnativenavigation.options.parsers.JSONParser
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.utils.StatusBarUtils
@@ -22,8 +25,8 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator
 private const val MODAL_MANAGER_NAME = "RNNModalViewManager"
 
 @ReactModule(name = MODAL_MANAGER_NAME)
-class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<ModalHostLayout>() {
-
+class ModalViewManager(private val navigator: Navigator) : ViewGroupManager<ModalHostLayout>() {
+    private val jsonParser = JSONParser()
     override fun getName(): String = MODAL_MANAGER_NAME
 
     override fun createViewInstance(reactContext: ThemedReactContext): ModalHostLayout {
@@ -59,28 +62,31 @@ class RNNModalViewManager(private val navigator: Navigator) : ViewGroupManager<M
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any>? {
         return MapBuilder.builder<String, Any>()
-            .put(RequestDismissModalEvent.EVENT_NAME, MapBuilder.of("registrationName", "onRequestDismiss"))
+            .put(RequestCloseModalEvent.EVENT_NAME, MapBuilder.of("registrationName", "onRequestClose"))
             .put(ShowModalEvent.EVENT_NAME, MapBuilder.of("registrationName", "onShow"))
             .build()
     }
 
-    @ReactProp(name = "visible")
-    fun setVisible(modal: ModalHostLayout, visible: Boolean) {
-        //should be empty, we need at least one prop to be implemented via this
-        //annotation, which enables RN to call onAfterUpdateTransaction to show and
-        //onDropViewInstance to hide (to prevent taking space).
+    @ReactProp(name = "animation")
+    fun setAnimation(modal: ModalHostLayout, animation: ReadableMap) {
+        modal.viewController.mergeOptions(Options().apply {
+           val animationJson = jsonParser.parse(animation)
+            val showModal = parseTransitionAnimationOptions(animationJson.optJSONObject("showModal"))
+            val dismissModal = parseTransitionAnimationOptions(animationJson.optJSONObject("dismissModal"))
+            this.animations.showModal = showModal
+            this.animations.dismissModal = dismissModal
+        })
     }
-
     @ReactProp(name = "blurOnUnmount")
     fun setBlurOnUnmount(modal: ModalHostLayout, blurOnUnmount: Boolean) {
        modal.viewController.mergeOptions(Options().apply {
            this.modal.blurOnUnmount = Bool(blurOnUnmount)
        })
     }
-    @ReactProp(name = "presentationStyle")
-    fun setPresentationStyle(modal: ModalHostLayout, presentationStyle: String) {
+    @ReactProp(name = "transparent")
+    fun setTransparent(modal: ModalHostLayout, transparent: Boolean) {
         modal.viewController.mergeOptions(Options().apply {
-            this.modal.presentationStyle = ModalPresentationStyle.fromString(presentationStyle)
+            this.modal.presentationStyle = if(transparent) ModalPresentationStyle.OverCurrentContext else ModalPresentationStyle.None
         })
     }
 }
