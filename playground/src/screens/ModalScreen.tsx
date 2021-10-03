@@ -21,6 +21,8 @@ const {
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
   MODAL_BTN,
+  SHOW_MODAL_FROM_DECLARED_BUTTON,
+  OVERLAY_BTN,
   MODAL_DISABLED_BACK_BTN,
   DISMISS_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
@@ -32,7 +34,6 @@ const {
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
   TOGGLE_REACT_NATIVE_MODAL,
-  DISMISS_BTN,
 } = testIDs;
 
 interface Props {
@@ -126,7 +127,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button label="Set Root" testID={SET_ROOT} onPress={this.setRoot} />
         <Button
-          label="Toggle react-native modal"
+          label="Toggle declared modal"
           testID={TOGGLE_REACT_NATIVE_MODAL}
           onPress={this.toggleModal}
         />
@@ -135,7 +136,17 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
             visible={this.state.modalVisible}
             onRequestDismiss={() => this.setState({ modalVisible: false })}
           >
-            <Button label="Dismiss Our Modal" testID={DISMISS_BTN} onPress={this.toggleModal} />
+            <Button
+              label="Dismiss declared Modal"
+              testID={DISMISS_MODAL_BTN}
+              onPress={this.toggleModal}
+            />
+            <Button
+              label="Show Modal"
+              testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
+              onPress={this.showModal}
+            />
+            <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
             <View style={styles.logoContainer}>
               <Image
                 style={styles.tinyLogo}
@@ -151,7 +162,17 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
             visible={this.state.modalVisible}
             onRequestClose={() => this.setState({ modalVisible: false })}
           >
-            <Button label="Dismiss RN Modal" onPress={this.toggleModal} />
+            <Button
+              label="Dismiss declared Modal"
+              testID={DISMISS_MODAL_BTN}
+              onPress={this.toggleModal}
+            />
+            <Button
+              label="Show Modal"
+              testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
+              onPress={this.showModal}
+            />
+            <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
             <View style={styles.logoContainer}>
               <Image
                 style={styles.tinyLogo}
@@ -165,14 +186,6 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
       </Root>
     );
   }
-
-  showRNModal = async () => {
-    await Navigation.showModal({
-      component: {
-        name: Screens.Stack,
-      },
-    });
-  };
 
   showOverlay = async () => {
     await Navigation.showOverlay(Screens.OverlayAlert, {
