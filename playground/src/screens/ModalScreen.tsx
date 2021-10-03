@@ -33,7 +33,7 @@ const {
   DISMISS_ALL_MODALS_BTN,
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
-  TOGGLE_REACT_NATIVE_MODAL,
+  TOGGLE_REACT_DECLARED_MODAL,
 } = testIDs;
 
 interface Props {
@@ -128,7 +128,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         <Button label="Set Root" testID={SET_ROOT} onPress={this.setRoot} />
         <Button
           label="Toggle declared modal"
-          testID={TOGGLE_REACT_NATIVE_MODAL}
+          testID={TOGGLE_REACT_DECLARED_MODAL}
           onPress={this.toggleModal}
         />
         {Platform.OS === 'android' && (
