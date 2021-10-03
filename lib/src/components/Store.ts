@@ -9,11 +9,11 @@ export class Store {
   private wrappedComponents: Record<string, React.ComponentClass<any>> = {};
   private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
 
-  updateProps(componentId: string, props: any) {
+  updateProps(componentId: string, props: any, callback?: () => void) {
     this.mergeNewPropsForId(componentId, props);
     const component = this.componentsInstancesById[componentId];
     if (component) {
-      this.componentsInstancesById[componentId].setProps(props);
+      this.componentsInstancesById[componentId].setProps(props, callback);
     }
   }
 

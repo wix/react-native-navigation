@@ -1,6 +1,9 @@
 #import "RNNBasePresenter.h"
-
+#import "RNNTabBarItemCreator.h"
 @interface BottomTabPresenter : RNNBasePresenter
+
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
+                            tabCreator:(RNNTabBarItemCreator *)tabCreator;
 
 - (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
 
