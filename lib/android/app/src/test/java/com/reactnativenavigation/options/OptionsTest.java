@@ -40,6 +40,7 @@ public class OptionsTest extends BaseTest {
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
+    private static final String BACK_BUTTON_ACCESSIBILITY_LABEL = "Go Back My Accessibility Label";
     private static final int SUBTITLE_FONT_SIZE = 14;
     private static final int SUBTITLE_TEXT_COLOR = 0xff123457;
     private static final int SCREEN_BACKGROUND_COLOR = 0xff123458;
@@ -101,6 +102,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBar.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBar.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBar.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
+        assertThat(result.topBar.buttons.back.accessibilityLabel.get()).isEqualTo(BACK_BUTTON_ACCESSIBILITY_LABEL);
         assertThat(result.bottomTabsOptions.animate.get()).isEqualTo(BOTTOM_TABS_ANIMATE.get());
         assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
@@ -123,6 +125,11 @@ public class OptionsTest extends BaseTest {
                 .put("animate", BOTTOM_TABS_ANIMATE.get());
     }
 
+    private JSONObject createBackButton() throws JSONException {
+        return new JSONObject()
+                .put("accessibilityLabel", BACK_BUTTON_ACCESSIBILITY_LABEL);
+    }
+
     @NonNull
     private JSONObject createTopBar(boolean visible) throws JSONException {
         return new JSONObject()
@@ -131,7 +138,8 @@ public class OptionsTest extends BaseTest {
                 .put("background", createBackground())
                 .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
-                .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
+                .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get())
+                .put("backButton", createBackButton());
     }
 
     private JSONObject createBackground() throws JSONException {
