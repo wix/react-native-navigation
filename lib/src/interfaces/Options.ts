@@ -337,6 +337,11 @@ export interface OptionsTopBarBackButton {
    */
   icon?: ImageResource;
   /**
+   * SF Symbol to show as the back button
+   * #### (iOS 13+ specific)
+   */
+  sfSymbol?: string;
+  /**
    * Weither the back button is visible or not
    * @default true
    */
@@ -1010,6 +1015,16 @@ export interface OptionsBottomTab {
    * #### (Android specific)
    */
   popToRoot?: boolean;
+  /**
+   * Set the SF symbol as icon (will be used primarily)
+   * #### (iOS 13+ specific)
+   */
+  sfSymbol?: string;
+  /**
+   * Set the SF symbol as selected icon (will be used primarily)
+   * #### (iOS 13+ specific)
+   */
+  sfSelectedSymbol?: string;
 }
 
 export interface SideMenuSide {

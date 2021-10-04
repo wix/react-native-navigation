@@ -29,6 +29,8 @@
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.visible = [BoolParser parse:dict key:@"visible"];
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
+    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
+    self.sfSelectedSymbol = [TextParser parse:dict key:@"sfSelectedSymbol"];
 
     return self;
 }
@@ -70,6 +72,10 @@
         self.visible = options.visible;
     if (options.selectTabOnPress.hasValue)
         self.selectTabOnPress = options.selectTabOnPress;
+    if (options.sfSymbol.hasValue)
+        self.sfSymbol = options.sfSymbol;
+    if (options.sfSelectedSymbol.hasValue)
+        self.sfSelectedSymbol = options.sfSelectedSymbol;
 }
 
 - (BOOL)hasValue {
@@ -78,7 +84,7 @@
            self.testID.hasValue || self.icon.hasValue || self.selectedIcon.hasValue ||
            self.iconColor.hasValue || self.selectedIconColor.hasValue ||
            self.selectedTextColor.hasValue || self.iconInsets.hasValue || self.textColor.hasValue ||
-           self.visible.hasValue || self.selectTabOnPress.hasValue;
+           self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue || self.sfSelectedSymbol.hasValue;
 }
 
 @end
