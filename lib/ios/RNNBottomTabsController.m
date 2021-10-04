@@ -40,6 +40,11 @@
     if (@available(iOS 13.0, *)) {
         self.tabBar.standardAppearance = [UITabBarAppearance new];
     }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+    if (@available(iOS 15.0, *)) {
+        self.tabBar.scrollEdgeAppearance = [UITabBarAppearance new];
+    }
+#endif
 
     self.longPressRecognizer =
         [[UILongPressGestureRecognizer alloc] initWithTarget:self

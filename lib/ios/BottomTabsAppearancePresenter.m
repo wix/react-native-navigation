@@ -28,8 +28,14 @@
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
     [self setTabBarOpaqueBackground];
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         childViewController.tabBarItem.standardAppearance.backgroundColor = backgroundColor;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            childViewController.tabBarItem.scrollEdgeAppearance.backgroundColor = backgroundColor;
+        }
+#endif
+    }
 }
 
 - (void)setTabBarTranslucent:(BOOL)translucent {
@@ -46,18 +52,37 @@
 }
 
 - (void)setTabBarTranslucentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithDefaultBackground];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem.scrollEdgeAppearance configureWithDefaultBackground];
+        }
+#endif
+    }
 }
 
 - (void)setTabBarTransparentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithTransparentBackground];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem
+                    .scrollEdgeAppearance configureWithTransparentBackground];
+        }
+#endif
+    }
 }
 
 - (void)setTabBarOpaqueBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers)
+    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
         [childViewController.tabBarItem.standardAppearance configureWithOpaqueBackground];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+        if (@available(iOS 15.0, *)) {
+            [childViewController.tabBarItem.scrollEdgeAppearance configureWithOpaqueBackground];
+        }
+#endif
+    }
 }
 
 @end
