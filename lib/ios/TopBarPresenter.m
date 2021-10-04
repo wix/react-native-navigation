@@ -150,7 +150,6 @@
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {
     UIImage *icon = [backButtonOptions.icon withDefault:nil];
-    UIImage *sfSymbol = [UIImage systemImageNamed:[backButtonOptions.sfSymbol withDefault:nil]];
     UIColor *color = [backButtonOptions.color withDefault:nil];
     NSString *title = [backButtonOptions.title withDefault:nil];
     BOOL showTitle = [backButtonOptions.showTitle withDefault:YES];
@@ -163,6 +162,7 @@
 
 
     if (@available(iOS 13.0, *)) {
+        UIImage *sfSymbol = [UIImage systemImageNamed:[backButtonOptions.sfSymbol withDefault:nil]];
         if (backButtonOptions.sfSymbol.hasValue) {
             icon = color ? [sfSymbol imageWithTintColor:color renderingMode:UIImageRenderingModeAlwaysOriginal]
                          : [sfSymbol imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
