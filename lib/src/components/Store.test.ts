@@ -23,8 +23,8 @@ describe('Store', () => {
     expect(uut.getPropsForId('component1')).toEqual({});
   });
 
-  test('update props with callback', done => {
-    function callback () {
+  test('update props with callback', (done) => {
+    function callback() {
       try {
         expect(true).toBe(true);
         done();

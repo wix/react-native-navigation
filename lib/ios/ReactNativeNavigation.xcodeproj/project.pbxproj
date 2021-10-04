@@ -259,8 +259,6 @@
 		507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43C41FF4F17C00D9425B /* RNNTopTabsViewController.m */; };
 		507F43C91FF4F9CC00D9425B /* RNNTopTabOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */; };
 		507F43CA1FF4F9CC00D9425B /* RNNTopTabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43C81FF4F9CC00D9425B /* RNNTopTabOptions.m */; };
-		507F43F41FF4FCFE00D9425B /* HMSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43F21FF4FCFE00D9425B /* HMSegmentedControl.h */; };
-		507F43F51FF4FCFE00D9425B /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43F31FF4FCFE00D9425B /* HMSegmentedControl.m */; };
 		507F43F81FF525B500D9425B /* RNNSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43F61FF525B500D9425B /* RNNSegmentedControl.h */; };
 		507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43F71FF525B500D9425B /* RNNSegmentedControl.m */; };
 		5082CC3323CDC3B800FD2B6A /* HorizontalTranslationTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 5082CC3123CDC3B800FD2B6A /* HorizontalTranslationTransition.h */; };
@@ -790,8 +788,6 @@
 		507F43C41FF4F17C00D9425B /* RNNTopTabsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabsViewController.m; sourceTree = "<group>"; };
 		507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabOptions.h; sourceTree = "<group>"; };
 		507F43C81FF4F9CC00D9425B /* RNNTopTabOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabOptions.m; sourceTree = "<group>"; };
-		507F43F21FF4FCFE00D9425B /* HMSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSegmentedControl.h; sourceTree = "<group>"; };
-		507F43F31FF4FCFE00D9425B /* HMSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSegmentedControl.m; sourceTree = "<group>"; };
 		507F43F61FF525B500D9425B /* RNNSegmentedControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSegmentedControl.h; sourceTree = "<group>"; };
 		507F43F71FF525B500D9425B /* RNNSegmentedControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSegmentedControl.m; sourceTree = "<group>"; };
 		5082CC3123CDC3B800FD2B6A /* HorizontalTranslationTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HorizontalTranslationTransition.h; sourceTree = "<group>"; };
@@ -1525,15 +1521,6 @@
 			name = Presenters;
 			sourceTree = "<group>";
 		};
-		507F43F11FF4FCD800D9425B /* HMSegmentControl */ = {
-			isa = PBXGroup;
-			children = (
-				507F43F21FF4FCFE00D9425B /* HMSegmentedControl.h */,
-				507F43F31FF4FCFE00D9425B /* HMSegmentedControl.m */,
-			);
-			name = HMSegmentControl;
-			sourceTree = "<group>";
-		};
 		50BAFE482399403200798674 /* Child View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1740,7 +1727,6 @@
 				7BD721F31E2D3AA100724059 /* Bridge */,
 				7B1E4C4B1E2D173700C3A525 /* Controllers */,
 				263905881E4C6F440023D7D3 /* RNNSideMenu */,
-				507F43F11FF4FCD800D9425B /* HMSegmentControl */,
 				7B49FEBC1E95090800DEB3EA /* ReactNativeNavigationTests */,
 				D8AFADBE1BEE6F3F00A4592D /* Products */,
 				7B49FED01E950A7A00DEB3EA /* Frameworks */,
@@ -1850,7 +1836,6 @@
 				50EF5BC624D1878D009CBFD0 /* RNNModalManagerEventHandler.h in Headers */,
 				263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */,
 				C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */,
-				507F43F41FF4FCFE00D9425B /* HMSegmentedControl.h in Headers */,
 				501CD31F214A5B6900A6E225 /* RNNLayoutInfo.h in Headers */,
 				50BCB28D23F2B82100D6C8E5 /* TextStorageTransition.h in Headers */,
 				503A8FED25DD397400BB6A74 /* RNNIconCreator.h in Headers */,
@@ -2325,7 +2310,6 @@
 				50C085F425939F6200B0502C /* RNNButtonBuilder.m in Sources */,
 				5038A3C2216E1E66009280BC /* RNNFontAttributesCreator.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* ElementAlphaTransition.m in Sources */,
-				507F43F51FF4FCFE00D9425B /* HMSegmentedControl.m in Sources */,
 				5017D9E7239D2D9E00B74047 /* BottomTabsBaseAttacher.m in Sources */,
 				5012242321736883000F5F98 /* NullColor.m in Sources */,
 				50BCB27E23F2A1EE00D6C8E5 /* FloatTransition.m in Sources */,

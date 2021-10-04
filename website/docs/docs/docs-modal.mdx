@@ -36,6 +36,41 @@ Navigation.showModal({
   },
 });
 ```
+Or by declaring modal as a Component inside render function:
+
+:::note
+Available for Android only, for iOS please use Modal from `react-native`.
+:::
+
+([Full code can be found in the Playground](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/ModalScreen.tsx)).
+
+```jsx
+import { NavigationComponent, Modal as RNNModal } from 'react-native-navigation';
+.....
+toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
+.....
+render() {
+  return (
+    .....
+  <RNNModal
+      onShow={/* optional callback */}
+      animationType={/* optional, 'none' | 'fade' | 'slide', default 'slide'*/}
+      blurOnUnmount={/* optional, default false */}
+      transparent={/* optional, default false, true behaves as overCurrentContext */}
+      visible={this.state.modalVisible}
+      onRequestClose={() => this.setState({ modalVisible: false })}
+      >
+          <Button
+            label="Dismiss declared Modal"
+            testID={DISMISS_MODAL_BTN}
+            onPress={this.toggleModal}
+          />
+          ....
+    </RNNModal>
+    ....
+    );
+}
+```
 
 Here's how the Modal looks on both platforms.
 

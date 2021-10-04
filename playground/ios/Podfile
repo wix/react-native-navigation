@@ -10,6 +10,7 @@ def all_pods
     :hermes_enabled => true
   )
   pod 'ReactNativeNavigation', :path => '../../'
+  pod 'HMSegmentedControl'
 end
 
 target 'playground' do

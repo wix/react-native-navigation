@@ -57,12 +57,15 @@ export class ComponentWrapper {
       }
 
       public setProps(newProps: any, callback?: () => void) {
-        this.setState((prevState) => ({
-          allProps: {
-            ...prevState.allProps,
-            ...newProps,
-          },
-        }), callback);
+        this.setState(
+          (prevState) => ({
+            allProps: {
+              ...prevState.allProps,
+              ...newProps,
+            },
+          }),
+          callback
+        );
       }
 
       componentDidMount() {

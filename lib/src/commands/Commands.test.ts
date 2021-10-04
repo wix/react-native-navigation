@@ -243,8 +243,8 @@ describe('Commands', () => {
       );
     });
 
-    test('update props with callback', done => {
-      function callback () {
+    test('update props with callback', (done) => {
+      function callback() {
         try {
           expect(true).toBe(true);
           done();
