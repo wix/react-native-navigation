@@ -1,7 +1,6 @@
 import React from 'react';
-import { requireNativeComponent, ViewProps, StyleSheet, Dimensions } from 'react-native';
+import { requireNativeComponent, View, ViewProps, StyleSheet, Dimensions } from 'react-native';
 import { AnimationOptions, ViewAnimationOptions } from 'react-native-navigation/interfaces/Options';
-import { View } from 'react-native-ui-lib';
 export interface RNNModalProps extends ViewProps {
   visible: boolean;
   transparent: boolean;
