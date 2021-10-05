@@ -24,7 +24,7 @@ public class StackControllerBuilder {
     private BackButtonHelper backButtonHelper = new BackButtonHelper();
     private Presenter presenter;
     private StackPresenter stackPresenter;
-    private List<ViewController> children = new ArrayList<>();
+    private List<ViewController<?>> children = new ArrayList<>();
     private EventEmitter eventEmitter;
     private FabPresenter fabPresenter = new FabPresenter();
 
@@ -40,11 +40,11 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setChildren(ViewController... children) {
+    public StackControllerBuilder setChildren(ViewController<?>... children) {
         return setChildren(Arrays.asList(children));
     }
 
-    public StackControllerBuilder setChildren(List<ViewController> children) {
+    public StackControllerBuilder setChildren(List<ViewController<?>> children) {
         this.children = children;
         return this;
     }

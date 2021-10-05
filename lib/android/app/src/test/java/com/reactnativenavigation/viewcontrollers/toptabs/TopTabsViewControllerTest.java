@@ -44,7 +44,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     private StackController stack;
     private TopTabsController uut;
-    private List<ViewController> tabControllers = new ArrayList<>(SIZE);
+    private List<ViewController<?>> tabControllers = new ArrayList<>(SIZE);
     private final Options options = new Options();
     private TopTabsViewPager topTabsLayout;
     private Activity activity;
@@ -73,7 +73,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @NonNull
     private ArrayList<Options> createOptions() {
-        ArrayList result = new ArrayList();
+        ArrayList<Options> result = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
@@ -83,8 +83,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         return result;
     }
 
-    private List<ViewController> createTabsControllers(Activity activity, List<Options> tabOptions) {
-        List<ViewController> tabControllers = new ArrayList<>(SIZE);
+    private List<ViewController<?>> createTabsControllers(Activity activity, List<Options> tabOptions) {
+        List<ViewController<?>> tabControllers = new ArrayList<>(SIZE);
         for (int i = 0; i < SIZE; i++) {
             ComponentViewController viewController = new ComponentViewController(
                     activity,
@@ -117,7 +117,7 @@ public class TopTabsViewControllerTest extends BaseTest {
             verify(tab(topTabs, i), times(0)).destroy();
         }
         uut.destroy();
-        for (ViewController tabController : tabControllers) {
+        for (ViewController<?> tabController : tabControllers) {
             verify(tabController, times(1)).destroy();
         }
     }
@@ -162,7 +162,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(0), times(1)).onViewWillAppear();
         verify(tabControllers.get(1), times(0)).onViewWillAppear();
 
-        ViewController comp = tabControllers.get(0);
+        ViewController<?> comp = tabControllers.get(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(comp));
     }
 
@@ -174,7 +174,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(1).ensureViewIsCreated();
 
         uut.onViewWillAppear();
-        ViewController currentTab = tab(0);
+        ViewController<?> currentTab = tab(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
         assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
 
@@ -208,7 +208,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     public void applyOptions_tabsAreRemovedAfterViewDisappears() {
         StackController stackController = TestUtils.newStackController(activity).build();
         stackController.ensureViewIsCreated();
-        ViewController first = new SimpleViewController(activity, childRegistry, "first", Options.EMPTY);
+        ViewController<?> first = new SimpleViewController(activity, childRegistry, "first", Options.EMPTY);
         disablePushAnimation(first, uut);
         stackController.push(first, new CommandListenerAdapter());
         stackController.push(uut, new CommandListenerAdapter());
@@ -241,7 +241,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         return "Title " + i;
     }
 
-    private ViewController tab(int index) {
+    private ViewController<?> tab(int index) {
         return tabControllers.get(index);
     }
 }
