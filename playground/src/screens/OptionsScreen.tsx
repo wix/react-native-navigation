@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import { NavigationComponentProps } from 'react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
@@ -42,15 +41,9 @@ export default class Options extends React.Component<Props> {
 
   render() {
     return (
-      <View componentId={this.props.componentId}>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', paddingTop:16 }}>
-          <Text style={{ color: 'white' }} ellipsizeMode={'tail'} numberOfLines={1}>
-            Ast elit et nulla tempor dolore minim est ea nostrud et eiusmod aliquip
-          </Text>
-          <Image style={{ tintColor: 'white', width: 20 }} source={require('../../img/two.png')} />
-        </View>
-        {/* <Button label="Change title" testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} /> */}
-        {/* <Button label="Hide TopBar" testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
+      <Root componentId={this.props.componentId}>
+        <Button label="Change title" testID={CHANGE_TITLE_BTN} onPress={this.changeTitle} />
+        <Button label="Hide TopBar" testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label="Show TopBar" testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button
@@ -90,8 +83,8 @@ export default class Options extends React.Component<Props> {
           label="Toggle Navigation bar visibility"
           platform="android"
           onPress={this.toggleAndroidNavigationBar}
-        /> */}
-      </View>
+        />
+      </Root>
     );
   }
 

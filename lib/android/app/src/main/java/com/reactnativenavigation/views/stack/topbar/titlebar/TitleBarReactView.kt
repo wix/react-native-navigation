@@ -21,9 +21,9 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
         var measuredWidth = 0;
         this.children.forEach {
-//            if (it.measuredWidth > measuredWidth) {
-                measuredWidth+= it.measuredWidth
-//            }
+            if (it.measuredWidth > measuredWidth) {
+                measuredWidth = it.measuredWidth
+            }
         }
         return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
             widthMeasureSpec
