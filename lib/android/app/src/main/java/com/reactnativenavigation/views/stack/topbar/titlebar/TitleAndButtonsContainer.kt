@@ -154,6 +154,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         val titleHeightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST)
         val titleWidthMeasureSpec = makeTitleAtMostWidthMeasureSpec(containerWidth, rightBarWidth, leftBarWidth, isCenter)
         titleComponent.measure(titleWidthMeasureSpec, titleHeightMeasureSpec)
+
     }
 
     private fun clearComponent() = component?.let { it.removeFromParent(); component = null; }
