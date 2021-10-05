@@ -1,6 +1,7 @@
 package com.reactnativenavigation.options
 
-import com.reactnativenavigation.options.params.*
+import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.parsers.BoolParser
 import org.json.JSONObject
 
