@@ -7,6 +7,7 @@ import com.reactnativenavigation.options.SharedElementTransitionOptions
 import java.lang.reflect.ParameterizedType
 
 abstract class PropertyAnimatorCreator<T : View> internal constructor(protected val from: View, protected val to: View) {
+    @Suppress("UNCHECKED_CAST")
     @CallSuper
     fun shouldAnimateProperty(): Boolean {
         val type = childClass
@@ -21,6 +22,7 @@ abstract class PropertyAnimatorCreator<T : View> internal constructor(protected 
     protected open fun excludedViews() = emptyList<Class<*>>()
 
     abstract fun create(options: SharedElementTransitionOptions): Animator
+    @Suppress("UNCHECKED_CAST")
     private val childClass: Class<T>
         get() = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>
 
