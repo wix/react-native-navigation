@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { NavigationComponentProps } from 'react-native-navigation';
 
 interface Props extends NavigationComponentProps {
@@ -11,25 +11,21 @@ interface Props extends NavigationComponentProps {
 export default class CustomTopBar extends React.Component<Props> {
   render() {
     return (
-      <View collapsable={false} style={styles.container}>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Text ellipsizeMode={'tail'} numberOfLines={1}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}
+        >
+          <Text ellipsizeMode={'tail'} numberOfLines={1} style={{ color: 'white' }}>
             Ast elit et nulla tempor dolore minim est ea nostrud et eiusmod aliquip
           </Text>
-          <Image source={require('../../img/two.png')} />
+        </View>
+        <View style={{ justifyContent: 'center' }}>
+          <Image source={require('../../img/two.png')} style={{ tintColor: 'white' }} />
         </View>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'baseline',
-  },
-  text: {
-    alignSelf: 'flex-start',
-    color: 'black',
-    fontSize: 16,
-  },
-});
