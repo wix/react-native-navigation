@@ -88,7 +88,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         menuItem.isEnabled = button.enabled.isTrueOrUndefined
     }
 
-    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable? {
+    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable {
         return if (button.iconBackground.hasValue()) {
             val width = button.iconBackground.width.get(srcDrawable.intrinsicWidth).let { max(it, srcDrawable.intrinsicWidth) }
             val height = button.iconBackground.height.get(srcDrawable.intrinsicHeight).let { max(it, srcDrawable.intrinsicHeight) }
