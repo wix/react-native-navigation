@@ -6,7 +6,6 @@ import com.facebook.react.bridge.JavaOnlyMap;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.ReactPlatformColor;
-import com.reactnativenavigation.utils.StatusBarUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +15,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 
 import android.app.Activity;
 
@@ -38,7 +36,6 @@ public class ColorParseTest extends BaseTest {
 
     @Test
     public void shouldParsePlatformColors() throws JSONException {
-        JSONObject json = new JSONObject();
         JSONObject color = new JSONObject();
         final JSONArray jsonArray = new JSONArray();
         jsonArray.put("@color/colorPrimary");

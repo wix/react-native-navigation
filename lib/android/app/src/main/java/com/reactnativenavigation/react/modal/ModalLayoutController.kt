@@ -36,16 +36,16 @@ class ModalLayoutController(
     override fun sendOnNavigationButtonPressed(buttonId: String?) {
         if (buttonId == Constants.HARDWARE_BACK_BUTTON_ID) {
             val dispatcher = reactContext.getNativeModule(
-                UIManagerModule::class.java
-            ).eventDispatcher
-            dispatcher.dispatchEvent(RequestCloseModalEvent(getHostId()))
+                    UIManagerModule::class.java
+            )?.eventDispatcher
+            dispatcher?.dispatchEvent(RequestCloseModalEvent(getHostId()))
         }
     }
 
     fun sendShowEvent() {
         val dispatcher = reactContext.getNativeModule(
-            UIManagerModule::class.java
-        ).eventDispatcher
-        dispatcher.dispatchEvent(ShowModalEvent(getHostId()))
+                UIManagerModule::class.java
+        )?.eventDispatcher
+        dispatcher?.dispatchEvent(ShowModalEvent(getHostId()))
     }
 }

@@ -107,10 +107,10 @@ class TopBarControllerTest : BaseTest() {
     fun setLeftButtons_emptyButtonsListClearsLeftButton() {
         uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(componentButton)!!)
-        assertThat(uut.leftButtonCount).isNotZero();
+        assertThat(uut.leftButtonCount).isNotZero()
         uut.applyLeftButtons(emptyList())
         uut.applyRightButtons(rightButtons(textButton1)!!)
-        assertThat(uut.leftButtonCount).isZero();
+        assertThat(uut.leftButtonCount).isZero()
     }
 
     @Test
@@ -142,7 +142,7 @@ class TopBarControllerTest : BaseTest() {
         uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
         assertThat(uut.view.navigationIcon).isNotNull()
         val initialButtons = leftButton(leftButton)
-        uut.applyLeftButtons(initialButtons!!)
+        uut.applyLeftButtons(initialButtons)
         uut.mergeLeftButtons(initialButtons, emptyList())
         assertThat(uut.view.navigationIcon).isNull()
     }

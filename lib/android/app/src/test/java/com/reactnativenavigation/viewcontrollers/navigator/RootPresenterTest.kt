@@ -47,12 +47,12 @@ class RootPresenterTest : BaseTest() {
 
         root = object : SimpleViewController(activity, ChildControllersRegistry(), "child1", Options()) {
             override fun createView(): SimpleView {
-                return root1View;
+                return root1View
             }
         }
         root2 = object : SimpleViewController(activity, ChildControllersRegistry(), "child1", Options()) {
             override fun createView(): SimpleView {
-                return root2View;
+                return root2View
             }
         }
         setupWithAnimator(Mockito.spy(createAnimator()))

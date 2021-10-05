@@ -3,7 +3,6 @@ package com.reactnativenavigation.utils;
 import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.view.ViewParent;
 
 import com.facebook.react.views.view.ReactViewBackgroundDrawable;
@@ -34,11 +33,11 @@ public class ViewUtils {
         return null;
     }
 
-    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz) {
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class<?> clazz) {
         return findChildrenByClassRecursive(root, clazz, child -> true);
     }
 
-    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz, Matcher<T> matcher) {
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class<?> clazz, Matcher<T> matcher) {
         ArrayList<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
@@ -56,7 +55,7 @@ public class ViewUtils {
         return findChildrenByClass(root, clazz, child -> true);
     }
 
-    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class<?> clazz, Matcher<T> matcher) {
         List<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
@@ -114,7 +113,7 @@ public class ViewUtils {
         }
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
     }
-    
+
 
     public static boolean isVisible(View view) {
         return perform(view, false, v -> v.getVisibility() == View.VISIBLE);

@@ -76,21 +76,21 @@ class StackPresenterTest : BaseTest() {
         iconResolver = IconResolverFake(activity)
         buttonCreator = TitleBarButtonCreatorMock()
         ogUut = StackPresenter(
-            activity,
-            titleViewCreator,
-            TopBarBackgroundViewCreatorMock(),
-            buttonCreator,
-            iconResolver,
-            typefaceLoader,
-            renderChecker,
-            Options()
+                activity,
+                titleViewCreator,
+                TopBarBackgroundViewCreatorMock(),
+                buttonCreator,
+                iconResolver,
+                typefaceLoader,
+                renderChecker,
+                Options()
         )
         uut = spy(ogUut)
         createTopBarController()
         parent = TestUtils.newStackController(activity)
-            .setTopBarController(topBarController)
-            .setStackPresenter(uut)
-            .build()
+                .setTopBarController(topBarController)
+                .setStackPresenter(uut)
+                .build()
         childRegistry = ChildControllersRegistry()
         child = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
         otherChild = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
@@ -768,9 +768,9 @@ class StackPresenterTest : BaseTest() {
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        verify(rightController, never()).applyColor(any(), any());
-        verify(leftController, never()).applyColor(any(), any());
-        verify(leftController, never()).applyDisabledColor(any(), any());
+        verify(rightController, never()).applyColor(any(), any())
+        verify(leftController, never()).applyColor(any(), any())
+        verify(leftController, never()).applyDisabledColor(any(), any())
         verify(leftController, never()).applyDisabledColor(any(), any())
 
     }
@@ -837,7 +837,7 @@ class StackPresenterTest : BaseTest() {
         val rightCaptor = argumentCaptor<List<ButtonController>>()
         val leftCaptor = argumentCaptor<List<ButtonController>>()
         verify(topBarController).applyRightButtons(rightCaptor.capture())
-        verify(topBarController).applyLeftButtons(leftCaptor.capture());
+        verify(topBarController).applyLeftButtons(leftCaptor.capture())
         assertThat(rightCaptor.firstValue.size).isOne()
         assertThat(leftCaptor.firstValue.size).isOne()
     }
@@ -897,8 +897,8 @@ class StackPresenterTest : BaseTest() {
         val options = Options().apply {
             topBar.buttons.right = ArrayList(listOf(componentBtn1))
             topBar.buttons.left = ArrayList(listOf(componentBtn2))
-            topBar.animateLeftButtons = Bool(false);
-            topBar.animateRightButtons = Bool(true);
+            topBar.animateLeftButtons = Bool(false)
+            topBar.animateRightButtons = Bool(true)
         }
 
         uut.applyChildOptions(options, parent, child)

@@ -11,7 +11,6 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
@@ -81,13 +80,13 @@ public class UiUtils {
         });
     }
 
-	public static void runOnMainThread(Runnable runnable) {
-		new Handler(Looper.getMainLooper()).post(runnable);
-	}
+    public static void runOnMainThread(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
+    }
 
-	public static float getWindowHeight(Context context) {
+    public static float getWindowHeight(Context context) {
         return getDisplayMetrics(context).heightPixels;
-	}
+    }
 
     public static float getWindowWidth(Context context) {
         return getDisplayMetrics(context).widthPixels;

@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.component;
 
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 

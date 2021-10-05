@@ -24,7 +24,7 @@ import static com.reactnativenavigation.react.Constants.HARDWARE_BACK_BUTTON_ID;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ModalStack {
-    private final List<ViewController> modals = new ArrayList<>();
+    private final List<ViewController<?>> modals = new ArrayList<>();
     private final ModalPresenter presenter;
     private final ModalOverlay overlay;
     private EventEmitter eventEmitter;
@@ -57,19 +57,19 @@ public class ModalStack {
         presenter.setDefaultOptions(defaultOptions);
     }
 
-    public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
-        ViewController toRemove = isEmpty() ? root : peek();
+    public void showModal(ViewController<?> viewController, ViewController<?> root, CommandListener listener) {
+        ViewController<?> toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
         viewController.setOverlay(overlay);
         presenter.showModal(viewController, toRemove, listener);
     }
 
-    public boolean dismissModal(String componentId, @Nullable ViewController root, CommandListener listener) {
-        ViewController toDismiss = findModalByComponentId(componentId);
+    public boolean dismissModal(String componentId, @Nullable ViewController<?> root, CommandListener listener) {
+        ViewController<?> toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
             boolean isDismissingTopModal = isTop(toDismiss);
             modals.remove(toDismiss);
-            @Nullable ViewController toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
+            @Nullable ViewController<?> toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
             if (isDismissingTopModal) {
                 if (toAdd == null) {
                     listener.onError("Could not dismiss modal");
@@ -90,7 +90,7 @@ public class ModalStack {
         }
     }
 
-    public void dismissAllModals(@Nullable ViewController root, Options mergeOptions, CommandListener listener) {
+    public void dismissAllModals(@Nullable ViewController<?> root, Options mergeOptions, CommandListener listener) {
         if (modals.isEmpty()) {
             listener.onSuccess(perform(root, "", ViewController::getId));
             return;
@@ -117,7 +117,7 @@ public class ModalStack {
         }
     }
 
-    public boolean handleBack(CommandListener listener, ViewController root) {
+    public boolean handleBack(CommandListener listener, ViewController<?> root) {
         if (isEmpty()) return false;
         if (peek().handleBack(listener)) {
             return true;
@@ -130,12 +130,12 @@ public class ModalStack {
         }
     }
 
-    ViewController peek() {
+    ViewController<?> peek() {
         if (modals.isEmpty()) throw new EmptyStackException();
         return modals.get(modals.size() - 1);
     }
 
-    public ViewController get(int index) {
+    public ViewController<?> get(int index) {
         return modals.get(index);
     }
 
@@ -147,13 +147,13 @@ public class ModalStack {
         return modals.size();
     }
 
-    private boolean isTop(ViewController modal) {
+    private boolean isTop(ViewController<?> modal) {
         return !isEmpty() && peek().equals(modal);
     }
 
     @Nullable
-    private ViewController findModalByComponentId(String componentId) {
-        for (ViewController modal : modals) {
+    private ViewController<?> findModalByComponentId(String componentId) {
+        for (ViewController<?> modal : modals) {
             if (modal.findController(componentId) != null) {
                 return modal;
             }
@@ -163,9 +163,9 @@ public class ModalStack {
 
 
     @Nullable
-    public ViewController findControllerById(String componentId) {
-        for (ViewController modal : modals) {
-            ViewController controllerById = modal.findController(componentId);
+    public ViewController<?> findControllerById(String componentId) {
+        for (ViewController<?> modal : modals) {
+            ViewController<?> controllerById = modal.findController(componentId);
             if (controllerById != null) {
                 return controllerById;
             }
@@ -174,14 +174,14 @@ public class ModalStack {
     }
 
     public void destroy() {
-        for (ViewController modal : modals) {
+        for (ViewController<?> modal : modals) {
             modal.destroy();
         }
         modals.clear();
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
-        for (ViewController controller : modals) {
+        for (ViewController<?> controller : modals) {
             controller.onConfigurationChanged(newConfig);
         }
     }

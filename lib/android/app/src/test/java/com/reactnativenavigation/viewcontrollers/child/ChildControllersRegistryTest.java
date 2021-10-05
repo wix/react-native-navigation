@@ -15,8 +15,8 @@ import static org.mockito.Mockito.verify;
 
 public class ChildControllersRegistryTest extends BaseTest {
     private ChildControllersRegistry uut;
-    private ChildController child1;
-    private ChildController child2;
+    private ChildController<?> child1;
+    private ChildController<?> child2;
 
     @Override
     public void beforeEach() {

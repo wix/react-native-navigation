@@ -36,7 +36,6 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -50,7 +49,6 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 
-import static com.nhaarman.mockitokotlin2.OngoingStubbingKt.whenever;
 import static com.reactnativenavigation.TestUtils.hideBackButton;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -68,12 +66,12 @@ public class BottomTabsControllerTest extends BaseTest {
     private BottomTabsContainer bottomTabsContainer;
     private BottomTabsController uut;
     private final Options initialOptions = new Options();
-    private ViewController child1;
-    private ViewController child2;
-    private ViewController child3;
-    private ViewController stackChild;
+    private ViewController<?> child1;
+    private ViewController<?> child2;
+    private ViewController<?> child3;
+    private ViewController<?> stackChild;
     private StackController child4;
-    private ViewController child5;
+    private ViewController<?> child5;
     private final Options tabOptions = OptionHelper.createBottomTabOptions();
     private final ImageLoader imageLoaderMock = ImageLoaderMock.mock();
     private EventEmitter eventEmitter;
@@ -125,7 +123,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void parentControllerIsSet() {
         uut = createBottomTabs();
-        for (ViewController tab : tabs) {
+        for (ViewController<?> tab : tabs) {
             assertThat(tab.getParentController()).isEqualTo(uut);
         }
     }
@@ -134,7 +132,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void setTabs_allChildViewsAreAttachedToHierarchy() {
         uut.onViewWillAppear();
         assertThat(uut.getView().getChildCount()).isEqualTo(6);
-        for (ViewController child : uut.getChildControllers()) {
+        for (ViewController<?> child : uut.getChildControllers()) {
             assertThat(child.getView().getParent()).isNotNull();
         }
     }
@@ -152,13 +150,13 @@ public class BottomTabsControllerTest extends BaseTest {
     public void onTabSelected() {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
-        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((ViewController<?>) ((List<?>) uut.getChildControllers()).get(0)).getView().getVisibility()).isEqualTo(View.VISIBLE);
 
         uut.onTabSelected(3, false);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(3);
-        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getVisibility()).isEqualTo(View.INVISIBLE);
-        assertThat(((ViewController) ((List) uut.getChildControllers()).get(3)).getView().getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((ViewController<?>) ((List<?>) uut.getChildControllers()).get(0)).getView().getVisibility()).isEqualTo(View.INVISIBLE);
+        assertThat(((ViewController<?>) ((List<?>) uut.getChildControllers()).get(3)).getView().getVisibility()).isEqualTo(View.VISIBLE);
         verify(eventEmitter).emitBottomTabSelected(0, 3);
     }
 
@@ -170,7 +168,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.onTabSelected(0, true);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(0);
-        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
+        assertThat(((ViewController<?>) ((List<?>) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
         verify(eventEmitter).emitBottomTabSelected(0, 0);
     }
 
@@ -185,7 +183,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void applyChildOptions_bottomTabsOptionsAreClearedAfterApply() {
-        ParentController parent = Mockito.mock(ParentController.class);
+        ParentController<?> parent = Mockito.mock(ParentController.class);
         uut.setParentController(parent);
 
         child1.options.bottomTabsOptions.backgroundColor = new ThemeColour(new Colour(Color.RED));
@@ -456,7 +454,7 @@ public class BottomTabsControllerTest extends BaseTest {
         when(child5.handleBack(any())).thenReturn(true);
     }
 
-    private StackController spyOnStack(ViewController initialChild) {
+    private StackController spyOnStack(ViewController<?> initialChild) {
         StackController build = TestUtils.newStackController(activity)
                 .setInitialOptions(tabOptions)
                 .build();

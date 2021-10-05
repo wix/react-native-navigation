@@ -9,9 +9,9 @@ import java.util.List;
 
 public class TopTabsLayoutCreator {
     private Context context;
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
 
-    public TopTabsLayoutCreator(Context context, List<ViewController> tabs) {
+    public TopTabsLayoutCreator(Context context, List<ViewController<?>> tabs) {
         this.context = context;
         this.tabs = tabs;
     }

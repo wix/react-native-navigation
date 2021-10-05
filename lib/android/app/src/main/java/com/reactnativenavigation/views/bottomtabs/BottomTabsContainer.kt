@@ -1,11 +1,9 @@
 package com.reactnativenavigation.views.bottomtabs
 
-import android.R.attr.factor
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
@@ -14,7 +12,6 @@ import kotlin.math.roundToInt
 
 internal const val DEFAULT_SHADOW_COLOR = Color.BLACK
 internal const val DEFAULT_SHADOW_RADIUS = 10
-internal const val SHADOW_HEIGHT_DP = 20
 internal const val DEFAULT_SHADOW_DISTANCE = 15f
 internal const val DEFAULT_SHADOW_ANGLE = 270f
 
@@ -50,7 +47,7 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
         this.topOutLineView.visibility = View.GONE
 
-        this.addView(linearLayout, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+        this.addView(linearLayout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 
     override var shadowRadius: Float

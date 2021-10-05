@@ -136,7 +136,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
+    protected WindowInsetsCompat applyWindowInsets(ViewController<?> view, WindowInsetsCompat insets) {
         ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
                 insets.getSystemWindowInsetLeft(),
                 insets.getSystemWindowInsetTop(),
