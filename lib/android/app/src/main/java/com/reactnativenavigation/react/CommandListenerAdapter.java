@@ -1,7 +1,5 @@
 package com.reactnativenavigation.react;
 
-import com.reactnativenavigation.react.CommandListener;
-
 import androidx.annotation.Nullable;
 
 public class CommandListenerAdapter implements CommandListener {

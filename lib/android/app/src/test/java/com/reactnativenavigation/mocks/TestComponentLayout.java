@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
@@ -71,7 +73,7 @@ public class TestComponentLayout extends ComponentLayout implements ButtonContro
     }
 
     @Override
-    public void onPress(ButtonOptions button) {
+    public void onPress(@NonNull ButtonOptions button) {
 
     }
 }

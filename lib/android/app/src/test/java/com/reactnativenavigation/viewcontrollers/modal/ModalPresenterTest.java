@@ -40,11 +40,11 @@ public class ModalPresenterTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
     private static final String MODAL_ID_2 = "modalId2";
 
-    private ChildController modal1;
-    private ChildController modal2;
+    private ChildController<?> modal1;
+    private ChildController<?> modal2;
     private ModalPresenter uut;
     private ModalAnimator animator;
-    private ViewController root;
+    private ViewController<?> root;
     private CoordinatorLayout modalsLayout;
 
 
@@ -285,7 +285,7 @@ public class ModalPresenterTest extends BaseTest {
     public void dismissModal_successIsReportedBeforeViewIsDestroyed() {
         disableModalAnimations(modal1);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
-        ViewController modal = spy(modal1);
+        ViewController<?> modal = spy(modal1);
         InOrder inOrder = inOrder(listener, modal);
 
         uut.showModal(modal, root, new CommandListenerAdapter());
