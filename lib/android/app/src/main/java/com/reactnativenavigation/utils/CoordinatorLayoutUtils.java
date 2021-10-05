@@ -13,7 +13,7 @@ public class CoordinatorLayoutUtils {
         return new CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
     }
 
-    public static CoordinatorLayout.LayoutParams matchParentWithBehaviour(CoordinatorLayout.Behavior behavior) {
+    public static CoordinatorLayout.LayoutParams matchParentWithBehaviour(CoordinatorLayout.Behavior<?> behavior) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp.setBehavior(behavior);
         return lp;

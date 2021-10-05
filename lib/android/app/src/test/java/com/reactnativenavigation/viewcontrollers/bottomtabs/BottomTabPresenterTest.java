@@ -12,7 +12,6 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
-import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.params.ThemeColour;
@@ -47,9 +46,9 @@ public class BottomTabPresenterTest extends BaseTest {
     private BottomTabPresenter uut;
     private BottomTabs bottomTabs;
     private List<ViewController<?>> tabs;
-    private ViewController child1;
-    private ViewController child2;
-    private ViewController child3;
+    private ViewController<?> child1;
+    private ViewController<?> child2;
+    private ViewController<?> child3;
     private Activity activity;
     private ChildControllersRegistry childRegistry;
 

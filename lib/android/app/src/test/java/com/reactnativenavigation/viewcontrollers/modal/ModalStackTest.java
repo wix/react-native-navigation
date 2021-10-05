@@ -40,16 +40,16 @@ public class ModalStackTest extends BaseTest {
     private static final String MODAL_ID_4 = "modalId4";
 
     private ModalStack uut;
-    private ViewController modal1;
-    private ViewController modal2;
-    private ViewController modal3;
-    private ViewController modal4;
+    private ViewController<?> modal1;
+    private ViewController<?> modal2;
+    private ViewController<?> modal3;
+    private ViewController<?> modal4;
     private StackController stack;
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private ModalPresenter presenter;
     private ModalAnimator animator;
-    private ViewController root;
+    private ViewController<?> root;
     private EventEmitter emitter;
 
     @Override
@@ -308,7 +308,7 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void handleBack_ViewControllerTakesPrecedenceOverModal() {
-        ViewController backHandlingModal = spy(new SimpleViewController(activity, childRegistry, "stack", new Options()){
+        ViewController<?> backHandlingModal = spy(new SimpleViewController(activity, childRegistry, "stack", new Options()){
             @Override
             public boolean handleBack(CommandListener listener) {
                 return true;
@@ -338,17 +338,17 @@ public class ModalStackTest extends BaseTest {
         verify(modal2).destroy();
     }
 
-    private ViewController findModal(String id) {
+    private ViewController<?> findModal(String id) {
         return uut.findControllerById(id);
     }
 
-    private void showModalsWithoutAnimation(ViewController... modals) {
-        for (ViewController modal : modals) {
+    private void showModalsWithoutAnimation(ViewController<?>... modals) {
+        for (ViewController<?> modal : modals) {
             showModalWithoutAnimation(modal);
         }
     }
 
-    private void showModalWithoutAnimation(ViewController modal) {
+    private void showModalWithoutAnimation(ViewController<?> modal) {
         disableShowModalAnimation(modal);
         uut.showModal(modal, root, new CommandListenerAdapter());
     }

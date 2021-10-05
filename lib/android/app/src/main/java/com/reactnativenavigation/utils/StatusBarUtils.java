@@ -9,8 +9,6 @@ import android.view.WindowManager;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
-import androidx.annotation.VisibleForTesting;
-
 public class StatusBarUtils {
     private static final int STATUS_BAR_HEIGHT_M = 24;
     private static final int STATUS_BAR_HEIGHT_L = 25;

@@ -2,14 +2,9 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.graphics.Rect
 import android.view.View
-import androidx.core.animation.doOnEnd
 import com.facebook.react.views.view.ReactViewGroup
 import com.reactnativenavigation.options.SharedElementTransitionOptions
-import com.reactnativenavigation.utils.areDimensionsWithInheritedScaleEqual
-import com.reactnativenavigation.utils.computeInheritedScale
-import kotlin.math.roundToInt
 
 class ReactViewRotationAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactViewGroup>(from, to) {
     private val fromRotation = from.rotation

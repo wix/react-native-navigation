@@ -41,8 +41,8 @@ public class ParentControllerTest extends BaseTest {
     private static final String INITIAL_TITLE = "initial title";
     private Activity activity;
     private ChildControllersRegistry childRegistry;
-    private List<ViewController> children;
-    private ParentController uut;
+    private List<ViewController<?>> children;
+    private ParentController<?> uut;
     private Presenter presenter;
 
     @Override
@@ -54,10 +54,10 @@ public class ParentControllerTest extends BaseTest {
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
         presenter = spy(new Presenter(activity, new Options()));
-        uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
+        uut = spy(new ParentController<ViewGroup>(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @Override
-            public ViewController getCurrentChild() {
+            public ViewController<?> getCurrentChild() {
                 return children.get(0);
             }
 
@@ -65,7 +65,7 @@ public class ParentControllerTest extends BaseTest {
             @Override
             public ViewGroup createView() {
                 FrameLayout layout = new FrameLayout(activity);
-                for (ViewController child : children) {
+                for (ViewController<?> child : children) {
                     child.setParentController(this);
                     layout.addView(child.getView());
                 }
@@ -79,7 +79,7 @@ public class ParentControllerTest extends BaseTest {
 
             @NonNull
             @Override
-            public Collection<ViewController> getChildControllers() {
+            public Collection<ViewController<?>> getChildControllers() {
                 return children;
             }
         });
@@ -89,10 +89,10 @@ public class ParentControllerTest extends BaseTest {
     public void onConfigurationChange_shouldCallConfigurationChangeForPresenterAndChildren() {
         children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
         children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
-        ParentController spyUUT = spy(uut);
+        ParentController<?> spyUUT = spy(uut);
         spyUUT.onConfigurationChanged(mockConfiguration);
         verify(presenter).onConfigurationChanged(any(),any());
-        for (ViewController controller : children) {
+        for (ViewController<?> controller : children) {
             verify(controller).onConfigurationChanged(any());
         }
     }
@@ -158,7 +158,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void destroy_DestroysChildren() {
-        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+        ViewController<?> child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         children.add(child1);
 
         verify(child1, times(0)).destroy();
@@ -181,7 +181,7 @@ public class ParentControllerTest extends BaseTest {
     public void mergeOptions_optionsAreMergedWhenChildAppears() {
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
-        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
+        ViewController<?> child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
         uut.ensureViewIsCreated();
 
@@ -197,7 +197,7 @@ public class ParentControllerTest extends BaseTest {
     public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() {
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
-        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
+        ViewController<?> child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
 
         uut.ensureViewIsCreated();
@@ -243,7 +243,7 @@ public class ParentControllerTest extends BaseTest {
 
         Options defaultOptions = new Options();
         Options currentOptions = spy(new Options());
-        ParentController spy = spy(uut);
+        ParentController<?> spy = spy(uut);
         Mockito.when(spy.resolveCurrentOptions()).thenReturn(currentOptions);
         spy.resolveCurrentOptions(defaultOptions);
         verify(currentOptions).withDefaultOptions(defaultOptions);
@@ -263,7 +263,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void getTopInsetForChild() {
-        ParentController parent = Mockito.mock(ParentController.class);
+        ParentController<?> parent = Mockito.mock(ParentController.class);
         when(parent.getTopInset(any())).thenReturn(123);
         uut.setParentController(parent);
 
@@ -279,14 +279,14 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void getBottomInsetForChild() {
-        ParentController parent = Mockito.mock(ParentController.class);
+        ParentController<?> parent = Mockito.mock(ParentController.class);
         when(parent.getBottomInset(any())).thenReturn(123);
         uut.setParentController(parent);
 
         assertThat(uut.getBottomInset(Mockito.mock(ViewController.class))).isEqualTo(123);
     }
 
-    private List<ViewController> createChildren() {
+    private List<ViewController<?>> createChildren() {
         return Arrays.asList(
                 spy(new SimpleViewController(activity, childRegistry, "child1", new Options())),
                 spy(new SimpleViewController(activity, childRegistry, "child2", new Options()))

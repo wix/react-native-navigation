@@ -1,17 +1,20 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.UiUtils.dpToPx;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Param;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -19,11 +22,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 public class BottomTabPresenter {
     private final Context context;
@@ -81,7 +79,7 @@ public class BottomTabPresenter {
         });
     }
 
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         bottomTabs.perform(bottomTabs -> {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {

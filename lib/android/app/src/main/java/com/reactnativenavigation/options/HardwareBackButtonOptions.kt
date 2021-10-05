@@ -1,11 +1,8 @@
 package com.reactnativenavigation.options
 
-import android.content.Context
-import com.reactnativenavigation.options.animations.ViewAnimationOptions
-import com.reactnativenavigation.options.params.*
+import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.parsers.BoolParser
-import com.reactnativenavigation.options.parsers.ColorParser
-import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
 
 

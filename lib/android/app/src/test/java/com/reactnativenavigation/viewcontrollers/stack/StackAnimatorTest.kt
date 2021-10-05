@@ -3,9 +3,6 @@ package com.reactnativenavigation.viewcontrollers.stack
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.os.Looper
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
@@ -19,7 +16,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
-import org.robolectric.Shadows
 
 class StackAnimatorTest : BaseTest() {
     private lateinit var uut: StackAnimator

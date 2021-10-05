@@ -36,7 +36,6 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
-import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
@@ -71,10 +70,10 @@ public class NavigatorTest extends BaseTest {
     private RootPresenter rootPresenter;
     private StackController parentController;
     private SimpleViewController child1;
-    private ViewController child2;
-    private ViewController child3;
-    private ViewController child4;
-    private ViewController child5;
+    private ViewController<?> child2;
+    private ViewController<?> child3;
+    private ViewController<?> child4;
+    private ViewController<?> child5;
     private final Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock;
     private ActivityController<TestActivity> activityController;
@@ -100,7 +99,7 @@ public class NavigatorTest extends BaseTest {
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
-        ViewController initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
+        ViewController<?> initialChild = new SimpleViewController(activity, childRegistry, "initialChild", Options.EMPTY);
         parentController = newStack(initialChild);
         parentVisibilityListener = spy(new ViewController.ViewVisibilityListener() {
             @Override
@@ -131,8 +130,8 @@ public class NavigatorTest extends BaseTest {
     public void onConfigurationChange_shouldCallOnConfigurationChangedForModals() {
         Navigator spyUUT = spy(uut);
         SimpleViewController spyChild1 = spy(child1);
-        ViewController spyChild2 = spy(child2);
-        ViewController spyChild3 = spy(child3);
+        ViewController<?> spyChild2 = spy(child2);
+        ViewController<?> spyChild3 = spy(child3);
 
         spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
         spyUUT.showModal(spyChild2, new CommandListenerAdapter());
@@ -147,8 +146,8 @@ public class NavigatorTest extends BaseTest {
     public void onConfigurationChange_shouldCallOnConfigurationChangedForOverlays() {
         Navigator spyUUT = spy(uut);
         SimpleViewController spyChild1 = spy(child1);
-        ViewController spyChild2 = spy(child2);
-        ViewController spyChild3 = spy(child3);
+        ViewController<?> spyChild2 = spy(child2);
+        ViewController<?> spyChild3 = spy(child3);
 
         spyUUT.setRoot(spyChild1, new CommandListenerAdapter(), reactInstanceManager);
         spyUUT.showOverlay(spyChild2, new CommandListenerAdapter());
@@ -198,8 +197,8 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void shouldCallOverlaysChildrenOnViewDidAppearOnHostResume() {
         SimpleViewController child1 = spy(this.child1);
-        ViewController child2 = spy(this.child2);
-        ViewController child3 = spy(this.child3);
+        ViewController<?> child2 = spy(this.child2);
+        ViewController<?> child3 = spy(this.child3);
 
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showOverlay(child2, new CommandListenerAdapter());
@@ -220,7 +219,7 @@ public class NavigatorTest extends BaseTest {
         final Options overContextOptions = tabOptions.copy();
         overContextOptions.modal =new ModalOptions();
         overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
-        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+        ViewController<?> overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
                 overContextOptions));
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(overContextModal, new CommandListenerAdapter());
@@ -236,7 +235,7 @@ public class NavigatorTest extends BaseTest {
         final Options overContextOptions = tabOptions.copy();
         overContextOptions.modal =new ModalOptions();
         overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
-        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+        ViewController<?> overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
                 overContextOptions));
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(overContextModal, new CommandListenerAdapter());
@@ -249,11 +248,11 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void shouldCallModalOnViewDisappearWhenModalDisplayedOverContextUnderneath(){
         SimpleViewController child1 = spy(this.child1);
-        ViewController child2 = spy(this.child2);
+        ViewController<?> child2 = spy(this.child2);
         final Options overContextOptions = tabOptions.copy();
         overContextOptions.modal =new ModalOptions();
         overContextOptions.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
-        ViewController overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
+        ViewController<?> overContextModal = spy(new SimpleViewController(activity, childRegistry, "overContextModal",
                 overContextOptions));
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(overContextModal, new CommandListenerAdapter());
@@ -266,9 +265,9 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void shouldCallOverlaysAndModalsChildrenOnViewDidAppearOnHostResume() {
         SimpleViewController child1 = spy(this.child1);
-        ViewController child2 = spy(this.child2);
-        ViewController child3 = spy(this.child3);
-        ViewController child4 = spy(this.child4);
+        ViewController<?> child2 = spy(this.child2);
+        ViewController<?> child3 = spy(this.child3);
+        ViewController<?> child4 = spy(this.child4);
 
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(child2, new CommandListenerAdapter());
@@ -296,7 +295,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void shouldCallModalPeekDidAppearWhenHostResumes() {
         SimpleViewController child1 = spy(this.child1);
-        ViewController child2 = spy(this.child2);
+        ViewController<?> child2 = spy(this.child2);
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(child2, new CommandListenerAdapter());
         uut.onHostResume();
@@ -325,7 +324,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void shouldCallModalPeekDidDisappearWhenHostPauses() {
         SimpleViewController child1 = spy(this.child1);
-        ViewController child2 = spy(this.child2);
+        ViewController<?> child2 = spy(this.child2);
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(child2, new CommandListenerAdapter());
         uut.onHostPause();
@@ -383,11 +382,11 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void setRoot_withWaitForRender() {
-        ViewController initialRoot = spy(child2);
+        ViewController<?> initialRoot = spy(child2);
         uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
 
         child3.options.animations.setRoot.getEnter().waitForRender = new Bool(true);
-        ViewController secondRoot = spy(child3);
+        ViewController<?> secondRoot = spy(child3);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.setRoot(secondRoot, listener, reactInstanceManager);
 
@@ -552,7 +551,7 @@ public class NavigatorTest extends BaseTest {
     public void handleBack_DelegatesToRoot() {
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
 
-        ViewController root = spy(child1);
+        ViewController<?> root = spy(child1);
         uut.setRoot(root, new CommandListenerAdapter(), reactInstanceManager);
         when(root.handleBack(any(CommandListener.class))).thenReturn(true);
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
@@ -561,7 +560,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_modalTakePrecedenceOverRoot() {
-        ViewController root = spy(child1);
+        ViewController<?> root = spy(child1);
         uut.setRoot(root, new CommandListenerAdapter(), reactInstanceManager);
         uut.showModal(child2, new CommandListenerAdapter());
         verify(root, times(0)).handleBack(new CommandListenerAdapter());
@@ -886,7 +885,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @NonNull
-    private StackController newStack(ViewController... children) {
+    private StackController newStack(ViewController<?>... children) {
         StackController stack = TestUtils.newStackController(activity)
                 .setChildren(children)
                 .setChildRegistry(childRegistry)

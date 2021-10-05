@@ -32,7 +32,7 @@ public class FabPresenter {
     private Fab fab;
     private FabMenu fabMenu;
 
-    public void applyOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
+    public void applyOptions(FabOptions options, @NonNull ViewController<?> component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
 
         if (options.id.hasValue()) {
@@ -54,7 +54,7 @@ public class FabPresenter {
         }
     }
 
-    public void mergeOptions(FabOptions options, @NonNull ViewController component, @NonNull ViewGroup viewGroup) {
+    public void mergeOptions(FabOptions options, @NonNull ViewController<?> component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         if (options.id.hasValue()) {
             if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
@@ -72,7 +72,7 @@ public class FabPresenter {
         }
     }
 
-    private void createFab(ViewController component, FabOptions options) {
+    private void createFab(ViewController<?> component, FabOptions options) {
         ViewExtensionsKt.removeFromParent(fabMenu);
         ViewExtensionsKt.removeFromParent(fab);
         if (options.actionsArray.size() > 0) {
@@ -123,7 +123,7 @@ public class FabPresenter {
                 });
     }
 
-    private void setParams(ViewController component, View fab, FabOptions options) {
+    private void setParams(ViewController<?> component, View fab, FabOptions options) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
         lp.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
@@ -164,7 +164,7 @@ public class FabPresenter {
         fab.setLayoutParams(lp);
     }
 
-    private void applyFabOptions(ViewController component, Fab fab, FabOptions options) {
+    private void applyFabOptions(ViewController<?> component, Fab fab, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
             fab.setScaleX(0.6f);
             fab.setScaleY(0.6f);
@@ -204,7 +204,7 @@ public class FabPresenter {
         }
     }
 
-    private void mergeFabOptions(ViewController component, Fab fab, FabOptions options) {
+    private void mergeFabOptions(ViewController<?> component, Fab fab, FabOptions options) {
         if (options.visible.isTrue()) {
             fab.show(true);
         }
@@ -234,7 +234,7 @@ public class FabPresenter {
         }
     }
 
-    private void applyFabMenuOptions(ViewController component, FabMenu fabMenu, FabOptions options) {
+    private void applyFabMenuOptions(ViewController<?> component, FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
             fabMenu.showMenuButton(true);
         }
@@ -271,7 +271,7 @@ public class FabPresenter {
         }
     }
 
-    private void mergeFabMenuOptions(ViewController component, FabMenu fabMenu, FabOptions options) {
+    private void mergeFabMenuOptions(ViewController<?> component, FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrue()) {
             fabMenu.showMenuButton(true);
         }

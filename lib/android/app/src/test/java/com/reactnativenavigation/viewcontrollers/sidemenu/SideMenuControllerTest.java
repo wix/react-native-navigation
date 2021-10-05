@@ -46,11 +46,11 @@ public class SideMenuControllerTest extends BaseTest {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private SideMenuPresenter presenter;
-    private ViewController left;
-    private ViewController right;
-    private ViewController center;
-    private ViewController child;
-    private ParentController parent;
+    private ViewController<?> left;
+    private ViewController<?> right;
+    private ViewController<?> center;
+    private ViewController<?> child;
+    private ParentController<?> parent;
     private Options resolvedOptions;
 
     @Override
@@ -118,12 +118,12 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Test
     public void onViewAppeared() {
-        ViewController left = spy(this.left);
+        ViewController<?> left = spy(this.left);
         ViewGroup leftView = spy(left.getView());
         when(left.findController(leftView)).thenReturn(left);
         Mockito.doReturn(leftView).when(left).getView();
 
-        ViewController right = spy(this.right);
+        ViewController<?> right = spy(this.right);
         ViewGroup rightView = spy(right.getView());
         when(right.findController(rightView)).thenReturn(right);
         Mockito.doReturn(rightView).when(right).getView();
@@ -373,7 +373,7 @@ public class SideMenuControllerTest extends BaseTest {
         forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }
 
-    private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+    private void openDrawerAndAssertVisibility(ViewController<?> side, Functions.FuncR1<ViewController<?>, SideMenuOptions> opt) {
         Options options = new Options();
         (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(true);
         uut.mergeOptions(options);
@@ -381,7 +381,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(opt.run(side).visible.isFalseOrUndefined()).isTrue();
     }
 
-    private void closeDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
+    private void closeDrawerAndAssertVisibility(ViewController<?> side, Functions.FuncR1<ViewController<?>, SideMenuOptions> opt) {
         Options options = new Options();
         (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(false);
         uut.mergeOptions(options);
@@ -389,7 +389,7 @@ public class SideMenuControllerTest extends BaseTest {
         assertThat(opt.run(side).visible.isTrue()).isFalse();
     }
 
-    private int getGravity(ViewController side) {
+    private int getGravity(ViewController<?> side) {
         return side == left ? Gravity.LEFT : Gravity.RIGHT;
     }
 
@@ -433,7 +433,7 @@ public class SideMenuControllerTest extends BaseTest {
         return activity;
     }
 
-    private void setLeftRight(ViewController left, ViewController right) {
+    private void setLeftRight(ViewController<?> left, ViewController<?> right) {
         uut.setLeftController(left);
         uut.setRightController(right);
         left.setParentController(uut);
