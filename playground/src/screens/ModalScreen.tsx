@@ -25,6 +25,7 @@ const {
   OVERLAY_BTN,
   MODAL_DISABLED_BACK_BTN,
   DISMISS_MODAL_BTN,
+  DISMISS_REACT_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
   MODAL_LIFECYCLE_BTN,
   MODAL_COMMANDS_BTN,
@@ -138,7 +139,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           >
             <Button
               label="Dismiss declared Modal"
-              testID={DISMISS_MODAL_BTN}
+              testID={DISMISS_REACT_MODAL_BTN}
               onPress={this.toggleModal}
             />
             <Button
@@ -164,7 +165,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           >
             <Button
               label="Dismiss declared Modal"
-              testID={DISMISS_MODAL_BTN}
+              testID={DISMISS_REACT_MODAL_BTN}
               onPress={this.toggleModal}
             />
             <Button
