@@ -33,8 +33,7 @@ class ModalViewManager(val reactContext: ReactContext) : ViewGroupManager<ModalH
         get() {
             val navigationActivity = reactContext.currentActivity as? NavigationActivity
             return navigationActivity?.let {
-                if (it.isFinishing || it.isDestroyed) return null
-                navigator
+                if (it.isFinishing || it.isDestroyed) null else navigator
             }
         }
     private val jsonParser = JSONParser()
