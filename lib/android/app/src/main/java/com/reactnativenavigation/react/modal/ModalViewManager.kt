@@ -1,7 +1,10 @@
 package com.reactnativenavigation.react.modal
 
 import android.content.Context
+import android.graphics.Insets
 import android.graphics.Point
+import android.os.Build
+import android.view.WindowInsets
 import android.view.WindowManager
 import com.facebook.infer.annotation.Assertions
 import com.facebook.react.bridge.ReactContext
@@ -116,7 +119,24 @@ private fun getModalHostSize(context: Context): Point {
     // getCurrentSizeRange will return the min and max width and height that the window can be
     display.getCurrentSizeRange(MIN_POINT, MAX_POINT)
     // getSize will return the dimensions of the screen in its current orientation
-    display.getSize(SIZE_POINT)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val metrics = wm.currentWindowMetrics
+        val bounds = wm.currentWindowMetrics.bounds
+        val windowInsets: WindowInsets = metrics.windowInsets
+        val insets: Insets = windowInsets.getInsetsIgnoringVisibility(
+            WindowInsets.Type.navigationBars()
+                    or WindowInsets.Type.displayCutout()
+        )
+
+        val insetsWidth: Int = insets.right + insets.left
+        val insetsHeight: Int = insets.top + insets.bottom
+
+        SIZE_POINT.set(bounds.width() - insetsWidth, bounds.height() - insetsHeight)
+
+    } else {
+        display.getSize(SIZE_POINT)
+    }
     val attrs = intArrayOf(android.R.attr.windowFullscreen)
     val theme = context.theme
     val ta = theme.obtainStyledAttributes(attrs)

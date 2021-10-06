@@ -26,7 +26,7 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
             hasAdjustedSize = false
             val viewTag = getChildAt(0).id
             val reactContext: ReactContext = this.getReactContext()
-            reactContext.runOnNativeModulesQueueThread(object : GuardedRunnable(reactContext) {
+            reactContext.runOnNativeModulesQueueThread(object : GuardedRunnable(reactContext.exceptionHandler) {
                 override fun runGuarded() {
                     val uiManager = this@ModalContentLayout.getReactContext().getNativeModule(
                             UIManagerModule::class.java
