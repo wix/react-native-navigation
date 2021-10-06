@@ -46,7 +46,6 @@
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
-    "docusaurus": "npm start --prefix website",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
   "peerDependencies": {
