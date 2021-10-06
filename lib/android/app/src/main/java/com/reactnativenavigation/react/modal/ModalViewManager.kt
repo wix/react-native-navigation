@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.view.WindowManager
 import com.facebook.infer.annotation.Assertions
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.module.annotations.ReactModule
@@ -12,6 +13,7 @@ import com.facebook.react.uimanager.ReactShadowNodeImpl
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.options.ModalPresentationStyle
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
@@ -25,7 +27,15 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator
 private const val MODAL_MANAGER_NAME = "RNNModalViewManager"
 
 @ReactModule(name = MODAL_MANAGER_NAME)
-class ModalViewManager(private val navigator: Navigator) : ViewGroupManager<ModalHostLayout>() {
+class ModalViewManager(val reactContext: ReactContext) : ViewGroupManager<ModalHostLayout>() {
+
+    private val navigator: Navigator?
+        get() {
+            val navigationActivity = reactContext.currentActivity as? NavigationActivity
+            return navigationActivity?.let {
+                if (it.isFinishing || it.isDestroyed) null else it.navigator
+            }
+        }
     private val jsonParser = JSONParser()
     override fun getName(): String = MODAL_MANAGER_NAME
 
@@ -41,15 +51,18 @@ class ModalViewManager(private val navigator: Navigator) : ViewGroupManager<Moda
         return ModalHostShadowNode::class.java
     }
 
+
     override fun onDropViewInstance(modal: ModalHostLayout) {
         super.onDropViewInstance(modal)
-        navigator.dismissModal(modal.viewController.id, CommandListenerAdapter())
-        modal.onDropInstance()
+        navigator?.let {
+            it.dismissModal(modal.viewController.id, CommandListenerAdapter())
+            modal.onDropInstance()
+        }
     }
 
     override fun onAfterUpdateTransaction(modal: ModalHostLayout) {
         super.onAfterUpdateTransaction(modal)
-        navigator.showModal(modal.viewController, CommandListenerAdapter(object : CommandListener {
+        navigator?.showModal(modal.viewController, CommandListenerAdapter(object : CommandListener {
             override fun onSuccess(childId: String?) {
                 modal.viewController.sendShowEvent()
             }
@@ -70,23 +83,26 @@ class ModalViewManager(private val navigator: Navigator) : ViewGroupManager<Moda
     @ReactProp(name = "animation")
     fun setAnimation(modal: ModalHostLayout, animation: ReadableMap) {
         modal.viewController.mergeOptions(Options().apply {
-           val animationJson = jsonParser.parse(animation)
+            val animationJson = jsonParser.parse(animation)
             val showModal = parseTransitionAnimationOptions(animationJson.optJSONObject("showModal"))
             val dismissModal = parseTransitionAnimationOptions(animationJson.optJSONObject("dismissModal"))
             this.animations.showModal = showModal
             this.animations.dismissModal = dismissModal
         })
     }
+
     @ReactProp(name = "blurOnUnmount")
     fun setBlurOnUnmount(modal: ModalHostLayout, blurOnUnmount: Boolean) {
-       modal.viewController.mergeOptions(Options().apply {
-           this.modal.blurOnUnmount = Bool(blurOnUnmount)
-       })
+        modal.viewController.mergeOptions(Options().apply {
+            this.modal.blurOnUnmount = Bool(blurOnUnmount)
+        })
     }
+
     @ReactProp(name = "transparent")
     fun setTransparent(modal: ModalHostLayout, transparent: Boolean) {
         modal.viewController.mergeOptions(Options().apply {
-            this.modal.presentationStyle = if(transparent) ModalPresentationStyle.OverCurrentContext else ModalPresentationStyle.None
+            this.modal.presentationStyle =
+                if (transparent) ModalPresentationStyle.OverCurrentContext else ModalPresentationStyle.None
         })
     }
 }
