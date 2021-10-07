@@ -136,7 +136,7 @@ export class OptionsProcessor {
         } else {
           options[key] = DynamicColorIOS({
             light: this.colorService.toNativeColor(value.light) as ColorValue,
-            dark: this.colorService.toNativeColor(value.dark) as ColorValue,
+            dark: this.colorService.toNativeColor(value.dark) as ColorValue
           });
         }
       } else {

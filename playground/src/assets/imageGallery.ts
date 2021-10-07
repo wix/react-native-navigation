@@ -33,7 +33,7 @@ function randomImage() {
   return images[Math.floor(Math.random() * images.length)];
 }
 
-const imageGallery: [ImageGalleryItem] = [
+const imageGallery: ImageGalleryItem[] = [
   {
     key: 1,
     images: [

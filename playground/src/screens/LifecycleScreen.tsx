@@ -85,7 +85,7 @@ export default class LifecycleScreen extends React.Component<Props, State> {
   push = () => Navigation.push(this, Screens.Pushed);
   screenPoppedEvent = async () => {
     this.showUnmountAndDisappearAlerts = false;
-    const promise = new Promise((resolve) => {
+    const promise = new Promise<void>((resolve) => {
       const unregister = Navigation.events().registerScreenPoppedListener(() => {
         alert('Screen popped event');
         unregister.remove();

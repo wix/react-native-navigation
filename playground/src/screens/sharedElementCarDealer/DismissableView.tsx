@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 import { StyleSheet, ViewProps } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -13,7 +13,7 @@ export interface DismissableViewProps extends ViewProps {
 const GESTURE_HANDLER_RANGE = 20;
 const GESTURE_HANDLER_FAIL_RANGE = [-20, 20];
 
-export default function DismissableView(props: DismissableViewProps): JSX.Element {
+export default function DismissableView(props: DismissableViewProps): ReactElement {
   const { dismissGestureState, style, ...passThroughProps } = props;
 
   const viewStyle = useMemo(
