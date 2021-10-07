@@ -155,22 +155,22 @@ describe('modal', () => {
     await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
   });
 
-  it.e2e('should show declated modal', async () => {
+  it.e2e('should show declared modal', async () => {
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
-    await expect(elementByLabel("Dismiss declared Modal")).toBeVisible();
-    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await expect(elementByLabel('Dismiss declared Modal')).toBeVisible();
+    await elementById(TestIDs.DISMISS_REACT_MODAL_BTN).tap();
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
 
   it.e2e('should show and dismiss multiple modals including declared modal', async () => {
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
-    await expect(elementByLabel("Toggle declared modal")).toBeVisible();
+    await expect(elementByLabel('Toggle declared modal')).toBeVisible();
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
+    await elementById(TestIDs.DISMISS_REACT_MODAL_BTN).tap();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await expect(elementByLabel("Dismiss declared Modal")).toBeVisible();
-    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await expect(elementByLabel('Dismiss declared Modal')).toBeVisible();
+    await elementById(TestIDs.DISMISS_REACT_MODAL_BTN).tap();
 
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
@@ -178,31 +178,29 @@ describe('modal', () => {
   it.e2e('overlay should be on top of all modals', async () => {
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
     await elementById(TestIDs.OVERLAY_BTN).tap();
-    await expect(elementByLabel("Dismiss declared Modal")).toBeVisible();
+    await expect(elementByLabel('Dismiss declared Modal')).toBeVisible();
     await expect(elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON)).toBeVisible();
-   
+
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
-    await expect(elementByLabel("Modal Lifecycle")).toBeVisible();
+    await expect(elementByLabel('Modal Lifecycle')).toBeVisible();
 
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+    await elementById(TestIDs.DISMISS_REACT_MODAL_BTN).tap();
 
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
   });
 
-
-
   it.e2e(':android: should handle back properly', async () => {
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
-    await expect(elementByLabel("Toggle declared modal")).toBeVisible();
-    
-    Android.pressBack();
-    
-    await expect(elementByLabel("Dismiss declared Modal")).toBeVisible();
+    await expect(elementByLabel('Toggle declared modal')).toBeVisible();
 
     Android.pressBack();
 
-    await expect(elementByLabel("Toggle declared modal")).toBeVisible();
+    await expect(elementByLabel('Dismiss declared Modal')).toBeVisible();
+
+    Android.pressBack();
+
+    await expect(elementByLabel('Toggle declared modal')).toBeVisible();
   });
 });
