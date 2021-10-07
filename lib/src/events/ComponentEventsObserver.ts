@@ -1,3 +1,4 @@
+import type { Component } from 'react';
 import isString from 'lodash/isString';
 import isNil from 'lodash/isNil';
 import uniqueId from 'lodash/uniqueId';
@@ -60,7 +61,10 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
   }
 
-  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
+  public bindComponent(
+    component: Component<{ componentId?: string }>,
+    componentId?: string
+  ): EventSubscription {
     const computedComponentId = componentId || component.props.componentId;
 
     if (!isString(computedComponentId)) {

@@ -38,7 +38,9 @@ describe('ComponentWrapper', () => {
     }
 
     render() {
-      return <this.ChildClass componentId="component1" {...this.state.propsFromState} />;
+      const { ChildClass } = this;
+
+      return <ChildClass componentId="component1" {...this.state.propsFromState} />;
     }
   }
 

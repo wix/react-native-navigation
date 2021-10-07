@@ -1,3 +1,4 @@
+import type { Component } from 'react';
 import { EmitterSubscription } from 'react-native';
 
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
@@ -117,7 +118,7 @@ export class EventsRegistry {
     return this.commandsObserver.register(callback);
   }
 
-  public bindComponent(component: React.Component<any>, componentId?: string): EventSubscription {
+  public bindComponent(component: Component<any>, componentId?: string): EventSubscription {
     return this.componentEventsObserver.bindComponent(component, componentId);
   }
 
