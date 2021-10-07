@@ -72,8 +72,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? process.env.VERSION
     : semver.gt(packageVersion, currentPublished)
-      ? `${packageVersion}-snapshot.${process.env.BUILD_ID}`
-      : `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
+    ? `${packageVersion}-snapshot.${process.env.BUILD_ID}`
+    : `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -107,9 +107,10 @@ function tryPublishAndTag(version) {
 
 function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
+  if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '')
+    documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
-  if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== '') documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
   if (isRelease) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
@@ -139,7 +140,7 @@ function updatePackageJsonGit(version) {
 function draftGitRelease(version) {
   exec.execSync(`npx gren release --tags=${version}`);
   exec.execSync(`sleep 1m`);
-  // For some unknown reason, gren release works well only when calling it twice. 
+  // For some unknown reason, gren release works well only when calling it twice.
   exec.execSync(`npx gren release --tags=${version}`);
 }
 

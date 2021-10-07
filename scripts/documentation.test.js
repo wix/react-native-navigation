@@ -20,7 +20,7 @@ describe('Documentation script', () => {
     expect(exec.execSync).toHaveBeenCalledWith(`cd ${docsPath()}`);
     expect(exec.execSync).toHaveBeenCalledWith(`current_dir=$PWD`);
     expect(exec.execSync).toHaveBeenCalledWith(`npm install`);
-    expect(exec.execSync).toHaveBeenCalledWith(`npm run docusaurus docs:version ${version}`);
+    expect(exec.execSync).toHaveBeenCalledWith(`npx docusaurus docs:version ${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
     expect(exec.execSync).toHaveBeenCalledWith(`cd $current_dir`);
   });
@@ -42,7 +42,7 @@ describe('Documentation script', () => {
     expect(exec.execSync).toHaveBeenCalledWith(
       `rm -f ${docsPath()}/versioned_sidebars/version-${version}-sidebars.json`
     );
-    expect(exec.execSync).toHaveBeenCalledWith(`npm run docusaurus docs:version ${version}`);
+    expect(exec.execSync).toHaveBeenCalledWith(`npx docusaurus docs:version ${version}`);
     expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
     expect(exec.execSync).toHaveBeenCalledWith(`cd $current_dir`);
   });
