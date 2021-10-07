@@ -1,6 +1,6 @@
 import concat from 'lodash/concat';
 import React from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
+import { BackHandler, StyleSheet, View, TextInput } from 'react-native';
 import {
   NavigationButtonPressedEvent,
   NavigationComponent,
@@ -36,7 +36,11 @@ interface Props extends NavigationComponentProps {
   stackPosition: number;
 }
 
-export default class PushedScreen extends NavigationComponent<Props> {
+interface PushedState {
+  text: string;
+}
+
+export default class PushedScreen extends NavigationComponent<Props, PushedState> {
   static options(): Options {
     return {
       topBar: {
@@ -61,6 +65,9 @@ export default class PushedScreen extends NavigationComponent<Props> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      text: '',
+    };
     Navigation.events().bindComponent(this);
   }
 
@@ -72,6 +79,13 @@ export default class PushedScreen extends NavigationComponent<Props> {
     const stackPosition = this.getStackPosition();
     return (
       <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
+        <TextInput
+          style={styles.input}
+          onChangeText={(val: string) => {
+            this.setState({ text: val });
+          }}
+          value={this.state.text}
+        />
         <View style={styles.container}>
           <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
           <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
@@ -241,6 +255,12 @@ export default class PushedScreen extends NavigationComponent<Props> {
 }
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
