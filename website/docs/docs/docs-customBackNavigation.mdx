@@ -59,11 +59,11 @@ options: {
 }
 ```
 
-Once the default behaviors are disabled, RNN will emit a [navigationButtonPress](../api/events#navigationbuttonpressed-event) with the `RNN.hardwareBack` id.
+Once the default behaviors are disabled, RNN will emit a [navigationButtonPress](../api/events#navigationbuttonpressed-event) with the `RNN.hardwareBackButton` id.
 
 ```js
 navigationButtonPressed({ buttonId }) {
-  if (buttonId === 'RNN.hardwareBack') {
+  if (buttonId === 'RNN.hardwareBackButton') {
     console.log('The hardware back button was pressed!');
   }
 }
