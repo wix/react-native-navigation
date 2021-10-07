@@ -5,7 +5,22 @@ buildscript {
         kotlinVersion = "1.5.31"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
+        compileSdkVersion = 30
+        buildToolsVersion = "30.0.2"
+        minSdkVersion = 21
+        targetSdkVersion = 30
     }
+    subprojects {
+        afterEvaluate {project ->
+            if (project.hasProperty("android")) {
+                android {
+                    compileSdkVersion compileSdkVersion
+                    buildToolsVersion "$buildToolsVersion"
+                }
+            }
+        }
+    }
+
 
     repositories {
         google()
