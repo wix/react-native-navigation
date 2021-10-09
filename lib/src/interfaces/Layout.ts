@@ -1,4 +1,4 @@
-import { Options } from './Options';
+import { Options, OptionsBottomTabs, OptionsLayout, OptionsSideMenu, OptionsSplitView, OptionsTopBar } from './Options';
 
 export interface LayoutComponent<P = {}> {
   /**
@@ -12,7 +12,7 @@ export interface LayoutComponent<P = {}> {
   /**
    * Styling options
    */
-  options?: Options;
+  options?: OptionsLayout;
   /**
    * Properties to pass down to the component
    */
@@ -43,7 +43,7 @@ export interface LayoutStack {
   /**
    * Set options
    */
-  options?: Options;
+  options?: OptionsLayout;
 }
 
 export interface LayoutTabsChildren {
@@ -78,7 +78,7 @@ export interface LayoutBottomTabs {
   /**
    * Set the bottom tabs options
    */
-  options?: Options;
+  options?: OptionsBottomTabs;
 }
 
 export interface LayoutSideMenu {
@@ -102,7 +102,7 @@ export interface LayoutSideMenu {
   /**
    * Set the bottom tabs options
    */
-  options?: Options;
+  options?: OptionsSideMenu;
 }
 
 export interface LayoutSplitView {
@@ -122,7 +122,7 @@ export interface LayoutSplitView {
   /**
    * Configure split view
    */
-  options?: Options;
+  options?: OptionsSplitView;
 }
 
 export interface LayoutTopTabs {
@@ -137,7 +137,7 @@ export interface LayoutTopTabs {
   /**
    * Configure top tabs
    */
-  options?: Options;
+  options?: OptionsTopBar;
 }
 
 export interface LayoutRoot {
