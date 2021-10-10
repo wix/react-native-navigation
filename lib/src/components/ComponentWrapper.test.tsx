@@ -121,7 +121,15 @@ describe('ComponentWrapper', () => {
     });
   });
 
-  test('update props with callback', (done) => {
+  it('update props with callback', (done) => {
+    const NavigationComponent = uut.wrap(
+      componentName,
+      () => MyComponent,
+      store,
+      componentEventsObserver
+    );
+    renderer.create(<NavigationComponent componentId={'component123'} />);
+
     function callback() {
       try {
         expect(true).toBe(true);

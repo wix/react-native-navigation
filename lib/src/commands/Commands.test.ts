@@ -243,17 +243,14 @@ describe('Commands', () => {
       );
     });
 
-    test('update props with callback', (done) => {
-      function callback() {
-        try {
-          expect(true).toBe(true);
-          done();
-        } catch (error) {
-          done(error);
-        }
-      }
-
+    it('update props with callback', () => {
+      const callback = jest.fn();
       uut.updateProps('theComponentId', { someProp: 'someValue' }, callback);
+
+      const args = capture(mockedStore.updateProps).last();
+      expect(args[0]).toEqual('theComponentId');
+      expect(args[1]).toEqual({ someProp: 'someValue' });
+      expect(args[2]).toEqual(callback);
     });
   });
 

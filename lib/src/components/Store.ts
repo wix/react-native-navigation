@@ -12,8 +12,9 @@ export class Store {
   updateProps(componentId: string, props: any, callback?: () => void) {
     this.mergeNewPropsForId(componentId, props);
     const component = this.componentsInstancesById[componentId];
+
     if (component) {
-      this.componentsInstancesById[componentId].setProps(props, callback);
+      component.setProps(props, callback);
     }
   }
 
