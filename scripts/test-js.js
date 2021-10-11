@@ -19,7 +19,7 @@ run();
 function run() {
   exec.execSync(`eslint ${dirs} ${fix} --ext .js,.jsx,.ts,.tsx --format "codeframe"`);
   assertAllTsFilesInSrc();
-  exec.execSync(`jest /Users/warda/Desktop/work/wix/react-native-navigation/lib/src/processors/OptionProcessorsStore.test.ts`);
+  exec.execSync(`jest --config ./jest.config.js`);
 }
 
 function assertAllTsFilesInSrc() {
