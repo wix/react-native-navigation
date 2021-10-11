@@ -1,0 +1,19 @@
+env:
+  CI: true
+  ANDROID_HOME: /usr/local/share/android-sdk/
+  PATH: "$PATH:/usr/local/share/android-sdk/platform-tools/"
+steps:
+  - label: "Android :android:"
+    command:
+    - "env"
+    - "npm install"
+    - "npm run clean"
+    - "npm run test-unit-android -- --release"
+    - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
+         
+  - label: "IOS :ios:"
+    command:
+    - "env"
+    - "npm install"
+    - "npm run clean"
+    - "npm run test-e2e-ios -- --release --multi --ci"
