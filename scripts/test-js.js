@@ -19,7 +19,7 @@ run();
 function run() {
   exec.execSync(`eslint ${dirs} ${fix} --ext .js,.jsx,.ts,.tsx --format "codeframe"`);
   assertAllTsFilesInSrc();
-  exec.execSync(`jest --config ./jest.config.js`);
+  exec.execSync(`jest --coverage --config ./jest.config.js`);
 }
 
 function assertAllTsFilesInSrc() {
