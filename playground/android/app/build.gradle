@@ -13,12 +13,10 @@ project.ext.react = [
         hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
 ]
 
-def jscFlavor = 'org.webkit:android-jsc:+'
-
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion rootProject.ext.get("compileSdkVersion")
     ndkVersion "20.1.5948944"
 
     compileOptions {
@@ -29,7 +27,7 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion rootProject.ext.get("targetSdkVersion")
         versionCode 1
         versionName "1.0"
         ndk {
