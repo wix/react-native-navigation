@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|react-native-ui-lib|@sentry/react-native)/)',
+    'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable)/)',
   ],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
@@ -12,7 +12,7 @@ module.exports = {
     '<rootDir>/playground/src/',
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
-    // '<rootDir>/e2e/',
+    '<rootDir>/e2e/',
   ],
   setupFilesAfterEnv: ['./jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],
