@@ -136,7 +136,7 @@ export class OptionsProcessor {
         } else {
           options[key] = DynamicColorIOS({
             light: this.colorService.toNativeColor(value.light) as ColorValue,
-            dark: this.colorService.toNativeColor(value.dark) as ColorValue
+            dark: this.colorService.toNativeColor(value.dark) as ColorValue,
           });
         }
       } else {
@@ -146,24 +146,26 @@ export class OptionsProcessor {
   }
 
   private processColorAndroid(key: string, value: any, options: Record<string, any>) {
-    const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
-    if (value === null) {
-      options[key] = newColorObj;
-    } else if (value instanceof Object) {
-      if ('semantic' in value || 'resource_paths' in value) {
-        options[key] = value;
-        return;
-      } else {
-        for (let keyColor in value) {
-          newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+    if (value !== undefined) {
+      const newColorObj: Record<string, any> = { dark: 'NoColor', light: 'NoColor' };
+      if (value === null) {
+        options[key] = newColorObj;
+      } else if (value instanceof Object) {
+        if ('semantic' in value || 'resource_paths' in value) {
+          options[key] = value;
+          return;
+        } else {
+          for (let keyColor in value) {
+            newColorObj[keyColor] = this.colorService.toNativeColor(value[keyColor]);
+          }
+          options[key] = newColorObj;
         }
+      } else {
+        let parsedColor = this.colorService.toNativeColor(value);
+        newColorObj.light = parsedColor;
+        newColorObj.dark = parsedColor;
         options[key] = newColorObj;
       }
-    } else {
-      let parsedColor = this.colorService.toNativeColor(value);
-      newColorObj.light = parsedColor;
-      newColorObj.dark = parsedColor;
-      options[key] = newColorObj;
     }
   }
 
