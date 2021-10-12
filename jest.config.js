@@ -5,7 +5,6 @@ module.exports = {
   ],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
-    '^.+\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
   },
   roots: [
     '<rootDir>/lib/src/',
