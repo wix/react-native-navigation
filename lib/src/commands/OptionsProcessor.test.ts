@@ -462,6 +462,17 @@ describe('navigation options', () => {
         Platform.OS = 'android';
       });
 
+      it('should not process undefined color', () => {
+        const options: Options = {
+          topBar: { background: { color: undefined } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: undefined } },
+        });
+      });
+
       it('PlatformColor should be passed to native as is', () => {
         const options: Options = {
           topBar: {
@@ -507,18 +518,12 @@ describe('navigation options', () => {
         const options: Options = {
           topBar: {
             background: { color: { light: 'blue', dark: 'red' } },
-            title: {
-              color: undefined,
-            },
           },
         };
         uut.processOptions(options, CommandName.SetRoot);
         expect(options).toEqual({
           topBar: {
             background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
-            title: {
-              color: { light: null, dark: null },
-            },
           },
         });
       });
@@ -539,6 +544,17 @@ describe('navigation options', () => {
         expect(options).toEqual({
           statusBar: { backgroundColor: 0xffff0000 },
           topBar: { background: { color: 0xff0000ff } },
+        });
+      });
+
+      it('should not process undefined color', () => {
+        const options: Options = {
+          topBar: { background: { color: undefined } },
+        };
+
+        uut.processOptions(options, CommandName.SetRoot);
+        expect(options).toEqual({
+          topBar: { background: { color: undefined } },
         });
       });
 
@@ -716,8 +732,8 @@ describe('navigation options', () => {
           hideOnScroll: false,
           hideTopBarOnFocus: false,
           obscuresBackgroundDuringPresentation: false,
-          backgroundColor: { light: null, dark: null },
-          tintColor: { light: null, dark: null },
+          backgroundColor: undefined,
+          tintColor: undefined,
           placeholder: '',
         });
       });
