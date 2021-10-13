@@ -178,7 +178,8 @@ public class StackPresenter {
         final View component = child.getView();
         TopBarOptions topBarOptions = options.topBar;
         AnimationsOptions animationOptions = options.animations;
-
+        if (topBar == null) return;
+        if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
         topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
