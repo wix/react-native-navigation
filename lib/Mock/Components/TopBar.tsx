@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import { Navigation, OptionsTopBarButton } from '../..';
-import { OptionsTopBar, OptionsTopBarBackButton } from '../../interfaces/Options';
+import { Navigation, OptionsTopBarButton } from '../../src';
+import { OptionsTopBar, OptionsTopBarBackButton } from '../../src/interfaces/Options';
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { NavigationButton } from './NavigationButton';

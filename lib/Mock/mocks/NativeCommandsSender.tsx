@@ -1,6 +1,6 @@
 import { LayoutStore } from '../Stores/LayoutStore';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
-import { LayoutNode } from 'react-native-navigation/commands/LayoutTreeCrawler';
+import { LayoutNode } from '../../src/commands/LayoutTreeCrawler';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
 import ComponentNode from '../Layouts/ComponentNode';

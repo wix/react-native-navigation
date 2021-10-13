@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Options } from '../../index';
+import { Options } from '../../src/index';
 import { LayoutStore } from '../Stores/LayoutStore';
 import ParentNode from './ParentNode';
 

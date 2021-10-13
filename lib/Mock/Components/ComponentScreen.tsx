@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import { Navigation } from '../..';
+import { Navigation } from '../../src';
 import { ComponentProps } from '../ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from '../constants';
 import { LayoutStore } from '../Stores/LayoutStore';

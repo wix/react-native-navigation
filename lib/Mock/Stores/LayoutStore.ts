@@ -2,7 +2,7 @@ import _ from 'lodash';
 import BottomTabsNode from '../Layouts/BottomTabsNode';
 import ParentNode from '../Layouts/ParentNode';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
-import { Options } from '../../interfaces/Options';
+import { Options } from '../../src/interfaces/Options';
 import StackNode from '../Layouts/StackNode';
 
 const remx = require('remx');

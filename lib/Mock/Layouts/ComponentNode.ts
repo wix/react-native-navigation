@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OptionsTopBarButton } from 'react-native-navigation/interfaces/Options';
+import { OptionsTopBarButton } from '../../src';
 import { events } from '../Stores/EventsStore';
 import ParentNode from './ParentNode';
 
