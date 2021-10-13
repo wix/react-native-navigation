@@ -200,6 +200,8 @@ public class StackPresenter {
         TopBarOptions topBarOptions = options.topBar;
 
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
+        if (topBar == null) return;
+        if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get(""));
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
