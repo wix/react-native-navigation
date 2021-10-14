@@ -61,7 +61,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public void onViewBroughtToFront() {
-        presenter.onViewBroughtToFront(resolveCurrentOptions());
+        presenter.onViewBroughtToFront(this,resolveCurrentOptions());
     }
 
     @Override

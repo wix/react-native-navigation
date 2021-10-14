@@ -37,6 +37,8 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
         <Root componentId={this.props.componentId} style={style.root}>
           <Button label="Full Screen Modal" onPress={this.fullScreenModal} />
           <Button label="Push" onPress={this.push} />
+          <Button label="Hide Status Bar" onPress={this.hideStatusBar} />
+          <Button label="Show Status Bar" onPress={this.showStatusBar} />
           <Button label="BottomTabs" onPress={this.bottomTabs} />
           <Button label="Open Left" onPress={() => this.open('left')} />
           <Button label="Open Right" onPress={() => this.open('right')} />
@@ -45,6 +47,19 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
     );
   }
 
+  hideStatusBar = () =>
+    Navigation.mergeOptions(this.props.componentId, {
+      statusBar: {
+        visible: false,
+      },
+    });
+
+  showStatusBar = () =>
+    Navigation.mergeOptions(this.props.componentId, {
+      statusBar: {
+        visible: true,
+      },
+    });
   fullScreenModal = () => Navigation.showModal(Screens.FullScreenModal);
   push = () => Navigation.push(this, Screens.Pushed);
   bottomTabs = () => Navigation.showModal(Screens.StatusBarBottomTabs);

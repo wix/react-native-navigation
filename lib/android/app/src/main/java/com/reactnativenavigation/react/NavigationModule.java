@@ -34,6 +34,8 @@ import java.util.Objects;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
+import android.app.Activity;
+
 public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
 
@@ -88,10 +90,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     private WritableMap createNavigationConstantsMap() {
         ReactApplicationContext ctx = getReactApplicationContext();
+        final Activity currentActivity = ctx.getCurrentActivity();
         WritableMap constants = Arguments.createMap();
         constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
         constants.putDouble(Constants.BOTTOM_TABS_HEIGHT_KEY, pxToDp(ctx, UiUtils.getBottomTabsHeight(ctx)));
-        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, pxToDp(ctx, StatusBarUtils.getStatusBarHeight(ctx)));
+        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, pxToDp(ctx, StatusBarUtils.getStatusBarHeight(currentActivity)));
         constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         return constants;
     }
