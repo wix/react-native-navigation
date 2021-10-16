@@ -22,7 +22,7 @@
 
 - (instancetype)initWithSFSymbol:(RNNButtonOptions *)buttonOptions
 						 onPress:(RNNButtonPressCallback)onPress {
-    UIImage *iconImage = [UIImage init];
+    UIImage *iconImage = [UIImage alloc];
 
 	if (@available(iOS 13.0, *)) {
         iconImage = [UIImage systemImageNamed:[buttonOptions.sfSymbol withDefault:nil]];
