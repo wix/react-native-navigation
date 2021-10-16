@@ -20,6 +20,20 @@
     return self;
 }
 
+- (instancetype)initWithSFSymbol:(RNNButtonOptions *)buttonOptions
+						 onPress:(RNNButtonPressCallback)onPress {
+	if (@available(iOS 13.0, *)) {
+		UIImage *iconImage = [UIImage systemImageNamed:[buttonOptions.sfSymbol withDefault:nil]];
+		self = [super initWithImage:iconImage
+							  style:UIBarButtonItemStylePlain
+							 target:self
+							 action:@selector(onButtonPressed:)];
+		[self applyOptions:buttonOptions];
+		self.onPress = onPress;
+		return self;
+	}
+}
+
 - (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
                      onPress:(RNNButtonPressCallback)onPress {
     UIImage *iconImage = buttonOptions.icon.get;
