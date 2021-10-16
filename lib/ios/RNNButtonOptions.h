@@ -16,6 +16,7 @@
 @property(nonatomic, strong) Color *color;
 @property(nonatomic, strong) Color *disabledColor;
 @property(nonatomic, strong) Image *icon;
+@property(nonatomic, strong) Text *sfSymbol;
 @property(nonatomic, strong) Bool *enabled;
 @property(nonatomic, strong) RNNInsetsOptions *iconInsets;
 @property(nonatomic, strong) Bool *selectTabOnPress;
