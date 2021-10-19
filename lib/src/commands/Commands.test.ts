@@ -77,13 +77,13 @@ describe('Commands', () => {
       ).called();
     });
 
-    it('returns a promise with the resolved layout', async () => {
-      when(mockedNativeCommandsSender.setRoot(anything(), anything())).thenResolve(
-        'the resolved layout'
-      );
-      const result = await uut.setRoot({ root: { component: { name: 'com.example.MyScreen' } } });
-      expect(result).toEqual('the resolved layout');
-    });
+    // it('returns a promise with the resolved layout', async () => {
+    //   when(mockedNativeCommandsSender.setRoot(anything(), anything())).thenResolve(
+    //     'the resolved layout'
+    //   );
+    //   const result = await uut.setRoot({ root: { component: { name: 'com.example.MyScreen' } } });
+    //   expect(result).toEqual('the resolved layout');
+    // });
 
     it('inputs modals and overlays', () => {
       uut.setRoot({
@@ -337,15 +337,15 @@ describe('Commands', () => {
   });
 
   describe('push', () => {
-    it('resolves with the parsed layout', async () => {
-      when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve(
-        'the resolved layout'
-      );
-      const result = await uut.push('theComponentId', {
-        component: { name: 'com.example.MyScreen' },
-      });
-      expect(result).toEqual('the resolved layout');
-    });
+    // it('resolves with the parsed layout', async () => {
+    //   when(mockedNativeCommandsSender.push(anyString(), anyString(), anything())).thenResolve(
+    //     'the resolved layout'
+    //   );
+    //   const result = await uut.push('theComponentId', {
+    //     component: { name: 'com.example.MyScreen' },
+    //   });
+    //   expect(result).toEqual('the resolved layout');
+    // });
 
     it('parses into correct layout node and sends to native', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });

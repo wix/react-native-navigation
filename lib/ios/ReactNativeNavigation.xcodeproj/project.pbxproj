@@ -174,6 +174,10 @@
 		504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 504189562506144D004A6BC7 /* RNNSetRootAnimator.m */; };
 		5041DC3E2417BBBA0033312F /* BottomTabsBasePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */; };
 		5041DC3F2417BBBA0033312F /* BottomTabsBasePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */; };
+		5043CEDC271F4EA300D1801A /* SimpleJsi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5043CED8271F4EA200D1801A /* SimpleJsi.mm */; };
+		5043CEDD271F4EA300D1801A /* YeetJSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5043CED9271F4EA200D1801A /* YeetJSIUtils.mm */; };
+		5043CEDE271F4EA300D1801A /* SimpleJsi.h in Headers */ = {isa = PBXBuildFile; fileRef = 5043CEDA271F4EA200D1801A /* SimpleJsi.h */; };
+		5043CEDF271F4EA300D1801A /* YeetJSIUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 5043CEDB271F4EA300D1801A /* YeetJSIUtils.h */; };
 		50451D052042DAEB00695F00 /* RNNPushAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D032042DAEB00695F00 /* RNNPushAnimation.h */; };
 		50451D062042DAEB00695F00 /* RNNPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D042042DAEB00695F00 /* RNNPushAnimation.m */; };
 		50451D092042E20600695F00 /* RNNAnimationsOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D072042E20600695F00 /* RNNAnimationsOptions.h */; };
@@ -704,6 +708,10 @@
 		504189562506144D004A6BC7 /* RNNSetRootAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSetRootAnimator.m; sourceTree = "<group>"; };
 		5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsBasePresenter.h; sourceTree = "<group>"; };
 		5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsBasePresenter.m; sourceTree = "<group>"; };
+		5043CED8271F4EA200D1801A /* SimpleJsi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleJsi.mm; sourceTree = "<group>"; };
+		5043CED9271F4EA200D1801A /* YeetJSIUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = YeetJSIUtils.mm; sourceTree = "<group>"; };
+		5043CEDA271F4EA200D1801A /* SimpleJsi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleJsi.h; sourceTree = "<group>"; };
+		5043CEDB271F4EA300D1801A /* YeetJSIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YeetJSIUtils.h; sourceTree = "<group>"; };
 		50451D032042DAEB00695F00 /* RNNPushAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPushAnimation.h; sourceTree = "<group>"; };
 		50451D042042DAEB00695F00 /* RNNPushAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNPushAnimation.m; sourceTree = "<group>"; };
 		50451D072042E20600695F00 /* RNNAnimationsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimationsOptions.h; sourceTree = "<group>"; };
@@ -1712,6 +1720,10 @@
 				2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */,
 				5047E4F22267568500908DD3 /* RNNExternalComponentStore.h */,
 				5047E4F32267568700908DD3 /* RNNExternalComponentStore.m */,
+				5043CEDA271F4EA200D1801A /* SimpleJsi.h */,
+				5043CED8271F4EA200D1801A /* SimpleJsi.mm */,
+				5043CEDB271F4EA300D1801A /* YeetJSIUtils.h */,
+				5043CED9271F4EA200D1801A /* YeetJSIUtils.mm */,
 				7B4928061E70415400555040 /* RNNCommandsHandler.h */,
 				7B4928071E70415400555040 /* RNNCommandsHandler.m */,
 				5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */,
@@ -1837,6 +1849,7 @@
 				263905B71E4C6F440023D7D3 /* UIViewController+MMDrawerController.h in Headers */,
 				C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */,
 				501CD31F214A5B6900A6E225 /* RNNLayoutInfo.h in Headers */,
+				5043CEDE271F4EA300D1801A /* SimpleJsi.h in Headers */,
 				50BCB28D23F2B82100D6C8E5 /* TextStorageTransition.h in Headers */,
 				503A8FED25DD397400BB6A74 /* RNNIconCreator.h in Headers */,
 				50BCB27923F29F8D00D6C8E5 /* ElementFrameTransition.h in Headers */,
@@ -1850,6 +1863,7 @@
 				5012241621736667000F5F98 /* Color.h in Headers */,
 				7365071121E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h in Headers */,
 				5064495D20DC62B90026709C /* RNNSideMenuSideOptions.h in Headers */,
+				5043CEDF271F4EA300D1801A /* YeetJSIUtils.h in Headers */,
 				50F5DFC11F407A8C001A00BC /* RNNBottomTabsController.h in Headers */,
 				503A8A0523BB850A0094D1C4 /* TimeInterval.h in Headers */,
 				B84F6E4E252C5ECE007D78A1 /* AccelerateDecelerateInterpolator.h in Headers */,
@@ -2261,6 +2275,7 @@
 				504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */,
 				506BF7CF26067B0500A22755 /* AnimatedUIImageView.m in Sources */,
 				50175CD2207A2AA1004FE91B /* RNNComponentOptions.m in Sources */,
+				5043CEDC271F4EA300D1801A /* SimpleJsi.mm in Sources */,
 				505C640323E074860078AFC0 /* TopBarTitlePresenter.m in Sources */,
 				50EA541F23B00E03006F881A /* StackControllerDelegate.m in Sources */,
 				50E02BDC21A6EE7900A43942 /* SideMenuOpenGestureModeParser.m in Sources */,
@@ -2355,6 +2370,7 @@
 				7BC9346E1E26886E00EFA125 /* RNNControllerFactory.m in Sources */,
 				506C2533244F0C6B00820F5B /* RotationTransition.m in Sources */,
 				507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */,
+				5043CEDD271F4EA300D1801A /* YeetJSIUtils.mm in Sources */,
 				5038A3B2216DF41B009280BC /* UIViewController+RNNOptions.m in Sources */,
 				B841531F251E088100467F37 /* SpringInterpolator.m in Sources */,
 				50D031352005149000386B3D /* RNNOverlayManager.m in Sources */,

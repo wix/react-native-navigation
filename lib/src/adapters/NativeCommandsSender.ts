@@ -20,12 +20,14 @@ interface NativeCommandsModule {
 
 export class NativeCommandsSender {
   private readonly nativeCommandsModule: NativeCommandsModule;
+  // private readonly JSIModule: NativeCommandsModule;
   constructor() {
     this.nativeCommandsModule = NativeModules.RNNBridgeModule;
   }
 
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
-    return this.nativeCommandsModule.setRoot(commandId, layout);
+    // @ts-ignore
+    return global.setRoot(commandId, layout);
   }
 
   setDefaultOptions(options: object) {
@@ -33,11 +35,15 @@ export class NativeCommandsSender {
   }
 
   mergeOptions(componentId: string, options: object) {
+    // @ts-ignore
+    // return global.mergeOptions(componentId, options);
     return this.nativeCommandsModule.mergeOptions(componentId, options);
   }
 
   push(commandId: string, onComponentId: string, layout: object) {
-    return this.nativeCommandsModule.push(commandId, onComponentId, layout);
+    // @ts-ignore
+    return global.push(commandId, onComponentId, layout);
+    // return this.nativeCommandsModule.push(commandId, onComponentId, layout);
   }
 
   pop(commandId: string, componentId: string, options?: object) {

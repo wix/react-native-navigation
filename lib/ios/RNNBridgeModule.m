@@ -24,13 +24,13 @@ RCT_EXPORT_METHOD(setRoot
                   : (NSDictionary *)layout resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-    RCTExecuteOnMainQueue(^{
-      [self->_commandsHandler setRoot:layout
-                            commandId:commandId
-                           completion:^(NSString *componentId) {
-                             resolve(componentId);
-                           }];
-    });
+    //    RCTExecuteOnMainQueue(^{
+    //      [self->_commandsHandler setRoot:layout
+    //                            commandId:commandId
+    //                           completion:^(NSString *componentId) {
+    //                             resolve(componentId);
+    //                           }];
+    //    });
 }
 
 RCT_EXPORT_METHOD(mergeOptions

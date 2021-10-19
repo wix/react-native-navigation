@@ -7,6 +7,7 @@
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNSplashScreen.h"
+#import "SimpleJsi.h"
 #import <React/RCTBridge.h>
 #import <React/RCTModalHostViewManager.h>
 #import <React/RCTUIManager.h>
@@ -89,8 +90,9 @@
                                                                   mainWindow:_mainWindow];
     RNNBridgeModule *bridgeModule =
         [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
+    SimpleJsi *bridgeModule2 = [[SimpleJsi alloc] initWithCommandsHandler:_commandsHandler];
 
-    return @[ bridgeModule, eventEmitter ];
+    return @[ bridgeModule, bridgeModule2, eventEmitter ];
 }
 
 - (UIViewController *)findComponentForId:(NSString *)componentId {

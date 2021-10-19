@@ -18,11 +18,12 @@
 
     if (@available(iOS 13.0, *)) {
         if (bottomTabOptions.sfSymbol.hasValue) {
-            icon = [UIImage systemImageNamed: [bottomTabOptions.sfSymbol withDefault:nil]];
+            icon = [UIImage systemImageNamed:[bottomTabOptions.sfSymbol withDefault:nil]];
         }
 
         if (bottomTabOptions.sfSelectedSymbol.hasValue) {
-            selectedIcon = [UIImage systemImageNamed: [bottomTabOptions.sfSelectedSymbol withDefault:nil]];
+            selectedIcon =
+                [UIImage systemImageNamed:[bottomTabOptions.sfSelectedSymbol withDefault:nil]];
         }
     }
 
