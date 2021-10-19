@@ -6,6 +6,8 @@ import android.content.Context
 import android.view.View
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.fakes.IconResolverFake
+import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock
 import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
@@ -19,11 +21,13 @@ import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAnimator
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
@@ -97,10 +101,16 @@ class TopBarControllerTest : BaseTest() {
     }
 
     @Test
-    fun mergeRightButtons_componentButtonIsNotAddedIfAlreadyAddedToMenu() {
-        val initialButtons = rightButtons(componentButton)
-        uut.applyRightButtons(initialButtons!!)
-        uut.mergeRightButtons(initialButtons, emptyList())
+    fun mergeRightButtonsOptions_componentButtonIsNotAddedIfAlreadyAddedToMenu() {
+        val controllers = mutableMapOf<String,ButtonController>()
+        uut.applyRightButtonsOptions(controllers, listOf(componentButton)){
+            createButtonController(it)
+        }
+        verify(controllers[componentButton.id]!!, times(1)).addToMenu(any(), any())
+        uut.mergeRightButtonsOptions(controllers, listOf(componentButton.copy())){
+            createButtonController(it)
+        }
+        verify(controllers[componentButton.id]!!, times(1)).addToMenu(any(), any())
     }
 
     @Test
@@ -131,19 +141,27 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun mergeLeftButtons_clearsBackButton() {
+        val controllers = mutableMapOf<String,ButtonController>()
         uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
         assertThat(uut.view.navigationIcon).isNotNull()
-        uut.mergeLeftButtons(emptyList(), leftButton(leftButton))
+        uut.mergeLeftButtonsOptions(controllers, listOf(leftButton)){
+            createButtonController(it)
+        }
         assertThat(uut.view.navigationIcon).isNull()
     }
 
     @Test
     fun mergeLeftButtons_emptyButtonsListClearsBackButton() {
+        val controllers = mutableMapOf<String,ButtonController>()
+
         uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
         assertThat(uut.view.navigationIcon).isNotNull()
-        val initialButtons = leftButton(leftButton)
-        uut.applyLeftButtons(initialButtons)
-        uut.mergeLeftButtons(initialButtons, emptyList())
+        uut.applyLeftButtonsOptions(controllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.mergeLeftButtonsOptions(controllers, emptyList()){
+            createButtonController(it)
+        }
         assertThat(uut.view.navigationIcon).isNull()
     }
 
@@ -219,6 +237,110 @@ class TopBarControllerTest : BaseTest() {
         assertThat(result).isEqualTo(someAnimator)
     }
 
+    @Test
+    fun `mergeRightButtons - should add buttons`(){
+        val controllers = spy(LinkedHashMap<String,ButtonController>())
+        val controller = spy(ButtonController(activity, ButtonPresenter(activity, textButton1, IconResolverFake(activity)),
+            textButton1, TitleBarButtonCreatorMock(), object : ButtonController.OnClickListener {
+                override fun onPress(button: ButtonOptions) {
+
+                }
+
+            }))
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1)) {
+                controller
+        }
+        assertThat(uut.rightButtonCount).isEqualTo(1)
+        verify(controllers, never()).remove(any())
+        assertThat(controllers[textButton1.id]).isEqualTo(controller)
+    }
+    @Test
+    fun `mergeRightButtons - should remove all and re-add buttons in case of reorder`(){
+        val controllers = mutableMapOf<String,ButtonController>()
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1, textButton2)) {
+            createButtonController(it)
+        }
+        assertThat(uut.getRightButton(1).itemId ).isEqualTo(textButton1.intId)
+        assertThat(uut.getRightButton(0).itemId ).isEqualTo(textButton2.intId)
+        val removedControllers = mutableMapOf<String, ButtonController>().apply { putAll(controllers) }
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton2.copy(), textButton1.copy())) {
+            createButtonController(it)
+        }
+        assertThat(uut.getRightButton(1).itemId ).isEqualTo(textButton2.intId)
+        assertThat(uut.getRightButton(0).itemId ).isEqualTo(textButton1.intId)
+
+        verify(removedControllers[textButton1.id]!!, times(1)).destroy()
+        verify(removedControllers[textButton2.id]!!, times(1)).destroy()
+
+        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+        verify(controllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
+    }
+    @Test
+    fun `mergeRightButtons - should rebuild menu when adding menu items`(){
+        val controllers = spy(LinkedHashMap<String,ButtonController>())
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1)) {
+            createButtonController(it)
+        }
+        assertThat(uut.rightButtonCount).isEqualTo(1)
+
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1, textButton2)) {
+            createButtonController(it)
+        }
+        assertThat(uut.rightButtonCount).isEqualTo(2)
+        verify(controllers, times(1)).remove(any())
+        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+    }
+    @Test
+    fun `mergeRightButtons - should modify changed buttons`(){
+        val controllers = spy(LinkedHashMap<String,ButtonController>())
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1.apply {
+            this.enabled = Bool(true)
+        })) {
+            createButtonController(it)
+        }
+        assertThat(uut.rightButtonCount).isEqualTo(1)
+        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1.copy().apply { this.enabled= Bool(false) })) {
+            createButtonController(it)
+        }
+        verify(controllers, never()).remove(any())
+        verify(controllers[textButton1.id]!!, times(1)).mergeButtonOptions(any(), any())
+        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+        verify(controllers[textButton1.id]!!, never()).destroy()
+    }
+
+    fun `mergeRightButtons - reorder of same menu items should rebuild menu`(){
+        val controllers = spy(LinkedHashMap<String,ButtonController>())
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton1, textButton2)) {
+            createButtonController(it)
+        }
+        assertThat(uut.rightButtonCount).isEqualTo(1)
+        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+        verify(controllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
+
+        uut.mergeRightButtonsOptions(controllers, listOf(textButton2.copy(), textButton1.copy())) {
+            createButtonController(it)
+        }
+        verify(controllers[textButton1.id]!!, never()).mergeButtonOptions(any(), any())
+        verify(controllers[textButton2.id]!!, never()).mergeButtonOptions(any(), any())
+        verify(controllers[textButton1.id]!!, times(2)).addToMenu(any(), any())
+        verify(controllers[textButton2.id]!!, times(2)).addToMenu(any(), any())
+        verify(controllers[textButton1.id]!!, times(1)).destroy()
+        verify(controllers[textButton2.id]!!, times(1)).destroy()
+    }
+
+
+
+    private fun createButtonController(it: ButtonOptions) =
+        spy(ButtonController(activity, ButtonPresenter(activity, it, IconResolverFake(activity)),
+            it, TitleBarButtonCreatorMock(), object : ButtonController.OnClickListener {
+                override fun onPress(button: ButtonOptions) {
+
+                }
+
+            }))
+
     private fun createButtons() {
         leftButton = ButtonOptions()
         leftButton.id = Constants.BACK_BUTTON_ID
@@ -251,4 +373,5 @@ class TopBarControllerTest : BaseTest() {
             return spy(super.createTopBar(context, stackLayout))
         }
     })
+
 }
