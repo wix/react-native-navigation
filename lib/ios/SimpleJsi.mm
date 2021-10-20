@@ -117,8 +117,6 @@ static void install(jsi::Runtime &jsiRuntime, SimpleJsi *simpleJsi) {
         jsiRuntime, PropNameID::forAscii(jsiRuntime, "mergeOptions"), 2,
         [simpleJsi](Runtime &runtime, const Value &thisValue, const Value *arguments,
                     size_t count) -> Value {
-            //        NSString *commandId = convertJSIStringToNSString(runtime,
-            //        arguments[0].getString(runtime));
             NSString *componentId =
                 convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
             NSDictionary *options =
