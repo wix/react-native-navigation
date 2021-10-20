@@ -376,10 +376,12 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 			[sheet setPrefersEdgeAttachedInCompactHeight:[withDefault.modal.prefersEdgeAttachedInCompactHeight withDefault:false]];
 			[sheet setWidthFollowsPreferredContentSizeWhenEdgeAttached:[withDefault.modal.widthFollowsPreferredContentSizeWhenEdgeAttached withDefault:false]];
 			[sheet setPrefersGrabberVisible:[withDefault.modal.prefersGrabberVisible withDefault:false]];
-			[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
+            // FIXME: This should be handled with conversion which is incorrect
+			//[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
 			if (withDefault.modal.detents) {
 				// FIXME: This should be handled with conversion rather than straightforward usage
-				[sheet setDetents:withDefault.modal.detents];
+				//[sheet setDetents:withDefault.modal.detents];
+                [sheet setDetents:[[NSArray alloc] initWithObjects:UISheetPresentationControllerDetentIdentifierMedium, UISheetPresentationControllerDetentIdentifierLarge, nil]];
 			}
 			if (withDefault.modal.preferredCornerRadius.hasValue) {
 				[sheet setPreferredCornerRadius:[withDefault.modal.preferredCornerRadius.get doubleValue]];

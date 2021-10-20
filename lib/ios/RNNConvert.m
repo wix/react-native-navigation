@@ -32,10 +32,11 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle, (@{
                    }),
                    UIModalPresentationFullScreen, integerValue)
 
-RCT_ENUM_CONVERTER(UISheetPresentationControllerDetentIdentifier, (@{
-					   @"medium" : @(UISheetPresentationControllerDetentIdentifierMedium),
-					   @"large" : @(UISheetPresentationControllerDetentIdentifierLarge)
-				   }),
-				   nil, integerValue)
+//FIXME: The conversion is incorrect
+//RCT_ENUM_CONVERTER(UISheetPresentationControllerDetentIdentifier, (@{
+//                       @"medium" : UISheetPresentationControllerDetentIdentifierMedium,
+//                       @"large" : UISheetPresentationControllerDetentIdentifierLarge
+//                   }),
+//                   nil, integerValue)
 
 @end
