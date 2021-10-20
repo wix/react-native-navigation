@@ -1136,7 +1136,7 @@ export interface ModalOptions {
   preferredCornerRadius?: number;
 
   /**
-   * A Boolean value that determines whether the sheet shows a grabber at the top.
+   * A boolean value that determines whether the sheet shows a grabber at the top.
    * #### (iOS 15+ specific)
    */
   prefersGrabberVisible?: boolean;

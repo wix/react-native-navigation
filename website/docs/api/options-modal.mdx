@@ -12,8 +12,65 @@ const options = {
 
 ## `swipeToDismiss`
 
-Control wether this modal should be dismiss using swipe gesture when the `modalPresentationStyle` is `pageSheet`
+Control whether this modal should be dismissed using swipe gesture when the `modalPresentationStyle` is `pageSheet`
 
 | Type                                  | Required | Platform |  Default |
 | ------------------------------------- | -------- | -------- | -------- |
 | boolean                               | No       | Both     | true     |
+
+## `detents`
+
+The array of heights where a sheet can rest.
+
+| Type                                  | Required | Platform |  Default |
+| ------------------------------------- | -------- | -------- | -------- |
+| ModalDetent[]                         | No       | iOS 15+  | 'large'  |
+
+## `largestUndimmedDetent`
+
+The largest detent that doesn’t dim the view underneath the sheet.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| ModalDetent                           | No       | iOS 15+  | undefined |
+
+## `prefersScrollingExpandsWhenScrolledToEdge`
+
+A boolean value that determines whether scrolling expands the sheet to a larger detent.
+After the sheet reaches its largest detent, scrolling begins.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| boolean                               | No       | iOS 15+  | true      |
+
+## `prefersEdgeAttachedInCompactHeight`
+
+A boolean value that determines whether the sheet attaches to the bottom edge of the screen in a compact-height size class.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| boolean                               | No       | iOS 15+  | false     |
+
+## `widthFollowsPreferredContentSizeWhenEdgeAttached`
+
+A boolean value that determines whether the sheet's width matches its view controller's preferred content size.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| boolean                               | No       | iOS 15+  | false     |
+
+## `preferredCornerRadius`
+
+The corner radius that the sheet attempts to present with.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| number                                | No       | iOS 15+  | undefined |
+
+## `prefersGrabberVisible`
+
+A boolean value that determines whether the sheet shows a grabber at the top.
+
+| Type                                  | Required | Platform |  Default  |
+| ------------------------------------- | -------- | -------- | --------- |
+| boolean                               | No       | iOS 15+  | false     |
