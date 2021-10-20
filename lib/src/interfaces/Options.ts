@@ -1086,12 +1086,60 @@ export interface OverlayOptions {
   handleKeyboardEvents?: boolean;
 }
 
+export enum ModalDetent {
+  medium = "medium",
+  large = "large",
+}
+
 export interface ModalOptions {
   /**
    * Control whether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
    * #### (iOS specific)
    */
   swipeToDismiss?: boolean;
+
+  /**
+   * The array of heights where a sheet can rest.
+   * #### (iOS 15+ specific)
+   */
+  detents?: ModalDetent[],
+
+  /**
+   * The largest detent that doesn’t dim the view underneath the sheet.
+   * #### (iOS 15+ specific)
+   */
+  largestUndimmedDetent?: ModalDetent,
+
+  /**
+   * A boolean value that determines whether scrolling expands the sheet to a larger detent.
+   * After the sheet reaches its largest detent, scrolling begins.
+   * #### (iOS 15+ specific)
+   */
+  prefersScrollingExpandsWhenScrolledToEdge?: boolean,
+
+  /**
+   * A boolean value that determines whether the sheet attaches to the bottom edge of the screen in a compact-height size class.
+   * #### (iOS 15+ specific)
+   */
+  prefersEdgeAttachedInCompactHeight?: boolean,
+
+  /**
+   * A boolean value that determines whether the sheet's width matches its view controller's preferred content size.
+   * #### (iOS 15+ specific)
+   */
+  widthFollowsPreferredContentSizeWhenEdgeAttached?: boolean,
+
+  /**
+   * The corner radius that the sheet attempts to present with.
+   * #### (iOS 15+ specific)
+   */
+  preferredCornerRadius?: number;
+
+  /**
+   * A Boolean value that determines whether the sheet shows a grabber at the top.
+   * #### (iOS 15+ specific)
+   */
+  prefersGrabberVisible?: boolean;
 }
 
 export interface OptionsPreviewAction {
