@@ -10,5 +10,6 @@
 @property(nonatomic, strong) Number *preferredCornerRadius;
 @property(nonatomic, strong) NSArray<Text *> *detents;
 @property(nonatomic, strong) Text *largestUndimmedDetent;
+@property(nonatomic, strong) Text *selectedDetentIdentifier;
 
 @end

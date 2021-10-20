@@ -12,6 +12,7 @@
 	self.prefersGrabberVisible = [BoolParser parse:dict key:@"prefersGrabberVisible"];
 	self.preferredCornerRadius = [NumberParser parse:dict key:@"preferredCornerRadius"];
 	self.largestUndimmedDetent = [TextParser parse:dict key:@"largestUndimmedDetent"];
+	self.selectedDetentIdentifier = [TextParser parse:dict key:@"selectedDetentIdentifier"];
 	//FIXME: Probably incorrect usage of the parser and incorrect class
 	self.detents = [OptionsArrayParser parse:dict key:@"detents" ofClass:Text.class];
     return self;
@@ -34,6 +35,8 @@
 		self.preferredCornerRadius = options.preferredCornerRadius;
 	if (options.largestUndimmedDetent.hasValue)
 		self.largestUndimmedDetent = options.largestUndimmedDetent;
+	if (options.selectedDetentIdentifier.hasValue)
+		self.selectedDetentIdentifier = options.selectedDetentIdentifier;
 	if (options.detents)
 		self.detents = options.detents;
 	

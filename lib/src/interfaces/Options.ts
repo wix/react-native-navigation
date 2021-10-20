@@ -1111,6 +1111,12 @@ export interface ModalOptions {
   largestUndimmedDetent?: ModalDetent,
 
   /**
+   * The identifier of the most recently selected detent.
+   * #### (iOS 15+ specific)
+   * */
+  selectedDetentIdentifier?: ModalDetent,
+
+  /**
    * A boolean value that determines whether scrolling expands the sheet to a larger detent.
    * After the sheet reaches its largest detent, scrolling begins.
    * #### (iOS 15+ specific)

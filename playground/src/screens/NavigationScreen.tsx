@@ -92,7 +92,8 @@ export default class NavigationScreen extends React.Component<Props> {
       preferredCornerRadius: 30,
       widthFollowsPreferredContentSizeWhenEdgeAttached: true,
       prefersScrollingExpandsWhenScrolledToEdge: true,
-      largestUndimmedDetent: ModalDetent.medium,
+      largestUndimmedDetent: ModalDetent.large,
+      selectedDetentIdentifier: ModalDetent.medium,
     }
   });
 

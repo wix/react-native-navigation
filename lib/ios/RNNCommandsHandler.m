@@ -378,16 +378,20 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 			[sheet setPrefersEdgeAttachedInCompactHeight:[withDefault.modal.prefersEdgeAttachedInCompactHeight withDefault:false]];
 			[sheet setWidthFollowsPreferredContentSizeWhenEdgeAttached:[withDefault.modal.widthFollowsPreferredContentSizeWhenEdgeAttached withDefault:false]];
 			[sheet setPrefersGrabberVisible:[withDefault.modal.prefersGrabberVisible withDefault:false]];
-			// FIXME: This should be handled with conversion which is incorrect
-			if (withDefault.modal.largestUndimmedDetent.hasValue) {
-				//[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
-				[sheet setLargestUndimmedDetentIdentifier:UISheetPresentationControllerDetentIdentifierLarge];
-			}
 			if (withDefault.modal.detents) {
 				// FIXME: This should be handled with conversion rather than straightforward usage
 				//[sheet setDetents:withDefault.modal.detents];
-				//[sheet setDetents: @[UISheetPresentationControllerDetentIdentifierMedium, UISheetPresentationControllerDetentIdentifierLarge]];
 			}
+            // FIXME: This should be handled with conversion which is incorrect
+            if (withDefault.modal.largestUndimmedDetent.hasValue) {
+                //[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
+                [sheet setLargestUndimmedDetentIdentifier:UISheetPresentationControllerDetentIdentifierLarge];
+            }
+            // FIXME: This should be handled with conversion rather than straightforward usage
+            if (withDefault.modal.selectedDetentIdentifier.hasValue) {
+                //[sheet setSelectedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.selectedDetentIdentifier withDefault:nil]]];
+                [sheet setSelectedDetentIdentifier:UISheetPresentationControllerDetentIdentifierMedium];
+            }
 			if (withDefault.modal.preferredCornerRadius.hasValue) {
 				[sheet setPreferredCornerRadius:[withDefault.modal.preferredCornerRadius.get doubleValue]];
 			}
