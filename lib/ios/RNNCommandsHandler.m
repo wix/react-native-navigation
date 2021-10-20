@@ -378,6 +378,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 			[sheet setPrefersEdgeAttachedInCompactHeight:[withDefault.modal.prefersEdgeAttachedInCompactHeight withDefault:false]];
 			[sheet setWidthFollowsPreferredContentSizeWhenEdgeAttached:[withDefault.modal.widthFollowsPreferredContentSizeWhenEdgeAttached withDefault:false]];
 			[sheet setPrefersGrabberVisible:[withDefault.modal.prefersGrabberVisible withDefault:false]];
+            
+            
+            [sheet setDetents:@[UISheetPresentationControllerDetent.mediumDetent, UISheetPresentationControllerDetent.largeDetent]];
+            
+            
 			if (withDefault.modal.detents) {
 				// FIXME: This should be handled with conversion rather than straightforward usage
 				//[sheet setDetents:withDefault.modal.detents];
