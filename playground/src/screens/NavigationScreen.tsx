@@ -85,6 +85,7 @@ export default class NavigationScreen extends React.Component<Props> {
   setRoot = () => Navigation.showModal(Screens.SetRoot);
 
   showModalIOS15 = () => Navigation.showModal(Screens.Modal, {
+    //TODO: Detents can't be used because of incorrect parsing in RNNModalOptions.m
     modal: {
       prefersEdgeAttachedInCompactHeight: false,
       prefersGrabberVisible: true,
