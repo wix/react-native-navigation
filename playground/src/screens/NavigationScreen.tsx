@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { NavigationComponentProps, OptionsModalPresentationStyle } from 'react-native-navigation';
+import { ModalDetent, NavigationComponentProps, OptionsModalPresentationStyle } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -43,6 +43,7 @@ export default class NavigationScreen extends React.Component<Props> {
       <Root componentId={this.props.componentId} testID={NAVIGATION_SCREEN}>
         <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label="Modal" testID={MODAL_BTN} onPress={this.showModal} />
+        <Button label="Modal (iOS15)" onPress={this.showModalIOS15} />
         <Button
           label="PageSheet modal"
           testID={PAGE_SHEET_MODAL_BTN}
@@ -82,6 +83,18 @@ export default class NavigationScreen extends React.Component<Props> {
   }
 
   setRoot = () => Navigation.showModal(Screens.SetRoot);
+
+  showModalIOS15 = () => Navigation.showModal(Screens.Modal, {
+    modal: {
+      prefersEdgeAttachedInCompactHeight: false,
+      prefersGrabberVisible: true,
+      preferredCornerRadius: 30,
+      widthFollowsPreferredContentSizeWhenEdgeAttached: true,
+      prefersScrollingExpandsWhenScrolledToEdge: true,
+      largestUndimmedDetent: ModalDetent.medium,
+    }
+  });
+
   showModal = () => Navigation.showModal(Screens.Modal);
 
   showPageSheetModal = () =>
