@@ -7,4 +7,6 @@
 
 + (UIModalTransitionStyle)UIModalTransitionStyle:(id)json;
 
++ (UISheetPresentationControllerDetentIdentifier)UISheetPresentationControllerDetentIdentifier:(id)json;
+
 @end

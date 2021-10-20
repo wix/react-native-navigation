@@ -367,6 +367,25 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *withDefault = newVc.resolveOptionsWithDefault;
 
     [_layoutManager addPendingViewController:newVc];
+	
+	if (@available(iOS 15.0, *)) {
+		UISheetPresentationController *sheet = [newVc sheetPresentationController];
+		
+		if (sheet) {
+			[sheet setPrefersScrollingExpandsWhenScrolledToEdge:[withDefault.modal.prefersScrollingExpandsWhenScrolledToEdge withDefault:true]];
+			[sheet setPrefersEdgeAttachedInCompactHeight:[withDefault.modal.prefersEdgeAttachedInCompactHeight withDefault:false]];
+			[sheet setWidthFollowsPreferredContentSizeWhenEdgeAttached:[withDefault.modal.widthFollowsPreferredContentSizeWhenEdgeAttached withDefault:false]];
+			[sheet setPrefersGrabberVisible:[withDefault.modal.prefersGrabberVisible withDefault:false]];
+			[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
+			if (withDefault.modal.detents) {
+				// FIXME: This should be handled with conversion rather than straightforward usage
+				[sheet setDetents:withDefault.modal.detents];
+			}
+			if (withDefault.modal.preferredCornerRadius.hasValue) {
+				[sheet setPreferredCornerRadius:[withDefault.modal.preferredCornerRadius.get doubleValue]];
+			}
+		}
+	}
 
     __weak UIViewController *weakNewVC = newVc;
     newVc.waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
