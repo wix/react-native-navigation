@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.options.LayoutFactory;
@@ -34,15 +36,37 @@ import java.util.Objects;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
+import android.util.Log;
+@ReactModule(name = NavigationModule.NAME)
 public class NavigationModule extends ReactContextBaseJavaModule {
-    private static final String NAME = "RNNBridgeModule";
+     static final String NAME = "RNNBridgeModule";
 
+    static {
+        try {
+            // Used to load the 'native-lib' library on application startup.
+            System.loadLibrary("jsi_navigation");
+        } catch (Exception ignored) {
+        }
+    }
     private final Now now = new Now();
     private final ReactInstanceManager reactInstanceManager;
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
 
+    private native void nativeInstall(long jsi);
+
+    public void installLib(JavaScriptContextHolder reactContext) {
+
+        if (reactContext.get() != 0) {
+            this.nativeInstall(
+                    reactContext.get()
+            );
+        } else {
+            Log.e("jsi_navigation", "JSI Runtime is not available in debug mode");
+        }
+
+    }
     @SuppressWarnings("WeakerAccess")
     public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager, LayoutFactory layoutFactory) {
         this(reactContext, reactInstanceManager, new JSONParser(), layoutFactory);

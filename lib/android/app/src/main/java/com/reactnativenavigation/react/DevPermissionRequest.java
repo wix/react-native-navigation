@@ -22,7 +22,6 @@ public class DevPermissionRequest {
 	public boolean shouldAskPermission(Activity activity) {
 		return isDebug &&
                Build.VERSION.SDK_INT >= 23 &&
-               BuildConfig.REACT_NATVE_VERSION_MINOR <= 51 &&
                !Settings.canDrawOverlays(activity);
 	}
 

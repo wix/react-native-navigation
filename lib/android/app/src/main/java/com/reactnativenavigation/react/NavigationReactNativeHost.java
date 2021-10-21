@@ -1,17 +1,18 @@
 package com.reactnativenavigation.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.react.DevBundleDownloadListenerAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.reactnativenavigation.jsi.NavigationJSIModule;
 
 public abstract class NavigationReactNativeHost extends ReactNativeHost implements BundleDownloadListenerProvider {
 
@@ -27,6 +28,12 @@ public abstract class NavigationReactNativeHost extends ReactNativeHost implemen
 
     public NavigationReactNativeHost(NavigationApplication application) {
         super(application);
+    }
+
+    @Nullable
+    @Override
+    protected JSIModulePackage getJSIModulePackage() {
+        return new NavigationJSIModule();
     }
 
     @Override

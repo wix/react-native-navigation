@@ -205,6 +205,9 @@ project.xcworkspace
 # Android/IJ
 #
 .idea
+.cxx
+.project
+.classpath
 .gradle
 local.properties
 
