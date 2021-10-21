@@ -55,6 +55,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
   }
 
   render() {
+    //@ts-ignore
+    // eslint-disable-next-line no-undef
+    const jsiTest = NavigationJSI.mergeOptions('HelloCompoent', '');
     return (
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
@@ -67,6 +70,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
           onPress={this.splitView}
         />
         <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
+        <Text>{`JSI Stuff ${jsiTest}`}</Text>
       </Root>
     );
   }
