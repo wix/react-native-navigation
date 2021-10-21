@@ -4,6 +4,7 @@ def enableHermes = false
 project.ext.react = [
         root     : "../../../",
         entryFile: "index.js",
+        cliPath : "node_modules/react-native/cli.js",
         bundleAssetName: "index.android.bundle",
         bundleInAlpha: true,
         bundleInBeta: true,

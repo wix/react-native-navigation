@@ -101,7 +101,7 @@
     "metro-react-native-babel-preset": "0.59.0",
     "prettier": "2.1.2",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.64.2",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
