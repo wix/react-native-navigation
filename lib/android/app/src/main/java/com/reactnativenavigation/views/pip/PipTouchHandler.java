@@ -15,6 +15,8 @@ import android.view.ViewConfiguration;
 
 import androidx.annotation.RequiresApi;
 
+import com.reactnativenavigation.options.PIPActionButton;
+
 import java.io.PrintWriter;
 
 /**
@@ -116,6 +118,11 @@ public class PipTouchHandler {
 
         @Override
         public void onFullScreenClick() {
+
+        }
+
+        @Override
+        public void onPIPButtonClick(PIPActionButton button) {
 
         }
     }

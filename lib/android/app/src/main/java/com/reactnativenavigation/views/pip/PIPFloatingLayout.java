@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,10 +19,12 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.CustomPIPDimension;
+import com.reactnativenavigation.options.PIPActionButton;
 import com.reactnativenavigation.utils.ILogger;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -45,7 +48,8 @@ public class PIPFloatingLayout extends FrameLayout {
     private int mMoveCount = 0;
     private String TAG = "PIPFloatingLayout";
     private ILogger logger;
-    private PIPButtonsLayout pipButtonsLayout;
+    private PIPTopButtonsLayout pipTopButtonsLayout;
+    private PIPCenterButtonsLayout pipCenterButtonsLayout;
     private int statusBarHeight = 0;
     private PipTouchHandler pipTouchHandler;
     private List<IPIPListener> pipListeners = new ArrayList();
@@ -54,14 +58,17 @@ public class PIPFloatingLayout extends FrameLayout {
     public PIPFloatingLayout(@NonNull Activity activity) {
         super(activity);
         this.activity = activity;
-        pipButtonsLayout = new PIPButtonsLayout(activity);
-        pipButtonsLayout.setPipButtonListener(buttonListener);
+        pipTopButtonsLayout = new PIPTopButtonsLayout(activity);
+        pipTopButtonsLayout.setPipButtonListener(buttonListener);
+        pipCenterButtonsLayout = new PIPCenterButtonsLayout(activity);
+        pipCenterButtonsLayout.setPipButtonListener(centerButtonListener);
         ViewConfiguration vc = ViewConfiguration.get(this.getContext());
         mTouchSlop = vc.getScaledTouchSlop() * 3;
         statusBarHeight = getStatusBarHeight();
         setBackgroundResource(R.drawable.pip_layout_bg);
         pipTouchHandler = new PipTouchHandler(this);
-        mDetector = new GestureDetector(activity, new PIPGestureListener());
+        PIPGestureListener gestureListener = new PIPGestureListener();
+        mDetector = new GestureDetector(activity, gestureListener);
         mDetector.setIsLongpressEnabled(false);
     }
 
@@ -80,12 +87,18 @@ public class PIPFloatingLayout extends FrameLayout {
 
     public void setCustomPIPDimensions(CustomPIPDimension dimension) {
         this.pipDimension = dimension;
-        pipButtonsLayout.setPIPHeight(UiUtils.dpToPx(activity, pipDimension.compact.height.get()));
+        int heightPixel = UiUtils.dpToPx(activity, pipDimension.compact.height.get());
+        pipTopButtonsLayout.setPIPHeight(heightPixel);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void setPIPActionButtons(PIPActionButton[] actionButtons) {
+        pipCenterButtonsLayout.setButtons(actionButtons);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return !pipButtonsLayout.isWithinBounds(event);
+        return !(pipTopButtonsLayout.isWithinBounds(event) || pipCenterButtonsLayout.isWithinBounds(event));
     }
 
     @Override
@@ -93,7 +106,6 @@ public class PIPFloatingLayout extends FrameLayout {
         mDetector.onTouchEvent(event);
         return true;
     }
-
     /*
        @Override
        public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -189,7 +201,7 @@ public class PIPFloatingLayout extends FrameLayout {
         FrameLayout.LayoutParams pipLayoutLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         pipLayoutLayoutParams.setMargins(0, 0, 0, 0);
         setLayoutParams(pipLayoutLayoutParams);
-        this.pipButtonsLayout.hide();
+        this.pipTopButtonsLayout.hide();
     }
 
     private void setCustomPIPMode() {
@@ -218,16 +230,13 @@ public class PIPFloatingLayout extends FrameLayout {
         this.setY(UiUtils.pxToDp(activity, loc.y));
     }
 
-    private boolean shouldInterceptTouchEvent() {
-        return this.pipState == PIPStates.CUSTOM_MOUNTED || this.pipState == PIPStates.CUSTOM_COMPACT;
-    }
 
     private void setCustomCompactState() {
         ViewGroup.LayoutParams params = getLayoutParams();
         params.width = UiUtils.dpToPx(activity, pipDimension.compact.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.compact.height.get());
         setLayoutParams(params);
-        pipButtonsLayout.makeShortTimeVisible();
+        pipTopButtonsLayout.makeShortTimeVisible();
     }
 
     private void setCustomExpandedState() {
@@ -235,7 +244,7 @@ public class PIPFloatingLayout extends FrameLayout {
         params.width = UiUtils.dpToPx(activity, pipDimension.expanded.width.get());
         params.height = UiUtils.dpToPx(activity, pipDimension.expanded.height.get());
         setLayoutParams(params);
-        pipButtonsLayout.makePermanentVisible();
+        pipTopButtonsLayout.makePermanentVisible();
         animateToCompact(5000);
     }
 
@@ -278,6 +287,9 @@ public class PIPFloatingLayout extends FrameLayout {
     }
 
     private void animateToCompact(int delay) {
+        if (pipState == PIPStates.CUSTOM_COMPACT) {
+            return;
+        }
         runningAnimation = createViewSizeAnimation(pipDimension.expanded.height.get(), pipDimension.compact.height.get(), pipDimension.expanded.width.get(), pipDimension.compact.width.get(), 100);
         runningAnimation.setStartDelay(delay);
         runningAnimation.start();
@@ -383,6 +395,7 @@ public class PIPFloatingLayout extends FrameLayout {
                     break;
 
             }
+            pipCenterButtonsLayout.updatePIPState(pipState);
             publishPIPStateChange(oldState, pipState);
         }
     }
@@ -402,7 +415,8 @@ public class PIPFloatingLayout extends FrameLayout {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 0);
         child.setLayoutParams(params);
-        super.addView(pipButtonsLayout);
+        super.addView(pipTopButtonsLayout);
+        super.addView(pipCenterButtonsLayout);
     }
 
     public void addPIPListener(IPIPListener pipListener) {
@@ -438,7 +452,13 @@ public class PIPFloatingLayout extends FrameLayout {
         }
     }
 
-    private PIPButtonsLayout.IPIPButtonListener buttonListener = new PIPButtonsLayout.IPIPButtonListener() {
+    private void publishPIPActionButton(PIPActionButton actionButton) {
+        for (IPIPListener listener : pipListeners) {
+            listener.onPIPButtonClick(actionButton);
+        }
+    }
+
+    private PIPTopButtonsLayout.IPIPButtonListener buttonListener = new PIPTopButtonsLayout.IPIPButtonListener() {
         @Override
         public void onFullScreenClick() {
             publishFullScreenClick();
@@ -449,6 +469,8 @@ public class PIPFloatingLayout extends FrameLayout {
             publishCloseClick();
         }
     };
+
+    private PIPCenterButtonsLayout.IPIPButtonListener centerButtonListener = this::publishPIPActionButton;
 
     public class PIPGestureListener extends GestureDetector.SimpleOnGestureListener {
 
