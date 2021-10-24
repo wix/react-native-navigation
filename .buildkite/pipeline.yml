@@ -33,6 +33,8 @@ steps:
     - "npm install"
     - "npm run test-unit-ios -- --release"
     key: "ios_unit"
+    agents:
+      test-agent: true
 
   - label: ":ios: iOS - E2E"
     command:
