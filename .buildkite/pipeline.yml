@@ -1,19 +1,48 @@
-env:
-  CI: true
-  ANDROID_HOME: /usr/local/share/android-sdk/
-  PATH: "$PATH:/usr/local/share/android-sdk/platform-tools/"
 steps:
-  - label: "Android :android:"
+  - block: ":rocket: Release!"
+    prompt: "Fill out the details for release"
+    if: 'build.message =~ /^release\$/i'
+    fields:
+      - text: "VERSION"
+        key: "version"
+      - text: "NPM_TAG"
+        key: "npm-tag"
+        default: 'null'
+        required: false
+      - text: "BUILD_DOCUMENTATION_VERSION"
+        key: "build-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+      - text: "REMOVE_DOCUMENTATION_VERSION"
+        key: "remove-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+  
+  - label: ":android: Android"
     command:
-    - "env"
+    - "nvm install"
     - "npm install"
-    - "npm run clean"
+    - "npm run test-js"
     - "npm run test-unit-android -- --release"
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
-         
-  - label: "IOS :ios:"
+    key: "android_build"
+
+  - label: ":ios: iOS"
     command:
-    - "env"
+    - "nvm install"
     - "npm install"
-    - "npm run clean"
+    - "npm run test-unit-ios -- --release"
+    - "npm run test-snapshot-ios -- --release"
     - "npm run test-e2e-ios -- --release --multi --ci"
+    key: "ios_build"
+
+  - label: ":package: Publish"
+    env:
+    if: "build.pull_request.id == null"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run release"
+    depends_on:
+    - "android_build"
+    - "ios_build"
