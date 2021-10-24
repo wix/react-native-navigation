@@ -18,23 +18,47 @@ steps:
         default: 'null'
         hint: 'Leave NULL if no version is specified'
   
-  - label: ":android: Android"
+  - label: ":js: JS"
     command:
     - "nvm install"
     - "npm install"
     - "npm run test-js"
+    key: "js_build"
+    
+  - label: ":android: Android - unit"
+    command:
+    - "nvm install"
+    - "npm install"
     - "npm run test-unit-android -- --release"
+    key: "android_build_unit"
+    
+  - label: ":android: Android - e2e"
+    command:
+    - "nvm install"
+    - "npm install"
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
-    key: "android_build"
+    key: "android_build_e2e"
 
-  - label: ":ios: iOS"
+  - label: ":ios: iOS - unit"
     command:
     - "nvm install"
     - "npm install"
     - "npm run test-unit-ios -- --release"
-    - "npm run test-snapshot-ios -- --release"
+    key: "ios_build_unit"
+  
+  - label: ":ios: iOS - e2e"
+    command:
+    - "nvm install"
+    - "npm install"
     - "npm run test-e2e-ios -- --release --multi --ci"
-    key: "ios_build"
+    key: "ios_build_e2e"
+    
+   - label: ":ios: iOS - snapshot"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run test-snapshot-ios -- --release"
+    key: "ios_build_snapshot"
 
   - label: ":package: Publish"
     env:
@@ -44,5 +68,9 @@ steps:
     - "npm install"
     - "npm run release"
     depends_on:
-    - "android_build"
-    - "ios_build"
+    - "js_build"
+    - "android_build_unit"
+    - "android_build_e2e"
+    - "ios_build_unit"
+    - "ios_build_e2e"
+    - "ios_build_snapshot"
