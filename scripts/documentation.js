@@ -13,7 +13,7 @@ function release(version, removeVersion) {
   process.chdir(docsPath);
   exec.execSync(`npm install`);
   exec.execSync(`npm run docusaurus docs:version ${version}`);
-  exec.execSync(`git add website`);
+  exec.execSync(`git add ../website`);
   process.chdir(originalDir);
 }
 
