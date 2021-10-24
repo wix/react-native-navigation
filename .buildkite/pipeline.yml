@@ -27,14 +27,22 @@ steps:
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
     key: "android_build"
 
-  - label: ":ios: iOS"
+  - label: ":ios: iOS - Unit"
     command:
     - "nvm install"
     - "npm install"
     - "npm run test-unit-ios -- --release"
+    key: "ios_unit"
+    agents:
+      test-agent: true
+
+  - label: ":ios: iOS - E2E"
+    command:
+    - "nvm install"
+    - "npm install"
     - "npm run test-snapshot-ios -- --release"
     - "npm run test-e2e-ios -- --release --multi --ci"
-    key: "ios_build"
+    key: "ios_e2e"
 
   - label: ":package: Publish"
     env:
@@ -45,4 +53,5 @@ steps:
     - "npm run release"
     depends_on:
     - "android_build"
-    - "ios_build"
+    - "ios_unit"
+    - "ios_e2e"
