@@ -201,51 +201,64 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         controllerCreator: (ButtonOptions) -> ButtonController,
         buttonBar: ButtonBar
     ) {
-
-        var updatedButtons = buttons.filter { btnControllers[it.id]?.areButtonOptionsChanged(it) ?: false }
-        var added = buttons.filterNot { btnControllers.containsKey(it.id) }
-        var removed = btnControllers.filterNot { ctrl ->
-            buttons.any {
-                ctrl.key == it.id
-            }
-        }.map { it.key to it.value.buttonIntId }
-
-        val rebuildMenu = if (updatedButtons.size == buttons.size) {
+        fun hasChangedOrder(): Boolean {
             val values = btnControllers.values
-            buttons.filterIndexed { index, buttonOptions ->
+            return buttons.filterIndexed { index, buttonOptions ->
                 val buttonController = btnControllers[buttonOptions.id]
                 values.indexOf(buttonController) == index
             }.size != buttons.size
-        } else added.isNotEmpty() || removed.isNotEmpty()
+        }
+
+        fun sameIdDifferentCompId(
+            toUpdate: MutableMap<String, Int>,
+            ctrl: Map.Entry<String, ButtonController>,
+            buttons: List<ButtonOptions>
+        ) = if (toUpdate.containsKey(ctrl.key)
+            && ctrl.value.button.hasComponent()
+            && buttons[toUpdate[ctrl.key]!!].component.componentId != ctrl.value.button.component.componentId
+        ) {
+            toUpdate.remove(ctrl.key)
+            true
+        } else false
+
+        val requestedButtons = buttons.mapIndexed { index, buttonOptions -> buttonOptions.id to index }.toMap()
+        var toUpdate = requestedButtons.filter {
+            btnControllers[it.key]?.areButtonOptionsChanged(buttons[it.value]) ?: false
+        }.toMutableMap()
+        var toAdd = requestedButtons.filter { !btnControllers.containsKey(it.key) }
+        var toRemove = btnControllers.filter { ctrl -> !requestedButtons.containsKey(ctrl.key) }
+        val toDestroy = btnControllers.filter { ctrl -> sameIdDifferentCompId(toUpdate, ctrl, buttons) }
+            .toMutableMap().apply { this.putAll(toRemove) }
+
+        val rebuildMenu = if (toUpdate.size == buttons.size) {
+            hasChangedOrder()
+        } else toAdd.isNotEmpty() || toRemove.isNotEmpty()
 
         if (rebuildMenu) {
-            updatedButtons = emptyList()
-            added = buttons
-            removed = btnControllers.map { it.key to it.value.buttonIntId }
+            toUpdate = mutableMapOf()
+            toAdd = requestedButtons
+            toRemove = btnControllers.toMap()
             if (buttonBar.shouldAnimate)
                 TransitionManager.beginDelayedTransition(buttonBar, buttonsTransition)
         }
-        logd("rebuildMenu:$rebuildMenu ${if (rightButtonBar == buttonBar) "Right" else "Left"}", "NewBarMerge")
 
-        updatedButtons.forEach {
-            logd(
-                "Updated ${if (rightButtonBar == buttonBar) "Right" else "Left"} Button ${it.id} with $it",
-                "NewBarMerge"
-            )
-            btnControllers[it.id]?.mergeButtonOptions(it, buttonBar)
+        toUpdate.forEach {
+            val button = buttons[it.value]
+            btnControllers[button.id]?.mergeButtonOptions(button, buttonBar)
         }
-        removed.forEach {
-            val (key, buttonIntId) = it
-            logd("Remove ${if (rightButtonBar == buttonBar) "Right" else "Left"} Button ${key}", "NewBarMerge")
-            buttonBar.removeButton(buttonIntId)
-            btnControllers.remove(key)?.destroy()
+        toRemove.forEach {
+            buttonBar.removeButton(it.value.buttonIntId)
+            btnControllers.remove(it.key)
         }
-        added.forEach {
-            logd("Add ${if (rightButtonBar == buttonBar) "Right" else "Left"} Button ${it.id}", "NewBarMerge")
-            val order = buttons.indexOf(it) * 10
-            val newController = controllerCreator(it)
+        toDestroy.values.forEach {
+            it.destroy()
+        }
+        toAdd.forEach {
+            val button = buttons[it.value]
+            val order = it.value * 10
+            val newController = btnControllers[button.id] ?: controllerCreator(button)
             newController.addToMenu(buttonBar, order)
-            btnControllers[it.id] = newController
+            btnControllers[button.id] = newController
         }
     }
 }
