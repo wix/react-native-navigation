@@ -11,9 +11,7 @@ import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.utils.CollectionUtils.forEachIndexed
 import com.reactnativenavigation.utils.ViewUtils
-import com.reactnativenavigation.utils.logd
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
