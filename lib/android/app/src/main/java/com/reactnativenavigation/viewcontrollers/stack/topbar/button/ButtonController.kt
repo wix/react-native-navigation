@@ -72,7 +72,7 @@ open class ButtonController(activity: Activity,
     }
 
     fun areButtonOptionsChanged(otherOptions:ButtonOptions):Boolean{
-        return otherOptions.id == id && !button.equals(otherOptions)
+        return otherOptions.id == id  && !button.equals(otherOptions)
     }
 
     fun applyNavigationIcon(toolbar: Toolbar) {
