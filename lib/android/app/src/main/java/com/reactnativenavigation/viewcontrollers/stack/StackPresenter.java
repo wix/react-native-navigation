@@ -119,8 +119,8 @@ public class StackPresenter {
 
     public boolean isRendered(View component) {
         ArrayList<ViewController<?>> controllers = new ArrayList<>();
-        controllers.addAll(perform(componentRightButtons.get(component), new ArrayList<>(), Map::values));
-        controllers.addAll(perform(componentLeftButtons.get(component), new ArrayList<>(), Map::values));
+        controllers.addAll(perform(rightButtonControllers.get(component), new ArrayList<>(), Map::values));
+        controllers.addAll(perform(leftButtonControllers.get(component), new ArrayList<>(), Map::values));
         controllers.add(backgroundControllers.get(component));
         controllers.add(titleControllers.get(component));
         return renderChecker.areRendered(filter(controllers, ObjectUtils::notNull));
@@ -141,8 +141,8 @@ public class StackPresenter {
             topBarController.setBackButton(createButtonController(withDefault.topBar.buttons.back));
         }
         topBarController.onConfigurationChanged(withDefault,
-                componentLeftButtons.get(currentChild.getView()),
-                componentRightButtons.get(currentChild.getView()));
+                leftButtonControllers.get(currentChild.getView()),
+                rightButtonControllers.get(currentChild.getView()));
 
     }
 
@@ -168,10 +168,10 @@ public class StackPresenter {
     public void onChildDestroyed(ViewController<?> child) {
         perform(titleControllers.remove(child.getView()), TitleBarReactViewController::destroy);
         perform(backgroundControllers.remove(child.getView()), TopBarBackgroundViewController::destroy);
-        destroyButtons(componentRightButtons.get(child.getView()));
-        destroyButtons(componentLeftButtons.get(child.getView()));
-        componentRightButtons.remove(child.getView());
-        componentLeftButtons.remove(child.getView());
+        destroyButtons(rightButtonControllers.get(child.getView()));
+        destroyButtons(leftButtonControllers.get(child.getView()));
+        rightButtonControllers.remove(child.getView());
+        leftButtonControllers.remove(child.getView());
     }
 
     private void destroyButtons(@Nullable Map<String, ButtonController> buttons) {
