@@ -76,8 +76,8 @@ public class StackPresenter {
 
     private final Map<View, TitleBarReactViewController> titleControllers = new HashMap();
     private final Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
-    private final Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
-    private final Map<View, Map<String, ButtonController>> componentLeftButtons = new HashMap();
+    private final Map<View, Map<String, ButtonController>> rightButtonControllers = new HashMap();
+    private final Map<View, Map<String, ButtonController>> leftButtonControllers = new HashMap();
     private final IconResolver iconResolver;
     private final TypefaceLoader typefaceLoader;
 
