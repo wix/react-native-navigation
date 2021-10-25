@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.stack.topbar
 
 import android.animation.Animator
 import android.content.Context
+import android.graphics.Color
 import android.view.MenuItem
 import android.view.View
 import androidx.transition.AutoTransition
