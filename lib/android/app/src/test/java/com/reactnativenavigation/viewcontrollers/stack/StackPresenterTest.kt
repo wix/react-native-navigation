@@ -102,6 +102,7 @@ class StackPresenterTest : BaseTest() {
 
     @Test
     fun onConfigurationChange_shouldApplyColors() {
+        parent.setRoot(listOf(child), CommandListenerAdapter())
         val options = Options.EMPTY.copy()
         options.topBar.borderColor = ThemeColour.of(Color.BLACK, Color.RED)
         options.topBar.background = TopBarBackgroundOptions().apply {
@@ -125,7 +126,7 @@ class StackPresenterTest : BaseTest() {
         options.topTabs.unselectedTabColor = ThemeColour.of(Color.BLACK, Color.RED)
 
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO
-        uut.onConfigurationChanged(options)
+        uut.onConfigurationChanged(options, getCurrentChild())
 
         verify(topBar).setTitleTextColor(Color.BLACK)
         verify(topBar).setSubtitleColor(Color.BLACK)
@@ -136,7 +137,7 @@ class StackPresenterTest : BaseTest() {
         verify(topBar).setBackButton(any())
 
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES
-        uut.onConfigurationChanged(options)
+        uut.onConfigurationChanged(options, getCurrentChild())
 
         verify(topBar).setTitleTextColor(Color.RED)
         verify(topBar).setSubtitleColor(Color.RED)
@@ -150,6 +151,8 @@ class StackPresenterTest : BaseTest() {
 
     @Test
     fun onConfigurationChange_shouldApplyColorsOnTopBarButtons() {
+        parent.setRoot(listOf(child), CommandListenerAdapter())
+
         val options = Options.EMPTY.copy()
         options.topBar.buttons.left = arrayListOf(ButtonOptions())
         options.topBar.buttons.right = arrayListOf(ButtonOptions())
@@ -158,9 +161,8 @@ class StackPresenterTest : BaseTest() {
         verify(topBarController, times(1)).applyRightButtonsOptions(any(),any(),any())
         verify(topBarController, times(1)).applyLeftButtonsOptions(any(),any(),any())
 
-        uut.onConfigurationChanged(options)
-        verify(topBarController, times(1)).applyRightButtons(any())
-        verify(topBarController, times(1)).applyLeftButtons(any())
+        uut.onConfigurationChanged(options, getCurrentChild())
+        verify(topBarController, times(1)).onConfigurationChanged(any(), any(), any())
     }
 
     @Test
@@ -257,8 +259,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child)
-        verify(topBarController, never()).applyRightButtons(any())
-        verify(topBarController, never()).applyLeftButtons(any())
+        verify(topBarController, never()).mergeLeftButtonsOptions(any(),any(),any())
+        verify(topBarController, never()).mergeRightButtonsOptions(any(),any(),any())
 
         val options = Options()
         val button = ButtonOptions()
@@ -1026,6 +1028,7 @@ class StackPresenterTest : BaseTest() {
         assertThat((topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin).isEqualTo(10)
     }
 
+    private fun getCurrentChild()=parent.currentChild
     private fun assertTopBarOptions(options: Options, t: Int) {
         if (options.topBar.title.component.hasValue()) {
             verify(topBar, never()).title = any()
