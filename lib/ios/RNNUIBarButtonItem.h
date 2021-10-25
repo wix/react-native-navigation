@@ -14,6 +14,8 @@ typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 - (instancetype)initCustomIcon:(RNNButtonOptions *)buttonOptions
                    iconCreator:(RNNIconCreator *)iconCreator
                        onPress:(RNNButtonPressCallback)onPress;
+- (instancetype)initWithSFSymbol:(RNNButtonOptions *)buttonOptions
+					onPress:(RNNButtonPressCallback)onPress;
 - (instancetype)initWithIcon:(RNNButtonOptions *)buttonOptions
                      onPress:(RNNButtonPressCallback)onPress;
 - (instancetype)initWithTitle:(RNNButtonOptions *)buttonOptions

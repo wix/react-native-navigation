@@ -489,6 +489,11 @@ export interface OptionsTopBarButton {
    */
   icon?: ImageResource;
   /**
+   * Set the SF symbol as icon (will be used primarily)
+   * #### (iOS 13+ specific)
+   */
+  sfSymbol?: string;
+  /**
    * Set the button icon insets
    */
   iconInsets?: IconInsets;

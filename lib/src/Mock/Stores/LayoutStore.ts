@@ -77,7 +77,8 @@ const setters = remx.setters({
   },
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
-    layout.mergeOptions(options);
+    if (layout) layout.mergeOptions(options);
+    else console.warn(`[RNN error] Merge options failure: cannot find layout for: ${componentId}`);
   },
 });
 
