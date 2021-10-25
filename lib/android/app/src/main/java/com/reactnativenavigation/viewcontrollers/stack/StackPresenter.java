@@ -366,6 +366,11 @@ public class StackPresenter {
     }
 
     private void mergeButtons(TopBarOptions options, TopBarOptions optionsToMerge, View child, StackController stack) {
+        if (optionsToMerge.animateRightButtons.hasValue())
+            topBarController.animateRightButtons(optionsToMerge.animateRightButtons.isTrue());
+        if (optionsToMerge.animateLeftButtons.hasValue())
+            topBarController.animateLeftButtons(optionsToMerge.animateLeftButtons.isTrue());
+
         mergeRightButtonsOptions(options, optionsToMerge.buttons, child);
         mergeLeftButtonsOptions(options, optionsToMerge.buttons, child);
         mergeLeftButtonsColor(child, optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor);
@@ -507,11 +512,6 @@ public class StackPresenter {
         mergeStatusBarDrawBehindOptions(resolveOptions, options);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
-
-        if (topBarOptions.animateLeftButtons.hasValue())
-            topBarController.animateLeftButtons(topBarOptions.animateLeftButtons.isTrue());
-        if (topBarOptions.animateRightButtons.hasValue())
-            topBarController.animateRightButtons(topBarOptions.animateRightButtons.isTrue());
 
         if (topBarOptions.title.component.hasValue()) {
             TitleBarReactViewController controller = findTitleComponent(topBarOptions.title.component);
