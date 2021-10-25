@@ -156,7 +156,12 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         rightButtons: List<ButtonOptions>,
         controllerCreator: (ButtonOptions) -> ButtonController
     ) {
-        applyButtonsOptions(btnControllers, rightButtons.reversed(), controllerCreator, rightButtonBar)
+        applyButtonsOptions(
+            btnControllers,
+            rightButtons.reversed(),
+            controllerCreator,
+            rightButtonBar
+        )
     }
 
     fun applyLeftButtonsOptions(
