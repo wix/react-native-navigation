@@ -10,12 +10,12 @@ import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock
 import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.ComponentOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.react.Constants
 import com.reactnativenavigation.react.ReactView
-import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.TitleBarHelper
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAnimator
@@ -26,8 +26,6 @@ import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
-import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
@@ -38,10 +36,16 @@ class TopBarControllerTest : BaseTest() {
     private lateinit var textButton2: ButtonOptions
     private lateinit var componentButton: ButtonOptions
     private lateinit var animator: TopBarAnimator
+    private lateinit var leftButtonControllers: MutableMap<String,ButtonController>
+    private lateinit var rightButtonControllers:  MutableMap<String,ButtonController>
+
+
     private val topBar: View
         get() = uut.view
 
     override fun beforeEach() {
+        leftButtonControllers= mutableMapOf()
+        rightButtonControllers= mutableMapOf()
         activity = newActivity()
         animator = spy(TopBarAnimator())
         uut = createTopBarController()
@@ -52,51 +56,80 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun setButton_setsTextButton() {
-        uut.applyRightButtons(rightButtons(textButton1)!!)
-        uut.applyLeftButtons(leftButton(leftButton))
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(textButton1)){
+            createButtonController(it)
+        }
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
         assertThat(uut.getRightButton(0).title.toString()).isEqualTo(textButton1.text.get())
     }
 
     @Test
     fun setButton_setsCustomButton() {
-        uut.applyLeftButtons(leftButton(leftButton))
-        uut.applyRightButtons(rightButtons(componentButton)!!)
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(componentButton)){
+            createButtonController(it)
+        }
         val btnView = uut.getRightButton(0).actionView as ReactView
         assertThat(btnView.componentName).isEqualTo(componentButton.component.name.get())
     }
 
     @Test
     fun applyRightButtons_emptyButtonsListClearsRightButtons() {
-        uut.applyLeftButtons(leftButton(leftButton))
-        uut.applyRightButtons(rightButtons(componentButton, textButton1)!!)
-        uut.applyLeftButtons(leftButton(leftButton))
-        uut.applyRightButtons(ArrayList())
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(componentButton, textButton1)){
+            createButtonController(it)
+        }
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf()){
+            createButtonController(it)
+        }
         assertThat(uut.rightButtonCount).isEqualTo(0)
     }
 
     @Test
     fun applyRightButtons_previousButtonsAreCleared() {
-        uut.applyRightButtons(rightButtons(textButton1, componentButton)!!)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(textButton1, componentButton)){
+            createButtonController(it)
+        }
         assertThat(uut.rightButtonCount).isEqualTo(2)
-        uut.applyRightButtons(rightButtons(textButton2)!!)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(textButton2)){
+            createButtonController(it)
+        }
         assertThat(uut.rightButtonCount).isEqualTo(1)
     }
 
     @Test
     fun applyRightButtons_buttonsAreAddedInReversedOrderToMatchOrderOnIOs() {
-        uut.applyLeftButtons(leftButton(leftButton))
-        uut.applyRightButtons(rightButtons(textButton1, componentButton)!!)
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(textButton1, componentButton)){
+            createButtonController(it)
+        }
         assertThat(uut.getRightButton(1).title.toString()).isEqualTo(textButton1.text.get())
     }
 
     @Test
     fun applyRightButtons_componentButtonIsReapplied() {
-        val initialButtons = rightButtons(componentButton)
-        uut.applyRightButtons(initialButtons!!)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf( componentButton)){
+            createButtonController(it)
+        }
         assertThat(uut.getRightButton(0).itemId).isEqualTo(componentButton.intId)
-        uut.applyRightButtons(rightButtons(textButton1)!!)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf( textButton1)){
+            createButtonController(it)
+        }
         assertThat(uut.getRightButton(0).itemId).isEqualTo(textButton1.intId)
-        uut.applyRightButtons(initialButtons)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf( componentButton)){
+            createButtonController(it)
+        }
         assertThat(uut.getRightButton(0).itemId).isEqualTo(componentButton.intId)
     }
 
@@ -115,11 +148,19 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun setLeftButtons_emptyButtonsListClearsLeftButton() {
-        uut.applyLeftButtons(leftButton(leftButton))
-        uut.applyRightButtons(rightButtons(componentButton)!!)
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf( componentButton)){
+            createButtonController(it)
+        }
         assertThat(uut.leftButtonCount).isNotZero()
-        uut.applyLeftButtons(emptyList())
-        uut.applyRightButtons(rightButtons(textButton1)!!)
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf()){
+            createButtonController(it)
+        }
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf( textButton1)){
+            createButtonController(it)
+        }
         assertThat(uut.leftButtonCount).isZero()
     }
 
@@ -127,7 +168,9 @@ class TopBarControllerTest : BaseTest() {
     fun setLeftButtons_clearsBackButton() {
         uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
         assertThat(uut.view.navigationIcon).isNotNull()
-        uut.applyLeftButtons(leftButton(leftButton))
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf(leftButton)){
+            createButtonController(it)
+        }
         assertThat(uut.view.navigationIcon).isNull()
     }
 
@@ -135,7 +178,9 @@ class TopBarControllerTest : BaseTest() {
     fun setLeftButtons_emptyButtonsListClearsBackButton() {
         uut.view.setBackButton(TitleBarHelper.createButtonController(activity, backButton))
         assertThat(uut.view.navigationIcon).isNotNull()
-        uut.applyLeftButtons(emptyList())
+        uut.applyLeftButtonsOptions(leftButtonControllers, listOf()){
+            createButtonController(it)
+        }
         assertThat(uut.view.navigationIcon).isNull()
     }
 
@@ -255,25 +300,44 @@ class TopBarControllerTest : BaseTest() {
         assertThat(controllers[textButton1.id]).isEqualTo(controller)
     }
     @Test
-    fun `mergeRightButtons - should remove all and re-add buttons in case of reorder`(){
-        val controllers = mutableMapOf<String,ButtonController>()
-        uut.mergeRightButtonsOptions(controllers, listOf(textButton1, textButton2)) {
+    fun `mergeRightOptions - should destroy all buttons that was removed`(){
+       val componentButton2 = componentButton.copy()
+        componentButton2.component = ComponentOptions().apply {
+           this.name = componentButton.component.name
+           this.componentId = Text("CustomNewComponent")
+        }
+        uut.mergeRightButtonsOptions(rightButtonControllers, listOf(textButton1, textButton2, componentButton)) {
+            createButtonController(it)
+        }
+        val removedControllers = mutableMapOf<String, ButtonController>().apply {
+            putAll(rightButtonControllers)
+        }
+        uut.mergeRightButtonsOptions(rightButtonControllers, listOf(componentButton2)) {
+            createButtonController(it)
+        }
+        verify(removedControllers[textButton1.id]!!, times(1)).destroy()
+        verify(removedControllers[textButton2.id]!!, times(1)).destroy()
+        verify(removedControllers[componentButton.id]!!, times(1)).destroy()
+    }
+    @Test
+    fun `mergeRightButtons - should remove all and re-add buttons in case of reorder, without destroy`(){
+        uut.mergeRightButtonsOptions(rightButtonControllers, listOf(textButton1, textButton2)) {
             createButtonController(it)
         }
         assertThat(uut.getRightButton(1).itemId ).isEqualTo(textButton1.intId)
         assertThat(uut.getRightButton(0).itemId ).isEqualTo(textButton2.intId)
-        val removedControllers = mutableMapOf<String, ButtonController>().apply { putAll(controllers) }
-        uut.mergeRightButtonsOptions(controllers, listOf(textButton2.copy(), textButton1.copy())) {
+        val removedControllers = mutableMapOf<String, ButtonController>().apply { putAll(rightButtonControllers) }
+        uut.mergeRightButtonsOptions(rightButtonControllers, listOf(textButton2.copy(), textButton1.copy())) {
             createButtonController(it)
         }
         assertThat(uut.getRightButton(1).itemId ).isEqualTo(textButton2.intId)
         assertThat(uut.getRightButton(0).itemId ).isEqualTo(textButton1.intId)
 
-        verify(removedControllers[textButton1.id]!!, times(1)).destroy()
-        verify(removedControllers[textButton2.id]!!, times(1)).destroy()
+        verify(removedControllers[textButton1.id]!!, never()).destroy()
+        verify(removedControllers[textButton2.id]!!, never()).destroy()
 
-        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
-        verify(controllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
+        verify(rightButtonControllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+        verify(rightButtonControllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
     }
     @Test
     fun `mergeRightButtons - should rebuild menu when adding menu items`(){
@@ -330,8 +394,6 @@ class TopBarControllerTest : BaseTest() {
         verify(controllers[textButton2.id]!!, times(1)).destroy()
     }
 
-
-
     private fun createButtonController(it: ButtonOptions) =
         spy(ButtonController(activity, ButtonPresenter(activity, it, IconResolverFake(activity)),
             it, TitleBarButtonCreatorMock(), object : ButtonController.OnClickListener {
@@ -358,14 +420,6 @@ class TopBarControllerTest : BaseTest() {
         button.id = id
         button.text = Text("txt$id")
         return button
-    }
-
-    private fun leftButton(leftButton: ButtonOptions): List<ButtonController> {
-        return listOf(TitleBarHelper.createButtonController(activity, leftButton))
-    }
-
-    private fun rightButtons(vararg buttons: ButtonOptions): List<ButtonController>? {
-        return CollectionUtils.map(listOf(*buttons)) { button: ButtonOptions? -> TitleBarHelper.createButtonController(activity, button) }
     }
 
     private fun createTopBarController() = spy(object : TopBarController(animator) {
