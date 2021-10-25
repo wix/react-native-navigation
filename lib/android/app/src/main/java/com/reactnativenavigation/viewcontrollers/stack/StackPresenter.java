@@ -451,7 +451,6 @@ public class StackPresenter {
                 options.leftButtonDisabledColor);
         final Map<String, ButtonController> btnControllers = getOrCreateButtonControllerMap(child, leftButtonControllers);
         topBarController.mergeLeftButtonsOptions(btnControllers, leftButtons, this::createButtonController);
-
         if (options.leftButtonColor.hasValue()) topBar.setOverflowButtonColor(options.leftButtonColor.get());
     }
 
