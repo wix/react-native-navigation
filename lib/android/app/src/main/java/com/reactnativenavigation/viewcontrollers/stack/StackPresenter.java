@@ -5,6 +5,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.isNullOrEmpty;
 import static com.reactnativenavigation.utils.CollectionUtils.merge;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarControllerKt.DEFAULT_BORDER_COLOR;
 
 import android.animation.Animator;
 import android.app.Activity;
@@ -59,7 +60,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class StackPresenter {
-    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final double DEFAULT_ELEVATION = 4d;
     private final Activity activity;
 
