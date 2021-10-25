@@ -134,23 +134,16 @@ public class StackPresenter {
         mergeTopTabOptions(options.topTabOptions);
     }
 
-    public void onConfigurationChanged(Options options) {
+    public void onConfigurationChanged(Options options, ViewController<?> currentChild) {
         if (topBar == null) return;
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        if (currentRightButtons != null && !currentRightButtons.isEmpty())
-            topBarController.applyRightButtons(currentRightButtons);
-        if (currentLeftButtons != null && !currentLeftButtons.isEmpty())
-            topBarController.applyLeftButtons(currentLeftButtons);
         if (withDefault.topBar.buttons.back.visible.isTrue()) {
             topBarController.setBackButton(createButtonController(withDefault.topBar.buttons.back));
         }
-        topBar.setOverflowButtonColor(withDefault.topBar.rightButtonColor.get(Color.BLACK));
-        topBar.applyTopTabsColors(withDefault.topTabs.selectedTabColor,
-                withDefault.topTabs.unselectedTabColor);
-        topBar.setBorderColor(withDefault.topBar.borderColor.get(DEFAULT_BORDER_COLOR));
-        topBar.setBackgroundColor(withDefault.topBar.background.color.get(Color.WHITE));
-        topBar.setTitleTextColor(withDefault.topBar.title.color.get(TopBar.DEFAULT_TITLE_COLOR));
-        topBar.setSubtitleColor(withDefault.topBar.subtitle.color.get(TopBar.DEFAULT_TITLE_COLOR));
+        topBarController.onConfigurationChanged(withDefault,
+                componentLeftButtons.get(currentChild.getView()),
+                componentRightButtons.get(currentChild.getView()));
+
     }
 
     public void applyInitialChildLayoutOptions(Options options) {
