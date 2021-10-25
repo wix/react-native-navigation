@@ -178,27 +178,23 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         controllerCreator: (ButtonOptions) -> ButtonController,
         buttonBar: ButtonBar
     ) {
-        val intersect = buttons.map { it.id }.intersect(btnControllers.values.map { it.button.id })
-        logd(
-            "Apply ButtonsOptions ${if (rightButtonBar == buttonBar) "Right" else "Left"} intersect ${intersect.size}",
-            "NewBarMerge"
-        )
+        if (buttonBar.shouldAnimate)
+            TransitionManager.beginDelayedTransition(buttonBar, buttonsTransition)
 
-        if (intersect.size != buttons.size) {
-            if (buttonBar.shouldAnimate)
-                TransitionManager.beginDelayedTransition(buttonBar, buttonsTransition)
-            buttonBar.clearButtons()
-            btnControllers.map { it.key }.forEach {
-                btnControllers.remove(it)?.destroy()
-            }
-            buttons.forEachIndexed { index, it ->
-                val order = (btnControllers.size + index) * 10
-                val newController = controllerCreator(it)
-                newController.addToMenu(buttonBar, order)
-                btnControllers[it.id] = newController
-            }
+        buttonBar.clearButtons()
+        buttons.forEachIndexed { index, it ->
+            val order = -index * 10
+            val newController = if (btnControllers.containsKey(it.id)) {
+                btnControllers.remove(it.id)
+            } else {
+                controllerCreator(it)
+            }!!
+
+            newController.addToMenu(buttonBar, order)
+            btnControllers[it.id] = newController
         }
     }
+
 
     private fun mergeButtonOptions(
         btnControllers: MutableMap<String, ButtonController>,
