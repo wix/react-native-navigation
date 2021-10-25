@@ -261,4 +261,28 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
             btnControllers[button.id] = newController
         }
     }
+
+
+    fun onConfigurationChanged(
+        options: Options,
+        leftBtnControllers: MutableMap<String, ButtonController>?,
+        rightBtnControllers: MutableMap<String, ButtonController>?
+    ) {
+        leftBtnControllers?.values?.forEach {
+            it.onConfigurationChanged(leftButtonBar)
+        }
+        rightBtnControllers?.values?.forEach {
+            it.onConfigurationChanged(rightButtonBar)
+        }
+
+        view.setOverflowButtonColor(options.topBar.rightButtonColor.get(Color.BLACK)!!)
+        view.applyTopTabsColors(
+            options.topTabs.selectedTabColor,
+            options.topTabs.unselectedTabColor
+        )
+        view.setBorderColor(options.topBar.borderColor.get(DEFAULT_BORDER_COLOR)!!)
+        view.setBackgroundColor(options.topBar.background.color.get(Color.WHITE)!!)
+        view.setTitleTextColor(options.topBar.title.color.get(TopBar.DEFAULT_TITLE_COLOR)!!)
+        view.setSubtitleColor(options.topBar.subtitle.color.get(TopBar.DEFAULT_TITLE_COLOR)!!)
+    }
 }
