@@ -621,8 +621,8 @@ public class StackPresenter {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public void setComponentsButtonController(View child, ButtonController rightController, ButtonController leftController) {
-        forEach(componentLeftButtons.get(child).keySet(), (key) -> componentLeftButtons.get(child).put(key, leftController));
-        forEach(componentRightButtons.get(child).keySet(), (key) -> componentRightButtons.get(child).put(key, rightController));
+        forEach(leftButtonControllers.get(child).keySet(), (key) -> leftButtonControllers.get(child).put(key, leftController));
+        forEach(rightButtonControllers.get(child).keySet(), (key) -> rightButtonControllers.get(child).put(key, rightController));
     }
 
 
@@ -632,11 +632,11 @@ public class StackPresenter {
     }
 
     private List<ButtonController> getRightButtons(View child) {
-        return componentRightButtons.containsKey(child) ? new ArrayList<>(componentRightButtons.get(child).values()) : null;
+        return rightButtonControllers.containsKey(child) ? new ArrayList<>(rightButtonControllers.get(child).values()) : null;
     }
 
     private List<ButtonController> getLeftButtons(View child) {
-        return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
+        return leftButtonControllers.containsKey(child) ? new ArrayList<>(leftButtonControllers.get(child).values()) : null;
     }
 
     private void applyStatusBarInsets(StackController stack, ViewController<?> child) {
