@@ -105,4 +105,12 @@ open class ButtonController(activity: Activity,
             presenter.applyOptions(buttonBar,menuItem,this::getView)
         }
     }
+
+    fun onConfigurationChanged(buttonBar: ButtonBar) {
+        buttonBar.getButtonById(button.intId)?.let {
+                menuItem->
+            presenter.applyOptions(buttonBar,menuItem,this::getView)
+        }
+    }
+
 }
