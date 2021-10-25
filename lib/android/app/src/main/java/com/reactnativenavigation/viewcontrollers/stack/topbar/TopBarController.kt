@@ -21,6 +21,7 @@ import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 
+const val DEFAULT_BORDER_COLOR = Color.BLACK
 
 open class TopBarController(private val animator: TopBarAnimator = TopBarAnimator()) {
     lateinit var view: TopBar
