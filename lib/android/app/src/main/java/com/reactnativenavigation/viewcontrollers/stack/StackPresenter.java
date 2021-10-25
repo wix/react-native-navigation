@@ -380,7 +380,7 @@ public class StackPresenter {
 
     private void mergeLeftButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
-            Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
+            Map<String, ButtonController> stringButtonControllerMap = leftButtonControllers.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
                     if (color.hasValue()) {
@@ -396,7 +396,7 @@ public class StackPresenter {
 
     private void mergeRightButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
-            Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
+            Map<String, ButtonController> stringButtonControllerMap = rightButtonControllers.get(child);
             if (stringButtonControllerMap != null) {
                 forEach(stringButtonControllerMap.values(), (btnController) -> {
                     if (color.hasValue()) {
