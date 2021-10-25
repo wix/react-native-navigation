@@ -416,15 +416,9 @@ public class StackPresenter {
                     options.leftButtonColor
                     , options.leftButtonDisabledColor);
             final ViewGroup childView = child.getView();
-            final Map<String, ButtonController> controllerMap = componentLeftButtons.get(childView);
-            final Map<String, ButtonController> btnControllers = controllerMap != null ? controllerMap :
-                    new HashMap<>();
-            if (controllerMap == null)
-                componentLeftButtons.put(childView, btnControllers);
+            final Map<String, ButtonController> btnControllers = getOrCreateButtonControllerMap(childView, leftButtonControllers);
             topBarController.applyLeftButtonsOptions(btnControllers, leftButtons, this::createButtonController);
-            currentLeftButtons = new ArrayList<>(btnControllers.values());
         } else {
-            currentLeftButtons = null;
             topBarController.clearLeftButtons();
         }
     }
@@ -435,15 +429,9 @@ public class StackPresenter {
                     options.rightButtonColor
                     , options.rightButtonDisabledColor);
             final ViewGroup childView = child.getView();
-            final Map<String, ButtonController> controllerMap = componentRightButtons.get(childView);
-            final Map<String, ButtonController> btnControllers = controllerMap != null ? controllerMap :
-                    new HashMap<>();
-            if (controllerMap == null)
-                componentRightButtons.put(childView, btnControllers);
+            final Map<String, ButtonController> btnControllers = getOrCreateButtonControllerMap(childView, rightButtonControllers);
             topBarController.applyRightButtonsOptions(btnControllers, rightButtons, this::createButtonController);
-            currentRightButtons = new ArrayList<>(btnControllers.values());
         } else {
-            currentRightButtons = null;
             topBarController.clearRightButtons();
         }
     }
@@ -452,30 +440,28 @@ public class StackPresenter {
         if (buttons.right == null) return;
         List<ButtonOptions> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor,
                 options.rightButtonDisabledColor);
-        final Map<String, ButtonController> controllerMap = componentRightButtons.get(child);
-        final Map<String, ButtonController> btnControllers = controllerMap != null ? controllerMap :
-                new HashMap<>();
-        if (controllerMap == null)
-            componentRightButtons.put(child, btnControllers);
+        final Map<String, ButtonController> btnControllers = getOrCreateButtonControllerMap(child, rightButtonControllers);
         topBarController.mergeRightButtonsOptions(btnControllers, rightButtons, this::createButtonController);
-
         if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
-
     }
 
     private void mergeLeftButtonsOptions(TopBarOptions options, TopBarButtons buttons, View child) {
         if (buttons.left == null) return;
         List<ButtonOptions> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor,
                 options.leftButtonDisabledColor);
-        final Map<String, ButtonController> controllerMap = componentLeftButtons.get(child);
-        final Map<String, ButtonController> btnControllers = controllerMap != null ? controllerMap :
-                new HashMap<>();
-        if (controllerMap == null)
-            componentLeftButtons.put(child, btnControllers);
+        final Map<String, ButtonController> btnControllers = getOrCreateButtonControllerMap(child, leftButtonControllers);
         topBarController.mergeLeftButtonsOptions(btnControllers, leftButtons, this::createButtonController);
 
         if (options.leftButtonColor.hasValue()) topBar.setOverflowButtonColor(options.leftButtonColor.get());
+    }
 
+    @NonNull
+    private Map<String, ButtonController> getOrCreateButtonControllerMap(View child, Map<View, Map<String, ButtonController>> buttonControllers) {
+        final Map<String, ButtonController> controllerMap = buttonControllers.get(child);
+        final Map<String, ButtonController> btnControllers = controllerMap != null ? controllerMap : new HashMap<>();
+        if (controllerMap == null)
+            buttonControllers.put(child, btnControllers);
+        return btnControllers;
     }
 
     private void mergeBackButton(TopBarButtons buttons, StackController stack) {
