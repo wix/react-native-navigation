@@ -74,8 +74,6 @@ public class StackPresenter {
     private final TitleBarButtonCreator buttonCreator;
     private Options defaultOptions;
 
-    private List<ButtonController> currentRightButtons = new ArrayList<>();
-    private List<ButtonController> currentLeftButtons = new ArrayList<>();
     private final Map<View, TitleBarReactViewController> titleControllers = new HashMap();
     private final Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
     private final Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
