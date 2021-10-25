@@ -27,7 +27,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
     lateinit var view: TopBar
     private lateinit var leftButtonBar: ButtonBar
     private lateinit var rightButtonBar: ButtonBar
-    private val buttonsTransition = AutoTransition().setDuration(350)
+    private val buttonsTransition = AutoTransition()
 
     val height: Int
         get() = view.height
