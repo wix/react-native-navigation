@@ -110,17 +110,6 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         view.alignTitleComponent(alignment)
     }
 
-    fun applyRightButtons(toAdd: List<ButtonController>) {
-        view.clearRightButtons()
-        toAdd.reversed().forEachIndexed { i, b -> b.addToMenu(rightButtonBar, i * 10) }
-    }
-
-    open fun applyLeftButtons(toAdd: List<ButtonController>) {
-        view.clearBackButton()
-        view.clearLeftButtons()
-        forEachIndexed(toAdd) { b: ButtonController, i: Int -> b.addToMenu(leftButtonBar, i * 10) }
-    }
-
     fun clearRightButtons() {
         view.clearRightButtons()
     }
