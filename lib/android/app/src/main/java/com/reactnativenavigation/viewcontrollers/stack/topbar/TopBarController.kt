@@ -230,11 +230,13 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         val toDestroy = btnControllers.filter { ctrl -> sameIdDifferentCompId(toUpdate, ctrl, buttons) }
             .toMutableMap().apply { this.putAll(toRemove) }
 
-        val rebuildMenu = if (toUpdate.size == buttons.size) {
-            hasChangedOrder()
-        } else toAdd.isNotEmpty() || toRemove.isNotEmpty()
+        fun  needsRebuild(): Boolean {
+           return if (toUpdate.size == buttons.size) {
+                hasChangedOrder()
+            } else toAdd.isNotEmpty() || toRemove.isNotEmpty()
+        }
 
-        if (rebuildMenu) {
+        if (needsRebuild()) {
             toUpdate = mutableMapOf()
             toAdd = requestedButtons
             toRemove = btnControllers.toMap()
