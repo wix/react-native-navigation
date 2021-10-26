@@ -120,7 +120,7 @@ const Screens = {
   },
   StatusBarOptions,
   StatusBarFirstTab,
-  KeyboardScreen: 'KeyboardScreens',
+  KeyboardScreen: 'KeyboardScreen',
   TopBarBackground: 'TopBarBackground',
   Toast: 'Toast',
   FlatListScreen: 'FlatListScreen',
