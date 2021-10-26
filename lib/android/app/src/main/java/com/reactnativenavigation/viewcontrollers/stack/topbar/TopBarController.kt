@@ -182,7 +182,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
 
         buttonBar.clearButtons()
         buttons.forEachIndexed { index, it ->
-            val order = -index * 10
+            val order = index * 10
             val newController = if (btnControllers.containsKey(it.id)) {
                 btnControllers.remove(it.id)
             } else {
