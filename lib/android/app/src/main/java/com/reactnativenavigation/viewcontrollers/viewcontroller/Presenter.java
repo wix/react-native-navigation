@@ -44,13 +44,13 @@ public class Presenter {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
-        applyStatusBarOptions(view, withDefaultOptions);
+        applyStatusBarOptions(withDefaultOptions);
         applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
-    public void onViewBroughtToFront(ViewController<?> viewController, Options options) {
+    public void onViewBroughtToFront(Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyStatusBarOptions(viewController, withDefaultOptions);
+        applyStatusBarOptions(withDefaultOptions);
     }
 
     private void applyOrientation(OrientationOptions options) {
@@ -83,12 +83,12 @@ public class Presenter {
         }
     }
 
-    private void applyStatusBarOptions(ViewController viewController, Options options) {
+    private void applyStatusBarOptions(Options options) {
         StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
         setStatusBarBackgroundColor(statusBar);
         setTextColorScheme(statusBar);
         setTranslucent(statusBar);
-        setStatusBarVisible(viewController, statusBar.visible);
+        setStatusBarVisible(statusBar.visible);
     }
 
     private void setTranslucent(StatusBarOptions options) {
@@ -100,17 +100,19 @@ public class Presenter {
         }
     }
 
-    private void setStatusBarVisible(ViewController viewController, Bool visible) {
-        final View view = viewController.view != null ? viewController.view : activity.getWindow().getDecorView();
+    private void setStatusBarVisible(Bool visible) {
+        View decorView = activity.getWindow().getDecorView();
+        int flags = decorView.getSystemUiVisibility();
         if (visible.isFalse()) {
-            StatusBarUtils.INSTANCE.hideStatusBar(activity.getWindow(), view);
+            flags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
         } else {
-            StatusBarUtils.INSTANCE.showStatusBar(activity.getWindow(), view);
+            flags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
         }
+        decorView.setSystemUiVisibility(flags);
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (statusBar.backgroundColor.canApplyValue()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.canApplyValue()) {
             activity.getWindow().setStatusBarColor(getStatusBarBackgroundColor(statusBar));
         }
     }
@@ -136,7 +138,7 @@ public class Presenter {
         final View view = activity.getWindow().getDecorView();
         //View.post is a Workaround, added to solve internal Samsung 
         //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
-        view.post(() -> {
+        view.post(()->{
             int flags = view.getSystemUiVisibility();
             if (isDarkTextColorScheme(statusBar)) {
                 flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -152,7 +154,7 @@ public class Presenter {
         mergeStatusBarBackgroundColor(statusBar);
         mergeTextColorScheme(statusBar);
         mergeTranslucent(statusBar);
-        mergeStatusBarVisible(view, statusBar.visible);
+        mergeStatusBarVisible(view, statusBar.visible, statusBar.drawBehind);
     }
 
     private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
@@ -175,13 +177,16 @@ public class Presenter {
         }
     }
 
-    private void mergeStatusBarVisible(View view, Bool visible) {
+    private void mergeStatusBarVisible(View view, Bool visible, Bool drawBehind) {
         if (visible.hasValue()) {
+            int flags = view.getSystemUiVisibility();
             if (visible.isTrue()) {
-                StatusBarUtils.INSTANCE.showStatusBar(activity.getWindow(), view);
+                flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN & ~View.SYSTEM_UI_FLAG_FULLSCREEN;
             } else {
-                StatusBarUtils.INSTANCE.hideStatusBar(activity.getWindow(), view);
+                flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN;
             }
+            if (flags != view.getSystemUiVisibility()) view.requestLayout();
+            view.setSystemUiVisibility(flags);
         }
     }
 
