@@ -1,5 +1,4 @@
 
-#import "RNNUIBarButtonItem.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <objc/runtime.h>
 
@@ -105,17 +104,6 @@
 
     for (UIViewController *child in self.childViewControllers) {
         [child destroy];
-    }
-
-    [self destroyButtons];
-}
-
-- (void)destroyButtons {
-    for (UIBarButtonItem *button in [self.navigationItem.leftBarButtonItems
-             arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems]) {
-        if ([button isKindOfClass:[RNNUIBarButtonItem class]]) {
-            [(RNNUIBarButtonItem *)button invalidate];
-        }
     }
 }
 
