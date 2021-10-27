@@ -7,11 +7,14 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class PresenterTest extends BaseTest {
@@ -26,16 +29,20 @@ public class PresenterTest extends BaseTest {
     }
 
     @Test
-    public void mergeStatusBarVisible_requestLayout() {
-        ViewGroup spy = Mockito.spy(new FrameLayout(activity));
-        Options options = new Options();
-        options.statusBar.visible = new Bool(false);
+    public void mergeStatusBarVisible_callsShowHide() {
+        mockStatusBarUtils(1,1,(mockedStatic)->{
+            ViewGroup spy = Mockito.spy(new FrameLayout(activity));
+            Options options = new Options();
+            options.statusBar.visible = new Bool(false);
+            uut.mergeOptions(spy, options);
+            mockedStatic.verify(times(1),
+                    ()-> StatusBarUtils.hideStatusBar(any(),any()));
 
-        uut.mergeOptions(spy, options);
-        verify(spy).requestLayout();
+            options.statusBar.visible = new Bool(true);
+            uut.mergeOptions(spy, options);
+            mockedStatic.verify(times(1),
+                    ()-> StatusBarUtils.showStatusBar(any(),any()));
+        });
 
-        // requested only if needed
-        uut.mergeOptions(spy, options);
-        verify(spy).requestLayout();
     }
 }

@@ -59,7 +59,8 @@ public abstract class BaseTest {
         when(res.getColor(ArgumentMatchers.anyInt(),any())).thenReturn(0x00000);
     }
 
-    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
+
+    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func1<MockedStatic<StatusBarUtils>> mockedBlock) {
         try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
             theMock.when(() -> {
                 StatusBarUtils.getStatusBarHeight(any());
@@ -67,7 +68,7 @@ public abstract class BaseTest {
             theMock.when(() -> {
                 StatusBarUtils.getStatusBarHeightDp(any());
             }).thenReturn(statusBarHeightDp);
-            block.run();
+            mockedBlock.run(theMock);
         }
     }
 

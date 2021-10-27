@@ -55,6 +55,7 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = createActivity();
 
         childRegistry = new ChildControllersRegistry();
@@ -369,6 +370,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void onMeasureChild_topInsetsAreApplied() {
         setLeftRight(spy(left), spy(right));
+        idleMainLooper();
         uut.applyTopInset();
         forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }

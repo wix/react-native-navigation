@@ -103,9 +103,9 @@ public class Presenter {
     private void setStatusBarVisible(ViewController viewController, Bool visible) {
         final View view = viewController.view != null ? viewController.view : activity.getWindow().getDecorView();
         if (visible.isFalse()) {
-            StatusBarUtils.INSTANCE.hideStatusBar(activity.getWindow(), view);
+            StatusBarUtils.hideStatusBar(activity.getWindow(), view);
         } else {
-            StatusBarUtils.INSTANCE.showStatusBar(activity.getWindow(), view);
+            StatusBarUtils.showStatusBar(activity.getWindow(), view);
         }
     }
 

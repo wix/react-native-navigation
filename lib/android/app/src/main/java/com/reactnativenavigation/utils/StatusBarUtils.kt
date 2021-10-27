@@ -26,8 +26,11 @@ object StatusBarUtils {
                 val window: Window = activity.window
                 window.decorView.getWindowVisibleDisplayFrame(rectangle)
                 val statusBarHeight: Int = rectangle.top
-                val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
-                abs(contentViewTop - statusBarHeight)
+                val contentView = window.findViewById<View>(Window.ID_ANDROID_CONTENT)
+                contentView?.let {
+                    val contentViewTop = contentView.top
+                    abs(contentViewTop - statusBarHeight)
+                }
             } ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) STATUS_BAR_HEIGHT_M else STATUS_BAR_HEIGHT_L
             statusBarHeight
         }
@@ -87,7 +90,7 @@ object StatusBarUtils {
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.navigationBars())
         }
     }
-
+    @JvmStatic
     fun hideStatusBar(window: Window?, view: View) {
         window?.let {
             WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -98,6 +101,7 @@ object StatusBarUtils {
         }
     }
 
+    @JvmStatic
     fun showStatusBar(window: Window?, view: View) {
         window?.let {
             WindowCompat.setDecorFitsSystemWindows(window, true)
