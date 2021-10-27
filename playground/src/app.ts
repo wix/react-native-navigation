@@ -31,6 +31,11 @@ function setRoot() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
+        options: {
+          bottomTabs: {
+            testID: testIDs.MAIN_BOTTOM_TABS,
+          },
+        },
         children: [
           {
             stack: {

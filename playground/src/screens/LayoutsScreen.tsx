@@ -20,6 +20,7 @@ const {
   BOTTOM_TABS_BTN,
   BOTTOM_TABS,
   SIDE_MENU_BTN,
+  KEYBOARD_SCREEN_BTN,
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
@@ -60,6 +61,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -168,6 +170,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     });
   };
 
+  openKeyboardScreen = async () => {
+    await Navigation.push(this.props.componentId, Screens.KeyboardScreen);
+  };
   onClickSearchBar = () => {
     Navigation.push(this.props.componentId, {
       component: {
