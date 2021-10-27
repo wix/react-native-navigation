@@ -638,7 +638,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options, CommandName.SetRoot);
 
-    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
+    verify(mockedStore.setPendingProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
@@ -667,7 +667,7 @@ describe('navigation options', () => {
 
     uut.processOptions(options, CommandName.SetRoot);
 
-    verify(mockedStore.updateProps('1', passProps)).called();
+    verify(mockedStore.setPendingProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {
