@@ -250,9 +250,9 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         }
         toRemove.forEach {
             buttonBar.removeButton(it.value.buttonIntId)
-            btnControllers.remove(it.key)
         }
         toDestroy.values.forEach {
+            btnControllers.remove(it.id)
             it.destroy()
         }
         toAdd.forEach {
