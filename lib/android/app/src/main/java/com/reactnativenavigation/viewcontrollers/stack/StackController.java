@@ -357,9 +357,6 @@ public class StackController extends ParentController<StackLayout> {
         }
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
-
-        appearing.onViewWillAppear();
-
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
             appearingView.setLayoutParams(matchParentWithBehaviour(new StackBehaviour(this)));
