@@ -90,6 +90,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         return children;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void pushPIP(ViewController childController, boolean toNative) {
         wasDirectLaunchToNative = toNative;
         closePIP(null);
@@ -99,8 +100,9 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         View pipView = this.childController.getView();
         PIPFloatingLayout floatingLayout = new PIPFloatingLayout(getActivity(), logger);
         floatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
+        floatingLayout.setPIPActionButtons(this.childController.options.pipOptions.actionButtons);
         floatingLayout.addView(pipView);
-        floatingLayout.setPIPListener(pipFloatingLayoutListener);
+        floatingLayout.addPIPListener(pipFloatingLayoutListener);
         getView().addView(floatingLayout);
         this.pipFloatingLayout = floatingLayout;
         if (this.childController != null) {
@@ -154,6 +156,9 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             pipFloatingLayout.updatePIPState(this.pipState);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && pipState == PIPStates.NATIVE_MOUNTED) {
                 updatePictureInPictureParams();
+            }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                pipFloatingLayout.setPIPActionButtons(this.childController.options.pipOptions.actionButtons);
             }
         }
     }
@@ -213,6 +218,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     private void clearPIP() {
+        PIPNavigator.this.pipFloatingLayout.removePIPListener(pipFloatingLayoutListener);
         getView().removeAllViews();
         PIPNavigator.this.childController = null;
         PIPNavigator.this.pipFloatingLayout = null;
@@ -225,7 +231,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private List<RemoteAction> getPIPActionButtons() {
-        List<RemoteAction> actionList = new ArrayList<RemoteAction>();
+        List<RemoteAction> actionList = new ArrayList<>();
         if (childController != null) {
             PIPActionButton[] buttons = childController.options.pipOptions.actionButtons;
             if (buttons != null) {
@@ -290,6 +296,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     private IPIPListener pipFloatingLayoutListener = new IPIPListener() {
         @Override
         public void onPIPStateChanged(PIPStates oldState, PIPStates newState) {
+            PIPNavigator.this.pipState = newState;
             if (isChildControlledAvailable()) {
                 logger.log(Log.INFO, TAG, "Old State " + oldState.toString() + " New State " + newState.toString());
                 PIPNavigator.this.childController.sendOnPIPStateChanged(oldState.getValue(), newState.getValue());
@@ -308,6 +315,11 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         public void onFullScreenClick() {
             if (pipListener != null)
                 pipListener.onFullScreenClick();
+        }
+
+        @Override
+        public void onPIPButtonClick(PIPActionButton button) {
+            PIPNavigator.this.childController.sendOnPIPButtonPressed(button.requestType.get());
         }
     };
 }
