@@ -17,6 +17,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.PIPActionButton;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -88,7 +89,7 @@ public class Navigator extends ParentController {
         pipNavigator.setContentLayout(contentLayout);
     }
 
-    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter,ILogger logger) {
+    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter, ILogger logger) {
         super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
@@ -206,18 +207,24 @@ public class Navigator extends ParentController {
     }
 
     public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
-        applyOnStack(id, listener, stack -> {
-            setPIPHostId(stack.getId());
-            this.pipNavigator.pushPIP(viewController, false);
-            viewController.start();
-        });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            applyOnStack(id, listener, stack -> {
+                setPIPHostId(stack.getId());
+                this.pipNavigator.pushPIP(viewController, false);
+                viewController.start();
+            });
+        }
     }
 
     public void switchToPIP(String id, Options mergeOptions, CommandListener listener) {
-        applyOnStack(id, listener, stack -> {
-            setPIPHostId(stack.getId());
-            this.pipNavigator.pushPIP(stack.switchToPIP(mergeOptions), false);
-        });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            applyOnStack(id, listener, stack -> {
+                setPIPHostId(stack.getId());
+                this.pipNavigator.pushPIP(stack.switchToPIP(mergeOptions), false);
+            });
+        } else {
+            pop(id, mergeOptions, listener);
+        }
     }
 
     public void setPIPHostId(String id) {
@@ -412,6 +419,11 @@ public class Navigator extends ParentController {
         @Override
         public void onFullScreenClick() {
             restorePIP(pipHostId, null);
+        }
+
+        @Override
+        public void onPIPButtonClick(PIPActionButton button) {
+
         }
     };
 

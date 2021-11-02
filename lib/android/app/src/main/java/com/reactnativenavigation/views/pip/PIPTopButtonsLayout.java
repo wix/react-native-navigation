@@ -15,26 +15,26 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.R;
 
-public class PIPButtonsLayout extends FrameLayout {
+public class PIPTopButtonsLayout extends FrameLayout {
     private IPIPButtonListener pipButtonListener;
     private boolean shouldVisible = false;
 
-    public PIPButtonsLayout(Context context) {
+    public PIPTopButtonsLayout(Context context) {
         super(context);
         initView(context);
     }
 
-    public PIPButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PIPTopButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    public PIPButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PIPTopButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
 
-    public PIPButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PIPTopButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(context);
     }
@@ -44,19 +44,13 @@ public class PIPButtonsLayout extends FrameLayout {
         FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         buttonParams.setMargins(0, 0, 0, 0);
         setLayoutParams(buttonParams);
-        findViewById(R.id.fullScreenButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pipButtonListener != null)
-                    pipButtonListener.onFullScreenClick();
-            }
+        findViewById(R.id.fullScreenButton).setOnClickListener(v -> {
+            if (pipButtonListener != null)
+                pipButtonListener.onFullScreenClick();
         });
-        findViewById(R.id.closeButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pipButtonListener != null)
-                    pipButtonListener.onCloseClick();
-            }
+        findViewById(R.id.closeButton).setOnClickListener(v -> {
+            if (pipButtonListener != null)
+                pipButtonListener.onCloseClick();
         });
     }
 
