@@ -98,7 +98,15 @@ public class PIPFloatingLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return !(pipTopButtonsLayout.isWithinBounds(event) || pipCenterButtonsLayout.isWithinBounds(event));
+        boolean isWithinTopButtons = pipTopButtonsLayout.isWithinBounds(event);
+        boolean areTopButtonVisible = pipTopButtonsLayout.getVisibility() == View.VISIBLE;
+        boolean isWithinCenterButtons = pipCenterButtonsLayout.isWithinBounds(event);
+        boolean areCenterButtonVisible = pipCenterButtonsLayout.getVisibility() == View.VISIBLE;
+        boolean shouldForwardToTopButtons = isWithinTopButtons && areTopButtonVisible;
+        boolean shouldForwardToCenterButtons = isWithinCenterButtons && areCenterButtonVisible;
+        boolean shouldIntercept = !(shouldForwardToTopButtons || shouldForwardToCenterButtons);
+        //logger.log(Log.VERBOSE, TAG, "onInterceptTouchEvent " + " isWithinTopButtons " + isWithinTopButtons + " areTopButtonVisible " + areTopButtonVisible + " isWithinCenterButtons " + isWithinCenterButtons + " areCenterButtonVisible " + areCenterButtonVisible + " shouldIntercept " + shouldIntercept);
+        return shouldIntercept;
     }
 
     @Override

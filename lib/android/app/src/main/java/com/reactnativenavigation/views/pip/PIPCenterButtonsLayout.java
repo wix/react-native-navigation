@@ -2,11 +2,13 @@ package com.reactnativenavigation.views.pip;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.PIPActionButton;
 import com.reactnativenavigation.utils.UiUtils;
 
@@ -37,7 +40,6 @@ public class PIPCenterButtonsLayout extends LinearLayout {
     public PIPCenterButtonsLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void setButtons(PIPActionButton[] buttons) {
@@ -87,13 +89,21 @@ public class PIPCenterButtonsLayout extends LinearLayout {
     public boolean isWithinBounds(MotionEvent ev) {
         int xPoint = Math.round(ev.getRawX());
         int yPoint = Math.round(ev.getRawY());
-        int[] l = new int[2];
-        getLocationOnScreen(l);
-        int x = l[0];
-        int y = l[1];
-        int w = getWidth();
-        int h = getHeight();
-        return !(xPoint < x || xPoint > x + w || yPoint < y || yPoint > y + h);
+        for (int index = 0; index < getChildCount(); index++) {
+            if (isChildViewInBounds(getChildAt(index), xPoint, yPoint)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isChildViewInBounds(View view, int x, int y) {
+        Rect outRect = new Rect();
+        int[] location = new int[2];
+        view.getDrawingRect(outRect);
+        view.getLocationOnScreen(location);
+        outRect.offset(location[0], location[1]);
+        return outRect.contains(x, y);
     }
 
     public void setPipButtonListener(PIPCenterButtonsLayout.IPIPButtonListener pipButtonListener) {
