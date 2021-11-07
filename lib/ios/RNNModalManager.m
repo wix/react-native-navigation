@@ -143,6 +143,11 @@
     }
 }
 
+- (void)reset {
+    [_presentedModals removeAllObjects];
+    [_pendingModalIdsToDismiss removeAllObjects];
+}
+
 #pragma mark - private
 
 - (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion

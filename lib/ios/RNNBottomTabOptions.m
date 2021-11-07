@@ -84,7 +84,8 @@
            self.testID.hasValue || self.icon.hasValue || self.selectedIcon.hasValue ||
            self.iconColor.hasValue || self.selectedIconColor.hasValue ||
            self.selectedTextColor.hasValue || self.iconInsets.hasValue || self.textColor.hasValue ||
-           self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue || self.sfSelectedSymbol.hasValue;
+           self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue ||
+           self.sfSelectedSymbol.hasValue;
 }
 
 @end
