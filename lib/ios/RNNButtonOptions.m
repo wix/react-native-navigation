@@ -11,7 +11,7 @@
     self.fontWeight = [TextParser parse:dict key:@"fontWeight"];
     self.fontSize = [NumberParser parse:dict key:@"fontSize"];
     self.text = [TextParser parse:dict key:@"text"];
-	self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
+    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
     self.testID = [TextParser parse:dict key:@"testID"];
     self.accessibilityLabel = [TextParser parse:dict key:@"accessibilityLabel"];
     self.color = [ColorParser parse:dict key:@"color"];
@@ -40,7 +40,7 @@
     newOptions.color = self.color.copy;
     newOptions.disabledColor = self.disabledColor.copy;
     newOptions.icon = self.icon.copy;
-	newOptions.sfSymbol = self.sfSymbol.copy;
+    newOptions.sfSymbol = self.sfSymbol.copy;
     newOptions.iconInsets = self.iconInsets.copy;
     newOptions.enabled = self.enabled.copy;
     newOptions.selectTabOnPress = self.selectTabOnPress.copy;
@@ -73,8 +73,8 @@
         self.disabledColor = options.disabledColor;
     if (options.icon.hasValue)
         self.icon = options.icon;
-	if (options.sfSymbol.hasValue)
-		self.sfSymbol = options.sfSymbol;
+    if (options.sfSymbol.hasValue)
+        self.sfSymbol = options.sfSymbol;
     if (options.enabled.hasValue) {
         self.enabled = options.enabled;
         [self.iconBackground setEnabled:self.enabled];

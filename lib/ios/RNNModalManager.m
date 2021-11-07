@@ -143,6 +143,11 @@
     }
 }
 
+- (void)reset {
+    _presentedModals = [NSMutableArray new];
+    _pendingModalIdsToDismiss = [NSMutableArray new];
+}
+
 #pragma mark - private
 
 - (void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion
