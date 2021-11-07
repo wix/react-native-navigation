@@ -144,8 +144,8 @@
 }
 
 - (void)reset {
-    _presentedModals = [NSMutableArray new];
-    _pendingModalIdsToDismiss = [NSMutableArray new];
+    [_presentedModals removeAllObjects];
+    [_pendingModalIdsToDismiss removeAllObjects];
 }
 
 #pragma mark - private
