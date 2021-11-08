@@ -176,7 +176,7 @@ describe('Commands', () => {
     it('retains passProps properties identity', () => {
       const obj = { some: 'content' };
       uut.setRoot({ root: { component: { name: 'com.example.MyScreen', passProps: { obj } } } });
-      const args = capture(mockedStore.updateProps).last();
+      const args = capture(mockedStore.setPendingProps).last();
       expect(args[1].obj).toBe(obj);
     });
   });
@@ -293,7 +293,7 @@ describe('Commands', () => {
     it('retains passProps properties identity', () => {
       const obj = { some: 'content' };
       uut.showModal({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
-      const args = capture(mockedStore.updateProps).last();
+      const args = capture(mockedStore.setPendingProps).last();
       expect(args[1].obj).toBe(obj);
     });
   });
@@ -380,7 +380,7 @@ describe('Commands', () => {
       uut.push('theComponentId', {
         component: { name: 'com.example.MyScreen', passProps: { obj } },
       });
-      const args = capture(mockedStore.updateProps).last();
+      const args = capture(mockedStore.setPendingProps).last();
       expect(args[1].obj).toBe(obj);
     });
   });
@@ -477,7 +477,7 @@ describe('Commands', () => {
       uut.setStackRoot('theComponentId', [
         { component: { name: 'com.example.MyScreen', passProps: { obj } } },
       ]);
-      const args = capture(mockedStore.updateProps).last();
+      const args = capture(mockedStore.setPendingProps).last();
       expect(args[1].obj).toBe(obj);
     });
   });
@@ -521,7 +521,7 @@ describe('Commands', () => {
     it('retains passProps properties identity', () => {
       const obj = { some: 'content' };
       uut.showOverlay({ component: { name: 'com.example.MyScreen', passProps: { obj } } });
-      const args = capture(mockedStore.updateProps).last();
+      const args = capture(mockedStore.setPendingProps).last();
       expect(args[1].obj).toBe(obj);
     });
   });
