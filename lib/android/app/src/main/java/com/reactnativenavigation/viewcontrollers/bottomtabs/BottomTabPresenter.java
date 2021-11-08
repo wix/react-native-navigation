@@ -41,7 +41,7 @@ public class BottomTabPresenter {
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.imageLoader = imageLoader;
         this.typefaceLoader = typefaceLoader;
-        this.defaultTypeface = (new AHTextView(context)).getTypeface();
+        this.defaultTypeface = typefaceLoader.getDefaultTypeFace();
         this.defaultOptions = defaultOptions;
         defaultDotIndicatorSize = dpToPx(context, 6);
     }
