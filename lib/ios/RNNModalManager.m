@@ -36,12 +36,14 @@
     modalHostViewManager.presentationBlock =
         ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
           dispatch_block_t completionBlock) {
-          [self showModal:viewController
-                 animated:animated
-               completion:^(NSString *_Nonnull componentId) {
-                 if (completionBlock)
-                     completionBlock();
-               }];
+          if (reactViewController.presentedViewController != viewController) {
+              [self showModal:viewController
+                     animated:animated
+                   completion:^(NSString *_Nonnull componentId) {
+                     if (completionBlock)
+                         completionBlock();
+                   }];
+          }
         };
 
     modalHostViewManager.dismissalBlock =
