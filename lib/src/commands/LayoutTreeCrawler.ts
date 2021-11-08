@@ -35,7 +35,7 @@ export class LayoutTreeCrawler {
   }
 
   private savePropsToStore(node: LayoutNode) {
-    this.store.updateProps(node.id, node.data.passProps);
+    this.store.setPendingProps(node.id, node.data.passProps);
   }
 
   private assertComponentDataName(component: LayoutNode) {

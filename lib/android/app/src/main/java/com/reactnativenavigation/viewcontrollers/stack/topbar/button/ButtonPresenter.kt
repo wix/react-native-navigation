@@ -25,7 +25,8 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
 import kotlin.math.max
 
-open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
+open class ButtonPresenter(private val context: Context,var button: ButtonOptions, private val iconResolver:
+IconResolver) {
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }
@@ -47,12 +48,19 @@ open class ButtonPresenter(private val context: Context, private val button: But
         applyComponent(menuItem, viewCreator)
         applyAccessibilityLabel(menuItem)
         applyIcon(menuItem)
+        applyText(menuItem)
+
 
         applyOptionsDirectlyOnView(toolbar, menuItem) {
             applyTestId(it)
             applyTextColor(it)
             applyAllCaps(it)
         }
+    }
+
+    private fun applyText(menuItem: MenuItem) {
+        if (button.text.hasValue())
+            menuItem.title = button.text.get()
     }
 
     fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {

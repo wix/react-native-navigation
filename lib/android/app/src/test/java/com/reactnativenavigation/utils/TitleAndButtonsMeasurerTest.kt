@@ -2,13 +2,13 @@ package com.reactnativenavigation.utils
 
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
+import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveLeftButtonsBounds
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveRightButtonsBounds
-import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class TitleAndButtonsMeasurer : BaseTest() {
+class TitleAndButtonsMeasurerTest : BaseTest() {
     private val parentWidth = 1080
 
     @Test
