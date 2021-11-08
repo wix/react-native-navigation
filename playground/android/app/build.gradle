@@ -1,24 +1,22 @@
 apply plugin: "com.android.application"
 
-def enableHermes = false
 project.ext.react = [
         root     : "../../../",
         entryFile: "index.js",
+        cliPath : "node_modules/react-native/cli.js",
         bundleAssetName: "index.android.bundle",
         bundleInAlpha: true,
         bundleInBeta: true,
-        enableHermes: enableHermes,
+        enableHermes: true,
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
         hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
 ]
 
-def jscFlavor = 'org.webkit:android-jsc:+'
-
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion rootProject.ext.get("compileSdkVersion")
     ndkVersion "20.1.5948944"
 
     compileOptions {
@@ -29,11 +27,11 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion rootProject.ext.get("targetSdkVersion")
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86", 'x86_64'
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", 'x86_64'
         }
 
         testBuildType System.getProperty('testBuildType', 'debug')
@@ -63,13 +61,10 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
 
     implementation project(':react-native-fast-image')
-    if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/";
-        debugImplementation files(hermesPath + "hermes-debug.aar")
-        releaseImplementation files(hermesPath + "hermes-release.aar")
-    } else {
-        implementation jscFlavor
-    }
+    def hermesPath = "../../../node_modules/hermes-engine/android/";
+    debugImplementation files(hermesPath + "hermes-debug.aar")
+    releaseImplementation files(hermesPath + "hermes-release.aar")
+
 
     //noinspection GradleDynamicVersion
     implementation project(':react-native-navigation')
@@ -80,7 +75,7 @@ dependencies {
 
 
 task copyDownloadableDepsToLibs(type: Copy) {
-    from configurations.compile
+    from configurations.implementation
     into 'libs'
 }
 

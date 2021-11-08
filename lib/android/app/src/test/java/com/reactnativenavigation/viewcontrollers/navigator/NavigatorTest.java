@@ -507,7 +507,7 @@ public class NavigatorTest extends BaseTest {
         StackController stack2 = newStack(child2, child3, child4);
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
         uut.setRoot(bottomTabsController, new CommandListenerAdapter(), reactInstanceManager);
-
+        idleMainLooper();
         CommandListenerAdapter listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
@@ -670,7 +670,7 @@ public class NavigatorTest extends BaseTest {
         final StackController stack2 = newStack(child2, child3);
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
         uut.setRoot(bottomTabsController, new CommandListenerAdapter(), reactInstanceManager);
-
+        idleMainLooper();
         CommandListenerAdapter listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
