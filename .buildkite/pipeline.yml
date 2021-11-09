@@ -2,8 +2,6 @@ steps:
   - block: ":rocket: Release!"
     prompt: "Fill out the details for release"
     if: 'build.message =~ /^release\$/i'
-    agents:
-      queue: testing
     fields:
       - text: "VERSION"
         key: "version"
