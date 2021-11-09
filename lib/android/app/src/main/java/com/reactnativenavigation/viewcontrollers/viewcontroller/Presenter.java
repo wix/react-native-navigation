@@ -20,8 +20,6 @@ import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
-import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-
 public class Presenter {
     private final Activity activity;
     private Options defaultOptions;
@@ -36,8 +34,9 @@ public class Presenter {
     }
 
     public void mergeOptions(View view, Options options) {
-        mergeStatusBarOptions(view, options.statusBar);
-        mergeNavigationBarOptions(options.navigationBar);
+        final Options withDefaults = options.copy().withDefaultOptions(defaultOptions);
+        mergeStatusBarOptions(view, withDefaults.statusBar);
+        mergeNavigationBarOptions(withDefaults.navigationBar);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -94,9 +93,9 @@ public class Presenter {
     private void setTranslucent(StatusBarOptions options) {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
-            window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
+            StatusBarUtils.setStatusBarTranslucent(window);
         } else if (StatusBarUtils.isTranslucent(window)) {
-            window.clearFlags(FLAG_TRANSLUCENT_STATUS);
+            StatusBarUtils.clearStatusBarTranslucency(window);
         }
     }
 
@@ -111,7 +110,9 @@ public class Presenter {
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
         if (statusBar.backgroundColor.canApplyValue()) {
-            activity.getWindow().setStatusBarColor(getStatusBarBackgroundColor(statusBar));
+            final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
+            StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
+                    Color.alpha(statusBarBackgroundColor)/255f);
         }
     }
 
@@ -122,7 +123,7 @@ public class Presenter {
             return false;
         }
 
-        return isColorLight(getStatusBarBackgroundColor(statusBar));
+        return !isColorLight(getStatusBarBackgroundColor(statusBar));
     }
 
     private int getStatusBarBackgroundColor(StatusBarOptions statusBar) {
@@ -137,14 +138,7 @@ public class Presenter {
         //View.post is a Workaround, added to solve internal Samsung 
         //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
         view.post(() -> {
-            int flags = view.getSystemUiVisibility();
-            if (isDarkTextColorScheme(statusBar)) {
-                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            } else {
-                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            }
-
-            view.setSystemUiVisibility(flags);
+            StatusBarUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar));
         });
     }
 
@@ -156,8 +150,10 @@ public class Presenter {
     }
 
     private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && statusBar.backgroundColor.hasValue()) {
-            activity.getWindow().setStatusBarColor(getStatusBarBackgroundColor(statusBar));
+        if (statusBar.backgroundColor.hasValue()) {
+            final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
+            StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
+                    Color.alpha(statusBarBackgroundColor)/255f);
         }
     }
 
@@ -169,9 +165,9 @@ public class Presenter {
     private void mergeTranslucent(StatusBarOptions options) {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
-            window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
+            StatusBarUtils.setStatusBarTranslucent(window);
         } else if (options.translucent.isFalse() && StatusBarUtils.isTranslucent(window)) {
-            window.clearFlags(FLAG_TRANSLUCENT_STATUS);
+            StatusBarUtils.clearStatusBarTranslucency(window);
         }
     }
 
