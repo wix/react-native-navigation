@@ -69,7 +69,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        presenter.onConfigurationChanged(resolveCurrentOptions());
+        presenter.onConfigurationChanged(resolveCurrentOptions(), getCurrentChild());
         fabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
@@ -176,9 +176,7 @@ public class StackController extends ParentController<StackLayout> {
                         presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
                         () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
-                child.onViewDidAppear();
-                getView().removeView(toRemove.getView());
-                listener.onSuccess(child.getId());
+                onPushAnimationComplete(child, toRemove, listener);
             }
         } else {
             listener.onSuccess(child.getId());
@@ -192,8 +190,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onPushAnimationComplete(ViewController<?> toAdd, ViewController<?> toRemove, CommandListener listener) {
-        toAdd.onViewDidAppear();
-        if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
+        toAdd.addOnAppearedListener(() -> {
+            toAdd.onViewDidAppear();
+            if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
+        });
         listener.onSuccess(toAdd.getId());
     }
 
@@ -429,11 +429,10 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void setChildId(ViewGroup child) {
-        //In RN > 64 ReactRootView ids are managed by ReactNative
-        // see: https://github.com/facebook/react-native/blob/main/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java#L676
-        if(!(child instanceof ReactRootView)){
+        //From RN > 64 we can't set id to child that is ReactRootView
+        //see:https://github.com/facebook/react-native/blob/main/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java#L676
+        if (!(child instanceof ReactRootView))
             child.setId(CompatUtils.generateViewId());
-        }
     }
 
     private void startChildrenBellowTopChild() {

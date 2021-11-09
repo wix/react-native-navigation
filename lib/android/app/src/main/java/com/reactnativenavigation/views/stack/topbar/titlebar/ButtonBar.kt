@@ -4,17 +4,15 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.text.SpannableString
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.children
 import com.reactnativenavigation.utils.ObjectUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
-
 open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
     var shouldAnimate: Boolean=false
 
@@ -43,23 +41,17 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
         get() = menu.size()
 
     fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
         return this.menu?.add(menuItem,
-                intId,
-                order,
-                styledText)
+            intId,
+            order,
+            styledText)
     }
 
     fun removeButton(buttonId: Int) {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
         menu.removeItem(buttonId)
     }
 
     open fun clearButtons() {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
         clearBackButton()
         if (menu.size() > 0) menu.clear()
     }
@@ -68,6 +60,9 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
         return menu.getItem(index)
     }
 
+    fun getButtonById(id: Int): MenuItem? {
+        return menu.children.firstOrNull { it.itemId == id }
+    }
     fun containsButton(menuItem: MenuItem?, order: Int): Boolean {
         return menuItem != null && menu.findItem(menuItem.itemId) != null && menuItem.order == order
     }

@@ -21,12 +21,12 @@
 }
 
 - (instancetype)initWithSFSymbol:(RNNButtonOptions *)buttonOptions
-						 onPress:(RNNButtonPressCallback)onPress {
+                         onPress:(RNNButtonPressCallback)onPress {
     UIImage *iconImage = [UIImage alloc];
 
-	if (@available(iOS 13.0, *)) {
+    if (@available(iOS 13.0, *)) {
         iconImage = [UIImage systemImageNamed:[buttonOptions.sfSymbol withDefault:nil]];
-	}
+    }
 
     self = [super initWithImage:iconImage
                           style:UIBarButtonItemStylePlain

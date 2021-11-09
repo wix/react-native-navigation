@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlin.math.abs
 
+
 object StatusBarUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25

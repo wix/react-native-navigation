@@ -1,9 +1,11 @@
 package com.reactnativenavigation.options;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.Assertions;
@@ -45,6 +47,8 @@ import androidx.annotation.RestrictTo;
 import static com.reactnativenavigation.options.Options.parse;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 
+import org.json.JSONObject;
+
 public class LayoutFactory {
 	private Activity activity;
 	private ChildControllersRegistry childRegistry;
@@ -75,15 +79,15 @@ public class LayoutFactory {
 		final ReactContext context = reactInstanceManager.getCurrentReactContext();
 		switch (node.type) {
 			case Component:
-				return createComponent(context, node);
+				return createComponent(node);
 			case ExternalComponent:
 				return createExternalComponent(context, node);
 			case Stack:
-				return createStack(context, node);
+				return createStack(node);
 			case BottomTabs:
-				return createBottomTabs(context, node);
+				return createBottomTabs(node);
 			case SideMenuRoot:
-				return createSideMenuRoot(context, node);
+				return createSideMenuRoot(node);
 			case SideMenuCenter:
 				return createSideMenuContent(node);
 			case SideMenuLeft:
@@ -91,17 +95,17 @@ public class LayoutFactory {
 			case SideMenuRight:
 				return createSideMenuRight(node);
 			case TopTabs:
-				return createTopTabs(context, node);
+				return createTopTabs(node);
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
 	}
 
-	private ViewController<?> createSideMenuRoot(ReactContext context, LayoutNode node) {
+	private ViewController<?> createSideMenuRoot(LayoutNode node) {
 		SideMenuController sideMenuController = new SideMenuController(activity,
 				childRegistry,
 				node.id,
-				parse(context, typefaceManager, node.getOptions()),
+				parseOptions( node.getOptions()),
 				new SideMenuPresenter(),
 				new Presenter(activity, defaultOptions)
 		);
@@ -153,7 +157,7 @@ public class LayoutFactory {
 		return create(node.children.get(0));
 	}
 
-	private ViewController<?> createComponent(ReactContext context, LayoutNode node) {
+	private ViewController<?> createComponent(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
 		return new ComponentViewController(activity,
@@ -161,7 +165,7 @@ public class LayoutFactory {
 				id,
 				name,
 				new ComponentViewCreator(reactInstanceManager),
-				parse(context, typefaceManager, node.getOptions()),
+				parseOptions(node.getOptions()),
 				new Presenter(activity, defaultOptions),
 				new ComponentPresenter(defaultOptions)
 		);
@@ -178,17 +182,17 @@ public class LayoutFactory {
 				reactInstanceManager,
 				new EventEmitter(context),
 				new ExternalComponentPresenter(),
-				parse(context, typefaceManager, node.getOptions())
+				parseOptions(node.getOptions())
 		);
 	}
 
-	private ViewController<?> createStack(ReactContext context, LayoutNode node) {
+	private ViewController<?> createStack(LayoutNode node) {
 		return new StackControllerBuilder(activity, eventEmitter)
 				.setChildren(createChildren(node.children))
 				.setChildRegistry(childRegistry)
 				.setTopBarController(new TopBarController())
 				.setId(node.id)
-				.setInitialOptions(parse(context, typefaceManager, node.getOptions()))
+				.setInitialOptions(parseOptions(node.getOptions()))
 				.setStackPresenter(new StackPresenter(activity,
 						new TitleBarReactViewCreator(reactInstanceManager),
 						new TopBarBackgroundViewCreator(reactInstanceManager),
@@ -210,7 +214,7 @@ public class LayoutFactory {
 		return result;
 	}
 
-	private ViewController<?> createBottomTabs(ReactContext context, LayoutNode node) {
+	private ViewController<?> createBottomTabs(LayoutNode node) {
 		List<ViewController<?>> tabs = map(node.children, this::create);
 		BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions, new BottomTabsAnimator());
 		return new BottomTabsController(activity,
@@ -219,24 +223,35 @@ public class LayoutFactory {
 				eventEmitter,
 				new ImageLoader(),
 				node.id,
-				parse(context, typefaceManager, node.getOptions()),
+				parseOptions( node.getOptions()),
 				new Presenter(activity, defaultOptions),
 				new BottomTabsAttacher(tabs, bottomTabsPresenter, defaultOptions),
 				bottomTabsPresenter,
 				new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions));
 	}
 
-	private ViewController<?> createTopTabs(ReactContext context, LayoutNode node) {
+	private ViewController<?> createTopTabs(LayoutNode node) {
 		final List<ViewController<?>> tabs = new ArrayList<>();
 		for (int i = 0; i < node.children.size(); i++) {
 			ViewController<?> tabController = create(node.children.get(i));
-			Options options = parse(context, typefaceManager, node.children.get(i).getOptions());
+			Options options = parseOptions(node.children.get(i).getOptions());
 			options.setTopTabIndex(i);
 			tabs.add(tabController);
 		}
-		return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(context, typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
+		return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs)
+				, parseOptions(node.getOptions()), new Presenter(activity, defaultOptions));
 	}
 
+    private Options parseOptions(JSONObject jsonOptions) {
+        Context context = reactInstanceManager.getCurrentReactContext();
+        if (context == null) {
+            context = activity == null ? NavigationApplication.instance : activity;
+        }
+        if (typefaceManager == null) {
+            typefaceManager = new TypefaceLoader(context);
+        }
+        return parse(context, typefaceManager, jsonOptions);
+    }
 	@NonNull
 	@RestrictTo(RestrictTo.Scope.TESTS)
 	public Options getDefaultOptions() {
