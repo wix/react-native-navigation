@@ -14,6 +14,7 @@ import flags from '../flags';
 import testIDs from '../testIDs';
 import { Dimensions, Modal, Image, Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
+import { SafeAreaView } from 'react-native';
 
 const height = Math.round(Dimensions.get('window').height);
 const MODAL_ANIMATION_DURATION = 350;
@@ -163,25 +164,27 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
             visible={this.state.modalVisible}
             onRequestClose={() => this.setState({ modalVisible: false })}
           >
-            <Button
-              label="Dismiss declared Modal"
-              testID={DISMISS_REACT_MODAL_BTN}
-              onPress={this.toggleModal}
-            />
-            <Button
-              label="Show Modal"
-              testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
-              onPress={this.showModal}
-            />
-            <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
-            <View style={styles.logoContainer}>
-              <Image
-                style={styles.tinyLogo}
-                source={{
-                  uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}
+            <SafeAreaView>
+              <Button
+                label="Dismiss declared Modal"
+                testID={DISMISS_REACT_MODAL_BTN}
+                onPress={this.toggleModal}
               />
-            </View>
+              <Button
+                label="Show Modal"
+                testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
+                onPress={this.showModal}
+              />
+              <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
+              <View style={styles.logoContainer}>
+                <Image
+                  style={styles.tinyLogo}
+                  source={{
+                    uri: 'https://reactnative.dev/img/tiny_logo.png',
+                  }}
+                />
+              </View>
+            </SafeAreaView>
           </Modal>
         )}
       </Root>

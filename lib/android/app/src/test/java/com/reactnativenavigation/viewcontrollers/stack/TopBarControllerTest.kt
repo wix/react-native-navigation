@@ -336,11 +336,11 @@ class TopBarControllerTest : BaseTest() {
         verify(removedControllers[textButton1.id]!!, never()).destroy()
         verify(removedControllers[textButton2.id]!!, never()).destroy()
 
-        verify(rightButtonControllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
-        verify(rightButtonControllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
+        verify(rightButtonControllers[textButton1.id]!!, times(2)).addToMenu(any(), any())
+        verify(rightButtonControllers[textButton2.id]!!, times(2)).addToMenu(any(), any())
     }
     @Test
-    fun `mergeRightButtons - should rebuild menu when adding menu items`(){
+    fun `mergeRightButtons - should rebuild menu when adding menu items, existing should not be destroyed`(){
         val controllers = spy(LinkedHashMap<String,ButtonController>())
         uut.mergeRightButtonsOptions(controllers, listOf(textButton1)) {
             createButtonController(it)
@@ -351,8 +351,8 @@ class TopBarControllerTest : BaseTest() {
             createButtonController(it)
         }
         assertThat(uut.rightButtonCount).isEqualTo(2)
-        verify(controllers, times(1)).remove(any())
-        verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
+        verify(controllers, never()).remove(any())
+        verify(controllers[textButton1.id]!!, times(2)).addToMenu(any(), any())
     }
     @Test
     fun `mergeRightButtons - should modify changed buttons`(){
@@ -374,12 +374,13 @@ class TopBarControllerTest : BaseTest() {
         verify(controllers[textButton1.id]!!, never()).destroy()
     }
 
-    fun `mergeRightButtons - reorder of same menu items should rebuild menu`(){
+    @Test
+    fun `mergeRightButtons - reorder of same menu items should rebuild menu, not view recreation`(){
         val controllers = spy(LinkedHashMap<String,ButtonController>())
         uut.mergeRightButtonsOptions(controllers, listOf(textButton1, textButton2)) {
             createButtonController(it)
         }
-        assertThat(uut.rightButtonCount).isEqualTo(1)
+        assertThat(uut.rightButtonCount).isEqualTo(2)
         verify(controllers[textButton1.id]!!, times(1)).addToMenu(any(), any())
         verify(controllers[textButton2.id]!!, times(1)).addToMenu(any(), any())
 
@@ -390,8 +391,8 @@ class TopBarControllerTest : BaseTest() {
         verify(controllers[textButton2.id]!!, never()).mergeButtonOptions(any(), any())
         verify(controllers[textButton1.id]!!, times(2)).addToMenu(any(), any())
         verify(controllers[textButton2.id]!!, times(2)).addToMenu(any(), any())
-        verify(controllers[textButton1.id]!!, times(1)).destroy()
-        verify(controllers[textButton2.id]!!, times(1)).destroy()
+        verify(controllers[textButton1.id]!!, never()).destroy()
+        verify(controllers[textButton2.id]!!, never()).destroy()
     }
 
     private fun createButtonController(it: ButtonOptions) =

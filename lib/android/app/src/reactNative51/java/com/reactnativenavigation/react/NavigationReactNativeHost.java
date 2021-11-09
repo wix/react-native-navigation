@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.reactnativenavigation.NavigationApplication;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,7 +45,7 @@ public abstract class NavigationReactNativeHost extends ReactNativeHost implemen
                 .setJSMainModulePath(getJSMainModuleName())
                 .setUseDeveloperSupport(getUseDeveloperSupport())
                 .setRedBoxHandler(getRedBoxHandler())
-                .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
+                .setJavaScriptExecutorFactory(new HermesExecutorFactory())
                 .setUIImplementationProvider(getUIImplementationProvider())
                 .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
                 .setDevBundleDownloadListener(getDevBundleDownloadListener());

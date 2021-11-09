@@ -26,11 +26,11 @@ class FontOptions {
 
     @JvmOverloads fun getTypeface(typefaceLoader: TypefaceLoader, defaultTypeface: Typeface? = null): Typeface? {
         if (isDirty) {
-            _typeface = typefaceLoader.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""))
+            _typeface = typefaceLoader.getTypeFace(fontFamily.get(null), fontStyle.get(""), fontWeight.get(""), defaultTypeface)
             isDirty = false
         }
         return _typeface
-                ?: defaultTypeface?.let { typefaceLoader.getTypeFace(fontFamily.get(""), fontStyle.get(""), fontWeight.get(""), it) }
+                ?: defaultTypeface?.let { typefaceLoader.getTypeFace(fontFamily.get(null), fontStyle.get(""), fontWeight.get(""), it) }
     }
 
     fun mergeWith(other: FontOptions) {

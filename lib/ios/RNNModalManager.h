@@ -24,4 +24,6 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *_Nonnull code, NSString *_
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion;
 - (void)dismissAllModalsSynchronosly;
 
+- (void)reset;
+
 @end
