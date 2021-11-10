@@ -27,6 +27,7 @@ public class BottomTabs extends AHBottomNavigation {
     public BottomTabs(Context context) {
         super(context);
         setId(R.id.bottomTabs);
+        hideBottomNavigation(false);
     }
 
     public void disableItemsCreation() {

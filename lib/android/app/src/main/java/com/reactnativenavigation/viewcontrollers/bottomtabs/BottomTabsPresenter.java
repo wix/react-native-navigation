@@ -137,7 +137,7 @@ public class BottomTabsPresenter {
                 tabSelector.selectTab(tabIndex);
             }
         }
-        if (bottomTabsOptions.visible.isTrueOrUndefined()) {
+        if (bottomTabsOptions.visible.isTrue()) {
             if (bottomTabsOptions.animate.isTrueOrUndefined()) {
                 animator.show(animationsOptions);
             } else {
