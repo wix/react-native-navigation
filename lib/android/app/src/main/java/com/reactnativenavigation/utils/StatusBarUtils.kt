@@ -15,10 +15,12 @@ import kotlin.math.abs
 import kotlin.math.ceil
 
 
+
 object StatusBarUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25
     private var statusBarHeight = -1
+
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -46,6 +48,7 @@ object StatusBarUtils {
     fun saveStatusBarHeight(height: Int) {
         statusBarHeight = height
     }
+
 
     @JvmStatic
     fun getStatusBarHeightDp(activity: Activity?): Int {
@@ -149,6 +152,5 @@ object StatusBarUtils {
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.statusBars())
         }
     }
-
 
 }
