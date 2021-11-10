@@ -1,28 +1,46 @@
 import React from 'react';
-import { StyleSheet, Image, View } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { StyleSheet, Image, View, Text } from 'react-native';
+import { ColorPalette, Switch } from 'react-native-ui-lib';
+import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
 
-let translucent = true;
-let darkStatusBarScheme = false;
-let isBlackStatusBar = true;
-let drawBehind = true;
-export default class StatusBarOptions extends React.Component<NavigationComponentProps> {
-  static options() {
+interface State {
+  statusBarVisible: boolean;
+  navigationBarVisible: boolean;
+  translucent: boolean;
+  darkStatusBarScheme: boolean;
+  drawBehind: boolean;
+  selectedColor: string;
+}
+const colors = [
+  '#000000',
+  '#20303C',
+  '#3182C8',
+  '#00AAAF',
+  '#00A65F',
+  '#E2902B',
+  '#D9644A',
+  '#CF262F',
+  '#8B1079',
+];
+
+export default class StatusBarOptions extends React.Component<NavigationComponentProps, State> {
+  static options(): Options {
     return {
       statusBar: {
-        translucent: translucent,
-        drawBehind: drawBehind,
-        backgroundColor: isBlackStatusBar ? '#000000' : 'red',
+        translucent: true,
+        style: 'dark',
+        drawBehind: false,
+        backgroundColor: '#000000',
       },
       topBar: {
-        elevation: 0,
+        elevation: 3,
         drawBehind: true,
         background: {
-          color: 'transparent',
+          color: 'argb(44,255,0,0)',
         },
         title: {
           text: 'StatusBar Options',
@@ -35,6 +53,18 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
     };
   }
 
+  constructor(props: Readonly<NavigationComponentProps>) {
+    super(props);
+    this.state = {
+      navigationBarVisible: true,
+      statusBarVisible: true,
+      translucent: true,
+      darkStatusBarScheme: true,
+      drawBehind: false,
+      selectedColor: '#000000',
+    };
+  }
+
   render() {
     return (
       <View style={style.container}>
@@ -42,11 +72,42 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
         <Root componentId={this.props.componentId} style={style.root}>
           {/*<Button label="Full Screen Modal" onPress={this.fullScreenModal} />*/}
           {/*<Button label="Push" onPress={this.push} />*/}
-          <Button label="Toggle color" onPress={this.toggleStatusBarColor} />
-          <Button label="Toggle color scheme" onPress={this.toggleStatusBarColorScheme} />
-          <Button label="Toggle Translucent" onPress={this.toggleTranslucent} />
-          <Button label="Hide Status Bar" onPress={this.hideStatusBar} />
-          <Button label="Show Status Bar" onPress={this.showStatusBar} />
+          <Text>Status Bar Color</Text>
+          <ColorPalette
+            value={this.state.selectedColor}
+            onValueChange={this.onPaletteValueChange}
+            colors={colors}
+          />
+          <View style={style.translucentSwitch}>
+            <Text>Translucent: </Text>
+            <Switch value={this.state.translucent} onValueChange={this.onTranslucentChanged} />
+          </View>
+
+          <View style={style.translucentSwitch}>
+            <Text>Light Status Bar Icons: </Text>
+            <Switch
+              value={this.state.darkStatusBarScheme}
+              onValueChange={this.toggleStatusBarColorScheme}
+            />
+          </View>
+          <View style={style.translucentSwitch}>
+            <Text>Draw Behind: </Text>
+            <Switch value={this.state.drawBehind} onValueChange={this.onDrawBehindValueChanged} />
+          </View>
+          <View style={style.translucentSwitch}>
+            <Text>StatusBar Visible: </Text>
+            <Switch
+              value={this.state.statusBarVisible}
+              onValueChange={this.onStatusBarVisibilityValueChanged}
+            />
+          </View>
+          <View style={style.translucentSwitch}>
+            <Text>NavigationBar Visible: </Text>
+            <Switch
+              value={this.state.navigationBarVisible}
+              onValueChange={this.onNavBarVisibilityValueChanged}
+            />
+          </View>
           <Button label="BottomTabs" onPress={this.bottomTabs} />
           <Button label="Open Left" onPress={() => this.open('left')} />
           <Button label="Open Right" onPress={() => this.open('right')} />
@@ -54,44 +115,57 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
       </View>
     );
   }
+  onPaletteValueChange = (value: string, _: object) => {
+    Navigation.mergeOptions(this.props.componentId, {
+      statusBar: {
+        backgroundColor: value,
+      },
+    });
+    this.setState({ selectedColor: value });
+  };
 
-  toggleStatusBarColor = () => {
-    isBlackStatusBar = !isBlackStatusBar;
+  onTranslucentChanged = (value: boolean) => {
     Navigation.mergeOptions(this.props.componentId, {
       statusBar: {
-        backgroundColor: isBlackStatusBar ? '#000000' : 'red',
+        translucent: value,
       },
     });
+    this.setState({ translucent: value });
   };
-  toggleTranslucent = () => {
-    translucent = !translucent;
+  toggleStatusBarColorScheme = (value: boolean) => {
     Navigation.mergeOptions(this.props.componentId, {
       statusBar: {
-        translucent: translucent,
+        style: value ? 'dark' : 'light',
       },
     });
+    this.setState({ darkStatusBarScheme: value });
   };
-  toggleStatusBarColorScheme = () => {
-    darkStatusBarScheme = !darkStatusBarScheme;
-    Navigation.mergeOptions(this.props.componentId, {
-      statusBar: {
-        style: darkStatusBarScheme ? 'dark' : 'light',
-      },
-    });
-  };
-  hideStatusBar = () =>
-    Navigation.mergeOptions(this.props.componentId, {
-      statusBar: {
-        visible: false,
-      },
-    });
 
-  showStatusBar = () =>
+  onDrawBehindValueChanged = (value: boolean) => {
     Navigation.mergeOptions(this.props.componentId, {
       statusBar: {
-        visible: true,
+        drawBehind: value,
       },
     });
+    this.setState({ drawBehind: value });
+  };
+  onStatusBarVisibilityValueChanged = (value: boolean) => {
+    Navigation.mergeOptions(this.props.componentId, {
+      statusBar: {
+        visible: value,
+      },
+    });
+    this.setState({ statusBarVisible: value });
+  };
+  onNavBarVisibilityValueChanged = (value: boolean) => {
+    Navigation.mergeOptions(this.props.componentId, {
+      navigationBar: {
+        visible: value,
+      },
+    });
+    this.setState({ navigationBarVisible: value });
+  };
+
   fullScreenModal = () => Navigation.showModal(Screens.FullScreenModal);
   push = () => Navigation.push(this, Screens.Pushed);
   bottomTabs = () => Navigation.showModal(Screens.StatusBarBottomTabs);
@@ -112,6 +186,7 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  translucentSwitch: { flexDirection: 'row' },
   image: {
     height: 250,
     width: '100%',

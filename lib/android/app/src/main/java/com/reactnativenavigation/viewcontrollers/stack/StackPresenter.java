@@ -353,10 +353,10 @@ public class StackPresenter {
     }
 
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController<?> child) {
-        TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
+        Options withDefault = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions);
         mergeOrientation(toMerge.layout.orientation);
-        mergeButtons(topBar, toMerge.topBar, child.getView(), stack);
-        mergeTopBarOptions(topBar, toMerge, stack, child);
+        mergeButtons(withDefault.topBar, toMerge.topBar, child.getView(), stack);
+        mergeTopBarOptions(withDefault.topBar, withDefault, stack, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
     }

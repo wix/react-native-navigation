@@ -174,9 +174,9 @@ public class Presenter {
     private void mergeStatusBarVisible(View view, Bool visible) {
         if (visible.hasValue()) {
             if (visible.isTrue()) {
-                StatusBarUtils.INSTANCE.showStatusBar(activity.getWindow(), view);
+                StatusBarUtils.showStatusBar(activity.getWindow(), view);
             } else {
-                StatusBarUtils.INSTANCE.hideStatusBar(activity.getWindow(), view);
+                StatusBarUtils.hideStatusBar(activity.getWindow(), view);
             }
         }
     }
@@ -197,15 +197,11 @@ public class Presenter {
 
     private void applyNavigationBarVisibility(NavigationBarOptions options) {
         View decorView = activity.getWindow().getDecorView();
-        int flags = decorView.getSystemUiVisibility();
-        boolean defaultVisibility = (flags & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == 0;
-        int hideNavigationBarFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        if (options.isVisible.get(defaultVisibility)) {
-            flags &= ~hideNavigationBarFlags;
-        } else {
-            flags |= hideNavigationBarFlags;
+        if(options.isVisible.isTrueOrUndefined()){
+            StatusBarUtils.showNavigationBar(activity.getWindow(),decorView);
+        }else{
+            StatusBarUtils.hideNavigationBar(activity.getWindow(),decorView);
         }
-        decorView.setSystemUiVisibility(flags);
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {

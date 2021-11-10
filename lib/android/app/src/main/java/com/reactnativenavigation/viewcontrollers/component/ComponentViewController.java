@@ -136,16 +136,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
-    @Override
-    protected WindowInsetsCompat applyWindowInsets(ViewController<?> view, WindowInsetsCompat insets) {
-        final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
-        final WindowInsetsCompat finalInsets = builder.setSystemWindowInsets(Insets.of(insets.getSystemWindowInsetLeft(),
-                Math.max(insets.getSystemWindowInsetTop() - getTopInset(), 0),
-                insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0))).build();
-        ViewCompat.onApplyWindowInsets(view.getView(), finalInsets);
-        return finalInsets;
-    }
 
     @Override
     public void destroy() {

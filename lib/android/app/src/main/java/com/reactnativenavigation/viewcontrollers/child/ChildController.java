@@ -15,7 +15,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import com.reactnativenavigation.views.component.Component;
 
 import androidx.annotation.CallSuper;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T> {
@@ -61,7 +63,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public void onViewBroughtToFront() {
-        presenter.onViewBroughtToFront(this,resolveCurrentOptions());
+        presenter.onViewBroughtToFront(this, resolveCurrentOptions());
     }
 
     @Override
@@ -94,22 +96,25 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
         return applyWindowInsets(findController(view), insets);
     }
 
-    protected WindowInsetsCompat applyWindowInsets(ViewController<?> view, WindowInsetsCompat insets) {
-        return insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                0,
-                insets.getSystemWindowInsetRight(),
-                insets.getSystemWindowInsetBottom()
-        );
+    protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
+        final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
+        Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        final WindowInsetsCompat finalInsets = builder.setInsets(WindowInsetsCompat.Type.systemBars(),
+                Insets.of(systemInsets.left,
+                        0,
+                        systemInsets.right,
+                        0)
+        ).build();
+        ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
+        return finalInsets;
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        presenter.onConfigurationChanged(this,options);
+        presenter.onConfigurationChanged(this, options);
     }
 }
