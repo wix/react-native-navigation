@@ -151,7 +151,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                 insets.getSystemWindowInsetLeft(),
                 insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
+                0
         ));
         return insets;
     }
