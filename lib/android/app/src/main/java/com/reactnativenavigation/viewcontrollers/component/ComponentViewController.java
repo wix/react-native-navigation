@@ -64,7 +64,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public void onViewDidAppear() {
         super.onViewDidAppear();
-        if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
+        if (view != null && lastVisibilityState == VisibilityState.Disappear)
+            view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
     }
 
@@ -136,9 +137,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
         ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
+                0,
                 insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),
+                0,
                 0
         ));
         return insets;
