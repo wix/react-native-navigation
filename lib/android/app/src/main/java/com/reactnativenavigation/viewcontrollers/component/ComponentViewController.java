@@ -138,7 +138,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
         ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
                 0,
-                insets.getSystemWindowInsetTop(),
+                getActivity().getApplicationContext().getApplicationInfo().targetSdkVersion >= 30
+                        && resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind()
+                        ? 0 : insets.getSystemWindowInsetTop(),
                 0,
                 0
         ));
