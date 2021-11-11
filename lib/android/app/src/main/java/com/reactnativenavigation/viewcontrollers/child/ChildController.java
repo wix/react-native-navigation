@@ -100,9 +100,9 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
 
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
         return insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
                 0,
-                insets.getSystemWindowInsetRight(),
+                0,
+                0,
                 0
         );
     }
