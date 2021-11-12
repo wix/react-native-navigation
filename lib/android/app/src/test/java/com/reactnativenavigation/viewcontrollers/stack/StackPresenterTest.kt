@@ -945,7 +945,7 @@ class StackPresenterTest : BaseTest() {
             statusBar.drawBehind = Bool(true)
         }
         Mockito.`when`(child.resolveCurrentOptions()).thenReturn(options)
-        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
             uut.applyChildOptions(Options.EMPTY.copy().apply {
                 topBar.height = Number(topBarHeightDp)
             }, parent, child)
@@ -961,7 +961,7 @@ class StackPresenterTest : BaseTest() {
         val statusBarHeightDp = 20
         val topBarHeightDp = 100
 
-        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
             uut.mergeChildOptions(Options.EMPTY.copy().apply {
                 topBar.height = Number(topBarHeightDp)
                 statusBar.drawBehind = Bool(true)
@@ -978,7 +978,7 @@ class StackPresenterTest : BaseTest() {
         val statusBarHeightDp = 20
         val topBarHeightDp = 100
 
-        mockStatusBarUtils(statusBarHeight, statusBarHeightDp) {
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
             uut.mergeChildOptions(Options.EMPTY.copy().apply {
                 topBar.height = Number(topBarHeightDp)
                 statusBar.drawBehind = Bool(false)

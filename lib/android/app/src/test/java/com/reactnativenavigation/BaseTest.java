@@ -60,7 +60,7 @@ public abstract class BaseTest {
     }
 
 
-    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func1<MockedStatic<SystemUiUtils>> mockedBlock) {
+    public void mockSystemUiUtils(int statusBarHeight, int statusBarHeightDp, Functions.Func1<MockedStatic<SystemUiUtils>> mockedBlock) {
         try (MockedStatic<SystemUiUtils> theMock = Mockito.mockStatic(SystemUiUtils.class)) {
             theMock.when(() -> {
                 SystemUiUtils.getStatusBarHeight(any());

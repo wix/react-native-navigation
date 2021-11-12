@@ -27,7 +27,7 @@ const colors = [
   '#8B1079',
 ];
 
-export default class StatusBarOptions extends React.Component<NavigationComponentProps, State> {
+export default class SystemUiOptions extends React.Component<NavigationComponentProps, State> {
   static options(): Options {
     return {
       statusBar: {
@@ -46,7 +46,7 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
           color: 'transparent',
         },
         title: {
-          text: 'StatusBar Options',
+          text: 'System UI Options',
           color: 'white',
         },
         backButton: {
@@ -187,7 +187,7 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
         children: [
           {
             component: {
-              name: Screens.StatusBarOptions,
+              name: Screens.SystemUiOptions,
             },
           },
         ],

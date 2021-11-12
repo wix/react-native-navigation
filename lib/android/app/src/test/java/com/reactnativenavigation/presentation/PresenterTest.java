@@ -30,7 +30,7 @@ public class PresenterTest extends BaseTest {
 
     @Test
     public void mergeStatusBarVisible_callsShowHide() {
-        mockStatusBarUtils(1,1,(mockedStatic)->{
+        mockSystemUiUtils(1,1,(mockedStatic)->{
             ViewGroup spy = Mockito.spy(new FrameLayout(activity));
             Options options = new Options();
             options.statusBar.visible = new Bool(false);
