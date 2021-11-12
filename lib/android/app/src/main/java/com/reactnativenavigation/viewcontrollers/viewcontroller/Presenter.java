@@ -16,7 +16,7 @@ import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
 import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
@@ -72,7 +72,7 @@ public class Presenter {
             if (view instanceof Navigator) return;
 
             LayerDrawable ld = new LayerDrawable(new Drawable[]{new ColorDrawable(options.layout.backgroundColor.get())});
-            int top = view.resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(view.getActivity());
+            int top = view.resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : SystemUiUtils.getStatusBarHeight(view.getActivity());
             if (!(view instanceof ParentController)) {
                 MarginLayoutParams lp = (MarginLayoutParams) view.getView().getLayoutParams();
                 if (lp.topMargin != 0) top = 0;
@@ -93,25 +93,25 @@ public class Presenter {
     private void setTranslucent(StatusBarOptions options) {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
-            StatusBarUtils.setStatusBarTranslucent(window);
-        } else if (StatusBarUtils.isTranslucent(window)) {
-            StatusBarUtils.clearStatusBarTranslucency(window);
+            SystemUiUtils.setStatusBarTranslucent(window);
+        } else if (SystemUiUtils.isTranslucent(window)) {
+            SystemUiUtils.clearStatusBarTranslucency(window);
         }
     }
 
     private void setStatusBarVisible(ViewController viewController, Bool visible) {
         final View view = viewController.view != null ? viewController.view : activity.getWindow().getDecorView();
         if (visible.isFalse()) {
-            StatusBarUtils.hideStatusBar(activity.getWindow(), view);
+            SystemUiUtils.hideStatusBar(activity.getWindow(), view);
         } else {
-            StatusBarUtils.showStatusBar(activity.getWindow(), view);
+            SystemUiUtils.showStatusBar(activity.getWindow(), view);
         }
     }
 
     private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
         if (statusBar.backgroundColor.canApplyValue()) {
             final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
-            StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
+            SystemUiUtils.setStatusBarColor(activity.getWindow(), statusBarBackgroundColor,
                     statusBar.translucent.isTrue());
         }
     }
@@ -138,7 +138,7 @@ public class Presenter {
         //View.post is a Workaround, added to solve internal Samsung 
         //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
         view.post(() -> {
-            StatusBarUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar));
+            SystemUiUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar));
         });
     }
 
@@ -152,7 +152,7 @@ public class Presenter {
     private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
         if (statusBar.backgroundColor.hasValue()) {
             final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
-            StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
+            SystemUiUtils.setStatusBarColor(activity.getWindow(), statusBarBackgroundColor,
                     statusBar.translucent.isTrue());
         }
     }
@@ -165,18 +165,18 @@ public class Presenter {
     private void mergeTranslucent(StatusBarOptions options) {
         Window window = activity.getWindow();
         if (options.translucent.isTrue()) {
-            StatusBarUtils.setStatusBarTranslucent(window);
-        } else if (options.translucent.isFalse() && StatusBarUtils.isTranslucent(window)) {
-            StatusBarUtils.clearStatusBarTranslucency(window);
+            SystemUiUtils.setStatusBarTranslucent(window);
+        } else if (options.translucent.isFalse() && SystemUiUtils.isTranslucent(window)) {
+            SystemUiUtils.clearStatusBarTranslucency(window);
         }
     }
 
     private void mergeStatusBarVisible(View view, Bool visible) {
         if (visible.hasValue()) {
             if (visible.isTrue()) {
-                StatusBarUtils.showStatusBar(activity.getWindow(), view);
+                SystemUiUtils.showStatusBar(activity.getWindow(), view);
             } else {
-                StatusBarUtils.hideStatusBar(activity.getWindow(), view);
+                SystemUiUtils.hideStatusBar(activity.getWindow(), view);
             }
         }
     }
@@ -197,32 +197,18 @@ public class Presenter {
 
     private void applyNavigationBarVisibility(NavigationBarOptions options) {
         View decorView = activity.getWindow().getDecorView();
-        if(options.isVisible.isTrueOrUndefined()){
-            StatusBarUtils.showNavigationBar(activity.getWindow(),decorView);
-        }else{
-            StatusBarUtils.hideNavigationBar(activity.getWindow(),decorView);
+        if (options.isVisible.isTrueOrUndefined()) {
+            SystemUiUtils.showNavigationBar(activity.getWindow(), decorView);
+        } else {
+            SystemUiUtils.hideNavigationBar(activity.getWindow(), decorView);
         }
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
+        if (navigationBar.backgroundColor.canApplyValue()) {
             int defaultColor = activity.getWindow().getNavigationBarColor();
             int color = navigationBar.backgroundColor.get(defaultColor);
-            activity.getWindow().setNavigationBarColor(color);
-            setNavigationBarButtonsColor(color);
-        }
-    }
-
-    private void setNavigationBarButtonsColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            View decorView = activity.getWindow().getDecorView();
-            int flags = decorView.getSystemUiVisibility();
-            if (isColorLight(color)) {
-                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            } else {
-                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            }
-            decorView.setSystemUiVisibility(flags);
+            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
         }
     }
 

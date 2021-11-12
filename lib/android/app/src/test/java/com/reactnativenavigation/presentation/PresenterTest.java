@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 
 import org.junit.Test;
@@ -36,12 +36,12 @@ public class PresenterTest extends BaseTest {
             options.statusBar.visible = new Bool(false);
             uut.mergeOptions(spy, options);
             mockedStatic.verify(times(1),
-                    ()-> StatusBarUtils.hideStatusBar(any(),any()));
+                    ()-> SystemUiUtils.hideStatusBar(any(),any()));
 
             options.statusBar.visible = new Bool(true);
             uut.mergeOptions(spy, options);
             mockedStatic.verify(times(1),
-                    ()-> StatusBarUtils.showStatusBar(any(),any()));
+                    ()-> SystemUiUtils.showStatusBar(any(),any()));
         });
 
     }

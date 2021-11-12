@@ -22,7 +22,7 @@ import com.reactnativenavigation.options.parseTransitionAnimationOptions
 import com.reactnativenavigation.options.parsers.JSONParser
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.react.CommandListenerAdapter
-import com.reactnativenavigation.utils.StatusBarUtils
+import com.reactnativenavigation.utils.SystemUiUtils
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator
 
 private const val MODAL_MANAGER_NAME = "RNNModalViewManager"
@@ -127,7 +127,7 @@ private fun getModalHostSize(activity: Activity): Point {
     // because Display.getCurrentSizeRange doesn't include it.
     var statusBarHeight = 0
     if (windowFullscreen) {
-        statusBarHeight = StatusBarUtils.getStatusBarHeight(activity)
+        statusBarHeight = SystemUiUtils.getStatusBarHeight(activity)
     }
     return if (SIZE_POINT.x < SIZE_POINT.y) {
         // If we are vertical the width value comes from min width and height comes from max height

@@ -36,6 +36,9 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
         drawBehind: false,
         backgroundColor: '#000000',
       },
+      navigationBar: {
+        backgroundColor: '#000000',
+      },
       topBar: {
         drawBehind: true,
         elevation: 0,
@@ -70,7 +73,7 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
       <View style={style.container}>
         <Image style={style.image} source={require('../../img/city.png')} fadeDuration={0} />
         <Root componentId={this.props.componentId} style={style.root}>
-          <Text>Status Bar Color</Text>
+          <Text>Navigation & Status Bar Color</Text>
           <ColorPalette
             value={this.state.selectedColor}
             onValueChange={this.onPaletteValueChange}
@@ -119,6 +122,9 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
   onPaletteValueChange = (value: string, _: object) => {
     Navigation.mergeOptions(this.props.componentId, {
       statusBar: {
+        backgroundColor: value,
+      },
+      navigationBar: {
         backgroundColor: value,
       },
     });

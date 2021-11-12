@@ -11,7 +11,7 @@ import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import org.assertj.core.api.Java6Assertions;
@@ -31,7 +31,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        StatusBarUtils.saveStatusBarHeight(63);
+        SystemUiUtils.saveStatusBarHeight(63);
         view = Mockito.spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
@@ -156,13 +156,13 @@ public class ComponentViewControllerTest extends BaseTest {
     public void getTopInset_returnsStatusBarHeight() {
         //noinspection ConstantConditions
         uut.setParentController(null);
-        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(SystemUiUtils.getStatusBarHeight(activity));
     }
 
     @Test
     public void getTopInset_resolveWithParent() {
         Java6Assertions
-                .assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
+                .assertThat(uut.getTopInset()).isEqualTo(SystemUiUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
     }
 
     @Test

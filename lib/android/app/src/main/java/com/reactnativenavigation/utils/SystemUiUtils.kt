@@ -14,7 +14,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 
 
-object StatusBarUtils {
+object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25
     private const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
@@ -53,23 +53,6 @@ object StatusBarUtils {
     fun getStatusBarHeightDp(activity: Activity?): Int {
         return UiUtils.pxToDp(activity, getStatusBarHeight(activity).toFloat())
             .toInt()
-    }
-
-    fun hideSystemUi(window: Window?, view: View) {
-        window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-            WindowInsetsControllerCompat(window, view).let { controller ->
-                controller.hide(WindowInsetsCompat.Type.systemBars())
-                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        }
-    }
-
-    fun showSystemUi(window: Window?, view: View) {
-        window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
-            WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.navigationBars())
-        }
     }
 
     @JvmStatic
@@ -152,6 +135,16 @@ object StatusBarUtils {
         window?.let {
             WindowCompat.setDecorFitsSystemWindows(window, true)
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.statusBars())
+        }
+    }
+
+    @JvmStatic
+    fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
+        window?.let {
+            WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+                controller.isAppearanceLightNavigationBars = lightColor
+            }
+            window.navigationBarColor = color
         }
     }
 
