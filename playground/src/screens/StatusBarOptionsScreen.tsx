@@ -37,10 +37,10 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
         backgroundColor: '#000000',
       },
       topBar: {
-        elevation: 3,
         drawBehind: true,
+        elevation: 0,
         background: {
-          color: 'argb(44,255,0,0)',
+          color: 'transparent',
         },
         title: {
           text: 'StatusBar Options',
@@ -70,8 +70,6 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
       <View style={style.container}>
         <Image style={style.image} source={require('../../img/city.png')} fadeDuration={0} />
         <Root componentId={this.props.componentId} style={style.root}>
-          {/*<Button label="Full Screen Modal" onPress={this.fullScreenModal} />*/}
-          {/*<Button label="Push" onPress={this.push} />*/}
           <Text>Status Bar Color</Text>
           <ColorPalette
             value={this.state.selectedColor}
@@ -108,7 +106,10 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
               onValueChange={this.onNavBarVisibilityValueChanged}
             />
           </View>
+          <Button label="Full Screen Modal" onPress={this.fullScreenModal} />
+          <Button label="Push" onPress={this.push} />
           <Button label="BottomTabs" onPress={this.bottomTabs} />
+          <Button label="Set As Root" onPress={this.setAsRoot} />
           <Button label="Open Left" onPress={() => this.open('left')} />
           <Button label="Open Right" onPress={() => this.open('right')} />
         </Root>
@@ -166,6 +167,27 @@ export default class StatusBarOptions extends React.Component<NavigationComponen
     this.setState({ navigationBarVisible: value });
   };
 
+  setAsRoot = async () => {
+    await Navigation.setRoot({
+      stack: {
+        options: {
+          statusBar: {
+            translucent: this.state.translucent,
+            style: this.state.darkStatusBarScheme ? 'dark' : 'light',
+            drawBehind: this.state.drawBehind,
+            backgroundColor: this.state.selectedColor,
+          },
+        },
+        children: [
+          {
+            component: {
+              name: Screens.StatusBarOptions,
+            },
+          },
+        ],
+      },
+    });
+  };
   fullScreenModal = () => Navigation.showModal(Screens.FullScreenModal);
   push = () => Navigation.push(this, Screens.Pushed);
   bottomTabs = () => Navigation.showModal(Screens.StatusBarBottomTabs);

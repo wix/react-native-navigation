@@ -253,15 +253,28 @@ public class StackPresenter {
     }
 
     private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options toMerge) {
-        if (toMerge.statusBar.drawBehind.hasValue()) {
-            if (toMerge.statusBar.visible.isTrueOrUndefined() && toMerge.statusBar.drawBehind.isTrue()) {
-                topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
-                topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
-            } else {
-                topBar.setTopPadding(0);
-                topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+        if(toMerge.statusBar.visible.isTrueOrUndefined()){
+            if (toMerge.statusBar.drawBehind.hasValue()) {
+                if (toMerge.statusBar.drawBehind.isTrue()) {
+                    topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+                } else {
+                    topBar.setTopPadding(0);
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+                }
+            }
+        }else{
+            if (toMerge.statusBar.drawBehind.hasValue()) {
+                if (toMerge.statusBar.drawBehind.isFalseOrUndefined()) {
+                    topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+                } else {
+                    topBar.setTopPadding(0);
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+                }
             }
         }
+
     }
 
     @Nullable

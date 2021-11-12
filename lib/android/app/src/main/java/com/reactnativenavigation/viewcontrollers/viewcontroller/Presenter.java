@@ -112,7 +112,7 @@ public class Presenter {
         if (statusBar.backgroundColor.canApplyValue()) {
             final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
             StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
-                    Color.alpha(statusBarBackgroundColor)/255f);
+                    statusBar.translucent.isTrue());
         }
     }
 
@@ -153,7 +153,7 @@ public class Presenter {
         if (statusBar.backgroundColor.hasValue()) {
             final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
             StatusBarUtils.setStatusBarColor(activity.getWindow(),statusBarBackgroundColor,
-                    Color.alpha(statusBarBackgroundColor)/255f);
+                    statusBar.translucent.isTrue());
         }
     }
 

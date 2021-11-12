@@ -47,7 +47,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
-    public final static int  DEFAULT_TITLE_COLOR = Color.BLACK;
+    public final static int DEFAULT_TITLE_COLOR = Color.BLACK;
     public final static int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
 
     private final TopBarCollapseBehavior collapsingBehavior;

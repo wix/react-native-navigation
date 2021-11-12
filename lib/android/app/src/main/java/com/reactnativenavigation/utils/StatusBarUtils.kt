@@ -7,7 +7,6 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import androidx.annotation.ColorInt
-import androidx.annotation.FloatRange
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -15,10 +14,10 @@ import kotlin.math.abs
 import kotlin.math.ceil
 
 
-
 object StatusBarUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25
+    private const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
 
 
@@ -93,19 +92,21 @@ object StatusBarUtils {
     }
 
     @JvmStatic
-    fun setStatusBarColorScheme(window: Window?, view: View, isDark:Boolean){
+    fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
         window?.let {
             WindowInsetsControllerCompat(window, view).let { controller ->
                 controller.isAppearanceLightStatusBars = !isDark
             }
         }
     }
+
     @JvmStatic
-    fun setStatusBarTranslucent(window: Window?){
+    fun setStatusBarTranslucent(window: Window?) {
         window?.let {
-            setStatusBarColor(window,window.statusBarColor,0.5f)
+            setStatusBarColor(window, window.statusBarColor, true)
         }
     }
+
     @JvmStatic
     fun isTranslucent(window: Window?): Boolean {
         return window?.let {
@@ -116,7 +117,7 @@ object StatusBarUtils {
     @JvmStatic
     fun clearStatusBarTranslucency(window: Window?) {
         window?.let {
-            setStatusBarColor(it,it.statusBarColor,1f)
+            setStatusBarColor(it, it.statusBarColor, false)
         }
     }
 
@@ -124,9 +125,9 @@ object StatusBarUtils {
     fun setStatusBarColor(
         window: Window?,
         @ColorInt color: Int,
-        @FloatRange(from = 0.0, to = 1.0, fromInclusive = true, toInclusive = true)
-        alpha: Float
+        translucent: Boolean
     ) {
+        val alpha = if (translucent) STATUS_BAR_HEIGHT_TRANSLUCENCY else 1f
         val red: Int = Color.red(color)
         val green: Int = Color.green(color)
         val blue: Int = Color.blue(color)
@@ -134,7 +135,6 @@ object StatusBarUtils {
         val opaqueColor = Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
         window?.statusBarColor = opaqueColor
     }
-
 
     @JvmStatic
     fun hideStatusBar(window: Window?, view: View) {
