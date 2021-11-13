@@ -19,6 +19,8 @@ object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_L = 25
     private const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
+    var navigationBarDefaultColor = -1
+        private set
 
 
     @JvmStatic
@@ -141,6 +143,9 @@ object SystemUiUtils {
     @JvmStatic
     fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
         window?.let {
+            if (navigationBarDefaultColor == -1) {
+                navigationBarDefaultColor = window.navigationBarColor
+            }
             WindowInsetsControllerCompat(window, window.decorView).let { controller ->
                 controller.isAppearanceLightNavigationBars = lightColor
             }

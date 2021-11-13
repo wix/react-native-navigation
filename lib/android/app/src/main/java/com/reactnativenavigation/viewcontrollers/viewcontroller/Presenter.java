@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
+import androidx.core.content.ContextCompat;
+
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
@@ -23,10 +25,10 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 public class Presenter {
     private final Activity activity;
     private Options defaultOptions;
-
     public Presenter(Activity activity, Options defaultOptions) {
         this.activity = activity;
         this.defaultOptions = defaultOptions;
+
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -205,10 +207,14 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+         int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
+         navigationBarDefaultColor = navigationBarDefaultColor==-1?Color.BLACK:navigationBarDefaultColor;
         if (navigationBar.backgroundColor.canApplyValue()) {
-            int defaultColor = activity.getWindow().getNavigationBarColor();
-            int color = navigationBar.backgroundColor.get(defaultColor);
+            int color = navigationBar.backgroundColor.get(navigationBarDefaultColor);
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
+        }else{
+            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), navigationBarDefaultColor, isColorLight(navigationBarDefaultColor));
+
         }
     }
 
