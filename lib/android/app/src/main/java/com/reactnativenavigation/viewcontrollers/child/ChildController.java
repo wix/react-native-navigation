@@ -73,7 +73,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
-        if (isViewShown()) presenter.mergeOptions(getView(), this.options.mergeWith(options));
+        if (isViewShown()) presenter.mergeOptions(this, options);
         super.mergeOptions(options);
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
     }
@@ -98,6 +98,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
+        if(viewController==null || viewController.getView() ==null)return insets;
         final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
         Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
         final WindowInsetsCompat finalInsets = builder.setInsets(WindowInsetsCompat.Type.systemBars(),
