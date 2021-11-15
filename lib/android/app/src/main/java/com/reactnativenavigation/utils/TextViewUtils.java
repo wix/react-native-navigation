@@ -23,4 +23,7 @@ public class TextViewUtils {
         return spans.length == 0 ? -1 : spans[0].getSize();
     }
 
+    public static void setColor(SpannableString span, int color) {
+        span.setSpan(new ForegroundColorSpan(color), 0, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
 }

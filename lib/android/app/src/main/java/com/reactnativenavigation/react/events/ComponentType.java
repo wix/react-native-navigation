@@ -6,7 +6,7 @@ public enum ComponentType {
     Title("TopBarTitle"),
     Background("TopBarBackground");
 
-    private final String name;
+    private String name;
 
     public String getName() {
         return name;

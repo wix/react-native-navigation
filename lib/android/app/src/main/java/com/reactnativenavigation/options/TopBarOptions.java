@@ -19,17 +19,18 @@ import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 
 public class TopBarOptions {
 
-    public static TopBarOptions parse(Context context, JSONObject json) {
+    public static TopBarOptions parse(Context context, TypefaceLoader typefaceLoader, JSONObject json) {
         TopBarOptions options = new TopBarOptions();
         if (json == null) return options;
 
-        options.title = TitleOptions.parse(context, json.optJSONObject("title"));
-        options.subtitle = SubtitleOptions.parse(context, json.optJSONObject("subtitle"));
+        options.title = TitleOptions.parse(context, typefaceLoader, json.optJSONObject("title"));
+        options.subtitle = SubtitleOptions.parse(context, typefaceLoader, json.optJSONObject("subtitle"));
         options.background = TopBarBackgroundOptions.parse(context, json.optJSONObject("background"));
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json,"animate");

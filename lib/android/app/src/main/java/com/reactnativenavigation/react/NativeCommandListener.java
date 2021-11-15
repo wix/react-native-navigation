@@ -7,11 +7,11 @@ import com.reactnativenavigation.utils.Now;
 import androidx.annotation.Nullable;
 
 public class NativeCommandListener extends CommandListenerAdapter {
-    private final String commandId;
-    private final String commandName;
-    @Nullable private final Promise promise;
-    private final EventEmitter eventEmitter;
-    private final Now now;
+    private String commandId;
+    private String commandName;
+    @Nullable private Promise promise;
+    private EventEmitter eventEmitter;
+    private Now now;
 
     public NativeCommandListener(String commandName, String commandId, @Nullable Promise promise, EventEmitter eventEmitter, Now now) {
         this.commandName = commandName;

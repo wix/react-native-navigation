@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 
 public class TopTabsController extends ParentController<TopTabsViewPager> {
 
-    private final List<ViewController<?>> tabs;
-    private final TopTabsLayoutCreator viewCreator;
+    private List<ViewController<?>> tabs;
+    private TopTabsLayoutCreator viewCreator;
 
     public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController<?>> tabs, TopTabsLayoutCreator viewCreator, Options options, Presenter presenter) {
         super(activity, childRegistry, id, presenter, options);

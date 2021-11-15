@@ -47,12 +47,49 @@ public class UiUtils {
         });
     }
 
+    public static void runOnMeasured(View view, Runnable task) {
+        if (view.getHeight() > 0 && view.getWidth() > 0) {
+            task.run();
+        } else {
+            ViewTreeObserver.OnGlobalLayoutListener listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (view.getHeight() > 0 && view.getWidth() > 0) {
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        task.run();
+                    }
+                }
+            };
+            runOnDetach(view, () -> view.getViewTreeObserver().removeOnGlobalLayoutListener(listener));
+            view.getViewTreeObserver().addOnGlobalLayoutListener(listener);
+        }
+    }
+
+    public static void runOnDetach(View view, Runnable task) {
+        view.getViewTreeObserver().addOnWindowAttachListener(new ViewTreeObserver.OnWindowAttachListener() {
+            @Override
+            public void onWindowAttached() {
+
+            }
+
+            @Override
+            public void onWindowDetached() {
+                view.getViewTreeObserver().removeOnWindowAttachListener(this);
+                task.run();
+            }
+        });
+    }
+
     public static void runOnMainThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
     }
 
     public static float getWindowHeight(Context context) {
         return getDisplayMetrics(context).heightPixels;
+    }
+
+    public static float getWindowWidth(Context context) {
+        return getDisplayMetrics(context).widthPixels;
     }
 
     @NonNull
@@ -113,4 +150,7 @@ public class UiUtils {
         return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    public static float dpToSp(Context context, float dp) {
+        return dpToPx(context, dp) / context.getResources().getDisplayMetrics().density;
+    }
 }

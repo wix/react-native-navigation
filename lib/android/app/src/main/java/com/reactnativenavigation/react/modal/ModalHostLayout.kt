@@ -18,7 +18,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import java.util.*
 
 @SuppressLint("ViewConstructor")
-class ModalHostLayout(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
+open class ModalHostLayout(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
     val viewController = ModalLayoutController(
         reactContext,
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),

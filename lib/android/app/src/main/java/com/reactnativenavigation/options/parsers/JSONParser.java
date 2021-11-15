@@ -6,6 +6,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +76,7 @@ public class JSONParser {
 
     private static Object parseNumber(ReadableMap map, String key) {
         try {
-            double doubleValue = map.getDouble(key);
+            Double doubleValue = map.getDouble(key);
             if(doubleValue % 1 == 0){
                 return map.getInt(key);
             }
@@ -86,7 +88,7 @@ public class JSONParser {
 
     private static Object parseNumber(ReadableArray arr, int index) {
         try {
-            double doubleValue = arr.getDouble(index);
+            Double doubleValue = arr.getDouble(index);
             if(doubleValue % 1 == 0){
                 return arr.getInt(index);
             }

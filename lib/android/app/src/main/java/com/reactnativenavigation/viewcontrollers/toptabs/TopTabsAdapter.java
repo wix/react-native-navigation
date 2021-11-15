@@ -12,7 +12,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import java.util.List;
 
 public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
-    private final List<ViewController<?>> tabs;
+    private List<ViewController<?>> tabs;
     private int currentPage = 0;
 
     public TopTabsAdapter(List<ViewController<?>> tabs) {
@@ -34,7 +34,6 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
         return view == object;
     }
 
-    @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup component, int position) {
         return tabs.get(position).getView();

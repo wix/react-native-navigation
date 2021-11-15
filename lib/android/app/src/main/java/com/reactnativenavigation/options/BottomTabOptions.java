@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class BottomTabOptions {
 
-    public static BottomTabOptions parse(Context context, JSONObject json) {
+    public static BottomTabOptions parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
         BottomTabOptions options = new BottomTabOptions();
         if (json == null) return options;
 

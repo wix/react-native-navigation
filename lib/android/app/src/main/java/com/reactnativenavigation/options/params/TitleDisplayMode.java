@@ -24,7 +24,7 @@ public enum TitleDisplayMode {
         }
     }
 
-    @Nullable private final TitleState state;
+    @Nullable private TitleState state;
 
     TitleDisplayMode(@Nullable TitleState state) {
         this.state = state;

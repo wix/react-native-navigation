@@ -12,7 +12,7 @@ private const val DARK_COLOR_KEY = "dark"
 
 class NullThemeColour() : ThemeColour(NullColor(), NullColor()) {
     override fun hasValue(): Boolean {
-        return false
+        return false;
     }
 }
 

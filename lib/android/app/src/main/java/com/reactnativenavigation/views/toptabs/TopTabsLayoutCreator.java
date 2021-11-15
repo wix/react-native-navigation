@@ -8,8 +8,8 @@ import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import java.util.List;
 
 public class TopTabsLayoutCreator {
-    private final Context context;
-    private final List<ViewController<?>> tabs;
+    private Context context;
+    private List<ViewController<?>> tabs;
 
     public TopTabsLayoutCreator(Context context, List<ViewController<?>> tabs) {
         this.context = context;

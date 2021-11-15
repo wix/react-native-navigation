@@ -1,9 +1,9 @@
 package com.reactnativenavigation;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,6 +12,7 @@ import android.view.View;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
@@ -130,7 +131,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         requestPermissions(permissions, requestCode);
     }
 
-    @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         NavigationApplication.instance.onRequestPermissionsResult(requestCode, permissions, grantResults);

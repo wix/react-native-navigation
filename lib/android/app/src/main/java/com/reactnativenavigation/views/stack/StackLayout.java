@@ -16,7 +16,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressLint("ViewConstructor")
 public class StackLayout extends CoordinatorLayout implements Component {
-    private final String stackId;
+    private String stackId;
 
     public StackLayout(Context context, TopBarController topBarController, String stackId) {
         super(context);

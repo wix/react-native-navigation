@@ -31,8 +31,24 @@ public class CollectionUtils {
         void on(T t);
     }
 
+    public interface Comparator<T> {
+        boolean compare(T a, T b);
+    }
+
     public static boolean isNullOrEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    public interface KeyBy<K, V> {
+        K by(V value);
+    }
+
+    public static <K, V> Map<K, V> keyBy(Collection<V> elements, KeyBy<K, V> key) {
+        Map<K, V> map = new HashMap<>();
+        for (V value : elements) {
+            map.put(key.by(value), value);
+        }
+        return map;
     }
 
     public interface Mapper<T, S> {
@@ -60,6 +76,11 @@ public class CollectionUtils {
         return result;
     }
 
+    public static <K, V> V getOrDefault(@Nullable Map<K, V> map, K key, Functions.FuncR<V> defaultValueCreator) {
+        if (map == null) return defaultValueCreator.run();
+        return map.containsKey(key) ? map.get(key) : defaultValueCreator.run();
+    }
+
     public static <T> List<T> merge(@Nullable Collection<T> a, @Nullable Collection<T> b, @NonNull List<T> defaultValue) {
         List<T> result = merge(a, b);
         return result == null ? defaultValue : result;
@@ -70,6 +91,25 @@ public class CollectionUtils {
         ArrayList<T> result = new ArrayList<>(get(a));
         result.addAll(get(b));
         return result;
+    }
+
+    /**
+     * @return Items in a, that are not in b
+     */
+    public static <T> List<T> difference(@NonNull Collection<T> a, @Nullable Collection<T> b, Comparator<T> comparator) {
+        if (b == null) return new ArrayList<>(a);
+        ArrayList<T> results = new ArrayList<>();
+        forEach(a, btn -> {
+            if (!contains(b, btn, comparator)) results.add(btn);
+        });
+        return results;
+    }
+
+    private static <T> boolean contains(@NonNull Collection<T> items, T item, Comparator<T> comparator) {
+        for (T t : items) {
+            if (comparator.compare(t, item)) return true;
+        }
+        return false;
     }
 
     public static <T> void forEach(@Nullable Collection<T> items, Apply<T> apply) {
@@ -94,6 +134,12 @@ public class CollectionUtils {
         }
     }
 
+    public static <T> void forEachIndexed(@Nullable List<T> items, Functions.Func2<T, Integer> apply) {
+        if (items == null) return;
+        for (int i = 0; i < items.size(); i++) {
+            apply.run(items.get(i), i);
+        }
+    }
 
     public static @Nullable <T> T first(@Nullable Collection<T> items, Filter<T> by) {
         if (isNullOrEmpty(items)) return null;
@@ -116,6 +162,14 @@ public class CollectionUtils {
 
     public static <T> T last(@Nullable List<T> items) {
         return CollectionUtils.isNullOrEmpty(items) ? null : items.get(items.size() - 1);
+    }
+
+    public static <T> T requireLast(@Size(min = 1) List<T> items) {
+        return items.get(items.size() - 1);
+    }
+
+    public static <T> T removeLast(@NonNull List<T> items) {
+        return items.remove(items.size() - 1);
     }
 
     public interface Reducer<S, T> {
@@ -148,4 +202,27 @@ public class CollectionUtils {
         return t == null ? Collections.emptyList() : t.values();
     }
 
+    public static <T> boolean equals(@Nullable Collection<T> a, @Nullable Collection<T> b) {
+        if (size(a) != size(b)) return false;
+        return reduce(zip(a, b), true, (p, currentValue) -> currentValue && Objects.equals(p.first, p.second));
+    }
+
+    public static int size(@Nullable Collection items) {
+        return items == null ? 0 : items.size();
+    }
+
+    public static <T> Collection<Pair<T, T>> zip(@Nullable Collection<T> a, @Nullable Collection<T> b) {
+        if (a == null || b == null) return new ArrayList<>();
+        Iterator iter1 = a.iterator();
+        Iterator iter2 = b.iterator();
+        ArrayList<Pair<T,T>> result = new ArrayList<>();
+        while (iter1.hasNext() && iter2.hasNext()) {
+            result.add(new Pair(iter1.next(), iter2.next()));
+        }
+        return result;
+    }
+
+    public static @Nullable<T> T safeGet(List<T> items, int index) {
+        return index >= 0 && index < items.size() ? items.get(index) : null;
+    }
 }

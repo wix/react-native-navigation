@@ -32,14 +32,14 @@ open class ShadowOptions(
     fun copy(): ShadowOptions = ShadowOptions(this.color, this.radius, this.opacity)
 
     fun mergeWith(other: ShadowOptions): ShadowOptions {
-        if(other.color.hasValue()) this.color = other.color
+        if(other.color.hasValue()) this.color = other.color;
         if (other.opacity.hasValue()) this.opacity = other.opacity
         if (other.radius.hasValue()) this.radius = other.radius
         return this
     }
 
     fun mergeWithDefaults(defaultOptions: ShadowOptions = NullShadowOptions): ShadowOptions {
-        if(!this.color.hasValue()) this.color = defaultOptions.color
+        if(!this.color.hasValue()) this.color = defaultOptions.color;
         if (!this.opacity.hasValue()) this.opacity = defaultOptions.opacity
         if (!this.radius.hasValue()) this.radius = defaultOptions.radius
         return this

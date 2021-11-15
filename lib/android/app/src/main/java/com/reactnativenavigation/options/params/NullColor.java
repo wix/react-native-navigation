@@ -1,7 +1,5 @@
 package com.reactnativenavigation.options.params;
 
-import androidx.annotation.NonNull;
-
 public class NullColor extends Colour {
 
     public NullColor() {
@@ -13,7 +11,6 @@ public class NullColor extends Colour {
         return false;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "Null Color";

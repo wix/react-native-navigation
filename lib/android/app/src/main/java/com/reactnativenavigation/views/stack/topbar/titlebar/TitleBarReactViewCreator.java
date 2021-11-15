@@ -7,7 +7,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator
 
 public class TitleBarReactViewCreator implements ReactViewCreator {
 
-    protected final ReactInstanceManager instanceManager;
+    protected ReactInstanceManager instanceManager;
 
     public TitleBarReactViewCreator(ReactInstanceManager instanceManager) {
         this.instanceManager = instanceManager;

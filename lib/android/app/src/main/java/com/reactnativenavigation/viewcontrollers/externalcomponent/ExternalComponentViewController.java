@@ -24,7 +24,7 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public class ExternalComponentViewController extends ChildController<ExternalComponentLayout> {
     private final ExternalComponent externalComponent;
     private final ExternalComponentCreator componentCreator;
-    private final ReactInstanceManager reactInstanceManager;
+    private ReactInstanceManager reactInstanceManager;
     private final EventEmitter emitter;
     private final ExternalComponentPresenter presenter;
 

@@ -16,7 +16,7 @@ public class StatusBarOptions {
     public enum TextColorScheme {
         Light("light"), Dark("dark"), None("none");
 
-        private final String scheme;
+        private String scheme;
 
         TextColorScheme(String scheme) {
             this.scheme = scheme;

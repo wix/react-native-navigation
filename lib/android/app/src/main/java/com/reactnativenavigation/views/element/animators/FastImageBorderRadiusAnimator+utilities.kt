@@ -42,7 +42,7 @@ private fun getBorderRadius(v: View): Float {
         return v.borderRadius
     }
 
-    return 0f
+    return 0f;
 }
 
 private fun getOriginalParent(view: View): ViewGroup? = when(view.parent) {

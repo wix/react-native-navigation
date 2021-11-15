@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StackControllerBuilder {
-    private final Activity activity;
+    private Activity activity;
     private ChildControllersRegistry childRegistry;
     private TopBarController topBarController;
     private String id;

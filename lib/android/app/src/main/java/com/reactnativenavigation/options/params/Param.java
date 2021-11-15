@@ -3,7 +3,7 @@ package com.reactnativenavigation.options.params;
 import static com.reactnativenavigation.utils.ObjectUtils.equalsNotNull;
 
 public abstract class Param<T> {
-    protected final T value;
+    protected T value;
     private boolean consumed;
 
     Param(T value) {

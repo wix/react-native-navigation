@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 public class TitleOptions {
 
-    public static TitleOptions parse(Context context, JSONObject json) {
+    public static TitleOptions parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
         final TitleOptions options = new TitleOptions();
         if (json == null) return options;
 

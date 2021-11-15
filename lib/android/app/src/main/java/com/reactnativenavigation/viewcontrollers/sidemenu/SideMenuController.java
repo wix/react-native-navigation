@@ -32,7 +32,7 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     private ViewController<?> center;
     private ViewController<?> left;
     private ViewController<?> right;
-    private final SideMenuPresenter presenter;
+    private SideMenuPresenter presenter;
     private float prevLeftSlideOffset = 0;
     private float prevRightSlideOffset = 0;
 

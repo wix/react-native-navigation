@@ -16,7 +16,7 @@ import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import org.json.JSONObject;
 
 public class SubtitleOptions {
-    public static SubtitleOptions parse(Context context, JSONObject json) {
+    public static SubtitleOptions parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
         final SubtitleOptions options = new SubtitleOptions();
         if (json == null) {
             return options;

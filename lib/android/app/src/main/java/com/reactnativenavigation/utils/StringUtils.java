@@ -1,5 +1,6 @@
 package com.reactnativenavigation.utils;
 
+import androidx.annotation.Nullable;
 
 public class StringUtils {
 
@@ -10,4 +11,8 @@ public class StringUtils {
 		}
 		return s1.equals(s2);
 	}
+
+    public static boolean isEmpty(@Nullable CharSequence s) {
+        return s == null || s.length() == 0;
+    }
 }

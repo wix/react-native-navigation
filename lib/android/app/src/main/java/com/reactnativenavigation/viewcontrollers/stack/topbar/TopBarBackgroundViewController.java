@@ -14,7 +14,7 @@ import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 
 public class TopBarBackgroundViewController extends ViewController<TopBarBackgroundView> {
 
-    private final TopBarBackgroundViewCreator viewCreator;
+    private TopBarBackgroundViewCreator viewCreator;
     private ComponentOptions component;
 
     public TopBarBackgroundViewController(Activity activity, TopBarBackgroundViewCreator viewCreator) {

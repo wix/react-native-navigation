@@ -10,7 +10,7 @@ import com.reactnativenavigation.react.ReactView;
 
 public class ComponentViewCreator implements ReactViewCreator {
 
-    private final ReactInstanceManager instanceManager;
+    private ReactInstanceManager instanceManager;
 
     public ComponentViewCreator(ReactInstanceManager instanceManager) {
         this.instanceManager = instanceManager;

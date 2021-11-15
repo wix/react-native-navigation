@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.params.ThemeColour

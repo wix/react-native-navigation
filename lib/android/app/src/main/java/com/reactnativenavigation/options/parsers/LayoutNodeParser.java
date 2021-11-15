@@ -12,6 +12,7 @@ import java.util.List;
 
 public class LayoutNodeParser {
 
+	@SuppressWarnings("unchecked")
 	public static LayoutNode parse(JSONObject layoutTree) {
 		String id = layoutTree.optString("id");
 		LayoutNode.Type type = LayoutNode.Type.valueOf(layoutTree.optString("type"));

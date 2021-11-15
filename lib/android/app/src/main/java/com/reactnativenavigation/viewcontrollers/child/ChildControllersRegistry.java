@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ChildControllersRegistry {
-    private final ArrayDeque<ChildController<?>> children = new ArrayDeque<>();
+    private ArrayDeque<ChildController<?>> children = new ArrayDeque<>();
 
     public void onViewAppeared(ChildController<?> child) {
         children.push(child);

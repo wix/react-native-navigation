@@ -22,7 +22,7 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
 
     private boolean willAppearSent = false;
-    private final ReactView reactView;
+    private ReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
 
     public ComponentLayout(Context context, ReactView reactView) {

@@ -32,7 +32,7 @@ class IconBackgroundDrawable(
     private val bitmapWidth = wrapped.intrinsicWidth
     private val bitmapHeight = wrapped.intrinsicHeight
     private var backgroundRect = Rect()
-    private var bitmapRect = Rect()
+    private var bitmapRect = Rect();
 
     override fun draw(canvas: Canvas) {
         drawPath(canvas)
