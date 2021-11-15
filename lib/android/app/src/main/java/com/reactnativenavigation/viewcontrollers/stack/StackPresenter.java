@@ -252,10 +252,10 @@ public class StackPresenter {
         }
     }
 
-    private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options toMerge) {
-        if(toMerge.statusBar.visible.isTrueOrUndefined()){
-            if (toMerge.statusBar.drawBehind.hasValue()) {
-                if (toMerge.statusBar.drawBehind.isTrue()) {
+    private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options childOptions) {
+        if(childOptions.statusBar.visible.isTrueOrUndefined()){
+            if (childOptions.statusBar.drawBehind.hasValue()) {
+                if (childOptions.statusBar.drawBehind.isTrue()) {
                     topBar.setTopPadding(SystemUiUtils.getStatusBarHeight(activity));
                     topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + SystemUiUtils.getStatusBarHeightDp(activity));
                 } else {
@@ -264,8 +264,8 @@ public class StackPresenter {
                 }
             }
         }else{
-            if (toMerge.statusBar.drawBehind.hasValue()) {
-                if (toMerge.statusBar.drawBehind.isFalseOrUndefined()) {
+            if (childOptions.statusBar.drawBehind.hasValue()) {
+                if (childOptions.statusBar.drawBehind.isFalseOrUndefined()) {
                     topBar.setTopPadding(SystemUiUtils.getStatusBarHeight(activity));
                     topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + SystemUiUtils.getStatusBarHeightDp(activity));
                 } else {
@@ -364,12 +364,11 @@ public class StackPresenter {
                 perform(bottomTabsController, null, btc -> btc.getSetStackRootAnimation(appearingOptions))
         );
     }
-
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController<?> child) {
-        Options withDefault = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions);
+        TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(toMerge.layout.orientation);
-        mergeButtons(withDefault.topBar, toMerge.topBar, child.getView(), stack);
-        mergeTopBarOptions(withDefault.topBar, withDefault, stack, child);
+        mergeButtons(topBar, toMerge.topBar, child.getView(), stack);
+        mergeTopBarOptions(topBar, toMerge, stack, child);
         mergeTopTabsOptions(toMerge.topTabs);
         mergeTopTabOptions(toMerge.topTabOptions);
     }
@@ -498,16 +497,18 @@ public class StackPresenter {
         return result;
     }
 
-    private void mergeTopBarOptions(TopBarOptions resolveOptions, Options options, StackController stack, ViewController<?> child) {
-        TopBarOptions topBarOptions = options.topBar;
+    private void mergeTopBarOptions(TopBarOptions resolveOptions, Options toMerge, StackController stack,
+                                    ViewController<?> child) {
+        TopBarOptions topBarOptions = toMerge.topBar;
         final View component = child.getView();
-        if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
+        if (toMerge.layout.direction.hasValue()) topBar.setLayoutDirection(toMerge.layout.direction);
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
-        mergeStatusBarDrawBehindOptions(resolveOptions, options);
+        Options childOptions = stack.resolveChildOptions(child).mergeWith(toMerge).withDefaultOptions(defaultOptions);
+        mergeStatusBarDrawBehindOptions(resolveOptions, childOptions);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
