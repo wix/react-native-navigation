@@ -33,9 +33,9 @@ public class Presenter {
         this.defaultOptions = defaultOptions;
     }
 
-    public void mergeOptions(View view, Options options) {
-        final Options withDefaults = options.copy().withDefaultOptions(defaultOptions);
-        mergeStatusBarOptions(view, withDefaults.statusBar);
+    public void mergeOptions(ViewController<?> viewController, Options options) {
+        final Options withDefaults =  viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
+        mergeStatusBarOptions(viewController.getView(), withDefaults.statusBar);
         mergeNavigationBarOptions(withDefaults.navigationBar);
     }
 
