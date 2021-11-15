@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 
+import com.aurelhubert.ahbottomnavigation.AHTextView;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
