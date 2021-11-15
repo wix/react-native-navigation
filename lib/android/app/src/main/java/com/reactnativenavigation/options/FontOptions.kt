@@ -56,4 +56,12 @@ class FontOptions {
         fontStyle.equals(other.fontStyle) &&
         fontWeight.equals(other.fontWeight)
     } ?: false
+    override fun hashCode(): Int {
+        var result = isDirty.hashCode()
+        result = 31 * result + fontFamily.hashCode()
+        result = 31 * result + fontStyle.hashCode()
+        result = 31 * result + fontWeight.hashCode()
+        result = 31 * result + (_typeface?.hashCode() ?: 0)
+        return result
+    }
 }

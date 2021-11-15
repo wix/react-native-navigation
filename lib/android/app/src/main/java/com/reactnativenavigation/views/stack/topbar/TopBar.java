@@ -31,7 +31,6 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -135,12 +134,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTitleTopMargin(int topMargin) {
-//        int marginPx = UiUtils.dpToPx(getContext(), topMargin);
-//        MarginLayoutParams layoutParams = (MarginLayoutParams) titleAndButtonsContainer.getLayoutParams();
-//        if (layoutParams.topMargin != topMargin) {
-//            layoutParams.topMargin = marginPx;
-//            titleAndButtonsContainer.setLayoutParams(layoutParams);
-//        }
+        int marginPx = UiUtils.dpToPx(getContext(), topMargin);
+        MarginLayoutParams layoutParams = (MarginLayoutParams) titleAndButtonsContainer.getLayoutParams();
+        if (layoutParams.topMargin != topMargin) {
+            layoutParams.topMargin = marginPx;
+            titleAndButtonsContainer.setLayoutParams(layoutParams);
+        }
     }
 
     public void setTitle(String title) {

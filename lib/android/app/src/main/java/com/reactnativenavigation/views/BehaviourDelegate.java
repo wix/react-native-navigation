@@ -8,7 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class BehaviourDelegate extends CoordinatorLayout.Behavior<ViewGroup> {
 
-    private BehaviourAdapter delegate;
+    private final BehaviourAdapter delegate;
 
     public BehaviourDelegate(BehaviourAdapter delegate) {
         this.delegate = delegate;

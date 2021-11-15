@@ -23,7 +23,7 @@ public class EventEmitter {
     private static final String ModalDismissed = "RNN.ModalDismissed";
     private static final String ScreenPopped = "RNN.ScreenPopped";
     @Nullable
-    private ReactContext reactContext;
+    private final ReactContext reactContext;
 
     public EventEmitter(@Nullable ReactContext reactContext) {
         this.reactContext = reactContext;

@@ -37,21 +37,4 @@ public class ExternalComponent {
         return new JSONObject();
     }
 
-    public void mergeWith(ExternalComponent other) {
-        if (other.name.hasValue()) {
-            name = other.name;
-        }
-        if (other.passProps.length() > 0) {
-            passProps = other.passProps;
-        }
-    }
-
-    public void mergeWithDefault(ExternalComponent defaultOptions) {
-        if (!name.hasValue()) {
-            name = defaultOptions.name;
-        }
-        if (passProps.length() == 0) {
-            passProps = defaultOptions.passProps;
-        }
-    }
 }

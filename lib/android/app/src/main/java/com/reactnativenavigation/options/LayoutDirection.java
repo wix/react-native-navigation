@@ -38,18 +38,13 @@ public enum LayoutDirection {
         return direction;
     }
 
-    public int inverse() {
-        return (isRtl() ? LTR : RTL).direction;
-    }
-
     public boolean isRtl() {
         switch (direction) {
-            case View.LAYOUT_DIRECTION_LTR:
-                return false;
             case View.LAYOUT_DIRECTION_RTL:
                 return true;
             case View.LAYOUT_DIRECTION_LOCALE:
                 return TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL;
+            case View.LAYOUT_DIRECTION_LTR:
             default:
                 return false;
         }

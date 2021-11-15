@@ -32,7 +32,7 @@ public class IdStack<E> implements Iterable<String> {
 	}
 
 	public E pop() {
-		return isEmpty() ? null : map.remove(removeLast(deque));
+		return isEmpty() ? null : map.remove(deque.remove(deque.size() - 1));
 	}
 
 	public boolean isEmpty() {

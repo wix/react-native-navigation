@@ -7,7 +7,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListe
 
 public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
 
-    private FabAnimator fabAnimator;
+    private final FabAnimator fabAnimator;
     private ScrollEventListener scrollEventListener;
 
     public FabCollapseBehaviour(FabAnimator fabAnimator) {

@@ -5,7 +5,7 @@ public enum ModalPresentationStyle {
     None("none"),
     OverCurrentContext("overCurrentContext");
 
-    public String name;
+    public final String name;
 
     ModalPresentationStyle(String name) {
         this.name = name;

@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
-import androidx.core.content.ContextCompat;
-
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
@@ -139,9 +137,7 @@ public class Presenter {
         final View view = activity.getWindow().getDecorView();
         //View.post is a Workaround, added to solve internal Samsung 
         //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
-        view.post(() -> {
-            SystemUiUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar));
-        });
+        view.post(() -> SystemUiUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar)));
     }
 
     private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {

@@ -19,6 +19,8 @@ public class ImageLoadingListenerAdapter implements ImageLoader.ImagesLoadingLis
 
     @Override
     public void onError(Throwable error) {
-        error.printStackTrace();
+        if (error != null) {
+            error.printStackTrace();
+        }
     }
 }

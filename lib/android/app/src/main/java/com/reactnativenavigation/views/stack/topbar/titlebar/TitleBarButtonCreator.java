@@ -7,7 +7,7 @@ import com.reactnativenavigation.options.ComponentOptions;
 
 public class TitleBarButtonCreator {
 
-    private ReactInstanceManager instanceManager;
+    private final ReactInstanceManager instanceManager;
 
     public TitleBarButtonCreator(ReactInstanceManager instanceManager) {
         this.instanceManager = instanceManager;

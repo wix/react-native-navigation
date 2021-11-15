@@ -54,7 +54,18 @@ public class StackController extends ParentController<StackLayout> {
     private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
-    public StackController(Activity activity, List<ViewController<?>> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, StackAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
+    public StackController(Activity activity,
+                           List<ViewController<?>> children,
+                           ChildControllersRegistry childRegistry,
+                           EventEmitter eventEmitter,
+                           TopBarController topBarController,
+                           StackAnimator animator,
+                           String id,
+                           Options initialOptions,
+                           BackButtonHelper backButtonHelper,
+                           StackPresenter stackPresenter,
+                           Presenter presenter,
+                           FabPresenter fabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.eventEmitter = eventEmitter;
         this.topBarController = topBarController;
@@ -214,7 +225,7 @@ public class StackController extends ParentController<StackLayout> {
         IdStack<?> stackToDestroy = stack;
         stack = new IdStack<>();
 
-        ViewController<?> child = requireLast(children);
+        ViewController<?> child = children.get(children.size() - 1);
         if (children.size() == 1) {
             backButtonHelper.clear(child);
         } else {

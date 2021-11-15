@@ -22,7 +22,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class TopTabsViewPager extends ViewPager implements Component, ButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
-    private List<ViewController<?>> tabs;
+    private final List<ViewController<?>> tabs;
 
     public TopTabsViewPager(Context context, List<ViewController<?>> tabs, TopTabsAdapter adapter) {
         super(context);

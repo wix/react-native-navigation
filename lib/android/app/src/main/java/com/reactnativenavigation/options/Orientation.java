@@ -10,8 +10,8 @@ public enum Orientation {
     PortraitLandscape("sensor", ActivityInfo.SCREEN_ORIENTATION_USER),
     SensorLandscape("sensorLandscape", ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
-    public String name;
-    public int orientationCode;
+    public final String name;
+    public final int orientationCode;
 
     Orientation(String name, int orientationCode) {
         this.name = name;

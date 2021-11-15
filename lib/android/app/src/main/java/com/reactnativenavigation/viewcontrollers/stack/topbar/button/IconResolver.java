@@ -14,8 +14,8 @@ import androidx.annotation.RestrictTo;
 
 public class IconResolver {
 
-    private Activity context;
-    private ImageLoader imageLoader;
+    private final Activity context;
+    private final ImageLoader imageLoader;
 
     public IconResolver(Activity context, ImageLoader imageLoader) {
         this.context = context;

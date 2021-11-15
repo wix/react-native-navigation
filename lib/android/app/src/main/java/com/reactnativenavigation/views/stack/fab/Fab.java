@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.stack.fab;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -19,10 +20,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 
+@SuppressLint("ViewConstructor")
 public class Fab extends FloatingActionButton implements FabAnimator {
 
-    private String id = "";
-    private FabCollapseBehaviour collapseBehaviour;
+    private final String id;
+    private final FabCollapseBehaviour collapseBehaviour;
 
     public Fab(Context context, String id) {
         super(context);

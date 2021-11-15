@@ -1,12 +1,12 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.reactnativenavigation.NavigationActivity;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends NavigationActivity {
 
@@ -18,7 +18,7 @@ public class MainActivity extends NavigationActivity {
 
     private void setSplashLayout() {
         ImageView img = new ImageView(this);
-        img.setImageDrawable(getDrawable(R.drawable.ic_android));
+        img.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_android));
         setContentView(img);
     }
 }

@@ -6,7 +6,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 
 public class ReactComponentViewCreator implements ReactViewCreator {
-	private ReactInstanceManager reactInstanceManager;
+	private final ReactInstanceManager reactInstanceManager;
 
 	public ReactComponentViewCreator(final ReactInstanceManager reactInstanceManager) {
 		this.reactInstanceManager = reactInstanceManager;

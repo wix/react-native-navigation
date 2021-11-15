@@ -5,16 +5,8 @@ public class Functions {
         T get();
     }
 
-    public interface Func {
-        void run();
-    }
-
     public interface Func1<T> {
         void run(T param);
-    }
-
-    public interface Func2<T, S> {
-        void run(T param1, S param2);
     }
 
     public interface FuncR<T> {
@@ -25,7 +17,4 @@ public class Functions {
         S run(T param);
     }
 
-    public interface FuncR2<T, S, R> {
-        R run(T param1, S param2);
-    }
 }

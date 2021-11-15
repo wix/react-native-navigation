@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 public class OrientationOptions {
     List<Orientation> orientations = new ArrayList<>();
@@ -67,6 +68,7 @@ public class OrientationOptions {
         return this;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return hasValue() ? Arrays.toString(orientations.toArray(new Orientation[0])) : Orientation.Default.toString();

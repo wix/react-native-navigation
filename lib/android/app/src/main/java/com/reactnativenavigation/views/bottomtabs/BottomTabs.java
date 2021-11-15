@@ -23,7 +23,7 @@ import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
-    private List<Runnable> onItemCreationEnabled = new ArrayList<>();
+    private final List<Runnable> onItemCreationEnabled = new ArrayList<>();
 
     public BottomTabs(Context context) {
         super(context);

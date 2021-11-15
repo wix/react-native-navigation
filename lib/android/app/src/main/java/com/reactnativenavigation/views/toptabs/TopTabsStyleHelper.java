@@ -5,14 +5,13 @@ import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ViewUtils;
 
 class TopTabsStyleHelper {
-    private TopTabs topTabs;
+    private final TopTabs topTabs;
 
     TopTabsStyleHelper(TopTabs topTabs) {
         this.topTabs = topTabs;

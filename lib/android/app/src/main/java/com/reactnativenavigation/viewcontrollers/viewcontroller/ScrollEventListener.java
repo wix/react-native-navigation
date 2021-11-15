@@ -30,7 +30,7 @@ public class ScrollEventListener implements EventDispatcherListener {
     private ScrollAwareView view;
     private OnScrollListener onScrollListener;
     private OnDragListener dragListener;
-    private EventDispatcher eventDispatcher;
+    private final EventDispatcher eventDispatcher;
     private int prevScrollY = -1;
     private boolean dragStarted;
 
