@@ -133,6 +133,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
 
+
     @Override
     public void destroy() {
         final boolean blurOnUnmount = options != null && options.modal.blurOnUnmount.isTrue();

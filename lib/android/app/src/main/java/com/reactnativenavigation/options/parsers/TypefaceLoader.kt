@@ -6,7 +6,6 @@ import com.aurelhubert.ahbottomnavigation.AHTextView
 import com.reactnativenavigation.utils.ReactTypefaceUtils
 
 open class TypefaceLoader(private val context: Context) {
-
   open  val defaultTypeFace: Typeface by lazy {
         AHTextView(context).typeface ?: Typeface.DEFAULT
     }
