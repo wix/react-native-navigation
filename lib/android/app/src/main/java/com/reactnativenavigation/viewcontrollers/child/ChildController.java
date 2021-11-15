@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.child;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.reactnativenavigation.views.component.Component;
 import androidx.annotation.CallSuper;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T> {
@@ -97,20 +99,37 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
                 getView().getParent() != null;
     }
 
-    private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        return applyWindowInsets(findController(view), insets);
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        final ViewController controller = findController(view);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ){
+          return applyWindowInsets(controller, insets);
+      }else{
+          return applyWindowInsets(controller, insets);
+      }
     }
 
     protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
         if(viewController==null || viewController.getView() ==null) return insets;
-        final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
-        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
-        return builder.setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
-                Insets.of(systemBarsInsets.left,
-                        0,
-                        systemBarsInsets.right,
-                        systemBarsInsets.bottom)
-        ).build();
+//        final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
+//        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+//        LogKt.logd("View:"+viewController.getId()+", systemBars:"+systemBarsInsets.toString(),"XMNX");
+//        final WindowInsetsCompat finalInsets = builder.setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+//                Insets.of(systemBarsInsets.left,
+//                        0,
+//                        systemBarsInsets.right,
+//                        systemBarsInsets.bottom)
+//        ).build();
+//        insets.replaceSystemWindowInsets()
+        return insets;
+    }
+
+    protected WindowInsetsCompat applyWindowInsetsPre30(ViewController<?> view, WindowInsetsCompat insets) {
+        return insets.replaceSystemWindowInsets(
+                insets.getSystemWindowInsetLeft(),
+                0,
+                insets.getSystemWindowInsetRight(),
+                insets.getSystemWindowInsetBottom()
+        );
     }
 
     @Override

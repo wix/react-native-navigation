@@ -60,7 +60,7 @@ object SystemUiUtils {
     @JvmStatic
     fun hideNavigationBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             WindowInsetsControllerCompat(window, view).let { controller ->
                 controller.hide(WindowInsetsCompat.Type.navigationBars())
                 controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -124,7 +124,7 @@ object SystemUiUtils {
     @JvmStatic
     fun hideStatusBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             WindowInsetsControllerCompat(window, view).let { controller ->
                 controller.hide(WindowInsetsCompat.Type.statusBars())
                 controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE

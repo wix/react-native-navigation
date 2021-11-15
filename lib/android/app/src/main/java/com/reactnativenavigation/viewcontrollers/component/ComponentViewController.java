@@ -137,7 +137,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
+    @Override
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        return super.onApplyWindowInsets(view, insets);
+    }
+
+    @Override
     protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
+
         if (viewController == null || viewController.getView() == null) return insets;
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
         final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
@@ -149,6 +156,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
     }
 
+    @Override
+    protected WindowInsetsCompat applyWindowInsetsPre30(ViewController<?> view, WindowInsetsCompat insets) {
+        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
+                insets.getSystemWindowInsetLeft(),
+                insets.getSystemWindowInsetTop(),
+                insets.getSystemWindowInsetRight(),
+                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
+        ));
+        return insets;
+    }
 
     @Override
     public void destroy() {

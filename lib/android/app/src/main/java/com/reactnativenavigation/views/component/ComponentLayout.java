@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -97,6 +98,11 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     @Override
     public void onPress(ButtonOptions button) {
         reactView.sendOnNavigationButtonPressed(button.id);
+    }
+
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        return super.onApplyWindowInsets(insets);
     }
 
     @Override
