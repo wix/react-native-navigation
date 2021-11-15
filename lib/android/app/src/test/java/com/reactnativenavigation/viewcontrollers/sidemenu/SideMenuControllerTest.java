@@ -119,12 +119,12 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Test
     public void onViewAppeared() {
-        ViewController<?> left = spy(this.left);
+        ViewController left = spy(this.left);
         ViewGroup leftView = spy(left.getView());
         when(left.findController(leftView)).thenReturn(left);
         Mockito.doReturn(leftView).when(left).getView();
 
-        ViewController<?> right = spy(this.right);
+        ViewController right = spy(this.right);
         ViewGroup rightView = spy(right.getView());
         when(right.findController(rightView)).thenReturn(right);
         Mockito.doReturn(rightView).when(right).getView();

@@ -55,7 +55,7 @@ public class ChildControllerTest extends BaseTest {
 
         Options options = new Options();
         uut.mergeOptions(options);
-        verify(presenter).mergeOptions(uut.getView(), options);
+        verify(presenter).mergeOptions(uut, options);
     }
 
     @Test
