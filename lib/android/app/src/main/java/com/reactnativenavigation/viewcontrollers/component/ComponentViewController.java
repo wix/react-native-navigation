@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -11,9 +12,13 @@ import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
@@ -132,6 +137,17 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
+    protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
+        if (viewController == null || viewController.getView() == null) return insets;
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+        final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+                Insets.of(systemBarsInsets.left,
+                        0,
+                        systemBarsInsets.right,
+                        systemBarsInsets.bottom)
+        ).build();
+        return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
+    }
 
 
     @Override

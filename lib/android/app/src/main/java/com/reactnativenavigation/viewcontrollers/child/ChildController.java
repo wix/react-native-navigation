@@ -2,10 +2,12 @@ package com.reactnativenavigation.viewcontrollers.child;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -67,7 +69,9 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        presenter.applyOptions(this, resolveCurrentOptions());
+        final Options resolveCurrentOptions = getParentController()==null? resolveCurrentOptions():
+                getParentController().resolveChildOptions(this);
+        presenter.applyOptions(this, resolveCurrentOptions);
     }
 
     @Override
@@ -98,17 +102,15 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
-        if(viewController==null || viewController.getView() ==null)return insets;
+        if(viewController==null || viewController.getView() ==null) return insets;
         final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
-        Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        final WindowInsetsCompat finalInsets = builder.setInsets(WindowInsetsCompat.Type.systemBars(),
-                Insets.of(systemInsets.left,
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+        return builder.setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+                Insets.of(systemBarsInsets.left,
                         0,
-                        systemInsets.right,
-                        0)
+                        systemBarsInsets.right,
+                        systemBarsInsets.bottom)
         ).build();
-        ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
-        return finalInsets;
     }
 
     @Override

@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { StyleSheet, Image, View, Text, TextInput } from 'react-native';
 import { ColorPalette, Switch } from 'react-native-ui-lib';
 import { NavigationComponentProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
+import testIDs from '../testIDs';
 
 interface State {
   statusBarVisible: boolean;
@@ -71,8 +72,9 @@ export default class SystemUiOptions extends React.Component<NavigationComponent
   render() {
     return (
       <View style={style.container}>
-        <Image style={style.image} source={require('../../img/city.png')} fadeDuration={0} />
         <Root componentId={this.props.componentId} style={style.root}>
+          <Image style={style.image} source={require('../../img/city.png')} fadeDuration={0} />
+
           <Text>Navigation & Status Bar Color</Text>
           <ColorPalette
             value={this.state.selectedColor}
@@ -109,6 +111,16 @@ export default class SystemUiOptions extends React.Component<NavigationComponent
               onValueChange={this.onNavBarVisibilityValueChanged}
             />
           </View>
+          <TextInput
+            style={style.input}
+            testID={testIDs.TEXT_INPUT1}
+            placeholderTextColor="rgba(255, 0, 0, 0.5)"
+            placeholder="Submit opens modal"
+            onSubmitEditing={async (event) => {
+              if (event.nativeEvent.text || event.nativeEvent.text.trim().length > 0)
+                console.warn('Submitted!!');
+            }}
+          />
           <Button label="Full Screen Modal" onPress={this.fullScreenModal} />
           <Button label="Push" onPress={this.push} />
           <Button label="BottomTabs" onPress={this.bottomTabs} />
@@ -213,6 +225,9 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+  },
+  input: {
+    color: 'red',
   },
   translucentSwitch: { flexDirection: 'row' },
   image: {
