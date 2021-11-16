@@ -535,6 +535,10 @@ export interface OptionsTopBarButton {
    */
   accessibilityLabel?: string;
   /**
+   * Communicates the purpose of a component to the user of an assistive technology
+   */
+  accessibilityRole?: string;
+  /**
    * Set the font family for the button's text
    */
   fontFamily?: FontFamily;
