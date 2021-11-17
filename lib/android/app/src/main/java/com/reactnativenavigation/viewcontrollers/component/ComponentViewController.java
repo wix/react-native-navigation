@@ -129,7 +129,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public int getTopInset() {
         int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : SystemUiUtils.getStatusBarHeight(getActivity());
-        return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
+        final Integer perform = perform(getParentController(), 0, p -> p.getTopInset(this));
+        return statusBarInset + perform;
     }
 
     @Override
@@ -143,28 +144,19 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    protected WindowInsetsCompat applyWindowInsets(ViewController<?> viewController, WindowInsetsCompat insets) {
-
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null) return insets;
-        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+        final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
+        final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
         final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
                 Insets.of(systemBarsInsets.left,
                         0,
                         systemBarsInsets.right,
-                        systemBarsInsets.bottom)
+                        Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardInsets.bottom))
         ).build();
         return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
-    }
-
-    @Override
-    protected WindowInsetsCompat applyWindowInsetsPre30(ViewController<?> view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
-        ));
-        return insets;
     }
 
     @Override
