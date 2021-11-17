@@ -123,6 +123,7 @@ export default class SystemUiOptions extends React.Component<NavigationComponent
           />
           <Button label="Full Screen Modal" onPress={this.fullScreenModal} />
           <Button label="Push" onPress={this.push} />
+          <Button label="Show Overlay" onPress={this.showOverlay} />
           <Button label="BottomTabs" onPress={this.bottomTabs} />
           <Button label="Set As Root" onPress={this.setAsRoot} />
           <Button label="Open Left" onPress={() => this.open('left')} />
@@ -208,6 +209,24 @@ export default class SystemUiOptions extends React.Component<NavigationComponent
   };
   fullScreenModal = () => Navigation.showModal(Screens.FullScreenModal);
   push = () => Navigation.push(this, Screens.Pushed);
+  showOverlay = () =>
+    Navigation.showOverlay({
+      component: {
+        name: Screens.Alert,
+        options: {
+          statusBar: {
+            drawBehind: true,
+            backgroundColor: '#3e434aa1',
+            style: 'light',
+            translucent: true,
+          },
+        },
+        passProps: {
+          title: 'Title',
+          message: 'Message',
+        },
+      },
+    });
   bottomTabs = () => Navigation.showModal(Screens.StatusBarBottomTabs);
   open = (side: 'left' | 'right') =>
     Navigation.mergeOptions(this, {
