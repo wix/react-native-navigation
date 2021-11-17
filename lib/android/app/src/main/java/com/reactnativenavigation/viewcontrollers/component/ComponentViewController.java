@@ -140,11 +140,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        return super.onApplyWindowInsets(view, insets);
-    }
-
-    @Override
-    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null) return insets;
         final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());

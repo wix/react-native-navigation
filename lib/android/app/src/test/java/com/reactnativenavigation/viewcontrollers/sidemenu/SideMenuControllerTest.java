@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Path;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -73,6 +74,7 @@ public class SideMenuControllerTest extends BaseTest {
         };
         uut.setCenterController(center);
         parent = mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
         uut.setParentController(parent);
     }
 

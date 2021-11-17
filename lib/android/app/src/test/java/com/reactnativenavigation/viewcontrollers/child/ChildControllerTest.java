@@ -32,6 +32,7 @@ public class ChildControllerTest extends BaseTest {
             }
         };
         ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
         uut.setParentController(parent);
     }
 

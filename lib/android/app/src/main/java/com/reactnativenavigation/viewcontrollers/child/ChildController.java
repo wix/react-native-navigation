@@ -10,6 +10,7 @@ import android.view.WindowInsets;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.utils.LogKt;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -72,8 +73,9 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        final Options resolveCurrentOptions = getParentController() == null ? resolveCurrentOptions() :
-                getParentController().resolveChildOptions(this);
+        final ParentController<?> parentController = getParentController();
+        final Options resolveCurrentOptions = parentController == null ? resolveCurrentOptions() :
+                parentController.resolveChildOptions(this);
         presenter.applyOptions(this, resolveCurrentOptions);
     }
 

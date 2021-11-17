@@ -184,6 +184,9 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyChildOptions_bottomTabsOptionsAreClearedAfterApply() {
         ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
+        Mockito.when(parent.resolveChildOptions(child1)).thenReturn(Options.EMPTY);
+
         uut.setParentController(parent);
 
         child1.options.bottomTabsOptions.backgroundColor = new ThemeColour(new Colour(Color.RED));
