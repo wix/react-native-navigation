@@ -75,7 +75,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     private void createLayout() {
         setId(CompatUtils.generateViewId());
-        setFitsSystemWindows(true);
         topTabs = createTopTabs();
         border = createBorder();
         LinearLayout content = createContentLayout();
