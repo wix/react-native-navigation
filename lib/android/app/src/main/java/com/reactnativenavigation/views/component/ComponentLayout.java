@@ -100,10 +100,6 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         reactView.sendOnNavigationButtonPressed(button.id);
     }
 
-    @Override
-    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
-        return super.onApplyWindowInsets(insets);
-    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
