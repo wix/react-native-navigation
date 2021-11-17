@@ -43,7 +43,13 @@ class OverlayManager {
     }
 
     fun destroy(overlaysContainer: ViewGroup) {
-        overlayRegistry.values.forEach { overlay -> destroyOverlay(overlaysContainer, overlay) }
+        val removedOverlays = overlayRegistry.values.map { overlay ->
+            destroyOverlay(overlaysContainer, overlay)
+            overlay.id
+        }.toList()
+        removedOverlays.forEach {
+            overlayRegistry.remove(it)
+        }
     }
 
     fun size() = overlayRegistry.size
@@ -54,7 +60,6 @@ class OverlayManager {
 
     private fun destroyOverlay(overlaysContainer: ViewGroup, overlay: ViewController<*>) {
         overlay.destroy()
-        overlayRegistry.remove(overlay.id)
         if (isEmpty) overlaysContainer.visibility = View.GONE
     }
 
