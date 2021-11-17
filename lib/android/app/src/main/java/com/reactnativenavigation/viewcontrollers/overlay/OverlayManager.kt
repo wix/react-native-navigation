@@ -28,7 +28,7 @@ class OverlayManager {
     }
 
     fun dismiss(overlaysContainer: ViewGroup, componentId: String, listener: CommandListener) {
-        val overlay = overlayRegistry[componentId]
+        val overlay = overlayRegistry.remove(componentId)
         if (overlay == null) {
             listener.onError("Could not dismiss Overlay. Overlay with id $componentId was not found.")
         } else {
@@ -43,7 +43,13 @@ class OverlayManager {
     }
 
     fun destroy(overlaysContainer: ViewGroup) {
-        overlayRegistry.values.forEach { overlay -> destroyOverlay(overlaysContainer, overlay) }
+        val removedOverlays = overlayRegistry.values.map { overlay ->
+            destroyOverlay(overlaysContainer, overlay)
+            overlay.id
+        }.toList()
+        removedOverlays.forEach {
+            overlayRegistry.remove(it)
+        }
     }
 
     fun size() = overlayRegistry.size
@@ -54,7 +60,6 @@ class OverlayManager {
 
     private fun destroyOverlay(overlaysContainer: ViewGroup, overlay: ViewController<*>) {
         overlay.destroy()
-        overlayRegistry.remove(overlay.id)
         if (isEmpty) overlaysContainer.visibility = View.GONE
     }
 
