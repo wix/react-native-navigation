@@ -28,7 +28,7 @@ class OverlayManager {
     }
 
     fun dismiss(overlaysContainer: ViewGroup, componentId: String, listener: CommandListener) {
-        val overlay = overlayRegistry[componentId]
+        val overlay = overlayRegistry.remove(componentId)
         if (overlay == null) {
             listener.onError("Could not dismiss Overlay. Overlay with id $componentId was not found.")
         } else {
