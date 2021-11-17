@@ -25,7 +25,7 @@ describe('Documentation script', () => {
 
     expect(exec.execSync).toHaveBeenCalledWith(`npm install`);
     expect(exec.execSync).toHaveBeenCalledWith(`npm run docusaurus docs:version ${version}`);
-    expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
+    expect(exec.execSync).toHaveBeenCalledWith(`git add ../website`);
     expect(process.chdir).toHaveBeenCalledWith(process.cwd());
   });
 
@@ -46,7 +46,7 @@ describe('Documentation script', () => {
       `rm -f ${docsPath()}/versioned_sidebars/version-${version}-sidebars.json`
     );
     expect(exec.execSync).toHaveBeenCalledWith(`npm run docusaurus docs:version ${version}`);
-    expect(exec.execSync).toHaveBeenCalledWith(`git add website`);
+    expect(exec.execSync).toHaveBeenCalledWith(`git add ../website`);
     expect(process.chdir).toHaveBeenCalledWith(process.cwd());
   });
 });

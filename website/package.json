@@ -21,6 +21,7 @@
     "react-dom": "^16.8.4",
     "remark-code-import": "^0.2.0"
   },
+  "resolutions": { "**/ua-parser-js": "0.7.28" },
   "browserslist": {
     "production": [
       ">0.2%",
