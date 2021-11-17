@@ -41,14 +41,14 @@ export default function useDismissGesture(navigateBack: () => void): DismissGest
   const enableGesture = useValue<0 | 1>(1); // Overrides gestureHandler.state to not trigger State.END cond() block when already released and navigating back
 
   const cardBorderRadius = useMemo(() => {
-    return Reanimated.interpolate(dismissAnimationProgress, {
+    return Reanimated.interpolateNode(dismissAnimationProgress, {
       inputRange: [0, 1],
       outputRange: [0, 30],
       extrapolate: Extrapolate.CLAMP,
     });
   }, [dismissAnimationProgress]);
   const viewScale = useMemo(() => {
-    return Reanimated.interpolate(dismissAnimationProgress, {
+    return Reanimated.interpolateNode(dismissAnimationProgress, {
       inputRange: [0, 1],
       outputRange: [1, 0.8],
       extrapolate: Extrapolate.CLAMP,
@@ -61,14 +61,14 @@ export default function useDismissGesture(navigateBack: () => void): DismissGest
         cond(eq(gestureHandler.state, State.ACTIVE), [
           set(
             dismissAnimationProgress,
-            Reanimated.interpolate(gestureHandler.translation.y, {
+            Reanimated.interpolateNode(gestureHandler.translation.y, {
               inputRange: [0, SCREEN_HEIGHT * 0.2],
               outputRange: [0, 1],
             })
           ),
           set(
             controlsOpacity,
-            Reanimated.interpolate(gestureHandler.translation.y, {
+            Reanimated.interpolateNode(gestureHandler.translation.y, {
               inputRange: [0, SCREEN_HEIGHT * 0.1, SCREEN_HEIGHT * 0.2],
               outputRange: [1, 0, 0],
             })
