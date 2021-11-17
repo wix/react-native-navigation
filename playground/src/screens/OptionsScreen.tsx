@@ -79,6 +79,11 @@ export default class Options extends React.Component<Props> {
           label="Search Bar Modal"
           onPress={this.searchBarModal}
         />
+        <Button
+          label="Toggle Navigation bar visibility"
+          platform="android"
+          onPress={this.toggleAndroidNavigationBar}
+        />
       </Root>
     );
   }
