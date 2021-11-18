@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-
 project.ext.react = [
         root     : "../../../",
         entryFile: "index.js",

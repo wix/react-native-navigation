@@ -3,7 +3,13 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: "com.facebook.react"
 
+react{
+    reactRoot = rootProject.file('../node_modules/react-native/')
+    jsRootDir = rootProject.file('../lib/src/')
+    codegenDir = rootProject.file('../node_modules/react-native-codegen/')
+}
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
