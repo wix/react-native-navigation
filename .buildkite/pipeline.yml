@@ -26,6 +26,7 @@ steps:
     - "npm run test-unit-android -- --release"
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
     key: "android_build"
+    timeout_in_minutes: 60
 
   - label: ":ios: iOS - Unit"
     command:
