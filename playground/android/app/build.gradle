@@ -18,6 +18,22 @@ android {
     compileSdkVersion rootProject.ext.get("compileSdkVersion")
     ndkVersion "20.1.5948944"
 
+    def reactAndroidProjectDir = project(':ReactAndroid').projectDir
+    def packageReactNdkLibs = tasks.register("packageReactNdkLibs", Copy) {
+        dependsOn(":ReactAndroid:packageReactNdkLibsForBuck")
+        dependsOn("generateCodegenSchemaFromJavaScript")
+        from("$reactAndroidProjectDir/src/main/jni/prebuilt/lib")
+        into("$buildDir/react-ndk/exported")
+    }
+
+    afterEvaluate {
+        preBuild.dependsOn(packageReactNdkLibs)
+    }
+
+    packagingOptions {
+        pickFirst '**/libhermes.so'
+        pickFirst '**/libjsc.so'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,7 +48,25 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", 'x86_64'
         }
-
+        externalNativeBuild {
+            ndkBuild {
+                path "$projectDir/src/main/jni/Android.mk"
+            }
+        }
+        externalNativeBuild {
+            ndkBuild {
+                arguments "APP_PLATFORM=android-21",
+                        "APP_STL=c++_shared",
+                        "NDK_TOOLCHAIN_VERSION=clang",
+                        "GENERATED_SRC_DIR=$buildDir/generated/source",
+                        "PROJECT_BUILD_DIR=$buildDir",
+                        "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
+                        "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
+                cFlags "-Wall", "-Werror", "-fexceptions", "-frtti",
+                        cppFlags "-std=c++17"
+                targets "myapplication_appmodules"
+            }
+        }
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -57,8 +91,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+'
-
+//    implementation 'com.facebook.react:react-native:+'
+    implementation "com.facebook.react:react-native:0.0.0-20211026-2008-456cf3db1"
     implementation project(':react-native-fast-image')
     def hermesPath = "../../../node_modules/hermes-engine/android/";
     debugImplementation files(hermesPath + "hermes-debug.aar")

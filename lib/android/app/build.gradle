@@ -193,8 +193,8 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
 
     //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+'
-
+//    implementation 'com.facebook.react:react-native:+'
+    implementation "com.facebook.react:react-native:0.0.0-20211026-2008-456cf3db1"
     // tests
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:4.4"
