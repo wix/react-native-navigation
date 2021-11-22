@@ -26,6 +26,7 @@ steps:
     - "npm run test-unit-android -- --release"
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
     key: "android_build"
+    timeout_in_minutes: 90
 
   - label: ":ios: iOS - Unit"
     command:
@@ -33,6 +34,7 @@ steps:
     - "npm install"
     - "npm run test-unit-ios -- --release"
     key: "ios_unit"
+    timeout_in_minutes: 90
 
   - label: ":ios: iOS - E2E"
     command:
@@ -41,6 +43,7 @@ steps:
     - "npm run test-snapshot-ios -- --release"
     - "npm run test-e2e-ios -- --release --multi --ci"
     key: "ios_e2e"
+    timeout_in_minutes: 90
 
   - label: ":package: Publish"
     env:
@@ -53,3 +56,4 @@ steps:
     - "android_build"
     - "ios_unit"
     - "ios_e2e"
+    timeout_in_minutes: 90
