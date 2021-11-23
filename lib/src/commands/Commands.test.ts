@@ -546,7 +546,8 @@ describe('Commands', () => {
     it('switch a component to PIP mode, passing componentId and options', () => {
       const options: Options = {
         pipOptions: {
-          enabled: true,
+          enabledOnBackPress: true,
+          enabledOnHomePress: true,
           actionButtons: [],
           actionControlGroup: 'test',
           customPIP: {

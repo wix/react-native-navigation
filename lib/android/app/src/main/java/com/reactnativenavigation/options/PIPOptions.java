@@ -5,7 +5,9 @@ import org.json.JSONObject;
 
 public class PIPOptions {
 
-    public boolean enabled = false;
+    public boolean enabledOnBackPress = false;
+
+    public boolean enabledOnHomePress = false;
 
     public String actionControlGroup;
 
@@ -24,7 +26,8 @@ public class PIPOptions {
         if (json != null) {
             pipOptions = new PIPOptions();
             pipOptions.actionControlGroup = json.optString("actionControlGroup");
-            pipOptions.enabled = json.optBoolean("enabled");
+            pipOptions.enabledOnBackPress = json.optBoolean("enabledOnBackPress");
+            pipOptions.enabledOnHomePress = json.optBoolean("enabledOnHomePress");
             pipOptions.aspectRatio = AspectRatio.parse(json.optJSONObject("aspectRatio"));
             pipOptions.customPIP = CustomPIPDimension.parse(json.optJSONObject("customPIP"));
             JSONArray array = json.optJSONArray("actionButtons");
@@ -46,7 +49,8 @@ public class PIPOptions {
 
     public PIPOptions mergeWith(final PIPOptions other) {
         if (other != null) {
-            this.enabled = other.enabled;
+            this.enabledOnBackPress = other.enabledOnBackPress;
+            this.enabledOnHomePress = other.enabledOnHomePress;
             this.actionControlGroup = other.actionControlGroup;
             this.aspectRatio.mergeWith(other.aspectRatio);
             this.actionButtons = other.actionButtons;

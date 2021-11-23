@@ -1377,7 +1377,9 @@ export interface NavigationBarOptions {
 }
 
 export interface PIPOptions {
-  enabled?: boolean;
+  enabledOnBackPress?: boolean;
+
+  enabledOnHomePress?: boolean;
 
   actionControlGroup: string;
 

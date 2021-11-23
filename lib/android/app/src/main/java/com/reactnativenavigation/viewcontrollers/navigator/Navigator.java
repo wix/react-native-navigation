@@ -386,11 +386,11 @@ public class Navigator extends ParentController {
     }
 
     public boolean shouldSwitchToPIPonHomePress() {
-        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIP())) && modalStack.isEmpty() && overlayManager.isEmpty();
+        return (getPipMode() != PIPStates.NOT_STARTED || (this.activeStack != null && this.activeStack.shouldSwitchToPIPOnHomePress())) && modalStack.isEmpty() && overlayManager.isEmpty();
     }
 
     public boolean shouldSwitchToPIPonBackPress() {
-        return (this.activeStack != null && this.activeStack.shouldSwitchToPIP()) && modalStack.isEmpty() && overlayManager.isEmpty();
+        return (this.activeStack != null && this.activeStack.shouldSwitchToPIPOnBackPress()) && modalStack.isEmpty() && overlayManager.isEmpty();
     }
 
     public void resetPIP() {

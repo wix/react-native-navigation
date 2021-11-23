@@ -369,8 +369,12 @@ public class StackController extends ParentController<StackLayout> {
         return disappearing;
     }
 
-    public boolean shouldSwitchToPIP() {
-        return peek() != null && peek().options.pipOptions.enabled;
+    public boolean shouldSwitchToPIPOnHomePress() {
+        return peek() != null && peek().options.pipOptions.enabledOnHomePress;
+    }
+
+    public boolean shouldSwitchToPIPOnBackPress() {
+        return peek() != null && peek().options.pipOptions.enabledOnBackPress;
     }
 
     private void finishPopping(ViewController appearing, ViewController disappearing, CommandListener listener) {
