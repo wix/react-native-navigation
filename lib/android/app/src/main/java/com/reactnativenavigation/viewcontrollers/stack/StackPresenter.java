@@ -367,6 +367,7 @@ public class StackPresenter {
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
+        if (topBar == null) return;
         topBar.applyTopTabsColors(options.selectedTabColor,
                 options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
