@@ -177,8 +177,7 @@
             _dismissModalTransitionDelegate;
     }
 
-    if ((modalToDismiss == topPresentedVC ||
-         [[topPresentedVC childViewControllers] containsObject:modalToDismiss])) {
+    if ((modalToDismiss == topPresentedVC || [topPresentedVC findViewController:modalToDismiss])) {
         [self dismissSearchController:modalToDismiss];
         [modalToDismiss
             dismissViewControllerAnimated:animated

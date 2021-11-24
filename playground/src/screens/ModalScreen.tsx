@@ -36,6 +36,7 @@ const {
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
   TOGGLE_REACT_DECLARED_MODAL,
+  SHOW_SIDE_MENU_MODAL,
 } = testIDs;
 
 interface Props {
@@ -133,6 +134,11 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
           testID={TOGGLE_REACT_DECLARED_MODAL}
           onPress={this.toggleModal}
         />
+        <Button
+          label="Show Side Menu Modal"
+          testID={SHOW_SIDE_MENU_MODAL}
+          onPress={this.showSideMenuModal}
+        />
         {Platform.OS === 'android' && (
           <RNNModal
             visible={this.state.modalVisible}
@@ -197,7 +203,10 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
       overlay: { interceptTouchOutside: false },
     });
   };
+
   toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
+
+  showSideMenuModal = () => Navigation.showModal(Screens.StatusBar);
 
   showModalWithTransition = () => {
     Navigation.showModal({
