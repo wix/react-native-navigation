@@ -41,7 +41,6 @@ object SystemUiUtils {
             } ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) STATUS_BAR_HEIGHT_M else STATUS_BAR_HEIGHT_L
             statusBarHeight
         }
-        logd("StatusBarHeight $res", "STATUSXXXX")
         return res
     }
 
