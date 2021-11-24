@@ -15,6 +15,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -148,15 +149,15 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                0,
+        final WindowInsetsCompat.Builder builder = new WindowInsetsCompat.Builder();
+        final WindowInsetsCompat finalInsets = builder.setSystemWindowInsets(Insets.of(insets.getSystemWindowInsetLeft(),
                 getActivity().getApplicationContext().getApplicationInfo().targetSdkVersion >= 30
                         && resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind()
-                        ? 0 : insets.getSystemWindowInsetTop(),
-                0,
-                0
-        ));
-        return insets;
+                        ? 0 : Math.max(insets.getSystemWindowInsetTop() - getTopInset(), 0),
+                insets.getSystemWindowInsetRight(),
+                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0))).build();
+        ViewCompat.onApplyWindowInsets(view.getView(), finalInsets);
+        return finalInsets;
     }
 
     @Override
