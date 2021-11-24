@@ -37,17 +37,19 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName, props?: any) {
-    this.processObject(
-      options,
-      clone(options),
-      (key, parentOptions) => {
-        this.deprecations.onProcessOptions(key, parentOptions, commandName);
-        this.deprecations.checkForDeprecatedOptions(parentOptions);
-      },
-      commandName,
-      props
-    );
+  public processOptions(commandName: CommandName, options?: Options, props?: any) {
+    if (options) {
+      this.processObject(
+        options,
+        clone(options),
+        (key, parentOptions) => {
+          this.deprecations.onProcessOptions(key, parentOptions, commandName);
+          this.deprecations.checkForDeprecatedOptions(parentOptions);
+        },
+        commandName,
+        props
+      );
+    }
   }
 
   public processDefaultOptions(options: Options, commandName: CommandName) {
@@ -370,7 +372,9 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'dismissModal') return;
+    console.log('dismiss modal process');
     if (!('exit' in animation)) {
+      console.log(animation);
       const elementTransitions = animation.elementTransitions;
       const sharedElementTransitions = animation.sharedElementTransitions;
       const exit = { ...(animation as OldModalAnimationOptions) };
