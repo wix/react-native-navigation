@@ -210,6 +210,6 @@ describe('modal', () => {
     await expect(elementByLabel('StatusBar Options')).toBeVisible();
     await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
     await expect(elementByLabel('StatusBar Options')).not.toBeVisible();
-    await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
+    await expect(elementByLabel('Modal Commands')).toBeVisible();
   });
 });
