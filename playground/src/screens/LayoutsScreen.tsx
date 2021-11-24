@@ -75,7 +75,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
-  bottomTabs = () =>
+  bottomTabs = () => {
     Navigation.showModal({
       bottomTabs: {
         children: [
@@ -88,6 +88,18 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
             },
             'SecondTab'
           ),
+          {
+            component: {
+              name: Screens.Pushed,
+              options: {
+                bottomTab: {
+                  selectTabOnPress: false,
+                  text: 'Tab 3',
+                  testID: testIDs.THIRD_TAB_BAR_BTN,
+                },
+              },
+            },
+          },
         ],
         options: {
           bottomTabs: {
@@ -96,6 +108,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         },
       },
     });
+  };
 
   sideMenu = () =>
     Navigation.showModal({
