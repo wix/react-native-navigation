@@ -372,9 +372,7 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'dismissModal') return;
-    console.log('dismiss modal process');
     if (!('exit' in animation)) {
-      console.log(animation);
       const elementTransitions = animation.elementTransitions;
       const sharedElementTransitions = animation.sharedElementTransitions;
       const exit = { ...(animation as OldModalAnimationOptions) };
