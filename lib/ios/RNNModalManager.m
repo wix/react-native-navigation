@@ -1,4 +1,5 @@
 #import "RNNModalManager.h"
+#import "AnimationObserver.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
 #import "ScreenAnimationController.h"
@@ -85,7 +86,8 @@
 
         viewController.transitioningDelegate = _showModalTransitionDelegate;
     }
-
+    if (animated)
+        [[AnimationObserver sharedObserver] beginAnimation];
     [topVC presentViewController:viewController
                         animated:animated
                       completion:^{

@@ -1,4 +1,5 @@
 #import "StackControllerDelegate.h"
+#import "AnimationObserver.h"
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -18,6 +19,8 @@
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {
+    if (animated)
+        [[AnimationObserver sharedObserver] beginAnimation];
     if (_presentedViewController &&
         ![navigationController.viewControllers containsObject:_presentedViewController]) {
         _isPopping = YES;

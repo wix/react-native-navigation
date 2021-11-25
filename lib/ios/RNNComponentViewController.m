@@ -1,4 +1,5 @@
 #import "RNNComponentViewController.h"
+#import "AnimationObserver.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;
@@ -36,6 +37,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [[AnimationObserver sharedObserver] endAnimation];
     [self.reactView componentDidAppear];
     [self componentDidAppear];
 }
