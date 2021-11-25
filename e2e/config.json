@@ -1,7 +1,7 @@
 {
   "globalSetup": "./global-setup.js",
   "globalTeardown": "./global-teardown.js",
-  "setupTestFrameworkScriptFile" : "./init.js",
+  "setupFilesAfterEnv" : ["./init.js"],
   "testEnvironment": "node",
   "bail": true,
   "verbose": true,

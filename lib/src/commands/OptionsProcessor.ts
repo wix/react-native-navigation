@@ -37,17 +37,19 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName, props?: any) {
-    this.processObject(
-      options,
-      clone(options),
-      (key, parentOptions) => {
-        this.deprecations.onProcessOptions(key, parentOptions, commandName);
-        this.deprecations.checkForDeprecatedOptions(parentOptions);
-      },
-      commandName,
-      props
-    );
+  public processOptions(commandName: CommandName, options?: Options, props?: any) {
+    if (options) {
+      this.processObject(
+        options,
+        clone(options),
+        (key, parentOptions) => {
+          this.deprecations.onProcessOptions(key, parentOptions, commandName);
+          this.deprecations.checkForDeprecatedOptions(parentOptions);
+        },
+        commandName,
+        props
+      );
+    }
   }
 
   public processDefaultOptions(options: Options, commandName: CommandName) {
@@ -200,7 +202,7 @@ export class OptionsProcessor {
     if (endsWith(key, 'Buttons')) {
       forEach(value, (button) => {
         if (button.passProps && button.id) {
-          this.store.updateProps(button.id, button.passProps);
+          this.store.setPendingProps(button.id, button.passProps);
           button.passProps = undefined;
         }
       });
@@ -212,7 +214,7 @@ export class OptionsProcessor {
       value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
       this.store.ensureClassForName(value.name);
       if (value.passProps) {
-        this.store.updateProps(value.componentId, value.passProps);
+        this.store.setPendingProps(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
     }

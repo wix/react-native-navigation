@@ -15,7 +15,7 @@ public class Options {
     public static final Options EMPTY = new Options();
 
     @NonNull
-    public static Options parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
+    public static Options parse(@NonNull Context context, TypefaceLoader typefaceManager, JSONObject json) {
         Options result = new Options();
         if (json == null) return result;
 

@@ -3,27 +3,29 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 29
-def DEFAULT_MIN_SDK_VERSION = 19
-def DEFAULT_TARGET_SDK_VERSION = 29
-def kotlinVersion = rootProject.ext.get("RNNKotlinVersion")
-def kotlinStdlib = safeExtGet('RNNKotlinStdlib', 'kotlin-stdlib-jdk8')
-def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.4.3')
+def safeExtGetFallbackLowerBound(prop, fallback) {
+    Math.max(safeExtGet(prop,fallback),fallback)
+}
 
+def DEFAULT_COMPILE_SDK_VERSION = 30
+def DEFAULT_MIN_SDK_VERSION = 21
+def DEFAULT_TARGET_SDK_VERSION = 30
+def DEFAULT_KOTLIN_VERSION = "1.5.31"
+def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
+def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
+def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+    compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
 
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
-        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
     }
     buildTypes {
         release {

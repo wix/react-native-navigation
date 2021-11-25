@@ -113,7 +113,6 @@
 - (void)onBridgeWillReload {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self->_overlayManager dismissAllOverlays];
-      [self->_modalManager dismissAllModalsSynchronosly];
       [self->_componentRegistry clear];
       UIApplication.sharedApplication.delegate.window.rootViewController = nil;
     });

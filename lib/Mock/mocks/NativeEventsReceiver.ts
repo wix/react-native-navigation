@@ -73,10 +73,13 @@ export class NativeEventsReceiver {
   }
 
   public registerBottomTabPressedListener(
-    _callback: (data: BottomTabPressedEvent) => void
+    callback: (data: BottomTabPressedEvent) => void
   ): EmitterSubscription {
+    events.bottomTabPressed.push(callback);
     return {
-      remove: () => {},
+      remove: () => {
+        _.remove(events.bottomTabPressed, (value) => value === callback);
+      },
     } as EmitterSubscription;
   }
 

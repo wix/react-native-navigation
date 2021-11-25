@@ -6,6 +6,8 @@ import { VISIBLE_SCREEN_TEST_ID } from '../constants';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { connect } from '../connect';
 import { TopBar } from './TopBar';
+import { events } from '../Stores/EventsStore';
+import _ from 'lodash';
 
 export const ComponentScreen = connect(
   class extends Component<ComponentProps> {
@@ -34,7 +36,13 @@ export const ComponentScreen = connect(
             <Button
               testID={bottomTabOptions?.testID}
               title={bottomTabOptions?.text || ''}
-              onPress={() => LayoutStore.selectTabIndex(this.props.layoutNode.getBottomTabs(), i)}
+              onPress={() => {
+                events.invokeBottomTabPressed({
+                  tabIndex: i,
+                });
+                if (_.defaultTo(bottomTabOptions?.selectTabOnPress, true))
+                  LayoutStore.selectTabIndex(this.props.layoutNode.getBottomTabs(), i);
+              }}
             />
             <Text>{bottomTabOptions?.badge}</Text>
           </View>
@@ -46,6 +54,9 @@ export const ComponentScreen = connect(
 
     render() {
       const Component = Navigation.mock.store.getWrappedComponent(this.props.layoutNode.data.name);
+      if (!Component)
+        throw new Error(`${this.props.layoutNode.data.name} has not been registered.`);
+
       return (
         <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
           {this.props.layoutNode.getStack() && (

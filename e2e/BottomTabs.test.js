@@ -106,4 +106,11 @@ describe('BottomTabs', () => {
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
   });
+
+  it('invoke bottomTabPressed event', async () => {
+    await elementById(TestIDs.THIRD_TAB_BAR_BTN).tap();
+    await expect(elementByLabel('BottomTabPressed')).toBeVisible();
+    await elementByLabel('OK').tap();
+    await expect(elementByLabel('First Tab')).toBeVisible();
+  });
 });

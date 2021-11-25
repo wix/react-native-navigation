@@ -11,7 +11,7 @@ class ModalFrameLayout(context: ReactContext) : FrameLayout(context) {
         addView(modalContentLayout, MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.WRAP_CONTENT)
             .apply {
                 val translucent = context.currentActivity?.window?.let {
-                    StatusBarUtils.isTranslucent(context.currentActivity?.window)
+                    StatusBarUtils.isTranslucent(it)
                 } ?: false
                 topMargin = if (translucent) 0 else StatusBarUtils.getStatusBarHeight(context)
             })

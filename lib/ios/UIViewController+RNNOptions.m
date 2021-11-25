@@ -134,7 +134,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     if (blur) {
         if (!curBlurView) {
             UIVisualEffectView *blur = [[UIVisualEffectView alloc]
-                initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+                initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
             blur.frame = [[UIApplication sharedApplication] statusBarFrame];
             blur.tag = BLUR_STATUS_TAG;
             [self.view addSubview:blur];
