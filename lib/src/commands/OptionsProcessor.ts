@@ -37,17 +37,19 @@ export class OptionsProcessor {
     private deprecations: Deprecations
   ) {}
 
-  public processOptions(options: Options, commandName: CommandName, props?: any) {
-    this.processObject(
-      options,
-      clone(options),
-      (key, parentOptions) => {
-        this.deprecations.onProcessOptions(key, parentOptions, commandName);
-        this.deprecations.checkForDeprecatedOptions(parentOptions);
-      },
-      commandName,
-      props
-    );
+  public processOptions(commandName: CommandName, options?: Options, props?: any) {
+    if (options) {
+      this.processObject(
+        options,
+        clone(options),
+        (key, parentOptions) => {
+          this.deprecations.onProcessOptions(key, parentOptions, commandName);
+          this.deprecations.checkForDeprecatedOptions(parentOptions);
+        },
+        commandName,
+        props
+      );
+    }
   }
 
   public processDefaultOptions(options: Options, commandName: CommandName) {
