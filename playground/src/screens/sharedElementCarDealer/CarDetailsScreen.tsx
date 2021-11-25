@@ -8,7 +8,7 @@ import {
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import FastImage from 'react-native-fast-image';
-import Reanimated, { Easing, useValue } from 'react-native-reanimated';
+import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
@@ -47,7 +47,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   );
   const headerY = useMemo(
     () =>
-      Reanimated.interpolate(scrollY, {
+      Reanimated.interpolateNode(scrollY, {
         inputRange: [0, HEADER_HEIGHT],
         outputRange: [0, -HEADER_HEIGHT],
         extrapolateLeft: Reanimated.Extrapolate.CLAMP,
@@ -83,7 +83,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
       Reanimated.timing(dismissGesture.controlsOpacity, {
         toValue: 1,
         duration: 300,
-        easing: Easing.linear,
+        easing: EasingNode.linear,
       }).start();
     }, SET_DURATION);
   }, [dismissGesture.controlsOpacity]);
