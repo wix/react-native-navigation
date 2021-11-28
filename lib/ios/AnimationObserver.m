@@ -1,7 +1,13 @@
 #import "AnimationObserver.h"
 
 @implementation AnimationObserver {
-    RNNAnimationEndedBlock _animationEndedBlock;
+    NSMutableArray<RNNAnimationEndedBlock> *_animationEndedBlocks;
+}
+
+- (instancetype)init {
+    self = [super init];
+    _animationEndedBlocks = [NSMutableArray array];
+    return self;
 }
 
 + (AnimationObserver *)sharedObserver {
@@ -15,7 +21,7 @@
 }
 
 - (void)registerAnimationEndedBlock:(RNNAnimationEndedBlock)block {
-    _animationEndedBlock = block;
+    [_animationEndedBlocks addObject:block];
 }
 
 - (void)beginAnimation {
@@ -25,10 +31,11 @@
 - (void)endAnimation {
     _isAnimating = NO;
 
-    if (_animationEndedBlock) {
-        _animationEndedBlock();
-        _animationEndedBlock = nil;
+    for (RNNAnimationEndedBlock block in _animationEndedBlocks) {
+        block();
     }
+
+    [_animationEndedBlocks removeAllObjects];
 }
 
 @end
