@@ -40,15 +40,6 @@
 - (void)componentDidDisappear {
 }
 
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-    if (parent) {
-        RNNNavigationOptions *resolvedOptions = [self.boundViewController resolveOptions];
-        [self applyOptionsOnWillMoveToParentViewController:resolvedOptions];
-        [self.boundViewController onChildAddToParent:self.boundViewController
-                                             options:resolvedOptions];
-    }
-}
-
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
     UIViewController *viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [initialOptions withDefault:[self defaultOptions]];
@@ -64,9 +55,6 @@
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
-}
-
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
