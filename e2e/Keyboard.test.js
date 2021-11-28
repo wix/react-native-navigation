@@ -24,4 +24,19 @@ describe.e2e('Keyboard', () => {
     await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
+
+  it('focus keyboard on push', async () => {
+    await elementById(TestIDs.PUSH_FOCUSED_KEYBOARD_SCREEN).tap();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
+  });
+
+  it('focus keyboard on show modal', async () => {
+    await elementById(TestIDs.MODAL_FOCUSED_KEYBOARD_SCREEN).tap();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
+  });
+
+  it('doesnt focus keyboard on show modal', async () => {
+    await elementById(TestIDs.MODAL_BTN).tap();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).not.toBeFocused();
+  });
 });
