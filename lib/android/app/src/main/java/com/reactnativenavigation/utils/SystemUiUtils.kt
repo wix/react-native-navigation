@@ -7,6 +7,7 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -75,12 +76,21 @@ object SystemUiUtils {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @JvmStatic
     fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
         window?.let {
             WindowInsetsControllerCompat(window, view).let { controller ->
-                controller.isAppearanceLightStatusBars = !isDark
+                controller.isAppearanceLightStatusBars = isDark
             }
+            var flags = view.systemUiVisibility
+            flags = if (isDark) {
+                flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            } else {
+                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            }
+
+            view.systemUiVisibility = flags
         }
     }
 

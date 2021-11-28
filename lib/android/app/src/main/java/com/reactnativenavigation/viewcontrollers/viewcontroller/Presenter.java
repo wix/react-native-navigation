@@ -129,7 +129,7 @@ public class Presenter {
             return false;
         }
 
-        return !isColorLight(getStatusBarBackgroundColor(statusBar));
+        return isColorLight(getStatusBarBackgroundColor(statusBar));
     }
 
     private int getStatusBarBackgroundColor(StatusBarOptions statusBar) {

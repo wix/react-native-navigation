@@ -5,6 +5,10 @@ import animations from './Animations';
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
     animations,
+    statusBar: {
+      style: 'dark',
+      backgroundColor: 'white',
+    },
     window: {
       backgroundColor: Colors.primary,
     },
