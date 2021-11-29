@@ -31,6 +31,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class ModalStackTest extends BaseTest {
@@ -152,7 +153,7 @@ public class ModalStackTest extends BaseTest {
         uut.dismissModal(MODAL_ID_1, root, listener);
         verify(onModalWillDismiss, times(0)).run();
         verify(listener, times(1)).onError(anyString());
-        verifyNoInteractions(listener);
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
@@ -188,7 +189,7 @@ public class ModalStackTest extends BaseTest {
         });
         uut.dismissAllModals(root, Options.EMPTY, listener);
         verify(listener, times(1)).onSuccess(anyString());
-        verifyNoInteractions(listener);
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
