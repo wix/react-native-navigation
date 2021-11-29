@@ -264,21 +264,26 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public void selectTab(final int newIndex) {
-        selectTab(newIndex,
-                resolveCurrentOptions().hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection);
+        final boolean enableSelectionHistory = resolveCurrentOptions().hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection;
+        selectTab(newIndex, enableSelectionHistory);
     }
 
     private void selectTab(int newIndex, boolean enableSelectionHistory) {
-        if (enableSelectionHistory) {
-            if (selectionStack.isEmpty() || selectionStack.peek() != newIndex)
-                selectionStack.offerFirst(bottomTabs.getCurrentItem());
-        }
-
+        saveTabSelection(newIndex, enableSelectionHistory);
         tabsAttacher.onTabSelected(tabs.get(newIndex));
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
         getCurrentChild().onViewDidAppear();
+    }
+
+    private void saveTabSelection(int newIndex, boolean enableSelectionHistory) {
+        if (enableSelectionHistory) {
+            if (selectionStack.isEmpty()
+                    || selectionStack.peek() != newIndex
+                    || bottomTabs.getCurrentItem() != newIndex)
+                selectionStack.offerFirst(bottomTabs.getCurrentItem());
+        }
     }
 
     @NonNull

@@ -172,7 +172,7 @@ class BottomTabsControllerTest : BaseTest() {
     }
 
     @Test
-    fun `handleBack - reselect tab selection history of navigation when root has bottom tabs`() {
+    fun `handleBack - PrevSelection - reselect tab selection history of navigation when root has bottom tabs`() {
         val options = Options().apply {
             hardwareBack.bottomTabOnPress = HwBackBottomTabsBehaviour.PrevSelection
         }
@@ -197,6 +197,70 @@ class BottomTabsControllerTest : BaseTest() {
 
         Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isTrue
         Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isFalse
+    }
+
+    @Test
+    fun `handleBack - JumpToFirst - reselect first tab`() {
+        val options = Options().apply {
+            hardwareBack.bottomTabOnPress = HwBackBottomTabsBehaviour.JumpToFirst
+        }
+        prepareViewsForTests(options = options)
+        idleMainLooper()
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        uut.selectTab(1)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(1)
+
+        uut.selectTab(3)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(3)
+
+        uut.selectTab(2)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(2)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isTrue
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isFalse
+    }
+
+    @Test
+    fun `handleBack - Default - should exit app with no reselection`() {
+
+        prepareViewsForTests()
+        idleMainLooper()
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        uut.selectTab(1)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(1)
+
+        uut.selectTab(3)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(3)
+
+        uut.selectTab(2)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(2)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isFalse
+    }
+
+    @Test
+    fun `handleBack - Exit - reselect first tab`() {
+        val options = Options().apply {
+            hardwareBack.bottomTabOnPress = HwBackBottomTabsBehaviour.Exit
+        }
+        prepareViewsForTests(options = options)
+        idleMainLooper()
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        uut.selectTab(1)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(1)
+
+        uut.selectTab(3)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(3)
+
+        uut.selectTab(2)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(2)
 
         Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isFalse
     }
