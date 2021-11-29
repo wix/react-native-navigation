@@ -282,7 +282,10 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updatePictureInPictureParams() {
-        getActivity().setPictureInPictureParams(getPictureInPictureParams());
+        if (this.childController.options.pipOptions.enabledOnBackPress
+                || this.childController.options.pipOptions.enabledOnHomePress) {
+            getActivity().setPictureInPictureParams(getPictureInPictureParams());
+        }
     }
 
     private boolean isChildControlledAvailable() {
