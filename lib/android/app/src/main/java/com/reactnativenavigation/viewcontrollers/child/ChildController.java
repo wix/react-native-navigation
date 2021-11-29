@@ -73,10 +73,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        final ParentController<?> parentController = getParentController();
-        final Options resolveCurrentOptions = parentController == null ? resolveCurrentOptions() :
-                parentController.resolveChildOptions(this);
-        presenter.applyOptions(this, resolveCurrentOptions);
+        presenter.applyOptions(this, resolveCurrentOptions());
     }
 
     @Override
