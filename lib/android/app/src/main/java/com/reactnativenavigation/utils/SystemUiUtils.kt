@@ -81,6 +81,8 @@ object SystemUiUtils {
 
         window?.let {
             WindowInsetsControllerCompat(window, view).isAppearanceLightStatusBars = isDark
+           // Workaround: on devices with api 30 status bar icons flickers or get hidden when removing view
+            //turns out it is a bug on such devices, fixed by using system flags until it is fixed.
             var flags = view.systemUiVisibility
             flags = if (isDark) {
                 flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
