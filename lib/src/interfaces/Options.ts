@@ -416,7 +416,7 @@ export interface HardwareBackButtonOptions {
   popStackOnPress?: boolean;
 
   /**
-   * Controls hardware back button tab selection behaviour
+   * Controls hardware back button bottom tab selection behaviour
    */
   bottomTabsOnPress?: 'exit' | 'first' | 'previous';
 }
