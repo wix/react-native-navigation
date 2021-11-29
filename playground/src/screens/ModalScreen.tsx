@@ -197,6 +197,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
       overlay: { interceptTouchOutside: false },
     });
   };
+
   toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
 
   showModalWithTransition = () => {

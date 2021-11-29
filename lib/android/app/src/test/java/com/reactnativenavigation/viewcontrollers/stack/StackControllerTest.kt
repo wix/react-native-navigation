@@ -6,7 +6,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.*

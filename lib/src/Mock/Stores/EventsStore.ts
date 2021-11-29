@@ -4,6 +4,7 @@ import {
   ModalDismissedEvent,
 } from '../../interfaces/ComponentEvents';
 import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../index';
+import { BottomTabPressedEvent } from '../../interfaces/Events';
 
 export const events = {
   navigationButtonPressed: [(_event: NavigationButtonPressedEvent) => {}],
@@ -11,6 +12,7 @@ export const events = {
   componentDidAppear: [(_event: ComponentDidAppearEvent) => {}],
   componentDidDisappear: [(_event: ComponentDidDisappearEvent) => {}],
   modalDismissed: [(_event: ModalDismissedEvent) => {}],
+  bottomTabPressed: [(_event: BottomTabPressedEvent) => {}],
   invokeComponentWillAppear: (event: ComponentWillAppearEvent) => {
     events.componentWillAppear &&
       events.componentWillAppear.forEach((listener) => {
@@ -38,6 +40,12 @@ export const events = {
   invokeNavigationButtonPressed: (event: NavigationButtonPressedEvent) => {
     events.navigationButtonPressed &&
       events.navigationButtonPressed.forEach((listener) => {
+        listener(event);
+      });
+  },
+  invokeBottomTabPressed: (event: BottomTabPressedEvent) => {
+    events.bottomTabPressed &&
+      events.bottomTabPressed?.forEach((listener) => {
         listener(event);
       });
   },

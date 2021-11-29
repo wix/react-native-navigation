@@ -203,4 +203,13 @@ describe('modal', () => {
 
     await expect(elementByLabel('Toggle declared modal')).toBeVisible();
   });
+
+  it.e2e('dismiss modal with side menu', async () => {
+    await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
+    await elementById(TestIDs.SHOW_SIDE_MENU_MODAL).tap();
+    await expect(elementByLabel('StatusBar Options')).toBeVisible();
+    await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
+    await expect(elementByLabel('StatusBar Options')).not.toBeVisible();
+    await expect(elementByLabel('Modal Commands')).toBeVisible();
+  });
 });

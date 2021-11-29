@@ -130,21 +130,6 @@
         completion();
 }
 
-- (void)dismissAllModalsSynchronosly {
-    if (_presentedModals.count) {
-        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-        [self dismissAllModalsAnimated:NO
-                            completion:^{
-                              dispatch_semaphore_signal(sem);
-                            }];
-
-        while (dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW)) {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                     beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
-        }
-    }
-}
-
 - (void)reset {
     [_presentedModals removeAllObjects];
     [_pendingModalIdsToDismiss removeAllObjects];
@@ -177,8 +162,7 @@
             _dismissModalTransitionDelegate;
     }
 
-    if ((modalToDismiss == topPresentedVC ||
-         [[topPresentedVC childViewControllers] containsObject:modalToDismiss])) {
+    if ((modalToDismiss == topPresentedVC || [topPresentedVC findViewController:modalToDismiss])) {
         [self dismissSearchController:modalToDismiss];
         [modalToDismiss
             dismissViewControllerAnimated:animated
