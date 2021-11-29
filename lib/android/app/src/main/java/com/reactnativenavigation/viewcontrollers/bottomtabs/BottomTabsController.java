@@ -171,13 +171,13 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
                     return true;
                 }
             } else if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.JumpToFirst) {
-                if(getSelectedIndex() != 0){
+                if (getSelectedIndex() != 0) {
                     selectTab(0, false);
                     return true;
-                }else{
+                } else {
                     return false;
                 }
-            }else{
+            } else {
                 return false;
             }
         }
