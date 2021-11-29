@@ -138,8 +138,6 @@ public class Presenter {
     }
 
     private void setTextColorScheme(StatusBarOptions statusBar) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-
         final View view = activity.getWindow().getDecorView();
         //View.post is a Workaround, added to solve internal Samsung 
         //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
