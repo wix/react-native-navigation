@@ -16,11 +16,19 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView
 
-open class ButtonController(activity: Activity,
-                            private val presenter: ButtonPresenter,
-                            val button: ButtonOptions,
-                            private val viewCreator: TitleBarButtonCreator,
-                            private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
+open class ButtonController(
+    activity: Activity,
+    private val presenter: ButtonPresenter,
+    val button: ButtonOptions,
+    private val viewCreator: TitleBarButtonCreator,
+    private val onPressListener: OnClickListener
+) : ViewController<TitleBarReactButtonView>(
+    activity,
+    button.id,
+    YellowBoxDelegate(activity),
+    Options(),
+    ViewControllerOverlay(activity)
+), MenuItem.OnMenuItemClickListener {
 
     private var menuItem: MenuItem? = null
 
@@ -77,17 +85,25 @@ open class ButtonController(activity: Activity,
         }
     }
 
-    open fun applyColor(toolbar: Toolbar, color: ThemeColour) = this.menuItem?.let { presenter.applyColor(toolbar, it, color) }
+    open fun applyColor(toolbar: Toolbar, color: ThemeColour) =
+        this.menuItem?.let { presenter.applyColor(toolbar, it, color) }
 
-    open fun applyDisabledColor(toolbar: Toolbar, disabledColour: ThemeColour) = this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
+    open fun applyDisabledColor(toolbar: Toolbar, disabledColour: ThemeColour) =
+        this.menuItem?.let { presenter.applyDisabledColor(toolbar, it, disabledColour) }
 
     fun addToMenu(buttonBar: ButtonBar, order: Int) {
-        if (button.component.hasValue() && buttonBar.containsButton(menuItem, order)) return
+        if ((button.component.hasValue() && buttonBar.containsButton(
+                menuItem,
+                order
+            )) || this@ButtonController.isDestroyed
+        ) return
         buttonBar.menu.removeItem(button.intId)
-        menuItem = buttonBar.addButton(Menu.NONE,
-                button.intId,
-                order,
-                presenter.styledText)?.also { menuItem ->
+        menuItem = buttonBar.addButton(
+            Menu.NONE,
+            button.intId,
+            order,
+            presenter.styledText
+        )?.also { menuItem ->
             menuItem.setOnMenuItemClickListener(this@ButtonController)
             presenter.applyOptions(buttonBar, menuItem, this@ButtonController::getView)
         }

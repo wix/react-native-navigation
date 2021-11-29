@@ -154,7 +154,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
         if (pipFloatingLayout != null) {
             pipFloatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);
             pipFloatingLayout.updatePIPState(this.pipState);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && pipState == PIPStates.NATIVE_MOUNTED) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 updatePictureInPictureParams();
             }
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -282,8 +282,8 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updatePictureInPictureParams() {
-        if (this.childController.options.pipOptions.enabledOnBackPress
-                || this.childController.options.pipOptions.enabledOnHomePress) {
+        if ((this.childController.options.pipOptions.enabledOnBackPress
+                || this.childController.options.pipOptions.enabledOnHomePress) && pipState == PIPStates.NATIVE_MOUNTED) {
             getActivity().setPictureInPictureParams(getPictureInPictureParams());
         }
     }
