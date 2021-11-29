@@ -92,5 +92,5 @@ export default class ModalScreen extends NavigationComponent<NavigationComponent
       });
   };
 
-  showSideMenuModal = () => Navigation.showModal(Screens.StatusBar);
+  showSideMenuModal = () => Navigation.showModal(Screens.SystemUi);
 }
