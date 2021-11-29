@@ -115,7 +115,7 @@ describe('BottomTabs', () => {
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
 
-  it(':android: hardware back tab selection history', async () => {
+  it.e2e(':android: hardware back tab selection history', async () => {
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
