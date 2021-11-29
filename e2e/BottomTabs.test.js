@@ -1,5 +1,6 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
+import Android from "./AndroidUtils";
 
 const { elementByLabel, elementById } = Utils;
 
@@ -113,4 +114,28 @@ describe('BottomTabs', () => {
     await elementByLabel('OK').tap();
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
+
+    it(':android: hardware back tab selection history', async () => {
+        await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+        await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
+        await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+        await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+        await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
+
+        await Android.pressBack();
+        await expect(elementByLabel('Second Tab')).toBeVisible();
+
+        await Android.pressBack();
+        await expect(elementByLabel('First Tab')).toBeVisible();
+
+        await Android.pressBack();
+        await expect(elementByLabel('Second Tab')).toBeVisible();
+
+        await Android.pressBack();
+        await expect(elementByLabel('First Tab')).toBeVisible();
+
+        await Android.pressBack();
+        await expect(elementByLabel('First Tab')).toBeNotVisible();
+        await expect(elementByLabel('Second Tab')).toBeNotVisible();
+    });
 });
