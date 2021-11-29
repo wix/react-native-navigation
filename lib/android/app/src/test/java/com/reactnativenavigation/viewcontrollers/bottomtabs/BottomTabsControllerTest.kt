@@ -13,12 +13,11 @@ import com.reactnativenavigation.mocks.ImageLoaderMock.mock
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.mocks.TypefaceLoaderMock
 import com.reactnativenavigation.options.BottomTabsOptions
+import com.reactnativenavigation.options.HwBackBottomTabsBehaviour
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.*
-import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.react.events.EventEmitter
-import com.reactnativenavigation.utils.ObjectUtils
 import com.reactnativenavigation.utils.OptionHelper
 import com.reactnativenavigation.utils.StatusBarUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.StatusBarUtils.saveStatusBarHeight
@@ -37,6 +36,9 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.times
 import java.util.*
 
 class BottomTabsControllerTest : BaseTest() {
@@ -60,6 +62,7 @@ class BottomTabsControllerTest : BaseTest() {
     private lateinit var bottomTabPresenter: BottomTabPresenter
     private lateinit var tabsAttacher: BottomTabsAttacher
     override fun beforeEach() {
+        super.beforeEach()
         activity = newActivity()
         childRegistry = ChildControllersRegistry()
         eventEmitter = Mockito.mock(EventEmitter::class.java)
@@ -98,6 +101,7 @@ class BottomTabsControllerTest : BaseTest() {
     fun setTabs_ThrowWhenMoreThan5() {
         tabs.add(SimpleViewController(activity, childRegistry, "6", tabOptions))
         createBottomTabs()
+        idleMainLooper()
     }
 
     @Test
@@ -168,6 +172,36 @@ class BottomTabsControllerTest : BaseTest() {
     }
 
     @Test
+    fun `handleBack - reselect tab selection history of navigation when root has bottom tabs`() {
+        val options = Options().apply {
+            hardwareBack.bottomTabOnPress = HwBackBottomTabsBehaviour.PrevSelection
+        }
+        prepareViewsForTests(options = options)
+        idleMainLooper()
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        uut.selectTab(1)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(1)
+
+        uut.selectTab(3)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(3)
+
+        uut.selectTab(2)
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(2)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isTrue
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(3)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isTrue
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(1)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isTrue
+        Java6Assertions.assertThat(uut.selectedIndex).isEqualTo(0)
+
+        Java6Assertions.assertThat(uut.handleBack(CommandListenerAdapter())).isFalse
+    }
+
+    @Test
     fun applyChildOptions_bottomTabsOptionsAreClearedAfterApply() {
         val parent = Mockito.mock(ParentController::class.java)
         uut.parentController = parent
@@ -183,8 +217,8 @@ class BottomTabsControllerTest : BaseTest() {
     @Test
     fun applyOptions_bottomTabsCreateViewOnlyOnce() {
         idleMainLooper()
-        Mockito.verify(presenter).applyOptions(ArgumentMatchers.any())
-        Mockito.verify(bottomTabsContainer.bottomTabs, Mockito.times(2))
+        Mockito.verify(presenter).applyOptions(any())
+        Mockito.verify(bottomTabsContainer.bottomTabs, times(2))
             .superCreateItems() // first time when view is created, second time when options are applied
     }
 
@@ -285,10 +319,10 @@ class BottomTabsControllerTest : BaseTest() {
                 }
             }
         }
-        activity.setContentView(uut.getView())
+        activity.setContentView(uut.view)
         idleMainLooper()
         Mockito.verify(presenter, Mockito.times(2))
-            .applyChildOptions(ArgumentMatchers.eq(resolvedOptions), ArgumentMatchers.any())
+            .applyChildOptions(eq(resolvedOptions), any())
     }
 
     @Test
@@ -362,26 +396,24 @@ class BottomTabsControllerTest : BaseTest() {
         Mockito.verify(tabs[4], Mockito.times(0)).onViewDidAppear()
     }
 
-    @get:Test
-    val topInset: Unit
-        get() {
-            Java6Assertions.assertThat(child1.topInset).isEqualTo(statusBarHeight)
-            Java6Assertions.assertThat(child2.topInset).isEqualTo(statusBarHeight)
-            child1.options.statusBar.drawBehind = Bool(true)
-            Java6Assertions.assertThat(child1.topInset).isEqualTo(0)
-            Java6Assertions.assertThat(child2.topInset).isEqualTo(statusBarHeight)
-            Java6Assertions.assertThat(stackChild.topInset).isEqualTo(statusBarHeight + child4.topBar.height)
-        }
+    @Test
+    fun topInset() {
+        Java6Assertions.assertThat(child1.topInset).isEqualTo(statusBarHeight)
+        Java6Assertions.assertThat(child2.topInset).isEqualTo(statusBarHeight)
+        child1.options.statusBar.drawBehind = Bool(true)
+        Java6Assertions.assertThat(child1.topInset).isEqualTo(0)
+        Java6Assertions.assertThat(child2.topInset).isEqualTo(statusBarHeight)
+        Java6Assertions.assertThat(stackChild.topInset).isEqualTo(statusBarHeight + child4.topBar.height)
+    }
 
-    @get:Test
-    val bottomInset_defaultOptionsAreTakenIntoAccount: Unit
-        get() {
-            val defaultOptions = Options()
-            defaultOptions.bottomTabsOptions.visible = Bool(false)
-            Java6Assertions.assertThat(uut.getBottomInset(child1)).isEqualTo(bottomTabs.height)
-            uut.setDefaultOptions(defaultOptions)
-            Java6Assertions.assertThat(uut.getBottomInset(child1)).isZero
-        }
+    @Test
+    fun bottomInset_defaultOptionsAreTakenIntoAccount() {
+        val defaultOptions = Options()
+        defaultOptions.bottomTabsOptions.visible = Bool(false)
+        Java6Assertions.assertThat(uut.getBottomInset(child1)).isEqualTo(bottomTabs.height)
+        uut.setDefaultOptions(defaultOptions)
+        Java6Assertions.assertThat(uut.getBottomInset(child1)).isZero
+    }
 
     @Test
     fun destroy() {
@@ -389,20 +421,26 @@ class BottomTabsControllerTest : BaseTest() {
         Mockito.verify(tabsAttacher).destroy()
     }
 
-    private fun prepareViewsForTests(bottomTabsOptions: BottomTabsOptions = initialOptions.bottomTabsOptions) {
-        ObjectUtils.perform(uut, { obj: BottomTabsController -> obj.destroy() })
+    private fun prepareViewsForTests(
+        bottomTabsOptions: BottomTabsOptions = initialOptions.bottomTabsOptions,
+        options: Options = initialOptions, defaultOptions: Options = initialOptions
+    ) {
+        if(::uut.isInitialized){
+            uut.destroy()
+        }
+//        ObjectUtils.perform(uut, { obj: BottomTabsController -> obj.destroy() })
         bottomTabs = Mockito.spy(object : BottomTabs(activity) {
             override fun superCreateItems() {}
         })
         bottomTabsContainer = Mockito.spy(BottomTabsContainer(activity, bottomTabs))
         createChildren()
-        tabs = Arrays.asList(child1, child2, child3, child4, child5)
-        initialOptions.bottomTabsOptions = bottomTabsOptions
-        presenter = Mockito.spy(BottomTabsPresenter(tabs, initialOptions, BottomTabsAnimator()))
+        tabs = mutableListOf(child1, child2, child3, child4, child5)
+        defaultOptions.bottomTabsOptions = bottomTabsOptions
+        presenter = Mockito.spy(BottomTabsPresenter(tabs, defaultOptions, BottomTabsAnimator()))
         bottomTabPresenter =
-            Mockito.spy(BottomTabPresenter(activity, tabs, mock(), TypefaceLoaderMock(), initialOptions))
-        tabsAttacher = Mockito.spy(BottomTabsAttacher(tabs, presenter, initialOptions))
-        uut = createBottomTabs()
+            Mockito.spy(BottomTabPresenter(activity, tabs, mock(), TypefaceLoaderMock(), defaultOptions))
+        tabsAttacher = Mockito.spy(BottomTabsAttacher(tabs, presenter, defaultOptions))
+        uut = createBottomTabs(options = options, defaultOptions = defaultOptions)
         activity.setContentView(FakeParentController(activity, childRegistry, uut).view)
     }
 
@@ -413,7 +451,7 @@ class BottomTabsControllerTest : BaseTest() {
         stackChild = Mockito.spy(SimpleViewController(activity, childRegistry, "stackChild", tabOptions))
         child4 = spyOnStack(stackChild)
         child5 = Mockito.spy(SimpleViewController(activity, childRegistry, "child5", tabOptions))
-        Mockito.`when`(child5.handleBack(ArgumentMatchers.any())).thenReturn(true)
+        Mockito.`when`(child5.handleBack(any())).thenReturn(true)
     }
 
     private fun spyOnStack(initialChild: ViewController<*>?): StackController {
@@ -427,7 +465,10 @@ class BottomTabsControllerTest : BaseTest() {
         return stack
     }
 
-    private fun createBottomTabs(): BottomTabsController {
+    private fun createBottomTabs(
+        options: Options = initialOptions,
+        defaultOptions: Options = initialOptions
+    ): BottomTabsController {
         return object : BottomTabsController(
             activity,
             tabs,
@@ -435,8 +476,8 @@ class BottomTabsControllerTest : BaseTest() {
             eventEmitter,
             imageLoaderMock,
             "uut",
-            initialOptions,
-            Presenter(activity, initialOptions),
+            options,
+            Presenter(activity, defaultOptions),
             tabsAttacher,
             presenter,
             bottomTabPresenter
@@ -448,20 +489,20 @@ class BottomTabsControllerTest : BaseTest() {
 
             override fun createView(): BottomTabsLayout {
                 val view = super.createView()
-                bottomTabs.layoutParams.height = 100
+                this@BottomTabsControllerTest.bottomTabs.layoutParams.height = 100
                 return view
             }
 
             override fun createBottomTabsContainer(): BottomTabsContainer {
-                return bottomTabsContainer
+                return this@BottomTabsControllerTest.bottomTabsContainer
             }
 
             override fun createBottomTabs(): BottomTabs {
-                return bottomTabs
+                return this@BottomTabsControllerTest.bottomTabs
             }
         }
     }
 
     private val statusBarHeight: Int
-        private get() = getStatusBarHeight(activity)
+        get() = getStatusBarHeight(activity)
 }
