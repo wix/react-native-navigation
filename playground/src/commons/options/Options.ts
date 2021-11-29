@@ -6,8 +6,7 @@ const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
     animations,
     statusBar: {
-      style: 'dark',
-      backgroundColor: 'white',
+      backgroundColor: Colors.statusBarColor,
     },
     window: {
       backgroundColor: Colors.primary,

@@ -2,6 +2,7 @@ import { Platform, PlatformColor } from 'react-native';
 
 const colors = {
   background: { light: '#e8e8e8', dark: '#282528' },
+  statusBarColor: { light: '#FFFFFF', dark: '#282528' },
   barBackground: { light: 'white', dark: '#282528' },
   primary: { light: '#5847ff', dark: '#BA292E' },
   secondary: { light: '#FFC249', dark: '#5847ff' },
