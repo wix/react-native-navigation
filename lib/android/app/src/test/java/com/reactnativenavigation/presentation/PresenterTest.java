@@ -43,13 +43,13 @@ public class PresenterTest extends BaseTest {
             Options options = new Options();
             options.statusBar.visible = new Bool(false);
             uut.mergeOptions(controller, options);
-            mockedStatic.verify(times(1),
-                    ()-> SystemUiUtils.hideStatusBar(any(),eq(spy)));
+            mockedStatic.verify(
+                    ()-> SystemUiUtils.hideStatusBar(any(),eq(spy)),times(1));
 
             options.statusBar.visible = new Bool(true);
             uut.mergeOptions(controller, options);
-            mockedStatic.verify(times(1),
-                    ()-> SystemUiUtils.showStatusBar(any(),eq(spy)));
+            mockedStatic.verify(
+                    ()-> SystemUiUtils.showStatusBar(any(),eq(spy)),times(1));
         });
 
     }
