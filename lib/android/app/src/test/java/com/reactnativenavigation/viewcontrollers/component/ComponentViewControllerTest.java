@@ -138,7 +138,7 @@ public class ComponentViewControllerTest extends BaseTest {
         Options options = new Options();
         Java6Assertions.assertThat(uut.isViewShown()).isFalse();
         uut.mergeOptions(options);
-        Mockito.verifyZeroInteractions(presenter);
+        Mockito.verifyNoInteractions(presenter);
 
         Mockito.when(uut.isViewShown()).thenReturn(true);
         uut.mergeOptions(options);
