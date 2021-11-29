@@ -38,6 +38,11 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
 
   dotVisible = true;
   badgeVisible = true;
+  bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
+    if (event.tabIndex == 2) {
+      alert('BottomTabPressed');
+    }
+  });
 
   render() {
     return (
@@ -66,6 +71,10 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
       </Root>
     );
+  }
+
+  componentWillUnmount() {
+    this.bottomTabPressedListener.remove();
   }
 
   modifyBottomTabs = () => {

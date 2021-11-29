@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 import android.animation.AnimatorSet
 import android.content.res.Configuration
 import android.graphics.Color
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options

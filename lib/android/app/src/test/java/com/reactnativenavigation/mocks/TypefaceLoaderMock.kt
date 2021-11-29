@@ -1,8 +1,8 @@
 package com.reactnativenavigation.mocks
 
 import android.graphics.Typeface
-import com.nhaarman.mockitokotlin2.mock
 import com.reactnativenavigation.options.parsers.TypefaceLoader
+import org.mockito.kotlin.mock
 
 class TypefaceLoaderMock() : TypefaceLoader(mock()) {
     private var mockTypefaces: Map<String, Typeface>? = null
