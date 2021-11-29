@@ -7,7 +7,6 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import androidx.annotation.ColorInt
-import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -76,13 +75,12 @@ object SystemUiUtils {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     @JvmStatic
     fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+
         window?.let {
-            WindowInsetsControllerCompat(window, view).let { controller ->
-                controller.isAppearanceLightStatusBars = isDark
-            }
+            WindowInsetsControllerCompat(window, view).isAppearanceLightStatusBars = isDark
             var flags = view.systemUiVisibility
             flags = if (isDark) {
                 flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -121,12 +119,15 @@ object SystemUiUtils {
         @ColorInt color: Int,
         translucent: Boolean
     ) {
-        val alpha = if (translucent) STATUS_BAR_HEIGHT_TRANSLUCENCY else 1f
-        val red: Int = Color.red(color)
-        val green: Int = Color.green(color)
-        val blue: Int = Color.blue(color)
-
-        val opaqueColor = Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
+        val opaqueColor = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            Color.BLACK
+        }else{
+            val alpha = if (translucent) STATUS_BAR_HEIGHT_TRANSLUCENCY else 1f
+            val red: Int = Color.red(color)
+            val green: Int = Color.green(color)
+            val blue: Int = Color.blue(color)
+            Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
+        }
         window?.statusBarColor = opaqueColor
     }
 
