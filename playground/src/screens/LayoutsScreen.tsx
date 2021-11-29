@@ -102,6 +102,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
           },
         ],
         options: {
+          hardwareBackButton: {
+            bottomTabsOnPress: 'previous',
+          },
           bottomTabs: {
             testID: BOTTOM_TABS,
           },

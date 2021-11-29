@@ -414,6 +414,11 @@ export interface HardwareBackButtonOptions {
    * @default true
    */
   popStackOnPress?: boolean;
+
+  /**
+   * Controls hardware back button tab selection behaviour
+   */
+  bottomTabsOnPress?: 'exit' | 'first' | 'previous';
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
