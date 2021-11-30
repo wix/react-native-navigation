@@ -24,7 +24,7 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.fakes.FakeParentController;
@@ -87,7 +87,7 @@ public class BottomTabsControllerTest extends BaseTest {
         childRegistry = new ChildControllersRegistry();
         eventEmitter = Mockito.mock(EventEmitter.class);
         prepareViewsForTests();
-        StatusBarUtils.saveStatusBarHeight(63);
+        SystemUiUtils.saveStatusBarHeight(63);
     }
 
     @Test
@@ -184,6 +184,9 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyChildOptions_bottomTabsOptionsAreClearedAfterApply() {
         ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
+        Mockito.when(parent.resolveChildOptions(child1)).thenReturn(Options.EMPTY);
+
         uut.setParentController(parent);
 
         child1.options.bottomTabsOptions.backgroundColor = new ThemeColour(new Colour(Color.RED));
@@ -506,6 +509,6 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private int getStatusBarHeight() {
-        return StatusBarUtils.getStatusBarHeight(activity);
+        return SystemUiUtils.getStatusBarHeight(activity);
     }
 }

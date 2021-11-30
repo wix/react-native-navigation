@@ -2,7 +2,7 @@ package com.reactnativenavigation.viewcontrollers.fakes
 
 import android.app.Activity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter
 import com.reactnativenavigation.utils.CompatUtils

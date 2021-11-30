@@ -4,7 +4,7 @@ import android.app.Activity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test

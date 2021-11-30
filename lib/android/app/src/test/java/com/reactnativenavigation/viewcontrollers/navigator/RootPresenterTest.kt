@@ -3,9 +3,6 @@ package com.reactnativenavigation.viewcontrollers.navigator
 import android.app.Activity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.facebook.react.ReactInstanceManager
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.never
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestActivity
 import com.reactnativenavigation.hierarchy.root.RootAnimator
@@ -22,6 +19,9 @@ import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.never
 import org.robolectric.android.controller.ActivityController
 
 class RootPresenterTest : BaseTest() {
@@ -76,7 +76,7 @@ class RootPresenterTest : BaseTest() {
     fun setRoot_doesNotAnimateByDefault() {
         val listener = Mockito.spy(CommandListenerAdapter())
         uut.setRoot(root, null, defaultOptions, listener, reactInstanceManager)
-        Mockito.verifyZeroInteractions(animator)
+        Mockito.verifyNoInteractions(animator)
         Mockito.verify(listener).onSuccess(root.id)
     }
 
@@ -210,7 +210,7 @@ class RootPresenterTest : BaseTest() {
         uut.setRoot(spy, null, defaultOptions, listener, reactInstanceManager)
         Mockito.verify(spy).addOnAppearedListener(any())
         Java6Assertions.assertThat(spy.view.alpha).isZero()
-        Mockito.verifyZeroInteractions(listener)
+        Mockito.verifyNoInteractions(listener)
         spy.onViewWillAppear()
         idleMainLooper()
         Java6Assertions.assertThat(spy.view.alpha).isOne()

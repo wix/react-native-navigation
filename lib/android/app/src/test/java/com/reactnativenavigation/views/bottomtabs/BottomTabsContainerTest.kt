@@ -6,7 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.graphics.ColorUtils
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

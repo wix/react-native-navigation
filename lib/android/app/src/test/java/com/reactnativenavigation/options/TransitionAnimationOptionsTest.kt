@@ -1,7 +1,6 @@
 package com.reactnativenavigation.options
-
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONArray
