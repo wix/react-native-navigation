@@ -21,7 +21,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.Functions;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
@@ -59,15 +59,16 @@ public abstract class BaseTest {
         when(res.getColor(ArgumentMatchers.anyInt(),any())).thenReturn(0x00000);
     }
 
-    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
-        try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
+
+    public void mockSystemUiUtils(int statusBarHeight, int statusBarHeightDp, Functions.Func1<MockedStatic<SystemUiUtils>> mockedBlock) {
+        try (MockedStatic<SystemUiUtils> theMock = Mockito.mockStatic(SystemUiUtils.class)) {
             theMock.when(() -> {
-                StatusBarUtils.getStatusBarHeight(any());
+                SystemUiUtils.getStatusBarHeight(any());
             }).thenReturn(statusBarHeight);
             theMock.when(() -> {
-                StatusBarUtils.getStatusBarHeightDp(any());
+                SystemUiUtils.getStatusBarHeightDp(any());
             }).thenReturn(statusBarHeightDp);
-            block.run();
+            mockedBlock.run(theMock);
         }
     }
 

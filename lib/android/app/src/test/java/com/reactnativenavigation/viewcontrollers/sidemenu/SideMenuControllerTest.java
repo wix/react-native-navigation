@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Path;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -55,6 +56,7 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = createActivity();
 
         childRegistry = new ChildControllersRegistry();
@@ -72,6 +74,7 @@ public class SideMenuControllerTest extends BaseTest {
         };
         uut.setCenterController(center);
         parent = mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
         uut.setParentController(parent);
     }
 
@@ -118,12 +121,12 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Test
     public void onViewAppeared() {
-        ViewController<?> left = spy(this.left);
+        ViewController left = spy(this.left);
         ViewGroup leftView = spy(left.getView());
         when(left.findController(leftView)).thenReturn(left);
         Mockito.doReturn(leftView).when(left).getView();
 
-        ViewController<?> right = spy(this.right);
+        ViewController right = spy(this.right);
         ViewGroup rightView = spy(right.getView());
         when(right.findController(rightView)).thenReturn(right);
         Mockito.doReturn(rightView).when(right).getView();
@@ -369,6 +372,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void onMeasureChild_topInsetsAreApplied() {
         setLeftRight(spy(left), spy(right));
+        idleMainLooper();
         uut.applyTopInset();
         forEach(uut.getChildControllers(), c -> verify(c).applyTopInset());
     }

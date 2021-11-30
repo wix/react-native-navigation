@@ -2,7 +2,7 @@ import { component, stack } from '../commons/Layouts';
 const SideMenuLeft = 'SideMenuLeft';
 const SideMenuCenter = 'SideMenuCenter';
 const SideMenuRight = 'SideMenuRight';
-const StatusBarOptions = 'StatusBarOptions';
+const SystemUiOptions = 'SystemUiOptions';
 const StatusBarFirstTab = 'StatusBarFirstTab';
 
 const Screens = {
@@ -57,7 +57,7 @@ const Screens = {
       center: component(SideMenuCenter),
     },
   },
-  StatusBar: {
+  SystemUi: {
     sideMenu: {
       left: component(
         SideMenuLeft,
@@ -69,7 +69,7 @@ const Screens = {
         },
         { marginTop: 20 }
       ),
-      center: stack(StatusBarOptions),
+      center: stack(SystemUiOptions),
       right: component(SideMenuRight),
     },
   },
@@ -118,7 +118,7 @@ const Screens = {
       ],
     },
   },
-  StatusBarOptions,
+  SystemUiOptions: SystemUiOptions,
   StatusBarFirstTab,
   KeyboardScreen: 'KeyboardScreen',
   TopBarBackground: 'TopBarBackground',

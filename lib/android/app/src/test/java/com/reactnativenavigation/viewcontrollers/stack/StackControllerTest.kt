@@ -61,7 +61,7 @@ class StackControllerTest : BaseTest() {
         eventEmitter = mock()
         backButtonHelper = spy(BackButtonHelper())
         activity = newActivity()
-        StatusBarUtils.saveStatusBarHeight(63)
+        SystemUiUtils.saveStatusBarHeight(63)
         animator = spy(StackAnimator(activity))
         childRegistry = ChildControllersRegistry()
         presenter = spy(StackPresenter(
@@ -1089,7 +1089,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(ViewUtils.topMargin(uut.topBar)).isEqualTo(StatusBarUtils.getStatusBarHeight(activity))
+        assertThat(ViewUtils.topMargin(uut.topBar)).isEqualTo(SystemUiUtils.getStatusBarHeight(activity))
     }
 
     @Test
