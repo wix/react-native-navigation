@@ -366,6 +366,40 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [_layoutManager addPendingViewController:newVc];
 
     __weak UIViewController *weakNewVC = newVc;
+	
+	if (@available(iOS 15.0, *)) {
+		UISheetPresentationController *sheet = [weakNewVC sheetPresentationController];
+		
+		if (sheet) {
+			[sheet setPrefersScrollingExpandsWhenScrolledToEdge:[withDefault.modal.prefersScrollingExpandsWhenScrolledToEdge withDefault:true]];
+			[sheet setPrefersEdgeAttachedInCompactHeight:[withDefault.modal.prefersEdgeAttachedInCompactHeight withDefault:false]];
+			[sheet setWidthFollowsPreferredContentSizeWhenEdgeAttached:[withDefault.modal.widthFollowsPreferredContentSizeWhenEdgeAttached withDefault:false]];
+			[sheet setPrefersGrabberVisible:[withDefault.modal.prefersGrabberVisible withDefault:false]];
+            
+            
+            [sheet setDetents:@[UISheetPresentationControllerDetent.mediumDetent, UISheetPresentationControllerDetent.largeDetent]];
+            
+            
+			if (withDefault.modal.detents) {
+				// FIXME: This should be handled with conversion rather than straightforward usage
+				//[sheet setDetents:withDefault.modal.detents];
+			}
+            // FIXME: This should be handled with conversion which is incorrect
+            if (withDefault.modal.largestUndimmedDetent.hasValue) {
+                //[sheet setLargestUndimmedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.largestUndimmedDetent withDefault:nil]]];
+                [sheet setLargestUndimmedDetentIdentifier:UISheetPresentationControllerDetentIdentifierLarge];
+            }
+            // FIXME: This should be handled with conversion rather than straightforward usage
+            if (withDefault.modal.selectedDetentIdentifier.hasValue) {
+                //[sheet setSelectedDetentIdentifier:[RNNConvert UISheetPresentationControllerDetentIdentifier:[withDefault.modal.selectedDetentIdentifier withDefault:nil]]];
+                [sheet setSelectedDetentIdentifier:UISheetPresentationControllerDetentIdentifierMedium];
+            }
+			if (withDefault.modal.preferredCornerRadius.hasValue) {
+				[sheet setPreferredCornerRadius:[withDefault.modal.preferredCornerRadius.get doubleValue]];
+			}
+		}
+	}
+	
     newVc.waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
     newVc.modalPresentationStyle = [RNNConvert
         UIModalPresentationStyle:[withDefault.modalPresentationStyle withDefault:@"default"]];
