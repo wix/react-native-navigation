@@ -19,8 +19,8 @@ import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.react.events.EventEmitter
 import com.reactnativenavigation.utils.OptionHelper
-import com.reactnativenavigation.utils.StatusBarUtils.getStatusBarHeight
-import com.reactnativenavigation.utils.StatusBarUtils.saveStatusBarHeight
+import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
+import com.reactnativenavigation.utils.SystemUiUtils.saveStatusBarHeight
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.fakes.FakeParentController
