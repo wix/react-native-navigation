@@ -46,6 +46,8 @@
     }
 #endif
 
+    [self createTabBarItems:childViewControllers];
+
     self.longPressRecognizer =
         [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                       action:@selector(handleLongPressGesture:)];
@@ -54,14 +56,16 @@
     return self;
 }
 
+- (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
+    for (UIViewController *child in childViewControllers) {
+        [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _viewWillAppearOnce = YES;
     [self loadChildren:self.pendingChildViewControllers];
-}
-
-- (void)onChildAddToParent:(UIViewController *)child options:(RNNNavigationOptions *)options {
-    [_bottomTabPresenter applyOptionsOnWillMoveToParentViewController:options child:child];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -188,10 +192,6 @@
 }
 
 #pragma mark - UIViewController overrides
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-    [self.presenter willMoveToParentViewController:parent];
-}
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return [self.presenter getStatusBarStyle];

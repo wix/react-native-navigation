@@ -13,6 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
+import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -29,6 +30,8 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
@@ -39,6 +42,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     private BottomTabsContainer bottomTabsContainer;
     private BottomTabs bottomTabs;
+    private final Deque<Integer> selectionStack;
     private final List<ViewController<?>> tabs;
     private final EventEmitter eventEmitter;
     private final ImageLoader imageLoader;
@@ -66,6 +70,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         this.presenter = bottomTabsPresenter;
         this.tabPresenter = bottomTabPresenter;
         forEach(tabs, tab -> tab.setParentController(this));
+        selectionStack = new LinkedList<>();
     }
 
     @Override
@@ -156,7 +161,27 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean handleBack(CommandListener listener) {
-        return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
+        final boolean childBack = !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
+        final Options options = resolveCurrentOptions();
+        if (!childBack) {
+            if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection) {
+                if (!selectionStack.isEmpty()) {
+                    final int prevSelectedTabIndex = selectionStack.poll();
+                    selectTab(prevSelectedTabIndex, false);
+                    return true;
+                }
+            } else if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.JumpToFirst) {
+                if (getSelectedIndex() != 0) {
+                    selectTab(0, false);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return childBack;
     }
 
     @Override
@@ -203,7 +228,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         });
     }
 
-    int getSelectedIndex() {
+    public int getSelectedIndex() {
         return bottomTabs.getCurrentItem();
     }
 
@@ -239,11 +264,26 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public void selectTab(final int newIndex) {
+        final boolean enableSelectionHistory = resolveCurrentOptions().hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection;
+        selectTab(newIndex, enableSelectionHistory);
+    }
+
+    private void selectTab(int newIndex, boolean enableSelectionHistory) {
+        saveTabSelection(newIndex, enableSelectionHistory);
         tabsAttacher.onTabSelected(tabs.get(newIndex));
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
         getCurrentChild().onViewDidAppear();
+    }
+
+    private void saveTabSelection(int newIndex, boolean enableSelectionHistory) {
+        if (enableSelectionHistory) {
+            if (selectionStack.isEmpty()
+                    || selectionStack.peek() != newIndex
+                    || bottomTabs.getCurrentItem() != newIndex)
+                selectionStack.offerFirst(bottomTabs.getCurrentItem());
+        }
     }
 
     @NonNull
