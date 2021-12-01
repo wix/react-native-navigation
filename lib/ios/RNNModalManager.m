@@ -86,8 +86,7 @@
 
         viewController.transitioningDelegate = _showModalTransitionDelegate;
     }
-    if (animated)
-        [[AnimationObserver sharedObserver] beginAnimation];
+
     [topVC presentViewController:viewController
                         animated:animated
                       completion:^{

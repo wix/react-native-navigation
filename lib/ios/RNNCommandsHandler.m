@@ -1,4 +1,5 @@
 #import "RNNCommandsHandler.h"
+#import "AnimationObserver.h"
 #import "RNNAssert.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
@@ -200,12 +201,16 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
             });
         }
     } else {
-        newVc.waitForRender = optionsWithDefault.animations.push.shouldWaitForRender;
+        BOOL animated = [optionsWithDefault.animations.push.enable withDefault:YES];
+        BOOL waitForRender = optionsWithDefault.animations.push.shouldWaitForRender;
+        newVc.waitForRender = waitForRender;
         __weak UIViewController *weakNewVC = newVc;
         [newVc setReactViewReadyCallback:^{
+          if (animated && !waitForRender)
+              [[AnimationObserver sharedObserver] beginAnimation];
           [fromVC.stack push:weakNewVC
                        onTop:fromVC
-                    animated:[optionsWithDefault.animations.push.enable withDefault:YES]
+                    animated:animated
                   completion:^{
                     [self->_layoutManager removePendingViewController:weakNewVC];
                     [self->_eventEmitter sendOnNavigationCommandCompletion:push
@@ -366,14 +371,19 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [_layoutManager addPendingViewController:newVc];
 
     __weak UIViewController *weakNewVC = newVc;
-    newVc.waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
+    BOOL animated = [withDefault.animations.showModal.enter.enable withDefault:YES];
+    BOOL waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
+    newVc.waitForRender = waitForRender;
     newVc.modalPresentationStyle = [RNNConvert
         UIModalPresentationStyle:[withDefault.modalPresentationStyle withDefault:@"default"]];
     newVc.modalTransitionStyle = [RNNConvert
         UIModalTransitionStyle:[withDefault.modalTransitionStyle withDefault:@"coverVertical"]];
+
+    if (animated && !waitForRender)
+        [[AnimationObserver sharedObserver] beginAnimation];
     [newVc setReactViewReadyCallback:^{
       [self->_modalManager showModal:weakNewVC
-                            animated:[withDefault.animations.showModal.enter.enable withDefault:YES]
+                            animated:animated
                           completion:^(NSString *componentId) {
                             [self->_layoutManager removePendingViewController:weakNewVC];
                             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal

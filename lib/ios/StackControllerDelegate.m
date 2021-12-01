@@ -19,8 +19,6 @@
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {
-    if (animated)
-        [[AnimationObserver sharedObserver] beginAnimation];
     if (_presentedViewController &&
         ![navigationController.viewControllers containsObject:_presentedViewController]) {
         _isPopping = YES;
