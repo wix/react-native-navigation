@@ -3,12 +3,13 @@ package com.reactnativenavigation.mocks
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.drawable.Drawable
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+
 import com.reactnativenavigation.utils.ImageLoader
 import com.reactnativenavigation.utils.ImageLoader.ImagesLoadingListener
+import org.mockito.Mockito.doAnswer
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.util.*
 
 object ImageLoaderMock {

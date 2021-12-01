@@ -36,7 +36,7 @@ import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.RenderChecker;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarBackgroundViewController;
@@ -244,24 +244,38 @@ public class StackPresenter {
 
     private void applyStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options withDefault) {
         if (withDefault.statusBar.visible.isTrueOrUndefined() && withDefault.statusBar.drawBehind.isTrue()) {
-            topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
-            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
+            topBar.setTopPadding(SystemUiUtils.getStatusBarHeight(activity));
+            topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + SystemUiUtils.getStatusBarHeightDp(activity));
+
         } else {
             topBar.setTopPadding(0);
             topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
         }
     }
-
-    private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options toMerge) {
-        if (toMerge.statusBar.drawBehind.hasValue()) {
-            if (toMerge.statusBar.visible.isTrueOrUndefined() && toMerge.statusBar.drawBehind.isTrue()) {
-                topBar.setTopPadding(StatusBarUtils.getStatusBarHeight(activity));
-                topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + StatusBarUtils.getStatusBarHeightDp(activity));
-            } else {
-                topBar.setTopPadding(0);
-                topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+    
+    private void mergeStatusBarDrawBehindOptions(TopBarOptions topBarOptions, Options childOptions) {
+        if(childOptions.statusBar.visible.isTrueOrUndefined()){
+            if (childOptions.statusBar.drawBehind.hasValue()) {
+                if (childOptions.statusBar.drawBehind.isTrue()) {
+                    topBar.setTopPadding(SystemUiUtils.getStatusBarHeight(activity));
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + SystemUiUtils.getStatusBarHeightDp(activity));
+                } else {
+                    topBar.setTopPadding(0);
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+                }
+            }
+        }else{
+            if (childOptions.statusBar.drawBehind.hasValue()) {
+                if (childOptions.statusBar.drawBehind.isFalseOrUndefined()) {
+                    topBar.setTopPadding(SystemUiUtils.getStatusBarHeight(activity));
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)) + SystemUiUtils.getStatusBarHeightDp(activity));
+                } else {
+                    topBar.setTopPadding(0);
+                    topBar.setHeight(topBarOptions.height.get(UiUtils.getTopBarHeightDp(activity)));
+                }
             }
         }
+
     }
 
     @Nullable
@@ -351,7 +365,6 @@ public class StackPresenter {
                 perform(bottomTabsController, null, btc -> btc.getSetStackRootAnimation(appearingOptions))
         );
     }
-
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController<?> child) {
         TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(toMerge.layout.orientation);
@@ -485,16 +498,18 @@ public class StackPresenter {
         return result;
     }
 
-    private void mergeTopBarOptions(TopBarOptions resolveOptions, Options options, StackController stack, ViewController<?> child) {
-        TopBarOptions topBarOptions = options.topBar;
+    private void mergeTopBarOptions(TopBarOptions resolveOptions, Options toMerge, StackController stack,
+                                    ViewController<?> child) {
+        TopBarOptions topBarOptions = toMerge.topBar;
         final View component = child.getView();
-        if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
+        if (toMerge.layout.direction.hasValue()) topBar.setLayoutDirection(toMerge.layout.direction);
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, topBarOptions.topMargin.get());
         }
-        mergeStatusBarDrawBehindOptions(resolveOptions, options);
+        Options childOptions = stack.resolveChildOptions(child).mergeWith(toMerge).withDefaultOptions(defaultOptions);
+        mergeStatusBarDrawBehindOptions(resolveOptions, childOptions);
         if (topBarOptions.title.height.hasValue()) topBar.setTitleHeight(topBarOptions.title.height.get());
         if (topBarOptions.title.topMargin.hasValue()) topBar.setTitleTopMargin(topBarOptions.title.topMargin.get());
 
@@ -652,7 +667,7 @@ public class StackPresenter {
     private int getTopBarTopMargin(StackController stack, ViewController<?> child) {
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
         int topMargin = UiUtils.dpToPx(activity, withDefault.topBar.topMargin.get(0));
-        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() && !withDefault.statusBar.drawBehind.isTrue() ? StatusBarUtils.getStatusBarHeight(child.getActivity()) : 0;
+        int statusBarInset = withDefault.statusBar.visible.isTrueOrUndefined() && !withDefault.statusBar.drawBehind.isTrue() ? SystemUiUtils.getStatusBarHeight(child.getActivity()) : 0;
         return topMargin + statusBarInset;
     }
 

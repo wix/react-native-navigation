@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour

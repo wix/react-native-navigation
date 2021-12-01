@@ -264,6 +264,8 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void getTopInsetForChild() {
         ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
+
         when(parent.getTopInset(any())).thenReturn(123);
         uut.setParentController(parent);
 
@@ -280,6 +282,8 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void getBottomInsetForChild() {
         ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
+
         when(parent.getBottomInset(any())).thenReturn(123);
         uut.setParentController(parent);
 
