@@ -4,7 +4,7 @@ import android.animation.AnimatorSet
 import android.app.Activity
 import android.content.Context
 import android.view.View
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock

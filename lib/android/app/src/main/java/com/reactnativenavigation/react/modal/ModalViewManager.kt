@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react.modal
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.view.WindowManager
@@ -21,7 +22,7 @@ import com.reactnativenavigation.options.parseTransitionAnimationOptions
 import com.reactnativenavigation.options.parsers.JSONParser
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.react.CommandListenerAdapter
-import com.reactnativenavigation.utils.StatusBarUtils
+import com.reactnativenavigation.utils.SystemUiUtils
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator
 
 private const val MODAL_MANAGER_NAME = "RNNModalViewManager"
@@ -107,18 +108,18 @@ class ModalViewManager(val reactContext: ReactContext) : ViewGroupManager<ModalH
     }
 }
 
-private fun getModalHostSize(context: Context): Point {
+private fun getModalHostSize(activity: Activity): Point {
     val MIN_POINT = Point()
     val MAX_POINT = Point()
     val SIZE_POINT = Point()
-    val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val wm = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val display = Assertions.assertNotNull(wm).defaultDisplay
     // getCurrentSizeRange will return the min and max width and height that the window can be
     display.getCurrentSizeRange(MIN_POINT, MAX_POINT)
     // getSize will return the dimensions of the screen in its current orientation
     display.getSize(SIZE_POINT)
     val attrs = intArrayOf(android.R.attr.windowFullscreen)
-    val theme = context.theme
+    val theme = activity.theme
     val ta = theme.obtainStyledAttributes(attrs)
     val windowFullscreen = ta.getBoolean(0, false)
 
@@ -126,7 +127,7 @@ private fun getModalHostSize(context: Context): Point {
     // because Display.getCurrentSizeRange doesn't include it.
     var statusBarHeight = 0
     if (windowFullscreen) {
-        statusBarHeight = StatusBarUtils.getStatusBarHeight(context)
+        statusBarHeight = SystemUiUtils.getStatusBarHeight(activity)
     }
     return if (SIZE_POINT.x < SIZE_POINT.y) {
         // If we are vertical the width value comes from min width and height comes from max height
@@ -140,8 +141,10 @@ private fun getModalHostSize(context: Context): Point {
 private class ModalHostShadowNode : LayoutShadowNode() {
     override fun addChildAt(child: ReactShadowNodeImpl, i: Int) {
         super.addChildAt(child, i)
-        val modalSize = getModalHostSize(themedContext)
-        child.setStyleWidth(modalSize.x.toFloat())
-        child.setStyleHeight(modalSize.y.toFloat())
+        themedContext?.currentActivity?.let {
+            val modalSize = getModalHostSize(it)
+            child.setStyleWidth(modalSize.x.toFloat())
+            child.setStyleHeight(modalSize.y.toFloat())
+        }
     }
 }

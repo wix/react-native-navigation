@@ -27,3 +27,15 @@ Controls whether the hardware back button should pop stacks or not.
 | Type    | Required | Default | Platform |
 | ------- | -------- | ------- | -------- |
 | boolean | No       | true    | Android  |
+
+
+### `bottomTabsOnPress`
+
+Controls hardware back button bottom tab selection behaviour,
+`first` will jump to first tab,
+`previous` will do reverse selection,
+`exit` (Default) will just exit the bottom tabs.
+
+| Type                             | Required | Default   | Platform |
+| -------------------------------- | -------- | --------- | -------- |
+| enum('exit', 'first', 'previous') | No       | 'exit'    | Android  |

@@ -13,7 +13,7 @@ public class UiUtilsTest extends BaseTest {
     public void runOnPreDrawOnce() {
         View view = new View(newActivity());
         Runnable task = mock(Runnable.class);
-        verifyZeroInteractions(task);
+        verifyNoInteractions(task);
 
         UiUtils.runOnPreDrawOnce(view, task);
         dispatchPreDraw(view);

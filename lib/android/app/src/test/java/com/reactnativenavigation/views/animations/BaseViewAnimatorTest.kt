@@ -2,14 +2,14 @@ package com.reactnativenavigation.views.animations
 
 import android.animation.Animator
 import android.view.View
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.AnimationOptions
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class BaseViewAnimatorTest : BaseTest() {
     private lateinit var uut: BaseViewAnimator<View>
