@@ -17,14 +17,6 @@
 - (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     RNNNavigationOptions *withDefault = [options withDefault:self.defaultOptions];
 
-    [child setTabBarItemBadge:[withDefault.bottomTab.badge withDefault:[NSNull null]]];
-    [child setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor withDefault:nil]];
-}
-
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options
-                                               child:(UIViewController *)child {
-    RNNNavigationOptions *withDefault = [options withDefault:self.defaultOptions];
-
     [self createTabBarItem:child bottomTabOptions:withDefault.bottomTab];
     [child setTabBarItemBadge:[withDefault.bottomTab.badge withDefault:[NSNull null]]];
     [child setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor withDefault:nil]];
