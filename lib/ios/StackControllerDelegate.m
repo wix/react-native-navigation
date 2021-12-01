@@ -1,5 +1,4 @@
 #import "StackControllerDelegate.h"
-#import "AnimationObserver.h"
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
