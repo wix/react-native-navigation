@@ -355,6 +355,8 @@
 		50D3A37723BB5CD900717F95 /* OptionsArrayParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D3A37523BB5CD900717F95 /* OptionsArrayParser.m */; };
 		50D4656D23CE2553005A84B2 /* Transition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D4656B23CE2553005A84B2 /* Transition.h */; };
 		50D4656E23CE2553005A84B2 /* Transition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D4656C23CE2553005A84B2 /* Transition.m */; };
+		50DD9154274FC6E200B4C917 /* AnimationObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 50DD9152274FC6E200B4C917 /* AnimationObserver.h */; };
+		50DD9155274FC6E200B4C917 /* AnimationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DD9153274FC6E200B4C917 /* AnimationObserver.m */; };
 		50DE2E45238EA14E005CD5F4 /* NSArray+utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 50DE2E43238EA14E005CD5F4 /* NSArray+utils.h */; };
 		50DE2E46238EA14E005CD5F4 /* NSArray+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DE2E44238EA14E005CD5F4 /* NSArray+utils.m */; };
 		50E02BD821A6EE0F00A43942 /* SideMenuOpenMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E02BD621A6EE0F00A43942 /* SideMenuOpenMode.h */; };
@@ -885,6 +887,8 @@
 		50D4656B23CE2553005A84B2 /* Transition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transition.h; sourceTree = "<group>"; };
 		50D4656C23CE2553005A84B2 /* Transition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Transition.m; sourceTree = "<group>"; };
 		50DA74CF232F80FE004A00C1 /* RCTConvert+UIFontWeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIFontWeight.h"; sourceTree = "<group>"; };
+		50DD9152274FC6E200B4C917 /* AnimationObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationObserver.h; sourceTree = "<group>"; };
+		50DD9153274FC6E200B4C917 /* AnimationObserver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimationObserver.m; sourceTree = "<group>"; };
 		50DE2E43238EA14E005CD5F4 /* NSArray+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+utils.h"; sourceTree = "<group>"; };
 		50DE2E44238EA14E005CD5F4 /* NSArray+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+utils.m"; sourceTree = "<group>"; };
 		50E02BD521A6E54B00A43942 /* RCTConvert+SideMenuOpenGestureMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+SideMenuOpenGestureMode.h"; sourceTree = "<group>"; };
@@ -1120,6 +1124,8 @@
 				5053CE7E2175FB1900D0386B /* RNNDefaultOptionsHelper.m */,
 				C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */,
 				C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */,
+				50DD9152274FC6E200B4C917 /* AnimationObserver.h */,
+				50DD9153274FC6E200B4C917 /* AnimationObserver.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1931,6 +1937,7 @@
 				50CED44D239EA78700C42EE2 /* TopBarAppearancePresenter.h in Headers */,
 				50D3A37223B8D77C00717F95 /* SharedElementTransitionOptions.h in Headers */,
 				50C085F325939F6200B0502C /* RNNButtonBuilder.h in Headers */,
+				50DD9154274FC6E200B4C917 /* AnimationObserver.h in Headers */,
 				50887C1520ECC5C200D06111 /* RNNButtonOptions.h in Headers */,
 				5049593E216F5D73006D2B81 /* BoolParser.h in Headers */,
 				E5F6C3A522DB4D0F0093C2CE /* UIViewController+Utils.h in Headers */,
@@ -2219,6 +2226,7 @@
 				509416AC23A11CB20036092C /* NullEnum.m in Sources */,
 				503A8A1A23BCB2ED0094D1C4 /* RNNReactButtonView.m in Sources */,
 				50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */,
+				50DD9155274FC6E200B4C917 /* AnimationObserver.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
 				5082CC3423CDC3B800FD2B6A /* HorizontalTranslationTransition.m in Sources */,
 				50495957216F6B3D006D2B81 /* DictionaryParser.m in Sources */,

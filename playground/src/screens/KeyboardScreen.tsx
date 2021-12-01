@@ -14,7 +14,9 @@ const screenWidth = Dimensions.get('window').width;
 const KEYBOARD_LABEL = 'Keyboard Demo';
 interface Props extends NavigationComponentProps {
   title?: string;
+  autoFocus?: boolean;
 }
+
 export default class KeyboardScreen extends NavigationComponent<Props> {
   static options() {
     return {
@@ -61,8 +63,25 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
                 await this.openModalKeyboard(undefined);
               }}
             />
+            <Button
+              style={styles.button}
+              label={'Push Focused Keyboard Screen'}
+              testID={testIDs.PUSH_FOCUSED_KEYBOARD_SCREEN}
+              onPress={async () => {
+                await this.openPushedKeyboard(undefined, true);
+              }}
+            />
+            <Button
+              style={styles.button}
+              label={'Show Focused Keyboard Screen Modal'}
+              testID={testIDs.MODAL_FOCUSED_KEYBOARD_SCREEN}
+              onPress={async () => {
+                await this.openModalKeyboard(undefined, true);
+              }}
+            />
             <TextInput
               style={styles.input}
+              autoFocus={this.props.autoFocus}
               testID={testIDs.TEXT_INPUT1}
               placeholderTextColor="rgba(255, 0, 0, 0.5)"
               placeholder="Submit opens modal"
@@ -92,22 +111,24 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
     );
   }
 
-  openPushedKeyboard = async (text?: string) => {
+  openPushedKeyboard = async (text?: string, autoFocus?: boolean) => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: Screens.KeyboardScreen,
         passProps: {
           title: text,
+          autoFocus,
         },
       },
     });
   };
-  openModalKeyboard = async (text?: string) => {
+
+  openModalKeyboard = async (text?: string, autoFocus?: boolean) => {
     await Navigation.showModal(
       stack({
         component: {
           name: Screens.KeyboardScreen,
-          passProps: { title: text },
+          passProps: { title: text, autoFocus },
         },
       })
     );
