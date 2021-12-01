@@ -13,7 +13,7 @@ import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-
+import com.reactnativenavigation.options.TransitionAnimationOptions;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -30,7 +30,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class ModalStackTest extends BaseTest {
@@ -54,6 +55,7 @@ public class ModalStackTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         root = new SimpleViewController(activity, childRegistry, "root", new Options());
@@ -82,6 +84,16 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
+    public void showModal_DidAppearEventShouldWaitForReactViewToBeShown(){
+        CommandListener listener = spy(new CommandListenerAdapter());
+        uut.showModal(modal1, root, listener);
+        verify(modal1).addOnAppearedListener(any());
+        verify(listener).onSuccess(modal1.getId());
+        idleMainLooper();
+        verify(modal1).onViewDidAppear();
+    }
+
+    @Test
     public void modalRefIsSaved() {
         disableShowModalAnimation(modal1);
         CommandListener listener = spy(new CommandListenerAdapter());
@@ -94,6 +106,7 @@ public class ModalStackTest extends BaseTest {
     public void showModal() {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, root, listener);
+        idleMainLooper();
         verify(listener).onSuccess(modal1.getId());
         verify(modal1).onViewDidAppear();
         assertThat(uut.size()).isOne();
@@ -140,7 +153,7 @@ public class ModalStackTest extends BaseTest {
         uut.dismissModal(MODAL_ID_1, root, listener);
         verify(onModalWillDismiss, times(0)).run();
         verify(listener, times(1)).onError(anyString());
-        verifyZeroInteractions(listener);
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
@@ -176,7 +189,7 @@ public class ModalStackTest extends BaseTest {
         });
         uut.dismissAllModals(root, Options.EMPTY, listener);
         verify(listener, times(1)).onSuccess(anyString());
-        verifyZeroInteractions(listener);
+        verifyNoMoreInteractions(listener);
     }
 
     @Test

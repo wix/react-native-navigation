@@ -3,6 +3,7 @@ import {
   NavigationComponent,
   NavigationButtonPressedEvent,
   NavigationComponentProps,
+  Options,
 } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -15,11 +16,13 @@ const {
   CENTER_SCREEN_HEADER,
   CHANGE_LEFT_SIDE_MENU_WIDTH_BTN,
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
+  DISABLE_DRAWERS,
+  ENABLE_DRAWERS,
 } = testIDs;
 
 // @ts-ignore TSC is unhappy as leftButtons is defined as an object instead of an array. Declaring buttons as a single object is not reflected in Options, but still supported.
 export default class SideMenuCenterScreen extends NavigationComponent {
-  static options() {
+  static options(): Options {
     return {
       sideMenu: {
         left: {
@@ -34,10 +37,13 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         title: {
           text: 'Center',
         },
-        leftButtons: {
-          id: 'sideMenu',
-          icon: require('../../img/menu.png'),
-        },
+
+        leftButtons: [
+          {
+            id: 'sideMenu',
+            icon: require('../../img/menu.png'),
+          },
+        ],
       },
     };
   }
@@ -74,10 +80,32 @@ export default class SideMenuCenterScreen extends NavigationComponent {
           testID={CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN}
           onPress={() => this.changeDrawerWidth('right', 50)}
         />
+        <Button
+          label="Disable Drawers"
+          testID={DISABLE_DRAWERS}
+          onPress={() => this.toggleDrawers(false)}
+        />
+        <Button
+          label="Enable Drawers"
+          testID={ENABLE_DRAWERS}
+          onPress={() => this.toggleDrawers(true)}
+        />
       </Root>
     );
   }
 
+  toggleDrawers = (enabled: boolean) => {
+    Navigation.mergeOptions(this, {
+      sideMenu: {
+        left: {
+          enabled: enabled,
+        },
+        right: {
+          enabled: enabled,
+        },
+      },
+    });
+  };
   open = (side: 'left' | 'right') =>
     Navigation.mergeOptions(this, {
       sideMenu: {

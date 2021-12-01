@@ -66,7 +66,7 @@ export default class Options extends React.Component<Props> {
           testID={GOTO_BUTTONS_SCREEN}
           onPress={this.pushButtonsScreen}
         />
-        <Button label="StatusBar" onPress={this.statusBarScreen} />
+        <Button label="SystemUi" onPress={this.systemUi} />
         <Button
           platform={'ios'}
           testID={GOTO_SEARCHBAR_SCREEN}
@@ -194,7 +194,7 @@ export default class Options extends React.Component<Props> {
       },
     });
 
-  statusBarScreen = () => Navigation.showModal(Screens.StatusBar);
+  systemUi = () => Navigation.showModal(Screens.SystemUi);
 
   searchBarScreen = () => Navigation.push(this, Screens.SearchBar, {});
 

@@ -15,6 +15,7 @@ const {
   HIDE_TABS_BTN,
   SHOW_TABS_BTN,
   HIDE_TABS_PUSH_BTN,
+  FIRST_TAB_BAR_BUTTON,
 } = testIDs;
 
 export default class FirstBottomTabScreen extends React.Component<NavigationComponentProps> {
@@ -29,6 +30,7 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         },
       },
       bottomTab: {
+        testID: FIRST_TAB_BAR_BUTTON,
         icon: require('../../img/whatshot.png'),
         text: 'Tab 1',
         dotIndicator: { visible: true },
@@ -38,6 +40,11 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
 
   dotVisible = true;
   badgeVisible = true;
+  bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
+    if (event.tabIndex == 2) {
+      alert('BottomTabPressed');
+    }
+  });
 
   render() {
     return (
@@ -66,6 +73,10 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
       </Root>
     );
+  }
+
+  componentWillUnmount() {
+    this.bottomTabPressedListener.remove();
   }
 
   modifyBottomTabs = () => {

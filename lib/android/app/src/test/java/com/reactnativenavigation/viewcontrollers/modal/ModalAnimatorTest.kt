@@ -1,7 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal
 
 import android.app.Activity
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.*

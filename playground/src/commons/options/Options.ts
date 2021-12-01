@@ -5,6 +5,9 @@ import animations from './Animations';
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
     animations,
+    statusBar: {
+      backgroundColor: Colors.statusBarColor,
+    },
     window: {
       backgroundColor: Colors.primary,
     },

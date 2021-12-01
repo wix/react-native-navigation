@@ -414,6 +414,11 @@ export interface HardwareBackButtonOptions {
    * @default true
    */
   popStackOnPress?: boolean;
+
+  /**
+   * Controls hardware back button bottom tab selection behaviour
+   */
+  bottomTabsOnPress?: 'exit' | 'first' | 'previous';
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
@@ -488,6 +493,11 @@ export interface OptionsTopBarButton {
    * Set the button icon
    */
   icon?: ImageResource;
+  /**
+   * Set the SF symbol as icon (will be used primarily)
+   * #### (iOS 13+ specific)
+   */
+  sfSymbol?: string;
   /**
    * Set the button icon insets
    */

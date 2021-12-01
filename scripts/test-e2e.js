@@ -16,7 +16,7 @@ function run() {
   const suffix = release ? `release` : `debug`;
   const configuration = `${prefix}.${suffix}`;
   const headless$ = android ? (headless ? `--headless` : ``) : ``;
-  const workers = multi ? 5 : 1;
+  const workers = multi ? 3 : 1;
   const loglevel = verbose ? '--loglevel verbose' : '';
 
   if (!android) {

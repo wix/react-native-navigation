@@ -41,10 +41,6 @@
     [_buttonsPresenter componentDidDisappear];
 }
 
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-    [super applyOptionsOnWillMoveToParentViewController:options];
-}
-
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
 

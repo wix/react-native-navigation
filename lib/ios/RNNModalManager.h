@@ -22,6 +22,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *_Nonnull code, NSString *_
             animated:(BOOL)animated
           completion:(RNNTransitionCompletionBlock _Nullable)completion;
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion;
-- (void)dismissAllModalsSynchronosly;
+
+- (void)reset;
 
 @end

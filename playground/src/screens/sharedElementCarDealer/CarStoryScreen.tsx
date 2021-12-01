@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import Reanimated, { Easing } from 'react-native-reanimated';
+import Reanimated, { EasingNode } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { SET_DURATION } from './Constants';
@@ -38,7 +38,7 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
       Reanimated.timing(dismissGesture.controlsOpacity, {
         toValue: 1,
         duration: 300,
-        easing: Easing.linear,
+        easing: EasingNode.linear,
       }).start();
     }, SET_DURATION);
   }, [dismissGesture.controlsOpacity]);

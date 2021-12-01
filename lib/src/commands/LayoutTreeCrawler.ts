@@ -24,7 +24,7 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this.handleComponent(node);
     }
-    this.optionsProcessor.processOptions(node.data.options, commandName);
+    this.optionsProcessor.processOptions(commandName, node.data.options);
     node.children.forEach((value: LayoutNode) => this.crawl(value, commandName));
   }
 
@@ -35,7 +35,7 @@ export class LayoutTreeCrawler {
   }
 
   private savePropsToStore(node: LayoutNode) {
-    this.store.updateProps(node.id, node.data.passProps);
+    this.store.setPendingProps(node.id, node.data.passProps);
   }
 
   private assertComponentDataName(component: LayoutNode) {

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 public class ModalPresenterTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
@@ -50,6 +50,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         Activity activity = newActivity();
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
 
@@ -108,7 +109,7 @@ public class ModalPresenterTest extends BaseTest {
         defaultOptions.animations.showModal = TransitionAnimationOptionsKt.parseTransitionAnimationOptions(disabledShowModalAnimation);
         uut.setDefaultOptions(defaultOptions);
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        verifyZeroInteractions(animator);
+        verifyNoInteractions(animator);
     }
 
     @Test
@@ -162,7 +163,7 @@ public class ModalPresenterTest extends BaseTest {
         modal1.options.animations.showModal.setWaitForRender(new Bool(true));
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).addOnAppearedListener(any());
-        verifyZeroInteractions(animator);
+        verifyNoInteractions(animator);
     }
 
     @Test
@@ -210,6 +211,7 @@ public class ModalPresenterTest extends BaseTest {
         uut.setRootLayout(spy);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
+        idleMainLooper();
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
 
         verify(spy).addView(root.getView(), 0);
@@ -237,6 +239,7 @@ public class ModalPresenterTest extends BaseTest {
         verify(modal1).onViewWillAppear();
 
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(modal1.getView().getParent()).isNull();
 
         Shadows.shadowOf(Looper.getMainLooper()).idle();
@@ -253,6 +256,7 @@ public class ModalPresenterTest extends BaseTest {
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        idleMainLooper();
         assertThat(modal1.getView().getParent()).isNull();
         assertThat(root.getView().getParent()).isNull();
 

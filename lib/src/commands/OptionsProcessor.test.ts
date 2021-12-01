@@ -83,7 +83,7 @@ describe('navigation options', () => {
       },
     };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual(expectedOptions);
   });
 
@@ -135,7 +135,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.ShowModal);
+        uut.processOptions(CommandName.ShowModal, options);
         expect(options).toEqual(expected);
       });
 
@@ -165,7 +165,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.ShowModal);
+        uut.processOptions(CommandName.ShowModal, options);
         expect(options).toEqual(expected);
       });
 
@@ -195,7 +195,7 @@ describe('navigation options', () => {
           },
         };
         const expected: Options = { ...options };
-        uut.processOptions(options, CommandName.ShowModal);
+        uut.processOptions(CommandName.ShowModal, options);
         expect(options).toEqual(expected);
       });
     });
@@ -247,7 +247,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.DismissModal);
+        uut.processOptions(CommandName.DismissModal, options);
         expect(options).toEqual(expected);
       });
 
@@ -277,7 +277,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.DismissModal);
+        uut.processOptions(CommandName.DismissModal, options);
         expect(options).toEqual(expected);
       });
 
@@ -307,7 +307,7 @@ describe('navigation options', () => {
           },
         };
         const expected: Options = { ...options };
-        uut.processOptions(options, CommandName.DismissModal);
+        uut.processOptions(CommandName.DismissModal, options);
         expect(options).toEqual(expected);
       });
     });
@@ -319,7 +319,7 @@ describe('navigation options', () => {
       popGesture: false,
       modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
     };
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       blurOnUnmount: false,
       popGesture: false,
@@ -338,7 +338,7 @@ describe('navigation options', () => {
       return !value;
     });
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       topBar: {
         visible: false,
@@ -364,7 +364,7 @@ describe('navigation options', () => {
       return !value;
     });
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       topBar: {
         visible: false,
@@ -386,7 +386,7 @@ describe('navigation options', () => {
       expect(commandName).toEqual(CommandName.SetRoot);
     });
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
   });
 
   it('passes props to registered processor', () => {
@@ -404,7 +404,7 @@ describe('navigation options', () => {
     };
 
     optionProcessorsRegistry.addProcessor('topBar.visible', processor);
-    uut.processOptions(options, CommandName.SetRoot, props);
+    uut.processOptions(CommandName.SetRoot, options, props);
   });
 
   it('supports multiple registered processors', () => {
@@ -417,7 +417,7 @@ describe('navigation options', () => {
     optionProcessorsRegistry.addProcessor('topBar.visible', () => false);
     optionProcessorsRegistry.addProcessor('topBar.visible', () => true);
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       topBar: {
         visible: true,
@@ -442,7 +442,7 @@ describe('navigation options', () => {
     optionProcessorsRegistry.addProcessor('bottomTabs.visible', () => true);
     optionProcessorsRegistry.addProcessor('topBar.background.translucent', () => true);
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       topBar: {
         visible: true,
@@ -462,6 +462,17 @@ describe('navigation options', () => {
         Platform.OS = 'android';
       });
 
+      it('should not process undefined color', () => {
+        const options: Options = {
+          topBar: { background: { color: undefined } },
+        };
+
+        uut.processOptions(CommandName.SetRoot, options);
+        expect(options).toEqual({
+          topBar: { background: { color: undefined } },
+        });
+      });
+
       it('PlatformColor should be passed to native as is', () => {
         const options: Options = {
           topBar: {
@@ -473,7 +484,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: { background: { color: { resource_paths: ['@color/textColor'] } } },
         });
@@ -485,7 +496,7 @@ describe('navigation options', () => {
           topBar: { background: { color: 'blue' } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           statusBar: { backgroundColor: { light: 0xffff0000, dark: 0xffff0000 } },
           topBar: { background: { color: { light: 0xff0000ff, dark: 0xff0000ff } } },
@@ -497,7 +508,7 @@ describe('navigation options', () => {
           topBar: { background: { color: null } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: { background: { color: { light: 'NoColor', dark: 'NoColor' } } },
         });
@@ -507,18 +518,12 @@ describe('navigation options', () => {
         const options: Options = {
           topBar: {
             background: { color: { light: 'blue', dark: 'red' } },
-            title: {
-              color: undefined,
-            },
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: {
             background: { color: { light: 0xff0000ff, dark: 0xffff0000 } },
-            title: {
-              color: { light: null, dark: null },
-            },
           },
         });
       });
@@ -535,10 +540,21 @@ describe('navigation options', () => {
           topBar: { background: { color: 'blue' } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           statusBar: { backgroundColor: 0xffff0000 },
           topBar: { background: { color: 0xff0000ff } },
+        });
+      });
+
+      it('should not process undefined color', () => {
+        const options: Options = {
+          topBar: { background: { color: undefined } },
+        };
+
+        uut.processOptions(CommandName.SetRoot, options);
+        expect(options).toEqual({
+          topBar: { background: { color: undefined } },
         });
       });
 
@@ -547,7 +563,7 @@ describe('navigation options', () => {
           topBar: { background: { color: null } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: { background: { color: 'NoColor' } },
         });
@@ -563,7 +579,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           statusBar: { backgroundColor: 0xffff0000 },
           topBar: {
@@ -580,7 +596,7 @@ describe('navigation options', () => {
           topBar: { background: { color: DynamicColorIOS({ light: 'red', dark: 'blue' }) } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: { background: { color: { dynamic: { light: 0xffff0000, dark: 0xff0000ff } } } },
         });
@@ -591,7 +607,7 @@ describe('navigation options', () => {
           topBar: { background: { color: undefined } },
         };
 
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options).toEqual({
           topBar: { background: { color: undefined } },
         });
@@ -605,7 +621,7 @@ describe('navigation options', () => {
       rootBackgroundImage: 234,
       bottomTab: { icon: 345, selectedIcon: 345 },
     };
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options).toEqual({
       backgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
       rootBackgroundImage: { height: 100, scale: 1, uri: 'lol', width: 100 },
@@ -620,15 +636,15 @@ describe('navigation options', () => {
     const passProps = { some: 'thing' };
     const options = { topBar: { title: { component: { passProps, name: 'a' } } } };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
 
-    verify(mockedStore.updateProps('CustomComponent1', passProps)).called();
+    verify(mockedStore.setPendingProps('CustomComponent1', passProps)).called();
   });
 
   it('generates componentId for component id was not passed', () => {
     const options = { topBar: { title: { component: { name: 'a' } } } };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
 
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', componentId: 'CustomComponent1' } } },
@@ -638,7 +654,7 @@ describe('navigation options', () => {
   it('copies passed id to componentId key', () => {
     const options = { topBar: { title: { component: { name: 'a', id: 'Component1' } } } };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
 
     expect(options).toEqual({
       topBar: { title: { component: { name: 'a', id: 'Component1', componentId: 'Component1' } } },
@@ -649,16 +665,16 @@ describe('navigation options', () => {
     const passProps = { prop: 'prop' };
     const options = { topBar: { rightButtons: [{ passProps, id: '1' }] } };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
 
-    verify(mockedStore.updateProps('1', passProps)).called();
+    verify(mockedStore.setPendingProps('1', passProps)).called();
   });
 
   it('do not touch passProps when id for button is missing', () => {
     const passProps = { prop: 'prop' };
     const options = { topBar: { rightButtons: [{ passProps } as any] } };
 
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
 
     expect(options).toEqual({ topBar: { rightButtons: [{ passProps }] } });
   });
@@ -672,7 +688,7 @@ describe('navigation options', () => {
         background: { component: { name: 'helloThere2', passProps: {} } },
       },
     };
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     expect(options.topBar.rightButtons[0].passProps).toBeUndefined();
     expect(options.topBar.leftButtons[0].passProps).toBeUndefined();
     expect(options.topBar.title.component.passProps).toBeUndefined();
@@ -686,14 +702,14 @@ describe('navigation options', () => {
         background: { component: { name: 'helloThere2', passProps: {} } },
       },
     };
-    uut.processOptions(options, CommandName.SetRoot);
+    uut.processOptions(CommandName.SetRoot, options);
     verify(mockedStore.ensureClassForName('helloThere1')).called();
     verify(mockedStore.ensureClassForName('helloThere2')).called();
   });
 
   it('show warning on iOS when toggling bottomTabs visibility through mergeOptions', () => {
     jest.spyOn(console, 'warn');
-    uut.processOptions({ bottomTabs: { visible: false } }, CommandName.MergeOptions);
+    uut.processOptions(CommandName.MergeOptions, { bottomTabs: { visible: false } });
     expect(console.warn).toBeCalledWith(
       'toggling bottomTabs visibility is deprecated on iOS. For more information see https://github.com/wix/react-native-navigation/issues/6416',
       {
@@ -710,50 +726,7 @@ describe('navigation options', () => {
 
       it('transform searchBar bool to object', () => {
         const options = { topBar: { searchBar: true as any } };
-        uut.processOptions(options, CommandName.SetRoot);
-        expect(options.topBar.searchBar).toStrictEqual({
-          visible: true,
-          hideOnScroll: false,
-          hideTopBarOnFocus: false,
-          obscuresBackgroundDuringPresentation: false,
-          backgroundColor: { light: null, dark: null },
-          tintColor: { light: null, dark: null },
-          placeholder: '',
-        });
-      });
-
-      it('transform searchBar bool to object and merges in deprecated values', () => {
-        const options = {
-          topBar: {
-            searchBar: true as any,
-            searchBarHiddenWhenScrolling: true,
-            hideNavBarOnFocusSearchBar: true,
-            searchBarBackgroundColor: 'red',
-            searchBarTintColor: 'green',
-            searchBarPlaceholder: 'foo',
-          },
-        };
-        uut.processOptions(options, CommandName.SetRoot);
-        expect(options.topBar.searchBar).toStrictEqual({
-          visible: true,
-          hideOnScroll: true,
-          hideTopBarOnFocus: true,
-          obscuresBackgroundDuringPresentation: false,
-          backgroundColor: { dark: 0xffff0000, light: 0xffff0000 },
-          tintColor: { dark: 0xff00ff00, light: 0xff00ff00 },
-          placeholder: 'foo',
-        });
-      });
-    });
-
-    describe('iOS', () => {
-      beforeEach(() => {
-        Platform.OS = 'ios';
-      });
-
-      it('transform searchBar bool to object', () => {
-        const options = { topBar: { searchBar: true as any } };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options.topBar.searchBar).toStrictEqual({
           visible: true,
           hideOnScroll: false,
@@ -776,7 +749,50 @@ describe('navigation options', () => {
             searchBarPlaceholder: 'foo',
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: true,
+          hideTopBarOnFocus: true,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: { dark: 0xffff0000, light: 0xffff0000 },
+          tintColor: { dark: 0xff00ff00, light: 0xff00ff00 },
+          placeholder: 'foo',
+        });
+      });
+    });
+
+    describe('iOS', () => {
+      beforeEach(() => {
+        Platform.OS = 'ios';
+      });
+
+      it('transform searchBar bool to object', () => {
+        const options = { topBar: { searchBar: true as any } };
+        uut.processOptions(CommandName.SetRoot, options);
+        expect(options.topBar.searchBar).toStrictEqual({
+          visible: true,
+          hideOnScroll: false,
+          hideTopBarOnFocus: false,
+          obscuresBackgroundDuringPresentation: false,
+          backgroundColor: undefined,
+          tintColor: undefined,
+          placeholder: '',
+        });
+      });
+
+      it('transform searchBar bool to object and merges in deprecated values', () => {
+        const options = {
+          topBar: {
+            searchBar: true as any,
+            searchBarHiddenWhenScrolling: true,
+            hideNavBarOnFocusSearchBar: true,
+            searchBarBackgroundColor: 'red',
+            searchBarTintColor: 'green',
+            searchBarPlaceholder: 'foo',
+          },
+        };
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options.topBar.searchBar).toStrictEqual({
           visible: true,
           hideOnScroll: true,
@@ -809,7 +825,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.push).toStrictEqual({
             [view]: {
               enter: {
@@ -845,7 +861,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.push).toStrictEqual({
             [view]: {
               exit: {
@@ -877,7 +893,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.push).toStrictEqual({
             enabled: false,
             waitForRender: true,
@@ -903,7 +919,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.pop).toStrictEqual({
             [view]: {
               exit: {
@@ -939,7 +955,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.pop).toStrictEqual({
             [view]: {
               exit: {
@@ -971,7 +987,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.pop).toStrictEqual({
             enabled: false,
             waitForRender: true,
@@ -994,7 +1010,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options.animations!!.setStackRoot).toStrictEqual({
           content: {
             enter: {
@@ -1016,7 +1032,7 @@ describe('navigation options', () => {
             },
           },
         };
-        uut.processOptions(options, CommandName.SetRoot);
+        uut.processOptions(CommandName.SetRoot, options);
         expect(options.animations!!.setStackRoot as StackAnimationOptions).toStrictEqual({
           enabled: false,
           waitForRender: true,
@@ -1045,7 +1061,7 @@ describe('navigation options', () => {
               },
             },
           };
-          uut.processOptions(options, CommandName.SetRoot);
+          uut.processOptions(CommandName.SetRoot, options);
           expect(options.animations!!.setStackRoot).toStrictEqual({
             [view]: {
               enter: {
