@@ -100,6 +100,7 @@ function registerScreens() {
   );
   Navigation.registerComponent(Screens.Search, () => require('./SearchScreen').default);
   Navigation.registerComponent(Screens.SearchBar, () => require('./SearchBar').default);
+  Navigation.registerComponent(Screens.SearchBarModal, () => require('./SearchBarModal').default);
   Navigation.registerComponent(Screens.SetRoot, () => require('./SetRootScreen').default);
   Navigation.registerComponent(
     Screens.SideMenuCenter,
@@ -111,10 +112,7 @@ function registerScreens() {
     () => require('./SideMenuRightScreen').default
   );
   Navigation.registerComponent(Screens.Stack, () => require('./StackScreen').default);
-  Navigation.registerComponent(
-    Screens.StatusBarOptions,
-    () => require('./StatusBarOptionsScreen').default
-  );
+  Navigation.registerComponent(Screens.SystemUiOptions, () => require('./SystemUiOptions').default);
   Navigation.registerComponent(
     Screens.StatusBarFirstTab,
     () => require('./StatusBarFirstTab').default
@@ -150,10 +148,7 @@ function registerScreens() {
     () => require('./TopTabOptionsScreen').default
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
-  Navigation.registerComponent(
-    'navigation.playground.KeyboardScreen',
-    () => require('./KeyboardScreen').default
-  );
+  Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

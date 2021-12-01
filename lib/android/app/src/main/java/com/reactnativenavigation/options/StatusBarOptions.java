@@ -5,11 +5,10 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullColor;
+import com.reactnativenavigation.options.params.ThemeColour;
+import com.reactnativenavigation.options.params.NullThemeColour;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 
 import org.json.JSONObject;
 
@@ -44,7 +43,7 @@ public class StatusBarOptions {
         StatusBarOptions result = new StatusBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(context, json, "backgroundColor");
+        result.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
         result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
         result.visible = BoolParser.parse(json, "visible");
         result.drawBehind = BoolParser.parse(json, "drawBehind");
@@ -53,7 +52,7 @@ public class StatusBarOptions {
         return result;
     }
 
-    public Colour backgroundColor = new NullColor();
+    public ThemeColour backgroundColor = new NullThemeColour();
     public TextColorScheme textColorScheme = TextColorScheme.None;
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();

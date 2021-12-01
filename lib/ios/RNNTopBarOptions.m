@@ -18,6 +18,8 @@
     self.noBorder = [BoolParser parse:dict key:@"noBorder"];
     self.borderColor = [ColorParser parse:dict key:@"borderColor"];
     self.animate = [BoolParser parse:dict key:@"animate"];
+    self.animateLeftButtons = [BoolParser parse:dict key:@"animateLeftButtons"];
+    self.animateRightButtons = [BoolParser parse:dict key:@"animateRightButtons"];
     self.searchBarHiddenWhenScrolling = [BoolParser parse:dict key:@"searchBarHiddenWhenScrolling"];
     self.hideNavBarOnFocusSearchBar = [BoolParser parse:dict key:@"hideNavBarOnFocusSearchBar"];
     self.testID = [TextParser parse:dict key:@"testID"];
@@ -69,6 +71,10 @@
         self.borderColor = options.borderColor;
     if (options.animate.hasValue)
         self.animate = options.animate;
+    if (options.animateLeftButtons.hasValue)
+        self.animateLeftButtons = options.animateLeftButtons;
+    if (options.animateRightButtons.hasValue)
+        self.animateRightButtons = options.animateRightButtons;
     if (options.searchBarHiddenWhenScrolling.hasValue)
         self.searchBarHiddenWhenScrolling = options.searchBarHiddenWhenScrolling;
     if (options.hideNavBarOnFocusSearchBar.hasValue)

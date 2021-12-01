@@ -14,7 +14,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 
 public class IdStack<E> implements Iterable<String> {
 
-	private final ArrayList<String> deque = new ArrayList();
+	private final ArrayList<String> deque = new ArrayList<>();
 	private final Map<String, E> map = new HashMap<>();
 
 	public void push(String id, E item) {
@@ -22,17 +22,17 @@ public class IdStack<E> implements Iterable<String> {
 		map.put(id, item);
 	}
 
-    public void set(String id, E item, int index) {
-        deque.add(index, id);
-        map.put(id, item);
-    }
+	public void set(String id, E item, int index) {
+		deque.add(index, id);
+		map.put(id, item);
+	}
 
 	public E peek() {
-        return isEmpty() ? null : map.get(last(deque));
+		return isEmpty() ? null : map.get(last(deque));
 	}
 
 	public E pop() {
-	    return isEmpty() ? null : map.remove(removeLast(deque));
+		return isEmpty() ? null : map.remove(removeLast(deque));
 	}
 
 	public boolean isEmpty() {
@@ -57,8 +57,8 @@ public class IdStack<E> implements Iterable<String> {
 	}
 
 	public E get(final int index) {
-        return map.get(deque.get(index));
-    }
+		return map.get(deque.get(index));
+	}
 
 	public boolean containsId(final String id) {
 		return deque.contains(id);
@@ -77,7 +77,7 @@ public class IdStack<E> implements Iterable<String> {
 	}
 
 	@NonNull
-    @Override
+	@Override
 	public Iterator<String> iterator() {
 		return deque.iterator();
 	}
@@ -87,8 +87,8 @@ public class IdStack<E> implements Iterable<String> {
 		return map(deque, map::get);
 	}
 
-    public void remove(Iterator<String> iterator, String id) {
-        iterator.remove();
-        map.remove(id);
-    }
+	public void remove(Iterator<String> iterator, String id) {
+		iterator.remove();
+		map.remove(id);
+	}
 }

@@ -1,10 +1,11 @@
 package com.reactnativenavigation.mocks
 
 import android.view.ViewGroup
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 object Mocks {
     fun viewController(): ViewController<*> {

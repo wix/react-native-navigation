@@ -1,17 +1,17 @@
+import concat from 'lodash/concat';
 import React from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import {
+  NavigationButtonPressedEvent,
   NavigationComponent,
   NavigationComponentProps,
-  NavigationButtonPressedEvent,
   Options,
 } from 'react-native-navigation';
-import concat from 'lodash/concat';
-import Navigation from '../services/Navigation';
-import Root from '../components/Root';
 import Button from '../components/Button';
-import Screens from './Screens';
+import Root from '../components/Root';
+import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
+import Screens from './Screens';
 
 const {
   PUSHED_SCREEN_HEADER,

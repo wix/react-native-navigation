@@ -11,12 +11,10 @@ fun parseTransitionAnimationOptions(jsonObject: JSONObject?): TransitionAnimatio
                 AnimationOptions(jsonObject.optJSONObject("exit"))
         )
         if (jsonObject.has("sharedElementTransitions")) {
-            val json = jsonObject.getJSONObject("sharedElementTransitions")
-            modalAnimationOptions.sharedElements = SharedElements.parse(json)
+            modalAnimationOptions.sharedElements = SharedElements.parse(jsonObject)
         }
         if (jsonObject.has("elementTransitions")) {
-            val json = jsonObject.getJSONObject("elementTransitions")
-            modalAnimationOptions.elementTransitions = ElementTransitions.parse(json)
+            modalAnimationOptions.elementTransitions = ElementTransitions.parse(jsonObject)
         }
         modalAnimationOptions
     } ?: TransitionAnimationOptions()

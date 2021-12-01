@@ -2,20 +2,27 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.view.Gravity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
+import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
+import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
@@ -23,22 +30,19 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
 
 import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.reactnativenavigation.utils.CollectionUtils.*;
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.map;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
     private BottomTabsContainer bottomTabsContainer;
     private BottomTabs bottomTabs;
+    private final Deque<Integer> selectionStack;
     private final List<ViewController<?>> tabs;
     private final EventEmitter eventEmitter;
     private final ImageLoader imageLoader;
@@ -50,6 +54,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return presenter.getAnimator();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(resolveCurrentOptions());
+        tabPresenter.onConfigurationChanged(resolveCurrentOptions());
+    }
 
     public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
@@ -60,6 +70,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         this.presenter = bottomTabsPresenter;
         this.tabPresenter = bottomTabPresenter;
         forEach(tabs, tab -> tab.setParentController(this));
+        selectionStack = new LinkedList<>();
     }
 
     @Override
@@ -128,7 +139,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, ViewController<?> child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
         performOnParentController(parent -> parent.applyChildOptions(
@@ -141,7 +152,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
@@ -150,7 +161,27 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean handleBack(CommandListener listener) {
-        return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
+        final boolean childBack = !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
+        final Options options = resolveCurrentOptions();
+        if (!childBack) {
+            if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection) {
+                if (!selectionStack.isEmpty()) {
+                    final int prevSelectedTabIndex = selectionStack.poll();
+                    selectTab(prevSelectedTabIndex, false);
+                    return true;
+                }
+            } else if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.JumpToFirst) {
+                if (getSelectedIndex() != 0) {
+                    selectTab(0, false);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return childBack;
     }
 
     @Override
@@ -159,21 +190,28 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return tabs.get(bottomTabs == null ? 0 : bottomTabs.getCurrentItem());
     }
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        BottomTabOptions options = tabs.get(index).resolveCurrentOptions().bottomTabOptions;
+        ViewController<?> stack = tabs.get(index);
+        BottomTabOptions options = stack.resolveCurrentOptions().bottomTabOptions;
 
         eventEmitter.emitBottomTabPressed(index);
 
         if (options.selectTabOnPress.get(true)) {
             eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-            if (wasSelected) return false;
-            selectTab(index);
+            if (!wasSelected) {
+                selectTab(index);
+            }
         }
+
+        if (options.popToRoot.get(false) && wasSelected && stack instanceof StackController) {
+            ((StackController) stack).popToRoot(Options.EMPTY, new CommandListenerAdapter());
+        }
+
         return false;
     }
 
@@ -190,7 +228,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         });
     }
 
-    int getSelectedIndex() {
+    public int getSelectedIndex() {
         return bottomTabs.getCurrentItem();
     }
 
@@ -201,7 +239,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public int getBottomInset(ViewController child) {
+    public int getBottomInset(ViewController<?> child) {
         return presenter.getBottomInset(resolveChildOptions(child)) + perform(getParentController(), 0, p -> p.getBottomInset(this));
     }
 
@@ -226,11 +264,26 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public void selectTab(final int newIndex) {
+        final boolean enableSelectionHistory = resolveCurrentOptions().hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection;
+        selectTab(newIndex, enableSelectionHistory);
+    }
+
+    private void selectTab(int newIndex, boolean enableSelectionHistory) {
+        saveTabSelection(newIndex, enableSelectionHistory);
         tabsAttacher.onTabSelected(tabs.get(newIndex));
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
         getCurrentChild().onViewDidAppear();
+    }
+
+    private void saveTabSelection(int newIndex, boolean enableSelectionHistory) {
+        if (enableSelectionHistory) {
+            if (selectionStack.isEmpty()
+                    || selectionStack.peek() != newIndex
+                    || bottomTabs.getCurrentItem() != newIndex)
+                selectionStack.offerFirst(bottomTabs.getCurrentItem());
+        }
     }
 
     @NonNull

@@ -1,12 +1,17 @@
 package com.reactnativenavigation.viewcontrollers.child;
 
 import android.app.Activity;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.utils.LogKt;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -14,7 +19,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import com.reactnativenavigation.views.component.Component;
 
 import androidx.annotation.CallSuper;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T> {
@@ -60,7 +67,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public void onViewBroughtToFront() {
-        presenter.onViewBroughtToFront(resolveCurrentOptions());
+        presenter.onViewBroughtToFront(this, resolveCurrentOptions());
     }
 
     @Override
@@ -72,7 +79,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void mergeOptions(Options options) {
         if (options == Options.EMPTY) return;
-        if (isViewShown()) presenter.mergeOptions(getView(), options);
+        if (isViewShown()) presenter.mergeOptions(this, options);
         super.mergeOptions(options);
         performOnParentController(parentController -> parentController.mergeChildOptions(options, this));
     }
@@ -92,17 +99,13 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
                 getView().getParent() != null;
     }
 
-    private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
-        return applyWindowInsets(findController(view), insets);
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+       return insets;
     }
 
-    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
-        return insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                0,
-                insets.getSystemWindowInsetRight(),
-                insets.getSystemWindowInsetBottom()
-        );
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(this, options);
     }
 }

@@ -25,7 +25,7 @@ public class RenderCheckerTest extends BaseTest {
 
     @Test
     public void areRendered() {
-        Collection<ViewController> items = Arrays.asList(
+        Collection<ViewController<?>> items = Arrays.asList(
                 renderedComponent(),
                 renderedComponent(),
                 renderedComponent()
@@ -36,7 +36,7 @@ public class RenderCheckerTest extends BaseTest {
 
     @Test
     public void areRendered_reduce() {
-        Collection<ViewController> items = Arrays.asList(
+        Collection<ViewController<?>> items = Arrays.asList(
                 renderedComponent(),
                 notRenderedComponent(),
                 renderedComponent()
@@ -45,14 +45,14 @@ public class RenderCheckerTest extends BaseTest {
 
     }
 
-    private ViewController renderedComponent() {
-        ViewController mock = Mockito.mock(ViewController.class);
+    private ViewController<?> renderedComponent() {
+        ViewController<?> mock = Mockito.mock(ViewController.class);
         when(mock.isRendered()).then(__ -> true);
         return mock;
     }
 
-    private ViewController notRenderedComponent() {
-        ViewController mock = Mockito.mock(ViewController.class);
+    private ViewController<?> notRenderedComponent() {
+        ViewController<?> mock = Mockito.mock(ViewController.class);
         when(mock.isRendered()).then(__ -> false);
         return mock;
     }

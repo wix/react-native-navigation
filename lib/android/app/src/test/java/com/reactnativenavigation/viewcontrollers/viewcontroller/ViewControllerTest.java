@@ -31,6 +31,7 @@ import org.robolectric.Shadows;
 import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -51,7 +52,9 @@ public class ViewControllerTest extends BaseTest {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         uut = new SimpleViewController(activity, childRegistry, "uut", new Options());
-        uut.setParentController(mock(ParentController.class));
+        final ParentController<?> parent = mock(ParentController.class);
+        uut.setParentController(parent);
+        Mockito.when(parent.resolveChildOptions(any())).thenReturn(Options.EMPTY);
     }
 
     @Test

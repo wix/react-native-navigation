@@ -17,6 +17,8 @@
         return ViewTypeImage;
     } else if ([self isKindOfClass:[RCTTextView class]]) {
         return ViewTypeText;
+    } else if ([self isKindOfClass:[UIImageView class]]) {
+        return ViewTypeUIImage;
     }
 
     return ViewTypeOther;
@@ -26,10 +28,9 @@
     if ([self isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)self;
         [scrollView setContentOffset:scrollView.contentOffset animated:NO];
-    } else {
-        for (UIView *subview in self.subviews) {
-            [subview stopMomentumScrollViews];
-        }
+    }
+    for (UIView *subview in self.subviews) {
+        [subview stopMomentumScrollViews];
     }
 }
 

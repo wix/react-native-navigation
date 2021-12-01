@@ -26,7 +26,7 @@ function runIosUnitTests() {
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
   testTarget('playground', 'iPhone 11');
-  testTarget('playgroundIOS12', 'iPhone X', '12.2');
+  testTarget('playgroundIOS12', 'iPhone X', '12.4');
 }
 
 function testTarget(scheme, device, OS = 'latest') {
@@ -40,7 +40,7 @@ function testTarget(scheme, device, OS = 'latest') {
   -configuration ${conf}
   -derivedDataPath ./DerivedData/playground
   -quiet
-  -UseModernBuildSystem=NO
+  -UseModernBuildSystem=YES
   ONLY_ACTIVE_ARCH=YES`);
 
   exec.execSync(`cd ./playground/ios &&

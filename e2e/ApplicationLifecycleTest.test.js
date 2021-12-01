@@ -7,7 +7,7 @@ const { elementByLabel, elementById, sleep } = Utils;
 const IS_RELEASE = includes(process.argv, '--release');
 const KEY_CODE_R = 46;
 
-describe('application lifecycle test', () => {
+describe.e2e('application lifecycle test', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
   });
@@ -59,7 +59,7 @@ describe('application lifecycle test', () => {
     await device.sendToHome();
 
     await togglePhonePermission();
-    await sleep(1000);
+    await sleep(5000);
     await device.launchApp({ newInstance: false });
 
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();

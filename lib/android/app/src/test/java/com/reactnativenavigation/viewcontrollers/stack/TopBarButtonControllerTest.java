@@ -14,10 +14,11 @@ import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
-import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar;
 
 import org.junit.Test;
 
@@ -49,7 +50,8 @@ public class TopBarButtonControllerTest extends BaseTest {
         getTitleBar().layout(0, 0, 1080, 200);
 
         optionsPresenter = spy(new ButtonPresenter(activity, button, new IconResolverFake(activity, ImageLoaderMock.mock())));
-        uut = new ButtonController(activity, optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
+        uut = new ButtonController(activity, optionsPresenter, button, buttonCreatorMock, (buttonId) -> {
+        });
 
         stackController.ensureViewIsCreated();
     }
@@ -82,7 +84,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     @Test
     public void setIconColor_disabledColor() {
         setIconButton(false);
-        button.disabledColor = new Colour(Color.BLACK);
+        button.disabledColor = new ThemeColour(new Colour(Color.BLACK), new Colour(Color.BLACK));
         uut.addToMenu(getTitleBar(), 0);
 
         verify(optionsPresenter).tint(any(), eq(Color.BLACK));
@@ -96,14 +98,14 @@ public class TopBarButtonControllerTest extends BaseTest {
         verify(optionsPresenter, times(0)).tint(any(), anyInt());
     }
 
-    private RightButtonsBar getTitleBar() {
-        return stackController.getTopBar().getRightButtonsBar();
+    private ButtonBar getTitleBar() {
+        return stackController.getTopBar().getRightButtonBar();
     }
 
     private void setIconButton(boolean enabled) {
         button.id = "btn1";
         button.icon = new Text("someIcon");
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED),new Colour(Color.RED));
         button.component.name = new NullText();
         button.component.componentId = new NullText();
         button.enabled = new Bool(enabled);

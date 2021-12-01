@@ -82,6 +82,9 @@
         setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds withDefault:NO]];
 
     [stack.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
+    if (options.topBar.background.component.name.hasValue) {
+        [self setCustomNavigationComponentBackground:options perform:nil];
+    }
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
@@ -144,6 +147,11 @@
     RNNNavigationOptions *withDefault = (RNNNavigationOptions *)[[resolvedOptions
         mergeOptions:mergeOptions] withDefault:[self defaultOptions]];
     [_topBarPresenter mergeOptions:mergeOptions.topBar withDefault:withDefault.topBar];
+
+    if (mergeOptions.topBar.backButton.visible.hasValue &&
+        withDefault.topBar.backButton.testID.hasValue) {
+        [stack setBackButtonTestID:withDefault.topBar.backButton.testID.get];
+    }
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options

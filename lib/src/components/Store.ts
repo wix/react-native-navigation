@@ -5,19 +5,29 @@ import { IWrappedComponent } from './ComponentWrapper';
 export class Store {
   private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};
+  private pendingPropsById: Record<string, any> = {};
   private componentsInstancesById: Record<string, IWrappedComponent> = {};
   private wrappedComponents: Record<string, React.ComponentClass<any>> = {};
   private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
 
-  updateProps(componentId: string, props: any) {
+  updateProps(componentId: string, props: any, callback?: () => void) {
     this.mergeNewPropsForId(componentId, props);
     const component = this.componentsInstancesById[componentId];
+
     if (component) {
-      this.componentsInstancesById[componentId].setProps(props);
+      component.setProps(props, callback);
     }
   }
 
+  setPendingProps(componentId: string, newProps: any) {
+    this.pendingPropsById[componentId] = newProps;
+  }
+
   getPropsForId(componentId: string) {
+    if (this.pendingPropsById[componentId]) {
+      this.propsById[componentId] = this.pendingPropsById[componentId];
+      delete this.pendingPropsById[componentId];
+    }
     return this.propsById[componentId] || {};
   }
 
@@ -54,7 +64,7 @@ export class Store {
     this.componentsInstancesById[id] = component;
   }
 
-  getComponentInstance(id: string): IWrappedComponent {
+  getComponentInstance(id: string): IWrappedComponent | undefined {
     return this.componentsInstancesById[id];
   }
 

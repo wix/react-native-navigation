@@ -3,6 +3,7 @@
 @interface RNNBackButtonOptions : RNNOptions
 
 @property(nonatomic, strong) Image *icon;
+@property(nonatomic, strong) Text *sfSymbol;
 @property(nonatomic, strong) Text *title;
 @property(nonatomic, strong) Text *fontFamily;
 @property(nonatomic, strong) Number *fontSize;

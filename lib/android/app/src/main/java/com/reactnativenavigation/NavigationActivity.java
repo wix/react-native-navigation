@@ -12,6 +12,7 @@ import android.view.View;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
+import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
@@ -28,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
-    
+
     protected Navigator navigator;
 
     @Override
@@ -52,6 +53,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         getReactGateway().onConfigurationChanged(this, newConfig);
+        navigator.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -108,7 +110,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        return getReactGateway().onKeyUp(keyCode) || super.onKeyUp(keyCode, event);
+        return getReactGateway().onKeyUp(this, keyCode) || super.onKeyUp(keyCode, event);
     }
 
     public ReactGateway getReactGateway() {
@@ -144,7 +146,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     protected void addDefaultSplashLayout() {
         View view = new View(this);
-        view.setBackgroundColor(Color.WHITE);
         setContentView(view);
     }
 

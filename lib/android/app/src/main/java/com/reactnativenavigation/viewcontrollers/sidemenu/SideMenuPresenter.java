@@ -15,18 +15,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 public class SideMenuPresenter {
 
     private SideMenu sideMenu;
-    private ViewController left;
-    private ViewController right;
+    private ViewController<?> left;
+    private ViewController<?> right;
 
     public void bindView(SideMenu sideMenu) {
         this.sideMenu = sideMenu;
     }
 
-    public void bindLeft(ViewController left) {
+    public void bindLeft(ViewController<?> left) {
         this.left = left;
     }
 
-    public void bindRight(ViewController right) {
+    public void bindRight(ViewController<?> right) {
         this.right = right;
     }
 

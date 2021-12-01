@@ -1,12 +1,14 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -14,6 +16,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -125,8 +128,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
-        return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
+        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : SystemUiUtils.getStatusBarHeight(getActivity());
+        final Integer perform = perform(getParentController(), 0, p -> p.getTopInset(this));
+        return statusBarInset + perform;
     }
 
     @Override
@@ -135,14 +139,19 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
-        ));
-        return insets;
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        ViewController<?> viewController = findController(view);
+        if (viewController == null || viewController.getView() == null) return insets;
+        final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
+        final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
+        final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+                Insets.of(systemBarsInsets.left,
+                        0,
+                        systemBarsInsets.right,
+                        Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardInsets.bottom))
+        ).build();
+        return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
     }
 
     @Override
@@ -160,5 +169,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (focusView != null) {
             focusView.clearFocus();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        presenter.onConfigurationChanged(view, options);
     }
 }

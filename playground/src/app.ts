@@ -33,6 +33,11 @@ function setRoot() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
+        options: {
+          bottomTabs: {
+            testID: testIDs.MAIN_BOTTOM_TABS,
+          },
+        },
         children: [
           {
             stack: {
@@ -79,6 +84,7 @@ function setRoot() {
           },
           {
             stack: {
+              id: 'NavigationTabStack',
               children: [
                 {
                   component: {

@@ -33,7 +33,7 @@ function testTarget(scheme, device, OS = 'latest') {
   -configuration ${conf}
   -derivedDataPath ./DerivedData/playground
   -quiet
-  -UseModernBuildSystem=NO
+  -UseModernBuildSystem=YES
   ONLY_ACTIVE_ARCH=YES`);
 
   try {

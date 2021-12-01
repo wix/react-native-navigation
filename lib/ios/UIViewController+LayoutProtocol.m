@@ -110,6 +110,16 @@
 - (void)destroyReactView {
 }
 
+- (void)prepareForTransition {
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+    if (self.navigationController) {
+        [self.navigationController.navigationBar setNeedsLayout];
+    } else if ([self isKindOfClass:UINavigationController.class]) {
+        [((UINavigationController *)self).navigationBar setNeedsLayout];
+    }
+}
+
 - (UIViewController *)presentedComponentViewController {
     UIViewController *currentChild = self.getCurrentChild;
     return currentChild ? currentChild.presentedComponentViewController : self;

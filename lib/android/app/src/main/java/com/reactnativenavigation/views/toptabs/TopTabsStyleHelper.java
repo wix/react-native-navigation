@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ViewUtils;
 
@@ -24,7 +25,7 @@ class TopTabsStyleHelper {
         }
     }
 
-    void applyTopTabsColors(Colour selected, Colour unselected) {
+    void applyTopTabsColors(ThemeColour selected, ThemeColour unselected) {
         ColorStateList originalColors = topTabs.getTabTextColors();
         int selectedTabColor = originalColors != null ? originalColors.getColorForState(topTabs.getSelectedTabColors(), -1) : -1;
         int tabTextColor = originalColors != null ? originalColors.getColorForState(topTabs.getDefaultTabColors(), -1) : -1;

@@ -1,6 +1,6 @@
 #import "StackControllerDelegate.h"
-#import "ReversedTransitionDelegate.h"
-#import "TransitionDelegate.h"
+#import "ScreenAnimationController.h"
+#import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
@@ -63,7 +63,7 @@
     if (operation == UINavigationControllerOperationPush &&
         toVCOptionsWithDefault.animations.push.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = toVCOptionsWithDefault.animations.push;
-        return [[TransitionDelegate alloc]
+        return [[ScreenAnimationController alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions
              sharedElementTransitions:screenTransition.sharedElementTransitions
@@ -72,7 +72,7 @@
     } else if (operation == UINavigationControllerOperationPop &&
                fromVCOptionsWithDefault.animations.pop.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = fromVCOptionsWithDefault.animations.pop;
-        return [[ReversedTransitionDelegate alloc]
+        return [[ScreenReversedAnimationController alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions
              sharedElementTransitions:screenTransition.sharedElementTransitions

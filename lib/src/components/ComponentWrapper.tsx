@@ -15,7 +15,8 @@ interface HocProps {
 }
 
 export interface IWrappedComponent extends React.Component {
-  setProps(newProps: Record<string, any>): void;
+  setProps(newProps: Record<string, any>, callback?: () => void): void;
+  isMounted: boolean;
 }
 
 export class ComponentWrapper {
@@ -39,6 +40,12 @@ export class ComponentWrapper {
         };
       }
 
+      private _isMounted = false;
+
+      get isMounted() {
+        return this._isMounted;
+      }
+
       constructor(props: HocProps) {
         super(props);
         this._assertComponentId();
@@ -49,13 +56,20 @@ export class ComponentWrapper {
         store.setComponentInstance(props.componentId, this);
       }
 
-      public setProps(newProps: any) {
-        this.setState((prevState) => ({
-          allProps: {
-            ...prevState.allProps,
-            ...newProps,
-          },
-        }));
+      public setProps(newProps: any, callback?: () => void) {
+        this.setState(
+          (prevState) => ({
+            allProps: {
+              ...prevState.allProps,
+              ...newProps,
+            },
+          }),
+          callback
+        );
+      }
+
+      componentDidMount() {
+        this._isMounted = true;
       }
 
       componentWillUnmount() {

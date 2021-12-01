@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.parent;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,8 +29,8 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
 
     public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options initialOptions) {
-		super(activity, childRegistry, id, presenter, initialOptions);
-	}
+        super(activity, childRegistry, id, presenter, initialOptions);
+    }
 
     @Override
     public void setWaitForRender(Bool waitForRender) {
@@ -39,27 +40,36 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
-	    super.setDefaultOptions(defaultOptions);
-	    forEach(getChildControllers(), child -> child.setDefaultOptions(defaultOptions));
+        super.setDefaultOptions(defaultOptions);
+        forEach(getChildControllers(), child -> child.setDefaultOptions(defaultOptions));
     }
 
     @Override
     public void onViewDidAppear() {
-        getCurrentChild().onViewDidAppear();
+        super.onViewDidAppear();
+        ViewController<?> currentChild = getCurrentChild();
+        if (currentChild != null) currentChild.onViewDidAppear();
+    }
+
+    @Override
+    public void onViewDisappear() {
+        super.onViewDisappear();
+        ViewController<?> currentChild = getCurrentChild();
+        if (currentChild != null) currentChild.onViewDisappear();
     }
 
     @Override
     @CheckResult
     public Options resolveCurrentOptions() {
-	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return initialOptions;
+        if (CollectionUtils.isNullOrEmpty(getChildControllers())) return initialOptions;
         return getCurrentChild()
                 .resolveCurrentOptions()
                 .copy()
                 .withDefaultOptions(initialOptions);
     }
 
-    public Options resolveChildOptions(ViewController child) {
-	    if (child == this) return resolveCurrentOptions();
+    public Options resolveChildOptions(ViewController<?> child) {
+        if (child == this) return resolveCurrentOptions();
         return child
                 .resolveCurrentOptions()
                 .copy()
@@ -72,18 +82,18 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return resolveCurrentOptions().withDefaultOptions(defaultOptions);
     }
 
-    public boolean isCurrentChild(ViewController child) {
+    public boolean isCurrentChild(ViewController<?> child) {
         return getCurrentChild() == child;
     }
 
-    public abstract ViewController getCurrentChild();
+    public abstract ViewController<?> getCurrentChild();
 
-	@NonNull
-	@Override
+    @NonNull
+    @Override
     public abstract T createView();
 
     @NonNull
-	public abstract Collection<? extends ViewController> getChildControllers();
+    public abstract Collection<? extends ViewController<?>> getChildControllers();
 
     @Nullable
     protected BottomTabsController getBottomTabsController() {
@@ -93,28 +103,28 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return perform(getParentController(), null, ParentController::getBottomTabsController);
     }
 
-	@Nullable
-	@Override
-	public ViewController findController(final String id) {
-		ViewController fromSuper = super.findController(id);
-		if (fromSuper != null) return fromSuper;
+    @Nullable
+    @Override
+    public ViewController<?> findController(final String id) {
+        ViewController<?> fromSuper = super.findController(id);
+        if (fromSuper != null) return fromSuper;
 
-		for (ViewController child : getChildControllers()) {
-			ViewController fromChild = child.findController(id);
-			if (fromChild != null) return fromChild;
-		}
+        for (ViewController<?> child : getChildControllers()) {
+            ViewController<?> fromChild = child.findController(id);
+            if (fromChild != null) return fromChild;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     @Nullable
     @Override
-    public ViewController findController(View child) {
-        ViewController fromSuper = super.findController(child);
+    public ViewController<?> findController(View child) {
+        ViewController<?> fromSuper = super.findController(child);
         if (fromSuper != null) return fromSuper;
 
-        for (ViewController childController : getChildControllers()) {
-            ViewController fromChild = childController.findController(child);
+        for (ViewController<?> childController : getChildControllers()) {
+            ViewController<?> fromChild = childController.findController(child);
             if (fromChild != null) return fromChild;
         }
 
@@ -126,31 +136,31 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         if (super.containsComponent(component)) {
             return true;
         }
-        for (ViewController child : getChildControllers()) {
+        for (ViewController<?> child : getChildControllers()) {
             if (child.containsComponent(component)) return true;
         }
         return false;
     }
 
     @CallSuper
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, ViewController<?> child) {
         this.options = initialOptions.mergeWith(options);
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
     }
 
-	@Override
-	public void destroy() {
-		super.destroy();
-		forEach(getChildControllers(), ViewController::destroy);
-	}
+    @Override
+    public void destroy() {
+        super.destroy();
+        forEach(getChildControllers(), ViewController::destroy);
+    }
 
-	@SuppressWarnings("WeakerAccess")
+    @SuppressWarnings("WeakerAccess")
     @CallSuper
     public void clearOptions() {
-	    performOnParentController(ParentController::clearOptions);
+        performOnParentController(ParentController::clearOptions);
         options = initialOptions.copy().clearOneTimeOptions();
     }
 
@@ -167,16 +177,16 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild() != null && getCurrentChild().isRendered();
     }
 
-    public void onChildDestroyed(ViewController child) {
+    public void onChildDestroyed(ViewController<?> child) {
 
     }
 
     @Override
     public void applyTopInset() {
-	    forEach(getChildControllers(), ViewController::applyTopInset);
+        forEach(getChildControllers(), ViewController::applyTopInset);
     }
 
-    public int getTopInset(ViewController child) {
+    public int getTopInset(ViewController<?> child) {
         return perform(getParentController(), 0, p -> p.getTopInset(child));
     }
 
@@ -185,12 +195,20 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         forEach(getChildControllers(), ViewController::applyBottomInset);
     }
 
-    public int getBottomInset(ViewController child) {
+    public int getBottomInset(ViewController<?> child) {
         return perform(getParentController(), 0, p -> p.getBottomInset(child));
     }
 
     @Override
     public String getCurrentComponentName() {
-	    return getCurrentChild().getCurrentComponentName();
+        return getCurrentChild().getCurrentComponentName();
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Collection<? extends ViewController<?>> childControllers = getChildControllers();
+        for(ViewController<?> controller: childControllers){
+            controller.onConfigurationChanged(newConfig);
+        }
     }
 }

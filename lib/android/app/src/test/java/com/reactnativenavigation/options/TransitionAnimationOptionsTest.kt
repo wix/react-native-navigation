@@ -1,9 +1,9 @@
 package com.reactnativenavigation.options
-
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Assertions.assertThat
+import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Test
 
@@ -85,6 +85,20 @@ class TransitionAnimationOptionsTest : BaseTest() {
     }
 
 }
+
+fun newSharedElementAnimationOptionsJson() =
+        JSONArray().apply {
+            put(JSONObject().apply {
+                put("fromId", "1")
+                put("toId", "2")
+                put("duration", "30")
+            })
+            put(JSONObject().apply {
+                put("fromId", "3")
+                put("toId", "4")
+                put("duration", "30")
+            })
+        }
 
 fun newAnimationOptionsJson(enabled: Boolean) =
         JSONObject().apply {

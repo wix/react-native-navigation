@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar.button
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.TextPaint
@@ -26,7 +25,7 @@ class ButtonSpan(
 
     fun apply(paint: Paint) {
         with(button.font) {
-            val typeface = getTypeface(typefaceLoader, Typeface.DEFAULT)
+            val typeface = getTypeface(typefaceLoader, paint.typeface)
             val fakeStyle = (paint.typeface?.style ?: 0) and (typeface?.style?.inv() ?: 1)
             if (fakeStyle and Typeface.BOLD != 0) paint.isFakeBoldText = true
             if (fakeStyle and Typeface.ITALIC != 0) paint.textSkewX = -0.25f

@@ -56,8 +56,8 @@ public class ReactGateway {
 		initializer.onActivityDestroyed(activity);
 	}
 
-	public boolean onKeyUp(final int keyCode) {
-		return jsDevReloadHandler.onKeyUp(keyCode);
+	public boolean onKeyUp(Activity activity, final int keyCode) {
+		return jsDevReloadHandler.onKeyUp(activity, keyCode);
 	}
 
     public void onBackPressed() {

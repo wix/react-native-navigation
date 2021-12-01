@@ -1,6 +1,7 @@
 #import "RNNCommandsHandler.h"
 #import "RNNAssert.h"
 #import "RNNComponentViewController.h"
+#import "RNNConvert.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "RNNErrorHandler.h"
 #import "React/RCTI18nUtil.h"
@@ -75,10 +76,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
             setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
     }
 
-    [_modalManager dismissAllModalsAnimated:NO
-                                 completion:^{
-
-                                 }];
+    [_modalManager reset];
 
     UIViewController *vc = [_controllerFactory createLayout:layout[@"root"]];
     [_layoutManager addPendingViewController:vc];
@@ -301,13 +299,22 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
     [vc mergeOptions:options];
 
-    [vc.stack popTo:vc
-           animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
-         completion:^(NSArray *poppedViewControllers) {
-           [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
-           completion();
-         }
-          rejection:rejection];
+    if (vc) {
+        [vc.stack popTo:vc
+               animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
+             completion:^(NSArray *poppedViewControllers) {
+               [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
+               completion();
+             }
+              rejection:rejection];
+    } else {
+        [RNNErrorHandler
+                      reject:rejection
+               withErrorCode:1012
+            errorDescription:
+                [NSString stringWithFormat:@"PopTo component failed - componentId '%@' not found",
+                                           componentId]];
+    }
 }
 
 - (void)popToRoot:(NSString *)componentId
@@ -348,21 +355,25 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNAssertMainQueue();
 
     UIViewController *newVc = [_controllerFactory createLayout:layout];
+    RNNNavigationOptions *withDefault = newVc.resolveOptionsWithDefault;
+
     [_layoutManager addPendingViewController:newVc];
 
     __weak UIViewController *weakNewVC = newVc;
-    newVc.waitForRender =
-        [newVc.resolveOptionsWithDefault.animations.showModal shouldWaitForRender];
+    newVc.waitForRender = [withDefault.animations.showModal.enter shouldWaitForRender];
+    newVc.modalPresentationStyle = [RNNConvert
+        UIModalPresentationStyle:[withDefault.modalPresentationStyle withDefault:@"default"]];
+    newVc.modalTransitionStyle = [RNNConvert
+        UIModalTransitionStyle:[withDefault.modalTransitionStyle withDefault:@"coverVertical"]];
     [newVc setReactViewReadyCallback:^{
-      [self->_modalManager
-           showModal:weakNewVC
-            animated:[weakNewVC.resolveOptionsWithDefault.animations.showModal.enable
-                         withDefault:YES]
-          completion:^(NSString *componentId) {
-            [self->_layoutManager removePendingViewController:weakNewVC];
-            [self->_eventEmitter sendOnNavigationCommandCompletion:showModal commandId:commandId];
-            completion(weakNewVC.layoutInfo.componentId);
-          }];
+      [self->_modalManager showModal:weakNewVC
+                            animated:[withDefault.animations.showModal.enter.enable withDefault:YES]
+                          completion:^(NSString *componentId) {
+                            [self->_layoutManager removePendingViewController:weakNewVC];
+                            [self->_eventEmitter sendOnNavigationCommandCompletion:showModal
+                                                                         commandId:commandId];
+                            completion(weakNewVC.layoutInfo.componentId);
+                          }];
     }];
     [newVc render];
 }
@@ -379,21 +390,26 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         (UIViewController *)[_layoutManager findComponentForId:componentId];
 
     if (!modalToDismiss.isModal) {
-        [RNNErrorHandler reject:reject
-                  withErrorCode:1013
-               errorDescription:@"component is not a modal"];
+        [RNNErrorHandler
+                      reject:reject
+               withErrorCode:1013
+            errorDescription:[NSString stringWithFormat:@"component with id: '%@' is not a modal",
+                                                        componentId]];
         return;
     }
 
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
     [modalToDismiss.presentedComponentViewController mergeOptions:options];
 
-    [_modalManager dismissModal:modalToDismiss
-                     completion:^{
-                       [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal
-                                                                    commandId:commandId];
-                       completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
-                     }];
+    [_modalManager
+        dismissModal:modalToDismiss
+            animated:[modalToDismiss.resolveOptionsWithDefault.animations.dismissModal.exit.enable
+                         withDefault:YES]
+          completion:^{
+            [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal
+                                                         commandId:commandId];
+            completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
+          }];
 }
 
 - (void)dismissAllModals:(NSDictionary *)mergeOptions
@@ -403,13 +419,13 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNAssertMainQueue();
 
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    [_modalManager dismissAllModalsAnimated:[options.animations.dismissModal.enable withDefault:YES]
-                                 completion:^{
-                                   [self->_eventEmitter
-                                       sendOnNavigationCommandCompletion:dismissAllModals
-                                                               commandId:commandId];
-                                   completion();
-                                 }];
+    [_modalManager
+        dismissAllModalsAnimated:[options.animations.dismissModal.exit.enable withDefault:YES]
+                      completion:^{
+                        [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals
+                                                                     commandId:commandId];
+                        completion();
+                      }];
 }
 
 - (void)showOverlay:(NSDictionary *)layout

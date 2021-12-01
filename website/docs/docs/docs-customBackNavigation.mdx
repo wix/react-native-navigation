@@ -1,0 +1,88 @@
+---
+id: customBackNavigation
+title: Custom back navigation
+sidebar_label: Custom back navigation
+---
+
+Back navigation lets users move backwards through the screens they previously visited.
+
+The most common form of back navigation is done through the **back button**. The [stack](stack) layout contains a back button by default, also known as the _software back button_.
+
+RNN handles the back navigation for you, but there are use cases where you might need to override the default behavior of the back navigation. For example, when editing a blog post, you might want to prompt the user about unsaved changes instead of navigating to the previous destination.
+
+### Additional back navigation methods
+
+- Android devices include a _hardware back button_, located at the bottom of the device.
+- Android 11 introduced an opt-in gesture navigation system that hides the [NavigationBar](../api/options-navigationBar). When enabled, the hardware back button is replaced with a back gesture performed with a horizontal swipe across the screen.
+- The stack layout on iOS supports a back gesture by default. Like the android back gesture, it's performed by swiping across the screen.
+
+## Handling the software back button
+
+The software back button is located in the TopBar and is responsible for popping the top most screen in the stack. It's configured in the [TopBar](../api/options-stack) options.
+
+To handle the software back button, we must first disable the default behavior which is to pop the top most screen:
+
+```js
+options: {
+  topBar: {
+    backButton: {
+      popStackOnPress: false;
+    }
+  }
+}
+```
+
+Now, when the software back button is pressed, instead of popping the screen RNN will emit a [navigationButtonPress](../api/events#navigationbuttonpressed-event) event which can be handled in JS.
+
+```js
+navigationButtonPressed({ buttonId }) {
+  if (buttonId === 'RNN.back') {
+    console.log('The software back button was pressed!');
+  }
+}
+```
+
+## Handling the hardware back button
+
+Unlike the software back button which affects the stack it's part of, the hardware back button isn't bound to a specific layout. Instead, The hardware back button affects the top most layout that responds to back navigation.
+
+When a stack containing more than one child is focused, pressing the hardware back button will pop the stack. When a modal is displayed and the current stack has exactly one child, pressing the hardware back button will dismiss the modal.
+
+To handle the hardware back button, we must first disable the default behavior for the desired action (pop stack or dismiss modal) through options:
+
+```js
+options: {
+  hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  }
+}
+```
+
+Once the default behaviors are disabled, RNN will emit a [navigationButtonPress](../api/events#navigationbuttonpressed-event) with the `RNN.hardwareBackButton` id.
+
+```js
+navigationButtonPressed({ buttonId }) {
+  if (buttonId === 'RNN.hardwareBackButton') {
+    console.log('The hardware back button was pressed!');
+  }
+}
+```
+
+:::info Note
+The hardware back button is available on Android only.
+:::
+
+:::info Note 2
+When gesture navigation is enabled on Android, the back gesture is handled as a hardware back press.
+:::
+
+## Disabling the iOS pop gesture
+
+The iOS stack layout can be popped with a swipe gesture. If desired, the swipe gesture can be disabled via options:
+
+```js
+options: {
+  popGesture: false;
+}
+```

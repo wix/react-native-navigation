@@ -28,12 +28,22 @@ module.exports = {
           position: 'left',
         },
         {
-          to: 'docs/before-you-start',
-          label: 'Docs',
+          type: 'doc',
           position: 'left',
-          activeBaseRegex: '.*/docs/',
+          docId: 'docs/before-you-start',
+          label: 'Docs',
         },
-        { to: 'api/component', label: 'API', position: 'left', activeBaseRegex: '.*/api/' },
+        {
+          type: 'doc',
+          position: 'left',
+          docId: 'api/component',
+          label: 'API',
+        },
+        {
+          to: 'showcase',
+          label: 'Showcase',
+          position: 'left',
+        },
         {
           href: 'https://github.com/wix/react-native-navigation',
           label: 'GitHub',
@@ -44,6 +54,7 @@ module.exports = {
     algolia: {
       apiKey: '6d8c985d9db80241d117497afe2a0e8c',
       indexName: 'wix_react-native-navigation',
+      contextualSearch: true
     },
     sidebarCollapsible: false,
     footer: {
@@ -99,6 +110,17 @@ module.exports = {
       ],
     },
   },
+  plugins: [
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 70,
+        max: 1030, // max resized image's size.
+        min: 640, // min resized image's size. if original is lower, use that size.
+        steps: 2, // the max number of images generated between min and max (inclusive)
+      },
+    ],
+  ],
   presets: [
     [
       '@docusaurus/preset-classic',

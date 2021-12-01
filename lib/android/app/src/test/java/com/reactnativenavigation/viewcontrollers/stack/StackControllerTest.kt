@@ -6,7 +6,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.*
@@ -31,15 +31,13 @@ import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
-import org.json.JSONException
 import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 import org.robolectric.Robolectric
-import org.robolectric.annotation.LooperMode
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
-import kotlin.jvm.Throws
+import kotlin.test.fail
 
 class StackControllerTest : BaseTest() {
     private lateinit var activity: Activity
@@ -63,7 +61,7 @@ class StackControllerTest : BaseTest() {
         eventEmitter = mock()
         backButtonHelper = spy(BackButtonHelper())
         activity = newActivity()
-        StatusBarUtils.saveStatusBarHeight(63)
+        SystemUiUtils.saveStatusBarHeight(63)
         animator = spy(StackAnimator(activity))
         childRegistry = ChildControllersRegistry()
         presenter = spy(StackPresenter(
@@ -97,6 +95,16 @@ class StackControllerTest : BaseTest() {
     @Test
     fun isAViewController() {
         assertThat(uut).isInstanceOf(ViewController::class.java)
+    }
+
+    @Test
+    fun childrenMustBeUniqueById() {
+        try {
+            val uut: StackController = createStack(listOf(child1, child2, child1))
+            fail("Stack should not have duplicate ids!")
+        } catch (e: IllegalArgumentException) {
+            assertThat(e.message).contains(child1.id)
+        }
     }
 
     @Test
@@ -174,7 +182,7 @@ class StackControllerTest : BaseTest() {
         child2.options.topBar.buttons.left = ArrayList(setOf(TitleBarHelper.iconButton("someButton", "icon.png")))
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(topBarController.leftButtonsCount).isOne();
+        assertThat(topBarController.leftButtonCount).isOne()
         verify(topBarController.view, never()).setBackButton(any())
     }
 
@@ -183,6 +191,16 @@ class StackControllerTest : BaseTest() {
         child1.options.topBar.buttons.left = ArrayList()
         uut.push(child1, CommandListenerAdapter())
         verify(child1, never()).mergeOptions(any())
+    }
+
+    @Test
+    fun setRoot_pushDuringSetRootAnimationShouldNotCrash() {
+        uut.push(child1, CommandListenerAdapter())
+        uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
+        uut.setRoot(listOf(child1), CommandListenerAdapter())
+        uut.push(child3, CommandListenerAdapter())
+        assertThat(uut.currentChild).isEqualTo(child3)
     }
 
     @Test
@@ -263,7 +281,22 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter()) // Initialize stack with a child
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
         verify(child2).onViewDidAppear()
+    }
+
+    @Test
+    fun `push - should make push when stack is not yet created`() {
+        val child11 = spy(child1)
+        val child21 = spy(child2)
+        disablePushAnimation(child11, child21)
+        uut.view = null
+        uut.push(child11, mock())
+        assertThat(uut.size()).isEqualTo(1)
+        uut.push(child21, mock())
+        assertThat(uut.size()).isEqualTo(2)
+        verify(child11, never()).view
+        verify(child21, never()).view
     }
 
     @Test
@@ -316,7 +349,7 @@ class StackControllerTest : BaseTest() {
                 assertThat(uut.currentChild).isEqualTo(child4)
                 uut.pop(Options.EMPTY, CommandListenerAdapter())
                 ShadowLooper.idleMainLooper()
-                assertThat(uut.topBar.leftButtonsBar.navigationIcon).isNull()
+                assertThat(uut.topBar.leftButtonBar.navigationIcon).isNull()
                 assertThat(uut.currentChild).isEqualTo(child3)
             }
         })
@@ -371,6 +404,27 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
+    fun `setRoot - should change stack children, no view creation, when stack is not yet created`() {
+        val spyChild = spy(child1)
+        val spyChild2 = spy(child2)
+        uut.view = null
+
+        uut.setRoot(listOf(spyChild), CommandListenerAdapter())
+        verify(spyChild, never()).view
+        verify(spyChild).parentController = uut
+        assertThat(uut.size()).isEqualTo(1)
+
+        val listOf = listOf(spyChild, spyChild2)
+        uut.setRoot(listOf, CommandListenerAdapter())
+        verify(spyChild, never()).view
+        verify(spyChild2, never()).view
+        verify(spyChild2).parentController = uut
+
+        assertThat(uut.size()).isEqualTo(2)
+        assertThat(uut.childControllers).isEqualTo(listOf)
+    }
+
+    @Test
     fun setRoot_onViewDidAppearIsInvokedBeforePreviousRootIsDestroyed() {
         disablePushAnimation(child1, child2, child3)
         uut.push(child1, CommandListenerAdapter())
@@ -395,6 +449,19 @@ class StackControllerTest : BaseTest() {
         })
     }
 
+    @Test
+    fun `pop - should make pop when stack is not yet created`() {
+        val child11 = spy(child1)
+        val child21 = spy(child2)
+        disablePushAnimation(child11, child21)
+        uut.view = null
+        uut.push(child11, mock())
+        uut.push(child21, mock())
+        uut.pop(Options.EMPTY, mock())
+        assertThat(uut.size()).isEqualTo(1)
+        verify(child11, never()).view
+        verify(child21, never()).view
+    }
     @Test
     fun pop_screenCurrentlyBeingPushedIsPopped() {
         disablePushAnimation(child1, child2)
@@ -484,7 +551,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChild() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -502,7 +568,6 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    @Throws(JSONException::class)
     fun pop_animationOptionsAreMergedCorrectlyToDisappearingChildWithDefaultOptions() {
         disablePushAnimation(child1, child2)
         uut.push(child1, CommandListenerAdapter())
@@ -544,8 +609,9 @@ class StackControllerTest : BaseTest() {
         assertNotChildOf(uut.view, child1.view)
         uut.push(child1, CommandListenerAdapter())
         assertIsChild(uut.view, child1.view)
-
+        idleMainLooper()
         uut.push(child2, CommandListenerAdapter())
+        idleMainLooper()
         assertIsChild(uut.view, child2)
         assertNotChildOf(uut.view, child1)
     }
@@ -599,7 +665,7 @@ class StackControllerTest : BaseTest() {
         val child1View: View = child1.view
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
-
+        idleMainLooper()
         assertIsChild(uut.view, child2View)
         assertNotChildOf(uut.view, child1View)
         uut.pop(Options.EMPTY, CommandListenerAdapter())
@@ -651,7 +717,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
         uut.push(child4, CommandListenerAdapter())
-
+        idleMainLooper()
         uut.popTo(child2, Options.EMPTY, CommandListenerAdapter())
         verify(animator, never()).pop(any(), eq(child1), any(), any(), any())
         verify(animator, never()).pop(any(), eq(child2), any(), any(), any())
@@ -665,6 +731,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, mock())
         uut.push(child2, mock())
         uut.push(child3, mock())
+        idleMainLooper()
         uut.popTo(child1, Options.EMPTY, mock())
         animator.endPushAnimation(child3)
         assertContainsOnlyId(child1.id)
@@ -695,8 +762,8 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1, child2, child3)
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
-
         uut.push(child3, CommandListenerAdapter())
+        idleMainLooper()
         uut.popToRoot(Options.EMPTY, object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 verify(animator).pop(eq(child1), eq(child3), any(), any(), any())
@@ -712,6 +779,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
+        idleMainLooper()
         uut.popToRoot(Options.EMPTY, object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 verify(child1, never()).destroy()
@@ -747,6 +815,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, mock())
         uut.push(child2, mock())
         uut.push(child3, mock())
+        idleMainLooper()
         uut.popToRoot(Options.EMPTY, mock())
         animator.endPushAnimation(child3)
         assertContainsOnlyId(child1.id)
@@ -853,7 +922,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun stackCanBePushed() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = createStack("someStack")
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
@@ -863,7 +932,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun applyOptions_applyOnlyOnFirstStack() {
-        ViewUtils.removeFromParent(uut.view)
+        uut.view.removeFromParent()
         val parent = spy(createStack("someStack"))
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
@@ -1020,7 +1089,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(ViewUtils.topMargin(uut.topBar)).isEqualTo(StatusBarUtils.getStatusBarHeight(activity))
+        assertThat(ViewUtils.topMargin(uut.topBar)).isEqualTo(SystemUiUtils.getStatusBarHeight(activity))
     }
 
     @Test
@@ -1054,7 +1123,8 @@ class StackControllerTest : BaseTest() {
 
     private fun assertContainsOnlyId(vararg ids: String) {
         assertThat(uut.size()).isEqualTo(ids.size)
-        assertThat(uut.childControllers).extracting(Extractor { obj: ViewController<*> -> obj.id } as Extractor<ViewController<*>, String>).containsOnly(*ids)
+        assertThat(uut.childControllers).extracting(Extractor { obj: ViewController<*> -> obj.id } as Extractor<ViewController<*>, String>)
+                .containsOnly(*ids)
     }
 
     private fun createStack(): StackController {

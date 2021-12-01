@@ -2,14 +2,12 @@ package com.reactnativenavigation.viewcontrollers.stack
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.RelativeLayout
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.fakes.IconResolverFake
@@ -32,13 +30,14 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReac
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
-import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN
+import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
+import org.mockito.Mockito
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,12 +63,15 @@ class StackPresenterTest : BaseTest() {
     private lateinit var typefaceLoader: TypefaceLoader
     private lateinit var iconResolver: IconResolver
     private lateinit var buttonCreator: TitleBarButtonCreatorMock
+    private lateinit var reactTitleView: TitleBarReactView
 
     override fun beforeEach() {
+        super.beforeEach()
         activity = spy(newActivity())
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
             override fun create(activity: Activity, componentId: String, componentName: String): TitleBarReactView {
-                return spy(super.create(activity, componentId, componentName))
+                reactTitleView = spy(super.create(activity, componentId, componentName))
+                return reactTitleView
             }
         }
         renderChecker = spy(RenderChecker())
@@ -96,6 +98,71 @@ class StackPresenterTest : BaseTest() {
         child = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
         otherChild = spy(SimpleViewController(activity, childRegistry, "child1", Options.EMPTY))
         activity.setContentView(parent.view)
+    }
+
+    @Test
+    fun onConfigurationChange_shouldApplyColors() {
+        parent.setRoot(listOf(child), CommandListenerAdapter())
+        val options = Options.EMPTY.copy()
+        options.topBar.borderColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topBar.background = TopBarBackgroundOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.title = TitleOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.subtitle = SubtitleOptions().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+        }
+        options.topBar.buttons.back = BackButton().apply {
+            color = ThemeColour.of(Color.BLACK, Color.RED)
+            visible = Bool(true)
+        }
+        options.topBar.rightButtonColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topBar.buttons.left = arrayListOf(ButtonOptions())
+        options.topBar.buttons.right = arrayListOf(ButtonOptions())
+
+        options.topTabs.selectedTabColor = ThemeColour.of(Color.BLACK, Color.RED)
+        options.topTabs.unselectedTabColor = ThemeColour.of(Color.BLACK, Color.RED)
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO
+        uut.onConfigurationChanged(options, getCurrentChild())
+
+        verify(topBar).setTitleTextColor(Color.BLACK)
+        verify(topBar).setSubtitleColor(Color.BLACK)
+        verify(topBar).setBackgroundColor(Color.BLACK)
+        verify(topBar).setBorderColor(Color.BLACK)
+        verify(topBar).applyTopTabsColors(options.topTabs.selectedTabColor,options.topTabs.unselectedTabColor)
+        verify(topBar).setOverflowButtonColor(Color.BLACK)
+        verify(topBar).setBackButton(any())
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES
+        uut.onConfigurationChanged(options, getCurrentChild())
+
+        verify(topBar).setTitleTextColor(Color.RED)
+        verify(topBar).setSubtitleColor(Color.RED)
+        verify(topBar).setBackgroundColor(Color.RED)
+        verify(topBar).setBorderColor(Color.RED)
+        verify(topBar,times(2)).applyTopTabsColors(options.topTabs.selectedTabColor,options.topTabs.unselectedTabColor)
+        verify(topBar).setOverflowButtonColor(Color.RED)
+        verify(topBar,times(2)).setBackButton(any())
+
+    }
+
+    @Test
+    fun onConfigurationChange_shouldApplyColorsOnTopBarButtons() {
+        parent.setRoot(listOf(child), CommandListenerAdapter())
+
+        val options = Options.EMPTY.copy()
+        options.topBar.buttons.left = arrayListOf(ButtonOptions())
+        options.topBar.buttons.right = arrayListOf(ButtonOptions())
+
+        uut.applyChildOptions(options,parent,child)
+        verify(topBarController, times(1)).applyRightButtonsOptions(any(),any(),any())
+        verify(topBarController, times(1)).applyLeftButtonsOptions(any(),any(),any())
+
+        uut.onConfigurationChanged(options, getCurrentChild())
+        verify(topBarController, times(1)).onConfigurationChanged(any(), any(), any())
     }
 
     @Test
@@ -143,10 +210,15 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyChildOptions_setTitleComponentAlignmentCenter() {
         val options = Options()
+        parent.view.layout(0, 0, 1000, 1000)
         options.topBar.title.component = component(Alignment.Center)
         uut.applyChildOptions(options, parent, child)
-        val lp = topBar.mainToolBar.getTitleComponent().layoutParams as FrameLayout.LayoutParams
-        assertThat(lp.gravity).isEqualTo(Gravity.CENTER)
+        val component = topBar.titleAndButtonsContainer.getComponent()
+        Assertions.assertThat(component).isEqualTo(reactTitleView)
+        child.view.requestLayout()
+        idleMainLooper()
+        Assertions.assertThat(component?.left).isEqualTo(parent.view.width / 2 - reactTitleView.width / 2)
+        Assertions.assertThat(component?.right).isEqualTo(parent.view.width / 2 + reactTitleView.width / 2)
     }
 
     @Test
@@ -154,12 +226,14 @@ class StackPresenterTest : BaseTest() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Fill)
         uut.applyChildOptions(options, parent, child)
-        val lp2 = topBar.mainToolBar.getComponent()?.layoutParams as RelativeLayout.LayoutParams
-        Assertions.assertThat(lp2.rules[RelativeLayout.CENTER_IN_PARENT]).isNotEqualTo(RelativeLayout.TRUE)
-        Assertions.assertThat(lp2.rules[RelativeLayout.CENTER_VERTICAL]).isEqualTo(RelativeLayout.TRUE)
-        Assertions.assertThat(lp2.rules[RelativeLayout.LEFT_OF]).isEqualTo(topBar.mainToolBar.rightButtonsBar.id)
-        Assertions.assertThat(lp2.rules[RelativeLayout.RIGHT_OF]).isEqualTo(topBar.mainToolBar.leftButtonsBar.id)
-        Assertions.assertThat(lp2.marginStart).isEqualTo(UiUtils.dpToPx(activity, DEFAULT_LEFT_MARGIN))
+
+        val component = topBar.titleAndButtonsContainer.getComponent()
+        Assertions.assertThat(component).isEqualTo(reactTitleView)
+        Mockito.doReturn(100).`when`(reactTitleView).measuredWidth
+        child.view.requestLayout()
+        idleMainLooper()
+        Assertions.assertThat(component?.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        Assertions.assertThat(component?.right).isEqualTo(DEFAULT_LEFT_MARGIN_PX + reactTitleView.measuredWidth + DEFAULT_LEFT_MARGIN_PX)
     }
 
     @Test
@@ -186,19 +260,29 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child)
-        verify(topBarController, never()).applyRightButtons(any())
-        verify(topBarController, never()).applyLeftButtons(any())
+        verify(topBarController, never()).mergeLeftButtonsOptions(any(),any(),any())
+        verify(topBarController, never()).mergeRightButtonsOptions(any(),any(),any())
 
         val options = Options()
         val button = ButtonOptions()
         button.text = Text("btn")
         options.topBar.buttons.right = ArrayList(setOf(button))
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
-        verify(topBarController).mergeRightButtons(any(), any())
+        verify(topBarController).mergeRightButtonsOptions(any(), any(),any())
 
         options.topBar.buttons.left = ArrayList(setOf(button))
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
-        verify(topBarController).mergeLeftButtons(any(), any())
+        verify(topBarController).mergeLeftButtonsOptions(any(), any(), any())
+    }
+
+    @Test
+    fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
+        val options = Options()
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject().apply {
+            put("color", Color.RED)
+        })
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar, times(0)).setBackButton(any())
     }
 
     @Test
@@ -233,28 +317,28 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeRightButtons_buttonsAreCreatedOnlyIfNeeded() {
         val toApply = Options()
-        textBtn1.color = Colour(Color.GREEN)
+        textBtn1.color = ThemeColour(Colour(Color.GREEN))
         toApply.topBar.buttons.right = arrayListOf(textBtn1, componentBtn1)
         uut.applyChildOptions(toApply, parent, child)
 
-        val captor1 = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).applyRightButtons(captor1.capture())
-        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(2)
+        val captor1 = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).applyRightButtonsOptions(any(),captor1.capture(), any())
+        assertThat(topBar.rightButtonBar.menu.size()).isEqualTo(2)
 
         val appliedButtons = captor1.firstValue
         val toMerge = Options()
         toMerge.topBar.buttons.right = ArrayList(toApply.topBar.buttons.right!!.map(ButtonOptions::copy))
-        toMerge.topBar.buttons.right!![0].color = Colour(Color.RED)
+        toMerge.topBar.buttons.right!![0].color = ThemeColour(Colour(Color.RED))
         toMerge.topBar.buttons.right!!.add(1, componentBtn2)
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
 
-        assertThat(topBar.rightButtonsBar.menu.size()).isEqualTo(3)
-        val captor2 = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).mergeRightButtons(captor2.capture(), any())
+        assertThat(topBar.rightButtonBar.menu.size()).isEqualTo(3)
+        val captor2 = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).mergeRightButtonsOptions(any(),captor2.capture(), any())
         val mergedButtons = captor2.firstValue
         assertThat(mergedButtons).hasSize(3)
-        assertThat(appliedButtons[0]).isNotEqualTo(mergedButtons[0])
-        assertThat(appliedButtons[1]).isEqualTo(mergedButtons[2])
+        assertThat(appliedButtons[0].id).isNotEqualTo(mergedButtons[1].id)
+        assertThat(appliedButtons[1].id).isEqualTo(mergedButtons[2].id)
     }
 
     @Test
@@ -270,6 +354,25 @@ class StackPresenterTest : BaseTest() {
         b.topBar.buttons.left = ArrayList(listOf(componentBtn2))
         uut.mergeChildOptions(b, Options.EMPTY, parent, child)
         assertThat(initialButtons[0].isDestroyed).isFalse()
+    }
+
+    @Test
+    fun mergeChildOptions_backButtonShouldNotAffectLeftButtons() {
+        val options = Options()
+        options.topBar.buttons.right = ArrayList(listOf(textBtn1))
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject())
+        options.topBar.buttons.back.setVisible()
+        options.topBar.buttons.left = ArrayList(listOf(textBtn2))
+        uut.applyChildOptions(options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBarController, times(1)).applyLeftButtonsOptions(any(), any(), any())
+        verify(topBar, never()).setBackButton(any())
+
+        val backButtonHidden = Options()
+        backButtonHidden.topBar.buttons.back.setHidden()
+        uut.mergeChildOptions(backButtonHidden, options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBar, times(1)).clearBackButton()
     }
 
     @Test
@@ -304,10 +407,34 @@ class StackPresenterTest : BaseTest() {
 
         assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue()
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
-        verify(topBarController).mergeLeftButtons(any(), any())
+        verify(topBarController).mergeLeftButtonsOptions(any(), any(),any())
         verify(topBar, never()).clearLeftButtons()
     }
 
+    @Test
+    fun mergeChildOptions_mergeAnimateLeftRightButtons() {
+        val options = Options().apply {
+            topBar.animateLeftButtons = Bool(false)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateLeftButtons(false)
+        verify(topBar, never()).animateRightButtons(any())
+
+        options.apply {
+            topBar.animateRightButtons = Bool(true)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateRightButtons(true)
+
+
+        options.apply {
+            topBar.animateRightButtons = Bool(false)
+            topBar.animateLeftButtons = Bool(true)
+        }
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar).animateRightButtons(false)
+        verify(topBar).animateLeftButtons(true)
+    }
     @Test
     fun mergeTopBarOptions() {
         val options = Options()
@@ -315,18 +442,18 @@ class StackPresenterTest : BaseTest() {
         assertTopBarOptions(options, 0)
         val title = TitleOptions()
         title.text = Text("abc")
-        title.color = Colour(0)
+        title.color = ThemeColour(Colour(0))
         title.fontSize = Fraction(1.0)
         title.font = FontOptions()
         title.font.fontStyle = Text("bold")
         options.topBar.title = title
         val subtitleOptions = SubtitleOptions()
         subtitleOptions.text = Text("Sub")
-        subtitleOptions.color = Colour(1)
+        subtitleOptions.color = ThemeColour(Colour(1))
         subtitleOptions.font.fontStyle = Text("bold")
         subtitleOptions.fontSize = Fraction(1.0)
         options.topBar.subtitle = subtitleOptions
-        options.topBar.background.color = Colour(0)
+        options.topBar.background.color = ThemeColour(Colour(0))
         options.topBar.testId = Text("test123")
         options.topBar.animate = Bool(false)
         options.topBar.visible = Bool(false)
@@ -342,7 +469,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeOptions_defaultOptionsAreNotApplied() {
         val defaultOptions = Options()
-        defaultOptions.topBar.background.color = Colour(10)
+        defaultOptions.topBar.background.color = ThemeColour(Colour(10))
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
         toMerge.topBar.title.text = Text("someText")
@@ -351,12 +478,27 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun mergeOptions_shouldUpdateTitleAlignmentWhenNotDefault() {
+        val defaultOptions = Options()
+        defaultOptions.topBar.title.text = Text("title")
+        uut.defaultOptions = defaultOptions
+        val toMerge = Options()
+        toMerge.topBar.title.text = Text("newTitle")
+        uut.mergeOptions(toMerge, parent, child)
+
+        val alignmentOptions = Options()
+        alignmentOptions.topBar.title.alignment = Alignment.Center
+        uut.mergeOptions(alignmentOptions, parent, child)
+        verify(topBarController).alignTitleComponent(Alignment.Center)
+    }
+
+    @Test
     fun mergeOptions_resolvedTitleFontOptionsAreApplied() {
         val childOptions = Options()
         childOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
-        parentOptions.topBar.title.color = Colour(Color.RED)
+        parentOptions.topBar.title.color = ThemeColour.of(Color.RED)
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
@@ -364,7 +506,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
+        val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
@@ -377,7 +519,7 @@ class StackPresenterTest : BaseTest() {
         childOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
-        parentOptions.topBar.subtitle.color = Colour(Color.RED)
+        parentOptions.topBar.subtitle.color = ThemeColour(Colour(Color.RED))
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.subtitle.fontSize = Fraction(9.0)
@@ -385,7 +527,7 @@ class StackPresenterTest : BaseTest() {
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeOptions(toMerge, parent, child)
-        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
+        val subtitle = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
         assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
@@ -399,11 +541,11 @@ class StackPresenterTest : BaseTest() {
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
-        resolvedOptions.topBar.title.color = Colour(Color.RED)
+        resolvedOptions.topBar.title.color = ThemeColour(Colour(Color.RED))
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
+        val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
@@ -417,11 +559,11 @@ class StackPresenterTest : BaseTest() {
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
-        resolvedOptions.topBar.subtitle.color = Colour(Color.RED)
+        resolvedOptions.topBar.subtitle.color = ThemeColour(Colour(Color.RED))
         val toMerge = Options()
         toMerge.topBar.subtitle.text = Text("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
-        val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
+        val subtitle = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
         assertThat(subtitle.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setSubtitleFontSize(9.0)
@@ -431,7 +573,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_defaultOptionsAreNotApplied() {
         val defaultOptions = Options()
-        defaultOptions.topBar.background.color = Colour(10)
+        defaultOptions.topBar.background.color = ThemeColour(Colour(10))
         uut.defaultOptions = defaultOptions
         val childOptions = Options()
         childOptions.topBar.title.text = Text("someText")
@@ -494,8 +636,8 @@ class StackPresenterTest : BaseTest() {
         verify(topBar, never()).applyTopTabsColors(any(), any())
         verify(topBar, never()).applyTopTabsFontSize(any())
         verify(topBar, never()).setTopTabsVisible(any())
-        options.topTabs.selectedTabColor = Colour(1)
-        options.topTabs.unselectedTabColor = Colour(1)
+        options.topTabs.selectedTabColor = ThemeColour(Colour(1))
+        options.topTabs.unselectedTabColor = ThemeColour(Colour(1))
         options.topTabs.fontSize = Number(1)
         options.topTabs.visible = Bool(true)
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
@@ -519,23 +661,23 @@ class StackPresenterTest : BaseTest() {
         val rightButton1 = ButtonOptions()
         val rightButton2 = ButtonOptions()
         val leftButton = ButtonOptions()
-        options.topBar.rightButtonColor = Colour(10)
-        options.topBar.leftButtonColor = Colour(100)
+        options.topBar.rightButtonColor = ThemeColour(Colour(10))
+        options.topBar.leftButtonColor = ThemeColour(Colour(100))
         options.topBar.buttons.right = ArrayList()
         options.topBar.buttons.right!!.add(rightButton1)
         options.topBar.buttons.right!!.add(rightButton2)
         options.topBar.buttons.left = ArrayList()
         options.topBar.buttons.left!!.add(leftButton)
         uut.applyChildOptions(options, parent, child)
-        val rightCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).applyRightButtons(rightCaptor.capture())
-        assertThat(rightCaptor.firstValue[0].button.color.get()).isEqualTo(options.topBar.rightButtonColor.get())
-        assertThat(rightCaptor.firstValue[1].button.color.get()).isEqualTo(options.topBar.rightButtonColor.get())
+        val rightCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).applyRightButtonsOptions(any(),rightCaptor.capture(), any())
+        assertThat(rightCaptor.firstValue[0].color.get()).isEqualTo(options.topBar.rightButtonColor.get())
+        assertThat(rightCaptor.firstValue[1].color.get()).isEqualTo(options.topBar.rightButtonColor.get())
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
-        val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).applyLeftButtons(leftCaptor.capture())
-        assertThat(leftCaptor.firstValue[0].button.color).isEqualTo(options.topBar.leftButtonColor)
+        val leftCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).applyLeftButtonsOptions(any(),leftCaptor.capture(),any())
+        assertThat(leftCaptor.firstValue[0].color).isEqualTo(options.topBar.leftButtonColor)
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
 
@@ -563,18 +705,18 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(initialOptions, parent, child)
 
         //Merge color change for right and left buttons
-        mergeOptions.topBar.rightButtonColor = Colour(100)
-        mergeOptions.topBar.leftButtonColor = Colour(10)
+        mergeOptions.topBar.rightButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock()))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock()))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        val rightColorCaptor = argumentCaptor<Colour>()
+        val rightColorCaptor = argumentCaptor<ThemeColour>()
         verify(rightController).applyColor(any(), rightColorCaptor.capture())
         assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonColor)
 
-        val leftColorCaptor = argumentCaptor<Colour>()
+        val leftColorCaptor = argumentCaptor<ThemeColour>()
         verify(leftController).applyColor(any(), leftColorCaptor.capture())
         assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonColor)
     }
@@ -592,18 +734,18 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(initialOptions, parent, child)
 
         //Merge color change for right and left buttons
-        mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
-        mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
+        mergeOptions.topBar.rightButtonDisabledColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonDisabledColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        val rightColorCaptor = argumentCaptor<Colour>()
+        val rightColorCaptor = argumentCaptor<ThemeColour>()
         verify(rightController).applyDisabledColor(any(), rightColorCaptor.capture())
         assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonDisabledColor)
 
-        val leftColorCaptor = argumentCaptor<Colour>()
+        val leftColorCaptor = argumentCaptor<ThemeColour>()
         verify(leftController).applyDisabledColor(any(), leftColorCaptor.capture())
         assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonDisabledColor)
     }
@@ -624,18 +766,18 @@ class StackPresenterTest : BaseTest() {
         //Merge color change for right and left buttons with clear buttons
         mergeOptions.topBar.buttons.right = ArrayList()
         mergeOptions.topBar.buttons.left = ArrayList()
-        mergeOptions.topBar.rightButtonColor = Colour(100)
-        mergeOptions.topBar.leftButtonColor = Colour(100)
-        mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
-        mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
+        mergeOptions.topBar.rightButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.rightButtonDisabledColor = ThemeColour(Colour(100))
+        mergeOptions.topBar.leftButtonDisabledColor = ThemeColour(Colour(10))
         val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock { }))
         val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock { }))
         uut.setComponentsButtonController(child.view, rightController, leftController)
         uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
 
-        verify(rightController, never()).applyColor(any(), any());
-        verify(leftController, never()).applyColor(any(), any());
-        verify(leftController, never()).applyDisabledColor(any(), any());
+        verify(rightController, never()).applyColor(any(), any())
+        verify(leftController, never()).applyColor(any(), any())
+        verify(leftController, never()).applyDisabledColor(any(), any())
         verify(leftController, never()).applyDisabledColor(any(), any())
 
     }
@@ -644,8 +786,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
         val appliedOptions = Options()
-        appliedOptions.topBar.rightButtonColor = Colour(10)
-        appliedOptions.topBar.leftButtonColor = Colour(100)
+        appliedOptions.topBar.rightButtonColor = ThemeColour(Colour(10))
+        appliedOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
 
         val options2 = Options()
         val rightButton1 = ButtonOptions()
@@ -655,23 +797,23 @@ class StackPresenterTest : BaseTest() {
         options2.topBar.buttons.left = ArrayList(listOf(leftButton))
 
         uut.mergeChildOptions(options2, appliedOptions, parent, child)
-        val rightCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).mergeRightButtons(rightCaptor.capture(), any())
-        assertThat(rightCaptor.firstValue[0].button.color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get())
-        assertThat(rightCaptor.firstValue[1].button.color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get())
+        val rightCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).mergeRightButtonsOptions(any(),rightCaptor.capture(), any())
+        assertThat(rightCaptor.firstValue[0].color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get())
+        assertThat(rightCaptor.firstValue[1].color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get())
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
-        val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any())
-        assertThat(leftCaptor.firstValue[0].button.color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get())
+        val leftCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).mergeLeftButtonsOptions(any(),leftCaptor.capture(), any())
+        assertThat(leftCaptor.firstValue[0].color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get())
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
 
     @Test
     fun mergeChildOptions_buttonColorIsResolvedFromMergedOptions() {
         val resolvedOptions = Options()
-        resolvedOptions.topBar.rightButtonColor = Colour(10)
-        resolvedOptions.topBar.leftButtonColor = Colour(100)
+        resolvedOptions.topBar.rightButtonColor = ThemeColour(Colour(10))
+        resolvedOptions.topBar.leftButtonColor = ThemeColour(Colour(100))
 
         val rightButton1 = ButtonOptions()
         val rightButton2 = ButtonOptions()
@@ -681,15 +823,15 @@ class StackPresenterTest : BaseTest() {
         options2.topBar.buttons.left = ArrayList(listOf(leftButton))
 
         uut.mergeChildOptions(options2, resolvedOptions, parent, child)
-        val rightCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).mergeRightButtons(rightCaptor.capture(), any())
-        assertThat(rightCaptor.firstValue[0].button.color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get())
-        assertThat(rightCaptor.firstValue[1].button.color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get())
+        val rightCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).mergeRightButtonsOptions(any(),rightCaptor.capture(), any())
+        assertThat(rightCaptor.firstValue[0].color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get())
+        assertThat(rightCaptor.firstValue[1].color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get())
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
-        val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).mergeLeftButtons(leftCaptor.capture(), any())
-        assertThat(leftCaptor.firstValue[0].button.color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get())
+        val leftCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).mergeLeftButtonsOptions(any(),leftCaptor.capture(), any())
+        assertThat(leftCaptor.firstValue[0].color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get())
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
 
@@ -699,10 +841,10 @@ class StackPresenterTest : BaseTest() {
         options.topBar.buttons.right = ArrayList(listOf(textBtn1))
         options.topBar.buttons.left = ArrayList(listOf(textBtn1))
         uut.applyChildOptions(options, parent, child)
-        val rightCaptor = argumentCaptor<List<ButtonController>>()
-        val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).applyRightButtons(rightCaptor.capture())
-        verify(topBarController).applyLeftButtons(leftCaptor.capture());
+        val rightCaptor = argumentCaptor<List<ButtonOptions>>()
+        val leftCaptor = argumentCaptor<List<ButtonOptions>>()
+        verify(topBarController).applyRightButtonsOptions(any(),rightCaptor.capture(),any())
+        verify(topBarController).applyLeftButtonsOptions(any(),leftCaptor.capture(),any())
         assertThat(rightCaptor.firstValue.size).isOne()
         assertThat(leftCaptor.firstValue.size).isOne()
     }
@@ -746,6 +888,32 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun applyChildOptions_shouldNotPassAnimateLeftRightButtonBarWhenNoValue() {
+        val options = Options().apply {
+            topBar.buttons.right = ArrayList(listOf(componentBtn1))
+            topBar.buttons.left = ArrayList(listOf(componentBtn2))
+
+        }
+        uut.applyChildOptions(options, parent, child)
+        verify(topBar, never()).animateLeftButtons(any())
+        verify(topBar, never()).animateLeftButtons(any())
+    }
+
+    @Test
+    fun applyChildOptions_shouldPassAnimateLeftRightButtonBar() {
+        val options = Options().apply {
+            topBar.buttons.right = ArrayList(listOf(componentBtn1))
+            topBar.buttons.left = ArrayList(listOf(componentBtn2))
+            topBar.animateLeftButtons = Bool(false)
+            topBar.animateRightButtons = Bool(true)
+        }
+
+        uut.applyChildOptions(options, parent, child)
+        verify(topBar).animateRightButtons(true)
+        verify(topBar).animateLeftButtons(false)
+    }
+
+    @Test
     fun onChildDestroyed_destroyedButtons() {
         val options = Options()
         options.topBar.buttons.right = ArrayList(listOf(componentBtn1))
@@ -767,6 +935,59 @@ class StackPresenterTest : BaseTest() {
         assertThat(buttons).hasSize(1)
         uut.onChildDestroyed(child)
         assertThat(buttons[0].isDestroyed).isTrue()
+    }
+
+    @Test
+    fun applyChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+        val options = Options().apply {
+            statusBar.drawBehind = Bool(true)
+        }
+        Mockito.`when`(child.resolveCurrentOptions()).thenReturn(options)
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
+            uut.applyChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+            }, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(statusBarHeight)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo(statusBarHeightDp + topBarHeightDp)
+        }
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldExtendBehindStatusBarWhenDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
+            uut.mergeChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+                statusBar.drawBehind = Bool(true)
+            }, Options.EMPTY, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(statusBarHeight)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo(statusBarHeightDp + topBarHeightDp)
+        }
+    }
+
+    @Test
+    fun mergeChildOptions_topBarShouldNotExtendBehindStatusBarWhenNoDrawBehind() {
+        val statusBarHeight = 10
+        val statusBarHeightDp = 20
+        val topBarHeightDp = 100
+
+        mockSystemUiUtils(statusBarHeight, statusBarHeightDp) {
+            uut.mergeChildOptions(Options.EMPTY.copy().apply {
+                topBar.height = Number(topBarHeightDp)
+                statusBar.drawBehind = Bool(false)
+            }, Options.EMPTY, parent, child)
+            assertThat(topBar.paddingTop).isEqualTo(0)
+            assertThat(topBar.y).isEqualTo(0f)
+            assertThat(topBar.layoutParams.height).isEqualTo( topBarHeightDp)
+        }
     }
 
     @Test
@@ -808,6 +1029,7 @@ class StackPresenterTest : BaseTest() {
         assertThat((topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin).isEqualTo(10)
     }
 
+    private fun getCurrentChild()=parent.currentChild
     private fun assertTopBarOptions(options: Options, t: Int) {
         if (options.topBar.title.component.hasValue()) {
             verify(topBar, never()).title = any()
@@ -838,7 +1060,7 @@ class StackPresenterTest : BaseTest() {
         })
     }
 
-    private fun component(alignment: Alignment): ComponentOptions {
+    fun component(alignment: Alignment): ComponentOptions {
         val component = ComponentOptions()
         component.name = Text("myComp")
         component.alignment = alignment

@@ -10,6 +10,21 @@ const options = {
 };
 ```
 
+
+## `selectTabOnPress`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `popToRoot`
+
+Pop to root of stack by tapping on already selected tab.
+
+| Type    | Required | Platform  |
+| ------- | -------- | --------- |
+| boolean | No       | Android   |
+
 ## `badge`
 
 | Type   | Required | Platform |
@@ -159,6 +174,23 @@ Overrides the text that's read by the screen reader when the user interacts with
 | Type  | Required | Platform |
 | ----- | -------- | -------- |
 | color | No       | Both     |
+
+### `sfSymbol`
+
+Set the SF symbol as icon (will be used primarily).
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS 13+  |
+
+
+### `sfSelectedSymbol`
+
+Set the SF symbol as selected icon (will be used primarily)
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS 13+  |
 
 ## DotIndicator
 

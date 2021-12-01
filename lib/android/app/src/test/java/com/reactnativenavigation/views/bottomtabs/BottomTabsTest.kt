@@ -1,9 +1,9 @@
 package com.reactnativenavigation.views.bottomtabs
 
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import com.reactnativenavigation.BaseTest
 import org.junit.Test
 

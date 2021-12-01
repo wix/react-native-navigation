@@ -234,3 +234,7 @@ playground/android/app/.settings/
 AndroidE2E/.settings/
 website/yarn.lock
 playground/ios/Podfile.lock
+website/package-lock.json
+
+# detox artifacts
+artifacts/

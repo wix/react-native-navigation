@@ -1,6 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -20,10 +21,11 @@ import com.reactnativenavigation.options.IconBackgroundOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
-import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 
@@ -41,7 +43,7 @@ import static org.mockito.Mockito.verify;
 public class ButtonPresenterTest extends BaseTest {
     private static final String BTN_TEXT = "button1";
 
-    private ButtonsToolbar titleBar;
+    private ButtonBar titleBar;
     private ButtonPresenter uut;
     private ButtonController buttonController;
     private ButtonOptions button;
@@ -49,8 +51,9 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         activity = newActivity();
-        titleBar = new ButtonsToolbar(activity);
+        titleBar = new ButtonBar(activity);
         activity.setContentView(titleBar);
         button = createButton();
         ImageLoader imageLoaderMock;
@@ -79,9 +82,22 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void applyOptions_appliesColorOnButtonTextView() {
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
         addButtonAndApplyOptions();
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+    }
+
+    @Test
+    public void applyOptions_appliesColorOnButtonTextViewOnDarkMode() {
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.BLACK));
+        MenuItem menuItem = addButtonAndApplyOptions();
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
+
+        mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_YES;
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLACK);
+
     }
 
     @Test
@@ -96,7 +112,7 @@ public class ButtonPresenterTest extends BaseTest {
         MenuItem menuItem = addMenuButton();
 
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
-        Colour color = new Colour(Color.RED);
+        ThemeColour color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
         uut.applyColor(titleBar, menuItem, color);
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.RED);
     }
@@ -107,7 +123,7 @@ public class ButtonPresenterTest extends BaseTest {
         initUUt(ImageLoaderMock.mock(mockD));
         button.enabled = new Bool(true);
         button.icon = new Text("icon");
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
         MenuItem menuItem = spy(addMenuButton());
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
 
@@ -122,8 +138,8 @@ public class ButtonPresenterTest extends BaseTest {
         initUUt(ImageLoaderMock.mock(mockD));
         button.enabled = new Bool(false);
         button.icon = new Text("icon");
-        button.color = new Colour(Color.RED);
-        button.disabledColor = new Colour(Color.YELLOW);
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
+        button.disabledColor = new ThemeColour(new Colour(Color.YELLOW), new Colour(Color.YELLOW));
         MenuItem menuItem = spy(addMenuButton());
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
 
@@ -138,9 +154,9 @@ public class ButtonPresenterTest extends BaseTest {
         initUUt(ImageLoaderMock.mock(mockD));
         button.enabled = new Bool(true);
         button.icon = new Text("icon");
-        button.color = new Colour(Color.RED);
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
         IconBackgroundOptions iconBackground = new IconBackgroundOptions();
-        iconBackground.color = new Colour(Color.GREEN);
+        iconBackground.color = new ThemeColour(new Colour(Color.GREEN),new Colour(Color.GREEN));
         button.iconBackground = iconBackground;
         MenuItem menuItem = spy(addMenuButton());
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
@@ -159,11 +175,11 @@ public class ButtonPresenterTest extends BaseTest {
         initUUt(ImageLoaderMock.mock(mockD));
         button.enabled = new Bool(false);
         button.icon = new Text("icon");
-        button.color = new Colour(Color.RED);
-        button.disabledColor = new Colour(Color.YELLOW);
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
+        button.disabledColor = new ThemeColour(new Colour(Color.YELLOW), new Colour(Color.YELLOW));
         IconBackgroundOptions iconBackground = new IconBackgroundOptions();
-        iconBackground.color = new Colour(Color.GREEN);
-        iconBackground.disabledColor = new Colour(Color.CYAN);
+        iconBackground.color = new ThemeColour( new Colour(Color.GREEN), new Colour(Color.GREEN));
+        iconBackground.disabledColor = new ThemeColour(new Colour(Color.CYAN),new Colour(Color.CYAN));
         button.iconBackground = iconBackground;
         MenuItem menuItem = spy(addMenuButton());
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
@@ -181,14 +197,15 @@ public class ButtonPresenterTest extends BaseTest {
         button.enabled = new Bool(false);
         MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
-        Colour disabledColor = new Colour(Color.BLUE);
+        ThemeColour disabledColor = new ThemeColour(new Colour(Color.BLUE), new Colour(Color.BLUE));
         uut.applyDisabledColor(titleBar, menuItem, disabledColor);
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(Color.BLUE);
     }
 
-    private void addButtonAndApplyOptions() {
+    private MenuItem addButtonAndApplyOptions() {
         MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
+        return menuItem;
     }
 
     private MenuItem addMenuButton() {

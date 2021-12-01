@@ -3,17 +3,18 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter
-
-- (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
-    RNNNavigationOptions *withDefault = [options withDefault:self.defaultOptions];
-
-    [child setTabBarItemBadge:[withDefault.bottomTab.badge withDefault:[NSNull null]]];
-    [child setTabBarItemBadgeColor:[withDefault.bottomTab.badgeColor withDefault:nil]];
+@implementation BottomTabPresenter {
+    RNNTabBarItemCreator *_tabCreator;
 }
 
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options
-                                               child:(UIViewController *)child {
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
+                            tabCreator:(RNNTabBarItemCreator *)tabCreator {
+    self = [super initWithDefaultOptions:defaultOptions];
+    _tabCreator = tabCreator;
+    return self;
+}
+
+- (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
     RNNNavigationOptions *withDefault = [options withDefault:self.defaultOptions];
 
     [self createTabBarItem:child bottomTabOptions:withDefault.bottomTab];
@@ -37,8 +38,7 @@
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    child.tabBarItem = [RNNTabBarItemCreator createTabBarItem:bottomTabOptions
-                                                    mergeItem:child.tabBarItem];
+    child.tabBarItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
 }
 
 @end

@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.element.finder
 
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.doOnPreDraw
@@ -9,10 +10,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.math.min
 
 class ExistingViewFinder : ViewFinder {
-    private val bailoutTime = 100L
-    private var timeElapsedWaitingForActualImageToLoad = 0L
 
     override suspend fun find(root: ViewController<*>, nativeId: String) = suspendCoroutine<View?> { cont ->
         when (val view = ReactFindViewUtil.findView(root.view, nativeId)) {
@@ -37,25 +37,29 @@ class ExistingViewFinder : ViewFinder {
     }
 
     private fun resumeOnImageLoad(view: ImageView, cont: Continuation<View?>) {
-        val t1 = System.currentTimeMillis()
         view.doOnPreDraw {
             if (hasMeasuredDrawable(view)) {
                 view.post {
                     cont.resume(view)
                 }
             } else {
-                timeElapsedWaitingForActualImageToLoad += (System.currentTimeMillis() - t1)
-                if (timeElapsedWaitingForActualImageToLoad < bailoutTime) {
-                    resumeOnImageLoad(view, cont)
-                } else {
-                    cont.resume(null)
-                }
+                resumeOnImageLoad(view, cont)
             }
         }
     }
 
     private fun hasMeasuredDrawable(view: ImageView) = when (view.drawable) {
         is RootDrawable -> true
-        else -> if (view.drawable != null) with(view.drawable) { intrinsicWidth != -1 && intrinsicHeight != -1 } else false
+        else -> checkIfFastImageIsMeasured(view)
+    }
+
+    private fun checkIfFastImageIsMeasured(view: ImageView) = with(view.drawable) {
+        this != null && intrinsicWidth != -1 && intrinsicHeight != -1 && isImageScaledToFit(view)
+    }
+
+    private fun Drawable.isImageScaledToFit(view: ImageView): Boolean {
+        val scaleX = view.width / intrinsicWidth.toFloat()
+        val scaleY = view.height / intrinsicHeight.toFloat()
+        return min(scaleX, scaleY) >= 1f
     }
 }

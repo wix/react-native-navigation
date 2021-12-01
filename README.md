@@ -8,7 +8,6 @@
   <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/latest.svg?style=flat-square" alt="NPM latest version"></a>
   <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/snapshot.svg?style=flat-square" alt="NPM snapshot version"></a>
   <a href="https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/"><img src="https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg?style=flat-square" alt="NPM snapshot version"></a>
-  <a href="https://github.com/wix/react-native-navigation/pulls"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fmerge-chance.info%2Fbadge%3Frepo%3Dwix/react-native-navigation"></a>
 
 </p>
 <p align="center">

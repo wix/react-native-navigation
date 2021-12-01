@@ -8,6 +8,7 @@ def all_pods
   use_react_native!(:path => config[:reactNativePath])
   
   pod 'ReactNativeNavigation', :path => '../../'
+  pod 'HMSegmentedControl'
 end
 
 target 'playground' do

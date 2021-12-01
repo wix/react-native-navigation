@@ -2,12 +2,12 @@ package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.animation.TypeEvaluator
 import android.graphics.PointF
 import android.graphics.Rect
 import android.view.View
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
+import com.facebook.react.views.image.ImageResizeMode
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils
@@ -38,7 +38,7 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
 
             to.layoutParams.width = max(from.width, to.width)
             to.layoutParams.height = max(from.height, to.height)
-            return ObjectAnimator.ofObject(TypeEvaluator<Float> { fraction: Float, _: Any, _: Any ->
+            return ObjectAnimator.ofObject({ fraction: Float, _: Any, _: Any ->
                 hierarchy.actualImageScaleType?.let {
                     (hierarchy.actualImageScaleType as? InterpolatingScaleType)?.let {
                         it.value = fraction
@@ -46,16 +46,18 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
                     }
                 }
                 null
-            }, 0, 1)
+            }, 0f, 1f)
         }
     }
 
-    private fun getScaleType(child: View): ScalingUtils.ScaleType? {
-        return getScaleType(child as ReactImageView, child.hierarchy.actualImageScaleType!!)
+    private fun getScaleType(child: View): ScalingUtils.ScaleType {
+        return getScaleType(
+                child as ReactImageView, child.hierarchy.actualImageScaleType ?: ImageResizeMode.defaultValue()
+        )
     }
 
-    private fun getScaleType(child: ReactImageView, scaleType: ScalingUtils.ScaleType): ScalingUtils.ScaleType? {
-        if (scaleType is InterpolatingScaleType) return getScaleType(child, scaleType.scaleTypeTo )
+    private fun getScaleType(child: ReactImageView, scaleType: ScalingUtils.ScaleType): ScalingUtils.ScaleType {
+        if (scaleType is InterpolatingScaleType) return getScaleType(child, scaleType.scaleTypeTo)
         return scaleType
     }
 

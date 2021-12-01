@@ -31,8 +31,8 @@ public abstract class AttachModeTest extends BaseTest {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     protected ViewGroup parent;
-    ViewController tab1;
-    ViewController tab2;
+    ViewController<?> tab1;
+    ViewController<?> tab2;
     List<ViewController<?>> tabs;
     protected Options options;
     protected BottomTabsPresenter presenter;
@@ -69,18 +69,18 @@ public abstract class AttachModeTest extends BaseTest {
         forEach(otherTabs(), t -> assertThat(t.getView().getVisibility()).isEqualTo(View.INVISIBLE));
     }
 
-    ViewController[] otherTabs() {
+    ViewController<?>[] otherTabs() {
         return filter(tabs, t -> t != initialTab()).toArray(new ViewController[0]);
     }
 
-    ViewController initialTab() {
+    ViewController<?> initialTab() {
         return tabs.get(INITIAL_TAB);
     }
 
     private List<ViewController<?>> createTabs() {
         tab1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         tab2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
-        ViewController tab3 = new SimpleViewController(activity, childRegistry, "child3", new Options());
+        ViewController<?> tab3 = new SimpleViewController(activity, childRegistry, "child3", new Options());
         return Arrays.asList(tab1, tab2, tab3);
     }
 }

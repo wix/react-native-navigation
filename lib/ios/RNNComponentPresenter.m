@@ -41,10 +41,6 @@
     [_buttonsPresenter componentDidDisappear];
 }
 
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-    [super applyOptionsOnWillMoveToParentViewController:options];
-}
-
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
 
@@ -83,6 +79,8 @@
                                  backgroundColor:[options.topBar.searchBar.backgroundColor
                                                      withDefault:nil]
                                        tintColor:[options.topBar.searchBar.tintColor
+                                                     withDefault:nil]
+                                      cancelText:[withDefault.topBar.searchBar.cancelText
                                                      withDefault:nil]];
     }
 
@@ -91,13 +89,16 @@
     if (withDefault.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
     }
 
     if (withDefault.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
-                                defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+        [_buttonsPresenter
+               applyRightButtons:withDefault.topBar.rightButtons
+                    defaultColor:withDefault.topBar.rightButtonColor
+            defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                        animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
     }
 }
 
@@ -142,6 +143,8 @@
                                  backgroundColor:[mergeOptions.topBar.searchBar.backgroundColor
                                                      withDefault:nil]
                                        tintColor:[mergeOptions.topBar.searchBar.tintColor
+                                                     withDefault:nil]
+                                      cancelText:[withDefault.topBar.searchBar.cancelText
                                                      withDefault:nil]];
     } else {
         [viewController setSearchBarVisible:NO];
@@ -193,13 +196,16 @@
     if (mergeOptions.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:mergeOptions.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
-                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor];
+                       defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                   animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
     }
 
     if (mergeOptions.topBar.rightButtons) {
-        [_buttonsPresenter applyRightButtons:mergeOptions.topBar.rightButtons
-                                defaultColor:withDefault.topBar.rightButtonColor
-                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor];
+        [_buttonsPresenter
+               applyRightButtons:mergeOptions.topBar.rightButtons
+                    defaultColor:withDefault.topBar.rightButtonColor
+            defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                        animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {

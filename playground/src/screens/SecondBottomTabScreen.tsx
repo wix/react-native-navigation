@@ -11,10 +11,12 @@ const {
   SIDE_MENU_INSIDE_BOTTOM_TABS_BTN,
   PUSH_BTN,
   PUSHED_BOTTOM_TABS,
+  MODAL_BTN,
   SIDE_MENU_TAB,
   FLAT_LIST_BTN,
   HIDE_TABS_PUSH_BTN,
   SECOND_TAB_BAR_BTN,
+  SET_BADGE_BTN,
 } = testIDs;
 
 export default class SecondBottomTabScreen extends React.Component<NavigationComponentProps> {
@@ -42,6 +44,9 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
       <Root componentId={this.props.componentId}>
         <Button label="Push" onPress={this.push} />
         <Button label="Push BottomTabs" testID={PUSH_BTN} onPress={this.pushBottomTabs} />
+        <Button label="Push Modal" testID={MODAL_BTN} onPress={this.pushModal} />
+        <Button label="SetBadge" testID={SET_BADGE_BTN} onPress={this.setBadge} />
+
         <Button label="Push ScrollView" onPress={this.pushScrollView} />
         <Button
           label="SideMenu inside BottomTabs"
@@ -66,6 +71,15 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
     );
 
   push = () => Navigation.push(this, Screens.Pushed);
+
+  pushModal = async () => await Navigation.push(this, Screens.Modal);
+
+  setBadge = () =>
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        badge: 'Badge',
+      },
+    });
 
   pushBottomTabs = () =>
     Navigation.push(this, {

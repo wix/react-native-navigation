@@ -21,7 +21,6 @@ public class BottomTabsLayout extends CoordinatorLayout {
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (bottomTabsContainer != null && child != bottomTabsContainer) {
-            int indexOfChild = this.indexOfChild(bottomTabsContainer);
             super.addView(child, getChildCount() - 1, params);
         } else {
             super.addView(child, 0, params);

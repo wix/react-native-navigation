@@ -1,3 +1,4 @@
+#import "DisplayLinkAnimation.h"
 #import "RNNViewLocation.h"
 #import "SharedElementTransitionOptions.h"
 
@@ -13,5 +14,7 @@
           transitionOptions:(SharedElementTransitionOptions *)transitionOptions;
 
 - (void)reset;
+
+- (NSArray<id<DisplayLinkAnimation>> *)extraAnimations;
 
 @end

@@ -4,10 +4,8 @@
 
 @interface ElementAnimator : BaseAnimator
 
-- (instancetype)initWithTransitionOptions:(ElementTransitionOptions *)transitionOptions
+- (instancetype)initWithTransitionOptions:(TransitionOptions *)transitionOptions
                                      view:(UIView *)view
-                                   fromVC:(UIViewController *)fromVC
-                                     toVC:(UIViewController *)toVC
                             containerView:(UIView *)containerView;
 
 - (NSMutableArray<id<DisplayLinkAnimation>> *)createAnimations:

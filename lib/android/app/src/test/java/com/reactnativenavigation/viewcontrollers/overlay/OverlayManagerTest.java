@@ -32,6 +32,7 @@ public class OverlayManagerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         Activity activity = newActivity();
         contentLayout = new FrameLayout(activity);
         contentLayout.layout(0, 0, 1000, 1000);

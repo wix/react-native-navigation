@@ -1,5 +1,6 @@
 package com.reactnativenavigation.options.parsers;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
@@ -98,7 +99,7 @@ public class JSONParser {
     }
 
     public static WritableMap convert(JSONObject jsonObject) {
-        WritableMap map = new WritableNativeMap();
+        WritableMap map = Arguments.createMap();
 
         Iterator<String> iterator = jsonObject.keys();
         while (iterator.hasNext()) {
@@ -125,7 +126,7 @@ public class JSONParser {
     }
 
     public static WritableArray convert(JSONArray jsonArray) {
-        WritableArray array = new WritableNativeArray();
+        WritableArray array = Arguments.createArray();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             Object value = jsonArray.opt(i);

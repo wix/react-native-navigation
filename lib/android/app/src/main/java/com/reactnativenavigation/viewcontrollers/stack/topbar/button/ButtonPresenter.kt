@@ -13,16 +13,20 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
-import com.reactnativenavigation.options.params.Colour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.utils.ArrayUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.views.stack.topbar.titlebar.IconBackgroundDrawable
 import kotlin.math.max
 
-open class ButtonPresenter(private val context: Context, private val button: ButtonOptions, private val iconResolver: IconResolver) {
+open class ButtonPresenter(private val context: Context,var button: ButtonOptions, private val iconResolver:
+IconResolver) {
     companion object {
         const val DISABLED_COLOR = Color.LTGRAY
     }
@@ -44,6 +48,8 @@ open class ButtonPresenter(private val context: Context, private val button: But
         applyComponent(menuItem, viewCreator)
         applyAccessibilityLabel(menuItem)
         applyIcon(menuItem)
+        applyText(menuItem)
+
 
         applyOptionsDirectlyOnView(toolbar, menuItem) {
             applyTestId(it)
@@ -52,7 +58,12 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: Colour) {
+    private fun applyText(menuItem: MenuItem) {
+        if (button.text.hasValue())
+            menuItem.title = button.text.get()
+    }
+
+    fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {
         button.color = color
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
@@ -60,7 +71,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
-    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: Colour) {
+    fun applyDisabledColor(toolbar: Toolbar, menuItem: MenuItem, disabledColor: ThemeColour) {
         button.disabledColor = disabledColor
         applyIcon(menuItem)
         applyOptionsDirectlyOnView(toolbar, menuItem) {
@@ -88,7 +99,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         menuItem.isEnabled = button.enabled.isTrueOrUndefined
     }
 
-    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable? {
+    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable {
         return if (button.iconBackground.hasValue()) {
             val width = button.iconBackground.width.get(srcDrawable.intrinsicWidth).let { max(it, srcDrawable.intrinsicWidth) }
             val height = button.iconBackground.height.get(srcDrawable.intrinsicHeight).let { max(it, srcDrawable.intrinsicHeight) }
@@ -127,7 +138,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
             if (button.enabled.isTrueOrUndefined) {
                 if (button.color.hasValue()) view.setTextColor(button.color.get())
             } else {
-                view.setTextColor(button.disabledColor.get(DISABLED_COLOR))
+                view.setTextColor(button.disabledColor.get(DISABLED_COLOR)!!)
             }
         }
     }
@@ -171,7 +182,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         if (button.enabled.isTrueOrUndefined && button.color.hasValue()) {
             return button.color.get()
         } else if (button.enabled.isFalse) {
-            return button.disabledColor[Color.LTGRAY]
+            return button.disabledColor.get(Color.LTGRAY)
         }
 
         return null
@@ -182,6 +193,26 @@ open class ButtonPresenter(private val context: Context, private val button: But
         toolbar.post {
             ViewUtils.findChildByClass(toolbar, ImageButton::class.java)?.let {
                 it.tag = button.testId.get()
+
+                class WixAccessibilityDelegateCompat: AccessibilityDelegateCompat(){
+                    override fun onInitializeAccessibilityNodeInfo(
+                        host: View?,
+                        info: AccessibilityNodeInfoCompat?
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+
+                        // Expose the testID prop as the resource-id name of the view. Black-box E2E/UI testing
+                        // frameworks, which interact with the UI through the accessibility framework, do not have
+                        // access to view tags. This allows developers/testers to avoid polluting the
+                        // content-description with test identifiers.
+                        val testId = host?.tag as String?
+                        if(testId != null){
+                            info!!.viewIdResourceName = testId
+                        }
+                    }
+                }
+
+                ViewCompat.setAccessibilityDelegate(it, WixAccessibilityDelegateCompat())
             }
         }
     }

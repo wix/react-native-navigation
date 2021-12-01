@@ -103,7 +103,8 @@ class AppDelegateLinker {
     debugn('   Bootstrapping Navigation');
     return content.replace(
       /RCTBridge.*];/,
-      '[ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];'
+      'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
+      '[ReactNativeNavigation bootstrapWithBridge:bridge];'
     );
   }
 
@@ -145,7 +146,7 @@ class AppDelegateLinker {
 
     const toRemove = [
       /RCTRootView\s+\*rootView((.|\r|\s)*?)];\s+/,
-      /rootView.backgroundColor((.|\r)*)];\s+/,
+      /if \(@available\(iOS 13\.0, \*\)\)\s{\s+ rootView.backgroundColor((.|\r)*)];\s+}\s+else {[^}]*}/,
       /self.window((.|\r)*)];\s+/,
       /UIViewController\s\*rootViewController((.|\r)*)];\s+/,
       /rootViewController\.view\s+=\s+rootView;\s+/,

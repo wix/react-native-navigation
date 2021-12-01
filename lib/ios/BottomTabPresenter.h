@@ -1,11 +1,11 @@
 #import "RNNBasePresenter.h"
-
+#import "RNNTabBarItemCreator.h"
 @interface BottomTabPresenter : RNNBasePresenter
 
-- (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
+- (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
+                            tabCreator:(RNNTabBarItemCreator *)tabCreator;
 
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options
-                                               child:(UIViewController *)child;
+- (void)applyOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions;
