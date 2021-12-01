@@ -4,6 +4,7 @@ import addProcessors from './commons/Processors';
 import { setDefaultOptions } from './commons/options/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
+import { I18nManager } from 'react-native';
 
 // @ts-ignore
 alert = (title, message) =>
@@ -18,6 +19,7 @@ alert = (title, message) =>
   });
 
 function start() {
+  I18nManager.allowRTL(true);
   registerScreens();
   addProcessors();
   setDefaultOptions();

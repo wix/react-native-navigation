@@ -24,7 +24,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.FontOptions;
-import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.params.Number;
@@ -316,10 +315,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void setOverflowButtonColor(int color) {
         titleAndButtonsContainer.getRightButtonBar().setOverflowButtonColor(color);
         titleAndButtonsContainer.getLeftButtonBar().setOverflowButtonColor(color);
-    }
-
-    public void setLayoutDirection(LayoutDirection direction) {
-        titleAndButtonsContainer.setLayoutDirection(direction.get());
     }
 
     public void removeRightButton(ButtonController button) {

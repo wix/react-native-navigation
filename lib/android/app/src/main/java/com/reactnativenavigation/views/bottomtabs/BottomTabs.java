@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,11 +115,6 @@ public class BottomTabs extends AHBottomNavigation {
             item.setSelectedIcon(icon);
             refresh();
         }
-    }
-
-    public void setLayoutDirection(LayoutDirection direction) {
-        LinearLayout tabsContainer = findChildByClass(this, LinearLayout.class);
-        if (tabsContainer != null) tabsContainer.setLayoutDirection(direction.get());
     }
 
     private boolean hasItemsAndIsMeasured(int w, int h, int oldw, int oldh) {

@@ -185,7 +185,6 @@ public class StackPresenter {
         Options withDefault = stack.resolveChildOptions(child).withDefaultOptions(defaultOptions);
 
         topBar.setTestId(topBarOptions.testId.get(""));
-        topBar.setLayoutDirection(options.layout.direction);
         applyStatusBarDrawBehindOptions(topBarOptions, withDefault);
         topBar.setElevation(topBarOptions.elevation.get(DEFAULT_ELEVATION));
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
@@ -502,7 +501,6 @@ public class StackPresenter {
                                     ViewController<?> child) {
         TopBarOptions topBarOptions = toMerge.topBar;
         final View component = child.getView();
-        if (toMerge.layout.direction.hasValue()) topBar.setLayoutDirection(toMerge.layout.direction);
         if (topBarOptions.height.hasValue()) topBar.setHeight(topBarOptions.height.get());
         if (topBarOptions.elevation.hasValue()) topBar.setElevation(topBarOptions.elevation.get());
         if (topBarOptions.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {

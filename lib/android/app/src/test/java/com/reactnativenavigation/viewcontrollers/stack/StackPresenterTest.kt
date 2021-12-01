@@ -226,6 +226,7 @@ class StackPresenterTest : BaseTest() {
         val options = Options()
         options.topBar.title.component = component(Alignment.Fill)
         uut.applyChildOptions(options, parent, child)
+
         val component = topBar.titleAndButtonsContainer.getComponent()
         Assertions.assertThat(component).isEqualTo(reactTitleView)
         Mockito.doReturn(100).`when`(reactTitleView).measuredWidth

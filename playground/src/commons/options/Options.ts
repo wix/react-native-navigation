@@ -14,7 +14,6 @@ const setDefaultOptions = () =>
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],
-      direction: 'locale',
     },
     topBar: {
       backButton: { color: Colors.buttonColor },
