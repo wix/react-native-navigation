@@ -240,4 +240,6 @@ website/package-lock.json
 artifacts/
 
 # Navigation mocks
-Mock*
+Mock.*
+lib/Mock/*.d.ts
+lib/Mock/*.js
