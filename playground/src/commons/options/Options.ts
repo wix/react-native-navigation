@@ -29,7 +29,6 @@ const setDefaultOptions = () =>
       backgroundColor: Colors.barBackground,
       tabsAttachMode: 'onSwitchToTab',
       titleDisplayMode: 'alwaysShow',
-      animate: false,
     },
     bottomTab: {
       iconColor: Colors.iconTint,
