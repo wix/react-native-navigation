@@ -92,7 +92,6 @@ public class BottomTabs extends AHBottomNavigation {
     public void restoreBottomNavigation(boolean withAnimation) {
         super.restoreBottomNavigation(withAnimation);
         if (!withAnimation) setVisibility(View.VISIBLE);
-
     }
 
     @Override
