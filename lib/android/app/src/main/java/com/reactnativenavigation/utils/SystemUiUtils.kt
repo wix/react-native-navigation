@@ -17,7 +17,7 @@ import kotlin.math.ceil
 object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25
-    private const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
+    internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
     var navigationBarDefaultColor = -1
         private set
