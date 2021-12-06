@@ -16,6 +16,7 @@ class TooltipsOverlay(context: Context, id:String) : FrameLayout(context) {
         }, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity=Gravity.CENTER
         })
+        z = Float.MAX_VALUE
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

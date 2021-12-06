@@ -62,6 +62,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
+        <Button label="showToolTips" testID={KEYBOARD_SCREEN_BTN} onPress={this.showTooltips} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -75,6 +76,19 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
+  showTooltips = async () => {
+    await Navigation.showOverlay(Screens.RoundButton, {
+      overlay: {
+        attach: {
+          layoutId: 'bottomTabs',
+          anchor: {
+            id: 'LayoutsBottomTab',
+            gravity: 'top',
+          },
+        },
+      },
+    });
+  };
   bottomTabs = () => {
     Navigation.showModal({
       bottomTabs: {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -207,7 +209,13 @@ public class Navigator extends ParentController<ViewGroup> {
     }
 
     public void showOverlay(ViewController<?> overlay, CommandListener listener) {
-        overlayManager.show(overlaysLayout, overlay, listener);
+        final Options options = overlay.resolveCurrentOptions();
+        final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.getOverlayAttachOptions();
+        if(overlayAttachOptions.hasValue()){
+            Toast.makeText(getActivity(),"Should show tooltip "+overlayAttachOptions.toString(),Toast.LENGTH_SHORT).show();
+        }else{
+            overlayManager.show(overlaysLayout, overlay, listener);
+        }
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {

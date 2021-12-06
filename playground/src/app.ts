@@ -40,7 +40,7 @@ function setRoot() {
         children: [
           {
             stack: {
-              id: 'LayoutsTabStack',
+              id: 'LayoutsStack',
               children: [
                 {
                   component: {
@@ -61,7 +61,7 @@ function setRoot() {
           },
           {
             stack: {
-              id: 'OptionsTabStack',
+              id: 'OptionsStack',
               children: [
                 {
                   component: {
@@ -76,6 +76,7 @@ function setRoot() {
                   },
                 },
                 bottomTab: {
+                  id: 'OptionsBottomTab',
                   text: 'Options',
                   icon: require('../img/options.png'),
                   selectedIcon: require('../img/options_selected.png'),
@@ -86,7 +87,7 @@ function setRoot() {
           },
           {
             stack: {
-              id: 'NavigationTabStack',
+              id: 'NavigationStack',
               children: [
                 {
                   component: {
@@ -94,6 +95,11 @@ function setRoot() {
                   },
                 },
               ],
+              options: {
+                bottomTab: {
+                  id: 'NavigationBottomTab',
+                },
+              },
             },
           },
         ],
