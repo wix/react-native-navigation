@@ -316,7 +316,24 @@ class BottomTabsControllerTest : BaseTest() {
             ), ArgumentMatchers.any(Int::class.java)
         )
     }
+    @Test
+    fun `mergeOptions - select tab calls onViewWillAppear to apply options on the selected child`(){
+        uut.ensureViewIsCreated()
+        Java6Assertions.assertThat(uut.selectedIndex).isZero
 
+        val options = Options()
+        options.bottomTabsOptions.currentTabIndex = Number(1)
+        uut.mergeOptions(options)
+        Java6Assertions.assertThat(uut.selectedIndex).isOne
+        Mockito.verify(child2).onViewWillAppear()
+        Mockito.verify(child2).onViewDidAppear()
+
+        options.bottomTabsOptions.currentTabIndex = Number(0)
+        uut.mergeOptions(options)
+        Java6Assertions.assertThat(uut.selectedIndex).isZero
+        Mockito.verify(child1).onViewWillAppear()
+        Mockito.verify(child1).onViewDidAppear()
+    }
     @Test
     fun mergeOptions_drawBehind() {
         Java6Assertions.assertThat(uut.getBottomInset(child1)).isEqualTo(uut.bottomTabs.height)
