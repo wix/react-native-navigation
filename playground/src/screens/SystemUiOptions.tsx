@@ -18,6 +18,7 @@ interface State {
 }
 const colors = [
   '#000000',
+  '#00AAAF00',
   '#20303C',
   '#3182C8',
   '#00AAAF',
