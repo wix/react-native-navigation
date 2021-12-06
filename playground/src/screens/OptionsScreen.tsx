@@ -25,10 +25,6 @@ interface Props extends NavigationComponentProps {}
 export default class Options extends React.Component<Props> {
   static options() {
     return {
-      bottomTabs: {
-        visible: false,
-        drawBehind: true,
-      },
       topBar: {
         visible: true,
         testID: TOP_BAR,
@@ -87,18 +83,6 @@ export default class Options extends React.Component<Props> {
           label="Toggle Navigation bar visibility"
           platform="android"
           onPress={this.toggleAndroidNavigationBar}
-        />
-
-        <Button
-          label="Home"
-          onPress={() => {
-            Navigation.mergeOptions('MainBottomTabs', {
-              bottomTabs: {
-                currentTabIndex: 0,
-                visible: true,
-              },
-            });
-          }}
         />
       </Root>
     );
