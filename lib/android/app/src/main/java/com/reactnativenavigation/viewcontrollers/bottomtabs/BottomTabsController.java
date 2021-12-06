@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
@@ -49,7 +50,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabsAttacher tabsAttacher;
     private final BottomTabsPresenter presenter;
     private final BottomTabPresenter tabPresenter;
-
     public BottomTabsAnimator getAnimator() {
         return presenter.getAnimator();
     }

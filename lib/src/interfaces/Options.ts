@@ -920,6 +920,11 @@ export interface ImageSystemSource {
 export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
+  /**
+   * Unique id in order to be found in the view hierarchy
+   */
+  id?: string;
+
   dotIndicator?: DotIndicatorOptions;
 
   /**
@@ -1089,6 +1094,17 @@ export interface OverlayOptions {
    * Set this to true if your Overlay contains a TextInput.
    */
   handleKeyboardEvents?: boolean;
+
+  attach?: {
+    /**
+     * layout id to look for to add as a layer
+     */
+    layoutId: string; // componentId or stackId or bottomTabsId
+    anchor: {
+      id: string; // bottomTabID or topBarButtonId
+      gravity: 'top' | 'left' | 'right' | 'bottom';
+    };
+  };
 }
 
 export interface ModalOptions {

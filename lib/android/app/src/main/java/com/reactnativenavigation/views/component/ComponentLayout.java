@@ -2,9 +2,12 @@ package com.reactnativenavigation.views.component;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -13,6 +16,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -25,11 +29,16 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     private boolean willAppearSent = false;
     private ReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
-
+    private final TooltipsOverlay overlay;
     public ComponentLayout(Context context, ReactView reactView) {
         super(context);
         this.reactView = reactView;
+        this.overlay = new TooltipsOverlay(context,"Component");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,0f,1f));
+        }
         addView(reactView.asView(), matchParentLP());
+        addView(overlay, matchParentLP());
         touchDelegate = new OverlayTouchDelegate(this, reactView);
     }
 

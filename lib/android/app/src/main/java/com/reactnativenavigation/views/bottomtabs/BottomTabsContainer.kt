@@ -3,10 +3,12 @@ package com.reactnativenavigation.views.bottomtabs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
+import com.reactnativenavigation.views.tooltips.TooltipsOverlay
 import kotlin.math.roundToInt
 
 
@@ -22,6 +24,7 @@ class TopOutlineView(context: Context) : View(context)
 
 @SuppressLint("ViewConstructor")
 class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : ShadowLayout(context) {
+    private val overlayLayout =  TooltipsOverlay(context, " BottomTabs")
 
     var topOutLineView = TopOutlineView(context)
         @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.SUBCLASSES) get
@@ -48,6 +51,10 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         this.topOutLineView.visibility = View.GONE
 
         this.addView(linearLayout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            overlayLayout.setBackgroundColor(Color.argb(0.5f,1f,0f,0f))
+        }
+        this.addView(overlayLayout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
 
     override var shadowRadius: Float

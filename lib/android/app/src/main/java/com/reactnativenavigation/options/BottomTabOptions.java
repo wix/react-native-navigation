@@ -25,6 +25,7 @@ public class BottomTabOptions {
         BottomTabOptions options = new BottomTabOptions();
         if (json == null) return options;
 
+        options.id = TextParser.parse(json, "id");
         options.text = TextParser.parse(json, "text");
         options.textColor = ThemeColour.parse(context, json.optJSONObject("textColor"));
         options.selectedTextColor = ThemeColour.parse(context, json.optJSONObject("selectedTextColor"));
@@ -48,6 +49,7 @@ public class BottomTabOptions {
         return options;
     }
 
+    public Text id = new NullText();
     public Text text = new NullText();
     public ThemeColour textColor = new NullThemeColour();
     public ThemeColour selectedTextColor = new NullThemeColour();
