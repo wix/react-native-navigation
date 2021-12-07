@@ -66,18 +66,22 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     }
 
     public void sendComponentWillStart(ComponentType type) {
-        if (this.reactInstanceManager == null) return;
-        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
-        if (currentReactContext != null)
-            new EventEmitter(currentReactContext).emitComponentWillAppear(componentId, componentName, type);
+        this.post(()->{
+            if (this.reactInstanceManager == null) return;
+            ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+            if (currentReactContext != null)
+                new EventEmitter(currentReactContext).emitComponentWillAppear(componentId, componentName, type);
+        });
     }
 
     public void sendComponentStart(ComponentType type) {
-        if (this.reactInstanceManager == null) return;
-        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
-        if (currentReactContext != null) {
-            new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
-        }
+        this.post(()->{
+            if (this.reactInstanceManager == null) return;
+            ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+            if (currentReactContext != null) {
+                new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
+            }
+        });
     }
 
     public void sendComponentStop(ComponentType type) {
