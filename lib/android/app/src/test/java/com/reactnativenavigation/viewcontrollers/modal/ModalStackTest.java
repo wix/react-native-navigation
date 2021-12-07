@@ -84,10 +84,9 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void showModal_DidAppearEventShouldWaitForReactViewToBeShown(){
+    public void showModal_DidAppearEventShouldBeCallled(){
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, root, listener);
-        verify(modal1).addOnAppearedListener(any());
         verify(listener).onSuccess(modal1.getId());
         idleMainLooper();
         verify(modal1).onViewDidAppear();
