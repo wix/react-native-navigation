@@ -198,7 +198,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onBackPressed() {
         logger.log(Log.VERBOSE, TAG, "onBackPressed PIPMode " + navigator.getPipMode());
-        getReactGateway().onBackPressed();
+//        getReactGateway().onBackPressed();
+        invokeDefaultOnBackPressed();
     }
 
     @Override

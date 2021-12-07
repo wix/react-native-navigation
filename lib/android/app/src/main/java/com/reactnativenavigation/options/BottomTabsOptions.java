@@ -42,6 +42,7 @@ public class BottomTabsOptions {
         options.borderColor = ThemeColour.parse(context, json.optJSONObject("borderColor"));
         options.borderWidth = FractionParser.parse(json, "borderWidth");
         options.shadowOptions = ShadowOptionsKt.parseShadowOptions(context, json.optJSONObject("shadow"));
+        options.resetToFirstTabOnBack = BoolParser.parse(json, "resetToFirstTabOnBack");
         return options;
     }
 
@@ -61,6 +62,7 @@ public class BottomTabsOptions {
     public ThemeColour borderColor = new NullThemeColour();
     public Fraction borderWidth = new NullFraction();
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
+    public Bool resetToFirstTabOnBack = new NullBool();
 
     void mergeWith(final BottomTabsOptions other) {
         if (other.currentTabId.hasValue()) currentTabId = other.currentTabId;
@@ -79,7 +81,7 @@ public class BottomTabsOptions {
         if (other.shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWith(other.shadowOptions);
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
-
+        if(other.resetToFirstTabOnBack.hasValue()) resetToFirstTabOnBack = other.resetToFirstTabOnBack;
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
@@ -99,6 +101,7 @@ public class BottomTabsOptions {
         if (!borderWidth.hasValue()) borderWidth = defaultOptions.borderWidth;
         if (!shadowOptions.hasValue())
             shadowOptions = shadowOptions.copy().mergeWithDefaults(defaultOptions.shadowOptions);
+        if (!resetToFirstTabOnBack.hasValue()) resetToFirstTabOnBack = defaultOptions.resetToFirstTabOnBack;
     }
 
     public boolean isHiddenOrDrawBehind() {
