@@ -84,6 +84,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void onViewDisappear() {
+        if(lastVisibilityState == VisibilityState.Disappear)return;
         lastVisibilityState = VisibilityState.Disappear;
         if (view != null) view.sendComponentStop();
         super.onViewDisappear();
