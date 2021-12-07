@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
 import Navigation from '../services/Navigation';
@@ -22,7 +22,7 @@ const {
 
 interface Props extends NavigationComponentProps {}
 
-export default class Options extends React.Component<Props> {
+export default class Options extends NavigationComponent<Props> {
   static options() {
     return {
       topBar: {
@@ -33,6 +33,23 @@ export default class Options extends React.Component<Props> {
         },
       },
     };
+  }
+
+  constructor(props: Props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  componentWillAppear() {
+    console.log('componentWillAppear:', this.props.componentId);
+  }
+
+  componentDidDisappear() {
+    console.log('componentDidDisappear:', this.props.componentId);
+  }
+
+  componentDidAppear() {
+    console.log('componentDidAppear:', this.props.componentId);
   }
 
   state = {

@@ -36,8 +36,16 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       componentDidAppear: false,
     };
   }
+  componentWillAppear() {
+    console.log('componentWillAppear:', this.props.componentId);
+  }
+
+  componentDidDisappear() {
+    console.log('componentDidDisappear:', this.props.componentId);
+  }
 
   componentDidAppear() {
+    console.log('componentDidAppear:', this.props.componentId);
     this.setState({ componentDidAppear: true });
   }
 
