@@ -124,7 +124,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     @Test
-    @Ignore("TopTabs not yet well supported should ")
+    @Ignore("TopTabs not yet well supported")
     public void lifecycleMethodsSentWhenSelectedTabChanges() {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
