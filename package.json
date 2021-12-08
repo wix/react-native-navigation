@@ -1,6 +1,6 @@
 {
   "name": "@dream11mobile/react-native-navigation",
-  "version": "7.19.31",
+  "version": "7.19.35",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,

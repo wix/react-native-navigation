@@ -879,6 +879,10 @@ export interface OptionsBottomTabs {
    * Control the shadow of the Bottom tabs bar
    */
   shadow?: ShadowOptions;
+  /**
+   * Reset bottom tab to first tab when user presses back button
+   */
+  resetToFirstTabOnBack?: boolean;
 }
 
 export interface ShadowOptions {
