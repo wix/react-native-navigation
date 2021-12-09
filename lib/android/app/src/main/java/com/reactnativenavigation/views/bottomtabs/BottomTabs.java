@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.bottomtabs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,19 +13,24 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
+    public final static int TAB_NOT_FOUND = -1;
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
-
+    private final SparseArray<String> idPositionMapping = new SparseArray<>();
     public BottomTabs(Context context) {
         super(context);
         setId(R.id.bottomTabs);
@@ -125,5 +131,27 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasItemsAndIsMeasured(int w, int h, int oldw, int oldh) {
         return w != 0 && h != 0 && (w != oldw || h != oldh) && getItemsCount() > 0;
+    }
+
+
+    public void setTagForTabIndex(int index, String tag) {
+        if(tag==null){
+            idPositionMapping.remove(index);
+        }else{
+            idPositionMapping.put(index,tag);
+        }
+    }
+
+    public int getTabIndexByTag(String tag) {
+        if(tag!=null){
+            final int size = idPositionMapping.size();
+            for(int i=0;i<size;++i){
+                final String found = idPositionMapping.get(i, null);
+                if(tag.equals(found)){
+                    return i;
+                }
+            }
+        }
+        return TAB_NOT_FOUND;
     }
 }
