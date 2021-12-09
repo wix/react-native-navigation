@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
@@ -54,7 +56,7 @@ public class StackController extends ParentController<StackLayout> {
     private final EventEmitter eventEmitter;
     private final TopBarController topBarController;
     private final BackButtonHelper backButtonHelper;
-    private final StackPresenter presenter;
+    public final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
     public StackController(Activity activity, List<ViewController<?>> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, StackAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
@@ -483,13 +485,19 @@ public class StackController extends ParentController<StackLayout> {
         return false;
     }
 
-    @Nullable
-    public View findTopBarViewById(String id){
-        return presenter.findTopBarViewById(getCurrentChild(),id);
-    }
     @Override
-    public void showTooltip(OverlayAttachOptions options) {
-        Toast.makeText(getActivity(),"Show On Stack",Toast.LENGTH_SHORT).show();
+    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
+        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+        final Rect rect = new Rect();
+        tooltipAnchorView.getGlobalVisibleRect(rect);
+        Toast.makeText(getActivity(),
+                "Show On Stack TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public List<ViewController<?>> getChildren() {
+        return stack.values();
     }
 
     @Override

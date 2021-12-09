@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -26,6 +27,7 @@ import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -246,37 +248,27 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void showTooltip(OverlayAttachOptions options) {
-        final String id = options.getAnchorId().get();
-        final View topBarView = findTopBarView(id);
-        final View bottomTabViewById = findBottomTabViewById(id);
+    public void showTooltip( View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
+        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+        if(tooltipAnchorView==null)return;
         final Rect rect = new Rect();
-        if(topBarView!=null){
-            topBarView.getGlobalVisibleRect(rect);
-            Toast.makeText(getActivity(), "Show On BottomTab TopBar anchor id"+id+", anchor at: "+rect,
-                    Toast.LENGTH_SHORT).show();
-        }else if(bottomTabViewById!=null){
-            bottomTabViewById.getGlobalVisibleRect(rect);
-            Toast.makeText(getActivity(), "Show On BottomTab Bottom anchor id"+id+", anchor at: "+rect, Toast.LENGTH_SHORT).show();
-        }
+        tooltipAnchorView.getGlobalVisibleRect(rect);
+        Toast.makeText(getActivity(),
+                "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+                Toast.LENGTH_SHORT).show();
     }
 
-    public View findTopBarView(String id) {
-        //start looking from current child and above
-        ViewController<?> stackController;
-        stackController = getCurrentChild() instanceof StackController ? getCurrentChild() : null;
-        stackController = stackController == null ? getStackController() : stackController;
-        if (stackController == null) return null;
-
-        return ((StackController) stackController).findTopBarViewById(id);
-    }
-
-    public View findBottomTabViewById(@NonNull String id) {
+    public View getTabViewByTag(String id) {
         int tabIndex = bottomTabs.getTabIndexByTag(id);
         if (tabIndex != TAB_NOT_FOUND) {
             return bottomTabs.getViewAtPosition(tabIndex);
         }
         return null;
+    }
+
+    @Override
+    public List<ViewController<?>> getChildren() {
+        return tabs;
     }
 
     @Override

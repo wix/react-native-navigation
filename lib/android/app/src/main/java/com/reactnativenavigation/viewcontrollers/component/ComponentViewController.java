@@ -2,11 +2,12 @@ package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.view.View;
 import android.widget.Toast;
 
 import com.reactnativenavigation.options.OverlayAttachOptions;
-import com.reactnativenavigation.utils.LogKt;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -174,8 +175,13 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void showTooltip(OverlayAttachOptions options) {
-        Toast.makeText(getActivity(),"Show On Component",Toast.LENGTH_SHORT).show();
+    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
+        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+        final Rect rect = new Rect();
+        tooltipAnchorView.getGlobalVisibleRect(rect);
+        Toast.makeText(getActivity(),
+                "Show On Component TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
