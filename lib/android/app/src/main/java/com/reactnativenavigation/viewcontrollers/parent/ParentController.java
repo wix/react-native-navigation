@@ -2,12 +2,16 @@ package com.reactnativenavigation.viewcontrollers.parent;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.CollectionUtils;
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -17,6 +21,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.Component;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -26,6 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
 
@@ -89,6 +97,10 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     public abstract ViewController<?> getCurrentChild();
 
+    public List<ViewController<?>> getChildren(){
+        return Collections.emptyList();
+    }
+
     @NonNull
     @Override
     public abstract T createView();
@@ -104,12 +116,55 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return perform(getParentController(), null, ParentController::getBottomTabsController);
     }
 
-    @Nullable
-    protected StackController getStackController() {
-        if (this instanceof StackController) {
-            return (StackController) this;
+    @Override
+    protected View findTooltipAnchorView(OverlayAttachOptions options) {
+        final String id = options.getAnchorId().get();
+        View found = null;
+        final View topBarView = findTopBarViewById(id);
+        if (topBarView != null) {
+            found = topBarView;
+        } else {
+            final View bottomTabViewById = findBottomTabViewById(id);
+            if (bottomTabViewById != null) {
+                found = bottomTabViewById;
+            }
         }
-        return perform(getParentController(), null, ParentController::getStackController);
+        return found;
+    }
+
+    @Nullable
+    protected View findTopBarViewById(String id) {
+        final View[] found = {null};
+        LogKt.logd("Lookup for "+id+" Started in Parent: "+this.getId(),"LookUp");
+        lookup((controller) -> {
+            LogKt.logd("Lookup for "+id+" in controller: "+controller.getId(),"LookUp");
+            if (controller instanceof StackController) {
+                final StackController stackController = (StackController) controller;
+                final View topBarViewById = stackController.presenter.findTopBarViewById(id);
+                found[0] = topBarViewById;
+                return topBarViewById != null;
+            }
+            return false;
+        });
+        LogKt.logd("Lookup for "+id+" Ended in Parent: "+this.getId()+" Found "+found[0],"LookUp");
+        return found[0];
+    }
+
+    @Nullable
+    protected View findBottomTabViewById(@NonNull String id) {
+        final View[] found = {null};
+        LogKt.logd("Lookup for "+id+" Started in Parent: "+this.getId(),"LookUp");
+        lookup((controller) -> {
+            LogKt.logd("Lookup for "+id+" in controller: "+controller.getId(),"LookUp");
+            if (controller instanceof BottomTabsController) {
+                BottomTabsController bottomTabsController = (BottomTabsController) controller;
+                found[0] = bottomTabsController.getTabViewByTag(id);
+                return found[0] != null;
+            }
+            return false;
+        });
+        LogKt.logd("Lookup for "+id+" Ended in Parent: "+this.getId()+" Found "+found[0],"LookUp");
+        return found[0];
     }
 
     @Nullable
@@ -235,14 +290,6 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
             }
             return null;
         }
-    }
-
-    public ViewController<?> getCurrentChildLeafChild(){
-        final ViewController<?> currentChild = getCurrentChild();
-        if(currentChild instanceof ParentController<?>){
-            return ((ParentController<?>) currentChild).getCurrentChildLeafChild();
-        }
-        return currentChild;
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
