@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -212,7 +214,9 @@ public class Navigator extends ParentController<ViewGroup> {
         final Options options = overlay.resolveCurrentOptions();
         final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.getOverlayAttachOptions();
         if(overlayAttachOptions.hasValue()){
-            Toast.makeText(getActivity(),"Should show tooltip "+overlayAttachOptions.toString(),Toast.LENGTH_SHORT).show();
+            final ViewController<?> hostController = findController(overlayAttachOptions.getLayoutId().get());
+            if(hostController!=null)
+                hostController.showTooltip(overlayAttachOptions);
         }else{
             overlayManager.show(overlaysLayout, overlay, listener);
         }
