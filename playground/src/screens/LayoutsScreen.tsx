@@ -66,11 +66,16 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button label="Pushed BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.pushBottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
           label="showToolTips on BottomTabs TopBar"
           onPress={async () => this.showTooltips('bottomTabs', 'HitRightButton')}
+        />
+        <Button
+          label="showToolTips on inner BottomTabs bottomTab"
+          onPress={async () => this.showTooltips('innerBt', 'non-press-tab')}
         />
         <Button
           label="showToolTips on BottomTabs BottomTab"
@@ -110,10 +115,16 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       },
     });
   };
-  bottomTabs = () => {
-    Navigation.showModal({
+  pushBottomTabs = () => {
+    Navigation.push(this.props.componentId, {
       bottomTabs: {
+        id: 'innerBt',
         children: [
+          {
+            component: {
+              name: Screens.Layouts,
+            },
+          },
           stack(Screens.FirstBottomTabsScreen),
           stack(
             {
@@ -128,6 +139,51 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
               name: Screens.Pushed,
               options: {
                 bottomTab: {
+                  id: 'non-press-tab',
+                  selectTabOnPress: false,
+                  text: 'Tab 3',
+                  testID: testIDs.THIRD_TAB_BAR_BTN,
+                },
+              },
+            },
+          },
+        ],
+        options: {
+          hardwareBackButton: {
+            bottomTabsOnPress: 'previous',
+          },
+          bottomTabs: {
+            testID: BOTTOM_TABS,
+          },
+        },
+      },
+    });
+  };
+  bottomTabs = () => {
+    Navigation.showModal({
+      bottomTabs: {
+        id: 'innerBt',
+        children: [
+          {
+            component: {
+              name: Screens.Layouts,
+            },
+          },
+          stack(Screens.FirstBottomTabsScreen),
+          stack(
+            {
+              component: {
+                name: Screens.SecondBottomTabsScreen,
+              },
+            },
+            'SecondTab'
+          ),
+          {
+            component: {
+              name: Screens.Pushed,
+              options: {
+                bottomTab: {
+                  id: 'non-press-tab',
                   selectTabOnPress: false,
                   text: 'Tab 3',
                   testID: testIDs.THIRD_TAB_BAR_BTN,
