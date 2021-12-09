@@ -3,9 +3,11 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
@@ -13,9 +15,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -29,6 +33,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
+import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -38,6 +43,7 @@ import java.util.List;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.map;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
@@ -50,6 +56,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabsAttacher tabsAttacher;
     private final BottomTabsPresenter presenter;
     private final BottomTabPresenter tabPresenter;
+
     public BottomTabsAnimator getAnimator() {
         return presenter.getAnimator();
     }
@@ -236,6 +243,40 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         perform(findController(child), ViewController::applyBottomInset);
         return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
+    }
+
+    @Override
+    public void showTooltip(OverlayAttachOptions options) {
+        final String id = options.getAnchorId().get();
+        final View topBarView = findTopBarView(id);
+        final View bottomTabViewById = findBottomTabViewById(id);
+        final Rect rect = new Rect();
+        if(topBarView!=null){
+            topBarView.getGlobalVisibleRect(rect);
+            Toast.makeText(getActivity(), "Show On BottomTab TopBar anchor id"+id+", anchor at: "+rect,
+                    Toast.LENGTH_SHORT).show();
+        }else if(bottomTabViewById!=null){
+            bottomTabViewById.getGlobalVisibleRect(rect);
+            Toast.makeText(getActivity(), "Show On BottomTab Bottom anchor id"+id+", anchor at: "+rect, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public View findTopBarView(String id) {
+        //start looking from current child and above
+        ViewController<?> stackController;
+        stackController = getCurrentChild() instanceof StackController ? getCurrentChild() : null;
+        stackController = stackController == null ? getStackController() : stackController;
+        if (stackController == null) return null;
+
+        return ((StackController) stackController).findTopBarViewById(id);
+    }
+
+    public View findBottomTabViewById(@NonNull String id) {
+        int tabIndex = bottomTabs.getTabIndexByTag(id);
+        if (tabIndex != TAB_NOT_FOUND) {
+            return bottomTabs.getViewAtPosition(tabIndex);
+        }
+        return null;
     }
 
     @Override

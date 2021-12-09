@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -32,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
@@ -478,6 +481,15 @@ public class StackController extends ParentController<StackLayout> {
                 updateBottomMargin(dependency, getBottomInset());
         });
         return false;
+    }
+
+    @Nullable
+    public View findTopBarViewById(String id){
+        return presenter.findTopBarViewById(getCurrentChild(),id);
+    }
+    @Override
+    public void showTooltip(OverlayAttachOptions options) {
+        Toast.makeText(getActivity(),"Show On Stack",Toast.LENGTH_SHORT).show();
     }
 
     @Override

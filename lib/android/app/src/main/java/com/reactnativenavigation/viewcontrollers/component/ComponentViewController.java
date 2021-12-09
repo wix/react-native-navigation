@@ -3,7 +3,9 @@ package com.reactnativenavigation.viewcontrollers.component;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
+import android.widget.Toast;
 
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
@@ -169,6 +171,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (focusView != null) {
             focusView.clearFocus();
         }
+    }
+
+    @Override
+    public void showTooltip(OverlayAttachOptions options) {
+        Toast.makeText(getActivity(),"Show On Component",Toast.LENGTH_SHORT).show();
     }
 
     @Override
