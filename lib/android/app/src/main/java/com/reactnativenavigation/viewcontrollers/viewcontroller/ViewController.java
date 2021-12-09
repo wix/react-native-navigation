@@ -45,6 +45,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
 
+    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
+
+    }
+
     public interface ViewVisibilityListener {
         /**
          * @return true if the event is consumed, false otherwise
@@ -385,8 +389,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
-    public void showTooltip(OverlayAttachOptions options){
-
+    public View findTooltipAnchorView(OverlayAttachOptions options) {
+        return null;
     }
 
     public int getBottomInset() {
