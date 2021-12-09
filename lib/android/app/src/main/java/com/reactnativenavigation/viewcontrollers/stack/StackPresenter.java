@@ -10,6 +10,7 @@ import static com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarContr
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -50,11 +52,13 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -677,40 +681,49 @@ public class StackPresenter {
         return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
     }
 
+
+    private TitleBarReactViewController findTitleById(String id){
+        final Collection<TitleBarReactViewController> values = titleControllers.values();
+        for(TitleBarReactViewController child: values){
+            if(child.getId().equals(id)){
+                return child;
+            }
+        }
+        return null;
+    }
+    private Pair<ButtonController, ButtonBar> findButtonById(String id){
+        final Collection<Map<String, ButtonController>> leftControllers = leftButtonControllers.values();
+        final Collection<Map<String, ButtonController>> rightControllers = rightButtonControllers.values();
+        for(Map<String, ButtonController> map : leftControllers){
+            if(map.containsKey(id)){
+                return Pair.create(map.get(id),topBar.getLeftButtonBar());
+            }
+        }
+        for(Map<String, ButtonController> map : rightControllers){
+            if(map.containsKey(id)){
+                return Pair.create(map.get(id),topBar.getRightButtonBar());
+            }
+        }
+        return null;
+    }
     @Nullable
-    public View findTopBarViewById(ViewController<?> currentChild, String id) {
-        final ViewGroup childView = currentChild.getView();
-        final Map<String, ButtonController> leftButtonControllers = this.leftButtonControllers.get(childView);
-        final Map<String, ButtonController> rightButtonControllers = this.rightButtonControllers.get(childView);
-        final TitleBarReactViewController titleController = this.titleControllers.get(childView);
-        if(titleController!=null && titleController.getId().equals(id)){
-            return titleController.getView();
-        }
-
-        if(leftButtonControllers!=null && leftButtonControllers.get(id) !=null){
-            final ButtonController buttonController = leftButtonControllers.get(id);
-            final View view = buttonController.getNullableView();
+    public View findTopBarViewById(String id) {
+        final Pair<ButtonController, ButtonBar> buttonById = findButtonById(id);
+        if(buttonById!=null){
+            final View view = buttonById.first.getNullableView();
             if(view==null){
-                final MenuItem menuItem = buttonController.getMenuItem();
+                final MenuItem menuItem = buttonById.first.getMenuItem();
                 if(menuItem!=null){
                     final int order = menuItem.getOrder();
-                    topBar.getLeftButtonBar().getChildAt(order/10);
+                    return buttonById.second.getChildAt(order/10);
                 }
             }
             return view;
-        }
-
-        if(rightButtonControllers!=null && rightButtonControllers.get(id) !=null){
-            final ButtonController buttonController = rightButtonControllers.get(id);
-            final View view = buttonController.getNullableView();
-            if(view==null){
-                final MenuItem menuItem = buttonController.getMenuItem();
-                if(menuItem!=null){
-                    final int order = menuItem.getOrder();
-                    topBar.getRightButtonBar().getChildAt(order/10);
-                }
+        }else {
+            final TitleBarReactViewController titleById = findTitleById(id);
+            if(titleById!=null){
+                return titleById.getView();
             }
-            return view;
         }
         return null;
     }
