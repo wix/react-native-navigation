@@ -50,6 +50,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactButtonView;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
@@ -673,5 +674,37 @@ public class StackPresenter {
 
     public int getTopInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
+    }
+
+    @Nullable
+    public View findTopBarViewById(ViewController<?> currentChild, String id) {
+        final ViewGroup childView = currentChild.getView();
+        final Map<String, ButtonController> leftButtonControllers = this.leftButtonControllers.get(childView);
+        final Map<String, ButtonController> rightButtonControllers = this.rightButtonControllers.get(childView);
+        final TitleBarReactViewController titleController = this.titleControllers.get(childView);
+        if(titleController!=null && titleController.getId().equals(id)){
+            return titleController.getView();
+        }
+
+        if(leftButtonControllers!=null && leftButtonControllers.get(id) !=null){
+            final ButtonController buttonController = leftButtonControllers.get(id);
+            final int order = buttonController.getMenuItem().getOrder();
+            final View view = buttonController.getNullableView();
+            if(view==null){
+                topBar.getLeftButtonBar().getChildAt(order/10);
+            }
+            return view;
+        }
+
+        if(rightButtonControllers!=null && rightButtonControllers.get(id) !=null){
+            final ButtonController buttonController = rightButtonControllers.get(id);
+            final int order = buttonController.getMenuItem().getOrder();
+             View view = buttonController.getNullableView();
+            if(view==null){
+                view=topBar.getRightButtonBar().getChildAt(order/10);
+            }
+            return view;
+        }
+        return null;
     }
 }
