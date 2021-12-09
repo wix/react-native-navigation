@@ -213,6 +213,38 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         return getCurrentChild().getCurrentComponentName();
     }
 
+    protected interface LookupPredicate<T> {
+        boolean test(T t);
+    }
+    public ViewController<?> lookup(LookupPredicate<ViewController<?>> predicate){
+        if(predicate.test(this)){
+            return this;
+        }else{
+            final List<ViewController<?>> children = getChildren();
+            for(ViewController<?> child : children){
+               if(child instanceof ParentController){
+                   ViewController<?> result= ((ParentController<?>) child).lookup(predicate);
+                   if(result!=null){
+                       return result;
+                   }
+               }else{
+                   if(predicate.test(child)){
+                       return child;
+                   }
+               }
+            }
+            return null;
+        }
+    }
+
+    public ViewController<?> getCurrentChildLeafChild(){
+        final ViewController<?> currentChild = getCurrentChild();
+        if(currentChild instanceof ParentController<?>){
+            return ((ParentController<?>) currentChild).getCurrentChildLeafChild();
+        }
+        return currentChild;
+    }
+
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Collection<? extends ViewController<?>> childControllers = getChildControllers();
