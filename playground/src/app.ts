@@ -44,6 +44,7 @@ function setRoot() {
               children: [
                 {
                   component: {
+                    id: 'LayoutsTabMainComponent',
                     name: 'Layouts',
                   },
                 },

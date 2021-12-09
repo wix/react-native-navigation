@@ -48,6 +48,12 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         title: {
           text: 'React Native Navigation',
         },
+        rightButtons: [
+          {
+            text: 'Hit',
+            id: 'HitRightButton',
+          },
+        ],
       },
       layout: {
         orientation: ['portrait', 'landscape'],
@@ -62,7 +68,22 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
-        <Button label="showToolTips" testID={KEYBOARD_SCREEN_BTN} onPress={this.showTooltips} />
+        <Button
+          label="showToolTips on BottomTabs TopBar"
+          onPress={async () => this.showTooltips('bottomTabs', 'HitRightButton')}
+        />
+        <Button
+          label="showToolTips on BottomTabs BottomTab"
+          onPress={async () => this.showTooltips('bottomTabs', 'LayoutsBottomTab')}
+        />
+        <Button
+          label="showToolTips on Stack"
+          onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton')}
+        />
+        <Button
+          label="showToolTips on Component"
+          onPress={async () => this.showTooltips('LayoutsTabMainComponent', 'LayoutsBottomTab')}
+        />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -76,13 +97,13 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
-  showTooltips = async () => {
+  showTooltips = async (layoutId: string, anchor: string) => {
     await Navigation.showOverlay(Screens.RoundButton, {
       overlay: {
         attach: {
-          layoutId: 'bottomTabs',
+          layoutId: layoutId,
           anchor: {
-            id: 'LayoutsBottomTab',
+            id: anchor,
             gravity: 'top',
           },
         },
