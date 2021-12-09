@@ -14,6 +14,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
+import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -380,6 +382,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void applyBottomInset() {
+
+    }
+
+    public void showTooltip(OverlayAttachOptions options){
 
     }
 
