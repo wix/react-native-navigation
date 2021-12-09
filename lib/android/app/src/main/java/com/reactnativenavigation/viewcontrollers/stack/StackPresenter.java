@@ -10,6 +10,7 @@ import static com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarContr
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -688,20 +689,26 @@ public class StackPresenter {
 
         if(leftButtonControllers!=null && leftButtonControllers.get(id) !=null){
             final ButtonController buttonController = leftButtonControllers.get(id);
-            final int order = buttonController.getMenuItem().getOrder();
             final View view = buttonController.getNullableView();
             if(view==null){
-                topBar.getLeftButtonBar().getChildAt(order/10);
+                final MenuItem menuItem = buttonController.getMenuItem();
+                if(menuItem!=null){
+                    final int order = menuItem.getOrder();
+                    topBar.getLeftButtonBar().getChildAt(order/10);
+                }
             }
             return view;
         }
 
         if(rightButtonControllers!=null && rightButtonControllers.get(id) !=null){
             final ButtonController buttonController = rightButtonControllers.get(id);
-            final int order = buttonController.getMenuItem().getOrder();
-             View view = buttonController.getNullableView();
+            final View view = buttonController.getNullableView();
             if(view==null){
-                view=topBar.getRightButtonBar().getChildAt(order/10);
+                final MenuItem menuItem = buttonController.getMenuItem();
+                if(menuItem!=null){
+                    final int order = menuItem.getOrder();
+                    topBar.getRightButtonBar().getChildAt(order/10);
+                }
             }
             return view;
         }

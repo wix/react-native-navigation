@@ -23,7 +23,8 @@ open class ButtonController(activity: Activity,
                             private val viewCreator: TitleBarButtonCreator,
                             private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
 
-    private var menuItem: MenuItem? = null
+    var menuItem: MenuItem? = null
+    private set
 
     interface OnClickListener {
         fun onPress(button: ButtonOptions)
