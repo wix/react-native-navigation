@@ -11,6 +11,7 @@ import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.Component;
@@ -101,6 +102,14 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
             return (BottomTabsController) this;
         }
         return perform(getParentController(), null, ParentController::getBottomTabsController);
+    }
+
+    @Nullable
+    protected StackController getStackController() {
+        if (this instanceof StackController) {
+            return (StackController) this;
+        }
+        return perform(getParentController(), null, ParentController::getStackController);
     }
 
     @Nullable
