@@ -2,10 +2,8 @@ package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +18,6 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -210,14 +207,25 @@ public class Navigator extends ParentController<ViewGroup> {
         modalStack.dismissAllModals(root, mergeOptions, listener);
     }
 
+    @Override
+    public List<ViewController<?>> getChildren() {
+        final List<ViewController<?>> children = modalStack.getChildren();
+        children.add(root);
+        return children;
+    }
+
     public void showOverlay(ViewController<?> overlay, CommandListener listener) {
         final Options options = overlay.resolveCurrentOptions();
         final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.getOverlayAttachOptions();
-        if(overlayAttachOptions.hasValue()){
+        if (overlayAttachOptions.hasValue()) {
             final ViewController<?> hostController = findController(overlayAttachOptions.getLayoutId().get());
-            if(hostController!=null)
-                hostController.showTooltip(overlayAttachOptions);
-        }else{
+            if (hostController != null) {
+                final View tooltipAnchorView = findTooltipAnchorView(overlayAttachOptions);
+                if (tooltipAnchorView != null)
+                    hostController.showTooltip(tooltipAnchorView, overlayAttachOptions);
+            }
+
+        } else {
             overlayManager.show(overlaysLayout, overlay, listener);
         }
     }
@@ -281,7 +289,7 @@ public class Navigator extends ParentController<ViewGroup> {
         overlayManager.onHostPause();
         if (!modalStack.isEmpty()) {
             modalStack.onHostPause();
-            if(modalStack.peekDisplayedOverCurrentContext()){
+            if (modalStack.peekDisplayedOverCurrentContext()) {
                 onViewDisappear();
             }
         } else {
@@ -293,7 +301,7 @@ public class Navigator extends ParentController<ViewGroup> {
         overlayManager.onHostResume();
         if (!modalStack.isEmpty()) {
             modalStack.onHostResume();
-            if(modalStack.peekDisplayedOverCurrentContext()){
+            if (modalStack.peekDisplayedOverCurrentContext()) {
                 onViewDidAppear();
             }
         } else {
