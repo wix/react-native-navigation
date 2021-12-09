@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
@@ -112,5 +113,9 @@ open class ButtonController(activity: Activity,
             presenter.applyOptions(buttonBar,menuItem,this::getView)
         }
     }
+
+   fun getNullableView(): View?{
+       return view
+   }
 
 }
