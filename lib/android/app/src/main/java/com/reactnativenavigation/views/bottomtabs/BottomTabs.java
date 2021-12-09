@@ -30,7 +30,7 @@ public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
-    private final SparseArray<String> idPositionMapping = new SparseArray<>();
+    private final Map<String,Integer> idPositionMapping = new HashMap<>();
     public BottomTabs(Context context) {
         super(context);
         setId(R.id.bottomTabs);
@@ -136,21 +136,24 @@ public class BottomTabs extends AHBottomNavigation {
 
     public void setTagForTabIndex(int index, String tag) {
         if(tag==null){
-            idPositionMapping.remove(index);
+            String oldTag = null;
+            for(Map.Entry<String,Integer>  e: idPositionMapping.entrySet()){
+                if(e.getValue() == index){
+                    oldTag = e.getKey();
+                    break;
+                }
+            }
+            if(oldTag!=null){
+                idPositionMapping.remove(oldTag);
+            }
         }else{
-            idPositionMapping.put(index,tag);
+            idPositionMapping.put(tag,index);
         }
     }
 
     public int getTabIndexByTag(String tag) {
-        if(tag!=null){
-            final int size = idPositionMapping.size();
-            for(int i=0;i<size;++i){
-                final String found = idPositionMapping.get(i, null);
-                if(tag.equals(found)){
-                    return i;
-                }
-            }
+        if(tag!=null && idPositionMapping.containsKey(tag)){
+         return idPositionMapping.get(tag);
         }
         return TAB_NOT_FOUND;
     }
