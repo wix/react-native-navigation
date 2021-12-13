@@ -2,10 +2,8 @@ package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.options.ButtonOptions;
@@ -16,13 +14,13 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.MaViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.stack.StackLayout;
@@ -36,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
@@ -486,12 +483,9 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
-        final Rect rect = new Rect();
-        tooltipAnchorView.getGlobalVisibleRect(rect);
-//        Toast.makeText(getActivity(),
-//                "Show On Stack TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-//                Toast.LENGTH_SHORT).show();
+    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+
+        return null;
     }
 
     @Override

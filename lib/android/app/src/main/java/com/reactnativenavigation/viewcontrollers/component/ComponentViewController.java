@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.view.View;
-import android.widget.Toast;
 
 import com.reactnativenavigation.options.OverlayAttachOptions;
-import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -16,6 +14,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.MaViewTooltip;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
@@ -175,12 +174,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
-        final Rect rect = new Rect();
-        tooltipAnchorView.getGlobalVisibleRect(rect);
-//        Toast.makeText(getActivity(),
-//                "Show On Component TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-//                Toast.LENGTH_SHORT).show();
+    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+        return null;
     }
 
     @Override

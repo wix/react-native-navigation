@@ -27,6 +27,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.MaViewTooltip;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
@@ -243,14 +244,13 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void showTooltip( View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,
-                             ViewController<?> tooltipViewController) {
-        if(tooltipAnchorView==null)return;
+    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView,@NonNull OverlayAttachOptions overlayAttachOptions,
+                                                 @NonNull ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
         final BottomTabsLayout view = getView();
         final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
-        tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
+        return tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
                 overlayAttachOptions.getGravity().get());
 //        Toast.makeText(getActivity(),
 //                "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
@@ -261,7 +261,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public void dismissTooltip(ViewController<?> tooltipsController) {
         final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
 
-        tooltipsOverlay.removeTooltip();
     }
 
     public View getTabViewByTag(String id) {
