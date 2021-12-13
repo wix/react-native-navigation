@@ -11,14 +11,15 @@ import com.reactnativenavigation.views.tooltips.TooltipsOverlay
 
 class BottomTabsLayout(context: Context) : CoordinatorLayout(context) {
     private var bottomTabsContainer: BottomTabsContainer? = null
-    private val overlayLayout =  TooltipsOverlay(context, " BottomTabs")
+    val tooltipsOverlay = TooltipsOverlay(context, " BottomTabs")
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            overlayLayout.setBackgroundColor(Color.argb(0.5f,1f,0f,0f))
+            tooltipsOverlay.setBackgroundColor(Color.argb(0.5f, 1f, 0f, 0f))
         }
-        this.addView(overlayLayout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        this.addView(tooltipsOverlay, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
+
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         if (bottomTabsContainer != null && child !== bottomTabsContainer) {
             super.addView(child, childCount - 1, params)
