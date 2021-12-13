@@ -42,6 +42,7 @@ const Screens = {
   Navigation: 'Navigation',
   NativeScreen: 'RNNCustomComponent',
   RoundButton: 'CustomRoundedButton',
+  Tooltip: 'Tooltip',
   LifecycleButton: 'LifecycleButton',
   ReactTitleView: 'ReactTitleView',
   LazyTitleView: 'LazyTitleView',
