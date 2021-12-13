@@ -35,7 +35,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         this.reactView = reactView;
         this.overlay = new TooltipsOverlay(context,"Component");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,0f,1f));
+//            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,0f,1f));
         }
         addView(reactView.asView(), matchParentLP());
         addView(overlay, matchParentLP());

@@ -489,9 +489,9 @@ public class StackController extends ParentController<StackLayout> {
     public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
-        Toast.makeText(getActivity(),
-                "Show On Stack TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),
+//                "Show On Stack TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+//                Toast.LENGTH_SHORT).show();
     }
 
     @Override

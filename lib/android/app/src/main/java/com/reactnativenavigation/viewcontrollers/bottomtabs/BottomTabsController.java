@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
@@ -253,9 +252,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
         tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
                 overlayAttachOptions.getGravity().get());
-        Toast.makeText(getActivity(),
-                "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),
+//                "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+//                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     }
 
     public View getTabViewByTag(String id) {

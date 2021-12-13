@@ -28,7 +28,7 @@ public class StackLayout extends CoordinatorLayout implements Component {
         this.stackId = stackId;
         this.overlay = new TooltipsOverlay(context,"Stack Layout");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,1f,0f));
+//            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,1f,0f));
         }
         createLayout(topBarController);
     }

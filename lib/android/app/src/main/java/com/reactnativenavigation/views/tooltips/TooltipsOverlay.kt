@@ -2,25 +2,23 @@ package com.reactnativenavigation.views.tooltips
 
 import android.app.Activity
 import android.content.Context
-import android.view.Gravity
+import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
-import com.github.florent37.viewtooltip.ViewTooltip
-import com.reactnativenavigation.utils.UiUtils
+import com.reactnativenavigation.views.MaViewTooltip
 
 class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
 
-    var tooltipViewContainer:ViewTooltip.TooltipView? = null
+    var tooltipViewContainer: MaViewTooltip.TooltipView? = null
+
     init {
-        addView(TextView(context).apply {
-            text = id
-            textSize = 18f
-        }, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-            gravity = Gravity.CENTER
-        })
+//        addView(TextView(context).apply {
+//            text = id
+//            textSize = 18f
+//        }, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+//            gravity = Gravity.CENTER
+//        })
         z = Float.MAX_VALUE
     }
 

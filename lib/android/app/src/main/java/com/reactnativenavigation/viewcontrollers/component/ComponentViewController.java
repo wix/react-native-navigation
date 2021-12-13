@@ -178,9 +178,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
-        Toast.makeText(getActivity(),
-                "Show On Component TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),
+//                "Show On Component TopBar anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
+//                Toast.LENGTH_SHORT).show();
     }
 
     @Override
