@@ -80,7 +80,7 @@ public class Navigator extends ParentController<ViewGroup> {
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
-        tooltipsManager = new TooltipsManager();
+        tooltipsManager = new TooltipsManager(this::findController, this::findTooltipAnchorView);
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
@@ -221,27 +221,16 @@ public class Navigator extends ParentController<ViewGroup> {
         final Options options = overlay.resolveCurrentOptions();
         final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.getOverlayAttachOptions();
         if (overlayAttachOptions.hasValue()) {
-            final ViewController<?> hostController = findController(overlayAttachOptions.getLayoutId().get());
-            if (hostController != null) {
-                final View tooltipAnchorView = findTooltipAnchorView(overlayAttachOptions);
-                if (tooltipAnchorView != null){
-                    hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, overlay);
-                    tooltipsManager.add(overlay.getId(), hostController);
-                }
-
-            }
-
+            tooltipsManager.showTooltip(overlay, overlayAttachOptions, listener);
         } else {
             overlayManager.show(overlaysLayout, overlay, listener);
         }
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        final ViewController<?> remove = tooltipsManager.remove(componentId);
-        if(remove!=null){
-            final ViewController<?> controller = findController(componentId);
-            remove.dismissTooltip(controller);
-        }else{
+        if (tooltipsManager.contains(componentId)) {
+           tooltipsManager.dismissTooltip(componentId, listener);
+        } else {
             overlayManager.dismiss(overlaysLayout, componentId, listener);
 
         }
@@ -249,6 +238,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void dismissAllOverlays(CommandListener listener) {
         overlayManager.dismissAll(overlaysLayout, listener);
+        tooltipsManager.dismissAllTooltip(listener);
     }
 
     @Nullable
