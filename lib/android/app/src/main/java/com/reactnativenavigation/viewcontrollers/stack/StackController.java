@@ -486,8 +486,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
-        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
         Toast.makeText(getActivity(),

@@ -6,17 +6,14 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
 import com.reactnativenavigation.options.Options;
@@ -27,7 +24,6 @@ import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -248,11 +244,15 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public void showTooltip( View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
-        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+    public void showTooltip( View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,
+                             ViewController<?> tooltipViewController) {
         if(tooltipAnchorView==null)return;
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
+        final BottomTabsLayout view = getView();
+        final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
+        tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
+                overlayAttachOptions.getGravity().get());
         Toast.makeText(getActivity(),
                 "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
                 Toast.LENGTH_SHORT).show();

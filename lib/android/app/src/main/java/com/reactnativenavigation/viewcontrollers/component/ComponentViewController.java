@@ -175,8 +175,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions) {
-        super.showTooltip(tooltipAnchorView, overlayAttachOptions);
+    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
         Toast.makeText(getActivity(),

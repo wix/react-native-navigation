@@ -222,7 +222,7 @@ public class Navigator extends ParentController<ViewGroup> {
             if (hostController != null) {
                 final View tooltipAnchorView = findTooltipAnchorView(overlayAttachOptions);
                 if (tooltipAnchorView != null)
-                    hostController.showTooltip(tooltipAnchorView, overlayAttachOptions);
+                    hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, overlay);
             }
 
         } else {
