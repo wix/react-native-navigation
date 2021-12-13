@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -26,6 +27,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
+import com.reactnativenavigation.views.MaViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
 
@@ -392,9 +394,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return null;
     }
 
-    public void showTooltip(View tooltipAnchorView, OverlayAttachOptions overlayAttachOptions,
-                            ViewController<?> tooltipViewController) {
-
+    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView,
+                                                 @NonNull OverlayAttachOptions overlayAttachOptions,
+                                                 @NonNull   ViewController<?> tooltipViewController) {
+        return null;
     }
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
