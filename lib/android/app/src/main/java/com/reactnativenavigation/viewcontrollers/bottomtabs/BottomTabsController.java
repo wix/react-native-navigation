@@ -3,7 +3,6 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,7 +20,6 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
@@ -156,22 +154,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     public boolean handleBack(CommandListener listener) {
-
-        final boolean childBack = !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
-        Boolean resetToFirstTabOnBack = resolveCurrentOptions().bottomTabsOptions.resetToFirstTabOnBack.get();
-
-        if (!childBack && resetToFirstTabOnBack) {
-
-            if (getSelectedIndex() != 0) {
-                selectTab(0);
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-        return childBack;
+        return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
     }
 
     @Override
