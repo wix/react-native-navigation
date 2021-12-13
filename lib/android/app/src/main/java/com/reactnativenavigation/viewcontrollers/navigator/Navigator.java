@@ -18,6 +18,7 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.viewcontrollers.TooltipsManager;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -36,6 +37,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
+    private final TooltipsManager tooltipsManager;
     private final RootPresenter rootPresenter;
     private ViewController<?> root;
     private ViewController<?> previousRoot;
@@ -78,6 +80,7 @@ public class Navigator extends ParentController<ViewGroup> {
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
+        tooltipsManager = new TooltipsManager();
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
@@ -221,8 +224,11 @@ public class Navigator extends ParentController<ViewGroup> {
             final ViewController<?> hostController = findController(overlayAttachOptions.getLayoutId().get());
             if (hostController != null) {
                 final View tooltipAnchorView = findTooltipAnchorView(overlayAttachOptions);
-                if (tooltipAnchorView != null)
+                if (tooltipAnchorView != null){
                     hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, overlay);
+                    tooltipsManager.add(overlay.getId(), hostController);
+                }
+
             }
 
         } else {
@@ -231,7 +237,14 @@ public class Navigator extends ParentController<ViewGroup> {
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss(overlaysLayout, componentId, listener);
+        final ViewController<?> remove = tooltipsManager.remove(componentId);
+        if(remove!=null){
+            final ViewController<?> controller = findController(componentId);
+            remove.dismissTooltip(controller);
+        }else{
+            overlayManager.dismiss(overlaysLayout, componentId, listener);
+
+        }
     }
 
     public void dismissAllOverlays(CommandListener listener) {
