@@ -27,126 +27,63 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
     }
 
     fun addTooltip(tooltipAnchorView: View, tooltipView: View, gravity: String) {
-        //TODO this is used temp need to be managed
-//        removeAllViews()
-        tooltipViewContainer?.close()
-        //TODO check for views that is not attached to a parent
-
-//        addView(tooltipView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        //UiUtils.runOnPreDrawOnce(tooltipView) {
-            when (gravity) {
-                "top" -> {
-                    anchorViewTop(tooltipAnchorView, tooltipView)
-                }
-                "bottom" -> {
-                    anchorViewBottom(tooltipAnchorView, tooltipView)
-                }
-                "left" -> {
-                    anchorViewLeft(tooltipAnchorView, tooltipView)
-                }
-                "right" -> {
-                    anchorViewRight(tooltipAnchorView, tooltipView)
-                }
+        tooltipViewContainer?.closeNow()
+        //In Order for ReactView to get measured properly it needs to be added to a layout
+        //then the component will get started the JS thread will update his measurements
+        //then we join it MessageQueue and wait after it finishes its job and move it to tooltip parent
+        tooltipView.alpha = 0.0f
+        this.addView(tooltipView)
+        when (gravity) {
+            "top" -> {
+                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.TOP)
             }
-      //  }
+            "bottom" -> {
+                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.BOTTOM)
+            }
+            "left" -> {
+                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.LEFT)
+            }
+            "right" -> {
+                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.RIGHT)
+            }
+        }
 
-//        tooltipView.x = centerX.toFloat()
-//        tooltipView.y = centerY.toFloat()
     }
 
-    private fun anchorViewRight(tooltipAnchorView: View, tooltipView: View) {
-        tooltipViewContainer = ViewTooltip
-            .on(context as Activity,this,tooltipAnchorView)
-            .autoHide(false, 5000)
-            .clickToHide(false)
-//             .text("Hello bowbvowebofoewbof ewfo wef owe fo weof owe of oew foewfewfewfoew fwefoewfew\n " +
-//                     "fwenfonweofowenfnwe\n fnweofnowebofowebofboewbfobew")
-            .align(ViewTooltip.ALIGN.CENTER)
-            .distanceWithView(0)
-            .position(ViewTooltip.Position.RIGHT)
-            .customView(tooltipView)
-            .onDisplay({
 
-            })
-            .onHide({
+    private fun showTooltip(
+        tooltipView: View,
+        tooltipAnchorView: View,
+        pos: MaViewTooltip.Position
+    ) {
+        this.post {
+            removeView(tooltipView)
+            tooltipView.alpha = 1.0f
 
-            })
-            .show()
-        UiUtils.runOnMeasured(tooltipView){
-            tooltipViewContainer?.setCustomView(tooltipView)
+            tooltipViewContainer = MaViewTooltip
+                .on(context as Activity, this, tooltipAnchorView)
+                .autoHide(false, 5000)
+                .clickToHide(false)
+                .align(MaViewTooltip.ALIGN.CENTER)
+                .padding(0, 0, 0, 0)
+               // .margin(0, 0, 0, 0)
+                .distanceWithView(-25)
+                .color(Color.WHITE)
+                .arrowHeight(25)
+                .arrowWidth(25)
+                .position(pos)
+                .customView(tooltipView)
+                .onDisplay {
+                }
+                .onHide {
+
+                }
+                .show()
         }
     }
 
-    private fun anchorViewLeft(tooltipAnchorView: View, tooltipView: View) {
-        tooltipViewContainer = ViewTooltip
-            .on(context as Activity,this,tooltipAnchorView)
-            .autoHide(false, 5000)
-            .clickToHide(false)
-//             .text("Hello bowbvowebofoewbof ewfo wef owe fo weof owe of oew foewfewfewfoew fwefoewfew\n " +
-//                     "fwenfonweofowenfnwe\n fnweofnowebofowebofboewbfobew")
-            .align(ViewTooltip.ALIGN.CENTER)
-            .distanceWithView(0)
-            .position(ViewTooltip.Position.LEFT)
-            .customView(tooltipView)
-            .onDisplay({
-
-            })
-            .onHide({
-
-            })
-            .show()
-        UiUtils.runOnMeasured(tooltipView){
-            tooltipViewContainer?.setCustomView(tooltipView)
-        }
-    }
-
-    private fun anchorViewBottom(tooltipAnchorView: View, tooltipView: View) {
-        tooltipViewContainer = ViewTooltip
-            .on(context as Activity,this,tooltipAnchorView)
-            .autoHide(false, 5000)
-            .clickToHide(false)
-//             .text("Hello bowbvowebofoewbof ewfo wef owe fo weof owe of oew foewfewfewfoew fwefoewfew\n " +
-//                     "fwenfonweofowenfnwe\n fnweofnowebofowebofboewbfobew")
-            .align(ViewTooltip.ALIGN.CENTER)
-            .distanceWithView(0)
-            .position(ViewTooltip.Position.BOTTOM)
-            .customView(tooltipView)
-            .onDisplay({
-
-            })
-            .onHide({
-
-            })
-            .show()
-        UiUtils.runOnMeasured(tooltipView){
-            tooltipViewContainer?.setCustomView(tooltipView)
-        }
-    }
-
-    private fun anchorViewTop(tooltipAnchorView: View, tooltipView: View) {
-
-
-         tooltipViewContainer = ViewTooltip
-             .on(context as Activity,this,tooltipAnchorView)
-            .autoHide(false, 5000)
-            .clickToHide(false)
-//             .text("Hello bowbvowebofoewbof ewfo wef owe fo weof owe of oew foewfewfewfoew fwefoewfew\n " +
-//                     "fwenfonweofowenfnwe\n fnweofnowebofowebofboewbfobew")
-            .align(ViewTooltip.ALIGN.CENTER)
-             .distanceWithView(100)
-            .position(ViewTooltip.Position.TOP)
-            .customView(FrameLayout(context).apply {
-                this.addView(tooltipView)
-            })
-            .onDisplay({
-
-            })
-            .onHide({
-
-            })
-            .show()
-        UiUtils.runOnMeasured(tooltipView){
-            tooltipViewContainer?.setCustomView(tooltipView)
-        }
+    fun removeTooltip() {
+        tooltipViewContainer?.close()
+        tooltipViewContainer = null
     }
 }
