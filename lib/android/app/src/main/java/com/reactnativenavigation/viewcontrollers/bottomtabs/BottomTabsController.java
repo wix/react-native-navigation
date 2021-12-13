@@ -258,6 +258,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
+    public void dismissTooltip(ViewController<?> tooltipsController) {
+        final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
+
+        tooltipsOverlay.removeTooltip();
     }
 
     public View getTabViewByTag(String id) {

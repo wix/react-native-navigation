@@ -28,7 +28,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewCont
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +43,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean appearEventPosted;
     private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
+
+    public void dismissTooltip(ViewController<?> controller) {
+
+    }
 
     public interface ViewVisibilityListener {
         /**
