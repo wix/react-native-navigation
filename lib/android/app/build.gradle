@@ -185,7 +185,7 @@ dependencies {
 //    implementation project(':AHBottomNavigation')
     implementation 'com.github.wix-playground:reflow-animator:1.0.6'
     implementation 'com.github.clans:fab:1.6.4'
-
+    implementation 'com.github.swabbass:ViewTooltip:master-SNAPSHOT'
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
