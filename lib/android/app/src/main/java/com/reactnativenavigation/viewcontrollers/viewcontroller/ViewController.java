@@ -27,7 +27,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
-import com.reactnativenavigation.views.MaViewTooltip;
+import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
 
@@ -394,9 +394,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return null;
     }
 
-    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView,
-                                                 @NonNull OverlayAttachOptions overlayAttachOptions,
-                                                 @NonNull   ViewController<?> tooltipViewController) {
+    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView,
+                                               @NonNull OverlayAttachOptions overlayAttachOptions,
+                                               @NonNull   ViewController<?> tooltipViewController) {
         return null;
     }
     public int getBottomInset() {

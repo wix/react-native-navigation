@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.view.View;
 
 import com.reactnativenavigation.options.OverlayAttachOptions;
@@ -14,7 +13,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.MaViewTooltip;
+import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
@@ -175,7 +174,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
         return null;
     }
 

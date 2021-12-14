@@ -4,13 +4,13 @@ import android.view.View
 import com.reactnativenavigation.options.OverlayAttachOptions
 import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.MaViewTooltip
+import com.reactnativenavigation.views.ViewTooltip
 
 class TooltipsManager(
     val findController: (String) -> ViewController<*>?,
     val findTooltipAnchorView: (OverlayAttachOptions) -> View?
 ) {
-    private val registry = mutableMapOf<String, Pair<MaViewTooltip.TooltipView, ViewController<*>>>()
+    private val registry = mutableMapOf<String, Pair<ViewTooltip.TooltipView, ViewController<*>>>()
 
     fun showTooltip(
         tooltipController: ViewController<*>, overlayAttachOptions: OverlayAttachOptions,
