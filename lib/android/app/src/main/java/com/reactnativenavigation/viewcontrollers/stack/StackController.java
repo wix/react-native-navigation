@@ -20,7 +20,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.MaViewTooltip;
+import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.stack.StackLayout;
@@ -481,7 +481,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
 
         return null;
     }

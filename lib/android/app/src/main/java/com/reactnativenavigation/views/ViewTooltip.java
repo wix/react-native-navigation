@@ -32,17 +32,14 @@ import com.reactnativenavigation.utils.UiUtils;
 
 import java.util.Arrays;
 
-/**
- * Created by florentchampigny on 02/06/2017.
- */
 
-public class MaViewTooltip {
+public class ViewTooltip {
 
     private View rootView;
     private final View view;
     private final TooltipView tooltip_view;
 
-    private MaViewTooltip(MyContext myContext, View view) {
+    private ViewTooltip(MyContext myContext, View view) {
         this.view = view;
         this.tooltip_view = new TooltipView(myContext.getContext());
         final NestedScrollView scrollParent = findScrollParent(view);
@@ -56,7 +53,7 @@ public class MaViewTooltip {
         }
     }
 
-    private MaViewTooltip(MyContext myContext, View rootView, View view) {
+    private ViewTooltip(MyContext myContext, View rootView, View view) {
         this.rootView = rootView;
         this.view = view;
         this.tooltip_view = new TooltipView(myContext.getContext());
@@ -71,24 +68,24 @@ public class MaViewTooltip {
         }
     }
 
-    private MaViewTooltip(View view) {
+    private ViewTooltip(View view) {
         this(new MyContext(getActivityContext(view.getContext())), view);
     }
 
-    public static MaViewTooltip on(final View view) {
-        return new MaViewTooltip(new MyContext(getActivityContext(view.getContext())), view);
+    public static ViewTooltip on(final View view) {
+        return new ViewTooltip(new MyContext(getActivityContext(view.getContext())), view);
     }
 
-    public static MaViewTooltip on(Fragment fragment, final View view) {
-        return new MaViewTooltip(new MyContext(fragment), view);
+    public static ViewTooltip on(Fragment fragment, final View view) {
+        return new ViewTooltip(new MyContext(fragment), view);
     }
 
-    public static MaViewTooltip on(Activity activity, final View view) {
-        return new MaViewTooltip(new MyContext(getActivityContext(activity)), view);
+    public static ViewTooltip on(Activity activity, final View view) {
+        return new ViewTooltip(new MyContext(getActivityContext(activity)), view);
     }
 
-    public static MaViewTooltip on(Activity activity, final View rootView, final View view) {
-        return new MaViewTooltip(new MyContext(getActivityContext(activity)), rootView, view);
+    public static ViewTooltip on(Activity activity, final View rootView, final View view) {
+        return new ViewTooltip(new MyContext(getActivityContext(activity)), rootView, view);
     }
 
     private NestedScrollView findScrollParent(View view) {
@@ -111,52 +108,52 @@ public class MaViewTooltip {
         return null;
     }
 
-    public MaViewTooltip position(Position position) {
+    public ViewTooltip position(Position position) {
         this.tooltip_view.setPosition(position);
         return this;
     }
 
-    public MaViewTooltip withShadow(boolean withShadow) {
+    public ViewTooltip withShadow(boolean withShadow) {
         this.tooltip_view.setWithShadow(withShadow);
         return this;
     }
 
-    public MaViewTooltip shadowColor(@ColorInt int shadowColor) {
+    public ViewTooltip shadowColor(@ColorInt int shadowColor) {
         this.tooltip_view.setShadowColor(shadowColor);
         return this;
     }
 
-    public MaViewTooltip customView(View customView) {
+    public ViewTooltip customView(View customView) {
         this.tooltip_view.setCustomView(customView);
         return this;
     }
 
-    public MaViewTooltip customView(int viewId) {
+    public ViewTooltip customView(int viewId) {
         this.tooltip_view.setCustomView(((Activity) view.getContext()).findViewById(viewId));
         return this;
     }
 
-    public MaViewTooltip arrowWidth(int arrowWidth) {
+    public ViewTooltip arrowWidth(int arrowWidth) {
         this.tooltip_view.setArrowWidth(arrowWidth);
         return this;
     }
 
-    public MaViewTooltip arrowHeight(int arrowHeight) {
+    public ViewTooltip arrowHeight(int arrowHeight) {
         this.tooltip_view.setArrowHeight(arrowHeight);
         return this;
     }
 
-    public MaViewTooltip arrowSourceMargin(int arrowSourceMargin) {
+    public ViewTooltip arrowSourceMargin(int arrowSourceMargin) {
         this.tooltip_view.setArrowSourceMargin(arrowSourceMargin);
         return this;
     }
 
-    public MaViewTooltip arrowTargetMargin(int arrowTargetMargin) {
+    public ViewTooltip arrowTargetMargin(int arrowTargetMargin) {
         this.tooltip_view.setArrowTargetMargin(arrowTargetMargin);
         return this;
     }
 
-    public MaViewTooltip align(ALIGN align) {
+    public ViewTooltip align(ALIGN align) {
         this.tooltip_view.setAlign(align);
         return this;
     }
@@ -197,32 +194,32 @@ public class MaViewTooltip {
         tooltip_view.close();
     }
 
-    public MaViewTooltip duration(long duration) {
+    public ViewTooltip duration(long duration) {
         this.tooltip_view.setDuration(duration);
         return this;
     }
 
-    public MaViewTooltip color(int color) {
+    public ViewTooltip color(int color) {
         this.tooltip_view.setColor(color);
         return this;
     }
 
-    public MaViewTooltip color(Paint paint) {
+    public ViewTooltip color(Paint paint) {
         this.tooltip_view.setPaint(paint);
         return this;
     }
 
-    public MaViewTooltip onDisplay(ListenerDisplay listener) {
+    public ViewTooltip onDisplay(ListenerDisplay listener) {
         this.tooltip_view.setListenerDisplay(listener);
         return this;
     }
 
-    public MaViewTooltip onHide(ListenerHide listener) {
+    public ViewTooltip onHide(ListenerHide listener) {
         this.tooltip_view.setListenerHide(listener);
         return this;
     }
 
-    public MaViewTooltip padding(int left, int top, int right, int bottom) {
+    public ViewTooltip padding(int left, int top, int right, int bottom) {
         this.tooltip_view.paddingTop = top;
         this.tooltip_view.paddingBottom = bottom;
         this.tooltip_view.paddingLeft = left;
@@ -230,68 +227,68 @@ public class MaViewTooltip {
         return this;
     }
 
-    public MaViewTooltip animation(TooltipAnimation tooltipAnimation) {
+    public ViewTooltip animation(TooltipAnimation tooltipAnimation) {
         this.tooltip_view.setTooltipAnimation(tooltipAnimation);
         return this;
     }
 
-    public MaViewTooltip text(String text) {
+    public ViewTooltip text(String text) {
         this.tooltip_view.setText(text);
         return this;
     }
 
-    public MaViewTooltip text(@StringRes int text) {
+    public ViewTooltip text(@StringRes int text) {
         this.tooltip_view.setText(text);
         return this;
     }
 
-    public MaViewTooltip corner(int corner) {
+    public ViewTooltip corner(int corner) {
         this.tooltip_view.setCorner(corner);
         return this;
     }
 
-    public MaViewTooltip textColor(int textColor) {
+    public ViewTooltip textColor(int textColor) {
         this.tooltip_view.setTextColor(textColor);
         return this;
     }
 
-    public MaViewTooltip textTypeFace(Typeface typeface) {
+    public ViewTooltip textTypeFace(Typeface typeface) {
         this.tooltip_view.setTextTypeFace(typeface);
         return this;
     }
 
-    public MaViewTooltip textSize(int unit, float textSize) {
+    public ViewTooltip textSize(int unit, float textSize) {
         this.tooltip_view.setTextSize(unit, textSize);
         return this;
     }
 
-    public MaViewTooltip margin(int left, int top, int right, int bottom) {
+    public ViewTooltip margin(int left, int top, int right, int bottom) {
         this.tooltip_view.setMargin(left, top, right, bottom);
         return this;
     }
 
-    public MaViewTooltip setTextGravity (int textGravity) {
+    public ViewTooltip setTextGravity (int textGravity) {
         this.tooltip_view.setTextGravity(textGravity);
         return this;
     }
 
-    public MaViewTooltip clickToHide(boolean clickToHide) {
+    public ViewTooltip clickToHide(boolean clickToHide) {
         this.tooltip_view.setClickToHide(clickToHide);
         return this;
     }
 
-    public MaViewTooltip autoHide(boolean autoHide, long duration) {
+    public ViewTooltip autoHide(boolean autoHide, long duration) {
         this.tooltip_view.setAutoHide(autoHide);
         this.tooltip_view.setDuration(duration);
         return this;
     }
 
-    public MaViewTooltip distanceWithView(int distance) {
+    public ViewTooltip distanceWithView(int distance) {
         this.tooltip_view.setDistanceWithView(distance);
         return this;
     }
 
-    public MaViewTooltip border(int color, float width){
+    public ViewTooltip border(int color, float width){
         Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setColor(color);
         borderPaint.setStyle(Paint.Style.STROKE);

@@ -27,7 +27,7 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.MaViewTooltip;
+import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
@@ -244,8 +244,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     @Override
-    public MaViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView,@NonNull OverlayAttachOptions overlayAttachOptions,
-                                                 @NonNull ViewController<?> tooltipViewController) {
+    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions,
+                                               @NonNull ViewController<?> tooltipViewController) {
         final Rect rect = new Rect();
         tooltipAnchorView.getGlobalVisibleRect(rect);
         final BottomTabsLayout view = getView();

@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.reactnativenavigation.views.MaViewTooltip
+import com.reactnativenavigation.views.ViewTooltip
 
 class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
 
@@ -24,7 +24,7 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
         return false
     }
 
-    fun addTooltip(tooltipAnchorView: View, tooltipView: View, gravity: String): MaViewTooltip.TooltipView? {
+    fun addTooltip(tooltipAnchorView: View, tooltipView: View, gravity: String): ViewTooltip.TooltipView? {
         //In Order for ReactView to get measured properly it needs to be added to a layout
         //then the component will get started the JS thread will update his measurements
         //then we join it MessageQueue and wait after it finishes its job and move it to tooltip parent
@@ -32,19 +32,19 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
         this.addView(tooltipView)
         return when (gravity) {
             "top" -> {
-                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.TOP)
+                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.TOP)
             }
             "bottom" -> {
-                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.BOTTOM)
+                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.BOTTOM)
             }
             "left" -> {
-                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.LEFT)
+                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.LEFT)
             }
             "right" -> {
-                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.RIGHT)
+                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.RIGHT)
             }
             else -> {
-                showTooltip(tooltipView, tooltipAnchorView, MaViewTooltip.Position.TOP)
+                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.TOP)
             }
         }
 
@@ -54,13 +54,13 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
     private fun showTooltip(
         tooltipView: View,
         tooltipAnchorView: View,
-        pos: MaViewTooltip.Position
-    ): MaViewTooltip.TooltipView {
-        val tooltipViewContainer = MaViewTooltip
+        pos: ViewTooltip.Position
+    ): ViewTooltip.TooltipView {
+        val tooltipViewContainer = ViewTooltip
             .on(context as Activity, this, tooltipAnchorView)
             .autoHide(false, 5000)
             .clickToHide(false)
-            .align(MaViewTooltip.ALIGN.CENTER)
+            .align(ViewTooltip.ALIGN.CENTER)
             .padding(0, 0, 0, 0)
             // .margin(0, 0, 0, 0)
             .distanceWithView(-25)
@@ -78,7 +78,7 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
         this.post {
             removeView(tooltipView)
             tooltipView.alpha = 1.0f
-           tooltipViewContainer.setCustomView(tooltipView)
+            tooltipViewContainer.setCustomView(tooltipView)
         }
         return tooltipViewContainer
     }
