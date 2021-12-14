@@ -257,12 +257,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 //                Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void dismissTooltip(ViewController<?> tooltipsController) {
-        final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
-
-    }
-
     public View getTabViewByTag(String id) {
         int tabIndex = bottomTabs.getTabIndexByTag(id);
         if (tabIndex != TAB_NOT_FOUND) {
