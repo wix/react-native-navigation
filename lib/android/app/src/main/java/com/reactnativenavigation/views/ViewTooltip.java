@@ -13,13 +13,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.StringRes;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +20,12 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.StringRes;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.reactnativenavigation.utils.UiUtils;
 
@@ -44,12 +43,7 @@ public class ViewTooltip {
         this.tooltip_view = new TooltipView(myContext.getContext());
         final NestedScrollView scrollParent = findScrollParent(view);
         if (scrollParent != null) {
-            scrollParent.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    tooltip_view.setTranslationY(tooltip_view.getTranslationY() - (scrollY - oldScrollY));
-                }
-            });
+            scrollParent.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> tooltip_view.setTranslationY(tooltip_view.getTranslationY() - (scrollY - oldScrollY)));
         }
     }
 
@@ -59,12 +53,7 @@ public class ViewTooltip {
         this.tooltip_view = new TooltipView(myContext.getContext());
         final NestedScrollView scrollParent = findScrollParent(view);
         if (scrollParent != null) {
-            scrollParent.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    tooltip_view.setTranslationY(tooltip_view.getTranslationY() - (scrollY - oldScrollY));
-                }
-            });
+            scrollParent.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> tooltip_view.setTranslationY(tooltip_view.getTranslationY() - (scrollY - oldScrollY)));
         }
     }
 
@@ -153,6 +142,11 @@ public class ViewTooltip {
         return this;
     }
 
+    public ViewTooltip bubble(boolean visbile) {
+        this.tooltip_view.enableBubble(visbile);
+        return this;
+    }
+
     public ViewTooltip align(ALIGN align) {
         this.tooltip_view.setAlign(align);
         return this;
@@ -182,7 +176,7 @@ public class ViewTooltip {
             }
 
             decorView.addView(tooltip_view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtils.runOnMeasured(tooltip_view,()->{
+            UiUtils.runOnMeasured(tooltip_view, () -> {
                 tooltip_view.setup(rect, decorView.getWidth());
             });
 
@@ -190,7 +184,7 @@ public class ViewTooltip {
         return tooltip_view;
     }
 
-    public void close(){
+    public void close() {
         tooltip_view.close();
     }
 
@@ -267,7 +261,7 @@ public class ViewTooltip {
         return this;
     }
 
-    public ViewTooltip setTextGravity (int textGravity) {
+    public ViewTooltip setTextGravity(int textGravity) {
         this.tooltip_view.setTextGravity(textGravity);
         return this;
     }
@@ -288,7 +282,7 @@ public class ViewTooltip {
         return this;
     }
 
-    public ViewTooltip border(int color, float width){
+    public ViewTooltip border(int color, float width) {
         Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setColor(color);
         borderPaint.setStyle(Paint.Style.STROKE);
@@ -356,6 +350,7 @@ public class ViewTooltip {
         private int arrowTargetMargin = 0;
         protected View childView;
         private int color = Color.parseColor("#1F7C82");
+        private boolean drawBubble = true;
         private Path bubblePath;
         private Paint bubblePaint;
         private Paint borderPaint;
@@ -446,7 +441,7 @@ public class ViewTooltip {
 
         public void setPosition(Position position) {
             this.position = position;
-            switch (position){
+            switch (position) {
                 case TOP:
                     setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom + arrowHeight);
                     break;
@@ -557,18 +552,18 @@ public class ViewTooltip {
         @Override
         protected void onSizeChanged(int width, int height, int oldw, int oldh) {
             super.onSizeChanged(width, height, oldw, oldh);
-
-            bubblePath = drawBubble(new RectF(shadowPadding, shadowPadding, width - shadowPadding * 2, height - shadowPadding * 2), corner, corner, corner, corner);
+            if (drawBubble)
+                bubblePath = drawBubble(new RectF(shadowPadding, shadowPadding, width - shadowPadding * 2, height - shadowPadding * 2), corner, corner, corner, corner);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            if (bubblePath != null) {
+            if (drawBubble && bubblePath != null) {
                 canvas.drawPath(bubblePath, bubblePaint);
-                if(borderPaint != null){
-                    canvas.drawPath(bubblePath,borderPaint);
+                if (borderPaint != null) {
+                    canvas.drawPath(bubblePath, borderPaint);
                 }
             }
         }
@@ -612,23 +607,15 @@ public class ViewTooltip {
 
         protected void handleAutoRemove() {
             if (clickToHide) {
-                setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (clickToHide) {
-                            remove();
-                        }
+                setOnClickListener(v -> {
+                    if (clickToHide) {
+                        remove();
                     }
                 });
             }
 
             if (autoHide) {
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        remove();
-                    }
-                }, duration);
+                postDelayed(this::remove, duration);
             }
         }
 
@@ -676,8 +663,10 @@ public class ViewTooltip {
 
         private int getAlignOffset(int myLength, int hisLength) {
             switch (align) {
-                case END:    return hisLength - myLength;
-                case CENTER: return (hisLength - myLength) / 2;
+                case END:
+                    return hisLength - myLength;
+                case CENTER:
+                    return (hisLength - myLength) / 2;
             }
             return 0;
         }
@@ -685,7 +674,7 @@ public class ViewTooltip {
         private Path drawBubble(RectF myRect, float topLeftDiameter, float topRightDiameter, float bottomRightDiameter, float bottomLeftDiameter) {
             final Path path = new Path();
 
-            if(viewRect == null)
+            if (viewRect == null)
                 return path;
 
             topLeftDiameter = topLeftDiameter < 0 ? 0 : topLeftDiameter;
@@ -781,29 +770,29 @@ public class ViewTooltip {
                 int adjustedLeft = rect.left;
                 int adjustedRight = rect.right;
 
-                if((rect.centerX() + getWidth() / 2f) > screenWidth){
+                if ((rect.centerX() + getWidth() / 2f) > screenWidth) {
                     float diff = (rect.centerX() + getWidth() / 2f) - screenWidth;
 
-                    adjustedLeft -=  diff;
-                    adjustedRight -=  diff;
+                    adjustedLeft -= diff;
+                    adjustedRight -= diff;
 
                     setAlign(ALIGN.CENTER);
                     changed = true;
-                }else if((rect.centerX() - getWidth() / 2f) < 0){
+                } else if ((rect.centerX() - getWidth() / 2f) < 0) {
                     float diff = -(rect.centerX() - getWidth() / 2f);
 
-                    adjustedLeft +=  diff;
-                    adjustedRight +=  diff;
+                    adjustedLeft += diff;
+                    adjustedRight += diff;
 
                     setAlign(ALIGN.CENTER);
                     changed = true;
                 }
 
-                if(adjustedLeft < 0){
+                if (adjustedLeft < 0) {
                     adjustedLeft = 0;
                 }
 
-                if(adjustedRight > screenWidth){
+                if (adjustedRight > screenWidth) {
                     adjustedRight = screenWidth;
                 }
 
@@ -811,14 +800,14 @@ public class ViewTooltip {
                 rect.right = adjustedRight;
             }
 
-            setLayoutParams(layoutParams);
+//            setLayoutParams(layoutParams);
             postInvalidate();
             return changed;
         }
 
         private void onSetup(Rect myRect) {
             setupPosition(myRect);
-
+            if(drawBubble)
             bubblePath = drawBubble(new RectF(shadowPadding, shadowPadding, getWidth() - shadowPadding * 2f, getHeight() - shadowPadding * 2f), corner, corner, corner, corner);
             startEnterAnimation();
 
@@ -860,7 +849,7 @@ public class ViewTooltip {
         }
 
         public void setWithShadow(boolean withShadow) {
-            if(withShadow){
+            if (withShadow) {
                 bubblePaint.setShadowLayer(shadowWidth, 0, 0, shadowColor);
             } else {
                 bubblePaint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
@@ -873,6 +862,12 @@ public class ViewTooltip {
 
         public void setBorderPaint(Paint borderPaint) {
             this.borderPaint = borderPaint;
+            postInvalidate();
+        }
+
+        public void enableBubble(boolean visbile) {
+            drawBubble = visbile;
+            bubblePath = null;
             postInvalidate();
         }
     }
