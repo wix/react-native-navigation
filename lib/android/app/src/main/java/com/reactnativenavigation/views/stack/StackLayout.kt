@@ -19,7 +19,7 @@ class StackLayout(
     topBarController: TopBarController,
     val stackId: String
 ) : CoordinatorLayout(context), Component {
-     val overlay: TooltipsOverlay = TooltipsOverlay(context, "Stack Layout")
+    val overlay: TooltipsOverlay = TooltipsOverlay(context, "Stack Layout")
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -30,11 +30,7 @@ class StackLayout(
 
     private fun createLayout(topBarController: TopBarController) {
         val topBar: View = topBarController.createView(context, this)
-        val lp = LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, UiUtils.getTopBarHeight(
-                context
-            )
-        )
+        val lp = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UiUtils.getTopBarHeight(context))
         lp.behavior = ScrollDIsabledBehavior()
         addView(topBar, lp)
         addView(overlay, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
