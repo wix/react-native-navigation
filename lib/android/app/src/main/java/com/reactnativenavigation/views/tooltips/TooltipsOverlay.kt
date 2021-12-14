@@ -63,6 +63,7 @@ class TooltipsOverlay(context: Context, id: String) : FrameLayout(context) {
             .align(ViewTooltip.ALIGN.CENTER)
             .padding(0, 0, 0, 0)
             // .margin(0, 0, 0, 0)
+//            .customView(tooltipView)
             .distanceWithView(-25)
             .color(Color.WHITE)
             .arrowHeight(25)

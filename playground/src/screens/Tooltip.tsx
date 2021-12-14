@@ -35,23 +35,26 @@ export default class Tooltip extends NavigationComponent<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Image
-          style={styles.tinyLogo}
-          source={{
-            uri: 'https://wix.github.io/react-native-navigation/img/logo.png',
-          }}
-        />
-        <View style={styles.button}>
-          <Text style={styles.text}>{'Hey, This is some text that belongs to a tooltip!!!'}</Text>
-          <TouchableOpacity
-            // @ts-ignore
-            onPress={async () => {
-              await Navigation.dismissOverlay(this.props.componentId);
+      <View style={styles.root}>
+        <View style={styles.container}>
+          <Image
+            style={styles.tinyLogo}
+            source={{
+              uri: 'https://wix.github.io/react-native-navigation/img/logo.png',
             }}
-          >
-            <Text style={styles.text}>{'OK'}</Text>
-          </TouchableOpacity>
+          />
+          <View style={styles.button}>
+            <Text style={styles.text}>{'Hey, This is some text that belongs to a tooltip!!!'}</Text>
+            <TouchableOpacity
+              style={styles.buttonClick}
+              // @ts-ignore
+              onPress={async () => {
+                await Navigation.dismissOverlay(this.props.componentId);
+              }}
+            >
+              <Text style={styles.text}>{'OK'}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -59,17 +62,18 @@ export default class Tooltip extends NavigationComponent<Props> {
 }
 
 const styles = StyleSheet.create({
+  root: { alignItems: 'flex-start' },
   container: {
-    width: '70%',
     backgroundColor: 'white',
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 4,
+    justifyContent: 'center',
   },
+  buttonClick: { padding: 8 },
   button: {
+    padding: 8,
     borderRadius: 12,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   tinyLogo: {
     justifyContent: 'center',
