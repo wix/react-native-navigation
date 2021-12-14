@@ -16,7 +16,7 @@ module.exports = {
   setupFilesAfterEnv: ['./jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
-    'react-native-navigation/Mock': '<rootDir>/lib/src/Mock',
+    'react-native-navigation/Mock': '<rootDir>/lib/Mock',
     'react-native-navigation': '<rootDir>/lib/src',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/playground/img/layouts@2x.png',

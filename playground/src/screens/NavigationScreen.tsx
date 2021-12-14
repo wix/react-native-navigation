@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { NavigationComponentProps, OptionsModalPresentationStyle } from 'react-native-navigation';
+import {
+  NavigationComponent,
+  NavigationComponentProps,
+  OptionsModalPresentationStyle,
+} from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -22,7 +26,7 @@ const {
 
 interface Props extends NavigationComponentProps {}
 
-export default class NavigationScreen extends React.Component<Props> {
+export default class NavigationScreen extends NavigationComponent<Props> {
   static options() {
     return {
       topBar: {
@@ -37,7 +41,20 @@ export default class NavigationScreen extends React.Component<Props> {
       },
     };
   }
+  constructor(props: Props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+  componentWillAppear() {
+    console.log('componentWillAppear:', this.props.componentId);
+  }
+  componentDidDisappear() {
+    console.log('componentDidDisappear:', this.props.componentId);
+  }
 
+  componentDidAppear() {
+    console.log('componentDidAppear:', this.props.componentId);
+  }
   render() {
     return (
       <Root componentId={this.props.componentId} testID={NAVIGATION_SCREEN}>

@@ -1,1 +1,1 @@
-export * from './lib/dist/Mock';
+export * from './lib/Mock';

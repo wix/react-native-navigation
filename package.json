@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.23.1",
+  "version": "7.24.1",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -19,8 +19,8 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/index.js",
-  "typings": "lib/dist/index.d.ts",
+  "main": "lib/dist/src/index.js",
+  "typings": "lib/dist/src/index.d.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",

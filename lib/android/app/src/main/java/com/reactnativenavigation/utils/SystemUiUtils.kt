@@ -17,7 +17,7 @@ import kotlin.math.ceil
 object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     private const val STATUS_BAR_HEIGHT_L = 25
-    private const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
+    internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
     var navigationBarDefaultColor = -1
         private set
@@ -124,7 +124,8 @@ object SystemUiUtils {
         val opaqueColor = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Color.BLACK
         }else{
-            val alpha = if (translucent) STATUS_BAR_HEIGHT_TRANSLUCENCY else 1f
+            val colorAlpha = Color.alpha(color)
+            val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
             val red: Int = Color.red(color)
             val green: Int = Color.green(color)
             val blue: Int = Color.blue(color)

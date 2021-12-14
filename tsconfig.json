@@ -16,5 +16,5 @@
       "react-native-navigation/*": ["lib/src/*"]
     }
   },
-  "include": ["./lib/src/**/*", "./playground/**/*"]
+  "include": ["./lib/src/**/*", "./playground/**/*", "lib/Mock"]
 }

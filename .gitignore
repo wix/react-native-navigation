@@ -238,3 +238,6 @@ website/package-lock.json
 
 # detox artifacts
 artifacts/
+
+# Navigation mocks
+Mock*

@@ -24,6 +24,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -123,6 +124,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     @Test
+    @Ignore("TopTabs not yet well supported")
     public void lifecycleMethodsSentWhenSelectedTabChanges() {
         stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();

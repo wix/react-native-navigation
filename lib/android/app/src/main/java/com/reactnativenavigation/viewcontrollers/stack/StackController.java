@@ -192,10 +192,8 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void onPushAnimationComplete(ViewController<?> toAdd, ViewController<?> toRemove, CommandListener listener) {
-        toAdd.addOnAppearedListener(() -> {
-            toAdd.onViewDidAppear();
-            if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
-        });
+        toAdd.onViewDidAppear();
+        if (!peek().equals(toRemove)) getView().removeView(toRemove.getView());
         listener.onSuccess(toAdd.getId());
     }
 

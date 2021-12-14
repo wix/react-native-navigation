@@ -95,6 +95,24 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
+    public void shouldNotSendDidDisappearAboutDisappearedView() {
+        uut.ensureViewIsCreated();
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStop();
+
+        uut.onViewWillAppear();
+        uut.onViewDidAppear();
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStop();
+
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStop();
+    }
+
+    @Test
     public void onViewDidAppear_componentStartIsEmittedOnlyIfComponentIsNotAppeared() {
         uut.ensureViewIsCreated();
 
