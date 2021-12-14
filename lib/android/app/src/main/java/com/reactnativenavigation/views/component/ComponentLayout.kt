@@ -24,14 +24,14 @@ open class ComponentLayout(
 ) : CoordinatorLayout(context), ReactComponent, ButtonController.OnClickListener {
     private var willAppearSent = false
     private val touchDelegate: OverlayTouchDelegate
-    private val overlay: TooltipsOverlay = TooltipsOverlay(context, "Component")
+    val tooltipsOverlay: TooltipsOverlay = TooltipsOverlay(context, "Component")
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,0f,1f));
         }
         addView(reactView.asView(), CoordinatorLayoutUtils.matchParentLP())
-        addView(overlay, CoordinatorLayoutUtils.matchParentLP())
+        addView(tooltipsOverlay, CoordinatorLayoutUtils.matchParentLP())
         touchDelegate = OverlayTouchDelegate(this, reactView)
     }
 

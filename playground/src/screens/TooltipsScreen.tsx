@@ -61,7 +61,9 @@ export default class TooltipsScreen extends NavigationComponent {
         />
         <Button
           label="showToolTips on Component"
-          onPress={async () => this.showTooltips('LayoutsTabMainComponent', 'LayoutsBottomTab')}
+          onPress={async () =>
+            this.showTooltips(this.props.componentId, 'HitRightButton', 'bottom')
+          }
         />
         <Button
           label="Pushed BottomTabs"

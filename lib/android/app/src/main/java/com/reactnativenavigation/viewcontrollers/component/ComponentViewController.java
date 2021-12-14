@@ -175,6 +175,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+        final ComponentLayout view = this.view;
+        if(view!=null){
+            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView,tooltipViewController.getView(),
+                    overlayAttachOptions.getGravity().get());
+        }
         return null;
     }
 
