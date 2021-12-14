@@ -6,7 +6,6 @@ import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
 import testIDs from '../testIDs';
-import { stack } from '../commons/Layouts';
 
 export default class TooltipsScreen extends NavigationComponent {
   static options(): Options {
@@ -42,7 +41,7 @@ export default class TooltipsScreen extends NavigationComponent {
         />
         <Button
           label="showToolTips on inner BottomTabs bottomTab"
-          onPress={async () => this.showTooltips('innerBt', 'non-press-tab')}
+          onPress={async () => this.showTooltips('innerBottomTabs', 'non-press-tab')}
         />
         <Button
           label="showToolTips on LayoutsBottomTab BottomTab"
@@ -104,27 +103,27 @@ export default class TooltipsScreen extends NavigationComponent {
   pushBottomTabs = async () => {
     await Navigation.push(this.props.componentId, {
       bottomTabs: {
-        id: 'innerBt',
+        id: 'innerBottomTabs',
         children: [
           {
             component: {
               name: Screens.Layouts,
-            },
-          },
-          stack(Screens.FirstBottomTabsScreen),
-          stack(
-            {
-              component: {
-                name: Screens.SecondBottomTabsScreen,
+              options: {
+                bottomTab: {
+                  icon: require('../../img/whatshot.png'),
+                  id: 'innerLayoutsBottomTab',
+                  text: 'Layouts',
+                  testID: testIDs.LAYOUTS_TAB,
+                },
               },
             },
-            'SecondTab'
-          ),
+          },
           {
             component: {
               name: Screens.Pushed,
               options: {
                 bottomTab: {
+                  icon: require('../../img/plus.png'),
                   id: 'non-press-tab',
                   selectTabOnPress: false,
                   text: 'Tab 3',
