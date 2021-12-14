@@ -27,6 +27,10 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
+    private boolean ignoreInsets=false;
+    public void ignoreInsets(boolean ignore) {
+        ignoreInsets = ignore;
+    }
 
     private enum VisibilityState {Appear, Disappear}
 
@@ -125,7 +129,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyTopInset() {
-        if (view != null) presenter.applyTopInsets(view, getTopInset());
+        if (view != null && !ignoreInsets) presenter.applyTopInsets(view, getTopInset());
     }
 
     @Override
@@ -137,13 +141,13 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+        if (view != null && !ignoreInsets) presenter.applyBottomInset(view, getBottomInset());
     }
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
-        if (viewController == null || viewController.getView() == null) return insets;
+        if (viewController == null || viewController.getView() == null || ignoreInsets) return insets;
         final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
         final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
