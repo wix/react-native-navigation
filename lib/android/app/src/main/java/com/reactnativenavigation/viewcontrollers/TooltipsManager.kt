@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers
 import android.view.View
 import com.reactnativenavigation.options.OverlayAttachOptions
 import com.reactnativenavigation.react.CommandListener
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.ViewTooltip
 
@@ -16,6 +17,12 @@ class TooltipsManager(
         tooltipController: ViewController<*>, overlayAttachOptions: OverlayAttachOptions,
         listener: CommandListener
     ) {
+        if(tooltipController !is ComponentViewController){
+            listener.onError("Cannot show Tooltip with non component layout")
+            return
+        }
+
+        tooltipController.ignoreInsets(true)
         val hostController: ViewController<*>? = findController(overlayAttachOptions.layoutId.get())
         if (hostController != null) {
             val tooltipAnchorView: View? = findTooltipAnchorView(overlayAttachOptions)
