@@ -5,6 +5,8 @@ import React from 'react';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
+import testIDs from '../testIDs';
+import { stack } from '../commons/Layouts';
 
 export default class TooltipsScreen extends NavigationComponent {
   static options(): Options {
@@ -55,12 +57,17 @@ export default class TooltipsScreen extends NavigationComponent {
           onPress={async () => this.showTooltips('bottomTabs', 'NavigationBottomTab')}
         />
         <Button
-          label="showToolTips on Stack"
-          onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton')}
+          label="showToolTips on Stack TopBar"
+          onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton', 'bottom')}
         />
         <Button
           label="showToolTips on Component"
           onPress={async () => this.showTooltips('LayoutsTabMainComponent', 'LayoutsBottomTab')}
+        />
+        <Button
+          label="Pushed BottomTabs"
+          testID={testIDs.BOTTOM_TABS_BTN}
+          onPress={this.pushBottomTabs}
         />
       </Root>
     );
@@ -92,5 +99,50 @@ export default class TooltipsScreen extends NavigationComponent {
       }
     );
     console.log('tooltip ', res);
+  };
+
+  pushBottomTabs = async () => {
+    await Navigation.push(this.props.componentId, {
+      bottomTabs: {
+        id: 'innerBt',
+        children: [
+          {
+            component: {
+              name: Screens.Layouts,
+            },
+          },
+          stack(Screens.FirstBottomTabsScreen),
+          stack(
+            {
+              component: {
+                name: Screens.SecondBottomTabsScreen,
+              },
+            },
+            'SecondTab'
+          ),
+          {
+            component: {
+              name: Screens.Pushed,
+              options: {
+                bottomTab: {
+                  id: 'non-press-tab',
+                  selectTabOnPress: false,
+                  text: 'Tab 3',
+                  testID: testIDs.THIRD_TAB_BAR_BTN,
+                },
+              },
+            },
+          },
+        ],
+        options: {
+          hardwareBackButton: {
+            bottomTabsOnPress: 'previous',
+          },
+          bottomTabs: {
+            testID: testIDs.BOTTOM_TABS,
+          },
+        },
+      },
+    });
   };
 }

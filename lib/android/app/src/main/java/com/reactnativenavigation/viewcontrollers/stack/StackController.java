@@ -27,6 +27,7 @@ import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.fab.Fab;
 import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -482,8 +483,14 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
-
-        return null;
+        final StackLayout view = this.view;
+        if(view!=null){
+            final TooltipsOverlay overlay = view.getOverlay();
+            return overlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
+                    overlayAttachOptions.getGravity().get());
+        }else{
+            return null;
+        }
     }
 
     @Override
