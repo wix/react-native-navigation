@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.bottomtabs
 
 import android.content.Context
-import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,6 @@ class BottomTabsLayout(context: Context) : CoordinatorLayout(context) {
     val tooltipsOverlay = TooltipsOverlay(context, " BottomTabs")
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            tooltipsOverlay.setBackgroundColor(Color.argb(0.5f, 1f, 0f, 0f))
-        }
         this.addView(tooltipsOverlay, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
 

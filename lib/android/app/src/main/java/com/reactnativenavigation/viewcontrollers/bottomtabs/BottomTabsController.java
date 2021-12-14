@@ -246,15 +246,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions,
                                                @NonNull ViewController<?> tooltipViewController) {
-        final Rect rect = new Rect();
-        tooltipAnchorView.getGlobalVisibleRect(rect);
         final BottomTabsLayout view = getView();
         final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
         return tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
                 overlayAttachOptions.getGravity().get());
-//        Toast.makeText(getActivity(),
-//                "Show On BottomTabs anchor id" + overlayAttachOptions.getAnchorId() + ", anchor at: " + rect,
-//                Toast.LENGTH_SHORT).show();
     }
 
     public View getTabViewByTag(String id) {
