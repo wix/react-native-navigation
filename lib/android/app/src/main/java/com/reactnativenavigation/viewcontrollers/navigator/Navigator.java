@@ -232,7 +232,6 @@ public class Navigator extends ParentController<ViewGroup> {
            tooltipsManager.dismissTooltip(componentId, listener);
         } else {
             overlayManager.dismiss(overlaysLayout, componentId, listener);
-
         }
     }
 

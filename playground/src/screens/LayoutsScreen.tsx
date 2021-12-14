@@ -21,6 +21,7 @@ const {
   BOTTOM_TABS,
   SIDE_MENU_BTN,
   KEYBOARD_SCREEN_BTN,
+  TOOLTIPS_SCREEN_BTN,
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
@@ -69,26 +70,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="Pushed BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.pushBottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
-        <Button
-          label="showToolTips on BottomTabs TopBar"
-          onPress={async () => this.showTooltips('bottomTabs', 'HitRightButton')}
-        />
-        <Button
-          label="showToolTips on inner BottomTabs bottomTab"
-          onPress={async () => this.showTooltips('innerBt', 'non-press-tab')}
-        />
-        <Button
-          label="showToolTips on BottomTabs BottomTab"
-          onPress={async () => this.showTooltips('bottomTabs', 'LayoutsBottomTab')}
-        />
-        <Button
-          label="showToolTips on Stack"
-          onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton')}
-        />
-        <Button
-          label="showToolTips on Component"
-          onPress={async () => this.showTooltips('LayoutsTabMainComponent', 'LayoutsBottomTab')}
-        />
+        <Button label="Tooltips" testID={TOOLTIPS_SCREEN_BTN} onPress={this.pushTooltips} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -102,19 +84,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
-  showTooltips = async (layoutId: string, anchor: string) => {
-    await Navigation.showOverlay(Screens.RoundButton, {
-      overlay: {
-        attach: {
-          layoutId: layoutId,
-          anchor: {
-            id: anchor,
-            gravity: 'top',
-          },
-        },
-      },
-    });
-  };
   pushBottomTabs = () => {
     Navigation.push(this.props.componentId, {
       bottomTabs: {
@@ -279,6 +248,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   openKeyboardScreen = async () => {
     await Navigation.push(this.props.componentId, Screens.KeyboardScreen);
+  };
+  pushTooltips = async () => {
+    await Navigation.push(this.props.componentId, Screens.TooltipsScreen);
   };
   onClickSearchBar = () => {
     Navigation.push(this.props.componentId, {

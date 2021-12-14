@@ -4,6 +4,7 @@ import addProcessors from './commons/Processors';
 import { setDefaultOptions } from './commons/options/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
+import { LogBox } from 'react-native';
 
 // @ts-ignore
 alert = (title, message) =>
@@ -25,6 +26,8 @@ function start() {
     Navigation.dismissAllModals();
     setRoot();
   });
+
+  LogBox.ignoreAllLogs();
 }
 
 function setRoot() {
