@@ -34,11 +34,6 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
     }
 
     fun addTooltip(tooltipAnchorView: View, tooltipView: View, gravity: String): ViewTooltip.TooltipView? {
-        //In Order for ReactView to get measured properly it needs to be added to a layout
-        //then the component will get started the JS thread will update his measurements
-        //then we join it MessageQueue and wait after it finishes its job and move it to tooltip parent
-        tooltipView.alpha = 0.0f
-        this.addView(tooltipView)
         return when (gravity) {
             "top" -> {
                 showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.TOP)
@@ -71,11 +66,13 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
             .clickToHide(false)
             .align(ViewTooltip.ALIGN.CENTER)
             .padding(0, 0, 0, 0)
-            // .margin(0, 0, 0, 0)
-//            .customView(tooltipView)
+            .customView(tooltipView)
+//            .shadowColor(Color.BLACK)
+//            .withShadow(true)
             .distanceWithView(-25)
             .color(Color.WHITE)
-            .arrowHeight(25)
+            .bubble(true)
+            .arrowHeight(40)
             .arrowWidth(25)
             .position(pos)
 
@@ -85,11 +82,6 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
 
             }
             .show()
-        this.post {
-            removeView(tooltipView)
-            tooltipView.alpha = 1.0f
-            tooltipViewContainer.setCustomView(tooltipView)
-        }
         return tooltipViewContainer
     }
 
