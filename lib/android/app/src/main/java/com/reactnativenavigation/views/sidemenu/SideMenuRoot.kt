@@ -21,7 +21,7 @@ import com.reactnativenavigation.views.tooltips.TooltipsOverlay
 
 class SideMenuRoot(context: Context) : CoordinatorLayout(context) {
     private var sideMenu: SideMenu? = null
-    val tooltipsOverlay = TooltipsOverlay(context,"SideMenu",true)
+    val tooltipsOverlay = TooltipsOverlay(context,"SideMenu")
 
     init {
         addView(tooltipsOverlay,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
