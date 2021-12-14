@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.CommandListener;
@@ -12,6 +13,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 
@@ -63,6 +65,15 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         SideMenuRoot root = new SideMenuRoot(getActivity());
         root.addSideMenu(sideMenu, this);
         return root;
+    }
+
+    @Override
+    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+        if (view != null) {
+            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView, tooltipViewController.getView(),
+                    overlayAttachOptions.getGravity().get());
+        }
+        return null;
     }
 
     @Override
