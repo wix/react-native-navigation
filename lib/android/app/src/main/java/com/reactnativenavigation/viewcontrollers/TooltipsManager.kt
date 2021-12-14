@@ -22,6 +22,7 @@ class TooltipsManager(
             if (tooltipAnchorView != null) {
                 val tooltipView = hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, tooltipController)
                 registry[tooltipController.id] = tooltipView to tooltipController
+                tooltipController.onViewDidAppear()
                 listener.onSuccess(tooltipController.id)
             } else {
                 listener.onError("Cannot find anchor view with id" + overlayAttachOptions.anchorId)

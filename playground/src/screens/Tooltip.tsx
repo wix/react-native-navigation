@@ -14,6 +14,10 @@ export default class Tooltip extends NavigationComponent<Props> {
     Navigation.events().bindComponent(this);
   }
 
+  componentWillAppear() {
+    console.log('Tooltip: componentWillAppear:', this.props.componentId);
+  }
+
   componentDidAppear() {
     console.log('Tooltip: componentDidAppear:', this.props.componentId);
   }
@@ -21,6 +25,14 @@ export default class Tooltip extends NavigationComponent<Props> {
   componentDidDisappear() {
     console.log('Tooltip: componentDidDisappear:', this.props.componentId);
   }
+
+  componentDidMount() {
+    console.log('Tooltip: componentDidMount:', this.props.componentId);
+  }
+  componentWillUnmount() {
+    console.log('Tooltip: componentWillUnmount:', this.props.componentId);
+  }
+
   render() {
     return (
       <View style={styles.container}>
