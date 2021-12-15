@@ -10,14 +10,15 @@ import com.reactnativenavigation.views.ViewTooltip
 class TooltipsManager(
     val findController: (String) -> ViewController<*>?,
     val findTooltipAnchorView: (OverlayAttachOptions) -> View?
-) {
+) /*: View.OnAttachStateChangeListener*/ {
     private val registry = mutableMapOf<String, Pair<ViewTooltip.TooltipView, ViewController<*>>>()
+    private val anchorsTooltipsRegistry = mutableMapOf<View, String>()
 
     fun showTooltip(
         tooltipController: ViewController<*>, overlayAttachOptions: OverlayAttachOptions,
         listener: CommandListener
     ) {
-        if(tooltipController !is ComponentViewController){
+        if (tooltipController !is ComponentViewController) {
             listener.onError("Cannot show Tooltip with non component layout")
             return
         }
@@ -29,10 +30,12 @@ class TooltipsManager(
             if (tooltipAnchorView != null) {
                 val tooltipView = hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, tooltipController)
                 tooltipView?.let {
+//                    tooltipAnchorView.addOnAttachStateChangeListener(this)
+//                    anchorsTooltipsRegistry[tooltipAnchorView] = tooltipController.id
                     registry[tooltipController.id] = tooltipView to tooltipController
                     tooltipController.onViewDidAppear()
                     listener.onSuccess(tooltipController.id)
-                }?:listener.onError("Parent could not create tooltip, it could be null parent")
+                } ?: listener.onError("Parent could not create tooltip, it could be null parent")
             } else {
                 listener.onError("Cannot find anchor view with id" + overlayAttachOptions.anchorId)
             }
@@ -41,9 +44,10 @@ class TooltipsManager(
         }
     }
 
-    fun contains(id:String): Boolean {
+    fun contains(id: String): Boolean {
         return registry.containsKey(id)
     }
+
     fun dismissTooltip(id: String, listener: CommandListener) {
         registry.remove(id)?.let {
             val (tpView, controller) = it
@@ -52,7 +56,7 @@ class TooltipsManager(
                 controller.destroy()
                 listener.onSuccess(id)
             }
-        }?:listener.onError("Can't dismiss non-shown tooltip of id: $id")
+        } ?: listener.onError("Can't dismiss non-shown tooltip of id: $id")
     }
 
     fun dismissAllTooltip(listener: CommandListener) {
@@ -69,4 +73,25 @@ class TooltipsManager(
 
     }
 
+//    override fun onViewAttachedToWindow(v: View?) {
+//
+//    }
+//
+//    override fun onViewDetachedFromWindow(v: View?) {
+//        anchorsTooltipsRegistry[v]?.let {
+//            v?.removeOnAttachStateChangeListener(this)
+//            dismissTooltip(it, NOOPCommandListener)
+//            anchorsTooltipsRegistry.remove(v)
+//        }
+//    }
+
 }
+//
+//private object NOOPCommandListener : CommandListener {
+//    override fun onSuccess(childId: String?) {
+//
+//    }
+//
+//    override fun onError(message: String?) {
+//    }
+//}
