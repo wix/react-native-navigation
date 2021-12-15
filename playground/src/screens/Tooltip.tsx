@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Navigation, NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
+import testIDs from '../testIDs';
 
 interface Props extends NavigationComponentProps {
   title?: string;
@@ -46,13 +47,14 @@ export default class Tooltip extends NavigationComponent<Props> {
           <View style={styles.button}>
             <Text style={styles.text}>{'Hey, This is some text that belongs to a tooltip!!!'}</Text>
             <TouchableOpacity
+              testID={testIDs.OK_BUTTON}
               style={styles.buttonClick}
               // @ts-ignore
               onPress={async () => {
                 await Navigation.dismissOverlay(this.props.componentId);
               }}
             >
-              <Text style={styles.text}>{'OK'}</Text>
+              <Text style={styles.text}>{'Got it!'}</Text>
             </TouchableOpacity>
           </View>
         </View>
