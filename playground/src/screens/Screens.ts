@@ -123,6 +123,7 @@ const Screens = {
   StatusBarFirstTab,
   KeyboardScreen: 'KeyboardScreen',
   TooltipsScreen: 'TooltipsScreen',
+  TooltipsScreenExtra: 'TooltipsScreenExtra',
   TopBarBackground: 'TopBarBackground',
   Toast: 'Toast',
   FlatListScreen: 'FlatListScreen',
