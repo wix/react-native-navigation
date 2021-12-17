@@ -164,7 +164,9 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         final boolean childBack = !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
         final Options options = resolveCurrentOptions();
         if (!childBack) {
-            if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection) {
+            if (options.hardwareBack.popStackOnPress.isFalse()) {
+                return true;
+            } else if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection) {
                 if (!selectionStack.isEmpty()) {
                     final int prevSelectedTabIndex = selectionStack.poll();
                     selectTab(prevSelectedTabIndex, false);
