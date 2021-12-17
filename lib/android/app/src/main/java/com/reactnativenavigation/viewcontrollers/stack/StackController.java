@@ -398,6 +398,9 @@ public class StackController extends ParentController<StackLayout> {
                 sendOnNavigationButtonPressed(HARDWARE_BACK_BUTTON_ID);
             }
             return true;
+        } else if (stack.size() == 1 && !presenter.shouldPopOnHardwareButtonPress(peek())) {
+            sendOnNavigationButtonPressed(HARDWARE_BACK_BUTTON_ID);
+            return true;
         }
         return false;
     }
