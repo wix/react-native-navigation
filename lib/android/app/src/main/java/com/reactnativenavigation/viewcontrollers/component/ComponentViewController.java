@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.component;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.utils.LogKt;
@@ -78,6 +79,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null)
             view.sendComponentWillStart();
         super.onViewDidAppear();
+        view.requestApplyInsets();
         if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
     }
