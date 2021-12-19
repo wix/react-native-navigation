@@ -8,8 +8,8 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.ViewTooltip
 
 class TooltipsManager(
-    val findController: (String) -> ViewController<*>?,
-    val findTooltipAnchorView: (OverlayAttachOptions) -> View?
+    private val findController: (String) -> ViewController<*>?,
+    private val findTooltipAnchorView: (OverlayAttachOptions) -> View?
 ) /*: View.OnAttachStateChangeListener*/ {
     private val registry = mutableMapOf<String, Pair<ViewTooltip.TooltipView, ViewController<*>>>()
     private val anchorsTooltipsRegistry = mutableMapOf<View, String>()
@@ -22,7 +22,6 @@ class TooltipsManager(
             listener.onError("Cannot show Tooltip with non component layout")
             return
         }
-
         tooltipController.ignoreInsets(true)
         val hostController: ViewController<*>? = findController(overlayAttachOptions.layoutId.get())
         if (hostController != null) {
@@ -37,14 +36,14 @@ class TooltipsManager(
                     listener.onSuccess(tooltipController.id)
                 } ?: listener.onError("Parent could not create tooltip, it could be null parent")
             } else {
-                listener.onError("Cannot find anchor view with id" + overlayAttachOptions.anchorId)
+                listener.onError("Cannot find anchor view with id " + overlayAttachOptions.anchorId)
             }
         } else {
-            listener.onError("Cannot find layout with id" + overlayAttachOptions.layoutId)
+            listener.onError("Cannot find layout with id " + overlayAttachOptions.layoutId)
         }
     }
 
-    fun contains(id: String): Boolean {
+    operator fun contains(id: String): Boolean {
         return registry.containsKey(id)
     }
 
