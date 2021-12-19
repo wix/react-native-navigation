@@ -69,11 +69,11 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
             .customView(tooltipView)
 //            .shadowColor(Color.BLACK)
 //            .withShadow(true)
-            .distanceWithView(-25)
-            .color(Color.WHITE)
-            .bubble(true)
-            .arrowHeight(40)
-            .arrowWidth(25)
+            .distanceWithView(0)
+            .color(Color.TRANSPARENT)
+            .bubble(false)
+            .arrowHeight(0)
+            .arrowWidth(0)
             .position(pos)
 
             .onDisplay {

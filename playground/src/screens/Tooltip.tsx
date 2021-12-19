@@ -66,7 +66,7 @@ export default class Tooltip extends NavigationComponent<Props> {
 const styles = StyleSheet.create({
   root: { alignItems: 'flex-start' },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
