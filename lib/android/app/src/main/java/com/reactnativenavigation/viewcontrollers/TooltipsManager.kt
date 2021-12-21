@@ -10,7 +10,7 @@ import com.reactnativenavigation.views.ViewTooltip
 class TooltipsManager(
     private val findController: (String) -> ViewController<*>?,
     private val findTooltipAnchorView: (OverlayAttachOptions) -> View?
-) /*: View.OnAttachStateChangeListener*/ {
+) : View.OnAttachStateChangeListener {
     private val registry = mutableMapOf<String, Pair<ViewTooltip.TooltipView, ViewController<*>>>()
     private val anchorsTooltipsRegistry = mutableMapOf<View, String>()
 
@@ -29,8 +29,8 @@ class TooltipsManager(
             if (tooltipAnchorView != null) {
                 val tooltipView = hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, tooltipController)
                 tooltipView?.let {
-//                    tooltipAnchorView.addOnAttachStateChangeListener(this)
-//                    anchorsTooltipsRegistry[tooltipAnchorView] = tooltipController.id
+                    tooltipAnchorView.addOnAttachStateChangeListener(this)
+                    anchorsTooltipsRegistry[tooltipAnchorView] = tooltipController.id
                     registry[tooltipController.id] = tooltipView to tooltipController
                     tooltipController.onViewDidAppear()
                     listener.onSuccess(tooltipController.id)
@@ -50,11 +50,9 @@ class TooltipsManager(
     fun dismissTooltip(id: String, listener: CommandListener) {
         registry.remove(id)?.let {
             val (tpView, controller) = it
-            tpView.close()
-            tpView.post {
-                controller.destroy()
-                listener.onSuccess(id)
-            }
+            tpView.closeNow()
+            controller.destroy()
+            listener.onSuccess(id)
         } ?: listener.onError("Can't dismiss non-shown tooltip of id: $id")
     }
 
@@ -72,25 +70,25 @@ class TooltipsManager(
 
     }
 
-//    override fun onViewAttachedToWindow(v: View?) {
-//
-//    }
-//
-//    override fun onViewDetachedFromWindow(v: View?) {
-//        anchorsTooltipsRegistry[v]?.let {
-//            v?.removeOnAttachStateChangeListener(this)
-//            dismissTooltip(it, NOOPCommandListener)
-//            anchorsTooltipsRegistry.remove(v)
-//        }
-//    }
+    override fun onViewAttachedToWindow(v: View?) {
+
+    }
+
+    override fun onViewDetachedFromWindow(v: View?) {
+        anchorsTooltipsRegistry[v]?.let {
+            v?.removeOnAttachStateChangeListener(this)
+            dismissTooltip(it, NOOPCommandListener)
+            anchorsTooltipsRegistry.remove(v)
+        }
+    }
 
 }
-//
-//private object NOOPCommandListener : CommandListener {
-//    override fun onSuccess(childId: String?) {
-//
-//    }
-//
-//    override fun onError(message: String?) {
-//    }
-//}
+
+private object NOOPCommandListener : CommandListener {
+    override fun onSuccess(childId: String?) {
+
+    }
+
+    override fun onError(message: String?) {
+    }
+}

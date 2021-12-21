@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.tooltips
 
 import android.app.Activity
 import android.view.View
+import android.widget.FrameLayout
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleComponentViewController
 import com.reactnativenavigation.options.Options
@@ -28,17 +29,24 @@ class TooltipsManagerTest : BaseTest() {
     private var tooltipView: ViewTooltip.TooltipView? = null
     lateinit var activity: Activity
     lateinit var childRegistry: ChildControllersRegistry
+    lateinit var parent:FrameLayout
     lateinit var commandListener: CommandListener
     override fun beforeEach() {
         super.beforeEach()
         commandListener = Mockito.mock(CommandListener::class.java)
         childRegistry = ChildControllersRegistry()
         hostViewController = Mockito.mock(ViewController::class.java)
-        tooltipView = Mockito.mock(ViewTooltip.TooltipView::class.java)
-        whenever(hostViewController?.showTooltip(any(), any(), any())).thenReturn(tooltipView)
-        anchorView = Mockito.mock(View::class.java)
+
         activity = newActivity()
+        tooltipView = spy(ViewTooltip.TooltipView(activity))
+        whenever(hostViewController?.showTooltip(any(), any(), any())).thenReturn(tooltipView)
+        anchorView = spy(View(activity))
+        parent = FrameLayout(activity)
+        parent.addView(anchorView)
+        activity.setContentView(parent)
         uut = TooltipsManager({ hostViewController }, { anchorView })
+        idleMainLooper()
+
     }
 
     @Test
@@ -128,9 +136,24 @@ class TooltipsManagerTest : BaseTest() {
         uut.dismissTooltip(id, dismissCmdListener)
 
 
-        verify(tooltipView)?.close()
-        verify(dismissCmdListener).onSuccess(any())
+        verify(tooltipView)?.closeNow()
+        verify(dismissCmdListener).onSuccess(id)
         verify(tooltipController).destroy()
+    }
+
+    @Test
+    fun `showTooltip - should track anchor view attached, detached state`() {
+        val overlayAttachOptions = newAttachOptions()
+
+        val id = "TooltipId"
+        val tooltipController = spy(SimpleComponentViewController(activity, childRegistry, id, Options()))
+        Java6Assertions.assertThat(id in uut).isFalse
+
+        uut.showTooltip(tooltipController, overlayAttachOptions, commandListener)
+
+        verify(anchorView)?.addOnAttachStateChangeListener(uut)
+        uut.onViewDetachedFromWindow(anchorView)
+        verify(anchorView)?.removeOnAttachStateChangeListener(uut)
     }
 
 
