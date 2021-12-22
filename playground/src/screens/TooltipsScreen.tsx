@@ -70,13 +70,6 @@ export default class TooltipsScreen extends NavigationComponent<Props> {
           onPress={this.pushNoButtons}
         />
         <Button label="showModal" testID={testIDs.MODAL_BTN} onPress={this.showModal} />
-        {this.props.enablePushBottomTabs && (
-          <Button
-            label="Push BottomTabs"
-            testID={testIDs.BOTTOM_TABS_BTN}
-            onPress={this.pushBottomTabs}
-          />
-        )}
         <Button label="Extra Flows" onPress={this.pushExtraFlows} />
       </Root>
     );
