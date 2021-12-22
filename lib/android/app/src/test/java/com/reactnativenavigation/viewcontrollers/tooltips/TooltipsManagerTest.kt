@@ -16,10 +16,7 @@ import com.reactnativenavigation.views.ViewTooltip
 import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.kotlin.any
-import org.mockito.kotlin.spy
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 
 class TooltipsManagerTest : BaseTest() {
 
@@ -27,6 +24,7 @@ class TooltipsManagerTest : BaseTest() {
     private var hostViewController: ViewController<*>? = null
     private var anchorView: View? = null
     private var tooltipView: ViewTooltip.TooltipView? = null
+    private var tooltipView2: ViewTooltip.TooltipView? = null
     lateinit var activity: Activity
     lateinit var childRegistry: ChildControllersRegistry
     lateinit var parent:FrameLayout
@@ -39,7 +37,9 @@ class TooltipsManagerTest : BaseTest() {
 
         activity = newActivity()
         tooltipView = spy(ViewTooltip.TooltipView(activity))
-        whenever(hostViewController?.showTooltip(any(), any(), any())).thenReturn(tooltipView)
+        tooltipView2 = spy(ViewTooltip.TooltipView(activity))
+        whenever(hostViewController?.showTooltip(any(), any(), any()))
+            .doReturnConsecutively(listOf(tooltipView,tooltipView2))
         anchorView = spy(View(activity))
         parent = FrameLayout(activity)
         parent.addView(anchorView)
@@ -95,6 +95,24 @@ class TooltipsManagerTest : BaseTest() {
     }
 
     @Test
+    fun `showTooltip - should show multiple tooltips on same anchor`() {
+        val overlayAttachOptions = newAttachOptions()
+
+        val tooltipController = spy(SimpleComponentViewController(activity, childRegistry, "TooltipId", Options()))
+        val tooltipController2 = spy(SimpleComponentViewController(activity, childRegistry, "TooltipId2", Options()))
+        uut.showTooltip(tooltipController, overlayAttachOptions, commandListener)
+
+        verify(hostViewController)?.showTooltip(anchorView!!, overlayAttachOptions, tooltipController)
+        verify(commandListener).onSuccess("TooltipId")
+        verify(tooltipController).onViewDidAppear()
+
+        uut.showTooltip(tooltipController2, overlayAttachOptions, commandListener)
+        verify(hostViewController)?.showTooltip(anchorView!!, overlayAttachOptions, tooltipController2)
+        verify(commandListener).onSuccess("TooltipId2")
+        verify(tooltipController2).onViewDidAppear()
+    }
+
+    @Test
     fun `contains - should return true for shown tooltip and false for not `() {
         val overlayAttachOptions = newAttachOptions()
 
@@ -142,18 +160,22 @@ class TooltipsManagerTest : BaseTest() {
     }
 
     @Test
-    fun `showTooltip - should track anchor view attached, detached state`() {
+    fun `dismissAllTooltips - should close all tooltips, destroy them and not keeping reference`() {
         val overlayAttachOptions = newAttachOptions()
 
-        val id = "TooltipId"
-        val tooltipController = spy(SimpleComponentViewController(activity, childRegistry, id, Options()))
-        Java6Assertions.assertThat(id in uut).isFalse
-
+        val tooltipController = spy(SimpleComponentViewController(activity, childRegistry, "TooltipId", Options()))
+        val tooltipController2 = spy(SimpleComponentViewController(activity, childRegistry, "TooltipId2", Options()))
         uut.showTooltip(tooltipController, overlayAttachOptions, commandListener)
+        uut.showTooltip(tooltipController2, overlayAttachOptions, commandListener)
 
-        verify(anchorView)?.addOnAttachStateChangeListener(uut)
-        uut.onViewDetachedFromWindow(anchorView)
-        verify(anchorView)?.removeOnAttachStateChangeListener(uut)
+        Java6Assertions.assertThat("TooltipId" in uut).isTrue
+        Java6Assertions.assertThat("TooltipId2" in uut).isTrue
+        uut.dismissAllTooltips()
+
+        verify(tooltipView)?.closeNow()
+        verify(tooltipController).destroy()
+        verify(tooltipView2)?.closeNow()
+        verify(tooltipController2).destroy()
     }
 
 
