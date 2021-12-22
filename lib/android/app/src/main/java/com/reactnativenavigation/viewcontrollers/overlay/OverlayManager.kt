@@ -37,9 +37,8 @@ class OverlayManager {
         }
     }
 
-    fun dismissAll(overlaysContainer: ViewGroup, listener: CommandListener) {
+    fun dismissAll(overlaysContainer: ViewGroup) {
         destroy(overlaysContainer)
-        listener.onSuccess("")
     }
 
     fun destroy(overlaysContainer: ViewGroup) {
