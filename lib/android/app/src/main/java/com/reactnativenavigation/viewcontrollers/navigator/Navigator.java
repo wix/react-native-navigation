@@ -236,8 +236,9 @@ public class Navigator extends ParentController<ViewGroup> {
     }
 
     public void dismissAllOverlays(CommandListener listener) {
-        overlayManager.dismissAll(overlaysLayout, listener);
-        tooltipsManager.dismissAllTooltip(listener);
+        overlayManager.dismissAll(overlaysLayout);
+        tooltipsManager.dismissAllTooltips();
+        listener.onSuccess("");
     }
 
     @Nullable
