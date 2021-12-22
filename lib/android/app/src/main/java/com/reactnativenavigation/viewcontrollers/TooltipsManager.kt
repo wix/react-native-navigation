@@ -7,12 +7,16 @@ import com.reactnativenavigation.viewcontrollers.component.ComponentViewControll
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.ViewTooltip
 
+private class TooltipDataEntry(
+    var tooltipView: ViewTooltip.TooltipView,
+    val tooltipController: ViewController<*>
+)
+
 class TooltipsManager(
     private val findController: (String) -> ViewController<*>?,
     private val findTooltipAnchorView: (OverlayAttachOptions) -> View?
-) : View.OnAttachStateChangeListener {
-    private val registry = mutableMapOf<String, Pair<ViewTooltip.TooltipView, ViewController<*>>>()
-    private val anchorsTooltipsRegistry = mutableMapOf<View, String>()
+){
+    private val registry = mutableMapOf<String, TooltipDataEntry>()
 
     fun showTooltip(
         tooltipController: ViewController<*>, overlayAttachOptions: OverlayAttachOptions,
@@ -29,9 +33,7 @@ class TooltipsManager(
             if (tooltipAnchorView != null) {
                 val tooltipView = hostController.showTooltip(tooltipAnchorView, overlayAttachOptions, tooltipController)
                 tooltipView?.let {
-                    tooltipAnchorView.addOnAttachStateChangeListener(this)
-                    anchorsTooltipsRegistry[tooltipAnchorView] = tooltipController.id
-                    registry[tooltipController.id] = tooltipView to tooltipController
+                    registry[tooltipController.id] = TooltipDataEntry(tooltipView, tooltipController)
                     tooltipController.onViewDidAppear()
                     listener.onSuccess(tooltipController.id)
                 } ?: listener.onError("Parent could not create tooltip, it could be null parent")
@@ -49,46 +51,21 @@ class TooltipsManager(
 
     fun dismissTooltip(id: String, listener: CommandListener) {
         registry.remove(id)?.let {
-            val (tpView, controller) = it
-            tpView.closeNow()
-            controller.destroy()
+            it.tooltipView.closeNow()
+            it.tooltipController.destroy()
             listener.onSuccess(id)
         } ?: listener.onError("Can't dismiss non-shown tooltip of id: $id")
     }
 
-    fun dismissAllTooltip(listener: CommandListener) {
-        while (registry.isNotEmpty()) {
-            val first = registry.entries.first()
-            val (tpView, controller) = first.value
-            tpView.close()
-            tpView.post {
-                controller.destroy()
-            }
+    fun dismissAllTooltips() {
+        val entries = registry.entries
+        while (entries.isNotEmpty()) {
+            val first = entries.first()
+            val tooltipDataEntry = first.value
+            tooltipDataEntry.tooltipView.closeNow()
+            tooltipDataEntry.tooltipController.destroy()
             registry.remove(first.key)
         }
-        listener.onSuccess("")
-
     }
 
-    override fun onViewAttachedToWindow(v: View?) {
-
-    }
-
-    override fun onViewDetachedFromWindow(v: View?) {
-        anchorsTooltipsRegistry[v]?.let {
-            v?.removeOnAttachStateChangeListener(this)
-            dismissTooltip(it, NOOPCommandListener)
-            anchorsTooltipsRegistry.remove(v)
-        }
-    }
-
-}
-
-private object NOOPCommandListener : CommandListener {
-    override fun onSuccess(childId: String?) {
-
-    }
-
-    override fun onError(message: String?) {
-    }
 }
