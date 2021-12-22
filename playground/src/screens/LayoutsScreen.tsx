@@ -78,7 +78,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
-        <Button label="Pushed BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.pushBottomTabs} />
+        <Button
+          label="Pushed BottomTabs"
+          testID={testIDs.PUSH_BOTTOM_TABS_BTN}
+          onPress={this.pushBottomTabs}
+        />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button label="Tooltips" testID={TOOLTIPS_SCREEN_BTN} onPress={this.pushTooltips} />
