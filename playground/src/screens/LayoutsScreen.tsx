@@ -148,11 +148,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       bottomTabs: {
         id: 'innerBt',
         children: [
-          {
-            component: {
-              name: Screens.Layouts,
-            },
-          },
           stack(Screens.FirstBottomTabsScreen),
           stack(
             {
