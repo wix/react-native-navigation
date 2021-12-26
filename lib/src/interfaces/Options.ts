@@ -1095,13 +1095,23 @@ export interface OverlayOptions {
    */
   handleKeyboardEvents?: boolean;
 
+  /**
+   * Attach overlay to anchor view in a certain layer of layout as a tooltip
+   */
   attach?: {
     /**
      * layout id to look for to add as a layer
+     * which can be componentId or stackId or bottomTabsId.
      */
-    layoutId: string; // componentId or stackId or bottomTabsId
+    layoutId: string;
     anchor: {
-      id: string; // bottomTabID or topBarButtonId
+      /**
+       * Anchor view id, TopBar Button, Title Component, BottomTab.
+       */
+      id: string;
+      /**
+       * The anchor view side that the tooltip will be displayed.
+       */
       gravity: 'top' | 'left' | 'right' | 'bottom';
     };
   };
