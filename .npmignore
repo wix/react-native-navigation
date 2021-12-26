@@ -9,7 +9,7 @@ website/
 .travis.yml
 wallaby.js
 package-lock.json
-
+.buildkite/
 #################
 # from .gitignore:
 ################
