@@ -3,6 +3,7 @@ coverage/
 e2e/
 integration/
 playground/
+artifacts/
 scripts/
 website/
 .travis.yml
@@ -164,6 +165,7 @@ lib/android/out/
 lib/android/.gradle/
 lib/android/build/
 lib/android/app/build/
+lib/android/app/src/test
 
 # Local configuration file (sdk path, etc)
 local.properties
