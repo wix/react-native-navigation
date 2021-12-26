@@ -190,7 +190,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
-    if("Playground" == rootProject.name){
+    if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
         // tests only for our playground
         testImplementation 'junit:junit:4.13.2'
         testImplementation "org.robolectric:robolectric:4.7.2"
