@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
@@ -17,6 +18,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
 import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
+import com.reactnativenavigation.options.layout.Margins;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -65,6 +67,19 @@ public class Presenter {
     private void applyViewOptions(ViewController view, Options options) {
         applyBackgroundColor(view, options);
         applyTopMargin(view.getView(), options);
+        applyMargins(view.getView(),options.layout.getMargins());
+    }
+
+    private void applyMargins(ViewGroup view, Margins margins) {
+        if (view.getLayoutParams() instanceof MarginLayoutParams) {
+            MarginLayoutParams mlp = (MarginLayoutParams) view.getLayoutParams();
+            mlp.setMargins(
+                    margins.getLeft() == null ? 0 : margins.getLeft(),
+                    margins.getTop() == null ? 0 : margins.getTop(),
+                    margins.getRight() == null ? 0 : margins.getRight(),
+                    margins.getBottom() == null ? 0 : margins.getBottom()
+            );
+        }
     }
 
     private void applyTopMargin(View view, Options options) {
