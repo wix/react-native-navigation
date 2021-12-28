@@ -180,6 +180,11 @@ export interface OptionsLayout {
    * #### (iOS specific)
    */
   autoHideHomeIndicator?: boolean;
+
+  /**
+   * Add insets to the top layout
+   */
+  insets?: Insets;
 }
 
 export enum OptionsModalPresentationStyle {

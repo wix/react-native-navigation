@@ -55,6 +55,16 @@
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
+    UIViewController *viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+
+    if (withDefault.layout.insets.hasValue) {
+        viewController.topMostViewController.additionalSafeAreaInsets =
+            UIEdgeInsetsMake([withDefault.layout.insets.top withDefault:0],
+                             [withDefault.layout.insets.left withDefault:0],
+                             [withDefault.layout.insets.bottom withDefault:0],
+                             [withDefault.layout.insets.right withDefault:0]);
+    }
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -82,6 +92,14 @@
         mergeOptions.layout.autoHideHomeIndicator.get != _prefersHomeIndicatorAutoHidden) {
         _prefersHomeIndicatorAutoHidden = mergeOptions.layout.autoHideHomeIndicator.get;
         [self.boundViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
+
+    if (mergeOptions.layout.insets.hasValue) {
+        self.boundViewController.topMostViewController.additionalSafeAreaInsets =
+            UIEdgeInsetsMake([withDefault.layout.insets.top withDefault:0],
+                             [withDefault.layout.insets.left withDefault:0],
+                             [withDefault.layout.insets.bottom withDefault:0],
+                             [withDefault.layout.insets.right withDefault:0]);
     }
 }
 

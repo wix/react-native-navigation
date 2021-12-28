@@ -54,6 +54,14 @@ describe('Overlay', () => {
     await elementById(TestIDs.HIDE_TOP_BAR_BUTTON).tap();
     await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it('should show banner overlay and not block the screen', async () => {
+    await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
+    await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
+    await expect(elementById(TestIDs.FOOTER_TEXT)).not.toBeVisible();
+    await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
+    await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
+  });
 });
 
 describe('Overlay Dismiss all', () => {

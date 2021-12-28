@@ -88,6 +88,7 @@
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
+    [super applyOptionsOnViewDidLayoutSubviews:options];
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     if (withDefault.topBar.background.component.name.hasValue) {
         [self presentBackgroundComponent];

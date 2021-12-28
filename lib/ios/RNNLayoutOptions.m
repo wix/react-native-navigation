@@ -11,6 +11,7 @@
     self.direction = [TextParser parse:dict key:@"direction"];
     self.orientation = dict[@"orientation"];
     self.autoHideHomeIndicator = [BoolParser parse:dict key:@"autoHideHomeIndicator"];
+    self.insets = [[RNNInsetsOptions alloc] initWithDict:dict[@"insets"]];
     return self;
 }
 
@@ -25,6 +26,9 @@
         self.orientation = options.orientation;
     if (options.autoHideHomeIndicator)
         self.autoHideHomeIndicator = options.autoHideHomeIndicator;
+    if (options.insets.hasValue) {
+        self.insets = options.insets;
+    }
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {
