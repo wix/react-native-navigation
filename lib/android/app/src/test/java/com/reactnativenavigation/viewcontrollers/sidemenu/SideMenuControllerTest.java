@@ -11,6 +11,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.Mocks;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuOptions;
@@ -73,7 +74,7 @@ public class SideMenuControllerTest extends BaseTest {
             }
         };
         uut.setCenterController(center);
-        parent = mock(ParentController.class);
+        parent = Mocks.INSTANCE.parentController(null);
         Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
         uut.setParentController(parent);
     }

@@ -5,11 +5,13 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.ImageLoaderMock.mock
+import com.reactnativenavigation.mocks.Mocks
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.mocks.TypefaceLoaderMock
 import com.reactnativenavigation.options.BottomTabsOptions
@@ -24,7 +26,6 @@ import com.reactnativenavigation.utils.SystemUiUtils.saveStatusBarHeight
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.fakes.FakeParentController
-import com.reactnativenavigation.viewcontrollers.parent.ParentController
 import com.reactnativenavigation.viewcontrollers.stack.StackController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -267,7 +268,7 @@ class BottomTabsControllerTest : BaseTest() {
 
     @Test
     fun applyChildOptions_bottomTabsOptionsAreClearedAfterApply() {
-        val parent = Mockito.mock(ParentController::class.java)
+        val parent = Mocks.parentController()
         uut.parentController = parent
         child1.options.bottomTabsOptions.backgroundColor = ThemeColour(Colour(Color.RED))
         child1.onViewWillAppear()
@@ -550,6 +551,7 @@ class BottomTabsControllerTest : BaseTest() {
         options: Options = initialOptions,
         defaultOptions: Options = initialOptions
     ): BottomTabsController {
+        val presenter1 = Presenter(activity, defaultOptions)
         return object : BottomTabsController(
             activity,
             tabs,
@@ -558,11 +560,14 @@ class BottomTabsControllerTest : BaseTest() {
             imageLoaderMock,
             "uut",
             options,
-            Presenter(activity, defaultOptions),
+            presenter1,
             tabsAttacher,
             presenter,
             bottomTabPresenter
         ) {
+            override fun getTopMostParent(): ViewController<*> {
+                return  Mocks.parentController(null, FrameLayout(activity))
+            }
             override fun ensureViewIsCreated() {
                 super.ensureViewIsCreated()
                 uut.view.layout(0, 0, 1000, 1000)
