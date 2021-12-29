@@ -55,9 +55,11 @@
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
+}
+
+- (void)applyOptions:(RNNNavigationOptions *)options {
     UIViewController *viewController = self.boundViewController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-
     if (withDefault.layout.insets.hasValue) {
         viewController.topMostViewController.additionalSafeAreaInsets =
             UIEdgeInsetsMake([withDefault.layout.insets.top withDefault:0],
@@ -65,9 +67,6 @@
                              [withDefault.layout.insets.bottom withDefault:0],
                              [withDefault.layout.insets.right withDefault:0]);
     }
-}
-
-- (void)applyOptions:(RNNNavigationOptions *)options {
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
