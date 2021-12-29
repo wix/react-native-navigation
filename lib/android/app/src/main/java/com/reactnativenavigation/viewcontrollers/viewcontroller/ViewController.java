@@ -1,5 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
@@ -18,7 +21,6 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
@@ -31,9 +33,6 @@ import com.reactnativenavigation.views.component.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
         ViewGroup.OnHierarchyChangeListener,
