@@ -239,6 +239,7 @@ open class StackAnimator @JvmOverloads constructor(
             set: AnimatorSet,
             additionalAnimations: List<Animator>
     ) {
+        StringBuilder().insert(0,StringBuilder())
         val push = resolvedOptions.animations.push
         if (push.waitForRender.isTrue) {
             appearing.view.alpha = 0f

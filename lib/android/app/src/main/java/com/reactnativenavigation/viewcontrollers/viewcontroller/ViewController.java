@@ -18,6 +18,7 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
@@ -154,6 +155,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (getParentController() != null) {
             this.options.clearOneTimeOptions();
             initialOptions.clearOneTimeOptions();
+        }
+    }
+
+    public ViewController<?> getTopMostParent(){
+        if(parentController!=null){
+            return parentController.getTopMostParent();
+        }else{
+            return this;
         }
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
 import androidx.core.content.ContextCompat;
+import androidx.transition.TransitionManager;
 
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
@@ -25,6 +26,7 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 public class Presenter {
     private final Activity activity;
     private Options defaultOptions;
+
     public Presenter(Activity activity, Options defaultOptions) {
         this.activity = activity;
         this.defaultOptions = defaultOptions;
@@ -40,9 +42,15 @@ public class Presenter {
     }
 
     public void mergeOptions(ViewController<?> viewController, Options options) {
-        final Options withDefaults =  viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
+        final Options withDefaults = viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
         mergeStatusBarOptions(viewController.getView(), withDefaults.statusBar);
         mergeNavigationBarOptions(withDefaults.navigationBar);
+        applyMarginOnMostTopParent(viewController,withDefaults.layout.getMargins());
+    }
+
+    private void applyMarginOnMostTopParent(ViewController<?> viewController, Margins margins) {
+        final ViewController<?> topMostParent = viewController.getTopMostParent();
+        applyMargins(topMostParent.getView(), margins);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -65,6 +73,17 @@ public class Presenter {
     private void applyViewOptions(ViewController view, Options options) {
         applyBackgroundColor(view, options);
         applyTopMargin(view.getView(), options);
+
+        applyMarginOnMostTopParent(view, options.layout.getMargins());
+    }
+
+    private void applyMargins(ViewGroup view, Margins margins) {
+        if (view.getLayoutParams() instanceof MarginLayoutParams && margins.hasValue()) {
+            view.setPadding(margins.getLeft() == null ? view.getPaddingLeft() : margins.getLeft(),
+                    margins.getTop() == null ? view.getPaddingTop() : margins.getTop(),
+                    margins.getRight() == null ?view.getPaddingRight() : margins.getRight(),
+                    margins.getBottom() == null ? view.getPaddingBottom() : margins.getBottom());
+        }
     }
 
     private void applyTopMargin(View view, Options options) {
@@ -209,12 +228,12 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-         int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
-         navigationBarDefaultColor = navigationBarDefaultColor==-1?Color.BLACK:navigationBarDefaultColor;
+        int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
+        navigationBarDefaultColor = navigationBarDefaultColor == -1 ? Color.BLACK : navigationBarDefaultColor;
         if (navigationBar.backgroundColor.canApplyValue()) {
             int color = navigationBar.backgroundColor.get(navigationBarDefaultColor);
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
-        }else{
+        } else {
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), navigationBarDefaultColor, isColorLight(navigationBarDefaultColor));
 
         }
