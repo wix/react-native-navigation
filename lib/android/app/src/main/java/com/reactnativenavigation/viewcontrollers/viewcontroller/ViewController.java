@@ -298,6 +298,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
+            setParentController(null);
             view = null;
             isDestroyed = true;
         }
