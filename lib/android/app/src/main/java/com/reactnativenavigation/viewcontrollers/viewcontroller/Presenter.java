@@ -5,19 +5,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
-
-import androidx.core.content.ContextCompat;
-import androidx.transition.TransitionManager;
 
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
 import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
+import com.reactnativenavigation.options.layout.LayoutInsets;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -45,12 +43,12 @@ public class Presenter {
         final Options withDefaults = viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
         mergeStatusBarOptions(viewController.getView(), withDefaults.statusBar);
         mergeNavigationBarOptions(withDefaults.navigationBar);
-        applyMarginOnMostTopParent(viewController,withDefaults.layout.getMargins());
+        applyLayoutInsetsOnMostTopParent(viewController,withDefaults.layout.getInsets());
     }
 
-    private void applyMarginOnMostTopParent(ViewController<?> viewController, Margins margins) {
+    private void applyLayoutInsetsOnMostTopParent(ViewController<?> viewController, LayoutInsets layoutInsets) {
         final ViewController<?> topMostParent = viewController.getTopMostParent();
-        applyMargins(topMostParent.getView(), margins);
+        applyLayoutInsets(topMostParent.getView(), layoutInsets);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -74,15 +72,15 @@ public class Presenter {
         applyBackgroundColor(view, options);
         applyTopMargin(view.getView(), options);
 
-        applyMarginOnMostTopParent(view, options.layout.getMargins());
+        applyLayoutInsetsOnMostTopParent(view, options.layout.getInsets());
     }
 
-    private void applyMargins(ViewGroup view, Margins margins) {
-        if (view.getLayoutParams() instanceof MarginLayoutParams && margins.hasValue()) {
-            view.setPadding(margins.getLeft() == null ? view.getPaddingLeft() : margins.getLeft(),
-                    margins.getTop() == null ? view.getPaddingTop() : margins.getTop(),
-                    margins.getRight() == null ?view.getPaddingRight() : margins.getRight(),
-                    margins.getBottom() == null ? view.getPaddingBottom() : margins.getBottom());
+    private void applyLayoutInsets(ViewGroup view, LayoutInsets layoutInsets) {
+        if ( layoutInsets.hasValue()) {
+            view.setPadding(layoutInsets.getLeft() == null ? view.getPaddingLeft() : layoutInsets.getLeft(),
+                    layoutInsets.getTop() == null ? view.getPaddingTop() : layoutInsets.getTop(),
+                    layoutInsets.getRight() == null ?view.getPaddingRight() : layoutInsets.getRight(),
+                    layoutInsets.getBottom() == null ? view.getPaddingBottom() : layoutInsets.getBottom());
         }
     }
 
