@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
@@ -79,7 +81,25 @@ public class Navigator extends ParentController<ViewGroup> {
         this.rootPresenter = rootPresenter;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
-        overlaysLayout = new CoordinatorLayout(getActivity());
+        overlaysLayout = getOverlaysLayout(overlayManager);
+    }
+
+    @NonNull
+    private CoordinatorLayout getOverlaysLayout(OverlayManager overlayManager) {
+        return new CoordinatorLayout(getActivity()) {
+            @Override
+            public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+                final WindowInsetsCompat windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(insets);
+                if (windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+                    this.setVisibility(GONE);
+                } else {
+                    if (overlayManager.size() > 0) {
+                        overlaysLayout.setVisibility(VISIBLE);
+                    }
+                }
+                return insets;
+            }
+        };
     }
 
     public void bindViews() {
@@ -147,6 +167,7 @@ public class Navigator extends ParentController<ViewGroup> {
         final ViewController<?> disappearing = previousRoot;
         root = appearing;
         root.setOverlay(new RootOverlay(getActivity(), contentLayout));
+        root.setParentController(this);
         rootPresenter.setRoot(appearing, disappearing, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
