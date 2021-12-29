@@ -81,26 +81,10 @@ public class Navigator extends ParentController<ViewGroup> {
         this.rootPresenter = rootPresenter;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
-        overlaysLayout = getOverlaysLayout(overlayManager);
+        overlaysLayout = new CoordinatorLayout(getActivity());
     }
 
-    @NonNull
-    private CoordinatorLayout getOverlaysLayout(OverlayManager overlayManager) {
-        return new CoordinatorLayout(getActivity()) {
-            @Override
-            public WindowInsets onApplyWindowInsets(WindowInsets insets) {
-                final WindowInsetsCompat windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(insets);
-                if (windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
-                    this.setVisibility(GONE);
-                } else {
-                    if (overlayManager.size() > 0) {
-                        overlaysLayout.setVisibility(VISIBLE);
-                    }
-                }
-                return insets;
-            }
-        };
-    }
+
 
     public void bindViews() {
         modalStack.setModalsLayout(modalsLayout);
