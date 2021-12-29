@@ -99,7 +99,7 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
               onBlur={this.showTabs}
               onSubmitEditing={async (event) => {
                 if (event.nativeEvent.text || event.nativeEvent.text.trim().length > 0)
-                  await this.openPushedKeyboard(event.nativeEvent.text);
+                  await this.openPushedKeyboard(event.nativeEvent.text, true);
               }}
             />
           </View>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   image: {
-    height: 300,
+    height: 220,
     width: screenWidth,
     resizeMode: 'cover',
   },

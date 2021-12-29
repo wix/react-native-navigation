@@ -78,6 +78,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null)
             view.sendComponentWillStart();
         super.onViewDidAppear();
+        view.requestApplyInsets();
         if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
     }
