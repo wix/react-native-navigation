@@ -3,10 +3,9 @@ package com.reactnativenavigation.options.layout
 import android.content.Context
 import com.reactnativenavigation.options.LayoutDirection
 import com.reactnativenavigation.options.OrientationOptions
-import com.reactnativenavigation.options.params.NullNumber
-import com.reactnativenavigation.options.params.NullThemeColour
+import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
-import com.reactnativenavigation.options.params.ThemeColour
+import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.NumberParser
 import org.json.JSONObject
 
@@ -19,6 +18,9 @@ class LayoutOptions {
 
     @JvmField
     var topMargin: Number = NullNumber()
+
+    @JvmField
+    var adjustResize: Bool = NullBool()
 
     @JvmField
     var orientation = OrientationOptions()
@@ -35,6 +37,7 @@ class LayoutOptions {
         if (other.topMargin.hasValue()) topMargin = other.topMargin
         if (other.orientation.hasValue()) orientation = other.orientation
         if (other.direction.hasValue()) direction = other.direction
+        if (other.adjustResize.hasValue()) adjustResize = other.adjustResize
         insets.merge(other.insets, null)
     }
 
@@ -44,6 +47,7 @@ class LayoutOptions {
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin
         if (!orientation.hasValue()) orientation = defaultOptions.orientation
         if (!direction.hasValue()) direction = defaultOptions.direction
+        if (!adjustResize.hasValue()) adjustResize = defaultOptions.adjustResize
         insets.merge(null, defaultOptions.insets)
 
     }
@@ -59,6 +63,7 @@ class LayoutOptions {
             result.insets = LayoutInsets.parse(json.optJSONObject("insets"))
             result.orientation = OrientationOptions.parse(json)
             result.direction = LayoutDirection.fromString(json.optString("direction", ""))
+            result.adjustResize = BoolParser.parse(json, "adjustResize")
             return result
         }
     }

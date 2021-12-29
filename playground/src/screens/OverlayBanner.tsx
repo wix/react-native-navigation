@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationComponentProps, Options } from 'react-native-navigation';
 import testIDs from '../testIDs';
 
 interface Props extends NavigationComponentProps {
@@ -9,7 +9,15 @@ interface Props extends NavigationComponentProps {
 
 const { BANNER_OVERLAY } = testIDs;
 
-export default class OverlayBanner extends React.PureComponent<Props> {
+export default class OverlayBanner extends NavigationComponent<Props> {
+  static options(): Options {
+    return {
+      layout: {
+        adjustResize: false,
+      },
+    };
+  }
+
   render() {
     return (
       <SafeAreaView

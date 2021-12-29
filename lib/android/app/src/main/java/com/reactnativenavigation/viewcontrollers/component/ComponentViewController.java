@@ -144,14 +144,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null) return insets;
-        final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());
+        final int keyboardBottomInset = options.layout.adjustResize.get(true) ? insets.getInsets( WindowInsetsCompat.Type.ime()).bottom : 0;
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
         final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
         final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
                 Insets.of(systemBarsInsets.left,
                         0,
                         systemBarsInsets.right,
-                        Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardInsets.bottom))
+                        Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardBottomInset))
         ).build();
         return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
     }

@@ -185,6 +185,13 @@ export interface OptionsLayout {
    * Add insets to the top layout
    */
   insets?: Insets;
+
+  /**
+   * Resizes the layout when keyboard is visible
+   * @default true
+   * #### (Android specific)
+   */
+  adjustResize?: boolean;
 }
 
 export enum OptionsModalPresentationStyle {
