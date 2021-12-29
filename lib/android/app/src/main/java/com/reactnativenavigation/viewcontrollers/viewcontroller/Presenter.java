@@ -47,8 +47,10 @@ public class Presenter {
     }
 
     private void applyLayoutInsetsOnMostTopParent(ViewController<?> viewController, LayoutInsets layoutInsets) {
+       if(viewController==null)return;
         final ViewController<?> topMostParent = viewController.getTopMostParent();
-        applyLayoutInsets(topMostParent.getView(), layoutInsets);
+        if(topMostParent==null || topMostParent.view == null)return;
+        applyLayoutInsets(topMostParent.view, layoutInsets);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -76,7 +78,7 @@ public class Presenter {
     }
 
     private void applyLayoutInsets(ViewGroup view, LayoutInsets layoutInsets) {
-        if ( layoutInsets.hasValue()) {
+        if ( view!=null && layoutInsets.hasValue()) {
             view.setPadding(layoutInsets.getLeft() == null ? view.getPaddingLeft() : layoutInsets.getLeft(),
                     layoutInsets.getTop() == null ? view.getPaddingTop() : layoutInsets.getTop(),
                     layoutInsets.getRight() == null ?view.getPaddingRight() : layoutInsets.getRight(),
