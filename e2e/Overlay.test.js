@@ -55,10 +55,11 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it('should show banner overlay and not block the screen', async () => {
+  it.only('should show banner overlay and not block the screen', async () => {
+    await expect(elementByLabel("this.props.componentId = ")).toBeVisible();
     await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
     await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
-    await expect(elementById(TestIDs.FOOTER_TEXT)).not.toBeVisible();
+    await expect(elementByLabel("this.props.componentId = ")).not.toBeVisible();
     await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
     await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
   });
