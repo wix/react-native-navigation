@@ -1,7 +1,8 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
+import { setDemoMode } from './AndroidUtils';
 
-const { elementByLabel, elementById, setDemoMode, expectBitmapsToBeEqual,expectBitmapsToBeNotEqual } = Utils;
+const { elementByLabel, elementById, expectBitmapsToBeEqual, expectBitmapsToBeNotEqual } = Utils;
 
 describe('Overlay', () => {
   beforeEach(async () => {
@@ -56,25 +57,25 @@ describe('Overlay', () => {
   });
 
   it.e2e(':android: should show banner overlay and not block the screen', async () => {
-      const snapshottedImagePath = './e2e/assets/overlay_banner_padding.png';
-      setDemoMode()
-      let expected =  await device.takeScreenshot("without_banner");
-      await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
-      await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
-      const actual =  await device.takeScreenshot("with_banner");
-      expectBitmapsToBeNotEqual(expected,actual)
-      await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
-       expected =  await device.takeScreenshot("with_banner");
-      expectBitmapsToBeEqual(expected, snapshottedImagePath)
+    const snapshottedImagePath = './e2e/assets/overlay_banner_padding.png';
+    setDemoMode();
+    let expected = await device.takeScreenshot('without_banner');
+    await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
+    await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
+    const actual = await device.takeScreenshot('with_banner');
+    expectBitmapsToBeNotEqual(expected, actual);
+    await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
+    expected = await device.takeScreenshot('with_banner');
+    expectBitmapsToBeEqual(expected, snapshottedImagePath);
   });
 
-    it.e2e(':ios: should show banner overlay and not block the screen', async () => {
-        await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
-        await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
-        await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
-        await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
-        await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
-    });
+  it.e2e(':ios: should show banner overlay and not block the screen', async () => {
+    await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
+    await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
+    await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
+    await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
+    await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
+  });
 });
 
 describe('Overlay Dismiss all', () => {
