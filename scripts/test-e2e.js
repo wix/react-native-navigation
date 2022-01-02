@@ -27,7 +27,7 @@ function run() {
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(
-    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} e2e/Overlay.test.js`
+    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel}`
     // "Buttons.test.js" --loglevel trace`
   );
 }
