@@ -81,7 +81,6 @@ export default class OverlayScreen extends React.Component<Props, State> {
           onPress={() => this.showOverlay(false)}
         />
         <Button label="Show overlay with ScrollView" onPress={this.showOverlayWithScrollView} />
-        <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button
           label="Show banner overlay"
           testID={SHOW_BANNER_OVERLAY}
@@ -92,6 +91,7 @@ export default class OverlayScreen extends React.Component<Props, State> {
           testID={SET_LAYOUT_BOTTOM_INSETS}
           onPress={() => this.setLayoutBottomInsets(50)}
         />
+        <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
       </Root>
     );
   }

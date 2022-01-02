@@ -1,6 +1,6 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
-import { setDemoMode } from './AndroidUtils';
+import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, expectBitmapsToBeEqual, expectBitmapsToBeNotEqual } = Utils;
 
@@ -58,7 +58,7 @@ describe('Overlay', () => {
 
   it.e2e(':android: should show banner overlay and not block the screen', async () => {
     const snapshottedImagePath = './e2e/assets/overlay_banner_padding.png';
-    setDemoMode();
+    Android.setDemoMode();
     let expected = await device.takeScreenshot('without_banner');
     await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
     await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
