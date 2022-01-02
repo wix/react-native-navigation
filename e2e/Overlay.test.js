@@ -55,7 +55,7 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it(':android: should show banner overlay and not block the screen', async () => {
+  it.e2e(':android: should show banner overlay and not block the screen', async () => {
       const snapshottedImagePath = './e2e/assets/overlay_banner_padding.png';
       setDemoMode()
       let expected =  await device.takeScreenshot("without_banner");
@@ -68,10 +68,10 @@ describe('Overlay', () => {
       expectBitmapsToBeEqual(expected, snapshottedImagePath)
   });
 
-    it(':ios: should show banner overlay and not block the screen', async () => {
+    it.e2e(':ios: should show banner overlay and not block the screen', async () => {
         await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
         await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
-        await expect(elementById(TestIDs.FOOTER_TEXT)).not.toBeVisible();
+        await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
         await elementById(TestIDs.SET_LAYOUT_BOTTOM_INSETS).tap();
         await expect(elementById(TestIDs.FOOTER_TEXT)).toBeVisible();
     });
