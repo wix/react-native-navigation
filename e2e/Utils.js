@@ -1,5 +1,14 @@
 import { readFileSync } from 'fs';
+function bitmapDiff(imagePath, expectedImagePath)  {
+    const PNG = require('pngjs').PNG;
+    const pixelmatch = require('pixelmatch');
+    const img1 = PNG.sync.read(readFileSync(imagePath));
+    const img2 = PNG.sync.read(readFileSync(expectedImagePath));
+    const {width, height} = img1;
+    const diff = new PNG({width, height});
 
+    return pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0.0})
+}
 const utils = {
   elementByLabel: (label) => {
     return element(by.text(label));
@@ -20,24 +29,18 @@ const utils = {
     }
   },
   sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
-  expectBitmapsToBeEqual: (imagePath, expectedImagePath) => {
-    const bitmapBuffer = readFileSync(imagePath);
-    const expectedBitmapBuffer = readFileSync(expectedImagePath);
-    if (!bitmapBuffer.equals(expectedBitmapBuffer)) {
-      throw new Error(
-        `Expected image at ${imagePath} to be equal to image at ${expectedImagePath}, but it was different!`
-      );
+  expectImagesToBeEqual:(imagePath, expectedImagePath)=>{
+      let diff = bitmapDiff(imagePath,expectedImagePath);
+      if(diff!==0){
+          throw Error(`${imagePath} should be the same as ${expectedImagePath}, with diff: ${diff}`)
+      }
+  } ,
+    expectImagesToBeNotEqual:(imagePath, expectedImagePath)=>{
+        let diff = bitmapDiff(imagePath,expectedImagePath);
+        if(diff===0){
+            throw Error(`${imagePath} should be the same as ${expectedImagePath}, with diff: ${diff}`)
+        }
     }
-  },
-  expectBitmapsToBeNotEqual: (imagePath, expectedImagePath) => {
-    const bitmapBuffer = readFileSync(imagePath);
-    const expectedBitmapBuffer = readFileSync(expectedImagePath);
-    if (bitmapBuffer.equals(expectedBitmapBuffer)) {
-      throw new Error(
-        `Expected image at ${imagePath} to be not equal to image at ${expectedImagePath}, but it was different!`
-      );
-    }
-  },
 };
 
 export default utils;

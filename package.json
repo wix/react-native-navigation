@@ -66,6 +66,8 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
+    "pixelmatch": "^5.2.1",
+    "pngjs": "^6.0.0",
     "@babel/plugin-proposal-export-default-from": "7.10.1",
     "@babel/plugin-proposal-export-namespace-from": "7.10.1",
     "@babel/types": "7.15.6",
