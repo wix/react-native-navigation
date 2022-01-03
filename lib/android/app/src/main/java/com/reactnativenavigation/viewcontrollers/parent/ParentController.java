@@ -1,17 +1,23 @@
 package com.reactnativenavigation.viewcontrollers.parent;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -23,17 +29,6 @@ import com.reactnativenavigation.views.component.Component;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
-
-import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
-import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
 

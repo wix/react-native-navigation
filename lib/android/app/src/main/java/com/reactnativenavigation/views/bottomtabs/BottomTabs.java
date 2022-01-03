@@ -3,7 +3,6 @@ package com.reactnativenavigation.views.bottomtabs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -18,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;

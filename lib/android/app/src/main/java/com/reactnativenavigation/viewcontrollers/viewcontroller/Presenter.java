@@ -5,12 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
-
-import androidx.core.content.ContextCompat;
 
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;

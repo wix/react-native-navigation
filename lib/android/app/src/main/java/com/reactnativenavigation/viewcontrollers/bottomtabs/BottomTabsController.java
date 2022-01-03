@@ -1,9 +1,13 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
+
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,11 +41,6 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.CollectionUtils.map;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
-import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
