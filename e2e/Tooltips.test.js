@@ -35,15 +35,6 @@ describe('Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
-    it.skip('hide/show tooltip when same anchor view hidden/shows, until dismissing it', async () => {
-        await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-        await elementById(TestIDs.OPTIONS_TAB).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeNotVisible();
-        await elementById(TestIDs.LAYOUTS_TAB).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-    });
-
     it.e2e('should attach tooltip to stack', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
@@ -71,14 +62,6 @@ describe('Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
-    it.skip('hide/show tooltip when same anchor view hidden/shows, until dismissing it', async () => {
-        await elementById(TestIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-        await elementById(TestIDs.PUSH_PUSHED_SCREEN).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeNotVisible();
-        await elementById(TestIDs.BACK_BUTTON).tap();
-        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-    });
 
     it.e2e('should attach tooltip to component', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT).tap();

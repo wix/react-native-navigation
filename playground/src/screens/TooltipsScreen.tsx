@@ -46,17 +46,17 @@ export default class TooltipsScreen extends NavigationComponent<Props> {
     return (
       <Root componentId={this.props.componentId}>
         <Button
-          label="showToolTips on Main BottomTabs Hit TopBar Button"
+          label="Show on BottomTabs under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT}
           onPress={async () => this.showTooltips('bottomTabs', 'HitRightButton', 'bottom')}
         />
         <Button
-          label="showToolTips on LayoutsStack Hit TopBar Button"
+          label="Show on LayoutsStack under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT}
           onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton', 'bottom')}
         />
         <Button
-          label="showToolTips on this component Hit TopBar Button"
+          label="Show on this component under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT}
           onPress={async () =>
             this.showTooltips(this.props.componentId, 'HitRightButton', 'bottom')
