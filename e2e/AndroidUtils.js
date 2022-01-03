@@ -30,6 +30,8 @@ const utils = {
     utils.executeShellCommand(
       'am broadcast -a com.android.systemui.demo -e command notifications -e visible false'
     );
+    // Disable pointer location
+    utils.executeShellCommand('settings put system pointer_location 0');
     // Show full battery but not in charging state
     utils.executeShellCommand(
       'am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100'
