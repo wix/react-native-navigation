@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const {elementById } = Utils;
 
-describe('Tooltips', () => {
+describe(':android: Tooltips', () => {
     beforeEach(async () => {
         await device.launchApp({ newInstance: true });
         await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
