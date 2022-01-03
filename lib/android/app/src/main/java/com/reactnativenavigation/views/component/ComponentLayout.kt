@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.component
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,9 +26,6 @@ open class ComponentLayout(
     val tooltipsOverlay: TooltipsOverlay = TooltipsOverlay(context, "Component")
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,0f,1f));
-        }
         addView(reactView.asView(), CoordinatorLayoutUtils.matchParentLP())
         addView(tooltipsOverlay, CoordinatorLayoutUtils.matchParentLP())
         touchDelegate = OverlayTouchDelegate(this, reactView)
