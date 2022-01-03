@@ -1,3 +1,4 @@
+artifact_paths: "/Users/builder/work/artifacts/**/*"
 steps:
   - block: ":rocket: Release!"
     prompt: "Fill out the details for release"
@@ -27,6 +28,7 @@ steps:
     - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
     key: "android_build"
     timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/work/artifacts/**/*"
 
   - label: ":ios: iOS - Unit"
     command:
