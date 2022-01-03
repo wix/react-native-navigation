@@ -25,6 +25,13 @@ describe.e2e('Keyboard', () => {
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
 
+  it('focus keyboard continue to resize content', async () => {
+        await elementById(TestIDs.TEXT_INPUT2).typeText("Hello");
+        await elementById(TestIDs.TEXT_INPUT2).tapReturnKey();
+        await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
+        await expect(elementById(TestIDs.TEXT_INPUT1)).toBeVisible();
+  });
+
   it('focus keyboard on push', async () => {
     await elementById(TestIDs.PUSH_FOCUSED_KEYBOARD_SCREEN).tap();
     await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();

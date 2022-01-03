@@ -16,11 +16,15 @@ let VERSION, VERSION_TAG, BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERS
 if (isRelease) {
   VERSION = cp.execSync(`buildkite-agent meta-data get version`).toString();
   VERSION_TAG = cp.execSync(`buildkite-agent meta-data get npm-tag`).toString();
-  BUILD_DOCUMENTATION_VERSION = cp.execSync(`buildkite-agent meta-data get build-documentation-version`).toString();
-  REMOVE_DOCUMENTATION_VERSION = cp.execSync(`buildkite-agent meta-data get remove-documentation-version`).toString();
+  BUILD_DOCUMENTATION_VERSION = cp
+    .execSync(`buildkite-agent meta-data get build-documentation-version`)
+    .toString();
+  REMOVE_DOCUMENTATION_VERSION = cp
+    .execSync(`buildkite-agent meta-data get remove-documentation-version`)
+    .toString();
 }
 
-console.log(typeof (VERSION));
+console.log(typeof VERSION);
 // Workaround JS
 if (VERSION_TAG == 'null') {
   VERSION_TAG = isRelease ? 'latest' : 'snapshot';
@@ -73,8 +77,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? VERSION
     : semver.gt(packageVersion, currentPublished)
-      ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
-      : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+    ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
+    : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -133,7 +137,7 @@ function updatePackageJsonGit(version) {
   packageJson.version = version;
   writePackageJson(packageJson);
   exec.execSync(`git add package.json`);
-  exec.execSync(`git commit -m"Update package.json version to ${version} [ci skip]"`);
+  exec.execSync(`git commit -m"Update package.json version to ${version} [buildkite skip]"`);
   exec.execSync(`git push deploy ${BRANCH}`);
   draftGitRelease(version);
 }
