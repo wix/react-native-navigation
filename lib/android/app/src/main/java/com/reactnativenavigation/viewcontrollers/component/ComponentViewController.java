@@ -27,7 +27,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
-    private boolean ignoreInsets=false;
+    private boolean ignoreInsets = false;
+
     public void ignoreInsets(boolean ignore) {
         ignoreInsets = ignore;
     }
@@ -83,14 +84,17 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null)
             view.sendComponentWillStart();
         super.onViewDidAppear();
-        view.requestApplyInsets();
-        if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
+        if (view != null) {
+            view.requestApplyInsets();
+            if (lastVisibilityState == VisibilityState.Disappear)
+                view.sendComponentStart();
+        }
         lastVisibilityState = VisibilityState.Appear;
     }
 
     @Override
     public void onViewDisappear() {
-        if(lastVisibilityState == VisibilityState.Disappear)return;
+        if (lastVisibilityState == VisibilityState.Disappear) return;
         lastVisibilityState = VisibilityState.Disappear;
         if (view != null) view.sendComponentStop();
         super.onViewDisappear();
@@ -149,14 +153,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null || ignoreInsets) return insets;
-        final Insets keyboardInsets = insets.getInsets( WindowInsetsCompat.Type.ime());
-        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
-        final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
+        final Insets keyboardInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined() ? 1 : 0;
         final WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder().setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
                 Insets.of(systemBarsInsets.left,
                         0,
                         systemBarsInsets.right,
-                        Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardInsets.bottom))
+                        Math.max(visibleNavBar * systemBarsInsets.bottom, keyboardInsets.bottom))
         ).build();
         return ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
     }
@@ -181,8 +185,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
         final ComponentLayout view = this.view;
-        if(view!=null){
-            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView,tooltipViewController.getView(),
+        if (view != null) {
+            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView, tooltipViewController.getView(),
                     overlayAttachOptions.getGravity().get());
         }
         return null;
