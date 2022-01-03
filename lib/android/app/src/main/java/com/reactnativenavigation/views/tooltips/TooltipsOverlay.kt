@@ -65,8 +65,6 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
             .align(ViewTooltip.ALIGN.CENTER)
             .padding(0, 0, 0, 0)
             .customView(tooltipView)
-//            .shadowColor(Color.BLACK)
-//            .withShadow(true)
             .distanceWithView(0)
             .color(Color.WHITE)
             .bubble(false)
