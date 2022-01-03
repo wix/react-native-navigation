@@ -128,13 +128,6 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void shouldCallApplyWindowInsetsWhenViewFullyAppeared(){
-        uut.ensureViewIsCreated();
-        uut.onViewDidAppear();
-        Mockito.verify(view).requestApplyInsets();
-    }
-
-    @Test
     public void isViewShownOnlyIfComponentViewIsReady() {
         Java6Assertions.assertThat(uut.isViewShown()).isFalse();
         uut.ensureViewIsCreated();
