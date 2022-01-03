@@ -70,7 +70,7 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
 //            .shadowColor(Color.BLACK)
 //            .withShadow(true)
             .distanceWithView(0)
-            .color(Color.TRANSPARENT)
+            .color(Color.WHITE)
             .bubble(false)
             .arrowHeight(0)
             .arrowWidth(0)
