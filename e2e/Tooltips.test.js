@@ -4,7 +4,7 @@ import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, sleep } = Utils;
 
-describe('Tooltips', () => {
+describe(':android: Tooltips', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
