@@ -135,9 +135,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Nullable
     protected View findTopBarViewById(String id) {
         final View[] found = {null};
-        LogKt.logd("Lookup for "+id+" Started in Parent: "+this.getId(),"LookUp");
         lookup((controller) -> {
-            LogKt.logd("Lookup for "+id+" in controller: "+controller.getId(),"LookUp");
             if (controller instanceof StackController) {
                 final StackController stackController = (StackController) controller;
                 final View topBarViewById = stackController.presenter.findTopBarViewById(id);
@@ -146,16 +144,13 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
             }
             return false;
         });
-        LogKt.logd("Lookup for "+id+" Ended in Parent: "+this.getId()+" Found "+found[0],"LookUp");
         return found[0];
     }
 
     @Nullable
     protected View findBottomTabViewById(@NonNull String id) {
         final View[] found = {null};
-        LogKt.logd("Lookup for "+id+" Started in Parent: "+this.getId(),"LookUp");
         lookup((controller) -> {
-            LogKt.logd("Lookup for "+id+" in controller: "+controller.getId(),"LookUp");
             if (controller instanceof BottomTabsController) {
                 BottomTabsController bottomTabsController = (BottomTabsController) controller;
                 found[0] = bottomTabsController.getTabViewByTag(id);
@@ -163,7 +158,6 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
             }
             return false;
         });
-        LogKt.logd("Lookup for "+id+" Ended in Parent: "+this.getId()+" Found "+found[0],"LookUp");
         return found[0];
     }
 
