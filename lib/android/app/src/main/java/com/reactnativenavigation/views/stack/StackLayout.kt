@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.stack
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,11 +17,14 @@ import com.reactnativenavigation.views.tooltips.TooltipsOverlay
 class StackLayout(
     context: Context,
     topBarController: TopBarController,
-    stackId: String?
+    val stackId: String
 ) : CoordinatorLayout(context), Component {
-    val overlay: TooltipsOverlay = TooltipsOverlay(context, "Stack Layout: $stackId")
+    val overlay: TooltipsOverlay = TooltipsOverlay(context, "Stack Layout")
 
     init {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            this.overlay.setBackgroundColor(Color.argb(0.5f,0f,1f,0f));
+        }
         createLayout(topBarController)
     }
 
@@ -33,9 +37,9 @@ class StackLayout(
     }
 
     override fun isRendered(): Boolean {
-        return childCount >= 3 &&
-                getChildAt(2) is Renderable &&
-                (getChildAt(2) as Renderable).isRendered
+        return childCount >= 2 &&
+                getChildAt(1) is Renderable &&
+                (getChildAt(1) as Renderable).isRendered
     }
 
 

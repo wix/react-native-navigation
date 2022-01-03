@@ -3,12 +3,12 @@ package com.reactnativenavigation.views.tooltips
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.reactnativenavigation.utils.ColorUtils
 import com.reactnativenavigation.views.ViewTooltip
 
 class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : FrameLayout(context) {
@@ -21,7 +21,9 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
             }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                 gravity = Gravity.CENTER
             })
-            setBackgroundColor(ColorUtils.randomColor(0.25f))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setBackgroundColor(Color.argb(0.25f,0.5f,0f,0f))
+            }
         }
 
         z = Float.MAX_VALUE
