@@ -5,32 +5,28 @@ import Android from './AndroidUtils';
 const { elementByLabel, elementById, sleep } = Utils;
 
 describe('Tooltips', () => {
-  beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
-    await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
-  });
-
-    it.e2e('remove me once ios finished', async () => {
-       expect(elementByLabel("Tooltips screen")).toBeVisible()
+    beforeEach(async () => {
+        await device.launchApp({ newInstance: true });
+        await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
     });
 
-    it.e2e(':android: should show and hide tooltips', async () => {
+    it.e2e('should show and hide tooltips', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
         await elementById(TestIDs.OK_BUTTON).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeNotVisible();
     });
 
-  it.e2e(':android: should be always in main bottom tabs layer', async () => {
-    await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
-      await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-      await elementById(TestIDs.BACK_BUTTON).tap();
-      await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-      await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
-      await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-  });
+    it.e2e('should be always in main bottom tabs layer', async () => {
+        await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
+        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
+        await elementById(TestIDs.BACK_BUTTON).tap();
+        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
+        await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
+        await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
+    });
 
 
-    it.e2e(':android: should be hidden, but still in main bottom tabs layer when modal opened', async () => {
+    it.e2e('should be hidden, but still in main bottom tabs layer when modal opened', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.MODAL_BTN).tap();
@@ -39,7 +35,7 @@ describe('Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
-    it.e2e(':android: should attach tooltip to stack', async () => {
+    it.e2e('should attach tooltip to stack', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.OPTIONS_TAB).tap();
@@ -50,14 +46,14 @@ describe('Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
-    it.e2e(':android: should keep tooltip on stack when pushing screen with same button id', async () => {
+    it.e2e('should keep tooltip on stack when pushing screen with same button id', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.PUSH_BTN).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
-    it.e2e(':android: should be hidden, but still in a stack layer when modal opened', async () => {
+    it.e2e('should be hidden, but still in a stack layer when modal opened', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.MODAL_BTN).tap();
@@ -67,7 +63,7 @@ describe('Tooltips', () => {
     });
 
 
-    it.e2e(':android: should attach tooltip to component', async () => {
+    it.e2e('should attach tooltip to component', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.PUSH_BTN).tap();
