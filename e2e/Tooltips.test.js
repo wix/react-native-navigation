@@ -1,8 +1,7 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
-import Android from './AndroidUtils';
 
-const { elementByLabel, elementById, sleep } = Utils;
+const {elementById } = Utils;
 
 describe('Tooltips', () => {
     beforeEach(async () => {
@@ -10,7 +9,7 @@ describe('Tooltips', () => {
         await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
     });
 
-    it.e2e('should show and hide tooltips', async () => {
+    it('should show and hide tooltips', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT).tap();
         await elementById(TestIDs.OK_BUTTON).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeNotVisible();
