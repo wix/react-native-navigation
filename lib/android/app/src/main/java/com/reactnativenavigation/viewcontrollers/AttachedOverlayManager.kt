@@ -28,7 +28,6 @@ class AttachedOverlayManager(
 ) {
     private val registry = mutableMapOf<String, AttachOverlayEntry>()
 
-
     fun show(
         overlayController: ViewController<*>, overlayAttachOptions: OverlayAttachOptions,
         listener: CommandListener

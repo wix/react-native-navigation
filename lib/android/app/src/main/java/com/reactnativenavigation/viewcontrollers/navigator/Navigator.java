@@ -37,7 +37,6 @@ public class Navigator extends ParentController<ViewGroup> {
 
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
-    private final AttachedOverlayManager attachedOverlayManager;
     private final RootPresenter rootPresenter;
     private ViewController<?> root;
     private ViewController<?> previousRoot;
@@ -80,10 +79,12 @@ public class Navigator extends ParentController<ViewGroup> {
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
-        attachedOverlayManager = new AttachedOverlayManager(this::findController, this::findTooltipAnchorView);
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
+        overlayManager.setFindController(this::findController);
+        overlayManager.setFindAnchorView(this::findTooltipAnchorView);
+        overlayManager.setMainOverlayContainer(overlaysLayout);
     }
 
     public void bindViews() {
@@ -219,25 +220,17 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void showOverlay(ViewController<?> overlay, CommandListener listener) {
         final Options options = overlay.resolveCurrentOptions();
-        final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.overlayAttachOptions;
-        if (overlayAttachOptions.hasValue()) {
-            attachedOverlayManager.show(overlay, overlayAttachOptions, listener);
-        } else {
-            overlayManager.show(overlaysLayout, overlay, listener);
-        }
+        overlayManager.show( overlay,options.overlayOptions, listener);
+
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        if (attachedOverlayManager.contains(componentId)) {
-           attachedOverlayManager.dismiss(componentId, listener);
-        } else {
-            overlayManager.dismiss(overlaysLayout, componentId, listener);
-        }
+        overlayManager.dismiss( componentId, listener);
+
     }
 
     public void dismissAllOverlays(CommandListener listener) {
         overlayManager.dismissAll(overlaysLayout);
-        attachedOverlayManager.dismissAll();
         listener.onSuccess("");
     }
 
@@ -271,7 +264,6 @@ public class Navigator extends ParentController<ViewGroup> {
     public void onConfigurationChanged(Configuration newConfig) {
         modalStack.onConfigurationChanged(newConfig);
         overlayManager.onConfigurationChanged(newConfig);
-        attachedOverlayManager.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
 

@@ -18,7 +18,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.*
 
-class TooltipsManagerTest : BaseTest() {
+class AttachedOverlayManagerTest : BaseTest() {
 
     lateinit var uut: AttachedOverlayManager
     private var hostViewController: ViewController<*>? = null
@@ -38,7 +38,7 @@ class TooltipsManagerTest : BaseTest() {
         activity = newActivity()
         tooltipView = spy(ViewTooltip.TooltipView(activity))
         tooltipView2 = spy(ViewTooltip.TooltipView(activity))
-        whenever(hostViewController?.showAttachedOverlay(any(), any(), any()))
+        whenever(hostViewController?.showAnchoredOverlay(any(), any(), any()))
             .doReturnConsecutively(listOf(tooltipView,tooltipView2))
         anchorView = spy(View(activity))
         parent = FrameLayout(activity)
@@ -127,7 +127,7 @@ class TooltipsManagerTest : BaseTest() {
         uut.show(tooltipController2, overlayAttachOptions, commandListener)
         Java6Assertions.assertThat(id + "1" in uut).isTrue
 
-        uut.dismissAll(id, commandListener)
+        uut.dismiss(id, commandListener)
         Java6Assertions.assertThat(id in uut).isFalse
         Java6Assertions.assertThat(id + "1" in uut).isTrue
     }
@@ -135,7 +135,7 @@ class TooltipsManagerTest : BaseTest() {
 
     @Test
     fun `dismissTooltip - should call error when dismissing non existing tooltip`() {
-        uut.dismissAll("imposterTooltip", commandListener)
+        uut.dismiss("imposterTooltip", commandListener)
         verify(commandListener).onError("Can't dismiss non-shown tooltip of id: imposterTooltip")
     }
 
@@ -151,7 +151,7 @@ class TooltipsManagerTest : BaseTest() {
         uut.show(tooltipController, overlayAttachOptions, commandListener)
         val dismissCmdListener = Mockito.mock(CommandListener::class.java)
 
-        uut.dismissAll(id, dismissCmdListener)
+        uut.dismiss(id, dismissCmdListener)
 
 
         verify(tooltipView)?.closeNow()
