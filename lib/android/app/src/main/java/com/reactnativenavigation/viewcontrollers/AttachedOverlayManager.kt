@@ -91,7 +91,7 @@ class AttachedOverlayManager(
         return registry.containsKey(id)
     }
 
-    fun dismissAll(id: String, listener: CommandListener) {
+    fun dismiss(id: String, listener: CommandListener) {
         registry.remove(id)?.let {
             it.overlayView.closeNow()
             it.viewController.destroy()
@@ -111,7 +111,15 @@ class AttachedOverlayManager(
     }
 
     fun onConfigurationChanged(newConfig: Configuration) {
+        registry.values.forEach { it.viewController.onConfigurationChanged(newConfig) }
+    }
 
+    fun onHostPause() {
+        registry.values.forEach{it.viewController.onViewDisappear()}
+    }
+
+    fun onHostResume() {
+        registry.values.forEach{it.viewController.onViewDidAppear()}
     }
 
 }

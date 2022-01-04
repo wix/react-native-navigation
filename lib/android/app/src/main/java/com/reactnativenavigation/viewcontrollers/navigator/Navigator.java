@@ -229,7 +229,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
         if (attachedOverlayManager.contains(componentId)) {
-           attachedOverlayManager.dismissAll(componentId, listener);
+           attachedOverlayManager.dismiss(componentId, listener);
         } else {
             overlayManager.dismiss(overlaysLayout, componentId, listener);
         }
