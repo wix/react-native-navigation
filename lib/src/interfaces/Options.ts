@@ -1104,7 +1104,7 @@ export interface OverlayOptions {
      * which can be componentId or stackId or bottomTabsId.
      */
     layoutId: string;
-    anchor: {
+    anchor?: {
       /**
        * Anchor view id, TopBar Button, Title Component, BottomTab.
        */
