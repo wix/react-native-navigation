@@ -31,7 +31,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
-import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
+import com.reactnativenavigation.views.overlay.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.ArgumentCaptor

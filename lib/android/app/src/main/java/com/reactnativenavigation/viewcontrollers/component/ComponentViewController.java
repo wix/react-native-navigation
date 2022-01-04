@@ -14,7 +14,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.ViewTooltip;
+import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;

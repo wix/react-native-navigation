@@ -20,14 +20,13 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.ViewTooltip;
+import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.fab.Fab;
 import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
-import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -487,7 +486,7 @@ public class StackController extends ParentController<StackLayout> {
     public View showOverlay(@NonNull ViewController<?> overlayViewController) {
         if(this.view!=null){
             final ViewGroup overlayView = overlayViewController.getView();
-            view.getOverlay().addOverlay(overlayView);
+            ( (StackLayout)view).getAttachedOverlayContainer().addOverlay(overlayView);
             return overlayView;
         }
         return null;
@@ -496,7 +495,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if(view!=null){
-            return view.getOverlay().addAnchoredView(anchorView, overlayViewController.getView(),
+            return( (StackLayout)view).getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
                     overlayAttachOptions.getGravity().get());
         }
         return null;

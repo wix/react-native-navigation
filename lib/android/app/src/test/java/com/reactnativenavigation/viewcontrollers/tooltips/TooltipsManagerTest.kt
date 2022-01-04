@@ -12,7 +12,7 @@ import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.viewcontrollers.AttachedOverlayManager
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.ViewTooltip
+import com.reactnativenavigation.views.overlay.ViewTooltip
 import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.Mockito

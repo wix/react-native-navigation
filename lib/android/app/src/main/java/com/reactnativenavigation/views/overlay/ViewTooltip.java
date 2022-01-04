@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.overlay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

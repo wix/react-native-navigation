@@ -14,7 +14,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.ViewTooltip;
+import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 

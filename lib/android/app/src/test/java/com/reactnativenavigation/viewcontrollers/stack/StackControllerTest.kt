@@ -28,7 +28,7 @@ import com.reactnativenavigation.views.stack.StackBehaviour
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
-import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
+import com.reactnativenavigation.views.overlay.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
 import org.json.JSONObject

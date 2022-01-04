@@ -7,7 +7,7 @@ import com.reactnativenavigation.react.CommandListener
 import com.reactnativenavigation.utils.removeFromParent
 import com.reactnativenavigation.viewcontrollers.component.ComponentViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.ViewTooltip
+import com.reactnativenavigation.views.overlay.ViewTooltip
 
 private fun View.closeNow() {
     if (this is ViewTooltip.TooltipView) {
