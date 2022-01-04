@@ -18,7 +18,7 @@ import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.TooltipsManager;
+import com.reactnativenavigation.viewcontrollers.AttachedOverlayManager;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -37,7 +37,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
-    private final TooltipsManager tooltipsManager;
+    private final AttachedOverlayManager attachedOverlayManager;
     private final RootPresenter rootPresenter;
     private ViewController<?> root;
     private ViewController<?> previousRoot;
@@ -80,7 +80,7 @@ public class Navigator extends ParentController<ViewGroup> {
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
-        tooltipsManager = new TooltipsManager(this::findController, this::findTooltipAnchorView);
+        attachedOverlayManager = new AttachedOverlayManager(this::findController, this::findTooltipAnchorView);
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
@@ -219,17 +219,17 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void showOverlay(ViewController<?> overlay, CommandListener listener) {
         final Options options = overlay.resolveCurrentOptions();
-        final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.getOverlayAttachOptions();
+        final OverlayAttachOptions overlayAttachOptions = options.overlayOptions.overlayAttachOptions;
         if (overlayAttachOptions.hasValue()) {
-            tooltipsManager.showTooltip(overlay, overlayAttachOptions, listener);
+            attachedOverlayManager.show(overlay, overlayAttachOptions, listener);
         } else {
             overlayManager.show(overlaysLayout, overlay, listener);
         }
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        if (tooltipsManager.contains(componentId)) {
-           tooltipsManager.dismissTooltip(componentId, listener);
+        if (attachedOverlayManager.contains(componentId)) {
+           attachedOverlayManager.dismissAll(componentId, listener);
         } else {
             overlayManager.dismiss(overlaysLayout, componentId, listener);
         }
@@ -237,7 +237,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void dismissAllOverlays(CommandListener listener) {
         overlayManager.dismissAll(overlaysLayout);
-        tooltipsManager.dismissAllTooltips();
+        attachedOverlayManager.dismissAll();
         listener.onSuccess("");
     }
 
@@ -271,6 +271,7 @@ public class Navigator extends ParentController<ViewGroup> {
     public void onConfigurationChanged(Configuration newConfig) {
         modalStack.onConfigurationChanged(newConfig);
         overlayManager.onConfigurationChanged(newConfig);
+        attachedOverlayManager.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
 

@@ -4,17 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.reactnativenavigation.utils.ColorUtils
 import com.reactnativenavigation.views.ViewTooltip
 
-class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : FrameLayout(context) {
+class AttachedOverlayContainer(context: Context, id: String, debug: Boolean = false) : FrameLayout(context) {
 
     init {
-        if(debug){
+        if (debug) {
             addView(TextView(context).apply {
                 text = id
                 textSize = 18f
@@ -27,26 +26,26 @@ class TooltipsOverlay(context: Context, id: String, debug:Boolean = false) : Fra
         z = Float.MAX_VALUE
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return false
+    fun addOverlay(overlayView: View) {
+        addView(overlayView)
     }
 
-    fun addTooltip(tooltipAnchorView: View, tooltipView: View, gravity: String): ViewTooltip.TooltipView? {
+    fun addAnchoredView(anchorView: View, overlayView: View, gravity: String): ViewTooltip.TooltipView? {
         return when (gravity) {
             "top" -> {
-                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.TOP)
+                showTooltip(overlayView, anchorView, ViewTooltip.Position.TOP)
             }
             "bottom" -> {
-                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.BOTTOM)
+                showTooltip(overlayView, anchorView, ViewTooltip.Position.BOTTOM)
             }
             "left" -> {
-                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.LEFT)
+                showTooltip(overlayView, anchorView, ViewTooltip.Position.LEFT)
             }
             "right" -> {
-                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.RIGHT)
+                showTooltip(overlayView, anchorView, ViewTooltip.Position.RIGHT)
             }
             else -> {
-                showTooltip(tooltipView, tooltipAnchorView, ViewTooltip.Position.TOP)
+                showTooltip(overlayView, anchorView, ViewTooltip.Position.TOP)
             }
         }
 

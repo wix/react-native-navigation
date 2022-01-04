@@ -5,14 +5,14 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 
 class BottomTabsLayout(context: Context) : CoordinatorLayout(context) {
     private var bottomTabsContainer: BottomTabsContainer? = null
-    val tooltipsOverlay = TooltipsOverlay(context, " BottomTabs")
+    val attachedOverlayContainer = AttachedOverlayContainer(context, " BottomTabs")
 
     init {
-        this.addView(tooltipsOverlay, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        this.addView(attachedOverlayContainer, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {

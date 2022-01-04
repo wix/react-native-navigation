@@ -10,7 +10,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.views.component.Component
 import com.reactnativenavigation.views.component.Renderable
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 
 @SuppressLint("ViewConstructor")
 class StackLayout(
@@ -18,7 +18,7 @@ class StackLayout(
     topBarController: TopBarController,
     stackId: String?
 ) : CoordinatorLayout(context), Component {
-    val overlay: TooltipsOverlay = TooltipsOverlay(context, "Stack Layout: $stackId")
+    val overlay: AttachedOverlayContainer = AttachedOverlayContainer(context, "Stack Layout: $stackId")
 
     init {
         createLayout(topBarController)

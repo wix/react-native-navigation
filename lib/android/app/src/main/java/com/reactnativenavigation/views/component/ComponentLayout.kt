@@ -13,7 +13,7 @@ import com.reactnativenavigation.react.events.ComponentType
 import com.reactnativenavigation.utils.CoordinatorLayoutUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate
 
 @SuppressLint("ViewConstructor")
@@ -23,11 +23,11 @@ open class ComponentLayout(
 ) : CoordinatorLayout(context), ReactComponent, ButtonController.OnClickListener {
     private var willAppearSent = false
     private val touchDelegate: OverlayTouchDelegate
-    val tooltipsOverlay: TooltipsOverlay = TooltipsOverlay(context, "Component")
+    val attachedOverlayContainer: AttachedOverlayContainer = AttachedOverlayContainer(context, "Component")
 
     init {
         addView(reactView.asView(), CoordinatorLayoutUtils.matchParentLP())
-        addView(tooltipsOverlay, CoordinatorLayoutUtils.matchParentLP())
+        addView(attachedOverlayContainer, CoordinatorLayoutUtils.matchParentLP())
         touchDelegate = OverlayTouchDelegate(this, reactView)
     }
 

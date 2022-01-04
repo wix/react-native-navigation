@@ -31,7 +31,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -76,7 +76,7 @@ class BottomTabsControllerTest : BaseTest() {
         idleMainLooper()
         Java6Assertions.assertThat(uut.view).isInstanceOf(CoordinatorLayout::class.java)
         Java6Assertions.assertThat(uut.view.getChildAt(uut.view.childCount - 1)).isInstanceOf(
-            TooltipsOverlay::class.java
+            AttachedOverlayContainer::class.java
         )
         Java6Assertions.assertThat(uut.view.getChildAt(uut.view.childCount - 1).z).isEqualTo(Float.MAX_VALUE)
         Java6Assertions.assertThat(uut.view.getChildAt(0)).isInstanceOf(

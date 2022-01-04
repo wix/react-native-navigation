@@ -17,14 +17,14 @@ import com.reactnativenavigation.utils.CoordinatorLayoutUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.BehaviourAdapter
 import com.reactnativenavigation.views.BehaviourDelegate
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 
 class SideMenuRoot(context: Context) : CoordinatorLayout(context) {
     private var sideMenu: SideMenu? = null
-    val tooltipsOverlay = TooltipsOverlay(context,"SideMenu")
+    val attachedOverlayContainer = AttachedOverlayContainer(context,"SideMenu")
 
     init {
-        addView(tooltipsOverlay,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
+        addView(attachedOverlayContainer,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
     }
 
     fun addSideMenu(sideMenu: SideMenu, behaviourAdapter: BehaviourAdapter?) {

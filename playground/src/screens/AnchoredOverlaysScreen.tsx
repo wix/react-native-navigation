@@ -10,7 +10,7 @@ import { stack } from '../commons/Layouts';
 interface Props extends NavigationComponentProps {
   enablePushBottomTabs: boolean;
 }
-export default class TooltipsScreen extends NavigationComponent<Props> {
+export default class AnchoredOverlaysScreen extends NavigationComponent<Props> {
   public static defaultProps = {
     enablePushBottomTabs: true,
   };
@@ -48,21 +48,25 @@ export default class TooltipsScreen extends NavigationComponent<Props> {
         <Button
           label="Show on BottomTabs under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_MAIN_BTMTABS_TPBAR_HIT}
-          onPress={async () => this.showTooltips('bottomTabs', 'HitRightButton', 'bottom')}
+          onPress={async () => this.showAttachedOverlay('bottomTabs', 'HitRightButton', 'bottom')}
         />
         <Button
           label="Show on LayoutsStack under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_LAYOUT_STACK_TPBAR_HIT}
-          onPress={async () => this.showTooltips('LayoutsStack', 'HitRightButton', 'bottom')}
+          onPress={async () => this.showAttachedOverlay('LayoutsStack', 'HitRightButton', 'bottom')}
         />
         <Button
           label="Show on this component under TopBar Button"
           testID={testIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT}
           onPress={async () =>
-            this.showTooltips(this.props.componentId, 'HitRightButton', 'bottom')
+            this.showAttachedOverlay(this.props.componentId, 'HitRightButton', 'bottom')
           }
         />
-
+        <Button
+          label="Show on this component no anchor"
+          testID={testIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT}
+          onPress={async () => this.showAttachedOverlay(this.props.componentId, undefined)}
+        />
         <Button label="Push a screen " testID={testIDs.PUSH_BTN} onPress={this.push} />
         <Button
           label="Push a screen different TopBar Buttons "
@@ -81,21 +85,21 @@ export default class TooltipsScreen extends NavigationComponent<Props> {
     return await Navigation.dismissOverlay(compId);
   };
 
-  showTooltips = async (
+  showAttachedOverlay = async (
     layoutId: string,
-    anchor: string,
+    anchor?: string,
     gravity: 'top' | 'bottom' | 'left' | 'right' = 'top'
   ) => {
+    const screen = !anchor ? Screens.OverlayAlert : Screens.Tooltip;
     const res = await Navigation.showOverlay(
-      Screens.Tooltip,
+      screen,
       {
+        layout: { componentBackgroundColor: 'transparent' },
         overlay: {
+          interceptTouchOutside: true,
           attach: {
             layoutId: layoutId,
-            anchor: {
-              id: anchor,
-              gravity: gravity,
-            },
+            anchor: !anchor ? undefined : { id: anchor!, gravity },
           },
         },
       },

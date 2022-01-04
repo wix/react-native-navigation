@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.component;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -17,6 +18,7 @@ import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -182,11 +184,21 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         }
     }
 
+    @Nullable
     @Override
-    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
-        final ComponentLayout view = this.view;
+    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
+        if(view!=null){
+            final ViewGroup overlayView = overlayViewController.getView();
+            this.view.getAttachedOverlayContainer().addOverlay(overlayView);
+            return overlayView;
+        }
+        return null;
+    }
+
+    @Override
+    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if (view != null) {
-            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView, tooltipViewController.getView(),
+            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
                     overlayAttachOptions.getGravity().get());
         }
         return null;

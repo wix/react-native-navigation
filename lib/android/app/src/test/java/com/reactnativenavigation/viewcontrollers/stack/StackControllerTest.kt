@@ -28,7 +28,7 @@ import com.reactnativenavigation.views.stack.StackBehaviour
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
 import org.json.JSONObject
@@ -129,7 +129,7 @@ class StackControllerTest : BaseTest() {
         assertThat(uut.childControllers.size).isEqualTo(4)
         assertThat(uut.view.childCount).isEqualTo(3)
         assertThat(uut.view.getChildAt(0)).isEqualTo(child4.view)
-        assertThat(uut.view.getChildAt(2)).isInstanceOf(TooltipsOverlay::class.java)
+        assertThat(uut.view.getChildAt(2)).isInstanceOf(AttachedOverlayContainer::class.java)
         assertThat(uut.view.getChildAt(2).z).isEqualTo(Float.MAX_VALUE)
     }
 

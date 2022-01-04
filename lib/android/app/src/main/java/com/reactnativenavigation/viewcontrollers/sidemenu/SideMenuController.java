@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OverlayAttachOptions;
@@ -67,10 +68,21 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         return root;
     }
 
+    @Nullable
     @Override
-    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
+    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
+        if(view!=null){
+            final ViewGroup view = overlayViewController.getView();
+            this.view.getAttachedOverlayContainer().addOverlay(view);
+            return view;
+        }
+        return null;
+    }
+
+    @Override
+    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if (view != null) {
-            return view.getTooltipsOverlay().addTooltip(tooltipAnchorView, tooltipViewController.getView(),
+            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
                     overlayAttachOptions.getGravity().get());
         }
         return null;

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -35,7 +36,7 @@ import com.reactnativenavigation.views.ViewTooltip;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -242,13 +243,25 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 
+    @Nullable
     @Override
-    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions,
-                                               @NonNull ViewController<?> tooltipViewController) {
-        final BottomTabsLayout view = getView();
-        final TooltipsOverlay tooltipsOverlay = view.getTooltipsOverlay();
-        return tooltipsOverlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
-                overlayAttachOptions.getGravity().get());
+    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
+        if(view!=null){
+            final ViewGroup overlayView = overlayViewController.getView();
+            view.getAttachedOverlayContainer().addOverlay(overlayView);
+            return overlayView;
+        }
+        return null;
+    }
+
+    @Override
+    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions,
+                                                       @NonNull ViewController<?> overlayViewController) {
+        if(view!=null){
+            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
+                    overlayAttachOptions.getGravity().get());
+        }
+       return null;
     }
 
     public View getTabViewByTag(String id) {

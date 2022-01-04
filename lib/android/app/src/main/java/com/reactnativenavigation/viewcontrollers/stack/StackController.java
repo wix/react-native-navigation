@@ -27,7 +27,7 @@ import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.fab.Fab;
 import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
-import com.reactnativenavigation.views.tooltips.TooltipsOverlay;
+import com.reactnativenavigation.views.tooltips.AttachedOverlayContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
@@ -481,16 +482,24 @@ public class StackController extends ParentController<StackLayout> {
         return false;
     }
 
+    @Nullable
     @Override
-    public ViewTooltip.TooltipView showTooltip(@NonNull View tooltipAnchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> tooltipViewController) {
-        final StackLayout view = this.view;
-        if(view!=null){
-            final TooltipsOverlay overlay = view.getOverlay();
-            return overlay.addTooltip(tooltipAnchorView,tooltipViewController.getView(),
-                    overlayAttachOptions.getGravity().get());
-        }else{
-            return null;
+    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
+        if(this.view!=null){
+            final ViewGroup overlayView = overlayViewController.getView();
+            view.getOverlay().addOverlay(overlayView);
+            return overlayView;
         }
+        return null;
+    }
+
+    @Override
+    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
+        if(view!=null){
+            return view.getOverlay().addAnchoredView(anchorView, overlayViewController.getView(),
+                    overlayAttachOptions.getGravity().get());
+        }
+        return null;
     }
 
     @Override

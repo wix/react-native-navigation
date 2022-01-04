@@ -150,7 +150,10 @@ function registerScreens() {
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
-  Navigation.registerComponent(Screens.TooltipsScreen, () => require('./TooltipsScreen').default);
+  Navigation.registerComponent(
+    Screens.TooltipsScreen,
+    () => require('./AnchoredOverlaysScreen').default
+  );
   Navigation.registerComponent(
     Screens.TooltipsScreenExtra,
     () => require('./ExtraTooltipsScreen').default
