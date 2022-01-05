@@ -4,7 +4,6 @@
     <item name="fragment_screen_content" type="id"/>
     <item name="topBarBackgroundComponent" type="id"/>
     <item name="bottomTabs" type="id"/>
-    <item name="topBarButton" type="id"/>
     <item name="fab_bottom_margin" type="id" />
 
     <item name="original_parent" type="id" />
