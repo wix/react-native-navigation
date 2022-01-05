@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const {elementById } = Utils;
 
-describe(':android: Tooltips', () => {
+describe(':android: AttachedOverlays', () => {
     beforeEach(async () => {
         await device.launchApp({ newInstance: true });
         await elementById(TestIDs.ATTACHED_OVERLAYS_SCREEN).tap();
@@ -62,7 +62,7 @@ describe(':android: Tooltips', () => {
     });
 
 
-    it.e2e('should attach tooltip to component', async () => {
+    it.e2e('should attach anchored tooltip to component', async () => {
         await elementById(TestIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.PUSH_BTN).tap();
@@ -73,6 +73,19 @@ describe(':android: Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeNotVisible();
         await elementById(TestIDs.BACK_BUTTON).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
+    });
+
+    it.e2e('should attach overlay to component', async () => {
+        await elementById(TestIDs.SHOW_TOOLTIP_COMPONENT_NO_ANCHOR_TPBAR_HIT).tap();
+        await expect(elementById(TestIDs.DISMISS_BTN)).toBeVisible();
+        await elementById(TestIDs.PUSH_BTN).tap();
+        await expect(elementById(TestIDs.DISMISS_BTN)).toBeNotVisible();
+        await elementById(TestIDs.BACK_BUTTON).tap();
+        await expect(elementById(TestIDs.DISMISS_BTN)).toBeVisible();
+        await elementById(TestIDs.PUSH_PUSHED_SCREEN).tap();
+        await expect(elementById(TestIDs.DISMISS_BTN)).toBeNotVisible();
+        await elementById(TestIDs.BACK_BUTTON).tap();
+        await expect(elementById(TestIDs.DISMISS_BTN)).toBeVisible();
     });
 
 });

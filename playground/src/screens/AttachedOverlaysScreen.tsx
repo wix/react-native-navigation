@@ -64,7 +64,7 @@ export default class AttachedOverlaysScreen extends NavigationComponent<Props> {
         />
         <Button
           label="Show on this component no anchor"
-          testID={testIDs.SHOW_TOOLTIP_COMPONENT_TPBAR_HIT}
+          testID={testIDs.SHOW_TOOLTIP_COMPONENT_NO_ANCHOR_TPBAR_HIT}
           onPress={async () => this.showAttachedOverlay(this.props.componentId, undefined)}
         />
         <Button label="Push a screen " testID={testIDs.PUSH_BTN} onPress={this.push} />
@@ -96,7 +96,7 @@ export default class AttachedOverlaysScreen extends NavigationComponent<Props> {
       {
         layout: { componentBackgroundColor: 'transparent' },
         overlay: {
-          interceptTouchOutside: true,
+          interceptTouchOutside: false,
           attach: {
             layoutId: layoutId,
             anchor: !anchor ? undefined : { id: anchor!, gravity },
