@@ -151,12 +151,12 @@ function registerScreens() {
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
   Navigation.registerComponent(
-    Screens.TooltipsScreen,
-    () => require('./AnchoredOverlaysScreen').default
+    Screens.AttachedOverlaysScreen,
+    () => require('./AttachedOverlaysScreen').default
   );
   Navigation.registerComponent(
-    Screens.TooltipsScreenExtra,
-    () => require('./ExtraTooltipsScreen').default
+    Screens.AttachedOverlaysExtra,
+    () => require('./ExtraAttachedOverlaysScreen').default
   );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {

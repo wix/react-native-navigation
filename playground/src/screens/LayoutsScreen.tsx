@@ -21,7 +21,7 @@ const {
   BOTTOM_TABS,
   SIDE_MENU_BTN,
   KEYBOARD_SCREEN_BTN,
-  TOOLTIPS_SCREEN_BTN,
+  ATTACHED_OVERLAYS_SCREEN,
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
@@ -85,7 +85,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
-        <Button label="Tooltips" testID={TOOLTIPS_SCREEN_BTN} onPress={this.pushTooltips} />
+        <Button
+          label="Attached Overlays"
+          testID={ATTACHED_OVERLAYS_SCREEN}
+          onPress={this.pushTooltips}
+        />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -260,7 +264,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     await Navigation.push(this.props.componentId, Screens.KeyboardScreen);
   };
   pushTooltips = async () => {
-    await Navigation.push(this.props.componentId, Screens.TooltipsScreen);
+    await Navigation.push(this.props.componentId, Screens.AttachedOverlaysScreen);
   };
   onClickSearchBar = () => {
     Navigation.push(this.props.componentId, {

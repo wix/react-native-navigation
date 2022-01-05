@@ -14,7 +14,24 @@ export default class Tooltip extends NavigationComponent<Props> {
     super(props);
     Navigation.events().bindComponent(this);
   }
+  componentWillAppear() {
+    console.log('Tooltip: componentWillAppear:', this.props.componentId);
+  }
 
+  componentDidAppear() {
+    console.log('Tooltip: componentDidAppear:', this.props.componentId);
+  }
+
+  componentDidDisappear() {
+    console.log('Tooltip: componentDidDisappear:', this.props.componentId);
+  }
+
+  componentDidMount() {
+    console.log('Tooltip: componentDidMount:', this.props.componentId);
+  }
+  componentWillUnmount() {
+    console.log('Tooltip: componentWillUnmount:', this.props.componentId);
+  }
   render() {
     return (
       <View style={styles.root}>
@@ -26,7 +43,8 @@ export default class Tooltip extends NavigationComponent<Props> {
             }}
           />
           <View style={styles.button}>
-            <Text style={styles.text}>{'Hey, This is some text that belongs to a tooltip!!!'}</Text>
+            <Text style={styles.text}>{`Hey, This is some text that belongs to a tooltip!!!`}</Text>
+            <Text style={styles.text}>{this.props.componentId}</Text>
             <TouchableOpacity
               testID={testIDs.OK_BUTTON}
               style={styles.buttonClick}
