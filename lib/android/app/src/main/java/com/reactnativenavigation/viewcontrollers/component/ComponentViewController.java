@@ -184,22 +184,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         }
     }
 
-    @Nullable
-    @Override
-    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
-        if(view!=null){
-            final ViewGroup overlayView = overlayViewController.getView();
-            this.view.getAttachedOverlayContainer().addOverlay(overlayView);
-            return overlayView;
-        }
-        return null;
-    }
-
     @Override
     public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if (view != null) {
             return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.getGravity().get());
+                    overlayAttachOptions.gravity.get());
         }
         return null;
     }

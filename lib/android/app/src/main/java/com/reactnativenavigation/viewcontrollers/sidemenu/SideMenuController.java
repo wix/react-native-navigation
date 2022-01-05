@@ -68,22 +68,11 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         return root;
     }
 
-    @Nullable
-    @Override
-    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
-        if(view!=null){
-            final ViewGroup view = overlayViewController.getView();
-            this.view.getAttachedOverlayContainer().addOverlay(view);
-            return view;
-        }
-        return null;
-    }
-
     @Override
     public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if (view != null) {
             return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.getGravity().get());
+                    overlayAttachOptions.gravity.get());
         }
         return null;
     }

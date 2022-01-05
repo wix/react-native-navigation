@@ -52,7 +52,7 @@ class OverlayManager {
 
         parent?.let {
             it.visibility = View.VISIBLE
-            registerOverlay(overlayController, listener)
+            registerOverlay(overlayController.view,overlayController, listener)
             it.addView(
                 overlayController.view,
                 CoordinatorLayoutUtils.matchParentWithBehaviour(BehaviourDelegate(overlayController))
@@ -75,7 +75,7 @@ class OverlayManager {
                 val anchoredView =
                     hostController.showAnchoredOverlay(anchorView, overlayAttachOptions, overlayController)
                 anchoredView?.let {
-                    registerOverlay(overlayController, listener)
+                    registerOverlay(it,overlayController, listener)
                 } ?: listener.onError("Parent could not create anchored view, it could be null parent")
             } else {
                 listener.onError("Cannot find anchor view with id " + overlayAttachOptions.anchorId)
@@ -86,10 +86,11 @@ class OverlayManager {
     }
 
     private fun registerOverlay(
+        view:View,
         viewController: ViewController<*>,
         listener: CommandListener
     ) {
-        overlayRegistry[viewController.id] = OverlayEntry(viewController.view, viewController)
+        overlayRegistry[viewController.id] = OverlayEntry(view, viewController)
         viewController.onViewDidAppear()
         listener.onSuccess(viewController.id)
     }
@@ -108,11 +109,11 @@ class OverlayManager {
         }
     }
 
-    fun dismissAll(overlaysContainer: ViewGroup) {
-        destroy(overlaysContainer)
+    fun dismissAll() {
+        destroy()
     }
 
-    fun destroy(overlaysContainer: ViewGroup) {
+    fun destroy() {
         val entries = overlayRegistry.entries
         while (entries.isNotEmpty()) {
             val first = entries.first()
@@ -121,7 +122,7 @@ class OverlayManager {
             attachOverlayEntry.viewController.destroy()
             overlayRegistry.remove(first.key)
         }
-        overlaysContainer.visibility = View.GONE
+        mainOverlayContainer?.visibility = View.GONE
     }
 
     fun size() = overlayRegistry.size
@@ -131,6 +132,7 @@ class OverlayManager {
     }
 
     private fun destroyOverlay(overlay: OverlayEntry?) {
+        overlay?.overlayView?.closeNow()
         overlay?.viewController?.destroy()
         if (overlayRegistry.isEmpty()) mainOverlayContainer?.visibility = View.GONE
     }

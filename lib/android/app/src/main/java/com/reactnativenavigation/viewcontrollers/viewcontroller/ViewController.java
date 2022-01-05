@@ -390,10 +390,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return null;
     }
 
-    @Nullable
-    public View showOverlay(@NonNull ViewController<?> overlayViewController){
-        return null;
-    }
     public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView,
                                                        @NonNull OverlayAttachOptions overlayAttachOptions,
                                                        @NonNull   ViewController<?> overlayViewController) {

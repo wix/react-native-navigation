@@ -209,8 +209,8 @@ public class NavigatorTest extends BaseTest {
 
         verify(overlayManager).onHostResume();
         verify(child1, times(2)).onViewDidAppear();
-        verify(child2).onViewDidAppear();
-        verify(child3).onViewDidAppear();
+        verify(child2, times(2)).onViewDidAppear();
+        verify(child3,  times(2)).onViewDidAppear();
     }
 
     @Test
@@ -280,8 +280,8 @@ public class NavigatorTest extends BaseTest {
         verify(overlayManager).onHostResume();
         verify(child1, times(1)).onViewDidAppear();
         verify(child2).onViewDidAppear();
-        verify(child3).onViewDidAppear();
-        verify(child4).onViewDidAppear();
+        verify(child3,times(2)).onViewDidAppear();
+        verify(child4,times(2)).onViewDidAppear();
     }
 
     @Test
@@ -872,7 +872,7 @@ public class NavigatorTest extends BaseTest {
     public void destroy_destroyOverlayManager() {
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
         activityController.destroy();
-        verify(overlayManager).destroy(uut.getOverlaysLayout());
+        verify(overlayManager).destroy();
     }
 
     @Test

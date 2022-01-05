@@ -12,13 +12,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Functions.Func1;
-import com.reactnativenavigation.viewcontrollers.AttachedOverlayManager;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
@@ -125,7 +123,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void destroyViews() {
         modalStack.destroy();
-        overlayManager.destroy(overlaysLayout);
+        overlayManager.destroy();
         destroyRoot();
     }
 
@@ -230,7 +228,7 @@ public class Navigator extends ParentController<ViewGroup> {
     }
 
     public void dismissAllOverlays(CommandListener listener) {
-        overlayManager.dismissAll(overlaysLayout);
+        overlayManager.dismissAll();
         listener.onSuccess("");
     }
 

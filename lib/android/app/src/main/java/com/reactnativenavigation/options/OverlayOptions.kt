@@ -6,8 +6,11 @@ import com.reactnativenavigation.options.parsers.TextParser
 import org.json.JSONObject
 class OverlayAttachOptions{
 
+    @JvmField
     var layoutId :Text = NullText()
+    @JvmField
     var anchorId :Text = NullText()
+    @JvmField
     var gravity:Text = NullText()
 
     fun hasValue() = layoutId.hasValue()

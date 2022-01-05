@@ -113,7 +113,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     protected View findTooltipAnchorView(OverlayAttachOptions options) {
-        final String id = options.getAnchorId().get();
+        final String id = options.anchorId.get();
         View found = null;
         final View topBarView = findTopBarViewById(id);
         if (topBarView != null) {

@@ -481,22 +481,11 @@ public class StackController extends ParentController<StackLayout> {
         return false;
     }
 
-    @Nullable
-    @Override
-    public View showOverlay(@NonNull ViewController<?> overlayViewController) {
-        if(this.view!=null){
-            final ViewGroup overlayView = overlayViewController.getView();
-            ( (StackLayout)view).getAttachedOverlayContainer().addOverlay(overlayView);
-            return overlayView;
-        }
-        return null;
-    }
-
     @Override
     public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
         if(view!=null){
             return( (StackLayout)view).getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.getGravity().get());
+                    overlayAttachOptions.gravity.get());
         }
         return null;
     }
