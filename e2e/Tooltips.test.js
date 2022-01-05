@@ -6,7 +6,7 @@ const {elementById } = Utils;
 describe(':android: Tooltips', () => {
     beforeEach(async () => {
         await device.launchApp({ newInstance: true });
-        await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
+        await elementById(TestIDs.ATTACHED_OVERLAYS_SCREEN).tap();
     });
 
     it('should show and hide tooltips', async () => {
@@ -20,7 +20,7 @@ describe(':android: Tooltips', () => {
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
         await elementById(TestIDs.BACK_BUTTON).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
-        await elementById(TestIDs.TOOLTIPS_SCREEN_BTN).tap();
+        await elementById(TestIDs.ATTACHED_OVERLAYS_SCREEN).tap();
         await expect(elementById(TestIDs.OK_BUTTON)).toBeVisible();
     });
 
