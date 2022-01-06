@@ -155,6 +155,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null  || ignoreInsets) return insets;
+
         final int keyboardBottomInset = options.layout.adjustResize.get(true) ? insets.getInsets( WindowInsetsCompat.Type.ime()).bottom : 0;
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
         final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
