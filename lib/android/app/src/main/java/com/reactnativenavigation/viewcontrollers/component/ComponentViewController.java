@@ -163,7 +163,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                         0,
                         systemBarsInsets.right,
                         Math.max(visibleNavBar*systemBarsInsets.bottom,keyboardBottomInset))
-
         ).build();
         ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
         return insets;
