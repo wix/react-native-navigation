@@ -111,6 +111,11 @@
     [self updateReactViewConstraints];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
+}
+
 - (void)updateReactViewConstraints {
     if (self.isViewLoaded && self.reactView) {
         [NSLayoutConstraint deactivateConstraints:_reactViewConstraints];

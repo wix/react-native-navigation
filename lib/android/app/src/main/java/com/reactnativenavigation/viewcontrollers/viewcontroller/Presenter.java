@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
@@ -14,6 +15,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
 import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
+import com.reactnativenavigation.options.layout.LayoutInsets;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -22,6 +24,7 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 public class Presenter {
     private final Activity activity;
     private Options defaultOptions;
+
     public Presenter(Activity activity, Options defaultOptions) {
         this.activity = activity;
         this.defaultOptions = defaultOptions;
@@ -37,9 +40,15 @@ public class Presenter {
     }
 
     public void mergeOptions(ViewController<?> viewController, Options options) {
-        final Options withDefaults =  viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
+        final Options withDefaults = viewController.resolveCurrentOptions().copy().mergeWith(options).withDefaultOptions(defaultOptions);
         mergeStatusBarOptions(viewController.getView(), withDefaults.statusBar);
         mergeNavigationBarOptions(withDefaults.navigationBar);
+        applyLayoutInsetsOnMostTopParent(viewController,withDefaults.layout.getInsets());
+    }
+
+    private void applyLayoutInsetsOnMostTopParent(ViewController<?> viewController, LayoutInsets layoutInsets) {
+        final ViewController<?> topMostParent = viewController.getTopMostParent();
+        applyLayoutInsets(topMostParent.getView(), layoutInsets);
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -62,6 +71,16 @@ public class Presenter {
     private void applyViewOptions(ViewController view, Options options) {
         applyBackgroundColor(view, options);
         applyTopMargin(view.getView(), options);
+        applyLayoutInsetsOnMostTopParent(view, options.layout.getInsets());
+    }
+
+    private void applyLayoutInsets(ViewGroup view, LayoutInsets layoutInsets) {
+        if ( view!=null && layoutInsets.hasValue()) {
+            view.setPadding(layoutInsets.getLeft() == null ? view.getPaddingLeft() : layoutInsets.getLeft(),
+                    layoutInsets.getTop() == null ? view.getPaddingTop() : layoutInsets.getTop(),
+                    layoutInsets.getRight() == null ?view.getPaddingRight() : layoutInsets.getRight(),
+                    layoutInsets.getBottom() == null ? view.getPaddingBottom() : layoutInsets.getBottom());
+        }
     }
 
     private void applyTopMargin(View view, Options options) {
@@ -206,12 +225,12 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-         int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
-         navigationBarDefaultColor = navigationBarDefaultColor==-1?Color.BLACK:navigationBarDefaultColor;
+        int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
+        navigationBarDefaultColor = navigationBarDefaultColor == -1 ? Color.BLACK : navigationBarDefaultColor;
         if (navigationBar.backgroundColor.canApplyValue()) {
             int color = navigationBar.backgroundColor.get(navigationBarDefaultColor);
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
-        }else{
+        } else {
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), navigationBarDefaultColor, isColorLight(navigationBarDefaultColor));
 
         }

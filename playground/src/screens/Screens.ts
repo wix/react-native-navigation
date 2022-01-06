@@ -32,6 +32,7 @@ const Screens = {
   SetRoot: 'SetRoot',
   Overlay: 'Overlay',
   OverlayAlert: 'OverlayAlert',
+  OverlayBanner: 'OverlayBanner',
   ScrollViewScreen: 'ScrollViewScreen',
   ScrollViewOverlay: 'ScrollViewOverlay',
   Lifecycle: 'Lifecycle',

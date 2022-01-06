@@ -172,6 +172,7 @@ allprojects { p ->
 }
 
 dependencies {
+
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
@@ -189,13 +190,15 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
-    // tests
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.robolectric:robolectric:4.7.2"
-    testImplementation 'org.assertj:assertj-core:3.11.1'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    testImplementation 'com.squareup.assertj:assertj-android:1.2.0'
-    testImplementation 'org.mockito:mockito-inline:3.4.0'
-    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
+        // tests only for our playground
+        testImplementation 'junit:junit:4.13.2'
+        testImplementation "org.robolectric:robolectric:4.7.2"
+        testImplementation 'org.assertj:assertj-core:3.11.1'
+        testImplementation 'org.mockito:mockito-core:4.0.0'
+        testImplementation 'com.squareup.assertj:assertj-android:1.2.0'
+        testImplementation 'org.mockito:mockito-inline:3.4.0'
+        testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+        testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    }
 }

@@ -88,6 +88,7 @@
 }
 
 - (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
     [self.presenter viewDidLayoutSubviews];
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
 }

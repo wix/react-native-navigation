@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Keyboard } from 'react-native-ui-lib';
 import flags from '../flags';
+import testIDs from '../testIDs';
 
 const KeyboardAwareInsetsView = Keyboard.KeyboardAwareInsetsView;
 const { showTextInputToTestKeyboardInteraction } = flags;
@@ -53,7 +54,10 @@ const Footer: React.FC<FooterProps> = ({ componentId, footer }) => {
       {footer && <Text style={styles.footerText}>{footer}</Text>}
 
       {/* Rendering component id. */}
-      <Text style={styles.footerText}>{`this.props.componentId = ${componentId}`}</Text>
+      <Text
+        testID={testIDs.FOOTER_TEXT}
+        style={styles.footerText}
+      >{`this.props.componentId = ${componentId}`}</Text>
     </View>
   );
 };
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#888',
     marginTop: 10,
+    backgroundColor: 'yellow',
   },
 });
 

@@ -16,6 +16,8 @@ const {
   TOAST_BTN,
   SHOW_FULLSCREEN_OVERLAY_BTN,
   OVERLAY_DISMISSED_COUNT,
+  SHOW_BANNER_OVERLAY,
+  SET_LAYOUT_BOTTOM_INSETS,
 } = testIDs;
 
 interface State {
@@ -80,11 +82,30 @@ export default class OverlayScreen extends React.Component<Props, State> {
         />
         <Button label="Show overlay with ScrollView" onPress={this.showOverlayWithScrollView} />
         <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
+        <Button
+          label="Show banner overlay"
+          testID={SHOW_BANNER_OVERLAY}
+          onPress={() => this.showBanner()}
+        />
+        <Button
+          label="Set layout bottom insets"
+          testID={SET_LAYOUT_BOTTOM_INSETS}
+          onPress={() => this.setLayoutBottomInsets(50)}
+        />
       </Root>
     );
   }
 
   toast = () => Navigation.showOverlay(Screens.Toast);
+
+  showBanner = () =>
+    Navigation.showOverlay(Screens.OverlayBanner, {
+      layout: { componentBackgroundColor: 'transparent' },
+      overlay: { interceptTouchOutside: false },
+    });
+
+  setLayoutBottomInsets = (bottom: number) =>
+    Navigation.mergeOptions(this, { layout: { insets: { bottom } } });
 
   showOverlay = (interceptTouchOutside: boolean) =>
     Navigation.showOverlay(

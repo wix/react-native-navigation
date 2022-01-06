@@ -1,5 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
@@ -33,9 +36,6 @@ import com.reactnativenavigation.views.component.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener,
         ViewGroup.OnHierarchyChangeListener,
@@ -157,6 +157,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (getParentController() != null) {
             this.options.clearOneTimeOptions();
             initialOptions.clearOneTimeOptions();
+        }
+    }
+
+    public ViewController<?> getTopMostParent(){
+        if(parentController!=null){
+            return parentController.getTopMostParent();
+        }else{
+            return this;
         }
     }
 
@@ -292,6 +300,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
+            setParentController(null);
             view = null;
             isDestroyed = true;
         }
