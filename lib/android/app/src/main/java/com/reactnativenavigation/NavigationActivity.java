@@ -198,7 +198,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onBackPressed() {
         logger.log(Log.VERBOSE, TAG, "onBackPressed PIPMode " + navigator.getPipMode());
-        getReactGateway().onBackPressed();
+        if(navigator.resolveCurrentOptions().bottomTabsOptions.resetToFirstTabOnBack.isTrue()){
+            invokeDefaultOnBackPressed();
+        }
+        else{
+            getReactGateway().onBackPressed();
+        }
     }
 
     @Override
