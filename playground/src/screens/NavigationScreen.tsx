@@ -109,7 +109,7 @@ export default class NavigationScreen extends NavigationComponent<Props> {
       },
     });
   pushBackButtonScreen = () => Navigation.push(this, Screens.BackButton);
-  showOverlay = () => Navigation.showModal(Screens.Overlay);
+  showOverlay = () => Navigation.showOverlay(Screens.Overlay, { statusBar: { translucent: true } });
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen);
   orientation = () => Navigation.showModal(Screens.Orientation);

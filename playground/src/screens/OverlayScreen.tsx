@@ -63,6 +63,7 @@ export default class OverlayScreen extends React.Component<Props, State> {
     return (
       <Root componentId={this.props.componentId}>
         <Text testID={OVERLAY_DISMISSED_COUNT}>{this.state?.overlayDismissedCount || ''}</Text>
+        <Button label="Hide overlay" onPress={() => Navigation.dismissAllOverlays()} />
         <Button label="Toast" testID={TOAST_BTN} onPress={this.toast} />
         <Button label="Alert" testID={ALERT_BUTTON} onPress={() => alert('Alert displayed')} />
         <Button
