@@ -4,11 +4,11 @@
 
 @implementation RNNTabBarItemCreator
 
-+ (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
+- (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
     return [UITabBarItem new];
 }
 
-+ (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions
+- (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions
                          mergeItem:(UITabBarItem *)mergeItem {
     UITabBarItem *tabItem = [self createTabBarItem:mergeItem];
     UIImage *icon = [bottomTabOptions.icon withDefault:nil];
@@ -44,7 +44,7 @@
     return tabItem;
 }
 
-+ (UIImage *)getSelectedIconImage:(UIImage *)selectedIcon
+- (UIImage *)getSelectedIconImage:(UIImage *)selectedIcon
                 selectedIconColor:(UIColor *)selectedIconColor {
     if (selectedIcon) {
         if (selectedIconColor) {
@@ -58,7 +58,7 @@
     return nil;
 }
 
-+ (UIImage *)getIconImage:(UIImage *)icon withTint:(UIColor *)tintColor {
+- (UIImage *)getIconImage:(UIImage *)icon withTint:(UIColor *)tintColor {
     if (icon) {
         if (tintColor) {
             return [[icon withTintColor:tintColor]
@@ -71,7 +71,7 @@
     return nil;
 }
 
-+ (void)appendTitleAttributes:(UITabBarItem *)tabItem
+- (void)appendTitleAttributes:(UITabBarItem *)tabItem
              bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
     UIColor *textColor = [bottomTabOptions.textColor withDefault:[UIColor blackColor]];
     UIColor *selectedTextColor =
@@ -97,11 +97,11 @@
     [self setTitleAttributes:tabItem titleAttributes:normalAttributes];
 }
 
-+ (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes {
+- (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes {
     [tabItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
 }
 
-+ (void)setSelectedTitleAttributes:(UITabBarItem *)tabItem
+- (void)setSelectedTitleAttributes:(UITabBarItem *)tabItem
            selectedTitleAttributes:(NSDictionary *)selectedTitleAttributes {
     [tabItem setTitleTextAttributes:selectedTitleAttributes forState:UIControlStateSelected];
 }
