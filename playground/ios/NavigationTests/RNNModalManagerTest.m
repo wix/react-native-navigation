@@ -2,6 +2,7 @@
 #import "RNNComponentViewController.h"
 #import "RNNStackController.h"
 #import <OCMock/OCMock.h>
+#import <React/RCTModalHostViewManager.h>
 #import <XCTest/XCTest.h>
 
 @interface MockViewController : UIViewController
@@ -52,8 +53,9 @@
     _vc3.layoutInfo = [RNNLayoutInfo new];
     _modalManagerEventHandler =
         [OCMockObject partialMockForObject:[RNNModalManagerEventHandler new]];
-    _modalManager = [[MockModalManager alloc] initWithBridge:nil
-                                                eventHandler:_modalManagerEventHandler];
+    _modalManager = [OCMockObject
+        partialMockForObject:[[MockModalManager alloc] initWithBridge:nil
+                                                         eventHandler:_modalManagerEventHandler]];
     _modalManager.topPresentedVC = [MockViewController new];
 }
 
@@ -168,6 +170,14 @@
     _vc1.options = [RNNNavigationOptions emptyOptions];
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
+}
+
+- (void)testModalHostManager_shouldNotPresentModalTwice {
+    RCTModalHostViewManager *modalHostViewManager = [RCTModalHostViewManager new];
+    [_modalManager connectModalHostViewManager:modalHostViewManager];
+
+    [[(id)_modalManager reject] showModal:OCMArg.any animated:YES completion:OCMArg.any];
+    modalHostViewManager.presentationBlock(nil, _modalManager.topPresentedVC, YES, nil);
 }
 
 @end

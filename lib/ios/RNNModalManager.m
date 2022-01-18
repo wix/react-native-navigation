@@ -36,7 +36,8 @@
     modalHostViewManager.presentationBlock =
         ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
           dispatch_block_t completionBlock) {
-          if (reactViewController.presentedViewController != viewController) {
+          if (reactViewController.presentedViewController != viewController &&
+              self.topPresentedVC != viewController) {
               [self showModal:viewController
                      animated:animated
                    completion:^(NSString *_Nonnull componentId) {
