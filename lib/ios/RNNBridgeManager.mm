@@ -4,11 +4,11 @@
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNLayoutManager.h"
+#import "RNNModalHostViewManagerHandler.h"
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNSplashScreen.h"
 #import <React/RCTBridge.h>
-#import <React/RCTModalHostViewManager.h>
 #import <React/RCTUIManager.h>
 
 @interface RNNBridgeManager ()
@@ -19,6 +19,7 @@
 @property(nonatomic, strong, readonly) RNNLayoutManager *layoutManager;
 @property(nonatomic, strong, readonly) RNNOverlayManager *overlayManager;
 @property(nonatomic, strong, readonly) RNNModalManager *modalManager;
+@property(nonatomic, strong, readonly) RNNModalHostViewManagerHandler *modalHostViewHandler;
 
 @end
 
@@ -66,7 +67,8 @@
         [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
     _modalManager = [[RNNModalManager alloc] initWithBridge:bridge
                                                eventHandler:modalManagerEventHandler];
-
+    _modalHostViewHandler =
+        [[RNNModalHostViewManagerHandler alloc] initWithModalManager:_modalManager];
     _layoutManager = [[RNNLayoutManager alloc] init];
 
     id<RNNComponentViewCreator> rootViewCreator =
@@ -105,7 +107,7 @@
 
 - (void)onJavaScriptLoaded {
     [_commandsHandler setReadyToReceiveCommands:true];
-    [_modalManager
+    [_modalHostViewHandler
         connectModalHostViewManager:[self.bridge moduleForClass:RCTModalHostViewManager.class]];
     [[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
 }
