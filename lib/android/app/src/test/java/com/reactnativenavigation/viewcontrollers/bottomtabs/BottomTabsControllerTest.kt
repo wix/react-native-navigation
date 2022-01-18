@@ -32,6 +32,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
+import com.reactnativenavigation.views.overlay.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -76,6 +77,10 @@ class BottomTabsControllerTest : BaseTest() {
         idleMainLooper()
         Java6Assertions.assertThat(uut.view).isInstanceOf(CoordinatorLayout::class.java)
         Java6Assertions.assertThat(uut.view.getChildAt(uut.view.childCount - 1)).isInstanceOf(
+            AttachedOverlayContainer::class.java
+        )
+        Java6Assertions.assertThat(uut.view.getChildAt(uut.view.childCount - 1).z).isEqualTo(Float.MAX_VALUE)
+        Java6Assertions.assertThat(uut.view.getChildAt(0)).isInstanceOf(
             BottomTabsContainer::class.java
         )
         Java6Assertions.assertThat((uut.bottomTabsContainer.layoutParams as CoordinatorLayout.LayoutParams).gravity)
@@ -116,7 +121,7 @@ class BottomTabsControllerTest : BaseTest() {
     @Test
     fun setTabs_allChildViewsAreAttachedToHierarchy() {
         uut.onViewWillAppear()
-        Java6Assertions.assertThat(uut.view.childCount).isEqualTo(6)
+        Java6Assertions.assertThat(uut.view.childCount).isEqualTo(7)
         for (child in uut.childControllers) {
             Java6Assertions.assertThat(child.view.parent).isNotNull
         }
@@ -126,8 +131,8 @@ class BottomTabsControllerTest : BaseTest() {
     fun setTabs_firstChildIsVisibleOtherAreGone() {
         uut.onViewWillAppear()
         for (i in uut.childControllers.indices) {
-            Java6Assertions.assertThat(uut.view.getChildAt(i)).isEqualTo(tabs[i].view)
-            Java6Assertions.assertThat(uut.view.getChildAt(i).visibility)
+            Java6Assertions.assertThat(uut.view.getChildAt(i+1)).isEqualTo(tabs[i].view)
+            Java6Assertions.assertThat(uut.view.getChildAt(i+1).visibility)
                 .isEqualTo(if (i == 0) View.VISIBLE else View.INVISIBLE)
         }
     }

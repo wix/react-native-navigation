@@ -69,6 +69,7 @@ module.exports = {
       'api/options-modal',
       'api/options-navigationBar',
       'api/options-overlay',
+      'api/options-overlay-attach',
       'api/options-sideMenu',
       'api/options-sideMenuSide',
       'api/options-splitView',

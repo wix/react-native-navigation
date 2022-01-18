@@ -36,8 +36,8 @@ const dismissModal = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
 
 const dismissAllModals = () => Navigation.dismissAllModals();
 
-const showOverlay = (name: CompIdOrLayout, options?: Options, passProps?: any) =>
-  Navigation.showOverlay(component(name, options, passProps));
+const showOverlay = (name: CompIdOrLayout, options?: Options, passProps?: any, id?: string) =>
+  Navigation.showOverlay(component(name, options, passProps, id));
 
 const dismissOverlay = (compId: string) => Navigation.dismissOverlay(compId);
 

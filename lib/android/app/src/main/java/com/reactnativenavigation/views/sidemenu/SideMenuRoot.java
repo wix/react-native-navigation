@@ -12,6 +12,7 @@ import com.reactnativenavigation.options.SideMenuOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.BehaviourDelegate;
+import com.reactnativenavigation.views.overlay.AttachedOverlayContainer;
 
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -23,9 +24,16 @@ import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParent
 
 public class SideMenuRoot extends CoordinatorLayout {
     private SideMenu sideMenu;
+    final private AttachedOverlayContainer attachedOverlayContainer ;
 
     public SideMenuRoot(Context context) {
         super(context);
+        attachedOverlayContainer =  new AttachedOverlayContainer(context);
+        addView(attachedOverlayContainer,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+    }
+
+    public AttachedOverlayContainer getAttachedOverlayContainer() {
+        return attachedOverlayContainer;
     }
 
     public void addSideMenu(SideMenu sideMenu, BehaviourAdapter behaviourAdapter) {
