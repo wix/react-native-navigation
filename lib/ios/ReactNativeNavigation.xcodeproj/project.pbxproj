@@ -51,6 +51,8 @@
 		4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */; };
 		500623A525B7003A0086AB39 /* RNNShadowOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 500623A325B7003A0086AB39 /* RNNShadowOptions.h */; };
 		500623A625B7003A0086AB39 /* RNNShadowOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 500623A425B7003A0086AB39 /* RNNShadowOptions.m */; };
+		5006E12C27974B8900D106A6 /* RNNModalHostViewManagerHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 5006E12A27974B8900D106A6 /* RNNModalHostViewManagerHandler.h */; };
+		5006E12D27974B8900D106A6 /* RNNModalHostViewManagerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5006E12B27974B8900D106A6 /* RNNModalHostViewManagerHandler.m */; };
 		5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008641023856A2C00A55BE9 /* UITabBar+utils.m */; };
 		501214C9217741A000435148 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501214C8217741A000435148 /* libOCMock.a */; };
 		501223D72173590F000F5F98 /* RNNStackPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 501223D52173590F000F5F98 /* RNNStackPresenter.h */; };
@@ -580,6 +582,8 @@
 		4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLargeTitleOptions.m; sourceTree = "<group>"; };
 		500623A325B7003A0086AB39 /* RNNShadowOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNShadowOptions.h; sourceTree = "<group>"; };
 		500623A425B7003A0086AB39 /* RNNShadowOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNShadowOptions.m; sourceTree = "<group>"; };
+		5006E12A27974B8900D106A6 /* RNNModalHostViewManagerHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalHostViewManagerHandler.h; sourceTree = "<group>"; };
+		5006E12B27974B8900D106A6 /* RNNModalHostViewManagerHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalHostViewManagerHandler.m; sourceTree = "<group>"; };
 		5008641023856A2C00A55BE9 /* UITabBar+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+utils.m"; sourceTree = "<group>"; };
 		5008641123856A2D00A55BE9 /* UITabBar+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBar+utils.h"; sourceTree = "<group>"; };
 		501214C8217741A000435148 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -1092,6 +1096,8 @@
 				390AD476200F499D00A8250D /* RNNSwizzles.m */,
 				506A2B1220973DFD00F43A95 /* RNNErrorHandler.h */,
 				506A2B1320973DFD00F43A95 /* RNNErrorHandler.m */,
+				5006E12A27974B8900D106A6 /* RNNModalHostViewManagerHandler.h */,
+				5006E12B27974B8900D106A6 /* RNNModalHostViewManagerHandler.m */,
 				50644A1E20E11A720026709C /* Constants.h */,
 				50644A1F20E11A720026709C /* Constants.m */,
 				50706E6B20CE7CA5003345C3 /* UIImage+utils.h */,
@@ -1818,6 +1824,7 @@
 			files = (
 				506BF6622600AE7600A22755 /* BoundsTransition.h in Headers */,
 				91CB34C9250ED50C000C132B /* RNNSearchBarOptions.h in Headers */,
+				5006E12C27974B8900D106A6 /* RNNModalHostViewManagerHandler.h in Headers */,
 				5060DE73219DAD7E00D0C052 /* ReactNativeNavigation.h in Headers */,
 				506BF7CE26067B0500A22755 /* AnimatedUIImageView.h in Headers */,
 				5022EDBD2405237100852BA6 /* BottomTabPresenterCreator.h in Headers */,
@@ -2337,6 +2344,7 @@
 				5017D9EF239D2FAF00B74047 /* BottomTabsAfterInitialTabAttacher.m in Sources */,
 				5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */,
 				9FDA2ABE24F2A42C005678CC /* RCTConvert+UIFontWeight.m in Sources */,
+				5006E12D27974B8900D106A6 /* RNNModalHostViewManagerHandler.m in Sources */,
 				9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */,
 				50BCB27223F1650800D6C8E5 /* SharedElementTransition.m in Sources */,
 				E5F6C3A822DB4D0F0093C2CE /* UIView+Utils.m in Sources */,

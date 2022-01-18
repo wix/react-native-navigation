@@ -1,7 +1,6 @@
 #import "RNNModalManagerEventHandler.h"
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
-#import <React/RCTModalHostViewManager.h>
 #import <UIKit/UIKit.h>
 
 typedef void (^RNNTransitionCompletionBlock)(void);
@@ -13,7 +12,6 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *_Nonnull code, NSString *_
 
 - (instancetype _Nonnull)initWithBridge:(RCTBridge *_Nonnull)bridge
                            eventHandler:(RNNModalManagerEventHandler *_Nonnull)eventHandler;
-- (void)connectModalHostViewManager:(RCTModalHostViewManager *_Nonnull)modalHostViewManager;
 
 - (void)showModal:(UIViewController *_Nonnull)viewController
          animated:(BOOL)animated
@@ -24,5 +22,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *_Nonnull code, NSString *_
 - (void)dismissAllModalsAnimated:(BOOL)animated completion:(void (^__nullable)(void))completion;
 
 - (void)reset;
+
+- (UIViewController *)topPresentedVC;
 
 @end
