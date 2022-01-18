@@ -10,6 +10,8 @@ import static com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarContr
 import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -49,10 +51,12 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
+import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -673,5 +677,52 @@ public class StackPresenter {
 
     public int getTopInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).topBar.isHiddenOrDrawBehind() ? 0 : topBarController.getHeight();
+    }
+
+
+    private TitleBarReactViewController findTitleById(String id){
+        final Collection<TitleBarReactViewController> values = titleControllers.values();
+        for(TitleBarReactViewController child: values){
+            if(child.getId().equals(id)){
+                return child;
+            }
+        }
+        return null;
+    }
+    private Pair<ButtonController, ButtonBar> findButtonById(String id){
+        final Collection<Map<String, ButtonController>> leftControllers = leftButtonControllers.values();
+        final Collection<Map<String, ButtonController>> rightControllers = rightButtonControllers.values();
+        for(Map<String, ButtonController> map : leftControllers){
+            if(map.containsKey(id)){
+                return Pair.create(map.get(id),topBar.getLeftButtonBar());
+            }
+        }
+        for(Map<String, ButtonController> map : rightControllers){
+            if(map.containsKey(id)){
+                return Pair.create(map.get(id),topBar.getRightButtonBar());
+            }
+        }
+        return null;
+    }
+    @Nullable
+    public View findTopBarViewById(String id) {
+        final Pair<ButtonController, ButtonBar> buttonById = findButtonById(id);
+        if(buttonById!=null){
+            final View view = buttonById.first.getNullableView();
+            if(view==null){
+                final MenuItem menuItem = buttonById.first.getMenuItem();
+                if(menuItem!=null){
+                    final int order = menuItem.getOrder();
+                    return buttonById.second.getChildAt(order/10);
+                }
+            }
+            return view;
+        }else {
+            final TitleBarReactViewController titleById = findTitleById(id);
+            if(titleById!=null){
+                return titleById.getView();
+            }
+        }
+        return null;
     }
 }

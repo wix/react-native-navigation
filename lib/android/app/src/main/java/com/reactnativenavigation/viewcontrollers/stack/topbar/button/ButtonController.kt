@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
@@ -22,7 +23,8 @@ open class ButtonController(activity: Activity,
                             private val viewCreator: TitleBarButtonCreator,
                             private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
 
-    private var menuItem: MenuItem? = null
+    var menuItem: MenuItem? = null
+    private set
 
     interface OnClickListener {
         fun onPress(button: ButtonOptions)
@@ -112,5 +114,9 @@ open class ButtonController(activity: Activity,
             presenter.applyOptions(buttonBar,menuItem,this::getView)
         }
     }
+
+   fun getNullableView(): View?{
+       return view
+   }
 
 }

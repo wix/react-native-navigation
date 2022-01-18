@@ -149,7 +149,7 @@ export default class StackScreen extends React.Component<NavigationComponentProp
     });
 
   setNavigationTabStackRoot() {
-    Navigation.setStackRoot('NavigationTabStack', [
+    Navigation.setStackRoot('NavigationStack', [
       {
         component: {
           name: Screens.Navigation,

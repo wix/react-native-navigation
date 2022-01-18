@@ -10,12 +10,21 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import com.reactnativenavigation.views.overlay.AttachedOverlayContainer;
+
 public class BottomTabsLayout extends CoordinatorLayout {
 
     private BottomTabsContainer bottomTabsContainer;
+    final private AttachedOverlayContainer attachedOverlayContainer ;
 
     public BottomTabsLayout(Context context) {
         super(context);
+        attachedOverlayContainer=new AttachedOverlayContainer(context);
+        this.addView(attachedOverlayContainer, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+
+    public AttachedOverlayContainer getAttachedOverlayContainer() {
+        return attachedOverlayContainer;
     }
 
     @Override

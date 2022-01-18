@@ -1,21 +1,12 @@
 package com.reactnativenavigation.viewcontrollers.parent;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.utils.CollectionUtils;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
-import com.reactnativenavigation.viewcontrollers.child.ChildController;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.component.Component;
-
-import java.util.Collection;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -23,8 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.OverlayAttachOptions;
+import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.utils.CollectionUtils;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
+import com.reactnativenavigation.views.component.Component;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController<T> {
 
@@ -88,6 +92,10 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     public abstract ViewController<?> getCurrentChild();
 
+    public List<ViewController<?>> getChildren(){
+        return Collections.emptyList();
+    }
+
     @NonNull
     @Override
     public abstract T createView();
@@ -101,6 +109,51 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
             return (BottomTabsController) this;
         }
         return perform(getParentController(), null, ParentController::getBottomTabsController);
+    }
+
+    @Override
+    protected View findTooltipAnchorView(OverlayAttachOptions options) {
+        final String id = options.anchorId.get();
+        View found = null;
+        final View topBarView = findTopBarViewById(id);
+        if (topBarView != null) {
+            found = topBarView;
+        } else {
+            final View bottomTabViewById = findBottomTabViewById(id);
+            if (bottomTabViewById != null) {
+                found = bottomTabViewById;
+            }
+        }
+        return found;
+    }
+
+    @Nullable
+    protected View findTopBarViewById(String id) {
+        final View[] found = {null};
+        lookup((controller) -> {
+            if (controller instanceof StackController) {
+                final StackController stackController = (StackController) controller;
+                final View topBarViewById = stackController.presenter.findTopBarViewById(id);
+                found[0] = topBarViewById;
+                return topBarViewById != null;
+            }
+            return false;
+        });
+        return found[0];
+    }
+
+    @Nullable
+    protected View findBottomTabViewById(@NonNull String id) {
+        final View[] found = {null};
+        lookup((controller) -> {
+            if (controller instanceof BottomTabsController) {
+                BottomTabsController bottomTabsController = (BottomTabsController) controller;
+                found[0] = bottomTabsController.getTabViewByTag(id);
+                return found[0] != null;
+            }
+            return false;
+        });
+        return found[0];
     }
 
     @Nullable
@@ -202,6 +255,30 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     public String getCurrentComponentName() {
         return getCurrentChild().getCurrentComponentName();
+    }
+
+    protected interface LookupPredicate<T> {
+        boolean test(T t);
+    }
+    public ViewController<?> lookup(LookupPredicate<ViewController<?>> predicate){
+        if(predicate.test(this)){
+            return this;
+        }else{
+            final List<ViewController<?>> children = getChildren();
+            for(ViewController<?> child : children){
+               if(child instanceof ParentController){
+                   ViewController<?> result= ((ParentController<?>) child).lookup(predicate);
+                   if(result!=null){
+                       return result;
+                   }
+               }else{
+                   if(predicate.test(child)){
+                       return child;
+                   }
+               }
+            }
+            return null;
+        }
     }
 
     public void onConfigurationChanged(Configuration newConfig) {

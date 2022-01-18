@@ -48,6 +48,7 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         this.topOutLineView.visibility = View.GONE
 
         this.addView(linearLayout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+
     }
 
     override var shadowRadius: Float

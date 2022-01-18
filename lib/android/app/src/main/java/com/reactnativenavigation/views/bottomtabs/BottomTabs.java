@@ -12,7 +12,9 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.IntRange;
 
@@ -21,10 +23,11 @@ import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
+    public final static int TAB_NOT_FOUND = -1;
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
-
+    private final Map<String,Integer> idPositionMapping = new HashMap<>();
     public BottomTabs(Context context) {
         super(context);
         setId(R.id.bottomTabs);
@@ -131,5 +134,30 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasItemsAndIsMeasured(int w, int h, int oldw, int oldh) {
         return w != 0 && h != 0 && (w != oldw || h != oldh) && getItemsCount() > 0;
+    }
+
+
+    public void setTagForTabIndex(int index, String tag) {
+        if(tag==null){
+            String oldTag = null;
+            for(Map.Entry<String,Integer>  e: idPositionMapping.entrySet()){
+                if(e.getValue() == index){
+                    oldTag = e.getKey();
+                    break;
+                }
+            }
+            if(oldTag!=null){
+                idPositionMapping.remove(oldTag);
+            }
+        }else{
+            idPositionMapping.put(tag,index);
+        }
+    }
+
+    public int getTabIndexByTag(String tag) {
+        if(tag!=null && idPositionMapping.containsKey(tag)){
+         return idPositionMapping.get(tag);
+        }
+        return TAB_NOT_FOUND;
     }
 }
