@@ -70,8 +70,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
 
-
-
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -198,10 +196,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onBackPressed() {
         logger.log(Log.VERBOSE, TAG, "onBackPressed PIPMode " + navigator.getPipMode());
-        if(navigator.resolveCurrentOptions().bottomTabsOptions.resetToFirstTabOnBack.isTrue()){
+        if (navigator.resolveCurrentOptions().bottomTabsOptions.resetToFirstTabOnBack.isTrue()) {
             invokeDefaultOnBackPressed();
-        }
-        else{
+        } else {
             getReactGateway().onBackPressed();
         }
     }
@@ -257,7 +254,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void startActivity(Intent intent) {
-        navigatingToAnotherActivity = true;
+        navigatingToAnotherActivity = intent != null && intent.getAction() == null;
         super.startActivity(intent);
     }
 
