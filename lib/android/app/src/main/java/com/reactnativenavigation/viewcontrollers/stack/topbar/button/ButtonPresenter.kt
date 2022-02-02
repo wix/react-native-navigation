@@ -60,7 +60,7 @@ IconResolver) {
 
     private fun applyText(menuItem: MenuItem) {
         if (button.text.hasValue())
-            menuItem.title = button.text.get()
+            menuItem.title = styledText
     }
 
     fun applyColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {
