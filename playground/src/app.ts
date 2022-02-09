@@ -1,9 +1,9 @@
-import Navigation from './services/Navigation';
-import { registerScreens } from './screens';
-import addProcessors from './commons/Processors';
 import { setDefaultOptions } from './commons/options/Options';
-import testIDs from './testIDs';
+import addProcessors from './commons/Processors';
+import { registerScreens } from './screens';
 import Screens from './screens/Screens';
+import Navigation from './services/Navigation';
+import testIDs from './testIDs';
 
 // @ts-ignore
 alert = (title, message) =>
@@ -50,6 +50,15 @@ function setRoot() {
                 },
               ],
               options: {
+                topBar: {
+                  animate: false,
+                  leftButtons: [
+                    {
+                      id: 'Button1',
+                      icon: require('../img/layouts.png'),
+                    },
+                  ],
+                },
                 bottomTab: {
                   id: 'LayoutsBottomTab',
                   text: 'Layouts',
@@ -75,6 +84,13 @@ function setRoot() {
                   title: {
                     text: 'Default Title',
                   },
+                  animate: false,
+                  leftButtons: [
+                    {
+                      id: 'Button2',
+                      icon: require('../img/layouts.png'),
+                    },
+                  ],
                 },
                 bottomTab: {
                   id: 'OptionsBottomTab',
@@ -97,6 +113,15 @@ function setRoot() {
                 },
               ],
               options: {
+                topBar: {
+                  animate: false,
+                  leftButtons: [
+                    {
+                      id: 'Button3',
+                      icon: require('../img/layouts.png'),
+                    },
+                  ],
+                },
                 bottomTab: {
                   id: 'NavigationBottomTab',
                 },

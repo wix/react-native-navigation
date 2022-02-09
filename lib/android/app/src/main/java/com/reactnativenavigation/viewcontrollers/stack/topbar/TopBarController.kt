@@ -177,6 +177,9 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         controllerCreator: (ButtonOptions) -> ButtonController,
         buttonBar: ButtonBar
     ) {
+        if (buttonBar.optionsHasBeenApplied)
+            return
+
         if (buttonBar.shouldAnimate)
             TransitionManager.beginDelayedTransition(buttonBar, buttonsTransition)
 
@@ -192,6 +195,7 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
             newController.addToMenu(buttonBar, order)
             btnControllers[it.id] = newController
         }
+        buttonBar.optionsHasBeenApplied = true
     }
 
 

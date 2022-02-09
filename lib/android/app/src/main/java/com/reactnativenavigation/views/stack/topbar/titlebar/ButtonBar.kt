@@ -15,6 +15,7 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
     var shouldAnimate: Boolean=false
+    var optionsHasBeenApplied: Boolean = false
 
     init {
         super.setContentInsetsAbsolute(0, 0)
