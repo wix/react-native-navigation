@@ -4,7 +4,6 @@ import android.animation.AnimatorSet
 import android.app.Activity
 import android.content.Context
 import android.view.View
-import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock
@@ -26,6 +25,7 @@ import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
@@ -105,6 +105,20 @@ class TopBarControllerTest : BaseTest() {
         }
         assertThat(uut.rightButtonCount).isEqualTo(1)
     }
+
+    @Test
+    fun applyRightButtons_sameButtonsAreUpdated() {
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(textButton1)){
+            createButtonController(it)
+        }
+        val copy = textButton1.copy()
+        copy.enabled= Bool(false)
+        uut.applyRightButtonsOptions(rightButtonControllers, listOf(copy)){
+            createButtonController(it)
+        }
+        assertThat(rightButtonControllers[copy.id]?.button?.enabled?.get()).isFalse()
+    }
+
 
     @Test
     fun applyRightButtons_buttonsAreAddedInReversedOrderToMatchOrderOnIOs() {
