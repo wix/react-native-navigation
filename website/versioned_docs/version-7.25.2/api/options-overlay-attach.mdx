@@ -1,0 +1,45 @@
+---
+id: options-overlay-attach
+title: Overlay Attach (Tooltips)
+sidebar_label: Overlay (Tooltips)
+---
+
+Controls overlay attach options
+
+```js
+const options = {
+  overlay: {
+    attach: {
+        layoutId: "someLayout",
+        anchor: {
+          id: "bottomTab1",
+          gravity: 'top',
+        },
+    },
+  }
+}
+```
+
+### `layoutId`
+Layout id in which the wanted tooltip (attached overlay) will be shown, for example pass bottomTabs id to have the
+overlay shown at bottom tabs level.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | Yes       | Both     |
+
+
+### `anchor.id`
+
+The id of the RNN view to have the overlay anchored to.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | Yes       | Both     |
+
+### `anchor.gravity`
+A side on which the overlay will be anchored.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| enum('top','left','right','bottom') | Yes       | Both     |

@@ -18,11 +18,9 @@ interface Props extends NavigationComponentProps {
 }
 
 export default class KeyboardScreen extends NavigationComponent<Props> {
+  private secondTextInput: any;
   static options() {
     return {
-      bottomTabs: {
-        drawBehind: true,
-      },
       topBar: {
         title: {
           text: 'Keyboard',
@@ -88,15 +86,17 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
               onSubmitEditing={async (event) => {
                 if (event.nativeEvent.text || event.nativeEvent.text.trim().length > 0)
                   await this.openModalKeyboard(event.nativeEvent.text);
+                else this.secondTextInput.focus();
               }}
             />
             <TextInput
+              ref={(input) => {
+                this.secondTextInput = input;
+              }}
               style={styles.input}
               testID={testIDs.TEXT_INPUT2}
               placeholderTextColor="rgba(255, 0, 0, 0.5)"
               placeholder="Submit pushes screen"
-              onFocus={this.hideTabs}
-              onBlur={this.showTabs}
               onSubmitEditing={async (event) => {
                 if (event.nativeEvent.text || event.nativeEvent.text.trim().length > 0)
                   await this.openPushedKeyboard(event.nativeEvent.text, true);
@@ -132,22 +132,6 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
         },
       })
     );
-  };
-
-  hideTabs = () => {
-    Navigation.mergeOptions(this.props.componentId, {
-      bottomTabs: {
-        visible: false,
-      },
-    });
-  };
-
-  showTabs = () => {
-    Navigation.mergeOptions(this.props.componentId, {
-      bottomTabs: {
-        visible: true,
-      },
-    });
   };
 }
 
