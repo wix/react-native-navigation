@@ -180,14 +180,16 @@ open class TopBarController(private val animator: TopBarAnimator = TopBarAnimato
         if (buttonBar.optionsHasBeenApplied)
             return
 
+        buttonBar.clearButtons()
         if (buttonBar.shouldAnimate)
             TransitionManager.beginDelayedTransition(buttonBar, buttonsTransition)
 
-        buttonBar.clearButtons()
         buttons.forEachIndexed { index, it ->
             val order = index * 10
             val newController = if (btnControllers.containsKey(it.id)) {
-                btnControllers.remove(it.id)
+                btnControllers.remove(it.id)?.apply {
+                    this.mergeButtonOptions(it,buttonBar)
+                }
             } else {
                 controllerCreator(it)
             }!!

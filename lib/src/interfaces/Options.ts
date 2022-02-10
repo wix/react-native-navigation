@@ -950,7 +950,7 @@ export interface OptionsBottomTab {
   /**
    * Set the background color of the badge that is overlayed over the component
    */
-  badgeColor?: string;
+  badgeColor?: Color;
   /**
    * Show the badge with the animation.
    * #### (Android specific)
