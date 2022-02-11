@@ -33,7 +33,12 @@ type FontWeight =
   | '800'
   | '900'
   | FontWeightIOS;
-export type LayoutOrientation = 'portrait' | 'landscape';
+export type LayoutOrientation =
+  | 'portrait'
+  | 'landscape'
+  | 'sensor'
+  | 'sensorLandscape'
+  | 'sensorPortrait';
 type AndroidDensityNumber = number;
 export type SystemItemIcon =
   | 'done'

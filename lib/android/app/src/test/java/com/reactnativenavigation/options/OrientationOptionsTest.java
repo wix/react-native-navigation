@@ -26,10 +26,13 @@ public class OrientationOptionsTest extends BaseTest {
 
     @Test
     public void parseOrientations() {
-        OrientationOptions options = OrientationOptions.parse(create("default", "landscape", "portrait"));
+        OrientationOptions options = OrientationOptions.parse(create("default", "landscape", "portrait", "sensor", "sensorLandscape", "sensorPortrait"));
         assertThat(options.orientations.get(0)).isEqualTo(Orientation.Default);
         assertThat(options.orientations.get(1)).isEqualTo(Orientation.Landscape);
         assertThat(options.orientations.get(2)).isEqualTo(Orientation.Portrait);
+        assertThat(options.orientations.get(3)).isEqualTo(Orientation.PortraitLandscape);
+        assertThat(options.orientations.get(4)).isEqualTo(Orientation.SensorLandscape);
+        assertThat(options.orientations.get(5)).isEqualTo(Orientation.SensorPortrait);
     }
 
     @Test
