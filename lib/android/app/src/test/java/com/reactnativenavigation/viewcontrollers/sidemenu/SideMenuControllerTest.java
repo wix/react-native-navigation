@@ -58,7 +58,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Override
     public void beforeEach() {
         super.beforeEach();
-        activity = createActivity();
+        activity = newActivity();
 
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new SideMenuPresenter());
@@ -428,14 +428,6 @@ public class SideMenuControllerTest extends BaseTest {
         options.sideMenuRootOptions.right.animate = new Bool(false);
         uut.mergeOptions(options);
         uut.onDrawerSlide(right.getView(), 0);
-    }
-
-    private Activity createActivity() {
-        Activity activity = spy(newActivity());
-        Window window = mock(Window.class);
-        when(window.getDecorView()).thenReturn(mock(View.class));
-        when(activity.getWindow()).thenReturn(window);
-        return activity;
     }
 
     private void setLeftRight(ViewController<?> left, ViewController<?> right) {
