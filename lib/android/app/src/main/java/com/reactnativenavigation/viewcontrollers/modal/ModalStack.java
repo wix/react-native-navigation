@@ -14,7 +14,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ModalOve
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.LinkedList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -142,9 +141,6 @@ public class ModalStack {
 
     public boolean isEmpty() {
         return modals.isEmpty();
-    }
-    public List<ViewController<?>> getChildren(){
-        return new LinkedList<>(modals);
     }
 
     public int size() {

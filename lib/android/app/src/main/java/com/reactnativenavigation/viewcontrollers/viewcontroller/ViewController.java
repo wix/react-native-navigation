@@ -12,13 +12,11 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.react.CommandListener;
@@ -30,7 +28,6 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
-import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.component.Renderable;
 
@@ -395,15 +392,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
-    protected View findTooltipAnchorView(OverlayAttachOptions options) {
-        return null;
-    }
-
-    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView,
-                                                       @NonNull OverlayAttachOptions overlayAttachOptions,
-                                                       @NonNull   ViewController<?> overlayViewController) {
-        return null;
-    }
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));
     }

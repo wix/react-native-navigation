@@ -21,8 +21,7 @@ When showing views like Alert or Toast in an Overlay, you would want to configur
   defaultValue="alert"
   values={[
     { label: 'Alert', value: 'alert', },
-    { label: 'Toast', value: 'toast', },
-    { label: 'Tooltip', value: 'tooltip', }
+    { label: 'Toast', value: 'toast', }
   ]
 }>
 <TabItem value='alert'>
@@ -152,41 +151,6 @@ Toast.options = {
 };
 
 module.exports = Toast;
-```
-
-</TabItem>
-
-<TabItem value='tooltip'>
-
-The example below demonstrates how to create a tooltip, (Attached overlay) using the Overlay API.
-
-The component will be anchored to `anchorId` in a `layerId` level, at `gravity` side of the anchor, [see](api/options-overlay-attach.mdx).
-
-You can use the returned id inorder to maintain the tooltip state, show/hide.
-
-<img width="30%" src={useBaseUrl('/img/tooltip_showcase.gif')} />
-
-```js
-    const tooltipId = await Navigation.showOverlay(
-      {
-          component:{
-            name: Screens.Tooltip
-          }
-      },
-      {
-        overlay: {
-          attach: {
-            layoutId: layoutId,
-            anchor: {
-              id: anchor,
-              gravity: gravity,
-            },
-          },
-        },
-      }
-    );
-    ....
-
 ```
 
 </TabItem>

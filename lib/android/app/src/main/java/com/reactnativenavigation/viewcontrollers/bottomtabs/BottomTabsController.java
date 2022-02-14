@@ -1,10 +1,5 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.CollectionUtils.map;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
-import static com.reactnativenavigation.views.bottomtabs.BottomTabs.TAB_NOT_FOUND;
-
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
@@ -12,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -21,7 +15,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -32,7 +25,6 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
@@ -41,6 +33,10 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
@@ -240,29 +236,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public boolean onMeasureChild(CoordinatorLayout parent, ViewGroup child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         perform(findController(child), ViewController::applyBottomInset);
         return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
-    }
-
-    @Override
-    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions,
-                                                       @NonNull ViewController<?> overlayViewController) {
-        if(view!=null){
-            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.gravity.get());
-        }
-       return null;
-    }
-
-    public View getTabViewByTag(String id) {
-        int tabIndex = bottomTabs.getTabIndexByTag(id);
-        if (tabIndex != TAB_NOT_FOUND) {
-            return bottomTabs.getViewAtPosition(tabIndex);
-        }
-        return null;
-    }
-
-    @Override
-    public List<ViewController<?>> getChildren() {
-        return tabs;
     }
 
     @Override

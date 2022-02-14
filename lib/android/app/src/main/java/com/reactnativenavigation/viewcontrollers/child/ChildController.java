@@ -2,20 +2,27 @@ package com.reactnativenavigation.viewcontrollers.child;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.CallSuper;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.view.WindowInsets;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
+import com.reactnativenavigation.utils.LogKt;
+import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.NoOpYellowBoxDelegate;
+import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.component.Component;
+
+import androidx.annotation.CallSuper;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T> {
     private final Presenter presenter;

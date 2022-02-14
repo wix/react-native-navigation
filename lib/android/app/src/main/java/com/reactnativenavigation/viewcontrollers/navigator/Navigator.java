@@ -82,9 +82,6 @@ public class Navigator extends ParentController<ViewGroup> {
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
         overlaysLayout = new CoordinatorLayout(getActivity());
-        overlayManager.setFindController(this::findController);
-        overlayManager.setFindAnchorView(this::findTooltipAnchorView);
-        overlayManager.setMainOverlayContainer(overlaysLayout);
     }
 
 
@@ -127,7 +124,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void destroyViews() {
         modalStack.destroy();
-        overlayManager.destroy();
+        overlayManager.destroy(overlaysLayout);
         destroyRoot();
     }
 
@@ -214,27 +211,16 @@ public class Navigator extends ParentController<ViewGroup> {
         modalStack.dismissAllModals(root, mergeOptions, listener);
     }
 
-    @Override
-    public List<ViewController<?>> getChildren() {
-        final List<ViewController<?>> children = modalStack.getChildren();
-        children.add(root);
-        return children;
-    }
-
     public void showOverlay(ViewController<?> overlay, CommandListener listener) {
-        final Options options = overlay.resolveCurrentOptions();
-        overlayManager.show( overlay,options.overlayOptions, listener);
-
+        overlayManager.show(overlaysLayout, overlay, listener);
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss( componentId, listener);
-
+        overlayManager.dismiss(overlaysLayout, componentId, listener);
     }
 
     public void dismissAllOverlays(CommandListener listener) {
-        overlayManager.dismissAll();
-        listener.onSuccess("");
+        overlayManager.dismissAll(overlaysLayout, listener);
     }
 
     @Nullable
@@ -288,7 +274,7 @@ public class Navigator extends ParentController<ViewGroup> {
         overlayManager.onHostPause();
         if (!modalStack.isEmpty()) {
             modalStack.onHostPause();
-            if (modalStack.peekDisplayedOverCurrentContext()) {
+            if(modalStack.peekDisplayedOverCurrentContext()){
                 onViewDisappear();
             }
         } else {
@@ -300,7 +286,7 @@ public class Navigator extends ParentController<ViewGroup> {
         overlayManager.onHostResume();
         if (!modalStack.isEmpty()) {
             modalStack.onHostResume();
-            if (modalStack.peekDisplayedOverCurrentContext()) {
+            if(modalStack.peekDisplayedOverCurrentContext()){
                 onViewDidAppear();
             }
         } else {

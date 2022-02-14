@@ -3,9 +3,8 @@ package com.reactnativenavigation.viewcontrollers.component;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.reactnativenavigation.options.OverlayAttachOptions;
+import com.reactnativenavigation.utils.LogKt;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -14,11 +13,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,11 +26,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
-    private boolean ignoreInsets = false;
-
-    public void ignoreInsets(boolean ignore) {
-        ignoreInsets = ignore;
-    }
 
     private enum VisibilityState {Appear, Disappear}
 
@@ -86,17 +78,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (view != null)
             view.sendComponentWillStart();
         super.onViewDidAppear();
-        if (view != null) {
-            view.requestApplyInsets();
-            if (lastVisibilityState == VisibilityState.Disappear)
-                view.sendComponentStart();
-        }
+        view.requestApplyInsets();
+        if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
     }
 
     @Override
     public void onViewDisappear() {
-        if (lastVisibilityState == VisibilityState.Disappear) return;
+        if(lastVisibilityState == VisibilityState.Disappear)return;
         lastVisibilityState = VisibilityState.Disappear;
         if (view != null) view.sendComponentStop();
         super.onViewDisappear();
@@ -136,7 +125,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyTopInset() {
-        if (view != null && !ignoreInsets) presenter.applyTopInsets(view, getTopInset());
+        if (view != null) presenter.applyTopInsets(view, getTopInset());
     }
 
     @Override
@@ -148,14 +137,13 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyBottomInset() {
-        if (view != null && !ignoreInsets) presenter.applyBottomInset(view, getBottomInset());
+        if (view != null) presenter.applyBottomInset(view, getBottomInset());
     }
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         ViewController<?> viewController = findController(view);
-        if (viewController == null || viewController.getView() == null  || ignoreInsets) return insets;
-
+        if (viewController == null || viewController.getView() == null) return insets;
         final int keyboardBottomInset = options.layout.adjustResize.get(true) ? insets.getInsets( WindowInsetsCompat.Type.ime()).bottom : 0;
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() );
         final int visibleNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isVisible.isTrueOrUndefined()?1:0;
@@ -184,15 +172,6 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         if (focusView != null) {
             focusView.clearFocus();
         }
-    }
-
-    @Override
-    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
-        if (view != null) {
-            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.gravity.get());
-        }
-        return null;
     }
 
     @Override
