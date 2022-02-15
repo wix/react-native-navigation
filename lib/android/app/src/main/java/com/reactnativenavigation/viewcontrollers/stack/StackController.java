@@ -69,7 +69,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        presenter.onConfigurationChanged(resolveCurrentOptions(), getCurrentChild());
+        presenter.onConfigurationChanged(resolveCurrentOptions());
         fabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
