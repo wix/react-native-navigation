@@ -18,6 +18,7 @@ export const NavigationButton = class extends Component<ButtonProps> {
         testID={button.testID}
         key={button.id}
         title={button.text || ''}
+        disabled={button.enabled === false}
         onPress={() =>
           button.enabled !== false &&
           events.invokeNavigationButtonPressed({
