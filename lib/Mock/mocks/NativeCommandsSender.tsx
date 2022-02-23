@@ -77,17 +77,22 @@ export class NativeCommandsSender {
   }
 
   dismissModal(_commandId: string, componentId: string, _options?: object) {
-    return new Promise((resolve) => {
-      const modal = LayoutStore.getModalById(componentId).getTopParent();
-      modal.componentDidDisappear();
-      LayoutStore.dismissModal(componentId);
-      events.invokeModalDismissed({
-        componentName: modal.data.name,
-        componentId: modal.nodeId,
-        modalsDismissed: 1,
-      });
-      resolve(modal.nodeId);
-      LayoutStore.getVisibleLayout().componentDidAppear();
+    return new Promise((resolve, reject) => {
+      const modal = LayoutStore.getModalById(componentId);
+      if (modal) {
+        const modalTopParent = modal.getTopParent();
+        modalTopParent.componentDidDisappear();
+        LayoutStore.dismissModal(componentId);
+        events.invokeModalDismissed({
+          componentName: modalTopParent.data.name,
+          componentId: modalTopParent.nodeId,
+          modalsDismissed: 1,
+        });
+        resolve(modalTopParent.nodeId);
+        LayoutStore.getVisibleLayout().componentDidAppear();
+      } else {
+        reject(`component with id: ${componentId} is not a modal`);
+      }
     });
   }
 
