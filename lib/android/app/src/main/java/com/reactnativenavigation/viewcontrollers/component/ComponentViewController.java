@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
@@ -21,9 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewKt;
 import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
+import kotlin.Unit;
 
 public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
@@ -156,8 +160,10 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         ViewController<?> viewController = findController(view);
         if (viewController == null || viewController.getView() == null || ignoreInsets) return insets;
         final Options currentOptions = resolveCurrentOptions(presenter.defaultOptions);
-
-        final int keyboardBottomInset = currentOptions.layout.adjustResize.get(true) ? insets.getInsets(WindowInsetsCompat.Type.ime()).bottom : 0;
+        int mode = getActivity().getWindow().getAttributes().softInputMode;
+        boolean adjustNothing = (mode & WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING) ==WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING ;
+        final int keyboardBottomInset = currentOptions.layout.adjustResize.get(true) &&!adjustNothing ?
+                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom : 0;
         final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
         final int visibleNavBar = currentOptions.navigationBar.isVisible.isTrueOrUndefined() ? 1 : 0;
         final int controllerBottomInset = currentOptions.bottomTabsOptions.isHiddenOrDrawBehind() ? 0 : getBottomInset();
@@ -167,8 +173,10 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                         systemBarsInsets.right,
                         Math.max(0, Math.max(visibleNavBar * systemBarsInsets.bottom, keyboardBottomInset) - controllerBottomInset))
         ).build();
-
-        ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
+        ViewKt.doOnLayout(viewController.getView(), (v) -> {
+            ViewCompat.onApplyWindowInsets(viewController.getView(), finalInsets);
+            return Unit.INSTANCE;
+        });
         return insets;
     }
 

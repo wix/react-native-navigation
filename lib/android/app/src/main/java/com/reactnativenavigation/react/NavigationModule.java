@@ -59,7 +59,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             @Override
             public void onHostPause() {
                 super.onHostPause();
-                navigator().onHostPause();
+                UiUtils.runOnMainThread(() -> navigator().onHostPause());
             }
 
             @Override
@@ -72,7 +72,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                         navigator().getChildRegistry(),
                         ((NavigationApplication) activity().getApplication()).getExternalComponents()
                 );
-                navigator().onHostResume();
+                UiUtils.runOnMainThread(() -> navigator().onHostResume());
             }
         });
     }
