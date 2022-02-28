@@ -49,8 +49,14 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
             updateFirstChildView()
         }
     }
+    override fun onChildStartedNativeGesture(child: View, androidEvent: MotionEvent?) {
+        mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
+    }
     override fun onChildStartedNativeGesture(androidEvent: MotionEvent?) {
         mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
+    }
+    override fun onChildEndedNativeGesture(child: View, androidEvent: MotionEvent?) {
+        mJSTouchDispatcher.onChildEndedNativeGesture(androidEvent, this.getEventDispatcher())
     }
     override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
     private fun getEventDispatcher(): EventDispatcher? {
