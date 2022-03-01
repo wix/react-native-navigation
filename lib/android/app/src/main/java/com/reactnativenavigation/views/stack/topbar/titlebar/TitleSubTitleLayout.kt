@@ -38,6 +38,13 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         }
     }
 
+    fun setTitleAlignment(alignment: Alignment) {
+        if (alignment == Alignment.Center) {
+            (this.titleTextView.layoutParams as LayoutParams).gravity = Gravity.CENTER
+        } else {
+            (this.titleTextView.layoutParams as LayoutParams).gravity = Gravity.START or Gravity.CENTER_VERTICAL
+        }
+    }
 
     fun setTitleFontSize(size: Float) = titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
 

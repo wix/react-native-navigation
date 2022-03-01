@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.*
@@ -28,13 +29,11 @@ import com.reactnativenavigation.views.stack.StackBehaviour
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.ScrollDIsabledBehavior
 import com.reactnativenavigation.views.stack.topbar.TopBar
-import com.reactnativenavigation.views.overlay.AttachedOverlayContainer
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.assertj.core.api.iterable.Extractor
 import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
-import org.mockito.kotlin.*
 import org.robolectric.Robolectric
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
@@ -124,20 +123,10 @@ class StackControllerTest : BaseTest() {
     }
 
     @Test
-    fun constructor_tooltipsOverlayIsAddedAtTopZAxis() {
-        val uut: StackController = createStack(listOf(child1, child2, child3, child4))
-        assertThat(uut.childControllers.size).isEqualTo(4)
-        assertThat(uut.view.childCount).isEqualTo(3)
-        assertThat(uut.view.getChildAt(0)).isEqualTo(child4.view)
-        assertThat(uut.view.getChildAt(2)).isInstanceOf(AttachedOverlayContainer::class.java)
-        assertThat(uut.view.getChildAt(2).z).isEqualTo(Float.MAX_VALUE)
-    }
-
-    @Test
     fun createView_currentChildIsAdded() {
         val uut: StackController = createStack(listOf(child1, child2, child3, child4))
         assertThat(uut.childControllers.size).isEqualTo(4)
-        assertThat(uut.view.childCount).isEqualTo(3)
+        assertThat(uut.view.childCount).isEqualTo(2)
         assertThat(uut.view.getChildAt(0)).isEqualTo(child4.view)
     }
 
@@ -938,7 +927,7 @@ class StackControllerTest : BaseTest() {
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
         uut.onViewWillAppear()
-        assertThat(parent.view.getChildAt(1)).isEqualTo(uut.view)
+        assertThat(parent.view.getChildAt(0)).isEqualTo(uut.view)
     }
 
     @Test

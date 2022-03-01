@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 
+import com.aurelhubert.ahbottomnavigation.AHTextView;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
@@ -57,7 +58,6 @@ public class BottomTabPresenter {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
-                bottomTabs.setTagForTabIndex(i, tab.id.get(null));
                 bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
                 bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
                 bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, defaultTypeface));
@@ -87,7 +87,6 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
-                if (tab.id.hasValue()) bottomTabs.setTagForTabIndex(index, tab.id.get());
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, defaultTypeface));

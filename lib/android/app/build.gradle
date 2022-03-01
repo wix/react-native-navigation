@@ -106,6 +106,10 @@ android {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "63")
         }
+        reactNative68 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "68")
+        }
     }
 
     def flavor = resolveFlavor()
@@ -122,7 +126,9 @@ String resolveFlavor() {
     Integer reactNativeMinorComponent = reactNativeVersionComponents[1].toInteger()
     Integer reactNativePatchComponent = reactNativeVersionComponents[2].toInteger()
 
-    if (reactNativeMinorComponent >= 63) {
+    if (reactNativeMinorComponent >= 68) {
+        return "reactNative68"
+    } else if (reactNativeMinorComponent >= 63) {
         return "reactNative63"
     } else if (reactNativeMinorComponent >= 62) {
         return "reactNative62"

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -20,7 +19,6 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.component.Component;
 import com.reactnativenavigation.views.stack.StackBehaviour;
 import com.reactnativenavigation.views.stack.StackLayout;
@@ -34,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.Size;
 import androidx.annotation.VisibleForTesting;
@@ -54,7 +51,7 @@ public class StackController extends ParentController<StackLayout> {
     private final EventEmitter eventEmitter;
     private final TopBarController topBarController;
     private final BackButtonHelper backButtonHelper;
-    public final StackPresenter presenter;
+    private final StackPresenter presenter;
     private final FabPresenter fabPresenter;
 
     public StackController(Activity activity, List<ViewController<?>> children, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, TopBarController topBarController, StackAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter, FabPresenter fabPresenter) {
@@ -72,7 +69,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        presenter.onConfigurationChanged(resolveCurrentOptions(), getCurrentChild());
+        presenter.onConfigurationChanged(resolveCurrentOptions());
         fabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
@@ -479,20 +476,6 @@ public class StackController extends ParentController<StackLayout> {
                 updateBottomMargin(dependency, getBottomInset());
         });
         return false;
-    }
-
-    @Override
-    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
-        if(view!=null){
-            return( (StackLayout)view).getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.gravity.get());
-        }
-        return null;
-    }
-
-    @Override
-    public List<ViewController<?>> getChildren() {
-        return stack.values();
     }
 
     @Override

@@ -13,11 +13,10 @@ const stack = (rawChildren: CompIdOrLayout | CompIdOrLayout[], id?: string): Lay
 const component = <P = {}>(
   compIdOrLayout: CompIdOrLayout,
   options?: Options,
-  passProps?: P,
-  id?: string
+  passProps?: P
 ): Layout<P> => {
   return isString(compIdOrLayout)
-    ? { component: { id: id, name: compIdOrLayout, options, passProps } }
+    ? { component: { name: compIdOrLayout, options, passProps } }
     : (compIdOrLayout as Layout<P>);
 };
 

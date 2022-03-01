@@ -11,6 +11,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 

@@ -76,6 +76,8 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     fun setSubTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setSubTitleAlignment(alignment)
 
+    fun setTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setTitleAlignment(alignment)
+
     fun setBackgroundColor(color: ThemeColour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
 
     fun setTitleFontSize(size: Float) = titleSubTitleBar.setTitleFontSize(size)

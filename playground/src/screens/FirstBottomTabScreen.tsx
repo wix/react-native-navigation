@@ -59,8 +59,6 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
           testID={SWITCH_TAB_BY_COMPONENT_ID_BTN}
           onPress={this.switchTabByComponentId}
         />
-        <Button label="showToolTips" onPress={this.showTooltips} />
-
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
         <Button label="Set Notification Dot" onPress={this.setNotificationDot} />
@@ -80,19 +78,7 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
   componentWillUnmount() {
     this.bottomTabPressedListener.remove();
   }
-  showTooltips = async () => {
-    await Navigation.showOverlay(Screens.RoundButton, {
-      overlay: {
-        attach: {
-          layoutId: 'bottomTabs',
-          anchor: {
-            id: 'LayoutsBottomTab',
-            gravity: 'top',
-          },
-        },
-      },
-    });
-  };
+
   modifyBottomTabs = () => {
     Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {

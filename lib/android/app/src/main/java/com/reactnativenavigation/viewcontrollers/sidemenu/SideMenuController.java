@@ -3,10 +3,8 @@ package com.reactnativenavigation.viewcontrollers.sidemenu;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.OverlayAttachOptions;
 import com.reactnativenavigation.options.SideMenuRootOptions;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.CommandListener;
@@ -14,7 +12,6 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.overlay.ViewTooltip;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 import com.reactnativenavigation.views.sidemenu.SideMenuRoot;
 
@@ -66,15 +63,6 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
         SideMenuRoot root = new SideMenuRoot(getActivity());
         root.addSideMenu(sideMenu, this);
         return root;
-    }
-
-    @Override
-    public ViewTooltip.TooltipView showAnchoredOverlay(@NonNull View anchorView, @NonNull OverlayAttachOptions overlayAttachOptions, @NonNull ViewController<?> overlayViewController) {
-        if (view != null) {
-            return view.getAttachedOverlayContainer().addAnchoredView(anchorView, overlayViewController.getView(),
-                    overlayAttachOptions.gravity.get());
-        }
-        return null;
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
@@ -23,8 +22,7 @@ open class ButtonController(activity: Activity,
                             private val viewCreator: TitleBarButtonCreator,
                             private val onPressListener: OnClickListener) : ViewController<TitleBarReactButtonView>(activity, button.id, YellowBoxDelegate(activity), Options(), ViewControllerOverlay(activity)), MenuItem.OnMenuItemClickListener {
 
-    var menuItem: MenuItem? = null
-    private set
+    private var menuItem: MenuItem? = null
 
     interface OnClickListener {
         fun onPress(button: ButtonOptions)
@@ -73,10 +71,6 @@ open class ButtonController(activity: Activity,
         return if (other.id != id) false else button.equals(other.button)
     }
 
-    fun areButtonOptionsChanged(otherOptions:ButtonOptions):Boolean{
-        return otherOptions.id == id  && !button.equals(otherOptions)
-    }
-
     fun applyNavigationIcon(toolbar: Toolbar) {
         presenter.applyNavigationIcon(toolbar) {
             onPressListener.onPress(it)
@@ -89,34 +83,13 @@ open class ButtonController(activity: Activity,
 
     fun addToMenu(buttonBar: ButtonBar, order: Int) {
         if (button.component.hasValue() && buttonBar.containsButton(menuItem, order)) return
-            buttonBar.menu.removeItem(button.intId)
-            menuItem = buttonBar.addButton(Menu.NONE,
+        buttonBar.menu.removeItem(button.intId)
+        menuItem = buttonBar.addButton(Menu.NONE,
                 button.intId,
                 order,
                 presenter.styledText)?.also { menuItem ->
-                menuItem.setOnMenuItemClickListener(this@ButtonController)
-                presenter.applyOptions(buttonBar, menuItem, this@ButtonController::getView)
-            }
-    }
-
-    fun mergeButtonOptions(optionsToMerge: ButtonOptions,buttonBar: ButtonBar) {
-        button.mergeWith(optionsToMerge)
-        presenter.button = this.button
-        buttonBar.getButtonById(button.intId)?.let {
-                menuItem->
-            presenter.applyOptions(buttonBar,menuItem,this::getView)
+            menuItem.setOnMenuItemClickListener(this@ButtonController)
+            presenter.applyOptions(buttonBar, menuItem, this@ButtonController::getView)
         }
     }
-
-    fun onConfigurationChanged(buttonBar: ButtonBar) {
-        buttonBar.getButtonById(button.intId)?.let {
-                menuItem->
-            presenter.applyOptions(buttonBar,menuItem,this::getView)
-        }
-    }
-
-   fun getNullableView(): View?{
-       return view
-   }
-
 }
