@@ -140,6 +140,7 @@ public class Navigator extends ParentController {
     }
 
     public void destroyViews() {
+        pipNavigator.closePIP(null);
         modalStack.destroy();
         overlayManager.destroy(overlaysLayout);
         destroyRoot();
