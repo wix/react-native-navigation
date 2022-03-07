@@ -168,6 +168,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         } else if (!navigator.handleBack(new CommandListenerAdapter())) {
             try {
                 super.onBackPressed();
+                navigator.forceClosePIP();
                 handleExit();
             } catch (Exception e) {
                 e.printStackTrace();
