@@ -97,7 +97,7 @@ public class Presenter {
             int top = view.resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : SystemUiUtils.getStatusBarHeight(view.getActivity());
             if (!(view instanceof ParentController)) {
                 MarginLayoutParams lp = (MarginLayoutParams) view.getView().getLayoutParams();
-                if (lp.topMargin != 0) top = 0;
+                if (lp != null && lp.topMargin != 0) top = 0;
             }
             ld.setLayerInset(0, 0, top, 0, 0);
             view.getView().setBackground(ld);
