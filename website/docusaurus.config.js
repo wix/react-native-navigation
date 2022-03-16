@@ -131,6 +131,7 @@ module.exports = {
           path: 'docs',
           editUrl: 'https://github.com/wix/react-native-navigation/edit/master/website',
           remarkPlugins: [remarkCodeImport],
+          docLayoutComponent: '@site/src/components/CustomLayout'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

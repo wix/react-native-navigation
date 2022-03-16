@@ -1,0 +1,28 @@
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f243c;
+  padding: 0.5em;
+}
+
+.link {
+  color: #fff;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.link:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.hashtag {
+  color: #ffd600;
+}
+
+@media (min-width: 768px) {
+  .banner {
+    height: 56px;
+  }
+}
