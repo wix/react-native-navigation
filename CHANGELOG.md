@@ -280,7 +280,7 @@ No Changes needed 🥳
 
 ### Android
 
-- Fix updating button options with mergeOptions [#b2df65a](https://github.com/wix/react-native-navigation/commit/b2df65a5fb245f123ea96cd2785ebc065cb065ea) by [guyca](https://github.com/guyca)
+- Fix updating button Options with mergeOptions [#b2df65a](https://github.com/wix/react-native-navigation/commit/b2df65a5fb245f123ea96cd2785ebc065cb065ea) by [guyca](https://github.com/guyca)
 - Fix react-native-youtube support [#4d8d2ae](https://github.com/wix/react-native-navigation/commit/4d8d2ae40a0455fb5187cb965213fe350052bc50) by [guyca](https://github.com/guyca)
 - Fix sideMenu.enabled option getting cleared when set on one drawer and the other drawer is opened [#67191e9](https://github.com/wix/react-native-navigation/commit/67191e9e7c915d612f83136e47000ed6311591e1) by [guyca](https://github.com/guyca)
 - Mount all stack children after initial child is mounted [#a1beebe](https://github.com/wix/react-native-navigation/commit/a1beebe74beb265ed196e9e322a85aa40b84aa98) by [guyca](https://github.com/guyca)
