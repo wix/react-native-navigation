@@ -52,11 +52,25 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/acuity-schedule-admin/id1179146771',
   },
   {
+    title: 'Magic Eden',
+    description: 'Magic Eden is the leading NFT Marketplace on Solana.',
+    image: require('./showcase/magiceden.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=io.magiceden.android',
+    appStore: 'https://apps.apple.com/us/app/magic-eden-nft-marketplace/id1602924580',
+  },
+  {
     title: 'Cookomix',
     description: `Cookomix est une application d'échange de recettes adaptées au Thermomix ®. Découvrez-y les meilleures recettes Thermomix ® écrites et commentées par la communauté et présentées de manière simple et lisible comme sur votre sur votre appareil !`,
     image: require('./showcase/cookomix.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.cookomix.mobile',
     appStore: 'https://itunes.apple.com/fr/app/cookomix/id1353826313',
+  },
+  {
+    title: 'Taimi - LGBTQ+ Dating and Chat',
+    description: 'World’s Largest LGBTQ+ Platform',
+    image: require('./showcase/taimi.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.digitail.digitail&hl=en&gl=US',
+    appStore: 'https://apps.apple.com/us/app/digitail-for-pets/id1473042508',
   },
   {
     title: 'getAbstract Book Summaries',
@@ -67,13 +81,6 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/getabstract-book-summaries/id338552990',
   },
   {
-    title: 'Nifty',
-    description: `Nifty helps you simplify your teams’ workflow by consolidating all phases of your project's lifecycle into one powerful and intuitive tool.`,
-    image: require('./showcase/nifty.png'),
-    playStore: 'https://play.google.com/store/apps/details?id=com.niftypm',
-    appStore: 'https://apps.apple.com/us/app/nifty-manage-projects-tasks/id1366408429',
-  },
-  {
     title: 'HoneyBook',
     description: `HoneyBook helps you get the client you really want. Reply to questions quickly, send professional invoices, contracts, quotes and brochures. Manage your clients and grow your business.`,
     image: require('./showcase/honeybook.png'),
@@ -81,11 +88,53 @@ const apps = [
     appStore: 'https://apps.apple.com/il/app/honeybook-small-business-crm/id1104772757',
   },
   {
+    title: 'Digitail - Smarter Pet Care',
+    description: 'Be the best pet parent you can be with Digitail! The app is a digital medical record that safe-guards all the info about your furry family member and allows you to share it with your vet.',
+    image: require('./showcase/digitail.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.digitail.digitail&hl=en&gl=US',
+    appStore: 'https://apps.apple.com/us/app/digitail-for-pets/id1473042508',
+  },
+  {
+    title: 'BetMentor: Betting Tips',
+    description: 'BetMentor Betting Tips is an app that offers several tools to help you to get football predictions increase your success rate at Social Betting Casino!',
+    image: require('./showcase/bementor.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.betmentor',
+    appStore: 'https://apps.apple.com/az/app/betmentor-football-predictions/id1542592232',
+  },
+  {
+    title: 'Thera: Mood tracker & Journal',
+    description: 'Thera – your personal mental health tracker and your diary with fingerprint lock.',
+    image: require('./showcase/thera.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.sintylapse.therapydiaries',
+    appStore: 'https://apps.apple.com/by/app/id1474161008',
+  },
+  {
+    title: 'hello aurora: forecast app',
+    description: 'Hello aurora is a mobile application that will act as your best friend when it comes to finding the Northern Lights.',
+    image: require('./showcase/aurora.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.helloaurora',
+    appStore: 'https://apps.apple.com/us/app/hello-aurora/id1457810302',
+  },
+  {
+    title: 'Nifty',
+    description: `Nifty helps you simplify your teams’ workflow by consolidating all phases of your project's lifecycle into one powerful and intuitive tool.`,
+    image: require('./showcase/nifty.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.niftypm',
+    appStore: 'https://apps.apple.com/us/app/nifty-manage-projects-tasks/id1366408429',
+  },
+  {
     title: 'Clubhouse',
     description: 'Clubhouse is collaborative project management without all the management.',
     image: require('./showcase/clubhouse.png'),
     playStore: 'https://play.google.com/store/apps/details?id=io.clubhouse.clubhouse',
     appStore: 'https://apps.apple.com/us/app/clubhouse/id1193784808',
+  },
+  {
+    title: 'Bene',
+    description: 'Wellness and sustainable awareness',
+    image: require('./showcase/bene.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.jp.bene.app',
+    appStore: 'https://apps.apple.com/jp/app/id1498032984',
   },
   {
     title: 'Nox',
@@ -163,7 +212,7 @@ const apps = [
     title: 'Подарки и Одежда на Новый Го‪д‬',
     image: require('./showcase/christmas.png'),
     appStore: 'https://apps.apple.com/ru/app/id1446775875',
-  },
+  }
 ];
 
 apps.forEach((app) => {
