@@ -236,7 +236,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
             PIPActionButton[] buttons = childController.options.pipOptions.actionButtons;
             if (buttons != null) {
                 for (PIPActionButton button : buttons) {
-                    PendingIntent intent = PendingIntent.getBroadcast(getActivity(), button.requestCode.intValue(), new Intent(childController.options.pipOptions.actionControlGroup).putExtra(EXTRA_CONTROL_TYPE, button.requestType.get()), 0);
+                    PendingIntent intent = PendingIntent.getBroadcast(getActivity(), button.requestCode.intValue(), new Intent(childController.options.pipOptions.actionControlGroup).putExtra(EXTRA_CONTROL_TYPE, button.requestType.get()), PendingIntent.FLAG_IMMUTABLE);
                     int id = getActivity().getResources().getIdentifier(button.actionIcon.get(), "drawable", getActivity().getPackageName());
                     Icon icon = Icon.createWithResource(getActivity(), id);
                     actionList.add(new RemoteAction(icon, button.actionTitle.get(), button.actionTitle.get(), intent));
