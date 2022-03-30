@@ -8,12 +8,14 @@ import android.util.Log;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
@@ -41,14 +43,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-
-public class Navigator extends ParentController {
+public class Navigator extends ParentController<ViewGroup> {
     private PIPNavigator pipNavigator;
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
     private final RootPresenter rootPresenter;
-    private ViewController root;
-    private ViewController previousRoot;
+    private ViewController<?> root;
+    private ViewController<?> previousRoot;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
     private final CoordinatorLayout overlaysLayout;
@@ -117,7 +118,7 @@ public class Navigator extends ParentController {
 
     @NonNull
     @Override
-    public Collection<ViewController> getChildControllers() {
+    public Collection<ViewController<?>> getChildControllers() {
         return root == null ? Collections.emptyList() : Collections.singletonList(root);
     }
 
@@ -129,7 +130,7 @@ public class Navigator extends ParentController {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return root;
     }
 
@@ -169,6 +170,7 @@ public class Navigator extends ParentController {
         final ViewController<?> disappearing = previousRoot;
         root = appearing;
         root.setOverlay(new RootOverlay(getActivity(), contentLayout));
+        root.setParentController(this);
         rootPresenter.setRoot(appearing, disappearing, defaultOptions, new CommandListenerAdapter(commandListener) {
             @Override
             public void onSuccess(String childId) {
@@ -181,18 +183,18 @@ public class Navigator extends ParentController {
     }
 
     public void mergeOptions(final String componentId, Options options) {
-        ViewController target = findController(componentId);
+        ViewController<?> target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
         } else {
-            target = pipNavigator.findController(componentId);
-            if (target != null) {
-                target.mergeOptions(options);
-            }
-        }
+                      target = pipNavigator.findController(componentId);
+                      if (target != null) {
+                          target.mergeOptions(options);
+                      }
+                  }
     }
 
-    public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
+    public void setStackRoot(String id, List<ViewController<?>> children, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
 
@@ -200,14 +202,14 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
     }
 
-    public void push(final String id, final ViewController viewController, CommandListener listener) {
+    public void push(final String id, final ViewController<?> viewController, CommandListener listener) {
         applyOnStack(id, listener, stack -> {
             this.activeStack = stack;
             stack.push(viewController, listener);
         });
     }
 
-    public void pushAsPIP(final String id, final ViewController viewController, CommandListener listener) {
+    public void pushAsPIP(final String id, final ViewController<?> viewController, CommandListener listener) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             applyOnStack(id, listener, stack -> {
                 setPIPHostId(stack.getId());
@@ -280,7 +282,7 @@ public class Navigator extends ParentController {
         }
     }
 
-    public void showModal(final ViewController viewController, CommandListener listener) {
+    public void showModal(final ViewController<?> viewController, CommandListener listener) {
         modalStack.showModal(viewController, root, listener);
     }
 
@@ -296,7 +298,7 @@ public class Navigator extends ParentController {
         modalStack.dismissAllModals(root, mergeOptions, listener);
     }
 
-    public void showOverlay(ViewController overlay, CommandListener listener) {
+    public void showOverlay(ViewController<?> overlay, CommandListener listener) {
         overlayManager.show(overlaysLayout, overlay, listener);
     }
 
@@ -310,8 +312,8 @@ public class Navigator extends ParentController {
 
     @Nullable
     @Override
-    public ViewController findController(String id) {
-        ViewController controllerById = super.findController(id);
+    public ViewController<?> findController(String id) {
+        ViewController<?> controllerById = super.findController(id);
         if (controllerById == null) {
             controllerById = modalStack.findControllerById(id);
         }
@@ -448,10 +450,26 @@ public class Navigator extends ParentController {
     }
 
     public void onHostPause() {
-        super.onViewDisappear();
+        overlayManager.onHostPause();
+        if (!modalStack.isEmpty()) {
+            modalStack.onHostPause();
+            if(modalStack.peekDisplayedOverCurrentContext()){
+                onViewDisappear();
+            }
+        } else {
+            onViewDisappear();
+        }
     }
 
     public void onHostResume() {
-        super.onViewDidAppear();
+        overlayManager.onHostResume();
+        if (!modalStack.isEmpty()) {
+            modalStack.onHostResume();
+            if(modalStack.peekDisplayedOverCurrentContext()){
+                onViewDidAppear();
+            }
+        } else {
+            onViewDidAppear();
+        }
     }
 }

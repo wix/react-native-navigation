@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationComponentProps } from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -12,6 +12,7 @@ const {
   SHOW_MODAL_PROMISE_RESULT,
   MODAL_DISMISSED_LISTENER_RESULT,
   DISMISS_MODAL_PROMISE_RESULT,
+  SHOW_SIDE_MENU_MODAL,
 } = testIDs;
 
 interface State {
@@ -51,6 +52,11 @@ export default class ModalScreen extends NavigationComponent<NavigationComponent
           {this.state?.dismissModalPromiseResult || ''}
         </Text>
         <Button label="Show Modal" testID={MODAL_BTN} onPress={this.showModal} />
+        <Button
+          label="Show Side Menu Modal"
+          testID={SHOW_SIDE_MENU_MODAL}
+          onPress={this.showSideMenuModal}
+        />
       </Root>
     );
   }
@@ -85,4 +91,6 @@ export default class ModalScreen extends NavigationComponent<NavigationComponent
         });
       });
   };
+
+  showSideMenuModal = () => Navigation.showModal(Screens.SystemUi);
 }

@@ -1,17 +1,21 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.UiUtils.dpToPx;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
+import com.aurelhubert.ahbottomnavigation.AHTextView;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.DotIndicatorOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Param;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
@@ -20,15 +24,11 @@ import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.UiUtils.dpToPx;
-
 public class BottomTabPresenter {
     private final Context context;
     private final ImageLoader imageLoader;
     private final TypefaceLoader typefaceLoader;
+    private final Typeface defaultTypeface;
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private final LateInit<BottomTabs> bottomTabs = new LateInit<>();
@@ -41,6 +41,7 @@ public class BottomTabPresenter {
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.imageLoader = imageLoader;
         this.typefaceLoader = typefaceLoader;
+        this.defaultTypeface = typefaceLoader.getDefaultTypeFace();
         this.defaultOptions = defaultOptions;
         defaultDotIndicatorSize = dpToPx(context, 6);
     }
@@ -59,7 +60,7 @@ public class BottomTabPresenter {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
                 bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
                 bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
-                bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
+                bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, defaultTypeface));
                 if (tab.selectedIconColor.canApplyValue()) bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
                 if (tab.iconColor.canApplyValue()) bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
                 bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
@@ -81,14 +82,14 @@ public class BottomTabPresenter {
         });
     }
 
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         bottomTabs.perform(bottomTabs -> {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
-                if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, Typeface.DEFAULT));
+                if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, defaultTypeface));
                 if (canMergeColor(tab.selectedIconColor)) bottomTabs.setIconActiveColor(index, tab.selectedIconColor.get());
                 if (canMergeColor(tab.iconColor)) bottomTabs.setIconInactiveColor(index, tab.iconColor.get());
                 if (tab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, tab.selectedTextColor.get());

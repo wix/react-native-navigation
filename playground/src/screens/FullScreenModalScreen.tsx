@@ -1,7 +1,7 @@
 import concat from 'lodash/concat';
 import last from 'lodash/last';
 import React from 'react';
-import { NavigationComponent } from 'react-native-navigation';
+import { NavigationComponent } from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
@@ -31,7 +33,7 @@ public class TestUtils {
     public static StackControllerBuilder newStackController(Activity activity) {
         TopBarController topBarController = new TopBarController() {
             @Override
-            protected TopBar createTopBar(Context context, StackLayout stackLayout) {
+            protected TopBar createTopBar(@NonNull Context context, @NonNull StackLayout stackLayout) {
                 TopBar topBar = super.createTopBar(context, stackLayout);
                 topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
                 return topBar;
@@ -45,7 +47,7 @@ public class TestUtils {
                 .setInitialOptions(new Options());
     }
 
-    public static void hideBackButton(ViewController viewController) {
+    public static void hideBackButton(ViewController<?> viewController) {
         viewController.options.topBar.buttons.back.visible = new Bool(false);
     }
 

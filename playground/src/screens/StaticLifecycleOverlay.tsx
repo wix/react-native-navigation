@@ -13,7 +13,7 @@ import {
   NavigationComponentProps,
   EventSubscription,
   Options,
-} from 'react-native-navigation';
+} from '@dream11/react-native-navigation';
 import TestIDs from '../testIDs';
 
 type Event = {

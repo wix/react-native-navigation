@@ -59,7 +59,7 @@ describe.e2e('application lifecycle test', () => {
     await device.sendToHome();
 
     await togglePhonePermission();
-    await sleep(1000);
+    await sleep(5000);
     await device.launchApp({ newInstance: false });
 
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();

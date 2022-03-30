@@ -75,17 +75,17 @@
 - (void)testApply_itAddsIndicatorToCorrectTabView {
     [self applyIndicator];
     UIView *indicator1 = [self getIndicator];
-    XCTAssertEqualObjects([indicator1 superview], [_bottomTabs getTabView:0]);
+    XCTAssertEqualObjects([indicator1 superview], [_bottomTabs getTabIcon:0]);
 }
 
 - (void)testApply_itRemovesPreviousDotIndicator {
-    NSUInteger childCountBeforeApplyingIndicator = [[_bottomTabs getTabView:0] subviews].count;
+    NSUInteger childCountBeforeApplyingIndicator = [[_bottomTabs getTabIcon:0] subviews].count;
     [self applyIndicator];
-    NSUInteger childCountAfterApplyingIndicatorOnce = [[_bottomTabs getTabView:0] subviews].count;
+    NSUInteger childCountAfterApplyingIndicatorOnce = [[_bottomTabs getTabIcon:0] subviews].count;
     XCTAssertEqual(childCountBeforeApplyingIndicator + 1, childCountAfterApplyingIndicatorOnce);
 
     [self applyIndicator:[UIColor greenColor]];
-    NSUInteger childCountAfterApplyingIndicatorTwice = [[_bottomTabs getTabView:0] subviews].count;
+    NSUInteger childCountAfterApplyingIndicatorTwice = [[_bottomTabs getTabIcon:0] subviews].count;
     XCTAssertEqual([[self getIndicator] backgroundColor], [UIColor greenColor]);
     XCTAssertEqual(childCountAfterApplyingIndicatorOnce, childCountAfterApplyingIndicatorTwice);
 }
@@ -112,7 +112,7 @@
     UIView *indicator = [self getIndicator];
     UIView *icon = [_bottomTabs getTabIcon:0];
 
-    NSArray<NSLayoutConstraint *> *alignmentConstraints = [_bottomTabs getTabView:0].constraints;
+    NSArray<NSLayoutConstraint *> *alignmentConstraints = [_bottomTabs getTabIcon:0].constraints;
     XCTAssertEqual([alignmentConstraints count], 2);
     XCTAssertEqual([alignmentConstraints[0] constant], -4);
     XCTAssertEqual([alignmentConstraints[0] firstItem], indicator);

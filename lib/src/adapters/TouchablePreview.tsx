@@ -101,7 +101,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
         this.props.onPeekIn();
       }
     }
-
+    //@ts-ignore
     this.timeout = setTimeout(this.onTouchEnd, PREVIEW_TIMEOUT);
   };
 

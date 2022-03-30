@@ -1,5 +1,8 @@
 import React from 'react';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import {
+  NavigationComponentProps,
+  NavigationButtonPressedEvent,
+} from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -85,7 +88,7 @@ export default class LifecycleScreen extends React.Component<Props, State> {
   push = () => Navigation.push(this, Screens.Pushed);
   screenPoppedEvent = async () => {
     this.showUnmountAndDisappearAlerts = false;
-    const promise = new Promise((resolve) => {
+    const promise = new Promise<void>((resolve) => {
       const unregister = Navigation.events().registerScreenPoppedListener(() => {
         alert('Screen popped event');
         unregister.remove();

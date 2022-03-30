@@ -1,4 +1,4 @@
-import { Options, Layout } from 'react-native-navigation';
+import { Options, Layout } from '@dream11/react-native-navigation';
 import isString from 'lodash/isString';
 import isArray from 'lodash/isArray';
 

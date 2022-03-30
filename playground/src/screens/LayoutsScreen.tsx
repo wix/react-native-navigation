@@ -4,7 +4,7 @@ import {
   OptionsModalPresentationStyle,
   NavigationComponent,
   NavigationComponentProps,
-} from 'react-native-navigation';
+} from '@dream11/react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -20,6 +20,7 @@ const {
   BOTTOM_TABS_BTN,
   BOTTOM_TABS,
   SIDE_MENU_BTN,
+  KEYBOARD_SCREEN_BTN,
   SPLIT_VIEW_BUTTON,
 } = testIDs;
 
@@ -35,13 +36,24 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
       componentDidAppear: false,
     };
   }
+  componentWillAppear() {
+    console.log('componentWillAppear:', this.props.componentId);
+  }
+
+  componentDidDisappear() {
+    console.log('componentDidDisappear:', this.props.componentId);
+  }
 
   componentDidAppear() {
+    console.log('componentDidAppear:', this.props.componentId);
     this.setState({ componentDidAppear: true });
   }
 
   static options(): Options {
     return {
+      bottomTabs: {
+        visible: true,
+      },
       topBar: {
         testID: WELCOME_SCREEN_HEADER,
         title: {
@@ -60,6 +72,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
@@ -73,7 +86,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
-  bottomTabs = () =>
+  bottomTabs = () => {
     Navigation.showModal({
       bottomTabs: {
         children: [
@@ -86,14 +99,30 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
             },
             'SecondTab'
           ),
+          {
+            component: {
+              name: Screens.Pushed,
+              options: {
+                bottomTab: {
+                  selectTabOnPress: false,
+                  text: 'Tab 3',
+                  testID: testIDs.THIRD_TAB_BAR_BTN,
+                },
+              },
+            },
+          },
         ],
         options: {
+          hardwareBackButton: {
+            bottomTabsOnPress: 'previous',
+          },
           bottomTabs: {
             testID: BOTTOM_TABS,
           },
         },
       },
     });
+  };
 
   sideMenu = () =>
     Navigation.showModal({
@@ -168,6 +197,9 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     });
   };
 
+  openKeyboardScreen = async () => {
+    await Navigation.push(this.props.componentId, Screens.KeyboardScreen);
+  };
   onClickSearchBar = () => {
     Navigation.push(this.props.componentId, {
       component: {

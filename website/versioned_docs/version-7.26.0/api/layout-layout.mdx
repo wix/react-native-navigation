@@ -1,0 +1,23 @@
+---
+id: layout-layout
+title: Layout
+sidebar_label: Layout
+---
+
+## `id`
+
+| Type   | Required | Description                                                                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string | No       | Unique id used to interact with the view via the Navigation API, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `options`
+
+| Type                    | Required | Description                    |
+| ----------------------- | -------- | ------------------------------ |
+| [Options](options-root.mdx) | No       | dynamic options for the layout |
+
+## `children`
+
+| Type               | Required | Description                   |
+| ------------------ | -------- | ----------------------------- |
+| [Layout[]](layout-layout.mdx) | Yes      | Child layouts of any kind. |

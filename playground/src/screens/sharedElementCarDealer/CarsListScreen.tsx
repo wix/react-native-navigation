@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native';
-import { NavigationFunctionComponent } from 'react-native-navigation';
+import { NavigationFunctionComponent } from '@dream11/react-native-navigation';
 import cars, { CarItem } from '../../assets/cars';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';

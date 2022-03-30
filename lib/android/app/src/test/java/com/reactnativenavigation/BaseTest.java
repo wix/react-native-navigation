@@ -1,25 +1,34 @@
 package com.reactnativenavigation;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.utils.Functions;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
@@ -30,18 +39,6 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Arrays;
-
-import androidx.annotation.CallSuper;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import kotlin.Function;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, application = TestApplication.class)
@@ -58,17 +55,20 @@ public abstract class BaseTest {
         mockConfiguration.uiMode = Configuration.UI_MODE_NIGHT_NO;
         when(res.getConfiguration()).thenReturn(mockConfiguration);
         when(NavigationApplication.instance.getResources()).thenReturn(res);
+        when(res.getColor(ArgumentMatchers.anyInt())).thenReturn(0x00000);
+        when(res.getColor(ArgumentMatchers.anyInt(),any())).thenReturn(0x00000);
     }
 
-    public void mockStatusBarUtils(int statusBarHeight,int statusBarHeightDp, Functions.Func block) {
-        try (MockedStatic<StatusBarUtils> theMock = Mockito.mockStatic(StatusBarUtils.class)) {
+
+    public void mockSystemUiUtils(int statusBarHeight, int statusBarHeightDp, Functions.Func1<MockedStatic<SystemUiUtils>> mockedBlock) {
+        try (MockedStatic<SystemUiUtils> theMock = Mockito.mockStatic(SystemUiUtils.class)) {
             theMock.when(() -> {
-                StatusBarUtils.getStatusBarHeight(any());
+                SystemUiUtils.getStatusBarHeight(any());
             }).thenReturn(statusBarHeight);
             theMock.when(() -> {
-                StatusBarUtils.getStatusBarHeightDp(any());
+                SystemUiUtils.getStatusBarHeightDp(any());
             }).thenReturn(statusBarHeightDp);
-            block.run();
+            mockedBlock.run(theMock);
         }
     }
 
@@ -86,7 +86,7 @@ public abstract class BaseTest {
         return Robolectric.buildActivity(clazz);
     }
 
-    public void assertIsChild(ViewGroup parent, ViewController... children) {
+    public void assertIsChild(ViewGroup parent, ViewController<?>... children) {
         forEach(Arrays.asList(children), c -> assertIsChild(parent, c.getView()));
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseTest {
         assertThat(ViewUtils.isChildOf(parent, child)).isTrue();
     }
 
-    public void assertNotChildOf(ViewGroup parent, ViewController... children) {
+    public void assertNotChildOf(ViewGroup parent, ViewController<?>... children) {
         forEach(Arrays.asList(children), c -> assertNotChildOf(parent, c.getView()));
     }
 
@@ -111,31 +111,31 @@ public abstract class BaseTest {
         assertThat(view.getLayoutParams().height).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
-    protected void disablePushAnimation(ViewController... controllers) {
-        for (ViewController controller : controllers) {
+    protected void disablePushAnimation(ViewController<?>... controllers) {
+        for (ViewController<?> controller : controllers) {
             controller.options.animations.push.enabled = new Bool(false);
         }
     }
 
-    protected void disablePopAnimation(ViewController... controllers) {
-        for (ViewController controller : controllers) {
+    protected void disablePopAnimation(ViewController<?>... controllers) {
+        for (ViewController<?> controller : controllers) {
             controller.options.animations.pop.enabled = new Bool(false);
         }
     }
 
-    protected void disableModalAnimations(ViewController... modals) {
+    protected void disableModalAnimations(ViewController<?>... modals) {
         disableShowModalAnimation(modals);
         disableDismissModalAnimation(modals);
     }
 
-    protected void disableShowModalAnimation(ViewController... modals) {
-        for (ViewController modal : modals) {
+    protected void disableShowModalAnimation(ViewController<?>... modals) {
+        for (ViewController<?> modal : modals) {
             modal.options.animations.showModal.toggle(new Bool(false));
         }
     }
 
-    protected void disableDismissModalAnimation(ViewController... modals) {
-        for (ViewController modal : modals) {
+    protected void disableDismissModalAnimation(ViewController<?>... modals) {
+        for (ViewController<?> modal : modals) {
             modal.options.animations.dismissModal.toggle(new Bool(false));
         }
     }
@@ -148,8 +148,8 @@ public abstract class BaseTest {
         view.getViewTreeObserver().dispatchOnGlobalLayout();
     }
 
-    protected void addToParent(Context context, ViewController... controllers) {
-        for (ViewController controller : controllers) {
+    protected void addToParent(Context context, ViewController<?>... controllers) {
+        for (ViewController<?> controller : controllers) {
             new CoordinatorLayout(context).addView(controller.getView());
         }
     }

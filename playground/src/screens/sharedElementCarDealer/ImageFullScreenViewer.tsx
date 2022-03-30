@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import FastImage, { Source } from 'react-native-fast-image';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import { Navigation, NavigationFunctionComponent } from '@dream11/react-native-navigation';
 
 interface Props {
   source: Source;

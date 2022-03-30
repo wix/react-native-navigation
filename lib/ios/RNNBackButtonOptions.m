@@ -7,6 +7,7 @@
 
     self.identifier = [TextParser parse:dict key:@"identifier"];
     self.icon = [ImageParser parse:dict key:@"icon"];
+    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
     self.title = [TextParser parse:dict key:@"title"];
     self.transition = [TextParser parse:dict key:@"transition"];
     self.color = [ColorParser parse:dict key:@"color"];
@@ -49,12 +50,14 @@
         self.displayMode = options.displayMode;
     if (options.popStackOnPress.hasValue)
         self.popStackOnPress = options.popStackOnPress;
+    if (options.sfSymbol.hasValue)
+        self.sfSymbol = options.sfSymbol;
 }
 
 - (BOOL)hasValue {
     return self.icon.hasValue || self.showTitle.hasValue || self.color.hasValue ||
            self.fontFamily.hasValue || self.fontSize.hasValue || self.title.hasValue ||
-           self.enableMenu.hasValue || self.displayMode.hasValue;
+           self.enableMenu.hasValue || self.displayMode.hasValue || self.sfSymbol.hasValue;
 }
 
 @end

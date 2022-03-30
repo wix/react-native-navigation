@@ -11,7 +11,8 @@ import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.utils.StatusBarUtils;
+import com.reactnativenavigation.utils.SystemUiUtils;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
 import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        StatusBarUtils.saveStatusBarHeight(63);
+        SystemUiUtils.saveStatusBarHeight(63);
         view = Mockito.spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parent = TestUtils.newStackController(activity).build();
         Presenter presenter = new Presenter(activity, new Options());
@@ -94,6 +95,24 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
+    public void shouldNotSendDidDisappearAboutDisappearedView() {
+        uut.ensureViewIsCreated();
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(0)).sendComponentStop();
+
+        uut.onViewWillAppear();
+        uut.onViewDidAppear();
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStop();
+
+        uut.onViewDisappear();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStart();
+        Mockito.verify(view, Mockito.times(1)).sendComponentStop();
+    }
+
+    @Test
     public void onViewDidAppear_componentStartIsEmittedOnlyIfComponentIsNotAppeared() {
         uut.ensureViewIsCreated();
 
@@ -106,6 +125,13 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.onViewDisappear();
         uut.onViewDidAppear();
         Mockito.verify(view, Mockito.times(2)).sendComponentStart();
+    }
+
+    @Test
+    public void shouldCallApplyWindowInsetsWhenViewFullyAppeared(){
+        uut.ensureViewIsCreated();
+        uut.onViewDidAppear();
+        Mockito.verify(view).requestApplyInsets();
     }
 
     @Test
@@ -137,7 +163,7 @@ public class ComponentViewControllerTest extends BaseTest {
         Options options = new Options();
         Java6Assertions.assertThat(uut.isViewShown()).isFalse();
         uut.mergeOptions(options);
-        Mockito.verifyZeroInteractions(presenter);
+        Mockito.verifyNoInteractions(presenter);
 
         Mockito.when(uut.isViewShown()).thenReturn(true);
         uut.mergeOptions(options);
@@ -155,13 +181,13 @@ public class ComponentViewControllerTest extends BaseTest {
     public void getTopInset_returnsStatusBarHeight() {
         //noinspection ConstantConditions
         uut.setParentController(null);
-        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity));
+        Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(SystemUiUtils.getStatusBarHeight(activity));
     }
 
     @Test
     public void getTopInset_resolveWithParent() {
         Java6Assertions
-                .assertThat(uut.getTopInset()).isEqualTo(StatusBarUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
+                .assertThat(uut.getTopInset()).isEqualTo(SystemUiUtils.getStatusBarHeight(activity) + parent.getTopInset(uut));
     }
 
     @Test

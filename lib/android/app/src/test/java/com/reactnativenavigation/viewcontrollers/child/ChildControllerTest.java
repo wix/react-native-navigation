@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
 public class ChildControllerTest extends BaseTest {
 
-    private ChildController uut;
+    private ChildController<?> uut;
     private ChildControllersRegistry childRegistry;
     private Presenter presenter;
     private Options resolvedOptions = new Options();
@@ -31,7 +31,8 @@ public class ChildControllerTest extends BaseTest {
                 return resolvedOptions;
             }
         };
-        ParentController parent = Mockito.mock(ParentController.class);
+        ParentController<?> parent = Mockito.mock(ParentController.class);
+        Mockito.when(parent.resolveChildOptions(uut)).thenReturn(Options.EMPTY);
         uut.setParentController(parent);
     }
 
@@ -55,7 +56,7 @@ public class ChildControllerTest extends BaseTest {
 
         Options options = new Options();
         uut.mergeOptions(options);
-        verify(presenter).mergeOptions(uut.getView(), options);
+        verify(presenter).mergeOptions(uut, options);
     }
 
     @Test

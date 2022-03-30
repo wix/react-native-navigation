@@ -29,7 +29,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                             hideOnScroll:(BOOL)hideOnScroll
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
-                               tintColor:(nullable UIColor *)tintColor {
+                               tintColor:(nullable UIColor *)tintColor
+                              cancelText:(NSString *)cancelText {
     if (!self.navigationItem.searchController) {
         UISearchController *search =
             [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -40,6 +41,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         search.searchBar.delegate = (id<UISearchBarDelegate>)self;
         if (placeholder) {
             search.searchBar.placeholder = placeholder;
+        }
+        if (cancelText) {
+            [search.searchBar setValue:cancelText forKey:@"cancelButtonText"];
         }
         search.hidesNavigationBarDuringPresentation = hideTopBarOnFocus;
         search.searchBar.searchBarStyle = UISearchBarStyleProminent;
@@ -130,7 +134,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     if (blur) {
         if (!curBlurView) {
             UIVisualEffectView *blur = [[UIVisualEffectView alloc]
-                initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+                initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
             blur.frame = [[UIApplication sharedApplication] statusBarFrame];
             blur.tag = BLUR_STATUS_TAG;
             [self.view addSubview:blur];

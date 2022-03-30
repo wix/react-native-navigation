@@ -20,7 +20,7 @@ public abstract class AttachMode {
     protected final BottomTabsPresenter presenter;
     protected final BottomTabFinder bottomTabFinder;
     protected final List<ViewController<?>> tabs;
-    final ViewController initialTab;
+    final ViewController<?> initialTab;
 
     public static AttachMode get(ViewGroup parent, List<ViewController<?>> tabs, BottomTabsPresenter presenter, Options resolved) {
         switch (resolved.bottomTabsOptions.tabsAttachMode) {
@@ -57,12 +57,12 @@ public abstract class AttachMode {
 
     }
 
-    public void onTabSelected(ViewController tab) {
+    public void onTabSelected(ViewController<?> tab) {
 
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    public void attach(ViewController tab) {
+    public void attach(ViewController<?> tab) {
         ViewGroup view = tab.getView();
         view.setVisibility(tab == initialTab ? View.VISIBLE : View.INVISIBLE);
         parent.addView(view, matchParentWithBehaviour(new BottomTabsBehaviour(tab.getParentController())));

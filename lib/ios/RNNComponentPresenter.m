@@ -41,10 +41,6 @@
     [_buttonsPresenter componentDidDisappear];
 }
 
-- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
-    [super applyOptionsOnWillMoveToParentViewController:options];
-}
-
 - (void)applyOptions:(RNNNavigationOptions *)options {
     [super applyOptions:options];
 
@@ -83,6 +79,8 @@
                                  backgroundColor:[options.topBar.searchBar.backgroundColor
                                                      withDefault:nil]
                                        tintColor:[options.topBar.searchBar.tintColor
+                                                     withDefault:nil]
+                                      cancelText:[withDefault.topBar.searchBar.cancelText
                                                      withDefault:nil]];
     }
 
@@ -145,6 +143,8 @@
                                  backgroundColor:[mergeOptions.topBar.searchBar.backgroundColor
                                                      withDefault:nil]
                                        tintColor:[mergeOptions.topBar.searchBar.tintColor
+                                                     withDefault:nil]
+                                      cancelText:[withDefault.topBar.searchBar.cancelText
                                                      withDefault:nil]];
     } else {
         [viewController setSearchBarVisible:NO];

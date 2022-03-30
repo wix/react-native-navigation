@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavigationFunctionComponent } from 'react-native-navigation';
+import { NavigationFunctionComponent } from '@dream11/react-native-navigation';
 import { Text } from 'react-native';
 import Root from '../components/Root';
 import Button from '../components/Button';

@@ -9,67 +9,67 @@ import androidx.annotation.NonNull;
 
 public class NavigationReactInitializer implements ReactInstanceManager.ReactInstanceEventListener {
 
-	private final ReactInstanceManager reactInstanceManager;
-	private final DevPermissionRequest devPermissionRequest;
-	private boolean waitingForAppLaunchEvent = true;
-	private boolean isActivityReadyForUi = false;
+    private final ReactInstanceManager reactInstanceManager;
+    private final DevPermissionRequest devPermissionRequest;
+    private boolean waitingForAppLaunchEvent = true;
+    private boolean isActivityReadyForUi = false;
 
-	NavigationReactInitializer(ReactInstanceManager reactInstanceManager, boolean isDebug) {
-		this.reactInstanceManager = reactInstanceManager;
-		this.devPermissionRequest = new DevPermissionRequest(isDebug);
-	}
+    NavigationReactInitializer(ReactInstanceManager reactInstanceManager, boolean isDebug) {
+        this.reactInstanceManager = reactInstanceManager;
+        this.devPermissionRequest = new DevPermissionRequest(isDebug);
+    }
 
-	void onActivityCreated() {
-		reactInstanceManager.addReactInstanceEventListener(this);
-		waitingForAppLaunchEvent = true;
-	}
+    void onActivityCreated() {
+        reactInstanceManager.addReactInstanceEventListener(this);
+        waitingForAppLaunchEvent = true;
+    }
 
-	void onActivityResumed(NavigationActivity activity) {
-		if (devPermissionRequest.shouldAskPermission(activity)) {
-			devPermissionRequest.askPermission(activity);
-		} else {
-			reactInstanceManager.onHostResume(activity, activity);
+    void onActivityResumed(NavigationActivity activity) {
+        if (devPermissionRequest.shouldAskPermission(activity)) {
+            devPermissionRequest.askPermission(activity);
+        } else {
+            reactInstanceManager.onHostResume(activity, activity);
             isActivityReadyForUi = true;
-			prepareReactApp();
-		}
-	}
+            prepareReactApp();
+        }
+    }
 
-	void onActivityPaused(NavigationActivity activity) {
+    void onActivityPaused(NavigationActivity activity) {
         isActivityReadyForUi = false;
-		if (reactInstanceManager.hasStartedCreatingInitialContext()) {
-			reactInstanceManager.onHostPause(activity);
-		}
-	}
+        if (reactInstanceManager.hasStartedCreatingInitialContext()) {
+            reactInstanceManager.onHostPause(activity);
+        }
+    }
 
-	void onActivityDestroyed(NavigationActivity activity) {
-		reactInstanceManager.removeReactInstanceEventListener(this);
-		if (reactInstanceManager.hasStartedCreatingInitialContext()) {
-			reactInstanceManager.onHostDestroy(activity);
-		}
-	}
+    void onActivityDestroyed(NavigationActivity activity) {
+        reactInstanceManager.removeReactInstanceEventListener(this);
+        if (reactInstanceManager.hasStartedCreatingInitialContext()) {
+            reactInstanceManager.onHostDestroy(activity);
+        }
+    }
 
-	private void prepareReactApp() {
-		if (shouldCreateContext()) {
-			reactInstanceManager.createReactContextInBackground();
-		} else if (waitingForAppLaunchEvent) {
+    private void prepareReactApp() {
+        if (shouldCreateContext()) {
+            reactInstanceManager.createReactContextInBackground();
+        } else if (waitingForAppLaunchEvent) {
             if (reactInstanceManager.getCurrentReactContext() != null) {
-			    emitAppLaunched(reactInstanceManager.getCurrentReactContext());
+                emitAppLaunched(reactInstanceManager.getCurrentReactContext());
             }
-		}
-	}
+        }
+    }
 
-	private void emitAppLaunched(@NonNull ReactContext context) {
-	    if (!isActivityReadyForUi) return;
-		waitingForAppLaunchEvent = false;
-		new EventEmitter(context).appLaunched();
-	}
+    private void emitAppLaunched(@NonNull ReactContext context) {
+        if (!isActivityReadyForUi) return;
+        waitingForAppLaunchEvent = false;
+        new EventEmitter(context).appLaunched();
+    }
 
-	private boolean shouldCreateContext() {
-		return !reactInstanceManager.hasStartedCreatingInitialContext();
-	}
+    private boolean shouldCreateContext() {
+        return !reactInstanceManager.hasStartedCreatingInitialContext();
+    }
 
-	@Override
-	public void onReactContextInitialized(final ReactContext context) {
+    @Override
+    public void onReactContextInitialized(final ReactContext context) {
         emitAppLaunched(context);
-	}
+    }
 }

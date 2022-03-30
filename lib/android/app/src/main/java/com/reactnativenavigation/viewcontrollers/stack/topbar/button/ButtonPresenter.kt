@@ -13,7 +13,10 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.doOnPreDraw
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.params.ThemeColour
@@ -88,7 +91,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
         menuItem.isEnabled = button.enabled.isTrueOrUndefined
     }
 
-    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable? {
+    private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable {
         return if (button.iconBackground.hasValue()) {
             val width = button.iconBackground.width.get(srcDrawable.intrinsicWidth).let { max(it, srcDrawable.intrinsicWidth) }
             val height = button.iconBackground.height.get(srcDrawable.intrinsicHeight).let { max(it, srcDrawable.intrinsicHeight) }
@@ -182,6 +185,26 @@ open class ButtonPresenter(private val context: Context, private val button: But
         toolbar.post {
             ViewUtils.findChildByClass(toolbar, ImageButton::class.java)?.let {
                 it.tag = button.testId.get()
+
+                class WixAccessibilityDelegateCompat: AccessibilityDelegateCompat(){
+                    override fun onInitializeAccessibilityNodeInfo(
+                        host: View?,
+                        info: AccessibilityNodeInfoCompat?
+                    ) {
+                        super.onInitializeAccessibilityNodeInfo(host, info)
+
+                        // Expose the testID prop as the resource-id name of the view. Black-box E2E/UI testing
+                        // frameworks, which interact with the UI through the accessibility framework, do not have
+                        // access to view tags. This allows developers/testers to avoid polluting the
+                        // content-description with test identifiers.
+                        val testId = host?.tag as String?
+                        if(testId != null){
+                            info!!.viewIdResourceName = testId
+                        }
+                    }
+                }
+
+                ViewCompat.setAccessibilityDelegate(it, WixAccessibilityDelegateCompat())
             }
         }
     }

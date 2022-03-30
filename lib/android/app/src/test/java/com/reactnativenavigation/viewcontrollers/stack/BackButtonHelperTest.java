@@ -24,8 +24,8 @@ import static org.mockito.Mockito.verify;
 public class BackButtonHelperTest extends BaseTest {
     private BackButtonHelper uut;
     private StackController stack;
-    private ChildController child1;
-    private ChildController child2;
+    private ChildController<?> child1;
+    private ChildController<?> child2;
 
     @Override
     public void beforeEach() {

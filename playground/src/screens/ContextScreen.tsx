@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Button, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps } from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import { GlobalContext, Context } from '../context';
 

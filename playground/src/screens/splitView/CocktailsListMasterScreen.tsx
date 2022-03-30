@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { NavigationButtonPressedEvent } from 'react-native-navigation';
+import { NavigationButtonPressedEvent } from '@dream11/react-native-navigation';
 import CocktailsView from '../sharedElementTransition/CocktailsView';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';

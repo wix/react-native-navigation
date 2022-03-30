@@ -1,6 +1,6 @@
 import React from 'react';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { Navigation } from 'react-native-navigation';
+import { Navigation } from '@dream11/react-native-navigation';
 import Screens from './Screens';
 
 function registerScreens() {
@@ -77,6 +77,7 @@ function registerScreens() {
   );
   Navigation.registerComponent(Screens.Overlay, () => require('./OverlayScreen').default);
   Navigation.registerComponent(Screens.OverlayAlert, () => require('./OverlayAlert').default);
+  Navigation.registerComponent(Screens.OverlayBanner, () => require('./OverlayBanner').default);
   Navigation.registerComponent(Screens.Pushed, () => require('./PushedScreen').default);
   Navigation.registerComponent(Screens.BackButton, () => require('./BackButtonScreen').default);
   Navigation.registerComponent(
@@ -112,10 +113,7 @@ function registerScreens() {
     () => require('./SideMenuRightScreen').default
   );
   Navigation.registerComponent(Screens.Stack, () => require('./StackScreen').default);
-  Navigation.registerComponent(
-    Screens.StatusBarOptions,
-    () => require('./StatusBarOptionsScreen').default
-  );
+  Navigation.registerComponent(Screens.SystemUiOptions, () => require('./SystemUiOptions').default);
   Navigation.registerComponent(
     Screens.StatusBarFirstTab,
     () => require('./StatusBarFirstTab').default
@@ -151,10 +149,7 @@ function registerScreens() {
     () => require('./TopTabOptionsScreen').default
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
-  Navigation.registerComponent(
-    'navigation.playground.KeyboardScreen',
-    () => require('./KeyboardScreen').default
-  );
+  Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

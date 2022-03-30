@@ -20,13 +20,13 @@ public class OnSwitchToTab extends AttachMode {
     }
 
     @Override
-    public void onTabSelected(ViewController tab) {
+    public void onTabSelected(ViewController<?> tab) {
         if (tab != initialTab && isNotAttached(tab)) {
             attach(tab);
         }
     }
 
-    private boolean isNotAttached(ViewController tab) {
+    private boolean isNotAttached(ViewController<?> tab) {
         return tab.getView().getParent() == null;
     }
 }

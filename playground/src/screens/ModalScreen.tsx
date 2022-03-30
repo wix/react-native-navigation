@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponent } from 'react-native-navigation';
+import { NavigationComponent, Modal as RNNModal } from '@dream11/react-native-navigation';
 import last from 'lodash/last';
 import concat from 'lodash/concat';
 import forEach from 'lodash/forEach';
@@ -12,16 +12,21 @@ import { stack } from '../commons/Layouts';
 import Screens from './Screens';
 import flags from '../flags';
 import testIDs from '../testIDs';
-import { Dimensions, Modal } from 'react-native';
+import { Dimensions, Modal, Image, Platform, StyleSheet } from 'react-native';
+import { View } from 'react-native-ui-lib';
+import { SafeAreaView } from 'react-native';
+
 const height = Math.round(Dimensions.get('window').height);
 const MODAL_ANIMATION_DURATION = 350;
-
 const {
   PUSH_BTN,
   MODAL_SCREEN_HEADER,
   MODAL_BTN,
+  SHOW_MODAL_FROM_DECLARED_BUTTON,
+  OVERLAY_BTN,
   MODAL_DISABLED_BACK_BTN,
   DISMISS_MODAL_BTN,
+  DISMISS_REACT_MODAL_BTN,
   DISMISS_UNKNOWN_MODAL_BTN,
   MODAL_LIFECYCLE_BTN,
   MODAL_COMMANDS_BTN,
@@ -30,8 +35,7 @@ const {
   DISMISS_ALL_MODALS_BTN,
   DISMISS_FIRST_MODAL_BTN,
   SET_ROOT,
-  TOGGLE_REACT_NATIVE_MODAL,
-  SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL,
+  TOGGLE_REACT_DECLARED_MODAL,
 } = testIDs;
 
 interface Props {
@@ -41,7 +45,7 @@ interface Props {
 
 interface State {
   swipeableToDismiss: boolean;
-  reactNativeModalVisible: boolean;
+  modalVisible: boolean;
 }
 
 export default class ModalScreen extends NavigationComponent<Props, State> {
@@ -60,7 +64,7 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
     super(props);
     this.state = {
       swipeableToDismiss: false,
-      reactNativeModalVisible: false,
+      modalVisible: false,
     };
   }
 
@@ -125,34 +129,76 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
         <Button label="Set Root" testID={SET_ROOT} onPress={this.setRoot} />
         <Button
-          label="Toggle react-native modal"
-          testID={TOGGLE_REACT_NATIVE_MODAL}
+          label="Toggle declared modal"
+          testID={TOGGLE_REACT_DECLARED_MODAL}
           onPress={this.toggleModal}
         />
-
-        <Modal visible={this.state.reactNativeModalVisible} animationType={'slide'}>
-          <Root>
-            <Button label="Toggle react-native modal" onPress={this.toggleModal} />
+        {Platform.OS === 'android' && (
+          <RNNModal
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setState({ modalVisible: false })}
+          >
             <Button
-              label="Present another modal and dismiss current modal"
-              testID={SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL}
-              onPress={async () => {
-                await Navigation.showModal({
-                  component: {
-                    name: Screens.Modal,
-                  },
-                });
-                this.toggleModal();
-              }}
+              label="Dismiss declared Modal"
+              testID={DISMISS_REACT_MODAL_BTN}
+              onPress={this.toggleModal}
             />
-          </Root>
-        </Modal>
+            <Button
+              label="Show Modal"
+              testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
+              onPress={this.showModal}
+            />
+            <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
+            <View style={styles.logoContainer}>
+              <Image
+                style={styles.tinyLogo}
+                source={{
+                  uri: 'https://wix.github.io/react-native-navigation/img/logo.png',
+                }}
+              />
+            </View>
+          </RNNModal>
+        )}
+        {Platform.OS === 'ios' && (
+          <Modal
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setState({ modalVisible: false })}
+          >
+            <SafeAreaView>
+              <Button
+                label="Dismiss declared Modal"
+                testID={DISMISS_REACT_MODAL_BTN}
+                onPress={this.toggleModal}
+              />
+              <Button
+                label="Show Modal"
+                testID={SHOW_MODAL_FROM_DECLARED_BUTTON}
+                onPress={this.showModal}
+              />
+              <Button label="Show Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
+              <View style={styles.logoContainer}>
+                <Image
+                  style={styles.tinyLogo}
+                  source={{
+                    uri: 'https://reactnative.dev/img/tiny_logo.png',
+                  }}
+                />
+              </View>
+            </SafeAreaView>
+          </Modal>
+        )}
       </Root>
     );
   }
 
-  toggleModal = () =>
-    this.setState({ reactNativeModalVisible: !this.state.reactNativeModalVisible });
+  showOverlay = async () => {
+    await Navigation.showOverlay(Screens.OverlayAlert, {
+      layout: { componentBackgroundColor: 'transparent' },
+      overlay: { interceptTouchOutside: false },
+    });
+  };
+
+  toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
 
   showModalWithTransition = () => {
     Navigation.showModal({
@@ -291,3 +337,16 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
 
   getPreviousModalId = () => last(this.props.previousModalIds)!;
 }
+
+const styles = StyleSheet.create({
+  logoContainer: {
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  tinyLogo: {
+    justifyContent: 'center',
+    width: 128,
+    height: 128,
+  },
+});

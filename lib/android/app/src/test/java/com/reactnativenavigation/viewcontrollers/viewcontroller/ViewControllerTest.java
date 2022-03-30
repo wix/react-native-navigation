@@ -11,6 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
+import com.reactnativenavigation.mocks.Mocks;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
@@ -31,6 +32,7 @@ import org.robolectric.Shadows;
 import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -43,6 +45,7 @@ public class ViewControllerTest extends BaseTest {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private YellowBoxDelegate yellowBoxDelegate;
+    private ParentController<?> mockedParent;
 
     @Override
     public void beforeEach() {
@@ -51,7 +54,22 @@ public class ViewControllerTest extends BaseTest {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         uut = new SimpleViewController(activity, childRegistry, "uut", new Options());
-        uut.setParentController(mock(ParentController.class));
+        mockedParent = Mocks.INSTANCE.parentController(null);
+        uut.setParentController(mockedParent);
+        Mockito.when(mockedParent.resolveChildOptions(any())).thenReturn(Options.EMPTY);
+    }
+
+    @Test
+    public void topMostParent_shouldReturnSelfWhenNoParent(){
+        assertThat(uut.getTopMostParent()).isEqualTo(mockedParent);
+    }
+
+    @Test
+    public void topMostParent_shouldReturnRootParent(){
+        final ParentController<?> root = Mocks.INSTANCE.parentController(null);
+        final ParentController<?> parent1 = Mocks.INSTANCE.parentController(root);
+        uut.setParentController(parent1);
+        assertThat(uut.getTopMostParent()).isEqualTo(root);
     }
 
     @Test

@@ -44,7 +44,7 @@ import static com.reactnativenavigation.views.pip.PIPStates.NATIVE_MOUNT_START;
 import static com.reactnativenavigation.views.pip.PIPStates.NOT_STARTED;
 
 public class PIPNavigator extends ParentController<PIPContainer> {
-    private ViewController childController;
+    private ViewController<?> childController;
     private StackAnimator animator;
     private PIPStates pipState = NOT_STARTED;
     private PIPFloatingLayout pipFloatingLayout;
@@ -62,7 +62,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     @Override
-    public ViewController getCurrentChild() {
+    public ViewController<?> getCurrentChild() {
         return childController;
     }
 
@@ -84,14 +84,14 @@ public class PIPNavigator extends ParentController<PIPContainer> {
 
     @NonNull
     @Override
-    public Collection<? extends ViewController> getChildControllers() {
-        ArrayList<ViewController> children = new ArrayList<>();
+    public Collection<? extends ViewController<?>> getChildControllers() {
+        ArrayList<ViewController<?>> children = new ArrayList<>();
         if (childController != null) children.add(childController);
         return children;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void pushPIP(ViewController childController, boolean toNative) {
+    public void pushPIP(ViewController<?> childController, boolean toNative) {
         wasDirectLaunchToNative = toNative;
         closePIP(null);
         getView().setVisibility(View.VISIBLE);
@@ -122,7 +122,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
 
-    public void restorePIP(Functions.Func1<ViewController> task) {
+    public void restorePIP(Functions.Func1<ViewController<?>> task) {
         if (this.childController != null) {
             pipFloatingLayout.cancelAnimations();
             pipFloatingLayout.initiateRestore();
@@ -149,7 +149,7 @@ public class PIPNavigator extends ParentController<PIPContainer> {
     }
 
     @Override
-    public void mergeChildOptions(Options options, ViewController child) {
+    public void mergeChildOptions(Options options, ViewController<?> child) {
         super.mergeChildOptions(options, child);
         if (pipFloatingLayout != null) {
             pipFloatingLayout.setCustomPIPDimensions(this.childController.options.pipOptions.customPIP);

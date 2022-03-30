@@ -31,6 +31,8 @@
         return [[RNNUIBarButtonItem alloc] initCustomIcon:button
                                               iconCreator:_iconCreator
                                                   onPress:onPress];
+    } else if (button.sfSymbol.hasValue) {
+        return [[RNNUIBarButtonItem alloc] initWithSFSymbol:button onPress:onPress];
     } else if (button.icon.hasValue) {
         return [[RNNUIBarButtonItem alloc] initWithIcon:button onPress:onPress];
     } else if (button.text.hasValue) {

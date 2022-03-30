@@ -73,7 +73,7 @@ export class Commands {
 
   public mergeOptions(componentId: string, options: Options) {
     const input = cloneDeep(options);
-    this.optionsProcessor.processOptions(input, CommandName.MergeOptions);
+    this.optionsProcessor.processOptions(CommandName.MergeOptions, input);
 
     const component = this.store.getComponentInstance(componentId);
     if (component && !component.isMounted)
@@ -85,8 +85,8 @@ export class Commands {
     this.commandsObserver.notify(CommandName.MergeOptions, { componentId, options });
   }
 
-  public updateProps(componentId: string, props: object) {
-    this.store.updateProps(componentId, props);
+  public updateProps(componentId: string, props: object, callback?: () => void) {
+    this.store.updateProps(componentId, props, callback);
     this.commandsObserver.notify(CommandName.UpdateProps, { componentId, props });
   }
 
@@ -106,6 +106,7 @@ export class Commands {
 
   public dismissModal(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate(CommandName.DismissModal);
+    this.optionsProcessor.processOptions(CommandName.DismissModal, mergeOptions);
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
     this.commandsObserver.notify(CommandName.DismissModal, {
       commandId,
@@ -117,6 +118,7 @@ export class Commands {
 
   public dismissAllModals(mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate(CommandName.DismissAllModals);
+    this.optionsProcessor.processOptions(CommandName.DismissAllModals, mergeOptions);
     const result = this.nativeCommandsSender.dismissAllModals(commandId, mergeOptions);
     this.commandsObserver.notify(CommandName.DismissAllModals, { commandId, mergeOptions });
     return result;
@@ -138,6 +140,7 @@ export class Commands {
 
   public pop(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate(CommandName.Pop);
+    this.optionsProcessor.processOptions(CommandName.Pop, mergeOptions);
     const result = this.nativeCommandsSender.pop(commandId, componentId, mergeOptions);
     this.commandsObserver.notify(CommandName.Pop, { commandId, componentId, mergeOptions });
     return result;
@@ -145,6 +148,7 @@ export class Commands {
 
   public popTo(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate(CommandName.PopTo);
+    this.optionsProcessor.processOptions(CommandName.PopTo, mergeOptions);
     const result = this.nativeCommandsSender.popTo(commandId, componentId, mergeOptions);
     this.commandsObserver.notify(CommandName.PopTo, { commandId, componentId, mergeOptions });
     return result;
@@ -152,6 +156,7 @@ export class Commands {
 
   public popToRoot(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate(CommandName.PopToRoot);
+    this.optionsProcessor.processOptions(CommandName.PopToRoot, mergeOptions);
     const result = this.nativeCommandsSender.popToRoot(commandId, componentId, mergeOptions);
     this.commandsObserver.notify(CommandName.PopToRoot, { commandId, componentId, mergeOptions });
     return result;
@@ -247,7 +252,7 @@ export class Commands {
 
   public setPIPHostId(componentId: string) {
     this.nativeCommandsSender.setPIPHostId(componentId);
-    this.commandsObserver.notify('setPIPHostId', {componentId });
+    this.commandsObserver.notify('setPIPHostId', { componentId });
   }
 }
 

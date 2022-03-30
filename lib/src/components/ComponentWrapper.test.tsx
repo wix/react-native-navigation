@@ -38,7 +38,9 @@ describe('ComponentWrapper', () => {
     }
 
     render() {
-      return <this.ChildClass componentId="component1" {...this.state.propsFromState} />;
+      const { ChildClass } = this;
+
+      return <ChildClass componentId="component1" {...this.state.propsFromState} />;
     }
   }
 
@@ -119,6 +121,27 @@ describe('ComponentWrapper', () => {
       stringProp: 'hello',
       objectProp: { a: 2 },
     });
+  });
+
+  it('update props with callback', (done) => {
+    const NavigationComponent = uut.wrap(
+      componentName,
+      () => MyComponent,
+      store,
+      componentEventsObserver
+    );
+    renderer.create(<NavigationComponent componentId={'component123'} />);
+
+    function callback() {
+      try {
+        expect(true).toBe(true);
+        done();
+      } catch (error) {
+        done(error);
+      }
+    }
+
+    store.updateProps('component123', { someProp: 'someValue' }, callback);
   });
 
   it('updates props from store into inner component', () => {

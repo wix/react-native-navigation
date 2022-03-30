@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { NavigationComponent } from 'react-native-navigation';
+import { NavigationComponent } from '@dream11/react-native-navigation';
 import CocktailsView from './CocktailsView';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';

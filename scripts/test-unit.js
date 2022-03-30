@@ -19,14 +19,14 @@ function runAndroidUnitTests() {
     exec.execSync(`yes | ${sdkmanager} --licenses`);
     // exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
   }
-  exec.execSync(`cd lib/android && ./gradlew ${conf}`);
+  exec.execSync(`cd playground/android && ./gradlew ${conf}`);
 }
 
 function runIosUnitTests() {
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
   testTarget('playground', 'iPhone 11');
-  testTarget('playgroundIOS12', 'iPhone X', '12.2');
+  testTarget('playgroundIOS12', 'iPhone X', '12.4');
 }
 
 function testTarget(scheme, device, OS = 'latest') {

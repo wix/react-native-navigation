@@ -49,7 +49,7 @@ public class BottomTabsAttacherTest extends BaseTest {
 
     @Test
     public void onTabSelected() {
-        ViewController tab = mock(ViewController.class);
+        ViewController<?> tab = mock(ViewController.class);
         uut.onTabSelected(tab);
         verify(mode).onTabSelected(tab);
     }

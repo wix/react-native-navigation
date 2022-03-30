@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import merge from 'lodash/merge';
 import isFunction from 'lodash/isFunction';
 import { Store } from '../components/Store';
@@ -14,7 +15,7 @@ import {
 import { UniqueIdProvider } from 'react-native-navigation/adapters/UniqueIdProvider';
 import { LayoutType } from './LayoutType';
 
-type ComponentWithOptions = React.ComponentType<any> & { options(passProps: any): Options };
+type ComponentWithOptions = ComponentType<any> & { options(passProps: any): Options };
 
 export class OptionsCrawler {
   constructor(public readonly store: Store, public readonly uniqueIdProvider: UniqueIdProvider) {

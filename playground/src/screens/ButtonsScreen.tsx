@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { NavigationComponent, Options, OptionsTopBarButton } from 'react-native-navigation';
+import { NavigationComponent, Options, OptionsTopBarButton } from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';

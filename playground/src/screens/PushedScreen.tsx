@@ -6,7 +6,7 @@ import {
   NavigationComponent,
   NavigationComponentProps,
   Options,
-} from 'react-native-navigation';
+} from '@dream11/react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
 import Navigation from '../services/Navigation';

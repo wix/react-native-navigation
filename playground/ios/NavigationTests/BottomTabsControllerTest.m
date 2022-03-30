@@ -108,13 +108,6 @@
     XCTAssertEqual(uut.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
 }
 
-- (void)testWillMoveToParent_shouldNotInvokePresenterApplyOptionsOnWillMoveToNilParent {
-    [[self.mockTabBarPresenter reject]
-        applyOptionsOnWillMoveToParentViewController:[self.uut options]];
-    [self.uut willMoveToParentViewController:nil];
-    [self.mockTabBarPresenter verify];
-}
-
 - (void)testOnChildAppear_shouldInvokePresenterApplyOptionsWithResolvedOptions {
     [[self.mockTabBarPresenter expect] applyOptions:[OCMArg any]];
     [self.uut onChildWillAppear];
@@ -323,6 +316,44 @@
     [self.uut tabBarController:self.uut
         shouldSelectViewController:self.uut.childViewControllers[0]];
     [self.mockEventEmitter verify];
+}
+
+- (void)testInit_shouldCreateTabBarItems {
+    id dotIndicator = [OCMockObject
+        partialMockForObject:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]];
+    RNNNavigationOptions *vc1Options = [RNNNavigationOptions emptyOptions];
+    vc1Options.bottomTab.text = [Text withValue:@"VC 1"];
+    RNNComponentViewController *vc1 = [RNNComponentViewController createWithComponentId:@"VC 1"
+                                                                         initialOptions:vc1Options];
+
+    RNNNavigationOptions *vc2Options = [RNNNavigationOptions emptyOptions];
+    vc2Options.bottomTab.text = [Text withValue:@"VC 2"];
+    RNNComponentViewController *vc2 = [RNNComponentViewController createWithComponentId:@"VC 2"
+                                                                         initialOptions:vc2Options];
+    RNNStackController *stack =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:RNNNavigationOptions.new
+                                        defaultOptions:nil
+                                             presenter:nil
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc2 ]];
+
+    __unused RNNBottomTabsController *uut = [[RNNBottomTabsController alloc]
+           initWithLayoutInfo:nil
+                      creator:nil
+                      options:nil
+               defaultOptions:nil
+                    presenter:nil
+           bottomTabPresenter:[BottomTabPresenterCreator
+                                  createWithDefaultOptions:RNNNavigationOptions.emptyOptions]
+        dotIndicatorPresenter:dotIndicator
+                 eventEmitter:nil
+         childViewControllers:@[ vc1, stack ]
+           bottomTabsAttacher:nil];
+
+    XCTAssert([vc1.tabBarItem.title isEqualToString:@"VC 1"]);
+    XCTAssert([stack.tabBarItem.title isEqualToString:@"VC 2"]);
 }
 
 @end

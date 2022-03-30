@@ -1,12 +1,12 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
-import Reanimated, { Easing, useValue } from 'react-native-reanimated';
+import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
 import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';
-import { Navigation } from 'react-native-navigation';
+import { Navigation } from '@dream11/react-native-navigation';
 
 type CarCardProps = {
   car: CarItem;
@@ -44,7 +44,7 @@ export default function CarCard({
     Reanimated.timing(textContainerOpacity, {
       toValue: 0,
       duration: 300,
-      easing: Easing.linear,
+      easing: EasingNode.linear,
     }).start();
   }, [onCarPressed, textContainerOpacity]);
   const onFocus = useCallback(() => {
@@ -53,7 +53,7 @@ export default function CarCard({
       Reanimated.timing(textContainerOpacity, {
         toValue: 1,
         duration: 300,
-        easing: Easing.linear,
+        easing: EasingNode.linear,
       }).start();
     }
   }, [textContainerOpacity]);

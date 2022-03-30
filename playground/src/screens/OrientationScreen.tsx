@@ -1,5 +1,9 @@
 import React from 'react';
-import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationComponentProps,
+  LayoutOrientation,
+} from '@dream11/react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';

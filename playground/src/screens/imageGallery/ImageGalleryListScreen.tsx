@@ -11,7 +11,7 @@ import Navigation from '../../services/Navigation';
 
 import images, { ImageGalleryAsset, ImageGalleryItem } from '../../assets/imageGallery';
 import Screens from '../Screens';
-import { NavigationComponent } from 'react-native-navigation';
+import { NavigationComponent } from '@dream11/react-native-navigation';
 
 const ROW_HEIGHT = 650;
 const COLS = 2;

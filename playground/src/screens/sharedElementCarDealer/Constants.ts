@@ -1,4 +1,4 @@
-import { AnimationOptions } from 'react-native-navigation';
+import { AnimationOptions } from '@dream11/react-native-navigation';
 import { CarItem } from '../../assets/cars';
 
 const SPRING_CONFIG = { mass: 3, damping: 500, stiffness: 200 };

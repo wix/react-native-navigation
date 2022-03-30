@@ -82,9 +82,13 @@
         setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds withDefault:NO]];
 
     [stack.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
+    if (options.topBar.background.component.name.hasValue) {
+        [self setCustomNavigationComponentBackground:options perform:nil];
+    }
 }
 
 - (void)applyOptionsOnViewDidLayoutSubviews:(RNNNavigationOptions *)options {
+    [super applyOptionsOnViewDidLayoutSubviews:options];
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     if (withDefault.topBar.background.component.name.hasValue) {
         [self presentBackgroundComponent];

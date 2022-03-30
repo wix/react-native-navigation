@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponentProps } from '@dream11/react-native-navigation';
 
 interface TopBarBackgroundProps extends NavigationComponentProps {
   color: string;

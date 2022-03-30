@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationComponentProps, Options } from '@dream11/react-native-navigation';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Colors from '../commons/Colors';

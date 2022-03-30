@@ -23,6 +23,8 @@
 @property(nonatomic, strong) Number *fontSize;
 @property(nonatomic, strong) Bool *visible;
 @property(nonatomic, strong) Bool *selectTabOnPress;
+@property(nonatomic, strong) Text *sfSymbol;
+@property(nonatomic, strong) Text *sfSelectedSymbol;
 
 - (BOOL)hasValue;
 

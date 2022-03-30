@@ -31,7 +31,7 @@ describe('LayoutTreeCrawler', () => {
       data: {},
     };
     uut.crawl(node, CommandName.SetRoot);
-    verify(mockedStore.updateProps('testId', deepEqual({ myProp: 123 }))).called();
+    verify(mockedStore.setPendingProps('testId', deepEqual({ myProp: 123 }))).called();
   });
 
   it('Components: must contain data name', () => {
