@@ -253,6 +253,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         setContentView(view);
     }
 
+    @Override
+    public void startActivity(Intent intent) {
+      navigatingToAnotherActivity = true;
+        super.startActivity(intent);
+    }
+
     /*
     @Override
     public void startActivity(Intent intent) {
