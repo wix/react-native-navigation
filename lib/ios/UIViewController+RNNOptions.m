@@ -143,7 +143,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-	self.view.backgroundColor = [[UIColor alloc] initWithRed:0.09 green:0.11 blue:0.15 alpha: 1.00];
+	UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    self.view.backgroundColor =  [UIColor clearColor];
+    blurEffectView.frame =  self.view.bounds;
+    blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view  insertSubview:blurEffectView atIndex:0]; 
+    self.view.layer.masksToBounds = true;
 }
 #if !TARGET_OS_TV
 - (void)setBackButtonVisible:(BOOL)visible {

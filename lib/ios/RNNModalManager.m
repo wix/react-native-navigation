@@ -36,20 +36,9 @@
 	
 	UIViewController* topVC = [self topPresentedVC];
 	
-    viewController.modalPresentationStyle = [RNNConvert UIModalPresentationStyle:[viewController.resolveOptionsWithDefault.modalPresentationStyle getWithDefaultValue:@"default"]];
-    viewController.modalTransitionStyle = [RNNConvert UIModalTransitionStyle:[viewController.resolveOptionsWithDefault.modalTransitionStyle getWithDefaultValue:@"coverVertical"]];
-    
-	if (viewController.presentationController) {
-		viewController.presentationController.delegate = self;
-	}
-	    
-	if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge];
-        viewController.transitioningDelegate = _modalTransitionDelegate;
-        viewController.modalPresentationStyle = UIModalPresentationCustom;
-	}
+    viewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
 	
-	[topVC presentViewController:viewController animated:animated completion:^{
+	[topVC presentViewController:viewController animated:YES completion:^{
 		if (completion) {
 			completion(nil);
 		}
