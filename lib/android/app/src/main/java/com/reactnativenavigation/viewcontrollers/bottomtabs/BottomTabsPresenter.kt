@@ -175,7 +175,9 @@ class BottomTabsPresenter(
             }
         }
         if (bottomTabsOptions.elevation.hasValue()) {
-            bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().toFloat())
+            val elevation = bottomTabsOptions.elevation.get().toFloat()
+            bottomTabsContainer.setPaddingTopForBottomTabWrapper(paddingTop = elevation.toInt())
+            bottomTabs.setUseElevation(true, elevation)
         }
 
         when {

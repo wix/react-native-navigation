@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -47,6 +48,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
+        Toast.makeText(this, "Hello Hanh!", Toast.LENGTH_LONG).show();
     }
 
     @Override
