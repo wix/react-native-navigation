@@ -93,12 +93,10 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         topOutLineView.alpha = 0f
     }
 
-    // set padding top to show elevation of the bottom bar
     fun setPaddingTopForBottomTabWrapper(paddingTop: Int) {
         if (childCount > 0) {
             val child = getChildAt(0)
             if (child is LinearLayout) {
-                // set padding for the container of bottom tab
                 child.setPadding(
                     child.paddingLeft,
                     paddingTop,
