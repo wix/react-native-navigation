@@ -18,43 +18,47 @@ export default class ComponentNode extends ParentNode {
 
   public componentDidAppear() {
     if (this.componentDidMountOnce) {
-      events.invokeComponentWillAppear({
-        componentName: this.data.name,
-        componentId: this.nodeId,
-        componentType: 'Component',
-      });
-      events.invokeComponentDidAppear({
-        componentName: this.data.name,
-        componentId: this.nodeId,
-        componentType: 'Component',
-      });
+      setTimeout(() => {
+        events.invokeComponentWillAppear({
+          componentName: this.data.name,
+          componentId: this.nodeId,
+          componentType: 'Component',
+        });
+        events.invokeComponentDidAppear({
+          componentName: this.data.name,
+          componentId: this.nodeId,
+          componentType: 'Component',
+        });
 
-      this.buttonsDidAppear(
-        _.concat(
-          this.data.options.topBar?.rightButtons || [],
-          this.data.options.topBar?.leftButtons || []
-        )
-      );
-      this.titleChanged(undefined, this.data.options.topBar?.title);
+        this.buttonsDidAppear(
+          _.concat(
+            this.data.options.topBar?.rightButtons || [],
+            this.data.options.topBar?.leftButtons || []
+          )
+        );
+        this.titleChanged(undefined, this.data.options.topBar?.title);
+      }, 0);
     } else {
       this.componentDidAppearPending = true;
     }
   }
 
   public componentDidDisappear() {
-    events.invokeComponentDidDisappear({
-      componentName: this.data.name,
-      componentId: this.nodeId,
-      componentType: 'Component',
-    });
+    setTimeout(() => {
+      events.invokeComponentDidDisappear({
+        componentName: this.data.name,
+        componentId: this.nodeId,
+        componentType: 'Component',
+      });
 
-    this.buttonsDidDisappear(
-      _.concat(
-        this.data.options.topBar?.rightButtons || [],
-        this.data.options.topBar?.leftButtons || []
-      )
-    );
-    this.titleChanged(this.data.options.topBar?.title);
+      this.buttonsDidDisappear(
+        _.concat(
+          this.data.options.topBar?.rightButtons || [],
+          this.data.options.topBar?.leftButtons || []
+        )
+      );
+      this.titleChanged(this.data.options.topBar?.title);
+    }, 0);
   }
 
   titleChanged(oldTitle: any, newTitle?: any) {
