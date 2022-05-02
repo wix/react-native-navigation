@@ -8,6 +8,7 @@ class ActivityLinker {
     this.activityPath = path.mainActivityJava;
     this.extendNavigationActivitySuccess = false;
     this.removeGetMainComponentNameSuccess = false;
+    this.removeCreateReactActivityDelegate = false;
   }
 
   link() {
@@ -35,6 +36,8 @@ class ActivityLinker {
     } catch (e) {
       errorn('   ' + e.message);
     }
+
+    activityContent = this._removeCreateReactActivityDelegate(activityContent);
 
     fs.writeFileSync(this.activityPath, activityContent);
     if (this.extendNavigationActivitySuccess && this.removeGetMainComponentNameSuccess) {
@@ -75,7 +78,7 @@ class ActivityLinker {
           'import com.reactnativenavigation.NavigationActivity;'
         );
     }
-    if (this._hasAlreadyExtendReactActivity) {
+    if (this._hasAlreadyExtendReactActivity(activityContent)) {
       warnn('   MainActivity already extends NavigationActivity');
       return activityContent;
     }
@@ -91,6 +94,27 @@ class ActivityLinker {
 
   _hasAlreadyExtendReactActivity(activityContent) {
     return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
+  }
+
+  _removeCreateReactActivityDelegate(activityContent) {
+    if (this._hasCreateReactActivityDelegate(activityContent)) {
+      debugn('   Removing createReactActivityDelegate function');
+      return activityContent.replace(
+        /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/,
+        '',
+      );
+    } else {
+      warnn(
+        '   createReactActivityDelegate is already not defined in MainActivity',
+      );
+      return activityContent;
+    }
+  }
+
+  _hasCreateReactActivityDelegate(activityContent) {
+    return /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/.test(
+      activityContent,
+    );
   }
 }
 
