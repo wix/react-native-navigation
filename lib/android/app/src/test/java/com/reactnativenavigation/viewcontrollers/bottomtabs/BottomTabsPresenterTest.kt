@@ -68,7 +68,7 @@ class BottomTabsPresenterTest : BaseTest() {
         val options = Options()
         options.bottomTabsOptions.backgroundColor = ThemeColour(Colour(10))
         uut.mergeChildOptions(options, tabs[0])
-        verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get())
+        verify(bottomTabsContainer).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get())
         verifyNoMoreInteractions(bottomTabs)
     }
 

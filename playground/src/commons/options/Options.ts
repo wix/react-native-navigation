@@ -27,7 +27,8 @@ const setDefaultOptions = () =>
     },
     bottomTabs: {
       backgroundColor: Colors.barBackground,
-      tabsAttachMode: 'onSwitchToTab',
+      tabsAttachMode: 'afterInitialTab',
+      elevation: 8,
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {

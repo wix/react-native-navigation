@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
+import com.reactnativenavigation.options.params.Fraction
+import com.reactnativenavigation.utils.UiUtils.dpToPx
 import kotlin.math.roundToInt
 
 
@@ -90,6 +92,10 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
 
     fun hideTopOutLine() {
         topOutLineView.alpha = 0f
+    }
+
+    fun setElevation(elevation: Fraction) {
+        setElevation(dpToPx(context, elevation.get().toFloat()))
     }
 }
 

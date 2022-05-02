@@ -71,7 +71,7 @@ class BottomTabsPresenter(
             bottomTabs.titleState = bottomTabsOptions.titleDisplayMode.toState()
         }
         if (bottomTabsOptions.backgroundColor.hasValue()) {
-            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
+            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
         }
         if (bottomTabsOptions.animateTabSelection.hasValue()) {
             bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get())
@@ -143,7 +143,7 @@ class BottomTabsPresenter(
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()
@@ -175,7 +175,7 @@ class BottomTabsPresenter(
             }
         }
         if (bottomTabsOptions.elevation.hasValue()) {
-            bottomTabs.setUseElevation(true, bottomTabsOptions.elevation.get().toFloat())
+            bottomTabsContainer.setElevation(bottomTabsOptions.elevation)
         }
 
         when {
