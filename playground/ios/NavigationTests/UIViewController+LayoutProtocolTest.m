@@ -1,4 +1,5 @@
 #import "RNNComponentPresenter.h"
+#import "RNNComponentViewController+Utils.h"
 #import "RNNStackController.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
@@ -222,6 +223,86 @@
     XCTAssertTrue(component.extendedLayoutIncludesOpaqueBars);
     XCTAssertTrue(stack.extendedLayoutIncludesOpaqueBars);
     XCTAssertTrue(tabBar.extendedLayoutIncludesOpaqueBars);
+}
+
+- (void)testConstants_shouldReturnNavigationBarHeight_visible {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.largeTitle.visible = [Bool withValue:YES];
+    UIViewController *vc1 = [RNNComponentViewController createWithComponentId:@"vc1"];
+    UIViewController *vc2 = [RNNComponentViewController createWithComponentId:@"vc2"
+                                                               initialOptions:options];
+    RNNStackController *stack =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:options
+                                        defaultOptions:nil
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc1 ]];
+    RNNStackController *stack2 =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:options
+                                        defaultOptions:nil
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc2 ]];
+
+    RNNBottomTabsController *bottomTabs =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:nil
+                                             defaultOptions:nil
+                                                  presenter:RNNBasePresenter.new
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:nil
+                                       childViewControllers:@[ stack, stack2 ]
+                                         bottomTabsAttacher:nil];
+
+    XCTAssertEqual([bottomTabs getTopBarHeight], stack.navigationBar.frame.size.height);
+}
+
+- (void)testConstants_shouldReturnNavigationBarHeight_invisible {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.topBar.visible = [Bool withValue:NO];
+    UIViewController *vc1 = [RNNComponentViewController createWithComponentId:@"vc1"];
+    UIViewController *vc2 = [RNNComponentViewController createWithComponentId:@"vc2"
+                                                               initialOptions:options];
+    RNNStackController *stack =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:RNNNavigationOptions.emptyOptions
+                                        defaultOptions:RNNNavigationOptions.emptyOptions
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc1 ]];
+    RNNStackController *stack2 =
+        [[RNNStackController alloc] initWithLayoutInfo:nil
+                                               creator:nil
+                                               options:RNNNavigationOptions.emptyOptions
+                                        defaultOptions:RNNNavigationOptions.emptyOptions
+                                             presenter:[[RNNStackPresenter alloc] init]
+                                          eventEmitter:nil
+                                  childViewControllers:@[ vc2 ]];
+
+    RNNBottomTabsController *bottomTabs =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:nil
+                                             defaultOptions:nil
+                                                  presenter:RNNBasePresenter.new
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:nil
+                                       childViewControllers:@[ stack, stack2 ]
+                                         bottomTabsAttacher:nil];
+    [vc1 viewWillAppear:NO];
+    XCTAssertNotEqual([bottomTabs getTopBarHeight], 0);
+
+    [bottomTabs setSelectedIndex:1];
+    [vc2 viewWillAppear:NO];
+    XCTAssertEqual([bottomTabs getTopBarHeight], 0);
 }
 
 @end

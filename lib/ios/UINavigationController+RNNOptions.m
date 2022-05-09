@@ -72,7 +72,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (CGFloat)getTopBarHeight {
-    return self.navigationBar.frame.size.height;
+    return self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height;
 }
 
 @end
