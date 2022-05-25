@@ -42,7 +42,7 @@ Pass a function that will allow you to register a component lazily. When encount
 #### Parameters
 | Name   | Required | Type                | Description                                                                                                            |
 | ------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| lazyRegistratorFn | Yes      | (lazyComponentRequest: string | number) => void | A function that takes a componentName, will be called when encountering an unknown componentName |
+| lazyRegistratorFn | Yes      | (lazyComponentRequest: string \| number) => void | A function that takes a componentName, will be called when encountering an unknown componentName |
 
 #### Example
 ```js
