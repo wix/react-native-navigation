@@ -13,12 +13,13 @@ import androidx.annotation.NonNull;
 
 public class Options {
     public static final Options EMPTY = new Options();
+    public JSONObject valueJson = new JSONObject();
 
     @NonNull
     public static Options parse(Context context, TypefaceLoader typefaceManager, JSONObject json) {
         Options result = new Options();
         if (json == null) return result;
-
+        result.valueJson = json;
         result.topBar = TopBarOptions.parse(context, typefaceManager, json.optJSONObject("topBar"));
         result.topTabs = TopTabsOptions.parse(context, json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
@@ -37,21 +38,37 @@ public class Options {
         return result;
     }
 
-    @NonNull public TopBarOptions topBar = new TopBarOptions();
-    @NonNull public TopTabsOptions topTabs = new TopTabsOptions();
-    @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
-    @NonNull public BottomTabOptions bottomTabOptions = new BottomTabOptions();
-    @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
-    @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
-    @NonNull public FabOptions fabOptions = new FabOptions();
-    @NonNull public AnimationsOptions animations = new AnimationsOptions();
-    @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
-    @NonNull public ModalOptions modal = new ModalOptions();
-    @NonNull public NavigationBarOptions navigationBar = new NavigationBarOptions();
-    @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
-    @NonNull public LayoutOptions layout = new LayoutOptions();
-    @NonNull public HardwareBackButtonOptions hardwareBack = new HardwareBackButtonOptions();
-    @NonNull public PIPOptions pipOptions = new PIPOptions();
+    @NonNull
+    public TopBarOptions topBar = new TopBarOptions();
+    @NonNull
+    public TopTabsOptions topTabs = new TopTabsOptions();
+    @NonNull
+    public TopTabOptions topTabOptions = new TopTabOptions();
+    @NonNull
+    public BottomTabOptions bottomTabOptions = new BottomTabOptions();
+    @NonNull
+    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    @NonNull
+    public OverlayOptions overlayOptions = new OverlayOptions();
+    @NonNull
+    public FabOptions fabOptions = new FabOptions();
+    @NonNull
+    public AnimationsOptions animations = new AnimationsOptions();
+    @NonNull
+    public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
+    @NonNull
+    public ModalOptions modal = new ModalOptions();
+    @NonNull
+    public NavigationBarOptions navigationBar = new NavigationBarOptions();
+    @NonNull
+    public StatusBarOptions statusBar = new StatusBarOptions();
+    @NonNull
+    public LayoutOptions layout = new LayoutOptions();
+    @NonNull
+    public HardwareBackButtonOptions hardwareBack = new HardwareBackButtonOptions();
+    @NonNull
+    public PIPOptions pipOptions = new PIPOptions();
+
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
     }

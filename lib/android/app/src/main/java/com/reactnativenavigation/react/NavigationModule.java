@@ -138,6 +138,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         });
     }
 
+    public void push(String onComponentId, LayoutNode layoutTree, CommandListener listener) {
+        handle(() -> {
+            final ViewController viewController = layoutFactory.create(layoutTree);
+            navigator().push(onComponentId, viewController, listener);
+        });
+    }
+
     @ReactMethod
     public void switchToPIP(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
         handle(() -> navigator().switchToPIP(componentId, parse(mergeOptions), new NativeCommandListener("switchToPIP", commandId, promise, eventEmitter, now)));
