@@ -91,6 +91,7 @@ public class Options {
         result.layout.mergeWith(layout);
         result.hardwareBack.mergeWith(hardwareBack);
         result.pipOptions.mergeWith(pipOptions);
+        result.valueJson = valueJson;
         return result;
     }
 
