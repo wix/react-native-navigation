@@ -42,7 +42,7 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
         ExternalComponentLayout content = new ExternalComponentLayout(getActivity());
         enableDrawingBehindStatusBar(content);
         content.addView(componentCreator
-                .create(getActivity(), reactInstanceManager, externalComponent.passProps, initialOptions.copy())
+                .create(getActivity(), reactInstanceManager, getId(), externalComponent.passProps, initialOptions.copy())
                 .asView(), CoordinatorLayoutUtils.matchParentWithBehaviour(new BehaviourDelegate(this)));
         return content;
     }

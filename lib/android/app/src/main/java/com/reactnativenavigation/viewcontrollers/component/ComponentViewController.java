@@ -21,10 +21,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
+import org.json.JSONObject;
+
 public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
+    private JSONObject passProps = null;
 
     private enum VisibilityState {Appear, Disappear}
 
@@ -42,6 +45,10 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         this.componentName = componentName;
         this.viewCreator = viewCreator;
         this.presenter = componentPresenter;
+    }
+
+    public void setPassProps(JSONObject passProps) {
+        this.passProps = passProps;
     }
 
     @Override
@@ -121,6 +128,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     @Override
     public ComponentLayout createView() {
         ComponentLayout view = (ComponentLayout) viewCreator.create(getActivity(), getId(), componentName);
+        view.setPassProps(passProps);
         return (ComponentLayout) view.asView();
     }
 

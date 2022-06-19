@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
+import org.json.JSONObject;
+
 public class EventEmitter {
     private static final String AppLaunched = "RNN.AppLaunched";
     private static final String CommandCompleted = "RNN.CommandCompleted";

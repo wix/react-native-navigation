@@ -21,9 +21,11 @@ import com.reactnativenavigation.views.component.Renderable;
 
 import androidx.annotation.RestrictTo;
 
+import org.json.JSONObject;
+
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView, Renderable {
-
+    private JSONObject passProps = null;
     private final ReactInstanceManager reactInstanceManager;
     private final String componentId;
     private final String componentName;
@@ -44,11 +46,15 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         start();
     }
 
+
     public void start() {
         if (isAttachedToReactInstance) return;
         isAttachedToReactInstance = true;
         final Bundle opts = new Bundle();
         opts.putString("componentId", componentId);
+        if (passProps != null) {
+            opts.putString("passProps", passProps.toString());
+        }
         startReactApplication(reactInstanceManager, componentName, opts);
     }
 
@@ -107,6 +113,10 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     @Override
     public void dispatchTouchEventToJs(MotionEvent event) {
         jsTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+    }
+
+    public void setPassProps(JSONObject passProps) {
+        this.passProps = passProps;
     }
 
     @Override

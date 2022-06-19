@@ -18,6 +18,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
+import org.json.JSONObject;
+
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
 
@@ -64,6 +66,10 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     public void sendComponentStop() {
         willAppearSent = false;
         reactView.sendComponentStop(ComponentType.Component);
+    }
+
+    public void setPassProps(JSONObject passProps) {
+        reactView.setPassProps(passProps);
     }
 
     public void applyOptions(Options options) {

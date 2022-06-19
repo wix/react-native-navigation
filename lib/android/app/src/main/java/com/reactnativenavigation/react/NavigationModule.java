@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.options.LayoutFactory;
@@ -33,8 +34,9 @@ import java.util.ArrayList;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
+@ReactModule(name = NavigationModule.NAME)
 public class NavigationModule extends ReactContextBaseJavaModule {
-    private static final String NAME = "RNNBridgeModule";
+    public static final String NAME = "RNNBridgeModule";
 
     private final Now now = new Now();
     public static ReactInstanceManager reactInstanceManager;

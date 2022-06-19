@@ -45,6 +45,9 @@ import androidx.annotation.RestrictTo;
 import static com.reactnativenavigation.options.Options.parse;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LayoutFactory {
 	private Activity activity;
     private ChildControllersRegistry childRegistry;
@@ -156,15 +159,17 @@ public class LayoutFactory {
 	private ViewController createComponent(ReactContext context, LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-        return new ComponentViewController(activity,
-                childRegistry,
-                id,
-                name,
-                new ComponentViewCreator(reactInstanceManager),
-                parse(context, typefaceManager, node.getOptions()),
-                new Presenter(activity, defaultOptions),
-                new ComponentPresenter(defaultOptions)
-        );
+		ComponentViewController controller= new ComponentViewController(activity,
+				childRegistry,
+				id,
+				name,
+				new ComponentViewCreator(reactInstanceManager),
+				parse(context, typefaceManager, node.getOptions()),
+				new Presenter(activity, defaultOptions),
+				new ComponentPresenter(defaultOptions)
+		);
+		controller.setPassProps(parsePassProps(node.data));
+		return controller;
 	}
 
     private ViewController createExternalComponent(ReactContext context, LayoutNode node) {
@@ -226,6 +231,17 @@ public class LayoutFactory {
                 new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions));
 	}
 
+	private static JSONObject parsePassProps(JSONObject json) {
+		if (json.has("passProps")) {
+			try {
+				return json.getJSONObject("passProps");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
     private ViewController createTopTabs(ReactContext context, LayoutNode node) {
         final List<ViewController> tabs = new ArrayList<>();
         for (int i = 0; i < node.children.size(); i++) {
@@ -236,6 +252,8 @@ public class LayoutFactory {
         }
         return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(context, typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
     }
+
+
 
     @NonNull
     @RestrictTo(RestrictTo.Scope.TESTS)

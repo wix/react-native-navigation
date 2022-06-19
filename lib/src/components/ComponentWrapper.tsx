@@ -10,12 +10,15 @@ interface HocState {
   componentId: string;
   allProps: {};
 }
+
 interface HocProps {
   componentId: string;
+  passProps?: string;
 }
 
 export interface IWrappedComponent extends React.Component {
   setProps(newProps: Record<string, any>): void;
+
   isMounted: boolean;
 }
 
@@ -30,6 +33,7 @@ export class ComponentWrapper {
     reduxStore?: any
   ): React.ComponentClass<any> {
     const GeneratedComponentClass = OriginalComponentGenerator();
+
     class WrappedComponent extends React.Component<HocProps, HocState> {
       static getDerivedStateFromProps(nextProps: any, prevState: HocState) {
         return {
@@ -49,11 +53,13 @@ export class ComponentWrapper {
       constructor(props: HocProps) {
         super(props);
         this._assertComponentId();
+        const passProps = props.passProps ? { ...JSON.parse(props.passProps) } : {};
         this.state = {
           componentId: props.componentId,
-          allProps: {},
+          allProps: passProps,
         };
         store.setComponentInstance(props.componentId, this);
+        store.mergeNewPropsForId(props.componentId, passProps);
       }
 
       public setProps(newProps: any) {
@@ -113,6 +119,7 @@ export class ComponentWrapper {
         );
       }
     }
+
     hoistNonReactStatics(ReduxWrapper, WrappedComponent);
     return ReduxWrapper;
   }
