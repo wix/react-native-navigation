@@ -15,6 +15,8 @@ import {
   PreviewCompletedEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
+  PIPStateChangedEvent,
+  PIPButtonPressedEvent,
   ModalAttemptedToDismissEvent,
 } from '../interfaces/ComponentEvents';
 import {
@@ -132,5 +134,17 @@ export class EventsRegistry {
     callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
     return this.nativeEventsReceiver.registerScreenPoppedListener(callback);
+  }
+
+  public registerPIPStateChangedEventListener(
+    callback: (event: PIPStateChangedEvent) => void
+  ): EmitterSubscription {
+    return this.nativeEventsReceiver.registerPIPStateChangedEventListener(callback);
+  }
+
+  public registerPIPButtonPressedEventListener(
+    callback: (event: PIPButtonPressedEvent) => void
+  ): EmitterSubscription {
+    return this.nativeEventsReceiver.registerPIPButtonPressedEventListener(callback);
   }
 }
