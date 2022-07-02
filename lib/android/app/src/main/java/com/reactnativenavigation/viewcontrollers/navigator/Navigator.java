@@ -175,6 +175,7 @@ public class Navigator extends ParentController {
                 root.onViewDidAppear();
                 if (removeSplashView) contentLayout.removeViewAt(0);
                 destroyPreviousRoot();
+                rootLayout.setBackgroundColor(Color.WHITE);
                 super.onSuccess(childId);
             }
         }, reactInstanceManager);
