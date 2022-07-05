@@ -64,7 +64,7 @@ export class ComponentEventsObserver {
       this.notifySearchBarCancelPressed
     );
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
-    this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
+    this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyScreenPopped);
     if (Platform.OS === 'android') {
       this.nativeEventsReceiver.registerPIPStateChangedEventListener(
         this.notifyPIPStateChangedEvent
