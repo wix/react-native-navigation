@@ -1,15 +1,21 @@
 #import "RNNButtonBuilder.h"
 #import "RNNFontAttributesCreator.h"
+#import "RNNDynamicIconCreator.h"
 
 @implementation RNNButtonBuilder {
     RNNReactComponentRegistry *_componentRegistry;
-    RNNIconCreator *_iconCreator;
+    RNNBaseIconCreator *_iconCreator;
 }
 
 - (instancetype)initWithComponentRegistry:(id)componentRegistry {
     self = [super init];
     _componentRegistry = componentRegistry;
-    _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
+    if (@available(iOS 13.0, *)) {
+        _iconCreator = [[RNNDynamicIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
+    } else {
+        _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
+    }
+    
     return self;
 }
 

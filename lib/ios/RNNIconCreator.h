@@ -1,11 +1,8 @@
 #import "RNNButtonOptions.h"
 #import "RNNIconDrawer.h"
 #import <Foundation/Foundation.h>
+#import "RNNBaseIconCreator.h"
 
-@interface RNNIconCreator : NSObject
-
-- (instancetype)initWithIconDrawer:(RNNIconDrawer *)iconDrawer;
-
-- (UIImage *)create:(RNNButtonOptions *)buttonOptions;
+@interface RNNIconCreator : RNNBaseIconCreator
 
 @end

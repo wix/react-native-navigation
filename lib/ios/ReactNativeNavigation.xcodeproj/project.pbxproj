@@ -303,6 +303,10 @@
 		50ACB2C92525FA1D00ABDBE2 /* ScreenReversedAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACB2C72525FA1D00ABDBE2 /* ScreenReversedAnimationController.m */; };
 		50ACB2CC2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ACB2CA2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.h */; };
 		50ACB2CD2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACB2CB2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.m */; };
+		50ACDEC62875C23D00C29069 /* RNNDynamicIconCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ACDEC42875C23D00C29069 /* RNNDynamicIconCreator.h */; };
+		50ACDEC72875C23D00C29069 /* RNNDynamicIconCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACDEC52875C23D00C29069 /* RNNDynamicIconCreator.m */; };
+		50ACDECA2875C25E00C29069 /* RNNBaseIconCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ACDEC82875C25E00C29069 /* RNNBaseIconCreator.h */; };
+		50ACDECB2875C25E00C29069 /* RNNBaseIconCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACDEC92875C25E00C29069 /* RNNBaseIconCreator.m */; };
 		50AD1CE023CB428400FF3134 /* TransitionOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AD1CDE23CB428400FF3134 /* TransitionOptions.h */; };
 		50AD1CE123CB428400FF3134 /* TransitionOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AD1CDF23CB428400FF3134 /* TransitionOptions.m */; };
 		50AD288823CDB71C00FF3134 /* ElementHorizontalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AD288623CDB71C00FF3134 /* ElementHorizontalTransition.h */; };
@@ -837,6 +841,10 @@
 		50ACB2C72525FA1D00ABDBE2 /* ScreenReversedAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenReversedAnimationController.m; sourceTree = "<group>"; };
 		50ACB2CA2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNScreenTransitionsCreator.h; sourceTree = "<group>"; };
 		50ACB2CB2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNScreenTransitionsCreator.m; sourceTree = "<group>"; };
+		50ACDEC42875C23D00C29069 /* RNNDynamicIconCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNDynamicIconCreator.h; sourceTree = "<group>"; };
+		50ACDEC52875C23D00C29069 /* RNNDynamicIconCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNDynamicIconCreator.m; sourceTree = "<group>"; };
+		50ACDEC82875C25E00C29069 /* RNNBaseIconCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBaseIconCreator.h; sourceTree = "<group>"; };
+		50ACDEC92875C25E00C29069 /* RNNBaseIconCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBaseIconCreator.m; sourceTree = "<group>"; };
 		50AD1CDE23CB428400FF3134 /* TransitionOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransitionOptions.h; sourceTree = "<group>"; };
 		50AD1CDF23CB428400FF3134 /* TransitionOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransitionOptions.m; sourceTree = "<group>"; };
 		50AD288623CDB71C00FF3134 /* ElementHorizontalTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ElementHorizontalTransition.h; sourceTree = "<group>"; };
@@ -1572,8 +1580,12 @@
 				50BAFE482399403200798674 /* Child View Controllers */,
 				50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */,
 				50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */,
+				50ACDEC82875C25E00C29069 /* RNNBaseIconCreator.h */,
+				50ACDEC92875C25E00C29069 /* RNNBaseIconCreator.m */,
 				503A8FEB25DD397400BB6A74 /* RNNIconCreator.h */,
 				503A8FEC25DD397400BB6A74 /* RNNIconCreator.m */,
+				50ACDEC42875C23D00C29069 /* RNNDynamicIconCreator.h */,
+				50ACDEC52875C23D00C29069 /* RNNDynamicIconCreator.m */,
 				503A90BB25DD550600BB6A74 /* RNNIconDrawer.h */,
 				503A90BC25DD550600BB6A74 /* RNNIconDrawer.m */,
 				50C085F125939F6200B0502C /* RNNButtonBuilder.h */,
@@ -1935,6 +1947,7 @@
 				50E5F7952240EBD6002AFEAD /* RNNAnimationsTransitionDelegate.h in Headers */,
 				50F72E552607468C0096758A /* PathTransition.h in Headers */,
 				7B1126A71E2D2B6C00F9B03B /* RNNEventEmitter.h in Headers */,
+				50ACDEC62875C23D00C29069 /* RNNDynamicIconCreator.h in Headers */,
 				506BF6982600B72D00A22755 /* UIImageView+Transition.h in Headers */,
 				E8A430111F9CB87B00B61A20 /* ElementAlphaTransition.h in Headers */,
 				5017D9E1239D2C6C00B74047 /* BottomTabsAttachModeFactory.h in Headers */,
@@ -2010,6 +2023,7 @@
 				5053CE7F2175FB1900D0386B /* RNNDefaultOptionsHelper.h in Headers */,
 				2DCD9195200014A900EDC75D /* RNNBridgeManager.h in Headers */,
 				7B1126A91E2D2B6C00F9B03B /* RNNControllerFactory.h in Headers */,
+				50ACDECA2875C25E00C29069 /* RNNBaseIconCreator.h in Headers */,
 				B8415322251E088100467F37 /* SpringInterpolator.h in Headers */,
 				501E0217213E7EA3003365C5 /* RNNReactView.h in Headers */,
 				5047E4F022674AD400908DD3 /* RNNLayoutManager.h in Headers */,
@@ -2200,6 +2214,7 @@
 				50C085F02591FC5000B0502C /* RNNIconBackgroundOptions.m in Sources */,
 				501CD320214A5B6900A6E225 /* RNNLayoutInfo.m in Sources */,
 				7BEF0D191E437684003E96B0 /* RNNComponentViewController.m in Sources */,
+				50ACDECB2875C25E00C29069 /* RNNBaseIconCreator.m in Sources */,
 				50E38DD823A7A2BE009817F6 /* AnimatedViewFactory.m in Sources */,
 				B84F6E4D252C5ECE007D78A1 /* AccelerateDecelerateInterpolator.m in Sources */,
 				50415CBB20553B8E00BB682E /* RNNScreenTransition.m in Sources */,
@@ -2333,6 +2348,7 @@
 				507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */,
 				50706E6E20CE7CA5003345C3 /* UIImage+utils.m in Sources */,
 				50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */,
+				50ACDEC72875C23D00C29069 /* RNNDynamicIconCreator.m in Sources */,
 				50F72E562607468C0096758A /* PathTransition.m in Sources */,
 				50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */,
 				50BCB29223F2C7CD00D6C8E5 /* AnchorTransition.m in Sources */,
