@@ -19,18 +19,18 @@ export interface LayoutComponent<P = {}> {
   passProps?: P;
 }
 
-export interface LayoutStackChildren {
+export interface LayoutStackChildren<P = {}> {
   /**
    * Set component
    */
-  component?: LayoutComponent;
+  component?: LayoutComponent<P>;
   /**
    * Set the external component
    */
-  externalComponent?: ExternalComponent;
+  externalComponent?: ExternalComponent<P>;
 }
 
-export interface LayoutStack {
+export interface LayoutStack<P = {}> {
   /**
    * Set ID of the stack so you can use Navigation.mergeOptions to
    * update options
@@ -39,33 +39,33 @@ export interface LayoutStack {
   /**
    * Set children screens
    */
-  children?: LayoutStackChildren[];
+  children?: LayoutStackChildren<P>[];
   /**
    * Set options
    */
   options?: Options;
 }
 
-export interface LayoutTabsChildren {
+export interface LayoutTabsChildren<P = {}> {
   /**
    * Set stack
    */
-  stack?: LayoutStack;
+  stack?: LayoutStack<P>;
   /**
    * Set component
    */
-  component?: LayoutComponent;
+  component?: LayoutComponent<P>;
   /**
    * Set the external component
    */
-  externalComponent?: ExternalComponent;
+  externalComponent?: ExternalComponent<P>;
   /**
    * Set the side menu
    */
-  sideMenu?: LayoutSideMenu;
+  sideMenu?: LayoutSideMenu<P>;
 }
 
-export interface LayoutBottomTabs {
+export interface LayoutBottomTabs<P> {
   /**
    * Set ID of the stack so you can use Navigation.mergeOptions to
    * update options
@@ -74,14 +74,14 @@ export interface LayoutBottomTabs {
   /**
    * Set the children screens
    */
-  children?: LayoutTabsChildren[];
+  children?: LayoutTabsChildren<P>[];
   /**
    * Set the bottom tabs options
    */
   options?: Options;
 }
 
-export interface LayoutSideMenu {
+export interface LayoutSideMenu<P = {}> {
   /**
    * Set ID of the stack so you can use Navigation.mergeOptions to
    * update options
@@ -90,22 +90,22 @@ export interface LayoutSideMenu {
   /**
    * Set the left side bar
    */
-  left?: Layout;
+  left?: Layout<P>;
   /**
    * Set the center view
    */
-  center: Layout;
+  center: Layout<P>;
   /**
    * Set the right side bar
    */
-  right?: Layout;
+  right?: Layout<P>;
   /**
    * Set the bottom tabs options
    */
   options?: Options;
 }
 
-export interface LayoutSplitView {
+export interface LayoutSplitView<P = {}> {
   /**
    * Set ID of the stack so you can use Navigation.mergeOptions to
    * update options
@@ -114,18 +114,18 @@ export interface LayoutSplitView {
   /**
    * Set master layout (the smaller screen, sidebar)
    */
-  master?: Layout;
+  master?: Layout<P>;
   /**
    * Set detail layout (the larger screen, flexes)
    */
-  detail?: Layout;
+  detail?: Layout<P>;
   /**
    * Configure split view
    */
   options?: Options;
 }
 
-export interface LayoutTopTabs {
+export interface LayoutTopTabs<P = {}> {
   /**
    * Set the layout's id so Navigation.mergeOptions can be used to update options
    */
@@ -133,23 +133,23 @@ export interface LayoutTopTabs {
   /**
    * Set the children screens
    */
-  children?: LayoutTabsChildren[];
+  children?: LayoutTabsChildren<P>[];
   /**
    * Configure top tabs
    */
   options?: Options;
 }
 
-export interface LayoutRoot {
+export interface LayoutRoot<P = {}> {
   /**
    * Set the root
    */
-  root: Layout;
+  root: Layout<P>;
   modals?: any;
   overlays?: any;
 }
 
-export interface ExternalComponent {
+export interface ExternalComponent<P = {}> {
   /**
    * Set the screen's id so Navigation.mergeOptions can be used to update options
    */
@@ -165,7 +165,7 @@ export interface ExternalComponent {
   /**
    * Properties to pass down to the component
    */
-  passProps?: object;
+  passProps?: P;
 }
 
 export interface Layout<P = {}> {
@@ -176,25 +176,25 @@ export interface Layout<P = {}> {
   /**
    * Set the stack
    */
-  stack?: LayoutStack;
+  stack?: LayoutStack<P>;
   /**
    * Set the bottom tabs
    */
-  bottomTabs?: LayoutBottomTabs;
+  bottomTabs?: LayoutBottomTabs<P>;
   /**
    * Set the side menu
    */
-  sideMenu?: LayoutSideMenu;
+  sideMenu?: LayoutSideMenu<P>;
   /**
    * Set the split view
    */
-  splitView?: LayoutSplitView;
+  splitView?: LayoutSplitView<P>;
   /**
    * Set the top tabs
    */
-  topTabs?: LayoutTopTabs;
+  topTabs?: LayoutTopTabs<P>;
   /**
    * Set the external component
    */
-  externalComponent?: ExternalComponent;
+  externalComponent?: ExternalComponent<P>;
 }
