@@ -31,7 +31,6 @@ open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
 
     init {
         super.setWillNotDraw(false)
-        super.setLayerType(View.LAYER_TYPE_HARDWARE, paint)
     }
 
     override fun onDetachedFromWindow() {
