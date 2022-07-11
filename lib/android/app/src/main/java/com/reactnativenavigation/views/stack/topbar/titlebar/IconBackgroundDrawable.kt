@@ -68,7 +68,7 @@ class IconBackgroundDrawable(
         super.setBounds(r)
     }
 
-    override fun onBoundsChange(bounds: Rect?) {
+    override fun onBoundsChange(bounds: Rect) {
         if (bounds != null) {
             backgroundRect = Rect((bounds.width() - backgroundWidth) / 2,
                     (bounds.height() - backgroundHeight) / 2,
