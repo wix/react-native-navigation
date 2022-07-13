@@ -32,10 +32,12 @@ export const NavigationButton = class extends Component<ButtonProps> {
 
   renderButtonComponent() {
     const { button, componentId } = this.props;
+    // @ts-ignore
     const buttonComponentId = button.component!.componentId;
+    // @ts-ignore
     const ComponentClass = Navigation.mock.store.getComponentClassForName(button.component.name);
     if (!ComponentClass) {
-      throw new Error(`Cannot find registered component for: ${button.component.name}`);
+      throw new Error(`Cannot find registered component for: ${button.component?.name}`);
     }
     const ButtonComponent = ComponentClass();
     const props = Navigation.mock.store.getPropsForId(buttonComponentId);
