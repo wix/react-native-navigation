@@ -69,18 +69,23 @@ class ActivityLinker {
   }
 
   _extendNavigationActivity(activityContent) {
+    if (this._hasAlreadyExtendNavigationActivity(activityContent)) {
+      warnn('   MainActivity already extends NavigationActivity');
+      return activityContent;
+    }
+
     if (this._doesActivityExtendReactActivity(activityContent)) {
       debugn('   Extending NavigationActivity');
       return activityContent
         .replace(/extends\s+ReactActivity\s*/, 'extends NavigationActivity ')
         .replace(
+          /public\s+MainActivityDelegate\s*\(\s*ReactActivity\s+activity,\s*String\s+mainComponentName\s*\)/,
+          'public MainActivityDelegate(NavigationActivity activity, String mainComponentName)'
+        )
+        .replace(
           'import com.facebook.react.ReactActivity;',
           'import com.reactnativenavigation.NavigationActivity;'
         );
-    }
-    if (this._hasAlreadyExtendReactActivity(activityContent)) {
-      warnn('   MainActivity already extends NavigationActivity');
-      return activityContent;
     }
 
     throw new Error(
@@ -92,8 +97,8 @@ class ActivityLinker {
     return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
   }
 
-  _hasAlreadyExtendReactActivity(activityContent) {
-    return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
+  _hasAlreadyExtendNavigationActivity(activityContent) {
+    return /public\s+class\s+MainActivity\s+extends\s+NavigationActivity\s*/.test(activityContent);
   }
 
   _removeCreateReactActivityDelegate(activityContent) {
@@ -101,19 +106,17 @@ class ActivityLinker {
       debugn('   Removing createReactActivityDelegate function');
       return activityContent.replace(
         /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/,
-        '',
+        ''
       );
     } else {
-      warnn(
-        '   createReactActivityDelegate is already not defined in MainActivity',
-      );
+      warnn('   createReactActivityDelegate is already not defined in MainActivity');
       return activityContent;
     }
   }
 
   _hasCreateReactActivityDelegate(activityContent) {
     return /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/.test(
-      activityContent,
+      activityContent
     );
   }
 }
