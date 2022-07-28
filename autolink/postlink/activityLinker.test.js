@@ -31,7 +31,10 @@ describe('activityLinker', () => {
 
       const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
 
-      copyFileSync(path.resolve('autolink/fixtures/rn68/MainActivity.java'), tmpMainActivityPath);
+      copyFileSync(
+        path.resolve('autolink/fixtures/rn68/MainActivity.java.template'),
+        tmpMainActivityPath
+      );
 
       return {
         mainActivityJava: tmpMainActivityPath,
@@ -54,7 +57,10 @@ describe('activityLinker', () => {
 
       const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
 
-      copyFileSync(path.resolve('autolink/fixtures/rn69/MainActivity.java'), tmpMainActivityPath);
+      copyFileSync(
+        path.resolve('autolink/fixtures/rn69/MainActivity.java.template'),
+        tmpMainActivityPath
+      );
 
       return {
         mainActivityJava: tmpMainActivityPath,
