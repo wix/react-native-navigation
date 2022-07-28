@@ -43,6 +43,7 @@
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test-e2e --ios",
     "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
+    "test-autolink": "node ./scripts/test-autolink",
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
