@@ -89,7 +89,6 @@ describe('static lifecycle events', () => {
     await elementById(TestIDs.SET_ROOT_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
-
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
 
