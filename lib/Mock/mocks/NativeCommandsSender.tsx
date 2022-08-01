@@ -1,117 +1,64 @@
-import { LayoutStore } from '../Stores/LayoutStore';
-import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
 import { LayoutNode } from '../../src/commands/LayoutTreeCrawler';
-import { events } from '../Stores/EventsStore';
-import _ from 'lodash';
-import ComponentNode from '../Layouts/ComponentNode';
+import layoutActions from '../actions/layoutActions';
+import optionActions from '../actions/optionActions';
 
 export class NativeCommandsSender {
   constructor() {}
 
-  setRoot(_commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
-    return new Promise((resolve) => {
-      if (LayoutStore.getVisibleLayout()) {
-        LayoutStore.getVisibleLayout().componentDidDisappear();
-        LayoutStore.setRoot({});
-      }
-
-      const layoutNode = LayoutNodeFactory.create(layout.root);
-      LayoutStore.setRoot(layoutNode);
-      layoutNode.getVisibleLayout().componentDidAppear();
-      resolve(layout.root.nodeId);
-    });
+  setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
+    return layoutActions.setRoot(commandId, layout);
   }
 
   setDefaultOptions(options: object) {
-    LayoutStore.setDefaultOptions(options);
+    return optionActions.setDefaultOptions(options);
   }
 
   mergeOptions(componentId: string, options: object) {
-    LayoutStore.mergeOptions(componentId, options);
+    return optionActions.mergeOptions(componentId, options);
   }
 
-  push(_commandId: string, onComponentId: string, layout: LayoutNode) {
-    return new Promise((resolve) => {
-      const stack = LayoutStore.getLayoutById(onComponentId).getStack();
-      const layoutNode = LayoutNodeFactory.create(layout, stack);
-      stack.getVisibleLayout().componentDidDisappear();
-      LayoutStore.push(layoutNode, stack);
-      stack.getVisibleLayout().componentDidAppear();
-      resolve(stack.getVisibleLayout().nodeId);
-    });
+  push(commandId: string, onComponentId: string, layout: LayoutNode) {
+    return layoutActions.push(commandId, onComponentId, layout);
   }
 
-  pop(_commandId: string, componentId: string, _options?: object) {
-    return new Promise((resolve) => {
-      const poppedChild = _.last(
-        LayoutStore.getLayoutById(componentId).getStack().children
-      ) as ComponentNode;
-      LayoutStore.pop(componentId);
-      resolve(poppedChild.nodeId);
-    });
+  pop(commandId: string, componentId: string, options?: object) {
+    return layoutActions.pop(commandId, componentId, options);
   }
 
-  popTo(_commandId: string, componentId: string, _options?: object) {
-    return new Promise((resolve) => {
-      LayoutStore.popTo(componentId);
-      resolve(componentId);
-    });
+  popTo(commandId: string, componentId: string, options?: object) {
+    return layoutActions.popTo(commandId, componentId, options);
   }
 
-  popToRoot(_commandId: string, componentId: string, _options?: object) {
-    LayoutStore.popToRoot(componentId);
+  popToRoot(commandId: string, componentId: string, options?: object) {
+    return layoutActions.popToRoot(commandId, componentId, options);
   }
 
-  setStackRoot(_commandId: string, onComponentId: string, layout: object) {
-    LayoutStore.setStackRoot(onComponentId, layout);
+  setStackRoot(commandId: string, onComponentId: string, layout: object) {
+    return layoutActions.setStackRoot(commandId, onComponentId, layout);
   }
 
-  showModal(_commandId: string, layout: object) {
-    return new Promise((resolve) => {
-      const layoutNode = LayoutNodeFactory.create(layout);
-      LayoutStore.getVisibleLayout().componentDidDisappear();
-      LayoutStore.showModal(layoutNode);
-      layoutNode.componentDidAppear();
-      resolve(layoutNode.nodeId);
-    });
+  showModal(commandId: string, layout: object) {
+    return layoutActions.showModal(commandId, layout);
   }
 
-  dismissModal(_commandId: string, componentId: string, _options?: object) {
-    return new Promise((resolve, reject) => {
-      const modal = LayoutStore.getModalById(componentId);
-      if (modal) {
-        const modalTopParent = modal.getTopParent();
-        modalTopParent.componentDidDisappear();
-        LayoutStore.dismissModal(componentId);
-        events.invokeModalDismissed({
-          componentName: modalTopParent.data.name,
-          componentId: modalTopParent.nodeId,
-          modalsDismissed: 1,
-        });
-        resolve(modalTopParent.nodeId);
-        LayoutStore.getVisibleLayout().componentDidAppear();
-      } else {
-        reject(`component with id: ${componentId} is not a modal`);
-      }
-    });
+  dismissModal(commandId: string, componentId: string, options?: object) {
+    return layoutActions.dismissModal(commandId, componentId, options);
   }
 
-  dismissAllModals(_commandId: string, _options?: object) {
-    LayoutStore.dismissAllModals();
+  dismissAllModals(commandId: string, options?: object) {
+    return layoutActions.dismissAllModals(commandId, options);
   }
 
-  showOverlay(_commandId: string, layout: object) {
-    const layoutNode = LayoutNodeFactory.create(layout);
-    LayoutStore.showOverlay(layoutNode);
-    layoutNode.componentDidAppear();
+  showOverlay(commandId: string, layout: object) {
+    return layoutActions.showOverlay(commandId, layout);
   }
 
-  dismissOverlay(_commandId: string, componentId: string) {
-    LayoutStore.dismissOverlay(componentId);
+  dismissOverlay(commandId: string, componentId: string) {
+    return layoutActions.dismissOverlay(commandId, componentId);
   }
 
-  dismissAllOverlays(_commandId: string) {
-    LayoutStore.dismissAllOverlays();
+  dismissAllOverlays(commandId: string) {
+    return layoutActions.dismissAllOverlays(commandId);
   }
 
   getLaunchArgs(_commandId: string) {}

@@ -8,7 +8,7 @@ import { connect } from '../connect';
 import { TopBar } from './TopBar';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
-import { switchTabByIndex } from '../actions/layoutActions';
+import optionActions from '../actions/optionActions';
 
 export const ComponentScreen = connect(
   class extends Component<ComponentProps> {
@@ -42,7 +42,7 @@ export const ComponentScreen = connect(
                   tabIndex: i,
                 });
                 if (_.defaultTo(bottomTabOptions?.selectTabOnPress, true))
-                  switchTabByIndex(this.props.layoutNode.getBottomTabs(), i);
+                  optionActions.switchTabByIndex(this.props.layoutNode.getBottomTabs(), i);
               }}
             />
             <Text>{bottomTabOptions?.badge}</Text>
@@ -54,8 +54,10 @@ export const ComponentScreen = connect(
     }
 
     render() {
-      const Component = Navigation.mock.store.getWrappedComponent(this.props.layoutNode.data.name);
-      if (!Component)
+      const WrappedComponent = Navigation.mock.store.getWrappedComponent(
+        this.props.layoutNode.data.name
+      );
+      if (!WrappedComponent)
         throw new Error(`${this.props.layoutNode.data.name} has not been registered.`);
 
       return (
@@ -68,7 +70,7 @@ export const ComponentScreen = connect(
             />
           )}
           {this.renderTabBar()}
-          <Component componentId={this.props.layoutNode.nodeId} />
+          <WrappedComponent componentId={this.props.layoutNode.nodeId} />
         </View>
       );
     }
