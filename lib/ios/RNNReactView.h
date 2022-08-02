@@ -4,6 +4,12 @@
 #import <React/RCTRootView.h>
 #endif
 
+#if RCT_NEW_ARCH_ENABLED
+
+// Fabric
+#import <React/RCTFabricSurfaceHostingProxyRootView.h>
+#endif
+
 #import "RNNEventEmitter.h"
 #import "UIView+Utils.h"
 #import <React/RCTRootViewDelegate.h>
@@ -30,7 +36,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @end
 
-#ifdef RN_FABRIC_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
 @interface RNNReactView
     : RCTFabricSurfaceHostingProxyRootView <RCTRootViewDelegate, RNNComponentProtocol>
 #else
