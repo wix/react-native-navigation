@@ -53,7 +53,6 @@
 		9F9A3A9625260DA900AAAF37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */; };
 		A55BD66DD6404C20A23DA948 /* libPods-NavigationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */; };
 		CC58376A9F3639711BDD0562 /* libPods-playground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE713009EFB937EA4BF877 /* libPods-playground.a */; };
-		E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E504607F227748EA00212BD8 /* JavaScriptCore.framework */; };
 		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */; };
 		E58D26472385888C003F36BA /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */; };
 		E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.m */; };
@@ -213,7 +212,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5046080227748EA00212BD8 /* JavaScriptCore.framework in Frameworks */,
 				CC58376A9F3639711BDD0562 /* libPods-playground.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1020,7 +1018,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = XPHGA2FMQQ;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
