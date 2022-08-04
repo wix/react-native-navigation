@@ -14,9 +14,6 @@ module.exports = {
     },
   },
   project: {
-    ios: {
-      project: './playground/ios/playground.xcworkspace',
-    },
     android: {
       sourceDir: './playground/android/',
     },
