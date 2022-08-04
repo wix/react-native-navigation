@@ -8,6 +8,7 @@ import com.reactnativenavigation.react.NavigationPackage;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import com.facebook.react.bridge.JSIModulePackage;
+import com.reactnativenavigation.playground.newarchitecture.MainApplicationReactNativeHost;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class MainApplication extends NavigationApplication {
                     return packages;
                 }
             };
-
+    private final ReactNativeHost mNewArchitectureNativeHost =
+            new MainApplicationReactNativeHost(this);
 
     @Override
     public void onCreate() {

@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
+
 import com.reactnativenavigation.NavigationActivity;
 
 import androidx.annotation.Nullable;
