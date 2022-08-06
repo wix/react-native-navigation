@@ -40,6 +40,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) Image* rootBackgroundImage;
 @property (nonatomic, strong) Text* modalPresentationStyle;
 @property (nonatomic, strong) Text* modalTransitionStyle;
+@property (nonatomic, strong) NSString* sid;
+@property (nonatomic, strong) NSString* ppid;
+
 
 - (instancetype)initEmptyOptions;
 

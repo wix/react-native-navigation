@@ -1,9 +1,10 @@
 
 #import "UIViewController+LayoutProtocol.h"
 #import <objc/runtime.h>
+static NSString *const RCTSetNonceValueNotification = @"RCTSetNonceValueNotification";
 
 @implementation UIViewController (LayoutProtocol)
-
+NSString * _nonceString ;
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 						   creator:(id<RNNComponentViewCreator>)creator
 						   options:(RNNNavigationOptions *)options
@@ -12,7 +13,7 @@
 					  eventEmitter:(RNNEventEmitter *)eventEmitter
 			  childViewControllers:(NSArray *)childViewControllers {
 	self = [self init];
-	
+
 	self.options = options;
 	self.defaultOptions = defaultOptions;
 	self.layoutInfo = layoutInfo;
@@ -24,11 +25,25 @@
     if ([self respondsToSelector:@selector(setViewControllers:)]) {
         [self performSelector:@selector(setViewControllers:) withObject:childViewControllers];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setNonce:)
+                                                 name:RCTSetNonceValueNotification
+                                               object:nil];
     [self.presenter applyOptionsOnInit:self.resolveOptions];
 
 	return self;
 }
+-(void) setNonce:(NSNotification*)notification
+{
+    NSDictionary* userInfo = notification.userInfo;
+    NSNumber* nonceString = (NSNumber*)userInfo[@"nonce"];
+    _nonceString = [NSString stringWithFormat:@"%@", nonceString];
 
+}
+-(NSString*) getNonce{
+    return  _nonceString;
+
+}
 - (void)mergeOptions:(RNNNavigationOptions *)options {
     [self.options overrideOptions:options];
     [self.presenter mergeOptions:options resolvedOptions:self.resolveOptions];

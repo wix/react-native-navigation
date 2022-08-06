@@ -1128,4 +1128,6 @@ setRoot: {
    * @default false
    */
   blurOnUnmount?: boolean;
+  sid?: string;
+  ppid?: string;
 }

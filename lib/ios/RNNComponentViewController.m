@@ -1,4 +1,15 @@
 #import "RNNComponentViewController.h"
+static NSString *const RCTSetNonceValueNotification = @"RCTSetNonceValueNotification";
+
+@import ProgrammaticAccessLibrary;
+
+@interface RNNComponentViewController () <PALNonceLoaderDelegate>
+/** The nonce loader to use for nonce requests. */
+@property(nonatomic) PALNonceLoader *nonceLoader;
+/** The nonce manager result from the last successful nonce request. */
+@property(nonatomic) PALNonceManager *nonceManager;
+
+@end
 
 @implementation RNNComponentViewController
 
@@ -22,9 +33,57 @@
 	[self.options overrideOptions:options];
 }
 
+
+- (void)requestNonceManager {
+  PALNonceRequest *request = [[PALNonceRequest alloc] init];
+  CGSize windowSize = self.view.frame.size;
+  request.continuousPlayback = PALFlagOff;
+  request.descriptionURL = [NSURL URLWithString:@"https://shahid.net"];
+  request.iconsSupported = YES;
+  request.playerType = @"tvOS AVPlayer";
+  request.playerVersion = @"5.1.25-sh4";
+  request.PPID =self.defaultOptions.ppid;
+  request.sessionID = self.defaultOptions.sid;
+  request.videoPlayerHeight = windowSize.height;
+  request.videoPlayerWidth =  windowSize.width;
+  request.willAdAutoPlay = PALFlagOn;
+  request.willAdPlayMuted = PALFlagOff;
+
+  if (self.nonceManager) {
+    // Detach the old nonce manager's gesture recognizer before destroying it.
+    [self.view removeGestureRecognizer:self.nonceManager.gestureRecognizer];
+    self.nonceManager = nil;
+  }
+  [self.nonceLoader loadNonceManagerWithRequest:request];
+}
+
+#pragma mark - PALNonceLoaderDelegate methods
+
+- (void)nonceLoader:(PALNonceLoader *)nonceLoader
+            withRequest:(PALNonceRequest *)request
+    didLoadNonceManager:(PALNonceManager *)nonceManager {
+    [[NSNotificationCenter defaultCenter] postNotificationName:RCTSetNonceValueNotification
+                                                    object:nil
+                                                  userInfo:@{@"nonce": nonceManager.nonce}];
+    // Capture the created nonce manager and attach its gesture recognizer to the video view.
+    self.nonceManager = nonceManager;
+    [self.view addGestureRecognizer:self.nonceManager.gestureRecognizer];
+}
+- (void)nonceLoader:(PALNonceLoader *)nonceLoader
+         withRequest:(PALNonceRequest *)request
+    didFailWithError:(NSError *)error {
+    NSLog(@"Error generating programmatic access nonce: %@", error);
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[_presenter applyOptions:self.resolveOptions];
+
+	  if([self.layoutInfo.name isEqual:@"shahidTV.SplashScreen"]){
+        self.nonceLoader = [[PALNonceLoader alloc] init];
+        self.nonceLoader.delegate = self;
+        [self requestNonceManager];
+      }
 	[self.parentViewController onChildWillAppear];
 }
 
@@ -101,7 +160,7 @@
 	} else if ([action[@"style"] isEqualToString:@"destructive"]) {
 		actionStyle = UIPreviewActionStyleDestructive;
 	}
-	
+
 	return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
 		[self onActionPress:actionId];
 	}];

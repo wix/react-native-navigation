@@ -37,6 +37,8 @@
 	self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
 	self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
 	self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
+    self.sid = dict[@"sid"];
+    self.ppid =dict[@"ppid"];
 	self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
 	
 	return self;
