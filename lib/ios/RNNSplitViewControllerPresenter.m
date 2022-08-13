@@ -55,7 +55,7 @@
         [self.splitViewController
             rnn_setPrimaryBackgroundStyle:options.splitView.primaryBackgroundStyle];
     }
-    if (options.splitView.presentsWithGesture) {
+    if (options.splitView.presentsWithGesture.hasValue) {
         [self.splitViewController rnn_setPresentsWithGesture:options.splitView.presentsWithGesture];
     }
 }
