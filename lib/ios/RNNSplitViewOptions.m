@@ -10,6 +10,7 @@
     self.minWidth = [NumberParser parse:dict key:@"minWidth"];
     self.maxWidth = [NumberParser parse:dict key:@"maxWidth"];
     self.primaryBackgroundStyle = dict[@"primaryBackgroundStyle"];
+    self.presentsWithGesture = [BoolParser parse:dict key:@"presentsWithGesture"];
     return self;
 }
 
@@ -24,6 +25,8 @@
         self.maxWidth = options.maxWidth;
     if (options.primaryBackgroundStyle)
         self.primaryBackgroundStyle = options.primaryBackgroundStyle;
+    if (options.presentsWithGesture.hasValue)
+        self.presentsWithGesture = options.presentsWithGesture;
 }
 
 @end

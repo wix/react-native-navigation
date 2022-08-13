@@ -205,6 +205,7 @@ const optionsSplitView: Options = {
     minWidth: 150,
     maxWidth: 300,
     primaryBackgroundStyle: 'sidebar',
+    presentsWithGesture: true,
   },
 };
 

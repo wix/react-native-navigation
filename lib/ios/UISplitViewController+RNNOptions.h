@@ -13,4 +13,6 @@
 
 - (void)rnn_setPrimaryBackgroundStyle:(NSString *)style;
 
+- (void)rnn_setPresentsWithGesture:(BOOL)presentsWithGesture;
+
 @end

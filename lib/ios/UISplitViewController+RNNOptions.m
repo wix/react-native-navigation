@@ -43,4 +43,8 @@
     }
 }
 
+- (void)rnn_setPresentsWithGesture:(BOOL)presentsWithGesture {
+	self.presentsWithGesture = presentsWithGesture;
+}
+
 @end

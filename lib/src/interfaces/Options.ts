@@ -108,6 +108,11 @@ export interface OptionsSplitView {
    * @default 'none'
    */
   primaryBackgroundStyle?: 'none' | 'sidebar';
+  /**
+     * Specifies whether a hidden view controller can be presented and dismissed using a swipe gesture.
+     * @default true
+     */
+   presentsWithGesture?: boolean;
 }
 
 export interface OptionsStatusBar {
