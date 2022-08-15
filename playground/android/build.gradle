@@ -6,9 +6,9 @@ buildscript {
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
         compileSdkVersion = 31
-        buildToolsVersion = "30.0.2"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 21
-        targetSdkVersion = 31
+        targetSdkVersion = 30
 
         if (System.properties['os.arch'] == "aarch64") {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
@@ -21,12 +21,12 @@ buildscript {
 
     repositories {
         google()
-        mavenLocal()
         mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath("de.undercouch:gradle-download-task:5.0.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

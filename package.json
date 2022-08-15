@@ -75,8 +75,9 @@
     "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/eslint-config": "2.0.0",
     "@react-native-community/netinfo": "9.3.0",
+    "@sinonjs/fake-timers": "9.1.2",
     "@testing-library/jest-native": "^4.0.1",
-    "@testing-library/react-native": "^7.2.0",
+    "@testing-library/react-native": "^11.0.0",
     "@types/detox": "17.14.3",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jasmine": "3.5.10",
@@ -85,6 +86,7 @@
     "@types/react": "16.9.41",
     "@types/react-native": "0.63.1",
     "@types/react-test-renderer": "16.9.2",
+    "@types/sinonjs__fake-timers": "8.1.2",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "babel-jest": "^27.2.5",
@@ -108,7 +110,7 @@
     "react-native": "0.69.3",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
-    "react-native-reanimated": "3.0.0-rc.0",
+    "react-native-reanimated": "2.9.1",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.0.0",
@@ -160,7 +162,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_28"
+          "avdName": "Pixel_5_API_32"
         }
       }
     },
