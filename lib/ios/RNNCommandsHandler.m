@@ -102,6 +102,8 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
              animate:self->_mainWindow
             duration:[optionsWithDefault.animations.setRoot.alpha.duration withDefault:0]
           completion:^{
+            NSDictionary *data = @{@"rootController":weakVC};
+            [[NSNotificationCenter defaultCenter] postNotificationName: @"LaunchCustomSplash" object:nil userInfo:data];
             [self->_layoutManager removePendingViewController:weakVC];
             [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
             completion(weakVC.layoutInfo.componentId);
