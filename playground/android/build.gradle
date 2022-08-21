@@ -5,10 +5,10 @@ buildscript {
         kotlinVersion = "1.5.31"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 30
-        buildToolsVersion = "30.0.2"
+        compileSdkVersion = 33
+        buildToolsVersion = "33.0.0"
         minSdkVersion = 21
-        targetSdkVersion = 30
+        targetSdkVersion = 33
     }
 
     repositories {
