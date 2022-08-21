@@ -19,6 +19,7 @@ public class RootPresenter {
     private final RootAnimator animator;
     private CoordinatorLayout rootLayout;
     private final LayoutDirectionApplier layoutDirectionApplier;
+    private boolean setRootCalled = false;
 
     public void setRootContainer(CoordinatorLayout rootLayout) {
         this.rootLayout = rootLayout;
@@ -28,6 +29,10 @@ public class RootPresenter {
         this(new RootAnimator(), new LayoutDirectionApplier());
     }
 
+    public boolean setRootCalled() {
+        return setRootCalled;
+    }
+
     @VisibleForTesting
     public RootPresenter(RootAnimator animator, LayoutDirectionApplier layoutDirectionApplier) {
         this.animator = animator;
@@ -35,6 +40,7 @@ public class RootPresenter {
     }
 
     public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
+        setRootCalled = true;
         layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
