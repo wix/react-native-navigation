@@ -24,7 +24,11 @@ module.exports = {
   collectCoverageFrom: [
     'lib/src/**/*.ts',
     'lib/src/**/*.tsx',
+    'playground/src/**/*.tsx',
+    'lib/Mock/**/*.ts',
+    'lib/Mock/**/*.tsx',
     'integration/**/*.js',
+    'e2e/**/*.jsx',
     '!lib/dist/index.js',
     '!lib/dist/Navigation.js',
     '!lib/dist/adapters/**/*',

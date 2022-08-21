@@ -1,12 +1,11 @@
-const { mockDetox } = require('detox-testing-library-rnn-adapter');
-
+const { mockDetox } = require('./e2e/detox_testing');
 mockDetox(() => require('./playground/index'));
 
 beforeEach(() => {
   const { mockNativeComponents } = require('react-native-navigation/Mock');
-  setTimeout = (func) => {
-    func();
-  };
+  // setTimeout = (func) => {
+  //   func();
+  // };
   mockNativeComponents();
   mockUILib();
 });
