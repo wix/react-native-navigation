@@ -43,17 +43,17 @@ open class BaseViewAnimator<T : View>(
     private inner class AnimatorListener(private val startState: AnimationState, private val endVisibility: Int) : AnimatorListenerAdapter() {
         var isCancelled = false
 
-        override fun onAnimationStart(animation: Animator?) {
+        override fun onAnimationStart(animation: Animator) {
             view.resetViewProperties()
             view.visibility = View.VISIBLE
             animationState = startState
         }
 
-        override fun onAnimationCancel(animation: Animator?) {
+        override fun onAnimationCancel(animation: Animator) {
             isCancelled = true
         }
 
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             if (!isCancelled) {
                 animationState = AnimationState.Idle
                 view.visibility = endVisibility
