@@ -44,7 +44,7 @@ android {
         unitTests.all { t ->
             maxHeapSize = "4g"
             reports {
-                html.enabled true
+                html.required true
             }
             testLogging {
                 events "PASSED", "SKIPPED", "FAILED"
