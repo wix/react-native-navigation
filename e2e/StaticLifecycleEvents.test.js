@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe('static lifecycle events', () => {
+describe.e2e('static lifecycle events', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
