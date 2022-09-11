@@ -12,9 +12,9 @@ def safeExtGetFallbackLowerBound(prop, fallback) {
     Math.max(safeExtGet(prop,fallback),fallback)
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 30
+def DEFAULT_COMPILE_SDK_VERSION = 33
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 30
+def DEFAULT_TARGET_SDK_VERSION = 33
 def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
@@ -22,7 +22,7 @@ def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 android {
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-
+    buildToolsVersion = "33.0.0"
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
@@ -166,6 +166,27 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
 
     return reactNativeVersion.tokenize('-')[0].tokenize('.')
 }
+
+task installBuildToolsAndRenameD8IfNeeded {
+    def buildToolsVersion = android.getBuildToolsVersion()
+    def sdkDir = android.sdkDirectory
+    def buildToolsDir = new File(sdkDir, "/build-tools/" + buildToolsVersion)
+
+    if (!buildToolsDir.exists()) {
+        def command = sdkDir.absolutePath + "/cmdline-tools/latest/bin/sdkmanager build-tools;" + buildToolsVersion
+        command.execute().waitForProcessOutput(System.out, System.err)
+    }
+
+    def d8File = new File(buildToolsDir, "d8")
+    def dxFile = new File(buildToolsDir, "dx")
+    d8File.renameTo(dxFile)
+
+    def buildToolsLibDir = new File(buildToolsDir, "lib")
+    d8File = new File(buildToolsLibDir, "d8.jar")
+    dxFile = new File(buildToolsLibDir, "dx.jar")
+    d8File.renameTo(dxFile)
+}
+build.dependsOn installBuildToolsAndRenameD8IfNeeded
 
 dependencies {
 
