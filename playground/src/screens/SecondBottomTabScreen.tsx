@@ -17,6 +17,7 @@ const {
   HIDE_TABS_PUSH_BTN,
   SECOND_TAB_BAR_BTN,
   SET_BADGE_BTN,
+  STATIC_EVENTS_OVERLAY_BTN,
 } = testIDs;
 
 export default class SecondBottomTabScreen extends React.Component<NavigationComponentProps> {
@@ -57,6 +58,11 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
           label="Hide Tabs on Push"
           testID={HIDE_TABS_PUSH_BTN}
           onPress={this.hideTabsOnPush}
+        />
+        <Button
+          label="Show Overlay"
+          testID={STATIC_EVENTS_OVERLAY_BTN}
+          onPress={this.showEventsOverlay}
         />
       </Root>
     );
@@ -138,4 +144,17 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
       },
     });
   };
+
+  showEventsOverlay = () =>
+    Navigation.showOverlay(
+      Screens.EventsOverlay,
+      {
+        overlay: {
+          interceptTouchOutside: false,
+        },
+      },
+      {
+        showOnTop: true,
+      }
+    );
 }

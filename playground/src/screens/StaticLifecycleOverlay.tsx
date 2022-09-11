@@ -39,10 +39,12 @@ type State = {
   text: string;
   events: Event[];
 };
-export default class StaticLifecycleOverlay extends React.Component<
-  NavigationComponentProps,
-  State
-> {
+
+interface OverlayProps extends NavigationComponentProps {
+  showOnTop: boolean;
+}
+
+export default class StaticLifecycleOverlay extends React.Component<OverlayProps, State> {
   static options(): Options {
     return {
       layout: {
@@ -66,7 +68,7 @@ export default class StaticLifecycleOverlay extends React.Component<
     alert('Overlay Unmounted');
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: OverlayProps) {
     super(props);
     this.state = {
       text: 'nothing yet',
@@ -146,7 +148,7 @@ export default class StaticLifecycleOverlay extends React.Component<
       <View key={`${event.componentId}${idx}`}>{this.renderEvent(event)}</View>
     ));
     return (
-      <View style={styles.root}>
+      <View style={[styles.root, this.props.showOnTop && { top: 50, bottom: undefined }]}>
         <Text style={styles.h1}>{`Static Lifecycle Events Overlay`}</Text>
         <View style={styles.events}>{events}</View>
         {this.renderDismissButton()}

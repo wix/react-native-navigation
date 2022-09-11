@@ -8,6 +8,7 @@ import { connect } from '../connect';
 import { TopBar } from './TopBar';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
+import { switchTabByIndex } from '../actions/layoutActions';
 
 export const ComponentScreen = connect(
   class extends Component<ComponentProps> {
@@ -41,7 +42,7 @@ export const ComponentScreen = connect(
                   tabIndex: i,
                 });
                 if (_.defaultTo(bottomTabOptions?.selectTabOnPress, true))
-                  LayoutStore.selectTabIndex(this.props.layoutNode.getBottomTabs(), i);
+                  switchTabByIndex(this.props.layoutNode.getBottomTabs(), i);
               }}
             />
             <Text>{bottomTabOptions?.badge}</Text>

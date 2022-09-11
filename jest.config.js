@@ -12,6 +12,7 @@ module.exports = {
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
     '<rootDir>/e2e/',
+    '<rootDir>/autolink/',
   ],
   setupFilesAfterEnv: ['./jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],
