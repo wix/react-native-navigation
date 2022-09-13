@@ -10,7 +10,7 @@ project.ext.react = [
         enableHermes: true,
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
-        hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
+        hermesCommand: "../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc",
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
