@@ -554,6 +554,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = XPHGA2FMQQ;
+						LastSwiftMigration = 1400;
 						ProvisioningStyle = Automatic;
 					};
 					507C80D92429111F00F765F7 = {
@@ -1015,6 +1016,7 @@
 			baseConfigurationReference = B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1111,6 +1113,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnn.playground;
 				PRODUCT_NAME = playground;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "playground/playground-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1120,6 +1125,7 @@
 			baseConfigurationReference = 7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1208,6 +1214,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnn.playground;
 				PRODUCT_NAME = playground;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "playground/playground-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
