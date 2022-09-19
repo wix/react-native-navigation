@@ -110,7 +110,7 @@
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "2.9.1",
-    "react-native-ui-lib": "5.11.0",
+    "react-native-ui-lib": "6.21.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.0.0",
     "redux": "3.x.x",
@@ -149,7 +149,7 @@
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11"
+          "type": "iPhone 14"
         }
       },
       "genymotion.emulator.name": {
@@ -161,7 +161,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_28"
+          "avdName": "Pixel_5_API_32"
         }
       }
     },
@@ -191,7 +191,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone 11",
+        "name": "iPhone 14",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
