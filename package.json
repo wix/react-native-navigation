@@ -149,7 +149,7 @@
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 14"
+          "type": "iPhone 11"
         }
       },
       "genymotion.emulator.name": {
@@ -161,7 +161,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_5_API_32"
+          "avdName": "Pixel_API_28"
         }
       }
     },
@@ -191,7 +191,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone 14",
+        "name": "iPhone 11",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
