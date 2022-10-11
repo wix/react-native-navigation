@@ -43,7 +43,7 @@ steps:
     command:
     - "nvm install"
     - "npm install"
-    - "RECORD=true npm run test-snapshot-ios -- --release"
+    - "npm run test-snapshot-ios -- --release"
     - "npm run test-e2e-ios -- --release --multi --ci"
     key: "ios_e2e"
     timeout_in_minutes: 90
