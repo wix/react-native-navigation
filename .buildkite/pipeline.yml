@@ -1,3 +1,5 @@
+agents:
+  queue: buildkite-test
 steps:
   - block: ":rocket: Release!"
     prompt: "Fill out the details for release"
