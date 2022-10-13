@@ -2,15 +2,22 @@ package com.reactnativenavigation.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Insets;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Size;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.view.WindowMetrics;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
@@ -85,12 +92,32 @@ public class UiUtils {
     }
 
     public static float getWindowHeight(Context context) {
-        return getDisplayMetrics(context).heightPixels;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            return getDisplayMetrics(context).heightPixels;
+        }
+        return getDisplaySize(context).getHeight();
     }
 
     public static float getWindowWidth(Context context) {
-        return getDisplayMetrics(context).widthPixels;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            return getDisplayMetrics(context).widthPixels;
+        }
+        return getDisplaySize(context).getWidth();
     }
+
+    @RequiresApi(31)
+    private static Size getDisplaySize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        final WindowMetrics metrics = windowManager.getCurrentWindowMetrics();
+        final WindowInsets windowInsets = metrics.getWindowInsets();
+        Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() | WindowInsets.Type.displayCutout());
+        int insetsWidth = insets.right + insets.left;
+        int insetsHeight = insets.top + insets.bottom;
+        final Rect bounds = metrics.getBounds();
+        final Size displaySize = new Size(bounds.width() - insetsWidth, bounds.height() - insetsHeight);
+        return displaySize;
+     }
+
 
     @NonNull
     private static DisplayMetrics getDisplayMetrics(Context context) {
