@@ -83,7 +83,7 @@ describe('Stack', () => {
     await expect(elementByLabel('Subtitle')).toBeVisible();
   });
 
-  it('screen lifecycle', async () => {
+  it.e2e('screen lifecycle', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(TestIDs.PUSH_TO_TEST_DID_DISAPPEAR_BTN).tap();
@@ -107,12 +107,12 @@ describe('Stack', () => {
   it.e2e(':android: override hardware back button', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
 
     await elementById(TestIDs.REMOVE_BACK_HANDLER).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
@@ -141,7 +141,7 @@ describe('Stack', () => {
     await expect(elementById(TestIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
   });
 
-  it('push promise is resolved with pushed ViewController id', async () => {
+  it.e2e('push promise is resolved with pushed ViewController id', async () => {
     await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();

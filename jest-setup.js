@@ -4,9 +4,6 @@ mockDetox(() => require('./playground/index'));
 
 beforeEach(() => {
   const { mockNativeComponents } = require('react-native-navigation/Mock');
-  setTimeout = (func) => {
-    func();
-  };
   mockNativeComponents();
   mockUILib();
 });

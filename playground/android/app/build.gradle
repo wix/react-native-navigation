@@ -10,7 +10,7 @@ project.ext.react = [
         enableHermes: true,
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
-        hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
+        hermesCommand: "../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc",
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
@@ -20,8 +20,8 @@ android {
     ndkVersion "20.1.5948944"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     defaultConfig {
@@ -61,9 +61,9 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
 
     implementation project(':react-native-fast-image')
-    def hermesPath = "../../../node_modules/hermes-engine/android/";
-    debugImplementation files(hermesPath + "hermes-debug.aar")
-    releaseImplementation files(hermesPath + "hermes-release.aar")
+    implementation("com.facebook.react:hermes-engine:+") {
+        exclude group: 'com.facebook.fbjni'
+    }
 
 
     //noinspection GradleDynamicVersion
