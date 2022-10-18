@@ -153,7 +153,11 @@ class AppDelegateLinker {
       /rootViewController\.view\s+=\s+rootView;\s+/,
       /self.window.rootViewController\s+=\s+rootViewController;\s+/,
       /\[self.window\s+makeKeyAndVisible];\s+/,
+      // Added from RN 0.69
+      /NSDictionary\s+\*initProps\s+=\s+\[self prepareInitialProps];\s+/,
+      /UIView \*rootView = RCTAppSetupDefaultRootView\(bridge, @".*", initProps\);/,
     ];
+
     let elementsRemovedCount = 0;
 
     toRemove.forEach((element) => {

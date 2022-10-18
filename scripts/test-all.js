@@ -4,6 +4,7 @@ const exec = require('shell-utils').exec;
 async function run() {
   exec.execSync(`npm run clean`);
   exec.execSync(`npm run test-js`);
+  exec.execSync(`npm run test-autolink`);
   exec.execAsyncSilent(`npm run start`);
   await exec.execAsyncAll(
     `npm run test-unit-android`,
