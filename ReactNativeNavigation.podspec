@@ -21,15 +21,12 @@ Pod::Spec.new do |s|
     s.exclude_files       = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
   end
   
-  reactJson = JSON.parse(File.read(File.join(__dir__, "node_modules", "react-native", "package.json")))
-  reactVersion = reactJson["version"]
-  rnVersion = reactVersion.split('.')[1]
-
-  fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
-
-  folly_prefix = ""
-  if rnVersion.to_i >= 64
-    folly_prefix = "RCT-"
+  s.subspec 'Fabric' do |ss|
+    ss.xcconfig = { "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/RCT-Folly\"",
+                    "OTHER_CFLAGS" => "$(inherited) -DRN_FABRIC_ENABLED -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1" }
+    ss.dependency 'React-RCTFabric'
+    ss.dependency 'React-Fabric'
+    ss.dependency 'RCT-Folly/Fabric'
   end
 
   folly_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -DRNVERSION=' + rnVersion
@@ -39,13 +36,7 @@ Pod::Spec.new do |s|
   if fabric_enabled
     fabric_flags = '-DRN_FABRIC_ENABLED -DRCT_NEW_ARCH_ENABLED'
   end
-  # s.subspec 'Fabric' do |ss|
-  #   ss.xcconfig = { "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/RCT-Folly\"",
-  #                   "OTHER_CFLAGS" => "$(inherited) -DRN_FABRIC_ENABLED -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1" }
-  #   ss.dependency 'React-RCTFabric'
-  #   ss.dependency 'React-Fabric'
-  #   ss.dependency 'RCT-Folly/Fabric'
-  # end
+
   s.source_files = [
     "lib/ios/**/*.{mm,h,m}",
     "Common/cpp/**/*.cpp",

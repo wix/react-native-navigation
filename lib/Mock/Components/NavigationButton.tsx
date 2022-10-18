@@ -45,8 +45,10 @@ export const NavigationButton = class extends Component<ButtonProps> {
       <TouchableOpacity
         onPress={() => {
           if (this.ref) {
-            // @ts-ignore
-            this.invokeOnClick(this.ref!._reactInternalFiber.return.stateNode);
+            this.invokeOnClick(
+              // @ts-ignore
+              (this.ref!._reactInternalFiber || this.ref!._reactInternals).return.stateNode
+            );
           }
 
           events.invokeNavigationButtonPressed({

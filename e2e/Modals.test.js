@@ -107,7 +107,7 @@ describe('modal', () => {
   it.e2e(':android: push into modal and dismiss pushed screen with hardware back', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
@@ -128,23 +128,23 @@ describe('modal', () => {
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
 
     // Back is handled in Js
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
 
     // pop
     await elementById(TestIDs.REMOVE_BACK_HANDLER).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
 
     // modal dismissed
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  it('dismissModal promise is resolved with root ViewController id', async () => {
+  it.e2e('dismissModal promise is resolved with root ViewController id', async () => {
     await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
 
@@ -195,11 +195,11 @@ describe('modal', () => {
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
     await expect(elementByLabel('Toggle declared modal')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
 
     await expect(elementByLabel('Dismiss declared Modal')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
 
     await expect(elementByLabel('Toggle declared modal')).toBeVisible();
   });

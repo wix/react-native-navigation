@@ -36,7 +36,7 @@ describe.e2e('application lifecycle test', () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
 
     await device.launchApp({ newInstance: false });
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
@@ -72,9 +72,9 @@ describe.e2e('application lifecycle test', () => {
       await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
-      Android.pressKeyCode(KEY_CODE_R);
+      await Android.pressKeyCode(KEY_CODE_R);
       await sleep(1000);
-      Android.pressKeyCode(KEY_CODE_R);
+      await Android.pressKeyCode(KEY_CODE_R);
 
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
     }
@@ -93,8 +93,8 @@ describe.e2e('application lifecycle test', () => {
       await elementById(TestIDs.PUSH_BTN).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
-      Android.pressKeyCode(KEY_CODE_R);
-      Android.pressKeyCode(KEY_CODE_R);
+      await Android.pressKeyCode(KEY_CODE_R);
+      await Android.pressKeyCode(KEY_CODE_R);
 
       await sleep(300);
       await expect(elementByLabel('React Native Navigation!')).toBeVisible();
