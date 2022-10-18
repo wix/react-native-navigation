@@ -55,13 +55,13 @@
     UIImage *icon = [iconCreator create:buttonOptions];
     UIButton *button =
         [[UIButton alloc] initWithFrame:CGRectMake(0, 0, icon.size.width, icon.size.height)];
-
     [button addTarget:self
                   action:@selector(onButtonPressed:)
         forControlEvents:UIControlEventTouchUpInside];
     [button setImage:icon
             forState:buttonOptions.isEnabled ? UIControlStateNormal : UIControlStateDisabled];
-
+    [button.widthAnchor constraintEqualToConstant:icon.size.width].active = YES;
+    [button.heightAnchor constraintEqualToConstant:icon.size.height].active = YES;
     self = [super initWithCustomView:button];
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
