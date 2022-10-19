@@ -1,9 +1,6 @@
 module.exports = {
-  projectRoot: `${__dirname}/playground`,
+  projectRoot: __dirname,
   watchFolders: [__dirname],
-  resolver: {
-    sourceExts: ['ts', 'tsx', 'js'],
-  },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
