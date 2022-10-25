@@ -40,7 +40,6 @@ allprojects {
             url("$rootDir/../../node_modules/react-native/android")
         }
         google()
-        mavenLocal()
         maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
@@ -54,5 +53,6 @@ allprojects {
         flatDir {
             dirs "$rootProject.projectDir/libs"
         }
+        maven { url 'https://www.jitpack.io' }
     }
 }
