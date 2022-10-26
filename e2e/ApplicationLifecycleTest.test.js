@@ -36,7 +36,7 @@ describe.e2e('application lifecycle test', () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
 
     await device.launchApp({ newInstance: false });
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();

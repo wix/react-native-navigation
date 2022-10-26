@@ -107,12 +107,12 @@ describe('Stack', () => {
   it.e2e(':android: override hardware back button', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.ADD_BACK_HANDLER).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
 
     await elementById(TestIDs.REMOVE_BACK_HANDLER).tap();
-    Android.pressBack();
+    await Android.pressBack();
     await sleep(100);
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });

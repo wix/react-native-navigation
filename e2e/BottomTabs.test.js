@@ -122,19 +122,19 @@ describe('BottomTabs', () => {
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
 
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('Second Tab')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('Second Tab')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeVisible();
 
-    Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
     await expect(elementByLabel('Second Tab')).toBeNotVisible();
   });
