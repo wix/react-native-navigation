@@ -6,19 +6,20 @@ buildscript {
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
         compileSdkVersion = 33
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 21
-        targetSdkVersion = 33
+        targetSdkVersion = 31
     }
 
     repositories {
         google()
-        mavenLocal()
         mavenCentral()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath("de.undercouch:gradle-download-task:5.0.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,16 +28,15 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'https://www.jitpack.io' }
-        google()
         maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../../node_modules/react-native/android"
+            url("$rootDir/../../node_modules/react-native/android")
         }
+        google()
         mavenLocal()
         maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
+        maven { url 'https://www.jitpack.io' }
         mavenCentral()
         flatDir {
             dirs "$rootProject.projectDir/libs"

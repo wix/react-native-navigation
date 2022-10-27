@@ -144,7 +144,7 @@ describe('modal', () => {
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  it('dismissModal promise is resolved with root ViewController id', async () => {
+  it.e2e('dismissModal promise is resolved with root ViewController id', async () => {
     await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
 

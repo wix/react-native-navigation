@@ -139,7 +139,7 @@ describe('BottomTabs', () => {
     await expect(elementByLabel('Second Tab')).toBeNotVisible();
   });
 
-  it('Switch tab should send lifecycle events', async () => {
+  it.e2e('Switch tab should send lifecycle events', async () => {
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
