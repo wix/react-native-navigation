@@ -50,6 +50,8 @@ public class TopBarOptions {
         options.leftButtonColor = ThemeColour.parse(context, json.optJSONObject("leftButtonColor"));
         options.leftButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("leftButtonDisabledColor"));
         options.rightButtonDisabledColor = ThemeColour.parse(context, json.optJSONObject("rightButtonDisabledColor"));
+        options.leftButtonBackgroundColor = ThemeColour.parse(context, json.optJSONObject("leftButtonBackgroundColor"));
+        options.rightButtonBackgroundColor = ThemeColour.parse(context, json.optJSONObject("rightButtonBackgroundColor"));
 
         options.validate();
         return options;
@@ -76,6 +78,8 @@ public class TopBarOptions {
     public ThemeColour leftButtonColor = new NullThemeColour();
     public ThemeColour rightButtonDisabledColor = new NullThemeColour();
     public ThemeColour leftButtonDisabledColor = new NullThemeColour();
+    public ThemeColour rightButtonBackgroundColor = new NullThemeColour();
+    public ThemeColour leftButtonBackgroundColor = new NullThemeColour();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();
@@ -94,6 +98,8 @@ public class TopBarOptions {
         if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
         if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
         if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
+        if (other.rightButtonBackgroundColor.hasValue()) rightButtonBackgroundColor = other.rightButtonBackgroundColor;
+        if (other.leftButtonBackgroundColor.hasValue()) rightButtonBackgroundColor = other.rightButtonBackgroundColor;
 
         if (other.testId.hasValue()) testId = other.testId;
         if (other.visible.hasValue()) visible = other.visible;
@@ -122,6 +128,8 @@ public class TopBarOptions {
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
         if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
         if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
+        if (!rightButtonBackgroundColor.hasValue()) rightButtonBackgroundColor = defaultOptions.rightButtonBackgroundColor;
+        if (!leftButtonBackgroundColor.hasValue()) rightButtonBackgroundColor = defaultOptions.rightButtonBackgroundColor;
 
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;

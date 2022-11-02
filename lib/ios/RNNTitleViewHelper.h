@@ -8,6 +8,10 @@
 
 @property(nonatomic, strong) UILabel *subtitleLabel;
 
+- (void)setTitleColor:(UIColor *)color;
+
+- (void)setSubtitleColor:(UIColor *)color;
+
 @end
 
 @interface RNNTitleViewHelper : NSObject
@@ -20,5 +24,9 @@
                           viewController:(UIViewController *)viewController;
 
 - (void)setup;
+
+- (void)setTitleColor:(UIColor *)color;
+
+- (void)setSubtitleColor:(UIColor *)color;
 
 @end

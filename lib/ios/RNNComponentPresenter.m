@@ -209,11 +209,19 @@
     }
 
     if (mergeOptions.topBar.leftButtonColor.hasValue) {
-        [_buttonsPresenter applyLeftButtonsColor:mergeOptions.topBar.leftButtonColor.get];
+        [_buttonsPresenter applyLeftButtonsColor:mergeOptions.topBar.leftButtonColor];
     }
 
     if (mergeOptions.topBar.rightButtonColor.hasValue) {
-        [_buttonsPresenter applyRightButtonsColor:mergeOptions.topBar.rightButtonColor.get];
+        [_buttonsPresenter applyRightButtonsColor:mergeOptions.topBar.rightButtonColor];
+    }
+    
+    if (mergeOptions.topBar.rightButtonBackgroundColor.hasValue) {
+        [_buttonsPresenter applyRightButtonsBackgroundColor:mergeOptions.topBar.rightButtonBackgroundColor];
+    }
+    
+    if (mergeOptions.topBar.leftButtonBackgroundColor.hasValue) {
+        [_buttonsPresenter applyLeftButtonsBackgroundColor:mergeOptions.topBar.leftButtonBackgroundColor];
     }
 
     if (mergeOptions.overlay.interceptTouchOutside.hasValue) {

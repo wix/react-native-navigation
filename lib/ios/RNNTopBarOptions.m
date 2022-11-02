@@ -14,6 +14,8 @@
     self.rightButtonColor = [ColorParser parse:dict key:@"rightButtonColor"];
     self.leftButtonDisabledColor = [ColorParser parse:dict key:@"leftButtonDisabledColor"];
     self.rightButtonDisabledColor = [ColorParser parse:dict key:@"rightButtonDisabledColor"];
+    self.leftButtonBackgroundColor = [ColorParser parse:dict key:@"leftButtonBackgroundColor"];
+    self.rightButtonBackgroundColor = [ColorParser parse:dict key:@"rightButtonBackgroundColor"];
     self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
     self.noBorder = [BoolParser parse:dict key:@"noBorder"];
     self.borderColor = [ColorParser parse:dict key:@"borderColor"];
@@ -63,6 +65,10 @@
         self.leftButtonDisabledColor = options.leftButtonDisabledColor;
     if (options.rightButtonDisabledColor.hasValue)
         self.rightButtonDisabledColor = options.rightButtonDisabledColor;
+    if (options.leftButtonBackgroundColor.hasValue)
+        self.leftButtonBackgroundColor = options.leftButtonBackgroundColor;
+    if (options.rightButtonBackgroundColor.hasValue)
+        self.rightButtonBackgroundColor = options.rightButtonBackgroundColor;
     if (options.drawBehind.hasValue)
         self.drawBehind = options.drawBehind;
     if (options.noBorder.hasValue)

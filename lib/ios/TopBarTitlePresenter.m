@@ -33,6 +33,13 @@
         [self removeTitleComponents];
         self.boundViewController.navigationItem.title = resolvedOptions.title.text.get;
     }
+    
+    if (options.title.color.hasValue) {
+        [_titleViewHelper setTitleColor:options.title.color.get];
+    }
+    if (options.subtitle.color.hasValue) {
+        [_titleViewHelper setSubtitleColor:options.subtitle.color.get];
+    }
 }
 
 - (void)setTitleViewWithSubtitle:(RNNTopBarOptions *)options {
