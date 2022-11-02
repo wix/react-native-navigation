@@ -29,7 +29,7 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    return [newImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return newImage;
 }
 
 @end

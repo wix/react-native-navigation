@@ -16,6 +16,14 @@
                                         self.frame.size.width, _subtitleLabel.frame.size.height)];
 }
 
+- (void)setTitleColor:(UIColor *)color {
+    _titleLabel.textColor = color;
+}
+
+- (void)setSubtitleColor:(UIColor *)color {
+    _subtitleLabel.textColor = color;
+}
+
 @end
 
 @interface RNNTitleViewHelper ()
@@ -168,6 +176,14 @@
     [self.titleView addSubview:titleLabel];
 
     return titleLabel;
+}
+
+- (void)setTitleColor:(UIColor *)color {
+    [_titleView setTitleColor:color];
+}
+
+- (void)setSubtitleColor:(UIColor *)color {
+    [_titleView setSubtitleColor:color];
 }
 
 @end

@@ -20,9 +20,13 @@
      defaultDisabledColor:(Color *)defaultDisabledColor
                  animated:(BOOL)animated;
 
-- (void)applyLeftButtonsColor:(UIColor *)color;
+- (void)applyLeftButtonsColor:(Color *)color;
 
-- (void)applyRightButtonsColor:(UIColor *)color;
+- (void)applyRightButtonsColor:(Color *)color;
+
+- (void)applyLeftButtonsBackgroundColor:(Color *)color;
+
+- (void)applyRightButtonsBackgroundColor:(Color *)color;
 
 - (void)componentWillAppear;
 

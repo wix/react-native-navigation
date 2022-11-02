@@ -458,12 +458,12 @@ public class StackPresenter {
     private void mergeButtons(TopBarOptions options, TopBarOptions optionsToMerge, View child, StackController stack) {
         mergeRightButtons(options, optionsToMerge.buttons, child);
         mergeLeftButton(options, optionsToMerge.buttons, child);
-        mergeLeftButtonsColor(child, optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor);
-        mergeRightButtonsColor(child, optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor);
+        mergeLeftButtonsColor(child, optionsToMerge.leftButtonColor, optionsToMerge.leftButtonDisabledColor, optionsToMerge.leftButtonBackgroundColor);
+        mergeRightButtonsColor(child, optionsToMerge.rightButtonColor, optionsToMerge.rightButtonDisabledColor, optionsToMerge.rightButtonBackgroundColor);
         mergeBackButton(optionsToMerge.buttons, stack);
     }
 
-    private void mergeLeftButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
+    private void mergeLeftButtonsColor(View child, ThemeColour color, ThemeColour disabledColor, ThemeColour backgroundColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -474,12 +474,15 @@ public class StackPresenter {
                     if (disabledColor.hasValue()) {
                         btnController.applyDisabledColor(topBarController.getView().getLeftButtonBar(), disabledColor);
                     }
+                    if (backgroundColor.hasValue()) {
+                        btnController.applyBackgroundColor(topBarController.getView().getLeftButtonBar(), backgroundColor);
+                    }
                 });
             }
         }
     }
 
-    private void mergeRightButtonsColor(View child, ThemeColour color, ThemeColour disabledColor) {
+    private void mergeRightButtonsColor(View child, ThemeColour color, ThemeColour disabledColor, ThemeColour backgroundColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
             Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
             if (stringButtonControllerMap != null) {
@@ -489,6 +492,9 @@ public class StackPresenter {
                     }
                     if (disabledColor.hasValue()) {
                         btnController.applyDisabledColor(topBarController.getView().getRightButtonBar(), disabledColor);
+                    }
+                    if (backgroundColor.hasValue()) {
+                        btnController.applyBackgroundColor(topBarController.getView().getRightButtonBar(), backgroundColor);
                     }
                 });
             }

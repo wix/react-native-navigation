@@ -71,6 +71,11 @@ open class ButtonPresenter(private val context: Context, private val button: But
         }
     }
 
+    fun applyBackgroundColor(toolbar: Toolbar, menuItem: MenuItem, color: ThemeColour) {
+        button.iconBackground.color = color
+        applyIcon(menuItem)
+    }
+
     private fun applyAccessibilityLabel(menuItem: MenuItem) {
         if (button.accessibilityLabel.hasValue()) {
             if (button.component.hasValue()) {
