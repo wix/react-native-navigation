@@ -36,11 +36,13 @@
 }
 
 - (void)rnn_setPrimaryBackgroundStyle:(NSString *)style {
+#if !TARGET_OS_TV
     if (@available(iOS 13.0, *)) {
         if ([style isEqualToString:@"sidebar"]) {
             [self setPrimaryBackgroundStyle:UISplitViewControllerBackgroundStyleSidebar];
         }
     }
+#endif
 }
 
 @end

@@ -31,6 +31,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                          backgroundColor:(nullable UIColor *)backgroundColor
                                tintColor:(nullable UIColor *)tintColor
                               cancelText:(NSString *)cancelText {
+#if !TARGET_OS_TV
     if (!self.navigationItem.searchController) {
         UISearchController *search =
             [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -66,16 +67,21 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         // be the root most view controller
         self.definesPresentationContext = YES;
     }
+#endif
 }
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden {
+#if !TARGET_OS_TV
     self.navigationItem.hidesSearchBarWhenScrolling = searchBarHidden;
+#endif
 }
 
 - (void)setSearchBarVisible:(BOOL)visible {
+#if !TARGET_OS_TV
     if (!visible) {
         self.navigationItem.searchController = nil;
     }
+#endif
 }
 
 - (void)setNavigationItemTitle:(NSString *)title {
@@ -122,11 +128,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 - (void)setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
+#if !TARGET_OS_TV
     if (prefersLargeTitle) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
     } else {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
+#endif
 }
 
 - (void)setStatusBarBlur:(BOOL)blur {
@@ -135,7 +143,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         if (!curBlurView) {
             UIVisualEffectView *blur = [[UIVisualEffectView alloc]
                 initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
+#if !TARGET_OS_TV
             blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+#endif
             blur.tag = BLUR_STATUS_TAG;
             [self.view addSubview:blur];
         }
@@ -151,7 +161,9 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 }
 
 - (void)setBackButtonVisible:(BOOL)visible {
+#if !TARGET_OS_TV
     self.navigationItem.hidesBackButton = !visible;
+#endif
 }
 
 - (CGFloat)statusBarAnimationDuration:(BOOL)animated {

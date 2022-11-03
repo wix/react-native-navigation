@@ -12,21 +12,31 @@
 
 RCT_ENUM_CONVERTER(UIModalTransitionStyle, (@{
                        @"coverVertical" : @(UIModalTransitionStyleCoverVertical),
+#if !TARGET_OS_TV
                        @"flipHorizontal" : @(UIModalTransitionStyleFlipHorizontal),
+#endif
                        @"crossDissolve" : @(UIModalTransitionStyleCrossDissolve),
+#if !TARGET_OS_TV
                        @"partialCurl" : @(UIModalTransitionStylePartialCurl)
+#endif
                    }),
                    UIModalTransitionStyleCoverVertical, integerValue)
 
 RCT_ENUM_CONVERTER(UIModalPresentationStyle, (@{
+#if !TARGET_OS_TV
                        @"fullScreen" : @(UIModalPresentationFullScreen),
+#endif
                        @"pageSheet" : @(UIModalPresentationPageSheet),
+#if !TARGET_OS_TV
                        @"formSheet" : @(UIModalPresentationFormSheet),
+#endif
                        @"currentContext" : @(UIModalPresentationCurrentContext),
                        @"custom" : @(UIModalPresentationCustom),
                        @"overFullScreen" : @(UIModalPresentationOverFullScreen),
                        @"overCurrentContext" : @(UIModalPresentationOverCurrentContext),
+#if !TARGET_OS_TV
                        @"popover" : @(UIModalPresentationPopover),
+#endif
                        @"none" : @(UIModalPresentationNone),
                        @"default" : @([RNNConvert defaultModalPresentationStyle])
                    }),

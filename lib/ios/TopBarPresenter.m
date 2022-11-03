@@ -66,8 +66,10 @@
 }
 
 - (void)setBackIndicatorImage:(UIImage *)image withColor:(UIColor *)color {
+#if !TARGET_OS_TV
     [self.navigationController.navigationBar setBackIndicatorImage:image];
     [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
+#endif
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
@@ -116,6 +118,7 @@
 }
 
 - (void)setLargeTitleAttributes:(RNNLargeTitleOptions *)largeTitleOptions {
+#if !TARGET_OS_TV
     NSString *fontFamily = [largeTitleOptions.fontFamily withDefault:nil];
     NSString *fontWeight = [largeTitleOptions.fontWeight withDefault:nil];
     NSNumber *fontSize = [largeTitleOptions.fontSize withDefault:nil];
@@ -127,6 +130,7 @@
                     fontSize:fontSize
                   fontWeight:fontWeight
                        color:fontColor];
+#endif
 }
 
 - (void)componentDidAppear {
@@ -136,6 +140,7 @@
     [self.navigationController setBackButtonTestID:backButtonTestID];
 }
 
+#if !TARGET_OS_TV
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
 - (UINavigationItemBackButtonDisplayMode)getBackButtonDisplayMode:(NSString *)displayMode {
     if ([displayMode isEqualToString:@"generic"]) {
@@ -146,6 +151,7 @@
         return UINavigationItemBackButtonDisplayModeDefault;
     }
 }
+#endif
 #endif
 
 - (void)setBackButtonOptions:(RNNBackButtonOptions *)backButtonOptions {

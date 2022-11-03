@@ -32,8 +32,10 @@
     _topBarPresenter =
         [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
     _interactivePopGestureDelegate.navigationController = boundViewController;
+#if !TARGET_OS_TV
     _interactivePopGestureDelegate.originalDelegate =
         boundViewController.interactivePopGestureRecognizer.delegate;
+#endif
 }
 
 - (void)componentWillAppear {
@@ -65,10 +67,13 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture withDefault:YES]];
+
+#if !TARGET_OS_TV
     stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
-    [stack
-        setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
+    [stack setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
+  #endif
+
     [stack setRootBackgroundImage:[withDefault.rootBackgroundImage withDefault:nil]];
     [stack setNavigationBarTestId:[withDefault.topBar.testID withDefault:nil]];
     [stack setNavigationBarVisible:[withDefault.topBar.visible withDefault:YES]
@@ -125,9 +130,11 @@
         [stack hideBarsOnScroll:[mergeOptions.topBar.hideOnScroll get]];
     }
 
+#if !TARGET_OS_TV
     if (mergeOptions.topBar.barStyle.hasValue) {
         [stack setBarStyle:[RCTConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
     }
+#endif
 
     if (mergeOptions.topBar.background.clipToBounds.hasValue) {
         [stack setNavigationBarClipsToBounds:[mergeOptions.topBar.background.clipToBounds get]];

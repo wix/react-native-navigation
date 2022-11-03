@@ -27,12 +27,16 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (void)hideBarsOnScroll:(BOOL)hideOnScroll {
+#if !TARGET_OS_TV
     self.hidesBarsOnSwipe = hideOnScroll;
+#endif
 }
 
+#if !TARGET_OS_TV
 - (void)setBarStyle:(UIBarStyle)barStyle {
     self.navigationBar.barStyle = barStyle;
 }
+#endif
 
 - (void)setNavigationBarBlur:(BOOL)blur {
     if (blur && ![self.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
@@ -40,10 +44,12 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
         self.navigationBar.shadowImage = [UIImage new];
         UIVisualEffectView *blur = [[UIVisualEffectView alloc]
             initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+#if !TARGET_OS_TV
         CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
         blur.frame =
             CGRectMake(0, -1 * statusBarFrame.size.height, self.navigationBar.frame.size.width,
                        self.navigationBar.frame.size.height + statusBarFrame.size.height);
+#endif
         blur.userInteractionEnabled = NO;
         blur.tag = BLUR_TOPBAR_TAG;
         [self.navigationBar insertSubview:blur atIndex:0];

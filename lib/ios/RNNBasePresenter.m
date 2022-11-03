@@ -83,14 +83,18 @@
             withDefault.window.backgroundColor.get;
     }
 
+#if !TARGET_OS_TV
     if (mergeOptions.statusBar.visible.hasValue) {
         [self.boundViewController setNeedsStatusBarAppearanceUpdate];
     }
+#endif
 
     if (mergeOptions.layout.autoHideHomeIndicator.hasValue &&
         mergeOptions.layout.autoHideHomeIndicator.get != _prefersHomeIndicatorAutoHidden) {
         _prefersHomeIndicatorAutoHidden = mergeOptions.layout.autoHideHomeIndicator.get;
+#if !TARGET_OS_TV
         [self.boundViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
+#endif
     }
 
     if (mergeOptions.layout.insets.hasValue) {
@@ -113,6 +117,7 @@
 - (void)viewDidLayoutSubviews {
 }
 
+#if !TARGET_OS_TV
 - (UIStatusBarStyle)getStatusBarStyle {
     RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
     NSString *statusBarStyle = [statusBarOptions.style withDefault:@"default"];
@@ -125,6 +130,7 @@
     }
     return UIStatusBarStyleDefault;
 }
+#endif
 
 - (BOOL)getStatusBarVisibility {
     RNNStatusBarOptions *statusBarOptions = [self resolveStatusBarOptions];
@@ -147,10 +153,12 @@
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 
+#if !TARGET_OS_TV
 - (UIInterfaceOrientationMask)getOrientation {
     return [self.boundViewController.resolveOptions withDefault:self.defaultOptions]
         .layout.supportedOrientations;
 }
+#endif
 
 - (BOOL)hidesBottomBarWhenPushed {
     RNNNavigationOptions *withDefault =

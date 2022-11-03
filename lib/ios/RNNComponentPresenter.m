@@ -55,6 +55,7 @@
     [viewController
         setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside withDefault:YES]];
 
+#if !TARGET_OS_TV
     if (@available(iOS 13.0, *)) {
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
                                                withDefault:UIColor.systemBackgroundColor]];
@@ -62,6 +63,10 @@
         [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
                                                withDefault:viewController.view.backgroundColor]];
     }
+#else
+    [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
+                                           withDefault:viewController.view.backgroundColor]];
+#endif
 
     if ([withDefault.topBar.searchBar.visible withDefault:NO]) {
         BOOL hideTopBarOnFocus = [withDefault.topBar.searchBar.hideTopBarOnFocus withDefault:YES];
@@ -215,11 +220,11 @@
     if (mergeOptions.topBar.rightButtonColor.hasValue) {
         [_buttonsPresenter applyRightButtonsColor:mergeOptions.topBar.rightButtonColor];
     }
-    
+
     if (mergeOptions.topBar.rightButtonBackgroundColor.hasValue) {
         [_buttonsPresenter applyRightButtonsBackgroundColor:mergeOptions.topBar.rightButtonBackgroundColor];
     }
-    
+
     if (mergeOptions.topBar.leftButtonBackgroundColor.hasValue) {
         [_buttonsPresenter applyLeftButtonsBackgroundColor:mergeOptions.topBar.leftButtonBackgroundColor];
     }

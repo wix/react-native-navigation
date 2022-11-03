@@ -9,6 +9,8 @@
 @property(nonatomic, strong) Bool *autoHideHomeIndicator;
 @property(nonatomic, strong) RNNInsetsOptions *insets;
 
+#if !TARGET_OS_TV
 - (UIInterfaceOrientationMask)supportedOrientations;
+#endif
 
 @end

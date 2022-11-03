@@ -19,8 +19,9 @@
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
-    RNNBottomTabsController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+#if !TARGET_OS_TV
+    RNNBottomTabsController *bottomTabs = self.tabBarController;
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID withDefault:nil]];
     [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]];
@@ -31,6 +32,7 @@
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
     [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle
                                                           withDefault:@"default"]]];
+#endif
     [self applyTabBarBorder:withDefault.bottomTabs];
     [self applyTabBarShadow:withDefault.bottomTabs.shadow];
 }
@@ -59,9 +61,11 @@
         [self setTabBarBackgroundColor:mergeOptions.bottomTabs.backgroundColor.get];
     }
 
+#if !TARGET_OS_TV
     if (mergeOptions.bottomTabs.barStyle.hasValue) {
         [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:mergeOptions.bottomTabs.barStyle.get]];
     }
+#endif
 
     if (mergeOptions.bottomTabs.translucent.hasValue) {
         [bottomTabs setTabBarTranslucent:mergeOptions.bottomTabs.translucent.get];

@@ -6,7 +6,9 @@
 + (NSDictionary *)getConstants {
     return @{
         @"topBarHeight" : @([self topBarHeight]),
+#if !TARGET_OS_TV
         @"statusBarHeight" : @([self statusBarHeight]),
+#endif
         @"bottomTabsHeight" : @([self bottomTabsHeight])
     };
 }
@@ -15,9 +17,11 @@
     return [RCTPresentedViewController() getTopBarHeight];
 }
 
+#if !TARGET_OS_TV
 + (CGFloat)statusBarHeight {
     return [UIApplication sharedApplication].statusBarFrame.size.height;
 }
+#endif
 
 + (CGFloat)bottomTabsHeight {
     return [UIApplication.sharedApplication.delegate.window.rootViewController getBottomTabsHeight];
