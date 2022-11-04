@@ -3,9 +3,9 @@ require_relative '../../node_modules/@react-native-community/cli-platform-ios/na
 
 platform :ios, '12.4'
 
-def all_pods  
+def all_pods
   config = use_native_modules!
-  
+
   flags = get_default_flags()
 
   use_react_native!(
@@ -16,9 +16,9 @@ def all_pods
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  
+
   pod 'ReactNativeNavigation', :path => '../../'
-  pod 'HMSegmentedControl'
+  pod 'HMSegmentedControl-Enhanced'
 end
 
 target 'playground' do
