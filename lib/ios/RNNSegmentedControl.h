@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <HMSegmentedControl/HMSegmentedControl.h>
+#import <HMSegmentedControl-Enhanced/HMSegmentedControl.h>
 
 @interface RNNSegmentedControl : HMSegmentedControl
 
