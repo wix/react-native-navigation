@@ -23,10 +23,10 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle, (@{
                    UIModalTransitionStyleCoverVertical, integerValue)
 
 RCT_ENUM_CONVERTER(UIModalPresentationStyle, (@{
-#if !TARGET_OS_TV
                        @"fullScreen" : @(UIModalPresentationFullScreen),
-#endif
+#if !TARGET_OS_TV
                        @"pageSheet" : @(UIModalPresentationPageSheet),
+#endif
 #if !TARGET_OS_TV
                        @"formSheet" : @(UIModalPresentationFormSheet),
 #endif
