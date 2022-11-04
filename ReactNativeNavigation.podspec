@@ -35,6 +35,6 @@ Pod::Spec.new do |s|
   s.dependency 'React-Core'
   s.dependency 'React-RCTImage'
   s.dependency 'React-RCTText'
-  # s.dependency 'HMSegmentedControl'
+  s.dependency 'HMSegmentedControl-Enhanced'
   s.frameworks = 'UIKit'
 end

@@ -209,6 +209,7 @@
                                 forState:UIControlStateHighlighted];
     }
 
+#if !TARGET_OS_TV
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
     if (@available(iOS 14.0, *)) {
         if (backButtonOptions.displayMode.hasValue) {
@@ -222,6 +223,7 @@
         previousNavigationItem.backBarButtonItem = backItem;
 #else
     previousNavigationItem.backBarButtonItem = backItem;
+#endif
 #endif
 }
 
