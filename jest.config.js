@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable)/)',
+    'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable|react-native-reanimated)/)',
   ],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
@@ -12,6 +12,7 @@ module.exports = {
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
     '<rootDir>/e2e/',
+    '<rootDir>/autolink/',
   ],
   setupFilesAfterEnv: ['./jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],

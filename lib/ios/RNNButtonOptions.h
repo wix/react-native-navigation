@@ -25,12 +25,14 @@
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
-- (UIColor *)resolveColor;
+- (Color *)resolveColor;
 
 - (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor;
 
 - (BOOL)shouldCreateCustomView;
 
 - (BOOL)isEnabled;
+
+- (UIControlState)state;
 
 @end

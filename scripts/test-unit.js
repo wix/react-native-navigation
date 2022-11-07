@@ -13,7 +13,7 @@ function run() {
 }
 
 function runAndroidUnitTests() {
-  const conf = release ? 'testReactNative63ReleaseUnitTest' : 'testReactNative63DebugUnitTest';
+  const conf = release ? 'testReactNative68ReleaseUnitTest' : 'testReactNative68DebugUnitTest';
   if (android && process.env.JENKINS_CI) {
     const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
     exec.execSync(`yes | ${sdkmanager} --licenses`);
@@ -39,7 +39,6 @@ function testTarget(scheme, device, OS = 'latest') {
   -sdk iphonesimulator
   -configuration ${conf}
   -derivedDataPath ./DerivedData/playground
-  -quiet
   -UseModernBuildSystem=YES
   ONLY_ACTIVE_ARCH=YES`);
 

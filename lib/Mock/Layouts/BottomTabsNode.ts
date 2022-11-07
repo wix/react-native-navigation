@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Options } from '../../src/index';
-import { LayoutStore } from '../Stores/LayoutStore';
+import { switchTabByIndex } from '../actions/layoutActions';
 import ParentNode from './ParentNode';
 
 export default class BottomTabsNode extends ParentNode {
@@ -13,7 +13,7 @@ export default class BottomTabsNode extends ParentNode {
     super.mergeOptions(options);
     if (options.bottomTabs?.currentTabIndex) {
       this.selectedIndex = options.bottomTabs?.currentTabIndex;
-      LayoutStore.selectTabIndex(this, this.selectedIndex);
+      switchTabByIndex(this, this.selectedIndex);
     }
     if (options.bottomTabs?.currentTabId) {
       const index = _.findIndex(
@@ -21,7 +21,7 @@ export default class BottomTabsNode extends ParentNode {
         (child) => child.nodeId === options?.bottomTabs?.currentTabId
       );
       if (index !== -1) this.selectedIndex = index;
-      LayoutStore.selectTabIndex(this, this.selectedIndex);
+      switchTabByIndex(this, this.selectedIndex);
     }
   }
 

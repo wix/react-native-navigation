@@ -122,20 +122,36 @@ describe('BottomTabs', () => {
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
 
-     Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('Second Tab')).toBeVisible();
 
-     Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeVisible();
 
-     Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('Second Tab')).toBeVisible();
 
-     Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeVisible();
 
-     Android.pressBack();
+    await Android.pressBack();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
     await expect(elementByLabel('Second Tab')).toBeNotVisible();
+  });
+
+  it.e2e('Switch tab should send lifecycle events', async () => {
+    await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+    await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+    await elementById(TestIDs.FIRST_TAB_BAR_BUTTON).tap();
+    await expect(
+      elementByLabel('componentWillAppear | FirstBottomTabsScreen | Component')
+    ).toBeVisible();
+    await expect(
+      elementByLabel('componentDidDisappear | SecondBottomTabsScreen | Component')
+    ).toBeVisible();
+    await expect(
+      elementByLabel('componentDidAppear | FirstBottomTabsScreen | Component')
+    ).toBeVisible();
   });
 });

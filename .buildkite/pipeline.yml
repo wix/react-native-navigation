@@ -23,8 +23,8 @@ steps:
     - "nvm install"
     - "npm install"
     - "npm run test-js"
-    - "npm run test-unit-android -- --release"
-    - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
+    - "JAVA_HOME=/usr/local/opt/openjdk@11 npm run test-unit-android -- --release"
+    - "JAVA_HOME=/usr/local/opt/openjdk@11 npm run test-e2e-android-multi -- --release --headless --verbose --ci"
     key: "android_build"
     timeout_in_minutes: 90
     artifact_paths: "/Users/builder/work/artifacts/**/*"
@@ -41,8 +41,8 @@ steps:
     command:
     - "nvm install"
     - "npm install"
-    - "npm run test-snapshot-ios -- --release"
-    - "npm run test-e2e-ios -- --release --multi --ci"
+    - "JAVA_HOME=/usr/local/opt/openjdk@11 npm run test-snapshot-ios -- --release"
+    - "JAVA_HOME=/usr/local/opt/openjdk@11 npm run test-e2e-ios -- --release --multi --ci"
     key: "ios_e2e"
     timeout_in_minutes: 90
     artifact_paths: "/Users/builder/work/artifacts/**/*"

@@ -47,15 +47,27 @@
         defaultDisabledColor:defaultDisabledColor];
 }
 
-- (void)applyLeftButtonsColor:(UIColor *)color {
+- (void)applyLeftButtonsColor:(Color *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
-        [button applyColor:color];
+        [button mergeColor:color];
     }
 }
 
-- (void)applyRightButtonsColor:(UIColor *)color {
+- (void)applyRightButtonsColor:(Color *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
-        [button applyColor:color];
+        [button mergeColor:color];
+    }
+}
+
+- (void)applyRightButtonsBackgroundColor:(Color *)color {
+    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
+        [button mergeBackgroundColor:color];
+    }
+}
+
+- (void)applyLeftButtonsBackgroundColor:(Color *)color {
+    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
+        [button mergeBackgroundColor:color];
     }
 }
 
