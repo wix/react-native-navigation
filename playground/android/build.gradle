@@ -42,10 +42,4 @@ allprojects {
             dirs "$rootProject.projectDir/libs"
         }
     }
-
-    configurations.all {
-        resolutionStrategy {
-            force 'com.facebook.react:react-native:0.69.5'
-        }
-    }
 }
