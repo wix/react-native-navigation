@@ -79,7 +79,7 @@ open class ButtonPresenter(private val context: Context, private val button: But
     private fun applyAccessibilityLabel(menuItem: MenuItem) {
         if (button.accessibilityLabel.hasValue()) {
             if (button.component.hasValue()) {
-                menuItem.actionView.contentDescription = button.accessibilityLabel.get()
+                menuItem.actionView?.contentDescription = button.accessibilityLabel.get()
             } else {
                 MenuItemCompat.setContentDescription(menuItem, button.accessibilityLabel.get())
             }
