@@ -37,7 +37,11 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "$rootDir/../../node_modules/jsc-android/dist" }
         maven { url 'https://www.jitpack.io' }
-        mavenCentral()
+        mavenCentral {
+            content {
+                excludeGroup "com.facebook.react"
+            }
+        }
         flatDir {
             dirs "$rootProject.projectDir/libs"
         }
