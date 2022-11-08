@@ -22,7 +22,6 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +47,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
-        setBackPressedCallback();
     }
 
     @Override
@@ -106,6 +104,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @Override
+    public void onBackPressed() {
+        getReactGateway().onBackPressed();
+    }
+
+    @Override
     public boolean onKeyUp(final int keyCode, final KeyEvent event) {
         return getReactGateway().onKeyUp(this, keyCode) || super.onKeyUp(keyCode, event);
     }
@@ -148,15 +151,5 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public void onCatalystInstanceDestroy() {
         runOnUiThread(() -> navigator.destroyViews());
-    }
-
-    private void setBackPressedCallback() {
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                getReactGateway().onBackPressed();
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 }

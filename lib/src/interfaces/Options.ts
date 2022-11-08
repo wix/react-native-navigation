@@ -637,6 +637,8 @@ export interface OptionsTopBar {
 
   leftButtonColor?: Color;
   rightButtonColor?: Color;
+  leftButtonBackgroundColor?: Color;
+  rightButtonBackgroundColor?: Color;
   leftButtonDisabledColor?: Color;
   rightButtonDisabledColor?: Color;
   /**

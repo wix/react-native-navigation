@@ -59,7 +59,7 @@
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
     [_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
-    [_uut applyLeftButtonsColor:UIColor.redColor];
+    [_uut applyLeftButtonsColor:[Color withValue:UIColor.redColor]];
     XCTAssertEqual(_viewController.navigationItem.leftBarButtonItems.firstObject.tintColor,
                    UIColor.redColor);
 }
@@ -67,7 +67,7 @@
 - (void)testApplyLeftButtonColor_shouldApplyTextAttributesColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
     [_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
-    [_uut applyLeftButtonsColor:UIColor.redColor];
+    [_uut applyLeftButtonsColor:[Color withValue:UIColor.redColor]];
     XCTAssertEqual([[_viewController.navigationItem.leftBarButtonItems.firstObject
                        titleTextAttributesForState:UIControlStateNormal]
                        valueForKey:NSForegroundColorAttributeName],
@@ -82,7 +82,7 @@
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
     button.icon = [Image withValue:UIImage.new];
     [_uut applyRightButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
-    [_uut applyRightButtonsColor:UIColor.redColor];
+    [_uut applyRightButtonsColor:[Color withValue:UIColor.redColor]];
     XCTAssertEqual(_viewController.navigationItem.rightBarButtonItems.firstObject.tintColor,
                    UIColor.redColor);
 }
@@ -90,7 +90,7 @@
 - (void)testApplyRightButtonColor_shouldApplyTextAttributesColor {
     RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId", @"text" : @"title"}];
     [_uut applyRightButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
-    [_uut applyRightButtonsColor:UIColor.redColor];
+    [_uut applyRightButtonsColor:[Color withValue:UIColor.redColor]];
     XCTAssertEqual([[_viewController.navigationItem.rightBarButtonItems.firstObject
                        titleTextAttributesForState:UIControlStateNormal]
                        valueForKey:NSForegroundColorAttributeName],
