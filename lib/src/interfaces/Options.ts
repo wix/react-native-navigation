@@ -140,7 +140,7 @@ export interface OptionsStatusBar {
    * Animate StatusBar style changes.
    * #### (iOS specific)
    */
-  animated?: boolean;
+  animate?: boolean;
   /**
    * Automatically hide the StatusBar when the TopBar hides.
    * #### (iOS specific)

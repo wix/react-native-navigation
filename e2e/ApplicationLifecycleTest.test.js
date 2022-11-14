@@ -82,7 +82,7 @@ describe.e2e('application lifecycle test', () => {
 
   xit(':android: pressing menu opens dev menu', async () => {
     if (!IS_RELEASE) {
-      Android.pressMenu();
+      await Android.pressMenu();
       await sleep(1000);
       await expect(elementByLabel('Reload')).toBeVisible();
     }

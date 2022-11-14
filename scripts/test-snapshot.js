@@ -3,7 +3,7 @@ const exec = require('shell-utils').exec;
 
 const android = includes(process.argv, '--android');
 const release = includes(process.argv, '--release');
-const BRANCH = process.env.BRANCH;
+const BRANCH = process.env.BUILDKITE_BRANCH;
 const RECORD = process.env.RECORD === 'true';
 
 function run() {
@@ -14,7 +14,7 @@ function run() {
   }
 }
 
-function runAndroidSnapshotTests() {}
+function runAndroidSnapshotTests() { }
 
 function runIosSnapshotTests() {
   exec.execSync('npm run build');
