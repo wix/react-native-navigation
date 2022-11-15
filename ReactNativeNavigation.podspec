@@ -12,8 +12,8 @@ Pod::Spec.new do |s|
   s.license      = package['license']
   s.platform     = { :ios => "11.0", :tvos => "11.0" }
 
-  s.ios.deployment_target     = "10.0"
-  s.tvos.deployment_target    = "11.0"
+  s.ios.deployment_target = "10.0"
+  s.tvos.deployment_target = "11.0"
 
   s.module_name  = 'ReactNativeNavigation'
   s.default_subspec = 'Core'
