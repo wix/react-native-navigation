@@ -1,0 +1,14 @@
+name: Test from github actions
+
+on:
+  push:
+
+jobs:
+    test-job:
+      name: "TESTSSSS"
+      runs-on: ubuntu-latest
+      steps:
+      - name: Trigger Buildkite Pipeline
+        uses: buildkite/trigger-pipeline-action@v1.2.0
+        env:
+          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
