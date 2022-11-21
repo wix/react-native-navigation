@@ -458,6 +458,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
       UIWindow *overlayWindow =
           [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
       overlayWindow.rootViewController = weakOverlayVC;
+      
+#if TARGET_OS_TV
+      [self->_mainWindow makeKeyWindow];
+#endif
+
       if ([weakOverlayVC.resolveOptionsWithDefault.overlay.handleKeyboardEvents withDefault:NO]) {
           [self->_overlayManager showOverlayWindowAsKeyWindow:overlayWindow];
       } else {
@@ -470,6 +475,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     }];
 
     [overlayVC render];
+    
+#if TARGET_OS_TV
+    [self->_mainWindow makeKeyWindow];
+#endif
+
 }
 
 - (void)dismissOverlay:(NSString *)componentId
