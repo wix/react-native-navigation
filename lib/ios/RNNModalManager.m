@@ -191,7 +191,7 @@
 
 - (UIViewController *)topPresentedVC {
     UIViewController *root = [self rootViewController];
-    while (root.presentedViewController) {
+    while (root.presentedViewController && !root.presentedViewController.isBeingDismissed) {
         root = root.presentedViewController;
     }
     return root;
