@@ -226,6 +226,46 @@ describe('Commands', () => {
         `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
       );
     });
+
+    it('processes mergeOptions', async () => {
+      const options = {
+        animations: {
+          dismissModal: {
+            enabled: false,
+          },
+        },
+      };
+
+      uut.mergeOptions('myUniqueId', options);
+      verify(
+        mockedOptionsProcessor.processOptions(
+          CommandName.MergeOptions,
+          deepEqual(options),
+          undefined
+        )
+      ).called();
+    });
+
+    it('processing mergeOptions should pass component props', async () => {
+      const options = {
+        animations: {
+          dismissModal: {
+            enabled: false,
+          },
+        },
+      };
+      const passProps = { prop: '1' };
+
+      when(mockedStore.getPropsForId('myUniqueId')).thenReturn(passProps);
+      uut.mergeOptions('myUniqueId', options);
+      verify(
+        mockedOptionsProcessor.processOptions(
+          CommandName.MergeOptions,
+          deepEqual(options),
+          passProps
+        )
+      ).called();
+    });
   });
 
   describe('updateProps', () => {
