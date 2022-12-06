@@ -22,7 +22,7 @@ export class OptionsCrawler {
     this.crawl = this.crawl.bind(this);
   }
 
-  crawl(api?: Layout): void {
+  crawl(api?: Layout<any>): void {
     if (!api) return;
     if (api.topTabs) {
       this.topTabs(api.topTabs);
