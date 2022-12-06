@@ -1,4 +1,3 @@
-// import { NativeModules } from 'react-native';
 import { NativeCommandsSender } from './NativeCommandsSender';
 
 export interface NavigationConstants {
