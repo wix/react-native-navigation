@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.reactnativenavigation">
 
-    <application
-        android:enableOnBackInvokedCallback="true">
+    <application>
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:exported="false"/>

@@ -93,11 +93,11 @@
     return [self.enabled withDefault:YES];
 }
 
-- (UIColor *)resolveColor {
+- (Color *)resolveColor {
     if (![_enabled withDefault:YES] && _disabledColor.hasValue)
-        return _disabledColor.get;
+        return _disabledColor;
     else
-        return [_color withDefault:nil];
+        return _color;
 }
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {
@@ -114,6 +114,10 @@
     if (!self.disabledColor.hasValue)
         self.disabledColor = disabledColor;
     return self;
+}
+
+- (UIControlState)state {
+    return self.isEnabled ? UIControlStateNormal : UIControlStateDisabled;
 }
 
 @end

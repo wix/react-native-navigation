@@ -21,14 +21,6 @@
 
 @end
 
-@interface MockModalManager : RNNModalManager
-@property(nonatomic, strong) MockViewController *rootViewController;
-@property(nonatomic, strong) MockViewController *topPresentedVC;
-@end
-
-@implementation MockModalManager
-@end
-
 @interface RNNModalManagerTest : XCTestCase {
     CGFloat _modalDismissedCount;
 }
@@ -39,7 +31,7 @@
     RNNComponentViewController *_vc1;
     RNNComponentViewController *_vc2;
     RNNComponentViewController *_vc3;
-    MockModalManager *_modalManager;
+    RNNModalManager *_modalManager;
     id _modalManagerEventHandler;
 }
 
@@ -53,16 +45,22 @@
     _vc3.layoutInfo = [RNNLayoutInfo new];
     _modalManagerEventHandler =
         [OCMockObject partialMockForObject:[RNNModalManagerEventHandler new]];
-    _modalManager = [[MockModalManager alloc] initWithBridge:nil
-                                                eventHandler:_modalManagerEventHandler];
-    _modalManager.topPresentedVC = [MockViewController new];
+    _modalManager = [OCMockObject
+        partialMockForObject:[[RNNModalManager alloc] initWithBridge:nil
+                                                        eventHandler:_modalManagerEventHandler]];
+
+    UIApplication.sharedApplication.delegate.window.rootViewController =
+        [OCMockObject partialMockForObject:MockViewController.new];
+}
+
+- (void)tearDown {
+    UIApplication.sharedApplication.delegate.window.rootViewController = UIViewController.new;
 }
 
 - (void)testDismissMultipleModalsInvokeDelegateWithCorrectParameters {
-    _modalManager.rootViewController = [OCMockObject partialMockForObject:UIViewController.new];
-    OCMStub(_modalManager.rootViewController.presentedViewController)
-        .andReturn(UIViewController.new);
-
+    OCMStub(
+        UIApplication.sharedApplication.delegate.window.rootViewController.presentedViewController)
+        .andReturn(MockViewController.new);
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     [_modalManager showModal:_vc2 animated:NO completion:nil];
     [_modalManager showModal:_vc3 animated:NO completion:nil];
@@ -105,10 +103,9 @@
 }
 
 - (void)testDismissAllModals_AfterDismissingPreviousModal_InvokeDelegateWithCorrectParameters {
-    _modalManager.rootViewController = [OCMockObject partialMockForObject:UIViewController.new];
-    OCMStub(_modalManager.rootViewController.presentedViewController)
-        .andReturn(UIViewController.new);
-
+    OCMStub(
+        UIApplication.sharedApplication.delegate.window.rootViewController.presentedViewController)
+        .andReturn(MockViewController.new);
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     [_modalManager showModal:_vc2 animated:NO completion:nil];
     [_modalManager showModal:_vc3 animated:NO completion:nil];
@@ -133,8 +130,10 @@
 }
 
 - (void)testShowModal_CallPresentViewController {
+    OCMStub([_modalManager topPresentedVC]).andReturn([MockViewController new]);
     [_modalManager showModal:_vc1 animated:NO completion:nil];
-    XCTAssertTrue(_modalManager.topPresentedVC.presentViewControllerCalls == 1);
+    XCTAssertTrue(((MockViewController *)_modalManager.topPresentedVC).presentViewControllerCalls ==
+                  1);
 }
 
 - (void)testPresentationControllerDidDismiss_ShouldInvokeDelegateDismissedModal {
@@ -169,6 +168,17 @@
     _vc1.options = [RNNNavigationOptions emptyOptions];
     [_modalManager showModal:_vc1 animated:NO completion:nil];
     XCTAssertEqual(_vc1.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
+}
+
+- (void)testTopPresentedVC_shouldNotReturnModalThatIsBeingDismissed {
+    UIApplication.sharedApplication.delegate.window.rootViewController =
+        [OCMockObject partialMockForObject:UIViewController.new];
+    UIViewController *beingDismissedModal =
+        [OCMockObject partialMockForObject:[UIViewController new]];
+    [_modalManager showModal:beingDismissedModal animated:NO completion:nil];
+    XCTAssertEqual(_modalManager.topPresentedVC, beingDismissedModal);
+    OCMStub(beingDismissedModal.isBeingDismissed).andReturn(YES);
+    XCTAssertNotEqual(_modalManager.topPresentedVC, beingDismissedModal);
 }
 
 @end

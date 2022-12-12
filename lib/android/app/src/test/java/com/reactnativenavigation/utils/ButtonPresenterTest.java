@@ -118,6 +118,25 @@ public class ButtonPresenterTest extends BaseTest {
     }
 
     @Test
+    public void applyBackgroundColor_shouldChangeBackgroundColor() {
+        IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
+        initUUt(ImageLoaderMock.mock(mockD));
+        button.enabled = new Bool(true);
+        button.icon = new Text("icon");
+        button.color = new ThemeColour(new Colour(Color.RED), new Colour(Color.RED));
+        IconBackgroundOptions iconBackground = new IconBackgroundOptions();
+        iconBackground.color = new ThemeColour(new Colour(Color.GREEN),new Colour(Color.GREEN));
+        button.iconBackground = iconBackground;
+        MenuItem menuItem = spy(addMenuButton());
+        uut.applyOptions(titleBar, menuItem, buttonController::getView);
+
+        assertThat(((IconBackgroundDrawable)menuItem.getIcon()).getBackgroundColor()).isEqualTo(Color.GREEN);
+
+        uut.applyBackgroundColor(titleBar, menuItem, new ThemeColour(new Colour(Color.BLACK),new Colour(Color.BLACK)));
+        assertThat(((IconBackgroundDrawable)menuItem.getIcon()).getBackgroundColor()).isEqualTo(Color.BLACK);
+    }
+
+    @Test
     public void applyOptions_shouldChangeIconColorTint() {
         IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
         initUUt(ImageLoaderMock.mock(mockD));
