@@ -1,5 +1,3 @@
-agents:
-  queue: mbms
 steps:
   - block: ":rocket: Release!"
     prompt: "Fill out the details for release"

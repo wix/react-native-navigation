@@ -73,9 +73,10 @@ export class Commands {
 
   public mergeOptions(componentId: string, options: Options) {
     const input = cloneDeep(options);
-    this.optionsProcessor.processOptions(CommandName.MergeOptions, input);
 
     const component = this.store.getComponentInstance(componentId);
+    const componentProps = this.store.getPropsForId(componentId) || undefined;
+    this.optionsProcessor.processOptions(CommandName.MergeOptions, input, componentProps);
     if (component && !component.isMounted)
       console.warn(
         `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
@@ -90,7 +91,7 @@ export class Commands {
     this.commandsObserver.notify(CommandName.UpdateProps, { componentId, props });
   }
 
-  public showModal(layout: Layout) {
+  public showModal<P>(layout: Layout<P>) {
     const layoutCloned = cloneLayout(layout);
     this.optionsCrawler.crawl(layoutCloned);
     const layoutProcessed = this.layoutProcessor.process(layoutCloned, CommandName.ShowModal);
@@ -124,7 +125,7 @@ export class Commands {
     return result;
   }
 
-  public push(componentId: string, simpleApi: Layout) {
+  public push<P>(componentId: string, simpleApi: Layout<P>) {
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.Push);
@@ -162,7 +163,7 @@ export class Commands {
     return result;
   }
 
-  public setStackRoot(componentId: string, children: Layout[]) {
+  public setStackRoot<P>(componentId: string, children: Layout<P>[]) {
     const input = map(cloneLayout(children), (simpleApi) => {
       this.optionsCrawler.crawl(simpleApi);
       const layoutProcessed = this.layoutProcessor.process(simpleApi, CommandName.SetStackRoot);
@@ -184,7 +185,7 @@ export class Commands {
     return result;
   }
 
-  public showOverlay(simpleApi: Layout) {
+  public showOverlay<P>(simpleApi: Layout<P>) {
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.ShowOverlay);

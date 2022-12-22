@@ -39,7 +39,7 @@
             [RNNElementFinder findElementForId:transitionOptions.toId
                                         inView:_toVC.presentedComponentViewController.reactView];
         if (fromView == nil || toView == nil) {
-            break;
+            continue;
         }
 
         SharedElementTransition *sharedElementAnimator =

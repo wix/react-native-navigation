@@ -4,6 +4,7 @@ import { LayoutNode } from '../../src/commands/LayoutTreeCrawler';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
 import ComponentNode from '../Layouts/ComponentNode';
+import { Constants } from '../../src/adapters/Constants';
 
 export class NativeCommandsSender {
   constructor() {}
@@ -115,4 +116,22 @@ export class NativeCommandsSender {
   }
 
   getLaunchArgs(_commandId: string) {}
+
+  getNavigationConstants(): Promise<Constants> {
+    return Promise.resolve({
+      topBarHeight: 0,
+      backButtonId: 'RNN.back',
+      bottomTabsHeight: 0,
+      statusBarHeight: 0,
+    });
+  }
+
+  getNavigationConstantsSync(): Constants {
+    return {
+      topBarHeight: 0,
+      backButtonId: 'RNN.back',
+      bottomTabsHeight: 0,
+      statusBarHeight: 0,
+    };
+  }
 }

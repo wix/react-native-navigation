@@ -15,9 +15,4 @@ public class TestActivity extends NavigationActivity {
     public void setNavigator(Navigator navigator) {
         this.navigator = navigator;
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }
