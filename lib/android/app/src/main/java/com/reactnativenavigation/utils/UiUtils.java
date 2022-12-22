@@ -81,7 +81,11 @@ public class UiUtils {
     }
 
     public static void runOnMainThread(Runnable runnable) {
-        new Handler(Looper.getMainLooper()).post(runnable);
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).postAtFrontOfQueue(runnable);
+        } else {
+            new Handler(Looper.getMainLooper()).post(runnable);
+        }
     }
 
     public static float getWindowHeight(Context context) {
