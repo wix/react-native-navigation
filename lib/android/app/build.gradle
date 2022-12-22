@@ -1,5 +1,6 @@
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
@@ -173,7 +174,9 @@ task installBuildToolsAndRenameD8IfNeeded {
     def buildToolsDir = new File(sdkDir, "/build-tools/" + buildToolsVersion)
 
     if (!buildToolsDir.exists()) {
-        def command = sdkDir.absolutePath + "/cmdline-tools/latest/bin/sdkmanager build-tools;" + buildToolsVersion
+        OperatingSystem os = OperatingSystem.current();
+        def buildToolsPath = os.isWindows() ? "/cmdline-tools/latest/bin/sdkmanager.bat build-tools;" : "/cmdline-tools/latest/bin/sdkmanager build-tools;"
+        def command = sdkDir.absolutePath + buildToolsPath + buildToolsVersion
         command.execute().waitForProcessOutput(System.out, System.err)
     }
 
