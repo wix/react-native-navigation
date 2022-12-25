@@ -168,29 +168,6 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
     return reactNativeVersion.tokenize('-')[0].tokenize('.')
 }
 
-task installBuildToolsAndRenameD8IfNeeded {
-    def buildToolsVersion = android.getBuildToolsVersion()
-    def sdkDir = android.sdkDirectory
-    def buildToolsDir = new File(sdkDir, "/build-tools/" + buildToolsVersion)
-
-    if (!buildToolsDir.exists()) {
-        OperatingSystem os = OperatingSystem.current();
-        def buildToolsPath = os.isWindows() ? "/cmdline-tools/latest/bin/sdkmanager.bat build-tools;" : "/cmdline-tools/latest/bin/sdkmanager build-tools;"
-        def command = sdkDir.absolutePath + buildToolsPath + buildToolsVersion
-        command.execute().waitForProcessOutput(System.out, System.err)
-    }
-
-    def d8File = new File(buildToolsDir, "d8")
-    def dxFile = new File(buildToolsDir, "dx")
-    d8File.renameTo(dxFile)
-
-    def buildToolsLibDir = new File(buildToolsDir, "lib")
-    d8File = new File(buildToolsLibDir, "d8.jar")
-    dxFile = new File(buildToolsLibDir, "dx.jar")
-    d8File.renameTo(dxFile)
-}
-build.dependsOn installBuildToolsAndRenameD8IfNeeded
-
 dependencies {
 
     implementation "androidx.core:core-ktx:1.6.0"
