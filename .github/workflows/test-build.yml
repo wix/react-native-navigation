@@ -2,7 +2,7 @@ name: Test from github actions
 
 on:
   pull_request:
-    paths:
+    paths-ignore:
       # - '!.github/workflows/**'
       # - '!.github/CODEOWNERS'
       - '!package.json'
@@ -14,9 +14,26 @@ jobs:
       name: "PR gatekeeper"
       runs-on: ubuntu-latest
       steps:
-      - name: Trigger Buildkite Pipeline
-        uses: buildkite/trigger-pipeline-action@v1.2.0
-        env:
-          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
-          BRANCH: ${GITHUB_REF}
-          PIPELINE: 'wix-mobile-oss/test-project'
+      
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      # Example 1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      # - name: Trigger Buildkite Pipeline
+      #   uses: buildkite/trigger-pipeline-action@v1.2.0
+      #   env:
+      #     BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+      #     BRANCH: ${GITHUB_REF}
+      #     PIPELINE: 'wix-mobile-oss/test-project'
