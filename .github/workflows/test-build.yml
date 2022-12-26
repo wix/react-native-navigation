@@ -26,10 +26,12 @@ jobs:
 
 
       - name: List all changed files
+    
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+          echo ${{ steps.changed-files }}
+          # for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          #   echo "$file was changed"
+          # done
 
       # - name: Trigger Buildkite Pipeline
       #   uses: buildkite/trigger-pipeline-action@v1.2.0
