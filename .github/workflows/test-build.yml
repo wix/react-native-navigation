@@ -2,7 +2,7 @@ name: Test from github actions
 
 on:
   pull_request:
-    paths-ignore:
+    # paths-ignore:
       # - '!.github/workflows/**'
       # - '!.github/CODEOWNERS'
       # - '!package.json'
