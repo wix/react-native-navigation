@@ -33,9 +33,10 @@ jobs:
             echo "$file was changed"
           done
 
-      # - name: Trigger Buildkite Pipeline
-      #   uses: buildkite/trigger-pipeline-action@v1.2.0
-      #   env:
-      #     BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
-      #     BRANCH: ${GITHUB_REF}
-      #     PIPELINE: 'wix-mobile-oss/test-project'
+      - name: Trigger Buildkite Pipeline
+        if: ${{ !contains(steps.changed-files.outputs.all_changed_files, 'package.json') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+        uses: buildkite/trigger-pipeline-action@v1.2.0
+        env:
+          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+          BRANCH: ${GITHUB_REF}
+          PIPELINE: 'wix-mobile-oss/test-project'
