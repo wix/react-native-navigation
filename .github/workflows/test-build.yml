@@ -28,7 +28,7 @@ jobs:
       - name: List all changed files
     
         run: |
-          echo ${{ contains(steps.changed-files.outputs, 'package.json') }}
+          echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') }}
           # for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           #   echo "$file was changed"
           # done
