@@ -5,8 +5,8 @@ on:
     paths-ignore:
       # - '!.github/workflows/**'
       # - '!.github/CODEOWNERS'
-      - '!package.json'
-      - '!.buildkite/pipeline.yml'
+      # - '!package.json'
+      # - '!.buildkite/pipeline.yml'
 
 
 jobs:
