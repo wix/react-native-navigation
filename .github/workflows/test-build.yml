@@ -1,14 +1,23 @@
 name: Test from github actions
 
 on:
-  push:
+  pull_request:
+    types:
+      - opened
+    paths-ignore:
+      - '.github/workflows/**'
+      - '.github/CODEOWNERS'
+      - 'package.json'
+      - '.buildkite/pipeline.yml'
+
 
 jobs:
     test-job:
-      name: "TESTSSSS"
+      name: "PR gatekeeper"
       runs-on: ubuntu-latest
       steps:
       - name: Trigger Buildkite Pipeline
         uses: buildkite/trigger-pipeline-action@v1.2.0
         env:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+          BRANCH: ${GITHUB_REF}
