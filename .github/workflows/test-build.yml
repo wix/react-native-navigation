@@ -2,11 +2,11 @@ name: Test from github actions
 
 on:
   pull_request:
-    paths-ignore:
-      - '.github/workflows/**'
-      - '.github/CODEOWNERS'
-      - 'package.json'
-      - '.buildkite/pipeline.yml'
+    paths:
+      # - '!.github/workflows/**'
+      # - '!.github/CODEOWNERS'
+      - '!package.json'
+      - '!.buildkite/pipeline.yml'
 
 
 jobs:
