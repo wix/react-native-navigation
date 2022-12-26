@@ -2,8 +2,6 @@ name: Test from github actions
 
 on:
   pull_request:
-    types:
-      - opened
     paths-ignore:
       - '.github/workflows/**'
       - '.github/CODEOWNERS'
