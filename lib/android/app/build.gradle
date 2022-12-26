@@ -1,6 +1,5 @@
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
