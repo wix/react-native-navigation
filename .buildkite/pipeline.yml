@@ -60,4 +60,4 @@ steps:
     - "android_build"
     - "ios_unit"
     - "ios_e2e"
-    timeout_in_minutes: 91
+    timeout_in_minutes: 92
