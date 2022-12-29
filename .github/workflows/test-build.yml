@@ -24,12 +24,8 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v35.1.0
 
-      - name: Save if result
-        id: tof
-        if: ${{ !contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }} 
-      
+
       - name: List all changed files
-    
         run: |
           echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
@@ -37,9 +33,11 @@ jobs:
           done
 
       - name: Trigger Buildkite Pipeline
-        if: ${{ steps.tof }} #${{ !contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
         uses: buildkite/trigger-pipeline-action@v1.2.0
         env:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
           PIPELINE: 'wix-mobile-oss/test-project'
+
+      if: $!{{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+      
