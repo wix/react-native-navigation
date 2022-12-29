@@ -12,6 +12,7 @@ jobs:
   test-job:
     name: "PR gatekeeper"
     runs-on: ubuntu-latest
+    if: ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -35,5 +36,3 @@ jobs:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
           PIPELINE: "wix-mobile-oss/test-project"
-
-    if: ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
