@@ -1,12 +1,5 @@
-name: Test from github actions
-
 on:
   pull_request:
-    # paths-ignore:
-    # - '!.github/workflows/**'
-    # - '!.github/CODEOWNERS'
-    # - '!package.json'
-    # - '!.buildkite/pipeline.yml'
 
 jobs:
   build:
@@ -14,23 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
 
-      # Example 1
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v35.1.0
 
-      - name: List all changed files
-        run: |
-          echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-      # contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
-      # contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
-      # contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml')
+      # - name: List all changed files
+      #   run: |
+      #     echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+      #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+      #       echo "$file was changed"
+      #     done
+
       - name: Trigger Buildkite Pipeline
         id: buildkite
         uses: buildkite/trigger-pipeline-action@v1.2.0
@@ -38,10 +26,16 @@ jobs:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
           PIPELINE: "wix-mobile-oss/test-project"
-        if: ${{ contains(steps.changed-files.outputs.all_changed_files, fromJson('["package.json", ".github/workflows", "pipeline.yml"]')) }}
+          if:
+            contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
+            contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
+            contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
 
       - uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Hello from Skipped**
+            **Hello there 👋 !**
+            Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
+            If you need to update or add dependency to `package.json`, please contact core team by opening issue.
+            Thanks!
         if: steps.buildkite.conclusion == 'skipped'
