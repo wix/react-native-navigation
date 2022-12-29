@@ -19,18 +19,6 @@ jobs:
       #       echo "$file was changed"
       #     done
 
-      - name: Trigger Buildkite Pipeline
-        id: buildkite
-        uses: buildkite/trigger-pipeline-action@v1.2.0
-        env:
-          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
-          BRANCH: ${GITHUB_REF}
-          PIPELINE: "wix-mobile-oss/test-project"
-          if:
-            contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
-            contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
-            contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
-
       - uses: mshick/add-pr-comment@v2
         with:
           message: |
@@ -38,4 +26,16 @@ jobs:
             Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
             If you need to update or add dependency to `package.json`, please contact core team by opening issue.
             Thanks!
-        if: steps.buildkite.conclusion == 'skipped'
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
+
+      - name: Trigger Buildkite Pipeline
+        id: buildkite
+        uses: buildkite/trigger-pipeline-action@v1.2.0
+        env:
+          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+          BRANCH: ${GITHUB_REF}
+          PIPELINE: "wix-mobile-oss/test-project"
+          if: steps.buildkite.conclusion == 'skipped'
