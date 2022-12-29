@@ -3,27 +3,24 @@ name: Test from github actions
 on:
   pull_request:
     # paths-ignore:
-      # - '!.github/workflows/**'
-      # - '!.github/CODEOWNERS'
-      # - '!package.json'
-      # - '!.buildkite/pipeline.yml'
-
+    # - '!.github/workflows/**'
+    # - '!.github/CODEOWNERS'
+    # - '!package.json'
+    # - '!.buildkite/pipeline.yml'
 
 jobs:
-    test-job:
-      name: "PR gatekeeper"
-      runs-on: ubuntu-latest
-      steps:
-      
+  test-job:
+    name: "PR gatekeeper"
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 0 # OR "2" -> To retrieve the preceding commit.
 
       # Example 1
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v35.1.0
-
 
       - name: List all changed files
         run: |
@@ -37,7 +34,6 @@ jobs:
         env:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
-          PIPELINE: 'wix-mobile-oss/test-project'
+          PIPELINE: "wix-mobile-oss/test-project"
 
-      if: $!{{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
-      
+    if: ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || !contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
