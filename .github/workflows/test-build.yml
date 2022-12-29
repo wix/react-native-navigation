@@ -28,9 +28,9 @@ jobs:
             If you need to update or add dependency to `package.json`, please contact core team by opening issue.
             Thanks!
         if:
-          ! contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
-          ! contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
-          ! contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
+          contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
 
       - name: Trigger Buildkite Pipeline
         uses: buildkite/trigger-pipeline-action@v1.2.0
