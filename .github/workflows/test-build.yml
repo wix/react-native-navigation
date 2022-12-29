@@ -20,6 +20,7 @@ jobs:
       #     done
 
       - uses: mshick/add-pr-comment@v2
+        name: Leave a comment if restricted files are changed
         id: comment
         with:
           message: |
