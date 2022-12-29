@@ -38,7 +38,7 @@ jobs:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
           PIPELINE: "wix-mobile-oss/test-project"
-        if: ${{ !contains(fromJson('["package.json", ".github/workflows", "pipeline.yml"]'), steps.changed-files.outputs.all_changed_files) }}
+        if: ${{ contains(steps.changed-files.outputs.all_changed_files, fromJson('["package.json", ".github/workflows", "pipeline.yml"]')) }}
 
       - uses: mshick/add-pr-comment@v2
         with:
