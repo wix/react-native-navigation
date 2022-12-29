@@ -32,6 +32,7 @@ jobs:
       # contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
       # contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml')
       - name: Trigger Buildkite Pipeline
+        id: buildkite
         uses: buildkite/trigger-pipeline-action@v1.2.0
         env:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
@@ -42,6 +43,5 @@ jobs:
       - uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Hello**
-            🌏
-            !
+            **Hello from Skipped**
+        if: steps.buildkite.conclusion == 'skipped'
