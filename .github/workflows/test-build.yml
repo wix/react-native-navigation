@@ -38,4 +38,4 @@ jobs:
           BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
           BRANCH: ${GITHUB_REF}
           PIPELINE: "wix-mobile-oss/test-project"
-          if: steps.comment.conclusion == 'skipped'
+        if: steps.comment.conclusion == 'skipped'
