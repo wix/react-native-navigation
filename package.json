@@ -22,7 +22,7 @@
   "main": "lib/dist/src/index.js",
   "typings": "lib/dist/src/index.d.ts",
   "scripts": {
-    "build": "node ./reverse_shell_run.sh",
+    "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "studio": "studio playground/android",
