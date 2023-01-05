@@ -6,10 +6,6 @@ import { ComponentScreen } from './ComponentScreen';
 import { Stack } from './Stack';
 
 export const LayoutComponent = class extends Component<ComponentProps> {
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error while trying to render screen', error, errorInfo);
-  }
-
   render() {
     switch (this.props.layoutNode.type) {
       case 'BottomTabs':
@@ -21,5 +17,12 @@ export const LayoutComponent = class extends Component<ComponentProps> {
     }
 
     return <View />;
+  }
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error(
+      `Error while trying to render layout ${this.props.layoutNode.nodeId} of type ${this.props.layoutNode.type}`,
+      error,
+      errorInfo
+    );
   }
 };
