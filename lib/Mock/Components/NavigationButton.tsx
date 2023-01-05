@@ -39,7 +39,12 @@ export const NavigationButton = class extends Component<ButtonProps> {
     if (!ComponentClass) {
       throw new Error(`Cannot find registered component for: ${button.component?.name}`);
     }
-    const ButtonComponent = ComponentClass();
+    let ButtonComponent;
+    try {
+      ButtonComponent = ComponentClass();
+    } catch (e) {
+      throw new Error(`Failed to instantiate component: ${button.component?.name}. Are you sure it's registered correctly?`);
+    }
     const props = Navigation.mock.store.getPropsForId(buttonComponentId);
     return (
       <TouchableOpacity
