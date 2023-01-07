@@ -3,6 +3,8 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -106,6 +108,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             initialTabIndex = resolveCurrentOptions.bottomTabsOptions.currentTabIndex.get();
         }
         bottomTabs.setCurrentItem(initialTabIndex, false);
+    }
+
+    @Override
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        ViewCompat.onApplyWindowInsets(view, insets);
+        return insets;
     }
 
     @NonNull
