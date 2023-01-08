@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -112,8 +113,11 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view, insets);
-        return insets;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ViewCompat.onApplyWindowInsets(view, insets);
+            return insets;
+        }
+        return super.onApplyWindowInsets(view, insets);
     }
 
     @NonNull
