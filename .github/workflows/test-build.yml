@@ -3,19 +3,17 @@ on:
 
 jobs:
   build:
-    name: "PR gatekeeper"
+    # name: "PR gatekeeper"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
 
       # - id: foo
       - uses: ./.github/actions/hello
-        with:
-          who-to-greet: "Mona the Octocat"
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
-        shell: bash
-
-      # - uses: actions/checkout@v3
+      #   with:
+      #     who-to-greet: "Mona the Octocat"
+      # - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      #   shell: bash
 
       # - name: Get changed files
       #   id: changed-files
