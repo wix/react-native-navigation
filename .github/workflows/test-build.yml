@@ -3,7 +3,7 @@ on:
 
 jobs:
   build:
-    # name: "PR gatekeeper"
+    name: "PR gatekeeper"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
