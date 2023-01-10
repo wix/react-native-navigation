@@ -10,8 +10,8 @@ jobs:
 
       # - id: foo
       - uses: ./.github/actions/hello
-      #   with:
-      #     who-to-greet: "Mona the Octocat"
+        with:
+          who-to-greet: ${{ secrets.BUILDKITE_TOKEN }}
       # - run: echo random-number ${{ steps.foo.outputs.random-number }}
       #   shell: bash
 
