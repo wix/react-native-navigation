@@ -214,7 +214,7 @@
       },
       "android.genycloud.release": {
         "app": "android.release",
-        "device": "genymotion.emulator.name"
+        "device": "genymotion.emulator.namee"
       }
     }
   }
