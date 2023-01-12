@@ -17,12 +17,13 @@ runs:
       id: changed-files
       uses: tj-actions/changed-files@v35.1.0
 
-    # - name: List all changed files
-    #   run: |
-    #     echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
-    #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-    #       echo "$file was changed"
-    #     done
+    - name: List all changed files
+      run: |
+        echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo "$file was changed"
+        done
+      shell: bash
 
     - uses: mshick/add-pr-comment@v2
       name: Leave a comment if restricted files are changed
