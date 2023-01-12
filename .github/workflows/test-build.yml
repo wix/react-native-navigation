@@ -15,16 +15,16 @@ jobs:
       # - run: echo random-number ${{ steps.foo.outputs.random-number }}
       #   shell: bash
 
-      # - name: Get changed files
-      #   id: changed-files
-      #   uses: tj-actions/changed-files@v35.1.0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35.1.0
 
-      # # - name: List all changed files
-      # #   run: |
-      # #     echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
-      # #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-      # #       echo "$file was changed"
-      # #     done
+      # - name: List all changed files
+      #   run: |
+      #     echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+      #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+      #       echo "$file was changed"
+      #     done
 
       # - uses: mshick/add-pr-comment@v2
       #   name: Leave a comment if restricted files are changed
