@@ -34,7 +34,7 @@ runs:
           Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
           If you need to update or add dependency to `package.json`, please contact core team by opening issue.
           Thanks!
-      if: #github.repository_owner != 'igorgn' &&
+      if: github.repository_owner == 'igorgn' &&
         (contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
         contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
         contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml'))
