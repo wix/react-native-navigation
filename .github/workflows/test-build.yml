@@ -8,9 +8,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v35.1.0
+      # - id: foo
+      - uses: ./.github/actions/hello
+        with:
+          who-to-greet: ${{ secrets.BUILDKITE_TOKEN }}
+      # - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      #   shell: bash
+
+      # - name: Get changed files
+      #   id: changed-files
+      #   uses: tj-actions/changed-files@v35.1.0
 
       # - name: List all changed files
       #   run: |
@@ -19,24 +26,24 @@ jobs:
       #       echo "$file was changed"
       #     done
 
-      - uses: mshick/add-pr-comment@v2
-        name: Leave a comment if restricted files are changed
-        id: comment
-        with:
-          message: |
-            **Hello there 👋 !**
-            Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
-            If you need to update or add dependency to `package.json`, please contact core team by opening issue.
-            Thanks!
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
-          contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
-          contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml')
+      # - uses: mshick/add-pr-comment@v2
+      #   name: Leave a comment if restricted files are changed
+      #   id: comment
+      #   with:
+      #     message: |
+      #       **Hello there 👋 !**
+      #       Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
+      #       If you need to update or add dependency to `package.json`, please contact core team by opening issue.
+      #       Thanks!
+      #   if: github.repository_owner != 'igorgn' &&
+      #     (contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
+      #     contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
+      #     contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml'))
 
-      - name: Trigger Buildkite Pipeline
-        uses: buildkite/trigger-pipeline-action@v1.2.0
-        env:
-          BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
-          BRANCH: ${GITHUB_REF}
-          PIPELINE: "wix-mobile-oss/test-project"
-        if: steps.comment.conclusion == 'skipped'
+      # - name: Trigger Buildkite Pipeline
+      #   uses: buildkite/trigger-pipeline-action@v1.2.0
+      #   env:
+      #     BUILDKITE_API_ACCESS_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+      #     BRANCH: ${GITHUB_REF}
+      #     PIPELINE: "wix-mobile-oss/test-project"
+      #   if: steps.comment.conclusion == 'skipped'
