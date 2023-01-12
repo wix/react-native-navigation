@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.30.2",
+  "version": "7.30.4",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -214,7 +214,7 @@
       },
       "android.genycloud.release": {
         "app": "android.release",
-        "device": "genymotion.emulator.name"
+        "device": "genymotion.emulator.nameeeeee"
       }
     }
   }

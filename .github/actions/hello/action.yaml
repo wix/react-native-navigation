@@ -1,0 +1,56 @@
+name: "Hello World"
+description: "PR Gatekeeper"
+inputs:
+  who-to-greet: # id of input
+    required: true
+    description: "Who to greet"
+    default: "World"
+# outputs:
+#   random-number:
+#     description: "Random number"
+#     value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    # - uses: actions/checkout@v3
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v35.1.0
+
+    - name: List all changed files
+      run: |
+        echo ${{ contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') || contains(steps.changed-files.outputs.all_changed_files, 'pipeline.yml') }}
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo "$file was changed"
+        done
+      shell: bash
+
+    - uses: mshick/add-pr-comment@v2
+      name: Leave a comment if restricted files are changed
+      id: comment
+      with:
+        message: |
+          **Hello there 👋 !**
+          Thank you for contributing and opening this PR, but we have detected changes in one or more files, which shouldn't be updated for security reasons.
+          If you need to update or add dependency to `package.json`, please contact core team by opening issue.
+          Thanks!
+      if: github.repository_owner == 'igorgn' &&
+        (contains(steps.changed-files.outputs.all_changed_files, 'package.json') ||
+        contains(steps.changed-files.outputs.all_changed_files, '.github/workflows') ||
+        contains(steps.changed-files.outputs.all_changed_files, '.buildkite/pipeline.yml'))
+
+    - name: Trigger Buildkite Pipeline
+      uses: buildkite/trigger-pipeline-action@v1.2.0
+      env:
+        BUILDKITE_API_ACCESS_TOKEN: ${{ inputs.who-to-greet }}
+        BRANCH: ${GITHUB_REF}
+        PIPELINE: "wix-mobile-oss/test-project"
+      if: steps.comment.conclusion == 'skipped'
+
+    # - run: echo Hello ${{ inputs.who-to-greet }}.
+    #   shell: bash
+    # - id: random-number-generator
+    #   run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+    #   shell: bash
+    # - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+    #   shell: bash
