@@ -20,7 +20,7 @@ body:
     id: contribution
     attributes:
       label: Are you willing to resolve this issue by submitting a Pull Request?
-      # description: 
+      description: Select one.
       options:
         - label: Yes, I have the time, and I know how to start.
         - label: Yes, I have the time, but I don't know how to start. I would need guidance.
