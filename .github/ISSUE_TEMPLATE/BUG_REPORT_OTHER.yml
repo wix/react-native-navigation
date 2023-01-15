@@ -1,6 +1,6 @@
-name: "🐛 Bug Report - Android"
-description: Create a report to help us improve React Native Navigation on Android
-labels: ["type: accepted/bug", "platform: Android"]
+name: "🐛 Bug Report - Other"
+description: Report a non-platform-specific bug to help us improve
+labels: ["type: accepted/bug", "needs triage"]
 body:
   - type: markdown
     attributes:
@@ -38,9 +38,7 @@ body:
       value: "React Native Navigation version:
       \nReact Native version:
       \nHas Fabric (React Native's new rendering system) enabled: (yes/no)
-      \nNode version:
-      \nDevice model:
-      \nAndroid version:"
+      \nNode version:"
   - type: markdown
     attributes:
       value: "Remember that first-time contributors are welcome! 🙌 Feel free to reach us out on https://discord.gg/DhkZjq2 \nHave a great day and thank you for the bug report!"
