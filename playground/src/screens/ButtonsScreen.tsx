@@ -29,8 +29,7 @@ const {
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
-
-  backButtonVisibile = false
+  backButtonVisibile = false;
 
   static options(): Options {
     return {
@@ -130,26 +129,22 @@ export default class ButtonOptions extends NavigationComponent {
           label="Set leftButtons default Color"
           onPress={this.changeButtonsColor}
         />
-        <Button
-          label="Toggle back"
-          testID={TOGGLE_BACK}
-          onPress={this.toggleBack}
-        />
+        <Button label="Toggle back" testID={TOGGLE_BACK} onPress={this.toggleBack} />
       </Root>
     );
   }
 
-  toggleBack= ()=> {
+  toggleBack = async () => {
     this.backButtonVisibile = !this.backButtonVisibile;
-    Navigation.mergeOptions(this.props.componentId,{
-      topBar:{
-        backButton:{
-          testID:BACK_BUTTON,
-          visible:this.backButtonVisibile
-        }
-      }
-    })
-  }
+    Navigation.mergeOptions(this.props.componentId, {
+      topBar: {
+        backButton: {
+          testID: BACK_BUTTON,
+          visible: this.backButtonVisibile,
+        },
+      },
+    });
+  };
 
   setRightButtons = () =>
     Navigation.mergeOptions(this, {
@@ -175,7 +170,7 @@ export default class ButtonOptions extends NavigationComponent {
             id: 'Three',
             text: 'Three',
             testID: BUTTON_THREE,
-            color:Colors.buttonColor,
+            color: Colors.buttonColor,
           },
         ],
       },
