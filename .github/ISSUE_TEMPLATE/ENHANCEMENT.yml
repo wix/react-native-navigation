@@ -1,6 +1,6 @@
 name: "🚀 Feature"
 description: Submit a proposal/request for a new feature
-labels: ["type: enhancement ⚡️", "status: triage"]
+labels: ["type: enhancement", "needs triage"]
 body:
   - type: markdown
     attributes:
