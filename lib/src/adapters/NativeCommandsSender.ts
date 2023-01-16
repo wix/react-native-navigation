@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { NavigationConstants } from './Constants';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
@@ -16,6 +17,8 @@ interface NativeCommandsModule {
   dismissOverlay(commandId: string, componentId: string): Promise<any>;
   dismissAllOverlays(commandId: string): Promise<any>;
   getLaunchArgs(commandId: string): Promise<any>;
+  getNavigationConstants(): Promise<NavigationConstants>;
+  getNavigationConstantsSync(): NavigationConstants;
 }
 
 export class NativeCommandsSender {
@@ -82,5 +85,13 @@ export class NativeCommandsSender {
 
   getLaunchArgs(commandId: string) {
     return this.nativeCommandsModule.getLaunchArgs(commandId);
+  }
+
+  getNavigationConstants() {
+    return this.nativeCommandsModule.getNavigationConstants();
+  }
+
+  getNavigationConstantsSync() {
+    return this.nativeCommandsModule.getNavigationConstantsSync();
   }
 }

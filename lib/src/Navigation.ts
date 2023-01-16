@@ -248,7 +248,7 @@ export class NavigationRoot {
     componentId: string,
     layout: Layout<P> | Array<Layout<P>>
   ): Promise<string> {
-    const children: Layout[] = isArray(layout) ? layout : [layout];
+    const children: Layout<P | []>[] = isArray(layout) ? layout : [layout];
     return this.commands.setStackRoot(componentId, children);
   }
 
@@ -291,13 +291,13 @@ export class NavigationRoot {
    * Constants coming from native
    */
   public async constants(): Promise<NavigationConstants> {
-    return await Constants.get();
+    return await Constants.get(this.nativeCommandsSender);
   }
 
   /**
    * Constants coming from native (synchronized call)
    */
   public constantsSync(): NavigationConstants {
-    return Constants.getSync();
+    return Constants.getSync(this.nativeCommandsSender);
   }
 }

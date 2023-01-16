@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeCommandsSender } from './NativeCommandsSender';
 
 export interface NavigationConstants {
   statusBarHeight: number;
@@ -8,13 +8,14 @@ export interface NavigationConstants {
 }
 
 export class Constants {
-  static async get(): Promise<NavigationConstants> {
-    const constants: NavigationConstants = await NativeModules.RNNBridgeModule.getNavigationConstants();
+  static async get(nativeCommandSender: NativeCommandsSender): Promise<NavigationConstants> {
+    const constants: NavigationConstants = await nativeCommandSender.getNavigationConstants();
     return new Constants(constants);
   }
 
-  static getSync(): NavigationConstants {
-    return new Constants(NativeModules.RNNBridgeModule.getNavigationConstantsSync());
+  static getSync(nativeCommandSender: NativeCommandsSender): NavigationConstants {
+    const constants: NavigationConstants = nativeCommandSender.getNavigationConstantsSync();
+    return new Constants(constants);
   }
 
   public readonly statusBarHeight: number;
