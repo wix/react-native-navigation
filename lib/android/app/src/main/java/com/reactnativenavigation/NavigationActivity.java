@@ -33,6 +33,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     protected Navigator navigator;
 
+    private OnBackPressedCallback callback;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +96,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        if (!navigator.handleBack(new CommandListenerAdapter())) {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -151,10 +150,15 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     private void setBackPressedCallback() {
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                if (!navigator.handleBack(new CommandListenerAdapter())) {
+                    callback.setEnabled(false);
+                    NavigationActivity.super.onBackPressed();
+                }
                 getReactGateway().onBackPressed();
+                callback.setEnabled(true);
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
