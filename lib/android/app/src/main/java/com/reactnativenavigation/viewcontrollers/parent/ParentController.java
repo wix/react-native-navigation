@@ -208,7 +208,9 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         super.onConfigurationChanged(newConfig);
         Collection<? extends ViewController<?>> childControllers = getChildControllers();
         for(ViewController<?> controller: childControllers){
-            controller.onConfigurationChanged(newConfig);
+            if (controller.isViewShown()) {
+                controller.onConfigurationChanged(newConfig);
+            }
         }
     }
 }
