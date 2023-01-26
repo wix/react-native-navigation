@@ -1,0 +1,46 @@
+name: "🐛 Bug Report - Android"
+description: Create a report to help us improve React Native Navigation on Android
+labels: ["type: accepted/bug", "platform: Android"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: What was the expected behaviour?
+      description: A clear and concise description of what was expected to happen.
+  - type: checkboxes
+    id: tested-last-rnn
+    attributes:
+      label: Was it tested on latest react-native-navigation?
+      description: Before reporting this issue, please make sure it can be reproduced on the latest released version of react-native-navigation, see our [releases](https://github.com/wix/react-native-navigation/releases).
+      options:
+        - label: I have tested this issue on the latest react-native-navigation release and it still reproduces.
+          required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Help us reproduce this issue!
+      description: "Paste the link to an example repo and exact instructions to reproduce the issue."
+  - type: textarea
+    id: environment
+    attributes:
+      label: In what environment did this happen?
+      description: "Include as many relevant details about the environment you experienced the bug in"
+      value: "React Native Navigation version:
+      \nReact Native version:
+      \nHas Fabric (React Native's new rendering system) enabled: (yes/no)
+      \nNode version:
+      \nDevice model:
+      \nAndroid version:"
+  - type: markdown
+    attributes:
+      value: "Remember that first-time contributors are welcome! 🙌 Feel free to reach us out on https://discord.gg/DhkZjq2 \nHave a great day and thank you for the bug report!"
