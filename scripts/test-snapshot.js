@@ -19,7 +19,7 @@ function runAndroidSnapshotTests() { }
 function runIosSnapshotTests() {
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
-  testTarget(RECORD ? 'SnapshotRecordTests' : 'SnapshotTests', 'iPhone 13', '14.5');
+  testTarget(RECORD ? 'SnapshotRecordTests' : 'SnapshotTests', 'iPhone 12', '14.4');
 }
 
 function testTarget(scheme, device, OS = 'latest') {
