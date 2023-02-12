@@ -70,7 +70,7 @@ describe('LayoutTreeCrawler', () => {
       mockedOptionsProcessor.processOptions(
         CommandName.SetRoot,
         undefined,
-        deepEqual({ someProp: 'here' })
+        deepEqual(passProps)
       )
     ).called();
   });
