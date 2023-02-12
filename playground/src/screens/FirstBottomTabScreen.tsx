@@ -38,7 +38,6 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
     };
   }
 
-  dotVisible = true;
   badgeVisible = true;
   bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
     if (event.tabIndex == 2) {
@@ -61,7 +60,8 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
         />
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
-        <Button label="Set Notification Dot" onPress={this.setNotificationDot} />
+        <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
+        <Button label="Hide Notification Dot" onPress={() => this.setNotificationDot(false)} />
         <Button label="Hide Tabs" testID={HIDE_TABS_BTN} onPress={() => this.toggleTabs(false)} />
         <Button label="Show Tabs" testID={SHOW_TABS_BTN} onPress={() => this.toggleTabs(true)} />
         <Button
@@ -109,17 +109,16 @@ export default class FirstBottomTabScreen extends React.Component<NavigationComp
 
   setBadge = (badge: string) => {
     this.badgeVisible = !!badge;
-    if (this.badgeVisible) this.dotVisible = false;
     Navigation.mergeOptions(this, {
       bottomTab: { badge, animateBadge: true },
     });
   };
 
-  setNotificationDot = () => {
-    this.dotVisible = !this.dotVisible;
+  setNotificationDot = (visible: boolean) => {
     Navigation.mergeOptions(this, {
       bottomTab: {
-        dotIndicator: { visible: this.dotVisible },
+        ...(visible ? { badge: '' } : {}),
+        dotIndicator: { visible },
       },
     });
   };

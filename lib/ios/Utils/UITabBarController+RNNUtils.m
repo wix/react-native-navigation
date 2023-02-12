@@ -1,17 +1,10 @@
+#import "UITabBar+utils.h"
 #import "UITabBarController+RNNUtils.h"
 #import "UIView+Utils.h"
 
 @implementation UITabBarController (RNNUtils)
 - (UIView *)getTabView:(int)tabIndex {
-    int index = 0;
-    for (UIView *view in [[self tabBar] subviews]) {
-        if ([NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
-            if (index == tabIndex)
-                return view;
-            index++;
-        }
-    }
-    return nil;
+    return [[self tabBar] tabBarItemViewAtIndex:tabIndex];
 }
 
 - (UIView *)getTabIcon:(int)tabIndex {
