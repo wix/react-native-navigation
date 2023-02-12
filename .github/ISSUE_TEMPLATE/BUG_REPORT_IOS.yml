@@ -40,7 +40,7 @@ body:
       \nHas Fabric (React Native's new rendering system) enabled: (yes/no)
       \nNode version:
       \nDevice model:
-      \iOS version:"
+      \niOS version:"
   - type: markdown
     attributes:
       value: "Remember that first-time contributors are welcome! 🙌 Feel free to reach us out on https://discord.gg/DhkZjq2 \nHave a great day and thank you for the bug report!"
