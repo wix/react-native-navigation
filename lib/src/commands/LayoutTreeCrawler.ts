@@ -24,7 +24,8 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this.handleComponent(node);
     }
-    this.optionsProcessor.processOptions(commandName, node.data.options);
+    const componentProps = this.store.getPropsForId(node.id) || undefined;
+    this.optionsProcessor.processOptions(commandName, node.data.options, componentProps);
     node.children.forEach((value: LayoutNode) => this.crawl(value, commandName));
   }
 
