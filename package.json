@@ -148,7 +148,7 @@
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11"
+          "type": "iPhone 14 Pro"
         }
       },
       "genymotion.emulator.name": {
@@ -160,7 +160,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_28"
+          "avdName": "Pixel_3A_API_29"
         }
       }
     },
