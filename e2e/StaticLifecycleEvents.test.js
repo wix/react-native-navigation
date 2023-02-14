@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('static lifecycle events', () => {
+describe('static lifecycle events', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
@@ -24,21 +24,25 @@ describe.e2e('static lifecycle events', () => {
 
   it('pushing and popping screen dispatch static event', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementByLabel('push')).toBeVisible();
+    await expect(elementByLabel('command started: push')).toBeVisible();
+    await expect(elementByLabel('command completed: push')).toBeVisible();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementByLabel('pop')).toBeVisible();
+    await expect(elementByLabel('command started: pop')).toBeVisible();
+    await expect(elementByLabel('command completed: pop')).toBeVisible();
   });
 
   it('showModal and dismissModal dispatch static event', async () => {
     await elementById(TestIDs.MODAL_BTN).tap();
-    await expect(elementByLabel('showModal')).toBeVisible();
+    await expect(elementByLabel('command started: showModal')).toBeVisible();
+    await expect(elementByLabel('command completed: showModal')).toBeVisible();
     await expect(elementByLabel('componentWillAppear | Modal | Component')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | Modal | Component')).toBeVisible();
     await expect(elementByLabel('componentDidDisappear | EventsScreen | Component')).toBeVisible();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await expect(elementByLabel('dismissModal')).toBeVisible();
+    await expect(elementByLabel('command started: dismissModal')).toBeVisible();
+    await expect(elementByLabel('command completed: dismissModal')).toBeVisible();
     await expect(elementByLabel('componentWillAppear | EventsScreen | Component')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | EventsScreen | Component')).toBeVisible();
     await expect(elementByLabel('componentDidDisappear | Modal | Component')).toBeVisible();

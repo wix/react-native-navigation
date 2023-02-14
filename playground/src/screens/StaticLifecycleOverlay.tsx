@@ -45,6 +45,7 @@ interface OverlayProps extends NavigationComponentProps {
 }
 
 export default class StaticLifecycleOverlay extends React.Component<OverlayProps, State> {
+  events: Event[];
   static options(): Options {
     return {
       layout: {
@@ -68,8 +69,16 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
     alert('Overlay Unmounted');
   }
 
+  addEvent(event: Event) {
+    this.events.push(event);
+    this.setState({
+      events: this.events,
+    });
+  }
+
   constructor(props: OverlayProps) {
     super(props);
+    this.events = [];
     this.state = {
       text: 'nothing yet',
       events: [],
@@ -77,48 +86,38 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
     this.listeners.push(
       Navigation.events().registerComponentWillAppearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentWillAppear' }],
-        });
+        this.addEvent({ ...event, event: 'componentWillAppear' });
       })
     );
 
     this.listeners.push(
       Navigation.events().registerComponentDidAppearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentDidAppear' }],
-        });
+        this.addEvent({ ...event, event: 'componentDidAppear' });
       })
     );
     this.listeners.push(
       Navigation.events().registerComponentDidDisappearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentDidDisappear' }],
-        });
+        this.addEvent({ ...event, event: 'componentDidDisappear' });
       })
     );
     this.listeners.push(
       Navigation.events().registerCommandListener((commandName) => {
-        this.setState({
-          events: [...this.state.events, { event: 'command started', commandName }],
-        });
+        this.addEvent({ event: 'command started', commandName });
+      })
+    );
+    this.listeners.push(
+      Navigation.events().registerCommandCompletedListener(({ commandName }) => {
+        this.addEvent({ event: 'command completed', commandName });
       })
     );
     this.listeners.push(
       Navigation.events().registerNavigationButtonPressedListener(({ componentId, buttonId }) => {
-        this.setState({
-          events: [
-            ...this.state.events,
-            { event: 'navigationButtonPressed', buttonId, componentId },
-          ],
-        });
+        this.addEvent({ event: 'navigationButtonPressed', buttonId, componentId });
       })
     );
     this.listeners.push(
       Navigation.events().registerModalDismissedListener(({ componentId }) => {
-        this.setState({
-          events: [...this.state.events, { event: 'modalDismissed', componentId }],
-        });
+        this.addEvent({ event: 'modalDismissed', componentId });
       })
     );
   }
@@ -127,7 +126,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
     if (event.commandId) {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
     } else if (event.commandName) {
-      return <Text style={styles.h2}>{`${event.commandName}`}</Text>;
+      return <Text style={styles.h2}>{`${event.event}: ${event.commandName}`}</Text>;
     } else if (event.componentName) {
       return (
         <Text
