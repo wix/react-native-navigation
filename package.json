@@ -160,7 +160,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_3A_API_29"
+          "avdName": "Pixel_API_28"
         }
       }
     },
