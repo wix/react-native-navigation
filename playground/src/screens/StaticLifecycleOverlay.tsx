@@ -30,9 +30,7 @@ type Event = {
 
 let _overlayInstance: any;
 export const logLifecycleEvent = (event: Event) => {
-  _overlayInstance.setState({
-    events: [..._overlayInstance.state.events, event],
-  });
+  _overlayInstance.addEvent(event);
 };
 
 type State = {
@@ -71,6 +69,13 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
   addEvent(event: Event) {
     this.events.push(event);
+    this.setState({
+      events: this.events,
+    });
+  }
+
+  clearEvents() {
+    this.events = [];
     this.setState({
       events: this.events,
     });
@@ -171,7 +176,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
   renderClearButton = () => {
     return (
-      <TouchableOpacity style={styles.clearBtn} onPress={() => this.setState({ events: [] })}>
+      <TouchableOpacity style={styles.clearBtn} onPress={() => this.clearEvents()}>
         <Text testID={TestIDs.CLEAR_OVERLAY_EVENTS_BTN} style={styles.btnText}>
           Clear
         </Text>
