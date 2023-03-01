@@ -6,8 +6,7 @@ var { warnn, logn, infon, debugn, errorn } = require('./log');
 class AppDelegateLinker {
   constructor() {
     this.appDelegatePath = path.appDelegate;
-    this.removeUnneededImportsSuccess = false;
-    this.removeApplicationLaunchContentSuccess = false;
+    this.sucess = true;
   }
 
   link() {
@@ -22,29 +21,15 @@ class AppDelegateLinker {
 
     var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
 
-    try {
-      appDelegateContents = this._removeUnneededImports(appDelegateContents);
-      this.removeUnneededImportsSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
     appDelegateContents = this._importNavigation(appDelegateContents);
 
     appDelegateContents = this._bootstrapNavigation(appDelegateContents);
 
     appDelegateContents = this._extraModulesForBridge(appDelegateContents);
 
-    try {
-      appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
-      this.removeApplicationLaunchContentSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
     fs.writeFileSync(this.appDelegatePath, appDelegateContents);
 
-    if (this.removeUnneededImportsSuccess && this.removeApplicationLaunchContentSuccess) {
+    if (this.sucess) {
       infon('AppDelegate linked successfully!\n');
     } else {
       warnn(
@@ -53,43 +38,16 @@ class AppDelegateLinker {
     }
   }
 
-  _removeUnneededImports(content) {
-    debugn('   Removing Unneeded imports');
-
-    const unneededImports = [/#import\s+\<React\/RCTRootView.h>\s/];
-    let elementsRemovedCount = 0;
-
-    unneededImports.forEach((unneededImport) => {
-      if (unneededImport.test(content)) {
-        content = content.replace(unneededImport, '');
-        elementsRemovedCount++;
-      }
-    });
-
-    if (unneededImports.length === elementsRemovedCount) {
-      debugn('   All imports have been removed');
-    } else if (elementsRemovedCount === 0) {
-      warnn(
-        '   No imports could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation'
-      );
-    } else {
-      throw new Error(
-        'Some imports were removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation'
-      );
-    }
-
-    return content;
-  }
-
   _importNavigation(content) {
     if (!this._doesImportNavigation(content)) {
       debugn('   Importing ReactNativeNavigation.h');
       return content.replace(
         /#import\s+"AppDelegate.h"/,
-        '#import "AppDelegate.h"\n#import <ReactNativeNavigation/ReactNativeNavigation.h>'
+        '#import "AppDelegate.h"\n#import <ReactNativeNavigation/ReactNativeNavigation.h>\n' +
+          '#import <React/RCTBridge.h>'
       );
     }
-
+    this.sucess = false;
     warnn('   AppDelegate already imports ReactNativeNavigation.h');
     return content;
   }
@@ -97,14 +55,16 @@ class AppDelegateLinker {
   _bootstrapNavigation(content) {
     if (this._doesBootstrapNavigation(content)) {
       warnn('   Navigation Bootstrap already present.');
+      this.sucess = false;
       return content;
     }
 
     debugn('   Bootstrapping Navigation');
     return content.replace(
-      /RCTBridge.*];/,
+      /self.moduleName =[\s\S]*?\[super application:application didFinishLaunchingWithOptions:launchOptions\];/,
       'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
-        '[ReactNativeNavigation bootstrapWithBridge:bridge];'
+        '  [ReactNativeNavigation bootstrapWithBridge:bridge];\n' +
+        '  return YES;'
     );
   }
 
@@ -115,6 +75,7 @@ class AppDelegateLinker {
   _extraModulesForBridge(content) {
     if (this._doesImplementsRNNExtraModulesForBridge(content)) {
       warnn('   extraModulesForBridge already present.');
+      this.sucess = false;
       return content;
     } else if (this._doesImplementsExtraModulesForBridge(content)) {
       throw new Error(
@@ -139,47 +100,6 @@ class AppDelegateLinker {
 
   _doesImplementsRNNExtraModulesForBridge(content) {
     return /ReactNativeNavigation\s+extraModulesForBridge/.test(content);
-  }
-
-  _removeApplicationLaunchContent(content) {
-    debugn('   Removing Application launch content');
-
-    const toRemove = [
-      /RCTRootView\s+\*rootView((.|\r|\s)*?)];\s+/,
-      /UIView \*rootView = RCTAppSetupDefaultRootView\(bridge, @".*", nil\);/,
-      /if \(@available\(iOS 13\.0, \*\)\)\s{\s+ rootView.backgroundColor((.|\r)*)];\s+}\s+else {[^}]*}/,
-      /self.window((.|\r)*)];\s+/,
-      /UIViewController\s\*rootViewController((.|\r)*)];\s+/,
-      /rootViewController\.view\s+=\s+rootView;\s+/,
-      /self.window.rootViewController\s+=\s+rootViewController;\s+/,
-      /\[self.window\s+makeKeyAndVisible];\s+/,
-      // Added from RN 0.69
-      /NSDictionary\s+\*initProps\s+=\s+\[self prepareInitialProps];\s+/,
-      /UIView \*rootView = RCTAppSetupDefaultRootView\(bridge, @".*", initProps\);/,
-    ];
-
-    let elementsRemovedCount = 0;
-
-    toRemove.forEach((element) => {
-      if (element.test(content)) {
-        content = content.replace(element, '');
-        elementsRemovedCount++;
-      }
-    });
-
-    if (toRemove.length === elementsRemovedCount) {
-      debugn('   Application Launch content has been removed');
-    } else if (elementsRemovedCount === 0) {
-      warnn(
-        '   No elements could be removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation'
-      );
-    } else {
-      warnn(
-        'Some elements were removed. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation'
-      );
-    }
-
-    return content;
   }
 
   _doesImportNavigation(content) {
