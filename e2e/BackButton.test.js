@@ -57,6 +57,7 @@ describe('Back Button', () => {
   it.e2e(':android: hardware back should not dismiss modal and dispatch event', async () => {
     await elementById(TestIDs.MODAL_DISABLED_BACK_BTN).tap();
     await expect(elementByLabel('Modal')).toBeVisible();
+    await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await Android.pressBack();
     await expect(elementByLabel('Modal')).toBeVisible();
     await expect(elementByLabel('navigationButtonPressed | RNN.hardwareBackButton')).toBeVisible();

@@ -47,7 +47,8 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
         <Button label="Push BottomTabs" testID={PUSH_BTN} onPress={this.pushBottomTabs} />
         <Button label="Push Modal" testID={MODAL_BTN} onPress={this.pushModal} />
         <Button label="SetBadge" testID={SET_BADGE_BTN} onPress={this.setBadge} />
-
+        <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
+        <Button label="Hide Notification Dot" onPress={() => this.setNotificationDot(false)} />
         <Button label="Push ScrollView" onPress={this.pushScrollView} />
         <Button
           label="SideMenu inside BottomTabs"
@@ -86,6 +87,15 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
         badge: 'Badge',
       },
     });
+
+  setNotificationDot = (visible: boolean) => {
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        ...(visible ? { badge: '' } : {}),
+        dotIndicator: { visible, color: 'green' },
+      },
+    });
+  };
 
   pushBottomTabs = () =>
     Navigation.push(this, {

@@ -110,6 +110,10 @@ android {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "68")
         }
+        reactNative71 {
+            dimension "RNN.reactNativeVersion"
+            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "71")
+        }
     }
 
     def flavor = resolveFlavor()
@@ -126,7 +130,9 @@ String resolveFlavor() {
     Integer reactNativeMinorComponent = reactNativeVersionComponents[1].toInteger()
     Integer reactNativePatchComponent = reactNativeVersionComponents[2].toInteger()
 
-    if (reactNativeMinorComponent >= 68) {
+    if (reactNativeMinorComponent >= 71) {
+        return "reactNative71"
+    } else if (reactNativeMinorComponent >= 68) {
         return "reactNative68"
     } else if (reactNativeMinorComponent >= 63) {
         return "reactNative63"
@@ -166,27 +172,6 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
 
     return reactNativeVersion.tokenize('-')[0].tokenize('.')
 }
-
-task installBuildToolsAndRenameD8IfNeeded {
-    def buildToolsVersion = android.getBuildToolsVersion()
-    def sdkDir = android.sdkDirectory
-    def buildToolsDir = new File(sdkDir, "/build-tools/" + buildToolsVersion)
-
-    if (!buildToolsDir.exists()) {
-        def command = sdkDir.absolutePath + "/cmdline-tools/latest/bin/sdkmanager build-tools;" + buildToolsVersion
-        command.execute().waitForProcessOutput(System.out, System.err)
-    }
-
-    def d8File = new File(buildToolsDir, "d8")
-    def dxFile = new File(buildToolsDir, "dx")
-    d8File.renameTo(dxFile)
-
-    def buildToolsLibDir = new File(buildToolsDir, "lib")
-    d8File = new File(buildToolsLibDir, "d8.jar")
-    dxFile = new File(buildToolsLibDir, "dx.jar")
-    d8File.renameTo(dxFile)
-}
-build.dependsOn installBuildToolsAndRenameD8IfNeeded
 
 dependencies {
 

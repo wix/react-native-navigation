@@ -1,7 +1,7 @@
 import { LayoutType } from './LayoutType';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { Store } from '../components/Store';
-import { mock, instance, verify, deepEqual } from 'ts-mockito';
+import { mock, instance, verify, deepEqual, when } from 'ts-mockito';
 import { OptionsProcessor } from './OptionsProcessor';
 import { CommandName } from '../interfaces/CommandName';
 
@@ -51,5 +51,27 @@ describe('LayoutTreeCrawler', () => {
     };
     uut.crawl(node, CommandName.SetRoot);
     expect(node.data.passProps).toBeUndefined();
+  });
+
+  it('pass props to option processor', () => {
+    const passProps = { someProp: 'here' };
+    when(mockedStore.getPropsForId('testId')).thenReturn(passProps);
+    const node = {
+      id: 'testId',
+      type: LayoutType.Component,
+      data: {
+        name: 'compName',
+        passProps,
+      },
+      children: [],
+    };
+    uut.crawl(node, CommandName.SetRoot);
+    verify(
+      mockedOptionsProcessor.processOptions(
+        CommandName.SetRoot,
+        undefined,
+        deepEqual(passProps)
+      )
+    ).called();
   });
 });

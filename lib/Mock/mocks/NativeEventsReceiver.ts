@@ -127,8 +127,9 @@ export class NativeEventsReceiver {
   }
 
   public registerCommandCompletedListener(
-    _callback: (data: CommandCompletedEvent) => void
+    callback: (data: CommandCompletedEvent) => void
   ): EmitterSubscription {
+    events.commandCompleted.push(callback);
     return {
       remove: () => {},
     } as EmitterSubscription;
