@@ -2,11 +2,13 @@ package com.reactnativenavigation.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.StrictMode
+import android.util.Base64
 import androidx.core.content.ContextCompat
 import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper
 import com.reactnativenavigation.R
@@ -62,7 +64,12 @@ open class ImageLoader {
     @Throws(IOException::class)
     private fun getDrawable(context: Context, source: String): Drawable {
         var drawable: Drawable?
-        if (isLocalFile(Uri.parse(source))) {
+        if (source.contains("base64")) {
+            val decodedString: ByteArray = Base64.decode(source.substring(source.indexOf(",") + 1), Base64.DEFAULT)
+            val decodedByte: Bitmap =
+            BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            drawable = BitmapDrawable(context.resources, decodedByte)
+        } else if (isLocalFile(Uri.parse(source))) {
             drawable = loadFile(context, source)
         } else {
             drawable = loadResource(context, source)

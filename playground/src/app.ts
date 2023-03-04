@@ -4,6 +4,8 @@ import addProcessors from './commons/Processors';
 import { setDefaultOptions } from './commons/options/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
+import { optionsBase64 } from '../img/options_base64';
+import { PixelRatio } from 'react-native';
 
 // @ts-ignore
 alert = (title, message) =>
@@ -73,7 +75,7 @@ function setRoot() {
                 },
                 bottomTab: {
                   text: 'Options',
-                  icon: require('../img/options.png'),
+                  icon: { uri: optionsBase64, scale: PixelRatio.get() },
                   selectedIcon: require('../img/options_selected.png'),
                   testID: testIDs.OPTIONS_TAB,
                 },
