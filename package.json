@@ -105,7 +105,7 @@
     "pngjs": "^6.0.0",
     "prettier": "2.1.2",
     "react": "18.0.0",
-    "react-native": "0.71.0",
+    "react-native": "0.71.6",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "2.14.1",

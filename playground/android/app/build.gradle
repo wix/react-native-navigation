@@ -4,7 +4,7 @@ apply plugin: "com.facebook.react"
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
-     root = file("../../../")
+     root = file("../../")
     //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
     // reactNativeDir = file("../node-modules/react-native")
     //   The folder where the react-native Codegen package is. Default is ../node_modules/react-native-codegen
@@ -47,7 +47,7 @@ react {
 }
 
 project.ext.react = [
-        root     : "../../../",
+        root     : "../../",
         entryFile: "index.js",
         cliPath : "node_modules/react-native/cli.js",
         bundleAssetName: "index.android.bundle",
@@ -57,10 +57,10 @@ project.ext.react = [
         hermesEnabled: true,
         hermesFlagsDebug:['-Xes6-proxy','-output-source-map'],
         hermesFlagsRelease:['-output-source-map'],
-        hermesCommand: "../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc",
+        hermesCommand: "../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc",
 ]
 
-apply from: "../../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion rootProject.ext.get("compileSdkVersion")
@@ -119,5 +119,5 @@ dependencies {
     androidTestImplementation 'junit:junit:4.12'
 }
 
-apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
 applyNativeModulesAppBuildGradle(project)
