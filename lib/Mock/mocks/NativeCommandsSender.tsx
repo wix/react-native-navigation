@@ -44,6 +44,7 @@ export class NativeCommandsSender {
 
   pop(_commandId: string, componentId: string, _options?: object) {
     return new Promise((resolve) => {
+      if (!LayoutStore.getLayoutById(componentId)) return;
       const poppedChild = _.last(
         LayoutStore.getLayoutById(componentId).getStack().children
       ) as ComponentNode;
