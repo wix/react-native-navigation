@@ -11,10 +11,10 @@ import com.reactnativenavigation.react.ReactView
 class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
                         componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(interceptReactRootViewMeasureSpec(widthMeasureSpec), heightMeasureSpec)
+        super.onMeasure(interceptReactRootViewMeasureSpecWidth(widthMeasureSpec), interceptReactRootViewMeasureSpecHeight(heightMeasureSpec))
     }
 
-    private fun interceptReactRootViewMeasureSpec(widthMeasureSpec: Int): Int {
+    private fun interceptReactRootViewMeasureSpecWidth(widthMeasureSpec: Int): Int {
         // This is a HACK.
         // ReactRootView has problematic behavior when setting width to WRAP_CONTENT,
         // It's causing infinite measurements, that hung up the UI.
@@ -28,5 +28,21 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
 
         return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
             widthMeasureSpec
+    }
+
+    private fun interceptReactRootViewMeasureSpecHeight(heightMeasureSpec: Int): Int {
+        // This is a HACK.
+        // ReactRootView has problematic behavior when setting width to WRAP_CONTENT,
+        // It's causing infinite measurements, that hung up the UI.
+        // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
+        // See for more details https://github.com/wix/react-native-navigation/pull/7096
+        var measuredHeight = 0
+
+        if (rootViewGroup.children.count() > 0) {
+            measuredHeight = (((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first() as ViewGroup).height
+        }
+
+        return if (measuredHeight > 0) MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY) else
+            heightMeasureSpec
     }
 }
