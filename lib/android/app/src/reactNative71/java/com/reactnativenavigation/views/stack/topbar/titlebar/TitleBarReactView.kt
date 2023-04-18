@@ -34,7 +34,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // This is a HACK.
         // ReactRootView has problematic behavior when setting width to WRAP_CONTENT,
         // It's causing infinite measurements, that hung up the UI.
-        // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
+        // Intercepting largest child by height, and use its height as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
         var measuredHeight = 0
 
