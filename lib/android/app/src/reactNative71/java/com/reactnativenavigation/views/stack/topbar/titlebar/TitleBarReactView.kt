@@ -23,7 +23,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         var measuredWidth = 0
 
         if (rootViewGroup.children.count() > 0) {
-            measuredWidth = (((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first() as ViewGroup).width
+            measuredWidth = ((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first().width
         }
 
         return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
@@ -39,7 +39,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         var measuredHeight = 0
 
         if (rootViewGroup.children.count() > 0) {
-            measuredHeight = (((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first() as ViewGroup).height
+            measuredHeight = ((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first().height
         }
 
         return if (measuredHeight > 0) MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY) else
