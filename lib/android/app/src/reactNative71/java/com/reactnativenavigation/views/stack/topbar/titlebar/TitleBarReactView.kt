@@ -40,7 +40,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
     }
 
     private fun getRootViewFirstChild(): View? {
-        if (rootViewGroup.children.count() > 0) {
+        if (rootViewGroup.children.count() == 0) {
             return null
         }
         var rootViewGroupFirstChild: View = rootViewGroup.children.first()
