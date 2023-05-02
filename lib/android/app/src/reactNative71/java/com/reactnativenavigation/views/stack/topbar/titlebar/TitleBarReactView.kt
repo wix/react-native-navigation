@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import com.facebook.react.ReactInstanceManager
@@ -20,13 +21,9 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // It's causing infinite measurements, that hung up the UI.
         // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
-        var measuredWidth = 0
+        val measuredWidth = this.getRootViewFirstChild()?.width
 
-        if (rootViewGroup.children.count() > 0) {
-            measuredWidth = ((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first().width
-        }
-
-        return if (measuredWidth > 0) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
+        return if (measuredWidth != null) MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
             widthMeasureSpec
     }
 
@@ -36,13 +33,23 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // It's causing infinite measurements, that hung up the UI.
         // Intercepting largest child by height, and use its height as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
-        var measuredHeight = 0
+        val measuredHeight = this.getRootViewFirstChild()?.height
 
-        if (rootViewGroup.children.count() > 0) {
-            measuredHeight = ((rootViewGroup.children.first() as ViewGroup).children.first() as ViewGroup).children.first().height
-        }
-
-        return if (measuredHeight > 0) MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY) else
+        return if (measuredHeight != null) MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY) else
             heightMeasureSpec
+    }
+
+    private fun getRootViewFirstChild(): View? {
+        if (rootViewGroup.children.count() > 0) {
+            return null
+        }
+        var rootViewGroupFirstChild: View = rootViewGroup.children.first()
+        while(true) try {
+            (rootViewGroupFirstChild as ViewGroup).children.first().also { rootViewGroupFirstChild = it }
+        } catch (e: Exception) {
+            //
+        }
+        @Suppress("UNREACHABLE_CODE")
+        return rootViewGroupFirstChild
     }
 }
