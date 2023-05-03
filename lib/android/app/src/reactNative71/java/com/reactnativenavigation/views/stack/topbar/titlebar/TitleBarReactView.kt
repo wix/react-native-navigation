@@ -46,7 +46,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         }
         var rootViewGroupLastChild: View = rootViewGroup
         var next = rootViewGroup as Any
-        while(next is ViewGroup) try {
+        while(next is ViewGroup && next.childCount > 0) try {
             rootViewGroupLastChild = next
             next.children.first().also { next = it }
 
