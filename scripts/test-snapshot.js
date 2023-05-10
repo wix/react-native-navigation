@@ -14,7 +14,7 @@ function run() {
   }
 }
 
-function runAndroidSnapshotTests() { }
+function runAndroidSnapshotTests() {}
 
 function runIosSnapshotTests() {
   exec.execSync('npm run build');
@@ -54,6 +54,7 @@ function testTarget(scheme, device, OS = 'latest') {
   } finally {
     if (RECORD) {
       pushSnapshots();
+      exec.execSync('cp -R playground/ios/SnapshotTests/FailureDiffs ./artifacts');
     }
   }
 }
