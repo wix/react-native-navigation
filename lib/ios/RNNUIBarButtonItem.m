@@ -12,8 +12,8 @@
 @end
 
 @implementation RNNUIBarButtonItem {
-    RNNIconCreator* _iconCreator;
-    RNNButtonOptions* _buttonOptions;
+    RNNIconCreator *_iconCreator;
+    RNNButtonOptions *_buttonOptions;
 }
 
 - (instancetype)init {
@@ -165,7 +165,7 @@
 
 - (void)redrawIcon {
     if (_buttonOptions.icon.hasValue && [self.customView isKindOfClass:UIButton.class]) {
-        UIImage* icon = [_iconCreator create:_buttonOptions];
+        UIImage *icon = [_iconCreator create:_buttonOptions];
         [(UIButton *)self.customView setImage:icon forState:_buttonOptions.state];
     }
 }

@@ -46,7 +46,7 @@
 #endif
 
     [self createTabBarItems:childViewControllers];
-    
+
     self.longPressRecognizer =
         [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                       action:@selector(handleLongPressGesture:)];
