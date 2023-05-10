@@ -91,14 +91,6 @@
     NSNumber *fontSize = [bottomTabOptions.fontSize withDefault:@(10)];
     NSString *fontWeight = [bottomTabOptions.fontWeight withDefault:nil];
 
-    NSDictionary *selectedAttributes = [RNNFontAttributesCreator
-        createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected]
-                  fontFamily:fontFamily
-                    fontSize:fontSize
-                  fontWeight:fontWeight
-                       color:selectedTextColor];
-    [self setSelectedTitleAttributes:tabItem selectedTitleAttributes:selectedAttributes];
-
     NSDictionary *normalAttributes = [RNNFontAttributesCreator
         createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]
                   fontFamily:fontFamily
@@ -106,6 +98,14 @@
                   fontWeight:fontWeight
                        color:textColor];
     [self setTitleAttributes:tabItem titleAttributes:normalAttributes];
+
+    NSDictionary *selectedAttributes = [RNNFontAttributesCreator
+        createFromDictionary:[tabItem titleTextAttributesForState:UIControlStateSelected]
+                  fontFamily:fontFamily
+                    fontSize:fontSize
+                  fontWeight:fontWeight
+                       color:selectedTextColor];
+    [self setSelectedTitleAttributes:tabItem selectedTitleAttributes:selectedAttributes];
 }
 
 - (void)setTitleAttributes:(UITabBarItem *)tabItem titleAttributes:(NSDictionary *)titleAttributes {
