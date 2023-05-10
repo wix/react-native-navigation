@@ -5,7 +5,7 @@
 @implementation RNNTabBarItemCreator
 
 - (UITabBarItem *)createTabBarItem:(UITabBarItem *)mergeItem {
-    return [UITabBarItem new];
+    return mergeItem ?: [UITabBarItem new];
 }
 
 - (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions
