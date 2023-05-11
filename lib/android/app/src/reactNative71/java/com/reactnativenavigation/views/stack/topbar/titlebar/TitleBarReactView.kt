@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.children
 import com.facebook.react.ReactInstanceManager
 import com.reactnativenavigation.react.ReactView
+import com.reactnativenavigation.BuildConfig
 
 @SuppressLint("ViewConstructor")
 class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
@@ -66,7 +67,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
                     val childTop = location[1]
                     val childBottom = childTop + child.measuredHeight
 
-                    if (childTop >= 50) { // To filter garbage views, such as debug warning messages
+                    if (childTop >= 50 || !BuildConfig.DEBUG) { // To filter garbage views, such as debug warning messages
                         currentLeft = currentLeft.coerceAtMost(childLeft)
                         currentRight = currentRight.coerceAtLeast(childRight)
                         currentTop = currentTop.coerceAtMost(childTop)
