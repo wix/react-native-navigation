@@ -55,6 +55,21 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // This hack is needed for cases when the initialized state of the tabBar should be hidden
+    UINavigationController *firstChild = [self.childViewControllers objectAtIndex:0];
+    if ([firstChild isKindOfClass:UINavigationController.class] &&
+        firstChild.hidesBottomBarWhenPushed) {
+        [firstChild pushViewController:UIViewController.new animated:NO];
+        [firstChild popViewControllerAnimated:NO];
+    }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
