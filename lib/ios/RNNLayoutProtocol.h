@@ -42,6 +42,4 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @optional
 
-- (NSArray<UIViewController *> *)pendingChildViewControllers;
-
 @end
