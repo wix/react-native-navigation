@@ -55,7 +55,7 @@ describe('LayoutTreeCrawler', () => {
 
   it('pass props to option processor', () => {
     const passProps = { someProp: 'here' };
-    when(mockedStore.getPropsForId('testId')).thenReturn(passProps);
+    when(mockedStore.getPendingProps('testId')).thenReturn(passProps);
     const node = {
       id: 'testId',
       type: LayoutType.Component,
@@ -67,11 +67,7 @@ describe('LayoutTreeCrawler', () => {
     };
     uut.crawl(node, CommandName.SetRoot);
     verify(
-      mockedOptionsProcessor.processOptions(
-        CommandName.SetRoot,
-        undefined,
-        deepEqual(passProps)
-      )
+      mockedOptionsProcessor.processOptions(CommandName.SetRoot, undefined, deepEqual(passProps))
     ).called();
   });
 });
