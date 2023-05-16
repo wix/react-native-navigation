@@ -12,7 +12,6 @@
                initialProperties:initialProperties
                     eventEmitter:eventEmitter
              reactViewReadyBlock:reactViewReadyBlock];
-    [bridge.uiManager setAvailableSize:UIScreen.mainScreen.bounds.size forRootView:self];
     return self;
 }
 

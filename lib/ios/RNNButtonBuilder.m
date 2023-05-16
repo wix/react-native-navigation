@@ -1,6 +1,6 @@
 #import "RNNButtonBuilder.h"
-#import "RNNFontAttributesCreator.h"
 #import "RNNDynamicIconCreator.h"
+#import "RNNFontAttributesCreator.h"
 
 @implementation RNNButtonBuilder {
     RNNReactComponentRegistry *_componentRegistry;
@@ -15,7 +15,7 @@
     } else {
         _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
     }
-    
+
     return self;
 }
 
