@@ -2,26 +2,41 @@ package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.ViewGroup
 import androidx.core.view.children
 import com.facebook.react.ReactInstanceManager
 import com.reactnativenavigation.react.ReactView
-import com.reactnativenavigation.BuildConfig
+
 
 @SuppressLint("ViewConstructor")
 class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
                         componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
 
-    private var currentLeft = Int.MAX_VALUE
-    private var currentRight = 0
-    private var currentTop = Int.MAX_VALUE
-    private var currentBottom = 0
-    private var garbageViews = false
+    private data class Coordinates(var left: Int = Int.MAX_VALUE,
+                                   var top: Int = Int.MAX_VALUE,
+                                   var right: Int = 0,
+                                   var bottom: Int = 0) {
+        fun width(): Int {
+            return if (left < Int.MAX_VALUE) right - left else 0
+        }
+
+        fun height(): Int {
+            return if (top < Int.MAX_VALUE) bottom - top else 0
+        }
+
+        fun set(left: Int, top: Int, right: Int, bottom: Int) {
+            this.left = left
+            this.top = top
+            this.right = right
+            this.bottom = bottom
+        }
+    }
+
+    private val titleCoordinates = Coordinates()
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (currentRight == 0) {
-            findSize(rootViewGroup)
+        if (titleCoordinates.right == 0) {
+            setSize(titleCoordinates)
         }
         super.onMeasure(interceptReactRootViewMeasureSpecWidth(widthMeasureSpec),
                 interceptReactRootViewMeasureSpecHeight(heightMeasureSpec))
@@ -33,7 +48,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // It's causing infinite measurements, that hung up the UI.
         // Intercepting largest child by width, and use its width as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
-        val width = currentRight - currentLeft
+        val width = titleCoordinates.width()
         return if (width > 0) MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY) else
             widthMeasureSpec
     }
@@ -45,20 +60,46 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // Intercepting largest child by height, and use its height as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
 
-        val height = currentBottom - currentTop
+        val height = titleCoordinates.height()
         return if (height > 0) MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY) else
             heightMeasureSpec
     }
 
-    private fun findSize(viewGroup: ViewGroup) {
-        if (garbageViews) {
-            return
+    private fun setSize(coordinates: Coordinates) {
+        if (!setSizeByFirstViewGroup(coordinates)) {
+            setSizeByAllChildren(rootViewGroup, coordinates)
+        }
+    }
+
+    private fun setSizeByFirstViewGroup(coordinates: Coordinates): Boolean {
+        for (child in rootViewGroup.children) {
+            if (child.isShown && child is ViewGroup) {
+                val location = IntArray(2)
+                child.getLocationOnScreen(location)
+                val left = location[0]
+                val top = location[1]
+                val height = child.bottom - child.top
+                val width = child.right - child.left
+                if (width < context.resources.displayMetrics.widthPixels) {
+                    coordinates.set(left, top, left + width, top + height)
+                    return true
+                }
+            }
         }
 
+        return false
+    }
+
+    private fun setSizeByAllChildren(viewGroup: ViewGroup, coordinates: Coordinates) {
         for (child in viewGroup.children) {
             if (child.isShown) {
                 if (child is ViewGroup) {
-                    findSize(child)
+                    val childCoordinates = Coordinates()
+                    setSizeByAllChildren(child, childCoordinates)
+                    coordinates.left = coordinates.left.coerceAtMost(childCoordinates.left)
+                    coordinates.right = coordinates.right.coerceAtLeast(childCoordinates.right)
+                    coordinates.top = coordinates.top.coerceAtMost(childCoordinates.top)
+                    coordinates.bottom = coordinates.bottom.coerceAtLeast(childCoordinates.bottom)
                 } else {
                     val location = IntArray(2)
                     child.getLocationOnScreen(location)
@@ -67,34 +108,13 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
                     val childTop = location[1]
                     val childBottom = childTop + child.measuredHeight
 
-                    if (childTop >= 50 || !BuildConfig.DEBUG) { // To filter garbage views, such as debug warning messages
-                        currentLeft = currentLeft.coerceAtMost(childLeft)
-                        currentRight = currentRight.coerceAtLeast(childRight)
-                        currentTop = currentTop.coerceAtMost(childTop)
-                        currentBottom = currentBottom.coerceAtLeast(childBottom)
-
-                        Log.d("TitleBarReactView", "current ViewGroup = $viewGroup")
-                        Log.d("TitleBarReactView", "child.measuredWidth = ${child.measuredWidth}")
-                        Log.d("TitleBarReactView", "child.measuredHeight = ${child.measuredHeight}")
-                        Log.d("TitleBarReactView", "currentLeft = $currentLeft")
-                        Log.d("TitleBarReactView", "currentRight = $currentRight")
-                        Log.d("TitleBarReactView", "currentWidth = ${currentRight - currentLeft}")
-                        Log.d("TitleBarReactView", "currentTop = $currentTop")
-                        Log.d("TitleBarReactView", "currentBottom = $currentBottom")
-                        Log.d("TitleBarReactView", "currentHeight = ${currentBottom - currentTop}")
-                        Log.d("TitleBarReactView", "---------------------------------------------")
-                    } else {
-
-                        Log.d("TitleBarReactView", "current ViewGroup (garbage) = $viewGroup")
-                        Log.d("TitleBarReactView", "child (garbage) = ${child.toString()}")
-                        Log.d("TitleBarReactView", "child.type (garbage) = ${child.javaClass.name}")
-                        Log.d("TitleBarReactView", "child.id (garbage) = ${child.id}")
-
-                        garbageViews = true
-                        return
-                    }
+                    coordinates.left = coordinates.left.coerceAtMost(childLeft)
+                    coordinates.right = coordinates.right.coerceAtLeast(childRight)
+                    coordinates.top = coordinates.top.coerceAtMost(childTop)
+                    coordinates.bottom = coordinates.bottom.coerceAtLeast(childBottom)
                 }
             }
         }
+
     }
 }
