@@ -1,7 +1,7 @@
-#import <Foundation/Foundation.h>
 #import "RNNButtonOptions.h"
 #import "RNNIconDrawer.h"
 #import "UIImage+utils.h"
+#import <Foundation/Foundation.h>
 
 @interface RNNBaseIconCreator : NSObject
 
@@ -9,7 +9,7 @@
 
 - (UIImage *)create:(RNNButtonOptions *)buttonOptions;
 
-@property (nonatomic, retain) RNNIconDrawer* iconDrawer;
+@property(nonatomic, retain) RNNIconDrawer *iconDrawer;
 
 @end
 

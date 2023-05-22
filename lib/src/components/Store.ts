@@ -23,6 +23,10 @@ export class Store {
     this.pendingPropsById[componentId] = newProps;
   }
 
+  getPendingProps(componentId: string) {
+    return this.pendingPropsById[componentId];
+  }
+
   getPropsForId(componentId: string) {
     if (this.pendingPropsById[componentId]) {
       this.propsById[componentId] = this.pendingPropsById[componentId];
