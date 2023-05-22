@@ -19,10 +19,8 @@ export const LayoutComponent = class extends Component<ComponentProps> {
     return <View />;
   }
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error(
-      `Error while trying to render layout ${this.props.layoutNode.nodeId} of type ${this.props.layoutNode.type}`,
-      error,
-      errorInfo
+    throw new Error(
+      `Error while trying to render layout ${this.props.layoutNode.nodeId} of type ${this.props.layoutNode.type}: ${error}\n${errorInfo?.componentStack}`
     );
   }
 };
