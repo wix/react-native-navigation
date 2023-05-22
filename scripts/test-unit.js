@@ -25,7 +25,7 @@ function runAndroidUnitTests() {
 function runIosUnitTests() {
   exec.execSync('npm run build');
   exec.execSync('npm run pod-install');
-  testTarget('playground', 'iPhone 11');
+  testTarget('playground', 'iPhone 11', '16.2');
   // testTarget('playgroundIOS12', 'iPhone X', '12.4');
 }
 
