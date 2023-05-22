@@ -14,7 +14,7 @@ module.exports = {
     '<rootDir>/e2e/',
     '<rootDir>/autolink/',
   ],
-  setupFilesAfterEnv: ['./jest-setup.js'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', './jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     'react-native-navigation/Mock': '<rootDir>/lib/Mock',
@@ -38,4 +38,5 @@ module.exports = {
   resetMocks: true,
   resetModules: true,
   coverageReporters: ['json', 'lcov', 'text', 'html'],
+  testEnvironment: 'node',
 };
