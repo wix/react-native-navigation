@@ -33,7 +33,7 @@
         [self removeTitleComponents];
         self.boundViewController.navigationItem.title = resolvedOptions.title.text.get;
     }
-    
+
     if (options.title.color.hasValue) {
         [_titleViewHelper setTitleColor:options.title.color.get];
     }
