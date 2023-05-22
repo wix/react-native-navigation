@@ -72,16 +72,6 @@
         }
     }
 
-    if ([parentViewController respondsToSelector:@selector(pendingChildViewControllers)]) {
-        NSArray *pendingChildVCs = [parentViewController pendingChildViewControllers];
-        for (UIViewController *childVC in pendingChildVCs) {
-            UIViewController *result = [self findChildComponentForParent:childVC forId:componentId];
-            if (result) {
-                return result;
-            }
-        }
-    }
-
     return nil;
 }
 

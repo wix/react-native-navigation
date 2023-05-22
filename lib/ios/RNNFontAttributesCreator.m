@@ -36,6 +36,7 @@
                                                              style:nil
                                                            variant:nil
                                                    scaleMultiplier:1.0];
+    titleTextAttributes[NSParagraphStyleAttributeName] = NSParagraphStyle.defaultParagraphStyle;
 
     return titleTextAttributes;
 }

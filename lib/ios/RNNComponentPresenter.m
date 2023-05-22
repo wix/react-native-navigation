@@ -215,13 +215,15 @@
     if (mergeOptions.topBar.rightButtonColor.hasValue) {
         [_buttonsPresenter applyRightButtonsColor:mergeOptions.topBar.rightButtonColor];
     }
-    
+
     if (mergeOptions.topBar.rightButtonBackgroundColor.hasValue) {
-        [_buttonsPresenter applyRightButtonsBackgroundColor:mergeOptions.topBar.rightButtonBackgroundColor];
+        [_buttonsPresenter
+            applyRightButtonsBackgroundColor:mergeOptions.topBar.rightButtonBackgroundColor];
     }
-    
+
     if (mergeOptions.topBar.leftButtonBackgroundColor.hasValue) {
-        [_buttonsPresenter applyLeftButtonsBackgroundColor:mergeOptions.topBar.leftButtonBackgroundColor];
+        [_buttonsPresenter
+            applyLeftButtonsBackgroundColor:mergeOptions.topBar.leftButtonBackgroundColor];
     }
 
     if (mergeOptions.overlay.interceptTouchOutside.hasValue) {
