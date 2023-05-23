@@ -1,0 +1,213 @@
+---
+id: options-bottomTab
+title: Bottom Tab Options
+sidebar_label: Bottom Tab
+---
+
+```js
+const options = {
+  bottomTab: {},
+};
+```
+
+
+## `selectTabOnPress`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `popToRoot`
+
+Pop to root of stack by tapping on already selected tab.
+
+| Type    | Required | Platform  |
+| ------- | -------- | --------- |
+| boolean | No       | Android   |
+
+## `badge`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+## `badgeColor`
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `animateBadge`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `disableIconTint`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `dotIndicator`
+
+| Type         | Required | Platform |
+| ------------ | -------- | -------- |
+| DotIndicator | No       | Both     |
+
+## `fontFamily`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+## `fontStyle`
+
+| Type                     | Required | Platform |
+| ------------------------ | -------- | -------- |
+| enum('normal', 'italic') | No       | Both     |
+
+## `fontWeight`
+
+| Type                                                                                  | Required | Platform |
+| ------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900') | No       | Both     |
+
+## `fontSize`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `icon`
+
+| Type                                       | Required | Platform |
+| ------------------------------------------ | -------- | -------- |
+| [ImageResource](options-imageResource.mdx) | No       | Both     |
+
+## `iconWidth`
+
+The width (in dp) of the icon.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+## `iconHeight`
+
+The height (in dp) of the icon.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+## `iconColor`
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `selectedFontSize`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `selectedIcon`
+
+| Type                                       | Required | Platform |
+| ------------------------------------------ | -------- | -------- |
+| [ImageResource](options-imageResource.mdx) | No       | Both     |
+
+## `selectedIconColor`
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `iconInsets`
+
+| Type       | Required | Platform |
+| ---------- | -------- | -------- |
+| IconInsets | No       | Both     |
+
+## `disableSelectedIconTint`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `disableIconTint`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `selectedTextColor`
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `testID`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `accessibilityLabel`
+
+Overrides the text that's read by the screen reader when the user interacts with the bottomTab button.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS      |
+
+## `text`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+## `textColor`
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+### `sfSymbol`
+
+Set the SF symbol as icon (will be used primarily).
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS 13+  |
+
+
+### `sfSelectedSymbol`
+
+Set the SF symbol as selected icon (will be used primarily)
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | iOS 13+  |
+
+## DotIndicator
+
+##### color?: color
+
+##### size?: number
+
+##### visible?: boolean
+
+##### animate?: boolean
+
+## IconInsets
+
+##### top?: number
+
+##### left?: number
+
+##### right?: number
+
+##### bottom?: number

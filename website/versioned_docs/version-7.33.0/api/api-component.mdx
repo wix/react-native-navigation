@@ -1,0 +1,75 @@
+---
+id: component
+title: Component
+sidebar_label: Component
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## `registerComponent`
+Every screen component in your app must be registered with a unique name. The component itself is a traditional React component extending `React.Component` or `React.PureComponent`. It can also be a HOC to provide context (or a Redux store) or a functional component. Similar to React Native's `AppRegistry.registerComponent`.
+
+#### Parameters
+| Name   | Required | Type                | Description                                                                                                            |
+| ------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| componentName | Yes      | string | Unique component name - not to be confused with **componentId** |
+| componentProvider | Yes      | Function | Anonymous function that returns the React component to register, **OR** the component wrapped with Providers|
+| concreteComponentProvider | No      | Function | Anonymous function that returns the concrete React component. If your component is wrapped with Providers, this must be an instance of the concrete component.|
+
+#### Examples
+##### Registering a component
+```js
+Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
+```
+
+##### Registering a component wrapped with Providers
+```js
+import { Provider } from 'react-redux';
+const store = createStore();
+
+Navigation.registerComponent(`navigation.playground.MyScreen`, () => (props) =>
+  <Provider store={store}>
+    <MyScreen {...props} />
+  </Provider>,
+  () => MyScreen)
+);
+```
+
+## `setLazyComponentRegistrator`
+Pass a function that will allow you to register a component lazily. When encountering an unknown component name, this function will be called, giving you a chance to register the component before an error is thrown.
+
+#### Parameters
+| Name   | Required | Type                | Description                                                                                                            |
+| ------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| lazyRegistratorFn | Yes      | (lazyComponentRequest: string | number) => void | A function that takes a componentName, will be called when encountering an unknown componentName |
+
+#### Example
+```js
+Navigation.setLazyComponentRegistrator((componentName) => {
+  if (componentName === 'navigation.playground.LazyScreen') {
+    Navigation.registerComponent(Screens.LazilyRegisteredScreen, () => LazyScreen);
+  }
+});
+```
+
+## `updateProps`
+Update props of a component registered with [registerComponent](#registercomponent). Updating props triggers the component lifecycle methods related to [updating](https://reactjs.org/docs/react-component.html#updating).
+
+#### Parameters
+| Name        | Required | Type     | Description                                                                                                            |
+| ----------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| componentId | Yes      | string   | Unique component id                                               |
+| options     | Yes      | object   | Props object to pass to the component                             |
+| callback    | No       | Function | Function that will be executed once inner `setState` is completed |
+
+#### Example
+```js
+Navigation.updateProps('MY_COMPONENT', {
+  // props to pass to the component
+};
+```
+
+:::important
+`updateProps` is called with a componentId. This is the same unique id components have in props. Don't confuse it with the `componentName` we use when registering components with [Navigation.registerComponent](#registerComponent).
+:::
