@@ -1,16 +1,13 @@
 package com.reactnativenavigation;
 
 import android.app.Application;
-
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import androidx.annotation.NonNull;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
