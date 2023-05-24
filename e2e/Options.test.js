@@ -75,7 +75,7 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeNotVisible();
   });
 
-  it('Replace tab testID', async () => {
+  it(':ios: Replace tab testID', async () => {
     await expect(elementById(TestIDs.OPTIONS_TAB)).toBeVisible();
     await elementById(TestIDs.REPLACE_TAB_TEST_ID).tap();
     await expect(elementById(TestIDs.OPTIONS_TAB)).toBeNotVisible();
