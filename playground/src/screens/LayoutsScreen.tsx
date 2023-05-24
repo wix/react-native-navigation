@@ -84,10 +84,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationCompone
     );
   }
 
-  stack = () =>
-    Navigation.mergeOptions(this, {
-      bottomTab: { testID: 'hellooo' },
-    });
+  stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () => {
     Navigation.showModal({
