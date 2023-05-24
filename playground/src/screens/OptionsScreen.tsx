@@ -19,6 +19,7 @@ const {
   GOTO_SEARCHBAR_SCREEN,
   GOTO_SEARCHBAR_MODAL,
   REPLACE_TAB_TEST_ID,
+  REPLACED_TAB,
 } = testIDs;
 
 interface Props extends NavigationComponentProps {}
@@ -235,7 +236,7 @@ export default class Options extends NavigationComponent<Props> {
   replaceTabTestID = () => {
     Navigation.mergeOptions(this, {
       bottomTab: {
-        testID: 'REPLACED_TAB',
+        testID: REPLACED_TAB,
       },
     });
   };

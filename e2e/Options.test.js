@@ -79,7 +79,7 @@ describe('Options', () => {
     await expect(elementById(TestIDs.OPTIONS_TAB)).toBeVisible();
     await elementById(TestIDs.REPLACE_TAB_TEST_ID).tap();
     await expect(elementById(TestIDs.OPTIONS_TAB)).toBeNotVisible();
-    await expect(elementById('REPLACED_TAB')).toBeVisible();
+    await expect(elementById(TestIDs.REPLACED_TAB)).toBeVisible();
   });
 
   xit('hides topBar onScroll down and shows it on scroll up', async () => {
