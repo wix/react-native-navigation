@@ -332,7 +332,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-        if (BuildConfig.DEBUG && parent instanceof ViewGroup && child instanceof ViewGroup) {
+        if (parent instanceof ViewGroup && child instanceof ViewGroup) {
             ((ViewGroup) child).setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
                 @Override
                 public void onChildViewAdded(View parent, View child) {
