@@ -24,30 +24,23 @@ open class YellowBoxDelegate(private val context: Context, private val yellowBox
 
     open fun onChildViewAdded(parent: View, child: View?) {
         if (!context.isDebug()) return
-        onYellowBoxAdded(child)
+        onYellowBoxAdded(parent, child)
     }
 
-    fun onYellowBoxAdded(parent: View?) {
+    fun onYellowBoxAdded(parent: View?, child: View?) {
         if (isDestroyed) return
 
         this.parent = parent as ViewGroup
 
-        parent.setOnHierarchyChangeListener(object : ViewGroup.OnHierarchyChangeListener {
-            override fun onChildViewAdded(parent: View, child: View) {
-                if (!yellowBoxHelper.isYellowBox(parent, child) && (isDestroyed || tempViews.contains(child))) return
-                parent as ViewGroup
-                for (i in 1 until parent.childCount) {
-                    yellowBoxViews.add(parent[i])
-                    parent.removeView(parent[i])
-                    var tempView = View(context)
-                    tempViews.add(tempView)
-                    parent.addView(tempView, i)
-                }
-            }
-
-            override fun onChildViewRemoved(parent: View?, child: View?) {
-            }
-        })
+        if (!yellowBoxHelper.isYellowBox(parent, child) && (isDestroyed || tempViews.contains(child))) return
+        parent as ViewGroup
+        for (i in 1 until parent.childCount) {
+            yellowBoxViews.add(parent[i])
+            parent.removeView(parent[i])
+            var tempView = View(context)
+            tempViews.add(tempView)
+            parent.addView(tempView, i)
+        }
     }
 
     fun destroy() {
