@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -331,7 +332,19 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-        yellowBoxDelegate.onChildViewAdded(parent, child);
+        if (parent instanceof ViewGroup && child instanceof ViewGroup) {
+            ((ViewGroup) child).setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+                @Override
+                public void onChildViewAdded(View parent, View child) {
+                    yellowBoxDelegate.onChildViewAdded(parent, child);
+                }
+
+                @Override
+                public void onChildViewRemoved(View parent, View child) {
+
+                }
+            });
+        }
     }
 
     @Override
