@@ -96,7 +96,8 @@
                   fontFamily:fontFamily
                     fontSize:fontSize
                   fontWeight:fontWeight
-                       color:textColor];
+                       color:textColor
+                    centered:NO];
     [self setTitleAttributes:tabItem titleAttributes:normalAttributes];
 
     NSDictionary *selectedAttributes = [RNNFontAttributesCreator
@@ -104,7 +105,8 @@
                   fontFamily:fontFamily
                     fontSize:fontSize
                   fontWeight:fontWeight
-                       color:selectedTextColor];
+                       color:selectedTextColor
+                    centered:NO];
     [self setSelectedTitleAttributes:tabItem selectedTitleAttributes:selectedAttributes];
 }
 

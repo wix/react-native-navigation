@@ -145,7 +145,8 @@
                                             fontFamily:fontFamily
                                               fontSize:fontSize
                                             fontWeight:fontWeight
-                                                 color:fontColor];
+                                                 color:fontColor
+                                              centered:YES];
 
     self.getAppearance.titleTextAttributes = titleTextAttributes;
     self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
@@ -161,7 +162,8 @@
                                             fontFamily:fontFamily
                                               fontSize:fontSize
                                             fontWeight:fontWeight
-                                                 color:fontColor];
+                                                 color:fontColor
+                                              centered:NO];
     self.getAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
     self.getScrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes;
 }

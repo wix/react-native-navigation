@@ -15,11 +15,14 @@
     NSDictionary *attributes = [RNNFontAttributesCreator createWithFontFamily:familyName
                                                                      fontSize:fontSize
                                                                    fontWeight:nil
-                                                                        color:fontColor];
+                                                                        color:fontColor
+                                                                     centered:NO];
     UIFont *font = attributes[NSFontAttributeName];
     XCTAssertEqual(attributes[NSForegroundColorAttributeName], fontColor);
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
     XCTAssertEqual(font.pointSize, fontSize.floatValue);
+    NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+    XCTAssertEqual(paragraphStyle.alignment, NSTextAlignmentNatural);
 }
 
 - (void)testCreateWithFontFamily_shouldResolveFontFamilyWithFontWeight {
@@ -31,7 +34,8 @@
     NSDictionary *attributes = [RNNFontAttributesCreator createWithFontFamily:familyName
                                                                      fontSize:fontSize
                                                                    fontWeight:fontWeight
-                                                                        color:fontColor];
+                                                                        color:fontColor
+                                                                     centered:NO];
     UIFont *font = attributes[NSFontAttributeName];
 
     XCTAssertEqual(attributes[NSForegroundColorAttributeName], fontColor);
@@ -49,7 +53,8 @@
                                                                    fontFamily:familyName
                                                                      fontSize:fontSize
                                                                    fontWeight:nil
-                                                                        color:fontColor];
+                                                                        color:fontColor
+                                                                     centered:NO];
     UIFont *font = attributes[NSFontAttributeName];
     XCTAssertEqual(attributes[NSForegroundColorAttributeName], fontColor);
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
@@ -65,7 +70,8 @@
                                                                    fontFamily:familyName
                                                                      fontSize:fontSize
                                                                    fontWeight:nil
-                                                                        color:nil];
+                                                                        color:nil
+                                                                     centered:NO];
     UIFont *font = attributes[NSFontAttributeName];
     XCTAssertTrue([familyName isEqualToString:font.familyName]);
     XCTAssertEqual(font.pointSize, fontSize.floatValue);
@@ -80,7 +86,8 @@
                                                                    fontFamily:familyName
                                                                      fontSize:fontSize
                                                                    fontWeight:nil
-                                                                        color:nil];
+                                                                        color:nil
+                                                                     centered:NO];
     XCTAssertEqual(attributes[NSForegroundColorAttributeName], nil);
 }
 
@@ -94,11 +101,29 @@
                                                                    fontFamily:nil
                                                                      fontSize:fontSize
                                                                    fontWeight:nil
-                                                                        color:nil];
+                                                                        color:nil
+                                                                     centered:NO];
 
     UIFont *font = attributes[NSFontAttributeName];
     XCTAssertEqual(font.pointSize, fontSize.floatValue);
     XCTAssertTrue([font.familyName isEqualToString:initialFont.familyName]);
+}
+
+- (void)testCreateWithFontFamily_shouldCenter {
+    NSNumber *fontSize = @(20);
+    UIFont *initialFont = [UIFont systemFontOfSize:10 weight:UIFontWeightHeavy];
+    NSMutableDictionary *initialAttributes = [NSMutableDictionary new];
+    initialAttributes[NSFontAttributeName] = initialFont;
+
+    NSDictionary *attributes = [RNNFontAttributesCreator createFromDictionary:initialAttributes
+                                                                   fontFamily:nil
+                                                                     fontSize:fontSize
+                                                                   fontWeight:nil
+                                                                        color:nil
+                                                                     centered:YES];
+
+    NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+    XCTAssertEqual(paragraphStyle.alignment, NSTextAlignmentCenter);
 }
 
 @end
