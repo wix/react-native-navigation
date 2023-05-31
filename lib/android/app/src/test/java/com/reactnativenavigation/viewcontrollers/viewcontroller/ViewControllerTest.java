@@ -158,7 +158,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void onChildViewAdded_delegatesToYellowBoxDelegate() {
-        View child = new View(activity);
+        ViewGroup child = new FrameLayout(activity);
         ViewGroup view = new FrameLayout(activity);
         ViewController vc = new ViewController(activity, "", yellowBoxDelegate, new Options(), new ViewControllerOverlay(activity)) {
             @Override
@@ -175,7 +175,9 @@ public class ViewControllerTest extends BaseTest {
             public String getCurrentComponentName() { return null; }
         };
         vc.onChildViewAdded(view, child);
-        verify(yellowBoxDelegate).onChildViewAdded(view, child);
+        View yellowBox = new View(activity);
+        child.addView(yellowBox);
+        verify(yellowBoxDelegate).onChildViewAdded(child, yellowBox);
     }
 
     @Test

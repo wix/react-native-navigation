@@ -42,7 +42,7 @@ describe('modal', () => {
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
 
-  it('dismiss unknown screen id', async () => {
+  it.e2e('dismiss unknown screen id', async () => {
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
     await elementById(TestIDs.DISMISS_UNKNOWN_MODAL_BTN).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();

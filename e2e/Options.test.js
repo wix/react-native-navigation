@@ -75,6 +75,13 @@ describe('Options', () => {
     await expect(elementByLabel('Styling Options')).toBeNotVisible();
   });
 
+  it(':ios: Replace tab testID', async () => {
+    await expect(elementById(TestIDs.OPTIONS_TAB)).toBeVisible();
+    await elementById(TestIDs.REPLACE_TAB_TEST_ID).tap();
+    await expect(elementById(TestIDs.OPTIONS_TAB)).toBeNotVisible();
+    await expect(elementById(TestIDs.REPLACED_TAB)).toBeVisible();
+  });
+
   xit('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.SCROLLVIEW_SCREEN_BUTTON).tap();

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Platform, PlatformOSType } from 'react-native';
-import { Button, ButtonPropTypes } from 'react-native-ui-lib';
+import { Button, ButtonProps } from 'react-native-ui-lib';
 
 type RnnButtonProps = {
   platform?: PlatformOSType;
-} & ButtonPropTypes;
+} & ButtonProps;
 
 export default class RnnButton extends React.Component<RnnButtonProps> {
   render() {
