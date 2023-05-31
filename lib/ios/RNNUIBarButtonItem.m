@@ -176,7 +176,8 @@
                                      createWithFontFamily:[button.fontFamily withDefault:nil]
                                                  fontSize:[button.fontSize withDefault:@(17)]
                                                fontWeight:[button.fontWeight withDefault:nil]
-                                                    color:button.color.get]];
+                                                    color:button.color.get
+                                                 centered:NO]];
 
     [self setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     [self setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
@@ -188,7 +189,8 @@
                                      createWithFontFamily:[button.fontFamily withDefault:nil]
                                                  fontSize:[button.fontSize withDefault:@(17)]
                                                fontWeight:[button.fontWeight withDefault:nil]
-                                                    color:[button.disabledColor withDefault:nil]]];
+                                                    color:[button.disabledColor withDefault:nil]
+                                                 centered:NO]];
 
     [self setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
 }
