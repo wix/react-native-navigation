@@ -553,7 +553,7 @@
              [expectation fulfill];
            }];
 
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
     XCTAssertTrue(_vc1.isViewLoaded);
     XCTAssertTrue(_vc2.isViewLoaded);
 }

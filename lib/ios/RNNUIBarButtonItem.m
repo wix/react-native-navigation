@@ -139,17 +139,16 @@
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }
 
-- (void)applyColor:(Color *)color {
-    if (color.hasValue) {
+- (void)applyColor:(UIColor *)color {
+    if (color) {
         NSMutableDictionary *titleTextAttributes = [NSMutableDictionary
             dictionaryWithDictionary:[self titleTextAttributesForState:UIControlStateNormal]];
-        [titleTextAttributes setValue:color.get forKey:NSForegroundColorAttributeName];
+        [titleTextAttributes setValue:color forKey:NSForegroundColorAttributeName];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateHighlighted];
+        self.tintColor = color;
     } else
         self.image = [self.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
-    self.tintColor = color.get;
 }
 
 - (void)mergeBackgroundColor:(Color *)color {
@@ -159,7 +158,7 @@
 
 - (void)mergeColor:(Color *)color {
     _buttonOptions.color = color;
-    [self applyColor:color];
+    [self applyColor:color.get];
     [self redrawIcon];
 }
 

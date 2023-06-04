@@ -18,7 +18,7 @@
 
 - (UIImage *)createEnabledIcon:(RNNButtonOptions *)buttonOptions {
     UIColor *backgroundColor = [buttonOptions.iconBackground.color withDefault:UIColor.clearColor];
-    UIColor *tintColor = [buttonOptions.color withDefault:nil];
+    UIColor *tintColor = buttonOptions.resolveColor;
 
     return [self createIcon:buttonOptions tintColor:tintColor backgroundColor:backgroundColor];
 }
