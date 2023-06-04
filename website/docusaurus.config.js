@@ -52,9 +52,10 @@ module.exports = {
       ],
     },
     algolia: {
-      apiKey: '6d8c985d9db80241d117497afe2a0e8c',
+      appId: 'ZRJM4AS2SX',
+      apiKey: 'ebb55ab120c19b3b8fe49cc71a66ec3d',
       indexName: 'wix_react-native-navigation',
-      contextualSearch: true
+      contextualSearch: true,
     },
     sidebarCollapsible: false,
     footer: {
@@ -131,7 +132,7 @@ module.exports = {
           path: 'docs',
           editUrl: 'https://github.com/wix/react-native-navigation/edit/master/website',
           remarkPlugins: [remarkCodeImport],
-          docLayoutComponent: '@site/src/components/CustomLayout'
+          docLayoutComponent: '@site/src/components/CustomLayout',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
