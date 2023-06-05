@@ -8,6 +8,7 @@ module.exports = {
   },
   roots: [
     '<rootDir>/lib/src/',
+    '<rootDir>/lib/Mock/',
     '<rootDir>/playground/src/',
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
@@ -23,8 +24,8 @@ module.exports = {
       '<rootDir>/playground/img/layouts@2x.png',
   },
   collectCoverageFrom: [
-    'lib/src/**/*.ts',
-    'lib/src/**/*.tsx',
+    'lib/src/**/*.(ts|tsx)',
+    'lib/Mock/**/*.(ts|tsx)',
     'integration/**/*.js',
     '!lib/dist/index.js',
     '!lib/dist/Navigation.js',
