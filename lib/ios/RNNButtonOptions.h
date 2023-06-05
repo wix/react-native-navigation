@@ -22,10 +22,11 @@
 @property(nonatomic, strong) Bool *selectTabOnPress;
 @property(nonatomic, strong) RNNComponentOptions *component;
 @property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
+@property(nonatomic, strong) Bool *disableIconTint;
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
-- (Color *)resolveColor;
+- (UIColor *)resolveColor;
 
 - (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor;
 
