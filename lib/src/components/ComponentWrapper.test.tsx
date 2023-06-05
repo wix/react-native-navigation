@@ -117,6 +117,7 @@ describe('ComponentWrapper', () => {
     renderer.create(<NavigationComponent componentId={'component123'} />);
     expect(myComponentProps).toEqual({
       componentId: 'component123',
+      componentName,
       numberProp: 1,
       stringProp: 'hello',
       objectProp: { a: 2 },
@@ -251,7 +252,10 @@ describe('ComponentWrapper', () => {
     const NavigationComponent = uut.wrap(componentName, generator, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
     expect(tree.root.findByType(View)).toBeDefined();
-    expect(tree.root.findByType(MyComponent).props).toEqual({ componentId: 'component123' });
+    expect(tree.root.findByType(MyComponent).props).toEqual({
+      componentId: 'component123',
+      componentName,
+    });
   });
 
   it('sets component instance in store when constructed', () => {
