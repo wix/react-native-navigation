@@ -66,3 +66,21 @@ public class MainActivity extends NavigationActivity {
 }
 "
 `;
+
+
+exports[`activityLinker should work for RN 0.71 1`] = `
+"package com.app;
+
+import com.reactnativenavigation.NavigationActivity;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactActivityDelegate;
+
+public class MainActivity extends NavigationActivity {
+
+  
+
+  
+}
+"
+`;
