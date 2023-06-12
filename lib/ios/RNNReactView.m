@@ -9,8 +9,13 @@
                     moduleName:(NSString *)moduleName
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
+               sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-    self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
+    self = [super initWithBridge:bridge
+                      moduleName:moduleName
+               initialProperties:initialProperties
+                 sizeMeasureMode:sizeMeasureMode];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentDidAppear:)
                                                  name:RCTContentDidAppearNotification

@@ -95,6 +95,7 @@
                                   }];
         self.reactView.backgroundColor = UIColor.clearColor;
         self.reactView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.reactView setFrame:self.view.frame];
         [self.view addSubview:self.reactView];
         [self updateReactViewConstraints];
     } else {

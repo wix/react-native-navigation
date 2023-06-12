@@ -1,7 +1,7 @@
 const detox = require('detox');
 
 async function globalTeardown() {
-  await detox.globalCleanup();
+  // await detox.globalCleanup();
 }
 
 module.exports = globalTeardown;

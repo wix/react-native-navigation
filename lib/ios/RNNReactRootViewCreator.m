@@ -26,6 +26,8 @@
                  moduleName:name
           initialProperties:@{@"componentId" : rootViewId}
                eventEmitter:_eventEmitter
+            sizeMeasureMode:RCTSurfaceSizeMeasureModeWidthExact |
+                            RCTSurfaceSizeMeasureModeHeightExact
         reactViewReadyBlock:reactViewReadyBlock];
 }
 

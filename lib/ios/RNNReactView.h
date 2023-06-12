@@ -1,4 +1,4 @@
-#ifdef RN_FABRIC_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTFabricSurfaceHostingProxyRootView.h>
 #else
 #import <React/RCTRootView.h>
@@ -30,7 +30,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @end
 
-#ifdef RN_FABRIC_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
 @interface RNNReactView
     : RCTFabricSurfaceHostingProxyRootView <RCTRootViewDelegate, RNNComponentProtocol>
 #else
@@ -41,6 +41,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
                     moduleName:(NSString *)moduleName
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
+               sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 
 @property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
