@@ -105,7 +105,7 @@ class ActivityLinker {
     if (this._hasCreateReactActivityDelegate(activityContent)) {
       debugn('   Removing createReactActivityDelegate function');
       return activityContent.replace(
-        /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/,
+        /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/,
         ''
       );
     } else {
@@ -115,7 +115,7 @@ class ActivityLinker {
   }
 
   _hasCreateReactActivityDelegate(activityContent) {
-    return /\/\*\*(\s+\*.+)+\s+@Override\s+protected ReactActivityDelegate createReactActivityDelegate\(\) {(\s*[\w*(,);])*\s*}/.test(
+    return /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/.test(
       activityContent
     );
   }

@@ -56,7 +56,7 @@
     XCTAssertEqual(uut.viewControllers.count, 2);
 }
 
-- (void)testInitBottomTabsWithLayoutInfoShouldNotSetChildViewControllers {
+- (void)testInitBottomTabsWithLayoutInfoShouldSetChildViewControllers {
     UIViewController *child1 = [UIViewController new];
     UIViewController *child2 = [UIViewController new];
     NSArray *childViewControllers = @[ child1, child2 ];
@@ -69,7 +69,7 @@
                                                eventEmitter:nil
                                        childViewControllers:childViewControllers];
 
-    XCTAssertEqual(uut.viewControllers.count, 0);
+    XCTAssertEqual(uut.viewControllers.count, 2);
 }
 
 - (void)testLoadChildrenShouldSetChildViewControllers {

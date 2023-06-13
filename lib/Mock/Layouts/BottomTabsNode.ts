@@ -4,9 +4,10 @@ import { switchTabByIndex } from '../actions/layoutActions';
 import ParentNode from './ParentNode';
 
 export default class BottomTabsNode extends ParentNode {
-  selectedIndex: number = 0;
+  selectedIndex: number;
   constructor(layout: any, parentNode?: ParentNode) {
     super(layout, 'BottomTabs', parentNode);
+    this.selectedIndex = layout.data?.options?.bottomTabs?.currentTabIndex || 0;
   }
 
   mergeOptions(options: Options) {

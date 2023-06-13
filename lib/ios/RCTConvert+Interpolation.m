@@ -27,12 +27,12 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
     }
     NSString *interpolation = json[@"type"] ? json[@"type"] : nil;
 
-    id<Interpolator> (^interpolator)(void) = @{
-        @"decelerate" : ^{
-          CGFloat factor = [[[NumberParser parse:json key:@"factor"]
-              withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
-          return [[DecelerateInterpolator alloc] init:factor];
-        },
+    id<Interpolator> (^interpolator)(void) = @{@"decelerate" : ^{
+        CGFloat factor = [[[NumberParser parse:json key:@"factor"]
+            withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
+    return [[DecelerateInterpolator alloc] init:factor];
+}
+,
         @"accelerate" : ^{
           CGFloat factor = [[[NumberParser parse:json key:@"factor"]
               withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
@@ -72,13 +72,14 @@ RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFro
                                 allowsOverdamping:allowsOverdamping
                                   initialVelocity:initialVelocity];
         },
-    }[interpolation];
+}
+[interpolation];
 
-    if (interpolator != nil) {
-        return interpolator();
-    } else {
-        return [RCTConvert defaultInterpolator];
-    }
+if (interpolator != nil) {
+    return interpolator();
+} else {
+    return [RCTConvert defaultInterpolator];
+}
 }
 
 @end

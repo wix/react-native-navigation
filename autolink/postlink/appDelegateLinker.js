@@ -100,12 +100,22 @@ class AppDelegateLinker {
       return content;
     }
 
-    debugn('   Bootstrapping Navigation');
-    return content.replace(
-      /RCTBridge.*];/,
-      'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
-        '[ReactNativeNavigation bootstrapWithBridge:bridge];'
-    );
+    debugn('   Bootstrapping Navigation !!!!');
+    return content
+      .replace(
+        /RCTBridge.*];/,
+        'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
+          '[ReactNativeNavigation bootstrapWithBridge:bridge];'
+      )
+      .replace(
+        /return \[super application:application didFinishLaunchingWithOptions:launchOptions\];/,
+        'return YES;'
+      )
+      .replace(
+        /self.moduleName.*;/,
+        'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
+          '  [ReactNativeNavigation bootstrapWithBridge:bridge];'
+      );
   }
 
   _doesBootstrapNavigation(content) {

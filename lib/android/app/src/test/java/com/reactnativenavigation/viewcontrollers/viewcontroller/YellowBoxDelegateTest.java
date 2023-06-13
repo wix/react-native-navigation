@@ -32,20 +32,20 @@ public class YellowBoxDelegateTest extends BaseTest {
 
     @Test
     public void onYellowBoxAdded_removedFromParent() {
-        uut.onYellowBoxAdded(parent);
+        uut.onYellowBoxAdded(parent, yellowBox);
         assertThat(yellowBox.getParent()).isNull();
     }
 
     @Test
     public void onYellowBoxAdded_storesRefToYellowBoxAndParent() {
-        uut.onYellowBoxAdded(parent);
+        uut.onYellowBoxAdded(parent, yellowBox);
         assertThat(uut.getYellowBoxes()).contains(yellowBox);
         assertThat(uut.getParent()).isEqualTo(parent);
     }
 
     @Test
     public void onReactViewDestroy_yellowBoxIsAddedBackToParent() {
-        uut.onYellowBoxAdded(parent);
+        uut.onYellowBoxAdded(parent, yellowBox);
         uut.destroy();
         assertThat(yellowBox.getParent()).isEqualTo(parent);
     }
@@ -59,10 +59,10 @@ public class YellowBoxDelegateTest extends BaseTest {
 
     @Test
     public void onYellowBoxAdded_notHandledIfDelegateIsDestroyed() {
-        uut.onYellowBoxAdded(parent);
+        uut.onYellowBoxAdded(parent, yellowBox);
         uut.destroy();
 
-        uut.onYellowBoxAdded(parent);
+        uut.onYellowBoxAdded(parent, yellowBox);
         assertThat(yellowBox.getParent()).isEqualTo(parent);
     }
 }
