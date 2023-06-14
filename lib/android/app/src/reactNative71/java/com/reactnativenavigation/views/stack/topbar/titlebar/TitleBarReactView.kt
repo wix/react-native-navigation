@@ -23,7 +23,8 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
         val measuredWidth = this.getLastRootViewChildMaxWidth()
 
-        return MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY)
+        return if (measuredWidth != null)  MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY) else
+            widthMeasureSpec
     }
 
     private fun interceptReactRootViewMeasureSpecHeight(heightMeasureSpec: Int): Int {
@@ -32,7 +33,7 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
         // It's causing infinite measurements, that hung up the UI.
         // Intercepting largest child by height, and use its height as (parent) ReactRootView width fixed that.
         // See for more details https://github.com/wix/react-native-navigation/pull/7096
-        val measuredHeight = this.getLastRootViewChild()?.height
+        val measuredHeight = this.getLastRootViewChildMaxHeight()
 
         return if (measuredHeight != null) MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY) else
             heightMeasureSpec
@@ -52,6 +53,22 @@ class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceMa
             next.children.first().also { next = it }
         }
         return maxWidth
+    }
+
+    private fun getLastRootViewChildMaxHeight(): Int {
+        if (rootViewGroup.children.count() == 0) {
+            return 0
+        }
+        var maxHeight = rootViewGroup.height
+        var next = rootViewGroup as Any
+        while(next is ViewGroup) { //try {
+            if (next.height > maxHeight) {
+                maxHeight = next.height
+            }
+            if (next.children.count() == 0) break
+            next.children.first().also { next = it }
+        }
+        return maxHeight
     }
 
     private fun getLastRootViewChild(): View? {
