@@ -19,7 +19,8 @@ def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
-def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.7.1')
+
 android {
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
     buildToolsVersion = "33.0.0"
@@ -195,8 +196,8 @@ dependencies {
     implementation 'com.github.wix-playground:reflow-animator:1.0.6'
     implementation 'com.github.clans:fab:1.6.4'
 
-    //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+'
+    implementation("com.facebook.react:react-android")
+
 
     if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
         // tests only for our playground
