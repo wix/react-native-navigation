@@ -9,8 +9,8 @@ react {
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
-    compileSdkVersion rootProject.ext.get("compileSdkVersion")
-    ndkVersion "20.1.5948944"
+    ndkVersion rootProject.ext.ndkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,13 +19,10 @@ android {
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
-        minSdkVersion 21
-        targetSdkVersion rootProject.ext.get("targetSdkVersion")
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86", "arm64-v8a", 'x86_64'
-        }
 
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -68,12 +65,6 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
-}
-
-
-task copyDownloadableDepsToLibs(type: Copy) {
-    from configurations.implementation
-    into 'libs'
 }
 
 apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
