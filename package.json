@@ -84,7 +84,7 @@
     "@types/jest": "27.0.2",
     "@types/lodash": "^4.14.149",
     "@types/react": "16.9.41",
-    "@types/react-native": "0.63.1",
+    "@types/react-native": "0.72.2",
     "@types/react-test-renderer": "16.9.2",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
