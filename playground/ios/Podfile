@@ -1,11 +1,15 @@
-require_relative '../../node_modules/react-native/scripts/react_native_pods'
-require_relative '../../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
 platform :ios, '12.4'
 
-def all_pods  
+def all_pods
   config = use_native_modules!
-  
+
   flags = get_default_flags()
 
   use_react_native!(
@@ -16,7 +20,7 @@ def all_pods
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  
+
   pod 'ReactNativeNavigation', :path => '../../'
   pod 'HMSegmentedControl'
 end
