@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlinVersion = "1.5.31"
+        kotlinVersion = "1.7.22"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
         compileSdkVersion = 33
