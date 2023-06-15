@@ -168,7 +168,7 @@
       "ios.debug": {
         "type": "ios.app",
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
-        "build": ":"
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
       },
       "ios.release": {
         "type": "ios.app",
