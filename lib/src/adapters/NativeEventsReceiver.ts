@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter, EventEmitter, EmitterSubscription } from 'react-native';
+import { NativeModules, NativeEventEmitter, EmitterSubscription } from 'react-native';
 import {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
@@ -17,6 +17,7 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
 } from '../interfaces/Events';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 export class NativeEventsReceiver {
   private emitter: EventEmitter;
