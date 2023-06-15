@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementById } = Utils;
 
-describe.e2e(':ios: orientation', () => {
+it.e2e(':ios: orientation', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     waitForDeviceToSettleAfterOrientationChangeAndroid = (ms) =>

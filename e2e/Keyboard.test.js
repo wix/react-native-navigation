@@ -4,7 +4,7 @@ import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('Keyboard', () => {
+it.e2e('Keyboard', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.KEYBOARD_SCREEN_BTN).tap();
@@ -26,10 +26,10 @@ describe.e2e('Keyboard', () => {
   });
 
   it('focus keyboard continue to resize content', async () => {
-        await elementById(TestIDs.TEXT_INPUT2).typeText("Hello");
-        await elementById(TestIDs.TEXT_INPUT2).tapReturnKey();
-        await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
-        await expect(elementById(TestIDs.TEXT_INPUT1)).toBeVisible();
+    await elementById(TestIDs.TEXT_INPUT2).typeText('Hello');
+    await elementById(TestIDs.TEXT_INPUT2).tapReturnKey();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeVisible();
   });
 
   it('focus keyboard on push', async () => {
