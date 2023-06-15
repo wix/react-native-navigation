@@ -1,5 +1,4 @@
 import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
-import Android from './AndroidUtils';
 import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
