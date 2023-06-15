@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('SideMenu', () => {
+describe('SideMenu', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.SIDE_MENU_BTN).tap();

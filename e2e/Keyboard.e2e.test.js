@@ -3,7 +3,7 @@ import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('Keyboard', () => {
+describe('Keyboard', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.KEYBOARD_SCREEN_BTN).tap();

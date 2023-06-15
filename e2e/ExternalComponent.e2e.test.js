@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('External Component', () => {
+describe('External Component', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
