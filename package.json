@@ -120,6 +120,9 @@
     "typedoc": "0.x.x",
     "typescript": "4.4.3"
   },
+  "engines": {
+    "node": ">= 16.0.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
