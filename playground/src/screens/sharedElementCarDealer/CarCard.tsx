@@ -1,7 +1,12 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
-import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
+import { Dimensions, Platform, StyleSheet, Text, ViewProps } from 'react-native';
+import Reanimated, {
+  Easing,
+  useSharedValue,
+  withTiming,
+  WithTimingConfig,
+} from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
 import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
@@ -30,7 +35,7 @@ export default function CarCard({
 
   const color = useMemo(() => hexToRgba(car.color, TEXT_BANNER_OPACITY), [car.color]);
 
-  const textContainerOpacity = useValue(1);
+  const textContainerOpacity = useSharedValue(1);
 
   const containerStyle = useMemo(() => [styles.container, style], [style]);
   const textContainerStyle = useMemo(
@@ -41,20 +46,13 @@ export default function CarCard({
   const onPress = useCallback(() => {
     onCarPressed();
     isTextHidden.current = true;
-    Reanimated.timing(textContainerOpacity, {
-      toValue: 0,
-      duration: 300,
-      easing: EasingNode.linear,
-    }).start();
+    textContainerOpacity.value = withTiming(0, timingConfig);
   }, [onCarPressed, textContainerOpacity]);
+
   const onFocus = useCallback(() => {
     if (isTextHidden.current === true) {
       isTextHidden.current = false;
-      Reanimated.timing(textContainerOpacity, {
-        toValue: 1,
-        duration: 300,
-        easing: EasingNode.linear,
-      }).start();
+      textContainerOpacity.value = withTiming(1, timingConfig);
     }
   }, [textContainerOpacity]);
 
@@ -93,6 +91,11 @@ export default function CarCard({
     </PressableScale>
   );
 }
+
+const timingConfig: WithTimingConfig = {
+  duration: 300,
+  easing: Easing.linear,
+};
 
 const styles = StyleSheet.create({
   container: {

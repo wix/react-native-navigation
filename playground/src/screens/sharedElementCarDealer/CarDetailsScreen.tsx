@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
+import { Dimensions, Insets, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   Navigation,
   NavigationFunctionComponent,
@@ -8,7 +8,14 @@ import {
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import FastImage from 'react-native-fast-image';
-import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
+import Reanimated, {
+  Easing,
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
@@ -35,9 +42,12 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   }, [componentId]);
   const dismissGesture = useDismissGesture(onClosePressed);
 
-  const scrollY = useValue(0);
-  const onScroll = useMemo(
-    () => Reanimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]),
+  const scrollY = useSharedValue(0);
+
+  const onScroll = useAnimatedScrollHandler(
+    (e) => {
+      scrollY.value = e.contentOffset.y;
+    },
     [scrollY]
   );
 
@@ -47,11 +57,9 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   );
   const headerY = useMemo(
     () =>
-      Reanimated.interpolateNode(scrollY, {
-        inputRange: [0, HEADER_HEIGHT],
-        outputRange: [0, -HEADER_HEIGHT],
-        extrapolateLeft: Reanimated.Extrapolate.CLAMP,
-        extrapolateRight: Reanimated.Extrapolate.EXTEND,
+      interpolate(scrollY.value, [0, HEADER_HEIGHT], [0, -HEADER_HEIGHT], {
+        extrapolateLeft: Extrapolation.CLAMP,
+        extrapolateRight: Extrapolation.EXTEND,
       }),
     [scrollY]
   );
@@ -80,11 +88,10 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
 
   useEffect(() => {
     setTimeout(() => {
-      Reanimated.timing(dismissGesture.controlsOpacity, {
-        toValue: 1,
+      dismissGesture.controlsOpacity.value = withTiming(1, {
         duration: 300,
-        easing: EasingNode.linear,
-      }).start();
+        easing: Easing.linear,
+      });
     }, SET_DURATION);
   }, [dismissGesture.controlsOpacity]);
 

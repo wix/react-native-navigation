@@ -31,7 +31,7 @@ export default function DismissableView(props: DismissableViewProps): ReactEleme
     <>
       <BlurView style={StyleSheet.absoluteFill} blurAmount={25} blurRadius={25} blurType="light" />
       <PanGestureHandler
-        {...dismissGestureState.gestureHandler}
+        onGestureEvent={dismissGestureState.onGestureEvent}
         maxPointers={1}
         failOffsetX={GESTURE_HANDLER_FAIL_RANGE}
         activeOffsetY={GESTURE_HANDLER_RANGE}
