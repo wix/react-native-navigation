@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import FastImage from 'react-native-fast-image';
+import FastImage, { FastImageProps } from 'react-native-fast-image';
 import Reanimated, {
   Easing,
   Extrapolation,
@@ -23,7 +23,7 @@ import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
-const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
+const ReanimatedFastImage = Reanimated.createAnimatedComponent<FastImageProps>(FastImage as any);
 
 const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
