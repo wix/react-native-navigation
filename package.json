@@ -72,6 +72,7 @@
     "@babel/plugin-proposal-export-namespace-from": "7.10.1",
     "@babel/runtime": "^7.22.5",
     "@babel/types": "7.22.5",
+    "@react-native/metro-config": "^0.72.6",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/eslint-config": "2.0.0",
