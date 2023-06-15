@@ -18,7 +18,7 @@ describe(':ios: SearchBar', () => {
   });
 });
 
-describe.e2e(':ios: SearchBar Modal', () => {
+describe(':ios: SearchBar Modal', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
