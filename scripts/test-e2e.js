@@ -27,7 +27,7 @@ function run() {
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(
-    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} --retries 3`
+    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} --retries 3 --debug-synchronization 500`
     // "Buttons.test.js" --loglevel trace`
   );
 }
