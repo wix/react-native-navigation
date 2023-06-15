@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        RNNKotlinVersion = '1.4.31'
+        RNNKotlinVersion = '1.5.31'
         appCompatVersion = '1.6.0-alpha05'
     }
 
