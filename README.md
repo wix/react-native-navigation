@@ -30,7 +30,7 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 
 # Requirements
 
-Apps using React Native Navigation may target iOS 11 and Android 5.0 (API 21). You may use Windows, macOS or Linux as your development operating system.
+Apps using React Native Navigation may target iOS 12.4 and Android 5.0 (API 21). You may use Windows, macOS or Linux as your development operating system.
 
 # Installation
 
