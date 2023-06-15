@@ -3,6 +3,7 @@ package com.reactnativenavigation.utils
 import android.app.Activity
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import org.mockito.kotlin.mock
 import com.reactnativenavigation.BaseTest
@@ -31,10 +32,12 @@ class MotionEventTest : BaseTest() {
 
     @Test
     fun coordinatesInsideView_inside() {
-        val view = View(activity)
+        val view = FrameLayout(activity)
+        val subview = View(activity)
+        view.addView(subview)
         parent.addView(view, 200, 300)
         idleMainLooper()
-        assertThat(uut.coordinatesInsideView(view)).isTrue()
+        assertThat(uut.coordinatesInsideView(parent)).isTrue()
     }
 
     @Test
