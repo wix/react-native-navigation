@@ -181,7 +181,7 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
 }
 
 dependencies {
-
+    implementation("com.facebook.react:react-android")
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
@@ -195,9 +195,6 @@ dependencies {
 //    implementation project(':AHBottomNavigation')
     implementation 'com.github.wix-playground:reflow-animator:1.0.6'
     implementation 'com.github.clans:fab:1.6.4'
-
-    implementation("com.facebook.react:react-android")
-
 
     if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
         // tests only for our playground
