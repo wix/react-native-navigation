@@ -113,6 +113,8 @@ ios/xcuserdata/
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
 ios/Pods/
+/vendor/bundle/
+playground/ios/.xcode.env.local
 
 # Carthage
 #
@@ -234,6 +236,7 @@ playground/android/app/.settings/
 AndroidE2E/.settings/
 website/yarn.lock
 playground/ios/Podfile.lock
+Gemfile.lock
 website/package-lock.json
 
 # detox artifacts
