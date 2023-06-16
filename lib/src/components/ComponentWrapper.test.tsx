@@ -75,7 +75,11 @@ describe('ComponentWrapper', () => {
     );
     expect(NavigationComponent).not.toBeInstanceOf(MyComponent);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(tree.toJSON()!.children).toEqual(['Hello, World!']);
+
+    const treeJSON = tree.toJSON();
+    const children = Array.isArray(treeJSON) ? treeJSON[0].children : treeJSON?.children;
+
+    expect(children).toEqual(['Hello, World!']);
   });
 
   it('injects props from wrapper into original component', () => {
@@ -89,7 +93,11 @@ describe('ComponentWrapper', () => {
     const tree = renderer.create(
       <NavigationComponent componentId={'component1'} text={'yo'} renderCount={renderCount} />
     );
-    expect(tree.toJSON()!.children).toEqual(['yo']);
+
+    const treeJSON = tree.toJSON();
+    const children = Array.isArray(treeJSON) ? treeJSON[0].children : treeJSON?.children;
+
+    expect(children).toEqual(['yo']);
     expect(renderCount).toHaveBeenCalledTimes(1);
   });
 
@@ -309,7 +317,11 @@ describe('ComponentWrapper', () => {
         reduxStore
       );
       const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
-      expect(tree.toJSON()!.children).toEqual(['it just works']);
+
+      const treeJSON = tree.toJSON();
+      const children = Array.isArray(treeJSON) ? treeJSON[0].children : treeJSON?.children;
+
+      expect(children).toEqual(['it just works']);
       expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
   });
