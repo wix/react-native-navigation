@@ -182,7 +182,9 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
 }
 
 dependencies {
-    implementation("com.facebook.react:react-android")
+    //noinspection GradleDynamicVersion
+    implementation("com.facebook.react:react-android:+")
+
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
