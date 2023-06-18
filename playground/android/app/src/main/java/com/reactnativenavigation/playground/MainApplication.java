@@ -9,8 +9,8 @@ import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationPackage;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class MainApplication extends NavigationApplication {
             // If you opted-in for the New Architecture, we load the native entry point for this app.
             DefaultNewArchitectureEntryPoint.load();
         }
-        initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+        ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     }
 
     @Override
