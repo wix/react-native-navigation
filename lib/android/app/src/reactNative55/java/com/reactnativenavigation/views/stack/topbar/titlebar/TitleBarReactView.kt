@@ -9,6 +9,7 @@ import com.reactnativenavigation.react.ReactView
 @SuppressLint("ViewConstructor")
 class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
                         componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
+    var centered: Boolean = false
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(interceptReactRootViewMeasureSpec(widthMeasureSpec), heightMeasureSpec)
     }
