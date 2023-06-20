@@ -8,7 +8,6 @@ class ActivityLinker {
     this.activityPath = path.mainActivityJava;
     this.extendNavigationActivitySuccess = false;
     this.removeGetMainComponentNameSuccess = false;
-    this.removeCreateReactActivityDelegate = false;
   }
 
   link() {
