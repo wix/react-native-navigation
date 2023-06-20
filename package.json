@@ -91,7 +91,7 @@
     "babel-jest": "^29.5.0",
     "clang-format": "^1.4.0",
     "detox": "20.9.0",
-    "detox-testing-library-rnn-adapter": "2.x.x",
+    "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "7.32.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
