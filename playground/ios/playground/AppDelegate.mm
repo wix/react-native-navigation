@@ -6,13 +6,11 @@
 #import "RNNCustomViewController.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-@interface AppDelegate () <RCTBridgeDelegate>
-@end
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.initialProps = @{};
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     if (@available(iOS 13.0, *)) {
@@ -22,8 +20,11 @@
     }
     [self.window makeKeyWindow];
 
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    [ReactNativeNavigation bootstrapWithBridge:bridge];
+    if (!self.bridge) {
+        self.bridge = [self createBridgeWithDelegate:self launchOptions:launchOptions];
+    }
+
+    [ReactNativeNavigation bootstrapWithBridge:self.bridge];
     [ReactNativeNavigation
         registerExternalComponent:@"RNNCustomComponent"
                          callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
