@@ -4,6 +4,7 @@ module.exports = {
   bail: true,
   globalSetup: 'detox/runners/jest/globalSetup',
   globalTeardown: 'detox/runners/jest/globalTeardown',
+  reporters: ['detox/runners/jest/reporter'],
   maxWorkers: 1,
   moduleNameMapper: {
     ...require('../jest.config.js').moduleNameMapper,

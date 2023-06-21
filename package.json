@@ -88,7 +88,7 @@
     "@types/react-test-renderer": "16.9.2",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
-    "babel-jest": "^29.5.0",
+    "babel-jest": "^27.0.0",
     "clang-format": "^1.4.0",
     "detox": "20.9.0",
     "detox-testing-library-rnn-adapter": "^2.0.3",
@@ -171,6 +171,7 @@
       "ios.debug": {
         "type": "ios.app",
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "start": "npm start -- --e2e",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
       },
       "ios.release": {
