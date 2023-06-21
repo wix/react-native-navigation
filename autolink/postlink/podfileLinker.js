@@ -26,15 +26,15 @@ class PodfileLinker {
   }
 
   /**
-   * Sets the minimum iOS version to iOS 12.4 which is the minimum version required by the library.
+   * Sets the minimum iOS version to iOS 11.0 which is the minimum version required by the library.
    */
   _setMinimumIOSVersion(contents) {
     const platformDefinition = contents.match(/platform :ios, '.*'/);
     const minimumIOSVersion = contents.match(/(?<=platform\s:ios,\s(?:"|'))(.*)(?=(?:"|'))/);
 
-    if (parseFloat(minimumIOSVersion) < 12.4) {
-      debugn('   Bump minimum iOS version to iOS 12.4');
-      return contents.replace(platformDefinition, "platform :ios, '12.4'");
+    if (parseFloat(minimumIOSVersion) < 11) {
+      debugn('   Bump minimum iOS version to iOS 11.0');
+      return contents.replace(platformDefinition, "platform :ios, '11.0'");
     }
 
     return contents;
