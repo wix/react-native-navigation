@@ -182,6 +182,7 @@
       "android.debug": {
         "type": "android.apk",
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
+        "start": "npm start -- --e2e",
         "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug"
       },
       "android.release": {
