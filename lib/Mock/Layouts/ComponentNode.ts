@@ -13,7 +13,7 @@ export default class ComponentNode extends ParentNode {
 
   public componentDidMount() {
     this.componentDidMountOnce = true;
-    this.componentDidAppearPending && this.componentDidAppear();
+    this.componentDidAppearPending && setImmediate(() => this.componentDidAppear());
   }
 
   public componentDidAppear() {
