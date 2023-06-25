@@ -88,10 +88,10 @@
     "@types/react-test-renderer": "18.0.0",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
-    "babel-jest": "^29.5.0",
+    "babel-jest": "^27.0.0",
     "clang-format": "^1.4.0",
     "detox": "20.9.0",
-    "detox-testing-library-rnn-adapter": "2.x.x",
+    "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "7.32.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
@@ -133,8 +133,11 @@
     "*.{h,m,mm}": "node ./scripts/check-clang-format"
   },
   "detox": {
-    "test-runner": "jest",
-    "specs": "",
+    "testRunner": {
+      "args": {
+        "config": "e2e/jest.config.js"
+      }
+    },
     "artifacts": {
       "plugins": {
         "log": "all",
@@ -171,7 +174,8 @@
       "ios.debug": {
         "type": "ios.app",
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
-        "build": ":"
+        "start": "npm start -- --e2e",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
       },
       "ios.release": {
         "type": "ios.app",
@@ -181,6 +185,7 @@
       "android.debug": {
         "type": "android.apk",
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
+        "start": "npm start -- --e2e",
         "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug"
       },
       "android.release": {
