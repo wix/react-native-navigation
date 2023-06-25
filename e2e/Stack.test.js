@@ -66,7 +66,7 @@ describe('Stack', () => {
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });
 
-  it('pop component should not detach component if can`t pop', async () => {
+  it.e2e('pop component should not detach component if can`t pop', async () => {
     await elementById(TestIDs.POP_NONE_EXISTENT_SCREEN_BTN).tap();
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
   });

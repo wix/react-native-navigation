@@ -1,4 +1,5 @@
 #import "RNNButtonOptions.h"
+#import "NullColor.h"
 
 @implementation RNNButtonOptions
 
@@ -23,6 +24,7 @@
     self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]
                                                                  enabled:self.enabled];
     self.systemItem = [TextParser parse:dict key:@"systemItem"];
+    self.disableIconTint = [BoolParser parse:dict key:@"disableIconTint"];
 
     return self;
 }
@@ -46,6 +48,7 @@
     newOptions.selectTabOnPress = self.selectTabOnPress.copy;
     newOptions.iconBackground = self.iconBackground.copy;
     newOptions.systemItem = self.systemItem.copy;
+    newOptions.disableIconTint = self.disableIconTint.copy;
     return newOptions;
 }
 
@@ -83,6 +86,8 @@
         self.selectTabOnPress = options.selectTabOnPress;
     if (options.systemItem.hasValue)
         self.systemItem = options.systemItem;
+    if (options.disableIconTint.hasValue)
+        self.disableIconTint = options.disableIconTint;
 }
 
 - (BOOL)shouldCreateCustomView {
@@ -93,11 +98,13 @@
     return [self.enabled withDefault:YES];
 }
 
-- (Color *)resolveColor {
+- (UIColor *)resolveColor {
+    if ([_disableIconTint withDefault:NO])
+        return NullColor.new.get;
     if (![_enabled withDefault:YES] && _disabledColor.hasValue)
-        return _disabledColor;
+        return _disabledColor.get;
     else
-        return _color;
+        return [_color withDefault:nil];
 }
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions {
