@@ -8,6 +8,7 @@
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTFabricSurfaceHostingProxyRootView.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
+#import <React/RCTRuntimeExecutorFromBridge.h>
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
@@ -51,7 +52,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
                                                 contextContainer:_contextContainer];
     bridge.surfacePresenter = self.bridgeAdapter.surfacePresenter;
 
-//  [self unstable_registerLegacyComponents];
+    [self unstable_registerLegacyComponents];
 #endif
 
     [ReactNativeNavigation bootstrapWithBridge:bridge];
