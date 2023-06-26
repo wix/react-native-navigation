@@ -29,6 +29,8 @@ beforeEach(() => {
   mockUILib();
 });
 
+setImmediate = (callback) => callback();
+
 const mockUILib = () => {
   const NativeModules = require('react-native').NativeModules;
   NativeModules.KeyboardTrackingViewTempManager = {};

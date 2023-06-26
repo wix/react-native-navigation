@@ -32,6 +32,7 @@ describe('Back Button', () => {
     await expect(elementById(TestIDs.BACK_BUTTON)).toBeNotVisible();
     await elementById(TestIDs.TOGGLE_BACK_BUTTON_VISIBILITY).tap();
     await elementById(TestIDs.DISMISS_BTN).tap();
+    await elementByLabel('OK').tap();
     await elementById(TestIDs.BACK_BUTTON).tap();
     await expect(elementById(TestIDs.NAVIGATION_TAB)).toBeVisible();
   });
