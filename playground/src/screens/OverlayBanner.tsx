@@ -24,8 +24,10 @@ export default class OverlayBanner extends NavigationComponent<Props> {
     return (
       <SafeAreaView
         style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
         }}
         pointerEvents="box-none"
       >

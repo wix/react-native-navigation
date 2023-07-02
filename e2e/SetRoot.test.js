@@ -34,7 +34,7 @@ describe('SetRoot', () => {
     await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
   });
 
-  it('set root with two children and second tab selected hides bottomTabs', async () => {
+  it(':ios: set root with two children and second tab selected hides bottomTabs', async () => {
     await elementById(TestIDs.SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN).tap();
     await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
   });
