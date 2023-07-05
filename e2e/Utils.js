@@ -11,7 +11,7 @@ function bitmapDiff(imagePath, expectedImagePath) {
 }
 const utils = {
   elementByLabel: (label) => {
-    return element(by.label(label));
+    return element(by.label(label)).atIndex(0);
   },
   elementById: (id) => {
     return element(by.id(id));

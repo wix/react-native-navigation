@@ -10,12 +10,13 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	BOOL res = [super application:application didFinishLaunchingWithOptions:launchOptions];
 	[ReactNativeNavigation
 		registerExternalComponent:@"RNNCustomComponent"
 						 callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
 						   return [[RNNCustomViewController alloc] initWithProps:props];
 						 }];
-	return [super application:application didFinishLaunchingWithOptions:launchOptions];
+	return res;
 }
 
 #pragma mark - RCTBridgeDelegate

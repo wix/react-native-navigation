@@ -64,7 +64,6 @@
 
 - (void)clearComponentsForParentId:(NSString *)parentComponentId {
     [_componentStore removeObjectForKey:parentComponentId];
-    ;
 }
 
 - (void)removeComponent:(NSString *)componentId {

@@ -19,11 +19,10 @@ function run() {
   const workers = multi ? 3 : 1;
   const loglevel = verbose ? '--loglevel verbose' : '';
 
-  if (!android) {
-    exec.execSync('npm run build');
-    exec.execSync('npm run pod-install');
-  }
   if (!skipBuild) {
+    if (!android) {
+      exec.execSync('npm run pod-install-new-arch');
+    }
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(
