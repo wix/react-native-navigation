@@ -94,7 +94,7 @@
                                                                }];
                                   }];
         self.reactView.backgroundColor = UIColor.clearColor;
-        self.reactView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.reactView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.reactView setFrame:self.view.frame];
         [self.view addSubview:self.reactView];
         [self updateReactViewConstraints];
@@ -115,24 +115,14 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
+    [self updateReactViewConstraints];
 }
 
 - (void)updateReactViewConstraints {
     if (self.isViewLoaded && self.reactView) {
-        [NSLayoutConstraint deactivateConstraints:_reactViewConstraints];
-        _reactViewConstraints = @[
-            [self.reactView.topAnchor
-                constraintEqualToAnchor:self.shouldDrawBehindTopBar
-                                            ? self.view.topAnchor
-                                            : self.view.safeAreaLayoutGuide.topAnchor],
-            [self.reactView.bottomAnchor
-                constraintEqualToAnchor:self.shouldDrawBehindBottomTabs
-                                            ? self.view.bottomAnchor
-                                            : self.view.safeAreaLayoutGuide.bottomAnchor],
-            [self.reactView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor],
-            [self.reactView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor]
-        ];
-        [NSLayoutConstraint activateConstraints:_reactViewConstraints];
+        CGFloat bottomInset = self.shouldDrawBehindBottomTabs ? 0 : self.view.safeAreaInsets.bottom;
+        CGFloat topInset = self.shouldDrawBehindTopBar ? 0 : self.view.safeAreaInsets.top;
+        [self.reactView setFrame:CGRectMake(0, topInset, self.view.frame.size.width, self.view.frame.size.height - topInset - bottomInset)];
     }
 }
 

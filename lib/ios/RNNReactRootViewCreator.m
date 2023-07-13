@@ -21,6 +21,7 @@
                           ofType:(RNNComponentType)componentType
              reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     [self verifyRootViewId:rootViewId];
+#ifdef RCT_NEW_ARCH_ENABLED
     return [[[self resolveComponentViewClass:componentType] alloc]
              initWithBridge:_bridge
                  moduleName:name
@@ -29,6 +30,14 @@
             sizeMeasureMode:RCTSurfaceSizeMeasureModeWidthExact |
                             RCTSurfaceSizeMeasureModeHeightExact
         reactViewReadyBlock:reactViewReadyBlock];
+#else
+    return [[[self resolveComponentViewClass:componentType] alloc]
+             initWithBridge:_bridge
+                 moduleName:name
+          initialProperties:@{@"componentId" : rootViewId}
+               eventEmitter:_eventEmitter
+        reactViewReadyBlock:reactViewReadyBlock];
+#endif
 }
 
 - (Class)resolveComponentViewClass:(RNNComponentType)componentType {
