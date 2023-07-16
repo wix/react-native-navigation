@@ -4,47 +4,111 @@ title: SplitView
 sidebar_label: SplitView
 ---
 
-A container view controller implementing a master-detail interface. See [UISplitViewController docs](https://developer.apple.com/documentation/uikit/uisplitviewcontroller).
-Currently implemented only in iOS.
+A container view controller that implements a hierarchical interface. See [UISplitViewController docs](https://developer.apple.com/documentation/uikit/uisplitviewcontroller).
+Only available for iOS.
+
+In iOS 14 and later, SplitView supports column-style layouts. Before iOS 14, SplitView supported just one interface style with a master view controller and a detail view controller.
+
+In order to use a column-style layout, you must set a `style` option. Without providing this, SplitView will default to displaying the classic interface.
+
+It is also worth noting that each `component` is automatially embedded into a UINavigationView by iOS when using a column-based layout style. Therefore you can set `topBar` options such as `title` as shown below.
+
+A toggle icon is also displayed in the Navigation bar to hide / show the Primary component.
 
 ```js
 {
   id: 'PROFILE_TAB',
-  master: {
+  primary: {
     component: {
-      id: 'MASTER_SCREEN',
-      name: 'MasterScreen'
+      id: 'PRIMARY_SCREEN',
+      name: 'PrimaryScreen',
+      options: {
+        topBar: {
+          title: {
+            text: 'Primary',
+          },
+        },
+      },
     }
   },
-  detail: {
+  supplementary: {
     component: {
-      id: 'DETAIL_SCREEN',
-      name: 'DetailScreen'
+      id: 'SUPPLEMENTARY_SCREEN',
+      name: 'SupplementaryScreen'
+      options: {
+        topBar: {
+          title: {
+            text: 'Supplementary',
+          },
+        },
+      },
     }
+  },
+  secondary: {
+    component: {
+      id: 'SECONDARY_SCREEN',
+      name: 'SecondaryScreen'
+      options: {
+        topBar: {
+          title: {
+            text: 'Secondary',
+          },
+        },
+      },
+    }
+  },
+  options: {
+    style: 'tripleColumn'
   }
 }
 ```
 
 ## `id`
 
-| Type   | Required | Description                                                                                                                                                    |
-| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type   | Required | Description                                                                                                                                              |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | string | No       | Unique id used to interact with the view via the Navigation api, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `primary`
+
+| Type                        | Required | Description        |
+| --------------------------- | -------- | ------------------ |
+| [Layout](layout-layout.mdx) | YES      | Set primary layout |
+
+## `supplementary`
+
+| Type                        | Required | Description                                                |
+| --------------------------- | -------- | ---------------------------------------------------------- |
+| [Layout](layout-layout.mdx) | NO       | Set supplementary layout (for 3 column layouts on iOS 14+) |
+
+## `secondary`
+
+| Type                        | Required | Description          |
+| --------------------------- | -------- | -------------------- |
+| [Layout](layout-layout.mdx) | YES      | Set secondary layout |
 
 ## `master`
 
-| Type               | Required | Description                                     |
-| ------------------ | -------- | ----------------------------------------------- |
+| Type                        | Required | Description                                     |
+| --------------------------- | -------- | ----------------------------------------------- |
 | [Layout](layout-layout.mdx) | YES      | Set master layout (the smaller screen, sidebar) |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use `primary` instead.
+:::
 
 ## `detail`
 
-| Type               | Required | Description                                   |
-| ------------------ | -------- | --------------------------------------------- |
+| Type                        | Required | Description                                   |
+| --------------------------- | -------- | --------------------------------------------- |
 | [Layout](layout-layout.mdx) | YES      | Set detail layout (the larger screen, flexes) |
+
+:::warning Deprecation warning
+This option is currently deprecated and will be removed in a future release. Please use `secondary` instead.
+:::
 
 ## `options`
 
-| Type                    | Required | Description                                     |
-| ----------------------- | -------- | ----------------------------------------------- |
+| Type                        | Required | Description                                     |
+| --------------------------- | -------- | ----------------------------------------------- |
 | [Options](options-root.mdx) | No       | dynamic options which will apply to all screens |

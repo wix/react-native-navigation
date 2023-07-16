@@ -1,5 +1,6 @@
 import { LayoutType } from './LayoutType';
 import { LayoutNode } from './LayoutTreeCrawler';
+import { Deprecations } from './Deprecations';
 import {
   Layout,
   LayoutTopTabs,
@@ -13,7 +14,7 @@ import {
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export class LayoutTreeParser {
-  constructor(private uniqueIdProvider: UniqueIdProvider) {
+  constructor(private uniqueIdProvider: UniqueIdProvider, private deprecations: Deprecations) {
     this.parse = this.parse.bind(this);
   }
 
@@ -31,6 +32,10 @@ export class LayoutTreeParser {
     } else if (api.externalComponent) {
       return this.externalComponent(api.externalComponent);
     } else if (api.splitView) {
+      if (api.splitView.master || api.splitView.detail) {
+        // Deprecated
+        this.deprecations.onParseLayout(api);
+      }
       return this.splitView(api.splitView);
     }
     throw new Error(`unknown LayoutType "${Object.keys(api)}"`);
@@ -126,14 +131,31 @@ export class LayoutTreeParser {
   }
 
   private splitView(api: LayoutSplitView): LayoutNode {
-    const master = api.master ? this.parse(api.master) : undefined;
-    const detail = api.detail ? this.parse(api.detail) : undefined;
-
     return {
       id: api.id || this.uniqueIdProvider.generate(LayoutType.SplitView),
       type: LayoutType.SplitView,
       data: { options: api.options },
-      children: master && detail ? [master, detail] : [],
+      children: this.splitViewChildren(api),
     };
+  }
+
+  private splitViewChildren(api: LayoutSplitView): LayoutNode[] {
+    const children: LayoutNode[] = [];
+    if (api.primary) {
+      children.push(this.parse(api.primary));
+    } else if (api.master) {
+      // Deprecated -- treat as `primary`
+      children.push(this.parse(api.master));
+    }
+    if (api.supplementary) {
+      children.push(this.parse(api.supplementary));
+    }
+    if (api.secondary) {
+      children.push(this.parse(api.secondary));
+    } else if (api.detail) {
+      // Deprecated -- treat as `secondary`
+      children.push(this.parse(api.detail));
+    }
+    return children;
   }
 }

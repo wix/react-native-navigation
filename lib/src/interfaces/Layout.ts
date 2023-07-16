@@ -105,25 +105,42 @@ export interface LayoutSideMenu {
   options?: Options;
 }
 
-export interface LayoutSplitView {
+export interface LayoutSplitViewCurrent {
   /**
    * Set ID of the stack so you can use Navigation.mergeOptions to
    * update options
    */
   id?: string;
   /**
-   * Set master layout (the smaller screen, sidebar)
+   * Set primary layout
    */
-  master?: Layout;
+  primary?: Layout;
   /**
-   * Set detail layout (the larger screen, flexes)
+   * Set supplementary layout (for 3 column layouts on iOS 14+)
    */
-  detail?: Layout;
+  supplementary?: Layout;
+  /**
+   * Set secondary layout
+   */
+  secondary?: Layout;
   /**
    * Configure split view
    */
   options?: Options;
 }
+
+export interface LayoutSplitViewDeprecated {
+  /**
+   * Set master layout (the smaller screen, sidebar)
+   */
+  master?: Layout;
+  /**
+   * Set master layout (the smaller screen, sidebar)
+   */
+  detail?: Layout;
+}
+
+export type LayoutSplitView = LayoutSplitViewCurrent & LayoutSplitViewDeprecated;
 
 export interface LayoutTopTabs {
   /**
