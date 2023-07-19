@@ -21,9 +21,7 @@
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-    self = [super initWithBridge:bridge
-                      moduleName:moduleName
-               initialProperties:initialProperties];
+    self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
 #endif
 
     [[NSNotificationCenter defaultCenter] addObserver:self

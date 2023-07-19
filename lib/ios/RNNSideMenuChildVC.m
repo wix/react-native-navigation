@@ -34,7 +34,8 @@
 
     [self addChildViewController:self.child];
     [self.child.view setFrame:self.view.bounds];
-    self.child.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.child.view.autoresizingMask =
+        UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.child.view];
     [self.view bringSubviewToFront:self.child.view];
     [self.child didMoveToParentViewController:self];

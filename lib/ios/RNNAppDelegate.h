@@ -1,12 +1,12 @@
+#import "RCTAppDelegate.h"
+#import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeDelegate.h>
-
-#import <Foundation/Foundation.h>
 
 @class RCTSurfacePresenterBridgeAdapter;
 @class RCTTurboModuleManager;
 
-@interface RNNAppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
+@interface RNNAppDelegate : RCTAppDelegate
 
 @property(nonatomic, strong) UIWindow *window;
 

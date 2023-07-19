@@ -21,7 +21,7 @@ function run() {
 
   if (!skipBuild) {
     if (!android) {
-      exec.execSync('npm run pod-install-new-arch');
+      exec.execSync('npm run pod-install');
     }
     exec.execSync(`detox build --configuration ${configuration}`);
   }

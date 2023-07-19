@@ -122,7 +122,8 @@
     if (self.isViewLoaded && self.reactView) {
         CGFloat bottomInset = self.shouldDrawBehindBottomTabs ? 0 : self.view.safeAreaInsets.bottom;
         CGFloat topInset = self.shouldDrawBehindTopBar ? 0 : self.view.safeAreaInsets.top;
-        [self.reactView setFrame:CGRectMake(0, topInset, self.view.frame.size.width, self.view.frame.size.height - topInset - bottomInset)];
+        [self.reactView setFrame:CGRectMake(0, topInset, self.view.frame.size.width,
+                                            self.view.frame.size.height - topInset - bottomInset)];
     }
 }
 
