@@ -11,6 +11,8 @@ function bitmapDiff(imagePath, expectedImagePath) {
 }
 const utils = {
   elementByLabel: (label) => {
+    // uncomment for running tests with rn's new arch
+    // return element(by.label(label)).atIndex(0);
     return element(by.text(label));
   },
   elementById: (id) => {
