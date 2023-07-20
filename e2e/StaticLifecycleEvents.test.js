@@ -89,7 +89,7 @@ describe('static lifecycle events', () => {
     ).toBeVisible();
   });
 
-  xit('unmounts previous root before resolving setRoot promise', async () => {
+  it('unmounts previous root before resolving setRoot promise', async () => {
     await elementById(TestIDs.SET_ROOT_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
