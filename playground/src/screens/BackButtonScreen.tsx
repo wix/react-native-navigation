@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -17,7 +17,7 @@ const {
   BACK_BUTTON,
 } = testIDs;
 
-export default class BackButtonScreen extends React.Component<NavigationComponentProps> {
+export default class BackButtonScreen extends React.Component<NavigationProps> {
   visible: boolean = true;
   static options(): Options {
     return {

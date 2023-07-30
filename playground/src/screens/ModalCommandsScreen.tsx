@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -21,7 +21,7 @@ interface State {
   dismissModalPromiseResult?: string;
 }
 
-export default class ModalScreen extends NavigationComponent<NavigationComponentProps, State> {
+export default class ModalScreen extends NavigationComponent<NavigationProps, State> {
   static options() {
     return {
       topBar: {
@@ -32,7 +32,7 @@ export default class ModalScreen extends NavigationComponent<NavigationComponent
     };
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: NavigationProps) {
     super(props);
     Navigation.events().registerModalDismissedListener(({ componentId }) => {
       this.setState({

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationProps } from 'react-native-navigation';
 import Colors from '../commons/Colors';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   title: string;
   timesCreated?: number;
 }
