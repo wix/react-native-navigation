@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Alert, Platform, ScrollView, StyleSheet } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class CustomDialogWithScroll extends React.PureComponent<Props> {
   static options() {

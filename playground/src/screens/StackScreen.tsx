@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -24,7 +24,7 @@ const {
   POP_BTN,
 } = testIDs;
 
-export default class StackScreen extends React.Component<NavigationComponentProps> {
+export default class StackScreen extends React.Component<NavigationProps> {
   static options(): Options {
     return {
       topBar: {

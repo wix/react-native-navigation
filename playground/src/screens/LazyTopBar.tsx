@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import testIDs from '../testIDs';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   title: string;
   text: string;
 }

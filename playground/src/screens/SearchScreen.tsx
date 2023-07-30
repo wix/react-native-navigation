@@ -1,10 +1,6 @@
 import React from 'react';
 import { StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
-import {
-  Navigation,
-  NavigationComponentProps,
-  SearchBarUpdatedEvent,
-} from 'react-native-navigation';
+import { Navigation, NavigationProps, SearchBarUpdatedEvent } from 'react-native-navigation';
 import testIDs from '../testIDs';
 
 const ITEMS: { key: string }[] = [];
@@ -17,7 +13,7 @@ interface State {
   isFocused: boolean;
 }
 
-export default class SearchScreen extends React.Component<NavigationComponentProps, State> {
+export default class SearchScreen extends React.Component<NavigationProps, State> {
   static options() {
     return {
       topBar: {
@@ -39,7 +35,7 @@ export default class SearchScreen extends React.Component<NavigationComponentPro
     };
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: NavigationProps) {
     super(props);
     this.state = {
       query: '',

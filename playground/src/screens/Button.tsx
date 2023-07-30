@@ -9,9 +9,9 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationProps } from 'react-native-navigation';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   title: string;
   accessibilityLabel?: string;
   color: string;
