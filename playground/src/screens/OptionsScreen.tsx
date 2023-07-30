@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationProps } from 'react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
 import Navigation from '../services/Navigation';
@@ -22,7 +22,7 @@ const {
   REPLACED_TAB,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class Options extends NavigationComponent<Props> {
   static options() {

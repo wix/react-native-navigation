@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import {
   Navigation,
-  NavigationComponentProps,
+  NavigationProps,
   LayoutOrientation,
   NavigationComponent,
   Options,
 } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   orientation: LayoutOrientation[]; // LayoutOrientation type is not exposed.
 }
 

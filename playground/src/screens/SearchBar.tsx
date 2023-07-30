@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -14,7 +14,7 @@ const {
   TOP_BAR,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class SearchBar extends React.Component<Props> {
   static options() {

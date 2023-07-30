@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, Button, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import { GlobalContext, Context } from '../context';
 
-export default class ContextScreen extends React.Component<NavigationComponentProps> {
+export default class ContextScreen extends React.Component<NavigationProps> {
   static contextType = Context;
 
   static options() {

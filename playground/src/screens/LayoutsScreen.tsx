@@ -3,7 +3,7 @@ import {
   Options,
   OptionsModalPresentationStyle,
   NavigationComponent,
-  NavigationComponentProps,
+  NavigationProps,
 } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -28,8 +28,8 @@ interface State {
   componentDidAppear: boolean;
 }
 
-export default class LayoutsScreen extends NavigationComponent<NavigationComponentProps, State> {
-  constructor(props: NavigationComponentProps) {
+export default class LayoutsScreen extends NavigationComponent<NavigationProps, State> {
+  constructor(props: NavigationProps) {
     super(props);
     Navigation.events().bindComponent(this);
     this.state = {

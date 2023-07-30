@@ -4,7 +4,7 @@ import { BackHandler, StyleSheet, View } from 'react-native';
 import {
   NavigationButtonPressedEvent,
   NavigationComponent,
-  NavigationComponentProps,
+  NavigationProps,
   Options,
 } from 'react-native-navigation';
 import Button from '../components/Button';
@@ -31,7 +31,7 @@ const {
   BACK_BUTTON,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   previousScreenIds: string[];
   stackPosition: number;
 }
