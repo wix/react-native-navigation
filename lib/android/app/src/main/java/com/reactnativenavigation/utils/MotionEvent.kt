@@ -14,7 +14,7 @@ fun MotionEvent.coordinatesInsideView(view: View?): Boolean {
         view.getHitRect(hitRect)
         return hitRect.contains(x.toInt(), y.toInt())
     } else {
-        val viewGroup = (view as? ViewGroup)?.getChildAt(0) as? ViewGroup ?: return false
+        val viewGroup = (view as? ViewGroup)?.getChildAt(0) as? ViewGroup ?: view as ViewGroup
 
         viewGroup.getHitRect(hitRect)
         return hitRect.contains(x.toInt(), y.toInt())
