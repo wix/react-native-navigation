@@ -1,5 +1,5 @@
 /**
- * @deprecated This type replaced with ComponentProps
+ * @deprecated This type replaced with NavigationProps
  */
 export interface NavigationComponentProps {
   componentId: string;
