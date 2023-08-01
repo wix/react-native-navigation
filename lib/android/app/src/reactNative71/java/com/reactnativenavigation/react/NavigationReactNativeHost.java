@@ -34,30 +34,6 @@ public abstract class NavigationReactNativeHost extends DefaultReactNativeHost i
         bundleListener = listener;
     }
 
-    protected ReactInstanceManager createReactInstanceManager() {
-        ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setJSMainModulePath(getJSMainModuleName())
-                .setUseDeveloperSupport(getUseDeveloperSupport())
-                .setRedBoxHandler(getRedBoxHandler())
-                .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-                .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
-                .setJSIModulesPackage(getJSIModulePackage())
-                .setDevBundleDownloadListener(getDevBundleDownloadListener());
-
-        for (ReactPackage reactPackage : getPackages()) {
-            builder.addPackage(reactPackage);
-        }
-
-        String jsBundleFile = getJSBundleFile();
-        if (jsBundleFile != null) {
-            builder.setJSBundleFile(jsBundleFile);
-        } else {
-            builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
-        }
-        return builder.build();
-    }
-
     @SuppressWarnings("WeakerAccess")
     @NonNull
     protected DevBundleDownloadListener getDevBundleDownloadListener() {

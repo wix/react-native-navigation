@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -34,6 +35,7 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         this.componentId = componentId;
         this.componentName = componentName;
         jsTouchDispatcher = new JSTouchDispatcher(this);
+        setIsFabric(ReactFeatureFlags.enableFabricRenderer);
     }
 
     @Override
