@@ -3,7 +3,7 @@ var path = require('./path');
 var fs = require('fs');
 var { warnn, errorn, logn, infon, debugn } = require('./log');
 var { insertString } = require('./stringUtils');
-var DEFAULT_KOTLIN_VERSION = '1.5.31';
+var DEFAULT_KOTLIN_VERSION = '1.7.10';
 // This should be the minSdkVersion required for RNN.
 var DEFAULT_MIN_SDK_VERSION = 21;
 
@@ -74,7 +74,7 @@ class GradleLinker {
       return contents;
     }
 
-    var match = /classpath\s*\(*["']com\.android\.tools\.build:gradle:/.exec(contents);
+    var match = /classpath\s*\(*["']com\.android\.tools\.build:gradle.*/.exec(contents);
     if (match) {
       debugn('   Adding Kotlin plugin');
       return insertString(
