@@ -6,13 +6,14 @@ import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
+import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.reactnativenavigation.NavigationApplication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public abstract class NavigationReactNativeHost extends ReactNativeHost implements BundleDownloadListenerProvider {
+public abstract class NavigationReactNativeHost extends DefaultReactNativeHost implements BundleDownloadListenerProvider {
 
     private @Nullable NavigationDevBundleDownloadListener bundleListener;
     private final DevBundleDownloadListener bundleListenerMediator = new DevBundleDownloadListenerAdapter() {

@@ -34,6 +34,16 @@ public class MainApplication extends NavigationApplication {
                     packages.add(new NavigationPackage(mReactNativeHost));
                     return packages;
                 }
+
+                @Override
+                protected Boolean isHermesEnabled() {
+                    return BuildConfig.IS_HERMES_ENABLED;
+                }
+
+                @Override
+                protected boolean isNewArchEnabled() {
+                    return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+                }
             };
 
 
