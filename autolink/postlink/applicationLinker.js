@@ -98,6 +98,11 @@ class ApplicationLinker {
   }
 
   _extendNavigationHost(applicationContent) {
+    if (this._hasAlreadyLinkedNavigationHost(applicationContent)) {
+      warnn('   NavigationReactNativeHost is already used, skipping.');
+      return applicationContent;
+    }
+
     if (this._doesExtendReactNativeHost(applicationContent)) {
       debugn('   Changing host implementation to NavigationReactNativeHost');
       return applicationContent
@@ -106,11 +111,14 @@ class ApplicationLinker {
           'import com.facebook.react.ReactNativeHost;',
           'import com.facebook.react.ReactNativeHost;\nimport com.reactnativenavigation.react.NavigationReactNativeHost;'
         );
-    }
-
-    if (this._hasAlreadyLinkedNavigationHost(applicationContent)) {
-      warnn('   NavigationReactNativeHost is already used, skipping.');
-      return applicationContent;
+    } else if (this._doesExtendDefaultReactNativeHost(applicationContent)) {
+      debugn('   Changing host implementation to NavigationReactNativeHost');
+      return applicationContent
+        .replace('new DefaultReactNativeHost(this)', 'new NavigationReactNativeHost(this)')
+        .replace(
+          'import com.facebook.react.defaults.DefaultReactNativeHost;',
+          'import com.facebook.react.defaults.DefaultReactNativeHost;\nimport com.reactnativenavigation.react.NavigationReactNativeHost;'
+        );
     }
 
     throw new Error('There was a problem extending NavigationReactNativeHost().');
@@ -118,6 +126,10 @@ class ApplicationLinker {
 
   _doesExtendReactNativeHost(applicationContent) {
     return /\s*new ReactNativeHost\(this\)\s*/.test(applicationContent);
+  }
+
+  _doesExtendDefaultReactNativeHost(applicationContent) {
+    return /\s*new DefaultReactNativeHost\(this\)\s*/.test(applicationContent);
   }
 
   _hasAlreadyLinkedNavigationHost(applicationContent) {
