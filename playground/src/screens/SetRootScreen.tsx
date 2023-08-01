@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -20,7 +20,7 @@ const {
   ROUND_BUTTON,
 } = testIDs;
 
-export default class SetRootScreen extends React.Component<NavigationComponentProps> {
+export default class SetRootScreen extends React.Component<NavigationProps> {
   static options() {
     return {
       topBar: {

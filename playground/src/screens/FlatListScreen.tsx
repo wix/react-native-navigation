@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View, Text } from 'react-native';
 import {
   Navigation,
-  NavigationComponentProps,
+  NavigationProps,
   NavigationButtonPressedEvent,
   NavigationComponent,
   Options,
@@ -23,7 +23,7 @@ type FakeDataItem = {
   gender: string;
 };
 
-export default class FlatListScreen extends NavigationComponent<NavigationComponentProps, State> {
+export default class FlatListScreen extends NavigationComponent<NavigationProps, State> {
   static options(): Options {
     return {
       topBar: {
@@ -63,7 +63,7 @@ export default class FlatListScreen extends NavigationComponent<NavigationCompon
     };
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: NavigationProps) {
     super(props);
     Navigation.events().bindComponent(this);
     this.state = { isFetching: false, shouldHideOnScroll: false };

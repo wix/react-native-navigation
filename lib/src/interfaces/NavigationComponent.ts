@@ -9,11 +9,11 @@ import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
-import { NavigationComponentProps } from './NavigationComponentProps';
+import { NavigationProps } from './NavigationComponentProps';
 import { Options } from './Options';
 
 export class NavigationComponent<Props = {}, State = {}, Snapshot = any> extends React.Component<
-  Props & NavigationComponentProps,
+  Props & NavigationProps,
   State,
   Snapshot
 > {

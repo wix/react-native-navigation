@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import {
   NavigationComponent,
-  NavigationComponentProps,
+  NavigationProps,
   OptionsModalPresentationStyle,
 } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -24,7 +24,7 @@ const {
   BACK_BUTTON_SCREEN_BTN,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class NavigationScreen extends NavigationComponent<Props> {
   static options() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import { component } from '../commons/Layouts';
@@ -23,7 +23,7 @@ const {
 interface State {
   overlayDismissedCount?: number;
 }
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   incrementDismissedOverlays: any;
 }
 export default class OverlayScreen extends React.Component<Props, State> {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Button, StyleSheet, ViewStyle } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationProps } from 'react-native-navigation';
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class BottomTabSideMenuScreen extends React.Component<Props> {
   static options() {

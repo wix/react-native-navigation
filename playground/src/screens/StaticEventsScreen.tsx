@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Navigation from '../services/Navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -16,7 +16,7 @@ const {
   ROUND_BUTTON,
 } = testIDs;
 
-export default class StaticEventsScreen extends React.Component<NavigationComponentProps> {
+export default class StaticEventsScreen extends React.Component<NavigationProps> {
   render() {
     return (
       <Root componentId={this.props.componentId}>
