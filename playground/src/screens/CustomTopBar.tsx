@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   title: string;
   text: string;
   clickable: boolean;

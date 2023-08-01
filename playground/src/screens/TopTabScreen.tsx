@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 
 const FAB = 'fab';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   text?: string;
 }
 

@@ -8,12 +8,7 @@ import {
   TextStyle,
   EmitterSubscription,
 } from 'react-native';
-import {
-  Navigation,
-  NavigationComponentProps,
-  EventSubscription,
-  Options,
-} from 'react-native-navigation';
+import { Navigation, NavigationProps, EventSubscription, Options } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
 type Event = {
@@ -38,7 +33,7 @@ type State = {
   events: Event[];
 };
 
-interface OverlayProps extends NavigationComponentProps {
+interface OverlayProps extends NavigationProps {
   showOnTop: boolean;
 }
 

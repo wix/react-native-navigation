@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -20,7 +20,7 @@ const {
   STATIC_EVENTS_OVERLAY_BTN,
 } = testIDs;
 
-export default class SecondBottomTabScreen extends React.Component<NavigationComponentProps> {
+export default class SecondBottomTabScreen extends React.Component<NavigationProps> {
   static options() {
     return {
       topBar: {

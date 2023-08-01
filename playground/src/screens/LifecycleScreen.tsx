@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, NavigationButtonPressedEvent } from 'react-native-navigation';
+import { NavigationProps, NavigationButtonPressedEvent } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -8,7 +8,7 @@ import testIDs from '../testIDs';
 
 const { PUSH_TO_TEST_DID_DISAPPEAR_BTN, DISMISS_MODAL_BTN, SCREEN_POPPED_BTN, POP_BTN } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   isModal?: boolean;
 }
 
