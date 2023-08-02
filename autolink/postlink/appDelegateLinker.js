@@ -22,7 +22,12 @@ class AppDelegateLinker {
     logn('Linking AppDelegate...');
 
     var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
-    var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
+
+    if (this.appDelegateHeaderPath) {
+      var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
+      appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
+      fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+    }
 
     try {
       appDelegateContents = this._removeUnneededImports(appDelegateContents);
@@ -42,10 +47,7 @@ class AppDelegateLinker {
       errorn('   ' + e.message);
     }
 
-    appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
-
     fs.writeFileSync(this.appDelegatePath, appDelegateContents);
-    fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
 
     if (this.removeUnneededImportsSuccess && this.removeApplicationLaunchContentSuccess) {
       infon('AppDelegate linked successfully!\n');
@@ -123,7 +125,7 @@ class AppDelegateLinker {
         '[ReactNativeNavigation bootstrapWithBridge:bridge];'
       )
       .replace(
-        /self.moduleName.*;(.|\n)*@{};/,
+        /self.moduleName.*;(.|\n)*@{};\n?/,
         ''
       );
   }
