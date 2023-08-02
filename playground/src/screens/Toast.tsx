@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Colors from '../commons/Colors';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 
 const { TOAST_OK_BTN_INNER, TOAST_OK_BTN_OUTER } = testIDs;
 
-export default function Toast({ componentId }: NavigationComponentProps) {
+export default function Toast({ componentId }: NavigationProps) {
   const dismiss = (txt: string) => {
     alert(txt);
     Navigation.dismissOverlay(componentId);

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   NavigationComponent,
   NavigationButtonPressedEvent,
-  NavigationComponentProps,
+  NavigationProps,
   Options,
 } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -48,7 +48,7 @@ export default class SideMenuCenterScreen extends NavigationComponent {
     };
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: NavigationProps) {
     super(props);
     Navigation.events().bindComponent(this);
   }

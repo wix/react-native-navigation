@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigation, NavigationComponentProps, LayoutOrientation } from 'react-native-navigation';
+import { Navigation, NavigationProps, LayoutOrientation } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -11,7 +11,7 @@ const {
   PORTRAIT_ORIENTATION_BTN,
 } = testIDs;
 
-export default class OrientationScreen extends React.Component<NavigationComponentProps> {
+export default class OrientationScreen extends React.Component<NavigationProps> {
   render() {
     return (
       <Root componentId={this.props.componentId}>

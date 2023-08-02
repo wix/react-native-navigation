@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, Button, View, ViewStyle, TextStyle } from 'react-native';
-import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { Navigation, NavigationProps } from 'react-native-navigation';
 import { component } from '../commons/Layouts';
 import Screens from './Screens';
 import testIDs from '../testIDs';
@@ -12,7 +12,7 @@ const {
   DISMISS_ALL_OVERLAYS_BUTTON,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   incrementDismissedOverlays: any;
 }
 

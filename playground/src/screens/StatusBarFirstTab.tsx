@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
 
-export default class StatusBarFirstTab extends React.Component<NavigationComponentProps> {
+export default class StatusBarFirstTab extends React.Component<NavigationProps> {
   visible = true;
 
   static options() {

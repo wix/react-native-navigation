@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
@@ -18,7 +18,7 @@ const {
   FIRST_TAB_BAR_BUTTON,
 } = testIDs;
 
-export default class FirstBottomTabScreen extends React.Component<NavigationComponentProps> {
+export default class FirstBottomTabScreen extends React.Component<NavigationProps> {
   static options(): Options {
     return {
       layout: {

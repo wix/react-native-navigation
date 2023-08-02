@@ -1,12 +1,12 @@
 import React from 'react';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 import Screens from './Screens';
 
-class LazilyRegisteredScreen extends React.Component<NavigationComponentProps> {
+class LazilyRegisteredScreen extends React.Component<NavigationProps> {
   static options(): Options {
     return {
       topBar: {
@@ -24,7 +24,7 @@ class LazilyRegisteredScreen extends React.Component<NavigationComponentProps> {
     };
   }
 
-  constructor(props: NavigationComponentProps) {
+  constructor(props: NavigationProps) {
     super(props);
     Navigation.events().bindComponent(this);
   }

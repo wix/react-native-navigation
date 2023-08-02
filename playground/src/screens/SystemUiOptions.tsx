@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, TextInput } from 'react-native';
 import { ColorPalette, Switch } from 'react-native-ui-lib';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -29,7 +29,7 @@ const colors = [
   '#8B1079',
 ];
 
-export default class SystemUiOptions extends React.Component<NavigationComponentProps, State> {
+export default class SystemUiOptions extends React.Component<NavigationProps, State> {
   static options(): Options {
     return {
       statusBar: {
@@ -58,7 +58,7 @@ export default class SystemUiOptions extends React.Component<NavigationComponent
     };
   }
 
-  constructor(props: Readonly<NavigationComponentProps>) {
+  constructor(props: Readonly<NavigationProps>) {
     super(props);
     this.state = {
       navigationBarVisible: true,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView, Dimensions, StyleSheet, Image, TextInput, Text } from 'react-native';
 import {
-  NavigationComponentProps,
+  NavigationProps,
   NavigationComponent,
   ComponentDidAppearEvent,
 } from 'react-native-navigation';
@@ -12,7 +12,7 @@ import testIDs from '../testIDs';
 import { stack } from '../commons/Layouts';
 const screenWidth = Dimensions.get('window').width;
 const KEYBOARD_LABEL = 'Keyboard Demo';
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   title?: string;
   autoFocus?: boolean;
 }
