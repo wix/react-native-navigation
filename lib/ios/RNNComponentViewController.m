@@ -97,7 +97,7 @@
         self.reactView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.reactView setFrame:self.view.frame];
         [self.view addSubview:self.reactView];
-        [self updateReactViewConstraints];
+        [self updateReactViewFrame];
     } else {
         [self readyForPresentation];
     }
@@ -109,16 +109,16 @@
 
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
-    [self updateReactViewConstraints];
+    [self updateReactViewFrame];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
-    [self updateReactViewConstraints];
+    [self updateReactViewFrame];
 }
 
-- (void)updateReactViewConstraints {
+- (void)updateReactViewFrame {
     if (self.isViewLoaded && self.reactView) {
         CGFloat bottomInset = self.shouldDrawBehindBottomTabs ? 0 : self.view.safeAreaInsets.bottom;
         CGFloat topInset = self.shouldDrawBehindTopBar ? 0 : self.view.safeAreaInsets.top;
@@ -139,12 +139,12 @@
 
 - (void)setDrawBehindTopBar:(BOOL)drawBehindTopBar {
     _drawBehindTopBar = drawBehindTopBar;
-    [self updateReactViewConstraints];
+    [self updateReactViewFrame];
 }
 
 - (void)setDrawBehindBottomTabs:(BOOL)drawBehindBottomTabs {
     _drawBehindBottomTabs = drawBehindBottomTabs;
-    [self updateReactViewConstraints];
+    [self updateReactViewFrame];
 }
 
 - (UIViewController *)getCurrentChild {
