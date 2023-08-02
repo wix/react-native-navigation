@@ -190,7 +190,7 @@ describe('modal', () => {
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
   });
 
-  it(':android: should handle back properly', async () => {
+  it.e2e(':android: should handle back properly', async () => {
     await elementById(TestIDs.TOGGLE_REACT_DECLARED_MODAL).tap();
     await elementById(TestIDs.SHOW_MODAL_FROM_DECLARED_BUTTON).tap();
     await expect(elementByLabel('Toggle declared modal')).toBeVisible();
