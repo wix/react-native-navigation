@@ -14,5 +14,6 @@ exports.appDelegate = glob.sync(
   reactNativeVersion < '0.68.0' ? '**/AppDelegate.m' : '**/AppDelegate.mm',
   ignoreFolders
 )[0];
+exports.appDelegateHeader = glob.sync('**/AppDelegate.h', ignoreFolders)[0];
 exports.podFile = glob.sync('**/Podfile', ignoreFolders)[0];
 exports.plist = glob.sync('**/info.plist', ignoreFolders)[0];
