@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[423],{494:function(e,t,n){"use strict";n.r(t);var a=n(0),o=n.n(a),r=n(21);t.default=function(){return o.a.createElement(r.Redirect,{to:"/react-native-navigation/docs/before-you-start/"})}}}]);
