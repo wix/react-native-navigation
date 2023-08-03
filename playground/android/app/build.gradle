@@ -2,7 +2,9 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
 react {
-     root = file("../../../")
+    root = file("../../../")
+    reactNativeDir = file("../../../node_modules/react-native")
+    codegenDir = file("../../../node_modules/@react-native/codegen")
 }
 
 
@@ -10,7 +12,6 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     compileSdkVersion rootProject.ext.get("compileSdkVersion")
-    ndkVersion "20.1.5948944"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -69,7 +70,6 @@ dependencies {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
 }
-
 
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.implementation

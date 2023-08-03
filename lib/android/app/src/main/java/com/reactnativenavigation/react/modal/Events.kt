@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react.modal
 
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.RCTEventEmitter
 
@@ -14,7 +15,7 @@ open class RequestCloseModalEvent(viewTag: Int) : Event<RequestCloseModalEvent>(
     }
 
     override fun dispatch(rctEventEmitter: RCTEventEmitter) {
-        rctEventEmitter.receiveEvent(viewTag, eventName, null)
+        rctEventEmitter.receiveEvent(viewTag, eventName, Arguments.createMap())
     }
 }
 
@@ -29,6 +30,6 @@ open class ShowModalEvent(viewTag: Int) : Event<ShowModalEvent>(viewTag) {
     }
 
     override fun dispatch(rctEventEmitter: RCTEventEmitter) {
-        rctEventEmitter.receiveEvent(viewTag, eventName, null)
+        rctEventEmitter.receiveEvent(viewTag, eventName, Arguments.createMap())
     }
 }

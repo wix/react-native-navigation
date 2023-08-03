@@ -4,13 +4,26 @@
 @implementation RNNReactView {
     BOOL _isAppeared;
 }
-
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithBridge:(RCTBridge *)bridge
+                    moduleName:(NSString *)moduleName
+             initialProperties:(NSDictionary *)initialProperties
+                  eventEmitter:(RNNEventEmitter *)eventEmitter
+               sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
+           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    self = [super initWithBridge:bridge
+                      moduleName:moduleName
+               initialProperties:initialProperties
+                 sizeMeasureMode:sizeMeasureMode];
+#else
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
+#endif
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentDidAppear:)
                                                  name:RCTContentDidAppearNotification

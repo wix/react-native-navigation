@@ -6,11 +6,10 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationPackage;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
-import com.facebook.react.bridge.JSIModulePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -20,10 +19,6 @@ public class MainApplication extends NavigationApplication {
 
     private final ReactNativeHost mReactNativeHost =
             new NavigationReactNativeHost(this) {
-                @Override
-                protected JSIModulePackage getJSIModulePackage() {
-                    return new ReanimatedJSIModulePackage();
-                }
                 @Override
                 protected String getJSMainModuleName() {
                     return "index";
@@ -40,6 +35,16 @@ public class MainApplication extends NavigationApplication {
                     packages.add(new NavigationPackage(mReactNativeHost));
                     return packages;
                 }
+
+                @Override
+                protected Boolean isHermesEnabled() {
+                    return BuildConfig.IS_HERMES_ENABLED;
+                }
+
+                @Override
+                protected boolean isNewArchEnabled() {
+                    return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+                }
             };
 
 
@@ -47,6 +52,10 @@ public class MainApplication extends NavigationApplication {
     public void onCreate() {
         super.onCreate();
         registerExternalComponent("RNNCustomComponent", new FragmentCreator());
+        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+            // If you opted-in for the New Architecture, we load the native entry point for this app.
+            DefaultNewArchitectureEntryPoint.load();
+        }
         initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     }
 

@@ -212,3 +212,5 @@ android/keystores/debug.keystore
 
 # Snapshot tests diffs
 ios/SnapshotTests/FailureDiffs/
+
+android/app/.cxx

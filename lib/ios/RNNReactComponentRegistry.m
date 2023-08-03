@@ -53,7 +53,7 @@
 
 - (NSMapTable *)componentsForParentId:(NSString *)parentComponentId {
     if (![_componentStore objectForKey:parentComponentId]) {
-        [_componentStore setObject:[NSMapTable weakToStrongObjectsMapTable]
+        [_componentStore setObject:[NSMapTable strongToWeakObjectsMapTable]
                             forKey:parentComponentId];
         ;
     }
@@ -64,7 +64,6 @@
 
 - (void)clearComponentsForParentId:(NSString *)parentComponentId {
     [_componentStore removeObjectForKey:parentComponentId];
-    ;
 }
 
 - (void)removeComponent:(NSString *)componentId {
