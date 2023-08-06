@@ -23,10 +23,10 @@ function run() {
     if (!android) {
       exec.execSync('npm run pod-install');
     }
-    exec.execSync(`detox build --configuration ${configuration}`);
+    exec.execSync(`time detox build --configuration ${configuration}`);
   }
   exec.execSync(
-    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} --retries 3`
+    `time detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} --retries 3`
     // "Buttons.test.js" --loglevel trace`
   );
 }
