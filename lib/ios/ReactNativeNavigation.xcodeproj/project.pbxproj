@@ -255,6 +255,8 @@
 		507ACB1223F44D1E00829911 /* RNNComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 507ACB1023F44D1E00829911 /* RNNComponentView.m */; };
 		507ACB1523F44E5200829911 /* RNNComponentRootView.h in Headers */ = {isa = PBXBuildFile; fileRef = 507ACB1323F44E5200829911 /* RNNComponentRootView.h */; };
 		507ACB1623F44E5200829911 /* RNNComponentRootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 507ACB1423F44E5200829911 /* RNNComponentRootView.m */; };
+		507DBBDB2A31DE8400F1FC74 /* RNNAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 507DBBD92A31DE8400F1FC74 /* RNNAppDelegate.h */; };
+		507DBBDC2A31DE8400F1FC74 /* RNNAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507DBBDA2A31DE8400F1FC74 /* RNNAppDelegate.mm */; };
 		507E7D57201DDD3000444E6C /* RNNSharedElementAnimationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 507E7D55201DDD3000444E6C /* RNNSharedElementAnimationOptions.h */; };
 		507E7D58201DDD3000444E6C /* RNNSharedElementAnimationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 507E7D56201DDD3000444E6C /* RNNSharedElementAnimationOptions.m */; };
 		507F43C51FF4F17C00D9425B /* RNNTopTabsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43C31FF4F17C00D9425B /* RNNTopTabsViewController.h */; };
@@ -792,6 +794,8 @@
 		507ACB1023F44D1E00829911 /* RNNComponentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentView.m; sourceTree = "<group>"; };
 		507ACB1323F44E5200829911 /* RNNComponentRootView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNComponentRootView.h; sourceTree = "<group>"; };
 		507ACB1423F44E5200829911 /* RNNComponentRootView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentRootView.m; sourceTree = "<group>"; };
+		507DBBD92A31DE8400F1FC74 /* RNNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAppDelegate.h; sourceTree = "<group>"; };
+		507DBBDA2A31DE8400F1FC74 /* RNNAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNAppDelegate.mm; sourceTree = "<group>"; };
 		507E7D55201DDD3000444E6C /* RNNSharedElementAnimationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSharedElementAnimationOptions.h; sourceTree = "<group>"; };
 		507E7D56201DDD3000444E6C /* RNNSharedElementAnimationOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSharedElementAnimationOptions.m; sourceTree = "<group>"; };
 		507F43C31FF4F17C00D9425B /* RNNTopTabsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabsViewController.h; sourceTree = "<group>"; };
@@ -1728,6 +1732,8 @@
 				50588B8723AA87E3001F6A5E /* Animations */,
 				7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */,
 				7BA500741E2544B9001B9E1B /* ReactNativeNavigation.m */,
+				507DBBD92A31DE8400F1FC74 /* RNNAppDelegate.h */,
+				507DBBDA2A31DE8400F1FC74 /* RNNAppDelegate.mm */,
 				5030B62023D5B4CA008F1642 /* Color+Interpolation.h */,
 				5030B61F23D5B4CA008F1642 /* Color+Interpolation.m */,
 				5030B62623D5B54D008F1642 /* LNInterpolable.h */,
@@ -2010,6 +2016,7 @@
 				50395593217485B000B0A663 /* Double.h in Headers */,
 				5050465421F8F4490035497A /* RNNReactComponentRegistry.h in Headers */,
 				506BF65C2600AE4200A22755 /* CenterTransition.h in Headers */,
+				507DBBDB2A31DE8400F1FC74 /* RNNAppDelegate.h in Headers */,
 				504AFE741FFFF0540076E904 /* RNNTopTabsOptions.h in Headers */,
 				50E38DD723A7A2BE009817F6 /* AnimatedViewFactory.h in Headers */,
 				E8E5182E1F83A48B000467AC /* RNNTransitionStateHolder.h in Headers */,
@@ -2354,6 +2361,7 @@
 				50BCB29223F2C7CD00D6C8E5 /* AnchorTransition.m in Sources */,
 				50344D2923A03DB4004B6A7C /* BottomTabsAttachMode.m in Sources */,
 				501224072173592D000F5F98 /* RNNBottomTabsPresenter.m in Sources */,
+				507DBBDC2A31DE8400F1FC74 /* RNNAppDelegate.mm in Sources */,
 				50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */,
 				50A5628B23DDAB5A0027C219 /* ScreenAnimationController.m in Sources */,
 				5039559C2174867000B0A663 /* DoubleParser.m in Sources */,

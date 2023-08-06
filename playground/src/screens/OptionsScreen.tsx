@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponent, NavigationComponentProps } from 'react-native-navigation';
+import { NavigationComponent, NavigationProps } from 'react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
 import Navigation from '../services/Navigation';
@@ -18,9 +18,11 @@ const {
   GOTO_BUTTONS_SCREEN,
   GOTO_SEARCHBAR_SCREEN,
   GOTO_SEARCHBAR_MODAL,
+  REPLACE_TAB_TEST_ID,
+  REPLACED_TAB,
 } = testIDs;
 
-interface Props extends NavigationComponentProps {}
+interface Props extends NavigationProps {}
 
 export default class Options extends NavigationComponent<Props> {
   static options() {
@@ -100,6 +102,11 @@ export default class Options extends NavigationComponent<Props> {
           label="Toggle Navigation bar visibility"
           platform="android"
           onPress={this.toggleAndroidNavigationBar}
+        />
+        <Button
+          testID={REPLACE_TAB_TEST_ID}
+          label="Replace tab testID"
+          onPress={this.replaceTabTestID}
         />
       </Root>
     );
@@ -225,4 +232,12 @@ export default class Options extends NavigationComponent<Props> {
         },
       },
     });
+
+  replaceTabTestID = () => {
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        testID: REPLACED_TAB,
+      },
+    });
+  };
 }

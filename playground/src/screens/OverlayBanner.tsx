@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import { NavigationComponent, NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationComponent, NavigationProps, Options } from 'react-native-navigation';
 import testIDs from '../testIDs';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 
-interface Props extends NavigationComponentProps {
+interface Props extends NavigationProps {
   incrementDismissedOverlays: any;
 }
 
@@ -24,8 +24,10 @@ export default class OverlayBanner extends NavigationComponent<Props> {
     return (
       <SafeAreaView
         style={{
-          flex: 1,
-          flexDirection: 'column-reverse',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
         }}
         pointerEvents="box-none"
       >

@@ -245,7 +245,11 @@ RCT_EXPORT_METHOD(getNavigationConstants
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getNavigationConstantsSync) {
-    return [Constants getConstants];
+    __block NSDictionary *c;
+    RCTUnsafeExecuteOnMainQueueSync(^{
+      c = [Constants getConstants];
+    });
+    return c;
 }
 
 @end

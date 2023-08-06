@@ -4,8 +4,15 @@ on:
   issues:
     types: labeled
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   processLabelAction:
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      issues: write # to close, comment, add labels to issues (hramos/label-actions)
+
     name: Process Label Action
     runs-on: ubuntu-latest
     steps:

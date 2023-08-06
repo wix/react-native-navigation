@@ -50,7 +50,7 @@
                                                         eventHandler:_modalManagerEventHandler]];
 
     UIApplication.sharedApplication.delegate.window.rootViewController =
-        [OCMockObject partialMockForObject:MockViewController.new];
+        [OCMockObject partialMockForObject:UIViewController.new];
 }
 
 - (void)tearDown {

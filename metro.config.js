@@ -1,15 +1,8 @@
-module.exports = {
-  projectRoot: `${__dirname}/playground`,
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+
+const config = {
+  projectRoot: `${__dirname}`,
   watchFolders: [__dirname],
-  resolver: {
-    sourceExts: ['ts', 'tsx', 'js'],
-  },
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: false,
-      },
-    }),
-  },
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);

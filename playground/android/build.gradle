@@ -2,13 +2,15 @@
 
 buildscript {
     ext {
-        kotlinVersion = "1.5.31"
+        kotlinVersion = "1.7.10"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
         compileSdkVersion = 33
-        buildToolsVersion = "31.0.0"
+        buildToolsVersion = "33.0.0"
         minSdkVersion = 21
-        targetSdkVersion = 31
+        targetSdkVersion = 33
+        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
+        ndkVersion = "23.1.7779620"
     }
 
     repositories {
@@ -18,9 +20,8 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.android.tools.build:gradle:7.1.1'
-        classpath("de.undercouch:gradle-download-task:5.0.1")
-
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath 'com.android.tools.build:gradle'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -28,16 +29,8 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url("$rootDir/../../node_modules/react-native/android")
-        }
-        google()
-        mavenLocal()
         maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url "$rootDir/../../node_modules/jsc-android/dist" }
-        maven { url 'https://www.jitpack.io' }
-        mavenCentral()
         flatDir {
             dirs "$rootProject.projectDir/libs"
         }

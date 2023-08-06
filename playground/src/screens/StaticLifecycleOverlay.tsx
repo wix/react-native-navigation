@@ -8,12 +8,7 @@ import {
   TextStyle,
   EmitterSubscription,
 } from 'react-native';
-import {
-  Navigation,
-  NavigationComponentProps,
-  EventSubscription,
-  Options,
-} from 'react-native-navigation';
+import { Navigation, NavigationProps, EventSubscription, Options } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
 type Event = {
@@ -30,9 +25,7 @@ type Event = {
 
 let _overlayInstance: any;
 export const logLifecycleEvent = (event: Event) => {
-  _overlayInstance.setState({
-    events: [..._overlayInstance.state.events, event],
-  });
+  _overlayInstance.addEvent(event);
 };
 
 type State = {
@@ -40,11 +33,12 @@ type State = {
   events: Event[];
 };
 
-interface OverlayProps extends NavigationComponentProps {
+interface OverlayProps extends NavigationProps {
   showOnTop: boolean;
 }
 
 export default class StaticLifecycleOverlay extends React.Component<OverlayProps, State> {
+  events: Event[];
   static options(): Options {
     return {
       layout: {
@@ -68,8 +62,23 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
     alert('Overlay Unmounted');
   }
 
+  addEvent(event: Event) {
+    this.events.push(event);
+    this.setState({
+      events: this.events,
+    });
+  }
+
+  clearEvents() {
+    this.events = [];
+    this.setState({
+      events: this.events,
+    });
+  }
+
   constructor(props: OverlayProps) {
     super(props);
+    this.events = [];
     this.state = {
       text: 'nothing yet',
       events: [],
@@ -77,48 +86,38 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
     this.listeners.push(
       Navigation.events().registerComponentWillAppearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentWillAppear' }],
-        });
+        this.addEvent({ ...event, event: 'componentWillAppear' });
       })
     );
 
     this.listeners.push(
       Navigation.events().registerComponentDidAppearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentDidAppear' }],
-        });
+        this.addEvent({ ...event, event: 'componentDidAppear' });
       })
     );
     this.listeners.push(
       Navigation.events().registerComponentDidDisappearListener((event) => {
-        this.setState({
-          events: [...this.state.events, { ...event, event: 'componentDidDisappear' }],
-        });
+        this.addEvent({ ...event, event: 'componentDidDisappear' });
       })
     );
     this.listeners.push(
       Navigation.events().registerCommandListener((commandName) => {
-        this.setState({
-          events: [...this.state.events, { event: 'command started', commandName }],
-        });
+        this.addEvent({ event: 'command started', commandName });
+      })
+    );
+    this.listeners.push(
+      Navigation.events().registerCommandCompletedListener(({ commandName }) => {
+        this.addEvent({ event: 'command completed', commandName });
       })
     );
     this.listeners.push(
       Navigation.events().registerNavigationButtonPressedListener(({ componentId, buttonId }) => {
-        this.setState({
-          events: [
-            ...this.state.events,
-            { event: 'navigationButtonPressed', buttonId, componentId },
-          ],
-        });
+        this.addEvent({ event: 'navigationButtonPressed', buttonId, componentId });
       })
     );
     this.listeners.push(
       Navigation.events().registerModalDismissedListener(({ componentId }) => {
-        this.setState({
-          events: [...this.state.events, { event: 'modalDismissed', componentId }],
-        });
+        this.addEvent({ event: 'modalDismissed', componentId });
       })
     );
   }
@@ -127,7 +126,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
     if (event.commandId) {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
     } else if (event.commandName) {
-      return <Text style={styles.h2}>{`${event.commandName}`}</Text>;
+      return <Text style={styles.h2}>{`${event.event}: ${event.commandName}`}</Text>;
     } else if (event.componentName) {
       return (
         <Text
@@ -172,7 +171,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
   renderClearButton = () => {
     return (
-      <TouchableOpacity style={styles.clearBtn} onPress={() => this.setState({ events: [] })}>
+      <TouchableOpacity style={styles.clearBtn} onPress={() => this.clearEvents()}>
         <Text testID={TestIDs.CLEAR_OVERLAY_EVENTS_BTN} style={styles.btnText}>
           Clear
         </Text>

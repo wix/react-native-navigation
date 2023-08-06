@@ -9,10 +9,10 @@ const colors = {
   accent: { light: '#65C888', dark: '#FFA73C' },
   textColor:
     Platform.OS === 'ios'
-      ? { light: '#5847ff', dark: '#BA292E' }
+      ? { light: '#444444', dark: '#BA292E' }
       : PlatformColor('@color/textColor'),
   activeTextColor: { light: '#5847ff', dark: '#FFA73C' },
-  iconTint: { light: 'black', dark: '#BA292E' },
+  iconTint: { light: '#444444', dark: '#BA292E' },
   activeIconTint: { light: '#5847ff', dark: '#FFA73C' },
   buttonColor: { light: 'black', dark: '#BA292E' },
   disabledButtonColor: { light: 'grey', dark: '#BA292E' },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -20,7 +20,7 @@ const {
   STATIC_EVENTS_OVERLAY_BTN,
 } = testIDs;
 
-export default class SecondBottomTabScreen extends React.Component<NavigationComponentProps> {
+export default class SecondBottomTabScreen extends React.Component<NavigationProps> {
   static options() {
     return {
       topBar: {
@@ -47,7 +47,8 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
         <Button label="Push BottomTabs" testID={PUSH_BTN} onPress={this.pushBottomTabs} />
         <Button label="Push Modal" testID={MODAL_BTN} onPress={this.pushModal} />
         <Button label="SetBadge" testID={SET_BADGE_BTN} onPress={this.setBadge} />
-
+        <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
+        <Button label="Hide Notification Dot" onPress={() => this.setNotificationDot(false)} />
         <Button label="Push ScrollView" onPress={this.pushScrollView} />
         <Button
           label="SideMenu inside BottomTabs"
@@ -86,6 +87,15 @@ export default class SecondBottomTabScreen extends React.Component<NavigationCom
         badge: 'Badge',
       },
     });
+
+  setNotificationDot = (visible: boolean) => {
+    Navigation.mergeOptions(this, {
+      bottomTab: {
+        ...(visible ? { badge: '' } : {}),
+        dotIndicator: { visible, color: 'green' },
+      },
+    });
+  };
 
   pushBottomTabs = () =>
     Navigation.push(this, {

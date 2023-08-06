@@ -1,0 +1,30 @@
+name: "🚀 Feature"
+description: Submit a proposal/request for a new feature
+labels: ["type: enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this enhancement suggestion!
+  - type: textarea
+    id: idea-description
+    attributes:
+      label: Describe your idea
+      description: "A clear and concise description of what you want to happen.\n
+      If your feature request is related to a problem, please describe any other alternative solutions or features you’ve considered."
+  - type: textarea
+    id: idea-motivation
+    attributes:
+      label: Motivation
+      description: (Please outline the motivation for the proposal.)
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Are you willing to resolve this issue by submitting a Pull Request?
+      description: Select one.
+      options:
+        - label: "Yes, I have the time, and I know how to start."
+        - label: "Yes, I have the time, but I don't know how to start. I would need guidance."
+        - label: "No, I don’t have the time and I’m okay to wait for the community / maintainers to resolve this issue."
+  - type: markdown
+    attributes:
+      value: "Remember that first-time contributors are welcome! 🙌 Feel free to reach us out on https://discord.gg/DhkZjq2 \nHave a great day and thank you for the bug report!"

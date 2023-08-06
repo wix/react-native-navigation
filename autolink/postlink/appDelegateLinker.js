@@ -6,6 +6,7 @@ var { warnn, logn, infon, debugn, errorn } = require('./log');
 class AppDelegateLinker {
   constructor() {
     this.appDelegatePath = path.appDelegate;
+    this.appDelegateHeaderPath = path.appDelegateHeader;
     this.removeUnneededImportsSuccess = false;
     this.removeApplicationLaunchContentSuccess = false;
   }
@@ -22,6 +23,12 @@ class AppDelegateLinker {
 
     var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
 
+    if (this.appDelegateHeaderPath) {
+      var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
+      appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
+      fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+    }
+
     try {
       appDelegateContents = this._removeUnneededImports(appDelegateContents);
       this.removeUnneededImportsSuccess = true;
@@ -32,8 +39,6 @@ class AppDelegateLinker {
     appDelegateContents = this._importNavigation(appDelegateContents);
 
     appDelegateContents = this._bootstrapNavigation(appDelegateContents);
-
-    appDelegateContents = this._extraModulesForBridge(appDelegateContents);
 
     try {
       appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
@@ -81,6 +86,18 @@ class AppDelegateLinker {
     return content;
   }
 
+  _extendRNNAppDelegate(content) {
+    return content
+      .replace(
+        /#import*.<RCTAppDelegate.h>/,
+        '#import "RNNAppDelegate.h"'
+      )
+      .replace(
+        /:*.RCTAppDelegate/,
+        ': RNNAppDelegate'
+      )
+  }
+
   _importNavigation(content) {
     if (!this._doesImportNavigation(content)) {
       debugn('   Importing ReactNativeNavigation.h');
@@ -100,45 +117,21 @@ class AppDelegateLinker {
       return content;
     }
 
-    debugn('   Bootstrapping Navigation');
-    return content.replace(
-      /RCTBridge.*];/,
-      'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
+    debugn('   Bootstrapping Navigation !!!!');
+    return content
+      .replace(
+        /RCTBridge.*];/,
+        'RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];\n' +
         '[ReactNativeNavigation bootstrapWithBridge:bridge];'
-    );
+      )
+      .replace(
+        /self.moduleName.*;(.|\n)*@{};\n?/,
+        ''
+      );
   }
 
   _doesBootstrapNavigation(content) {
     return /ReactNativeNavigation\s+bootstrap/.test(content);
-  }
-
-  _extraModulesForBridge(content) {
-    if (this._doesImplementsRNNExtraModulesForBridge(content)) {
-      warnn('   extraModulesForBridge already present.');
-      return content;
-    } else if (this._doesImplementsExtraModulesForBridge(content)) {
-      throw new Error(
-        'extraModulesForBridge implemented for a different module and needs manual linking. Check the manual installation docs to verify that everything is properly setup:\n   https://wix.github.io/react-native-navigation/docs/installing#native-installation'
-      );
-    }
-
-    debugn('   Implementing extraModulesForBridge');
-    return content.replace(
-      /-.*\(NSURL.*\*\)sourceURLForBridge:\(RCTBridge.*\*\)bridge/,
-      '- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {\n\
-  return [ReactNativeNavigation extraModulesForBridge:bridge];\n\
-}\n\
-\n\
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge'
-    );
-  }
-
-  _doesImplementsExtraModulesForBridge(content) {
-    return /-.*\(NSArray.*\*\)extraModulesForBridge:\(RCTBridge.*\*\)bridge/.test(content);
-  }
-
-  _doesImplementsRNNExtraModulesForBridge(content) {
-    return /ReactNativeNavigation\s+extraModulesForBridge/.test(content);
   }
 
   _removeApplicationLaunchContent(content) {

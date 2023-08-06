@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationComponentProps } from 'react-native-navigation';
+import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Screens from './Screens';
@@ -9,7 +9,7 @@ import testIDs from '../testIDs';
 
 const { PUSH_BTN, MODAL_BTN, REGISTER_MODAL_DISMISS_EVENT_BTN } = testIDs;
 
-export default class ExternalComponentScreen extends React.Component<NavigationComponentProps> {
+export default class ExternalComponentScreen extends React.Component<NavigationProps> {
   static options() {
     return {
       topBar: {

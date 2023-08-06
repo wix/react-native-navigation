@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
+#import "RNNAppDelegate.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property(nonatomic, strong) UIWindow *window;
+@interface AppDelegate : RNNAppDelegate
 
 @end

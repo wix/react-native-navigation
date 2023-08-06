@@ -12,8 +12,8 @@
 @end
 
 @implementation RNNUIBarButtonItem {
-    RNNIconCreator* _iconCreator;
-    RNNButtonOptions* _buttonOptions;
+    RNNIconCreator *_iconCreator;
+    RNNButtonOptions *_buttonOptions;
 }
 
 - (instancetype)init {
@@ -87,31 +87,13 @@
                      buttonOptions:(RNNButtonOptions *)buttonOptions
                            onPress:(RNNButtonPressCallback)onPress {
     self = [super initWithCustomView:reactView];
+    [reactView setFrame:CGRectMake(0, 0, 50, 50)];
     [self applyOptions:buttonOptions];
 
-    reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
     reactView.delegate = self;
-    reactView.backgroundColor = [UIColor clearColor];
-    reactView.hidden = CGRectEqualToRect(reactView.frame, CGRectZero);
 
-    [NSLayoutConstraint deactivateConstraints:reactView.constraints];
-    self.widthConstraint =
-        [NSLayoutConstraint constraintWithItem:reactView
-                                     attribute:NSLayoutAttributeWidth
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1.0
-                                      constant:reactView.intrinsicContentSize.width];
-    self.heightConstraint =
-        [NSLayoutConstraint constraintWithItem:reactView
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1.0
-                                      constant:reactView.intrinsicContentSize.height];
-    [NSLayoutConstraint activateConstraints:@[ self.widthConstraint, self.heightConstraint ]];
+    reactView.backgroundColor = [UIColor clearColor];
+
     self.onPress = onPress;
     return self;
 }
@@ -139,17 +121,16 @@
     [self applyDisabledTitleTextAttributes:buttonOptions];
 }
 
-- (void)applyColor:(Color *)color {
-    if (color.hasValue) {
+- (void)applyColor:(UIColor *)color {
+    if (color) {
         NSMutableDictionary *titleTextAttributes = [NSMutableDictionary
             dictionaryWithDictionary:[self titleTextAttributesForState:UIControlStateNormal]];
-        [titleTextAttributes setValue:color.get forKey:NSForegroundColorAttributeName];
+        [titleTextAttributes setValue:color forKey:NSForegroundColorAttributeName];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
         [self setTitleTextAttributes:titleTextAttributes forState:UIControlStateHighlighted];
+        self.tintColor = color;
     } else
         self.image = [self.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
-    self.tintColor = color.get;
 }
 
 - (void)mergeBackgroundColor:(Color *)color {
@@ -159,13 +140,13 @@
 
 - (void)mergeColor:(Color *)color {
     _buttonOptions.color = color;
-    [self applyColor:color];
+    [self applyColor:color.get];
     [self redrawIcon];
 }
 
 - (void)redrawIcon {
     if (_buttonOptions.icon.hasValue && [self.customView isKindOfClass:UIButton.class]) {
-        UIImage* icon = [_iconCreator create:_buttonOptions];
+        UIImage *icon = [_iconCreator create:_buttonOptions];
         [(UIButton *)self.customView setImage:icon forState:_buttonOptions.state];
     }
 }
@@ -176,7 +157,8 @@
                                      createWithFontFamily:[button.fontFamily withDefault:nil]
                                                  fontSize:[button.fontSize withDefault:@(17)]
                                                fontWeight:[button.fontWeight withDefault:nil]
-                                                    color:button.color.get]];
+                                                    color:button.color.get
+                                                 centered:NO]];
 
     [self setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     [self setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
@@ -188,7 +170,8 @@
                                      createWithFontFamily:[button.fontFamily withDefault:nil]
                                                  fontSize:[button.fontSize withDefault:@(17)]
                                                fontWeight:[button.fontWeight withDefault:nil]
-                                                    color:[button.disabledColor withDefault:nil]]];
+                                                    color:[button.disabledColor withDefault:nil]
+                                                 centered:NO]];
 
     [self setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
 }

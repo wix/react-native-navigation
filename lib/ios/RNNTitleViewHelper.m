@@ -111,7 +111,7 @@
     subtitleFrame.origin.y = subtitleFrame.size.height;
 
     UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:subtitleFrame];
-    subtitleLabel.textAlignment = NSTextAlignmentCenter;
+
     subtitleLabel.backgroundColor = [UIColor clearColor];
     subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
@@ -119,7 +119,8 @@
         [RNNFontAttributesCreator createWithFontFamily:[_subtitleOptions.fontFamily withDefault:nil]
                                               fontSize:[_subtitleOptions.fontSize withDefault:@(12)]
                                             fontWeight:[_subtitleOptions.fontWeight withDefault:nil]
-                                                 color:[_subtitleOptions.color withDefault:nil]];
+                                                 color:[_subtitleOptions.color withDefault:nil]
+                                              centered:YES];
     [subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle
                                                                      attributes:fontAttributes]];
 
@@ -128,7 +129,7 @@
     labelframe.size = labelSize;
     subtitleLabel.frame = labelframe;
     [subtitleLabel sizeToFit];
-
+    subtitleLabel.textAlignment = NSTextAlignmentCenter;
     if (_subtitleOptions.color.hasValue) {
         UIColor *color = _subtitleOptions.color.get;
         subtitleLabel.textColor = color;
@@ -145,7 +146,6 @@
         titleFrame.size.height /= 2;
     }
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.backgroundColor = [UIColor clearColor];
 
     titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -154,7 +154,8 @@
         [RNNFontAttributesCreator createWithFontFamily:[_titleOptions.fontFamily withDefault:nil]
                                               fontSize:[_titleOptions.fontSize withDefault:@(16)]
                                             fontWeight:[_titleOptions.fontWeight withDefault:nil]
-                                                 color:[_subtitleOptions.color withDefault:nil]];
+                                                 color:[_subtitleOptions.color withDefault:nil]
+                                              centered:YES];
     [titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title
                                                                   attributes:fontAttributes]];
 

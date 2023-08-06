@@ -86,15 +86,18 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void onConfigurationChange_shouldCallConfigurationChangeForPresenterAndChildren() {
-        children.add(spy(new SimpleViewController(activity, childRegistry, "child1", new Options())));
-        children.add(spy(new SimpleViewController(activity, childRegistry, "child2", new Options())));
+    public void onConfigurationChange_shouldCallConfigurationChangeForPresenterAndVisibleChild() {
+        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+        SimpleViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        children.add(child1);
+        children.add(child2);
+        Mockito.when(child1.isViewShown()).thenReturn(true);
+        Mockito.when(child2.isViewShown()).thenReturn(false);
         ParentController<?> spyUUT = spy(uut);
         spyUUT.onConfigurationChanged(mockConfiguration);
         verify(presenter).onConfigurationChanged(any(),any());
-        for (ViewController<?> controller : children) {
-            verify(controller).onConfigurationChanged(any());
-        }
+        verify(child1).onConfigurationChanged(any());
+        verify(child2, never()).onConfigurationChanged(any());
     }
 
     @Test

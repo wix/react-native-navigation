@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
-import { NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationProps, Options } from 'react-native-navigation';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import Colors from '../commons/Colors';
@@ -11,7 +11,7 @@ interface State {
   fabHideOnScroll: boolean;
 }
 
-export default class ScrollViewScreen extends React.Component<NavigationComponentProps, State> {
+export default class ScrollViewScreen extends React.Component<NavigationProps, State> {
   static options(): Options {
     return {
       topBar: {

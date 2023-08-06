@@ -9,20 +9,23 @@
 + (NSDictionary *)createWithFontFamily:(NSString *)fontFamily
                               fontSize:(NSNumber *)fontSize
                             fontWeight:(NSString *)fontWeight
-                                 color:(UIColor *)color {
+                                 color:(UIColor *)color
+                              centered:(BOOL)centered {
     NSMutableDictionary *titleTextAttributes = [NSMutableDictionary new];
     return [self createFromDictionary:titleTextAttributes
                            fontFamily:fontFamily
                              fontSize:fontSize
                            fontWeight:fontWeight
-                                color:color];
+                                color:color
+                             centered:centered];
 }
 
 + (NSDictionary *)createFromDictionary:(NSDictionary *)attributesDictionary
                             fontFamily:(NSString *)fontFamily
                               fontSize:(NSNumber *)fontSize
                             fontWeight:(NSString *)fontWeight
-                                 color:(UIColor *)color {
+                                 color:(UIColor *)color
+                              centered:(BOOL)centered {
     NSMutableDictionary *titleTextAttributes =
         [NSMutableDictionary dictionaryWithDictionary:attributesDictionary];
     UIFont *currentFont = attributesDictionary[NSFontAttributeName];
@@ -36,6 +39,11 @@
                                                              style:nil
                                                            variant:nil
                                                    scaleMultiplier:1.0];
+    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    if (centered)
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+
+    titleTextAttributes[NSParagraphStyleAttributeName] = paragraphStyle;
 
     return titleTextAttributes;
 }

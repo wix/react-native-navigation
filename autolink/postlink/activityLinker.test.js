@@ -74,4 +74,30 @@ describe('activityLinker', () => {
     const mainActivityContent = fs.readFileSync(linker.activityPath, 'utf8');
     expect(mainActivityContent).toMatchSnapshot();
   });
+
+  it('should work for RN 0.71', () => {
+    jest.mock('../postlink/path', () => {
+      const { copyFileSync } = require('fs');
+      const { tmpdir } = require('os');
+      const path = require('path');
+
+      const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
+
+      copyFileSync(
+        path.resolve('autolink/fixtures/rn71/MainActivity.java.template'),
+        tmpMainActivityPath
+      );
+
+      return {
+        mainActivityJava: tmpMainActivityPath,
+      };
+    });
+
+    const ActivityLinker = require('./activityLinker');
+    const linker = new ActivityLinker();
+
+    linker.link();
+    const mainActivityContent = fs.readFileSync(linker.activityPath, 'utf8');
+    expect(mainActivityContent).toMatchSnapshot();
+  });
 });

@@ -8,13 +8,14 @@ module.exports = {
   },
   roots: [
     '<rootDir>/lib/src/',
+    '<rootDir>/lib/Mock/',
     '<rootDir>/playground/src/',
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
     '<rootDir>/e2e/',
     '<rootDir>/autolink/',
   ],
-  setupFilesAfterEnv: ['./jest-setup.js'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', './jest-setup.js'],
   testPathIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     'react-native-navigation/Mock': '<rootDir>/lib/Mock',
@@ -23,8 +24,8 @@ module.exports = {
       '<rootDir>/playground/img/layouts@2x.png',
   },
   collectCoverageFrom: [
-    'lib/src/**/*.ts',
-    'lib/src/**/*.tsx',
+    'lib/src/**/*.(ts|tsx)',
+    'lib/Mock/**/*.(ts|tsx)',
     'integration/**/*.js',
     '!lib/dist/index.js',
     '!lib/dist/Navigation.js',
@@ -38,4 +39,5 @@ module.exports = {
   resetMocks: true,
   resetModules: true,
   coverageReporters: ['json', 'lcov', 'text', 'html'],
+  testEnvironment: 'node',
 };

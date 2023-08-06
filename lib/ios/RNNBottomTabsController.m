@@ -4,7 +4,6 @@
 @interface RNNBottomTabsController ()
 @property(nonatomic, strong) BottomTabPresenter *bottomTabPresenter;
 @property(nonatomic, strong) RNNDotIndicatorPresenter *dotIndicatorPresenter;
-@property(nonatomic) BOOL viewWillAppearOnce;
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressRecognizer;
 
 @end
@@ -29,7 +28,7 @@
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
-    _pendingChildViewControllers = childViewControllers;
+
     self = [super initWithLayoutInfo:layoutInfo
                              creator:creator
                              options:options
@@ -56,16 +55,25 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // This hack is needed for cases when the initialized state of the tabBar should be hidden
+    UINavigationController *selectedChild = self.selectedViewController;
+    if ([selectedChild isKindOfClass:UINavigationController.class] &&
+        selectedChild.hidesBottomBarWhenPushed) {
+        [selectedChild pushViewController:UIViewController.new animated:NO];
+        [selectedChild popViewControllerAnimated:NO];
+    }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    _viewWillAppearOnce = YES;
-    [self loadChildren:self.pendingChildViewControllers];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -124,21 +132,10 @@
     return self.childViewControllers.count ? self.childViewControllers[_currentTabIndex] : nil;
 }
 
-- (NSArray<__kindof UIViewController *> *)childViewControllers {
-    return self.pendingChildViewControllers ?: super.childViewControllers;
-}
-
 - (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController {
     _previousTabIndex = _currentTabIndex;
     _currentTabIndex = [self.childViewControllers indexOfObject:selectedViewController];
     [super setSelectedViewController:selectedViewController];
-}
-
-- (void)loadChildren:(NSArray *)children {
-    if (self.viewWillAppearOnce) {
-        [super loadChildren:children];
-        self.pendingChildViewControllers = nil;
-    }
 }
 
 - (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated {

@@ -13,52 +13,48 @@ export default class ComponentNode extends ParentNode {
 
   public componentDidMount() {
     this.componentDidMountOnce = true;
-    this.componentDidAppearPending && this.componentDidAppear();
+    this.componentDidAppearPending && setImmediate(() => this.componentDidAppear());
   }
 
   public componentDidAppear() {
     if (this.componentDidMountOnce) {
-      setTimeout(() => {
-        events.invokeComponentWillAppear({
-          componentName: this.data.name,
-          componentId: this.nodeId,
-          componentType: 'Component',
-        });
-        events.invokeComponentDidAppear({
-          componentName: this.data.name,
-          componentId: this.nodeId,
-          componentType: 'Component',
-        });
+      events.invokeComponentWillAppear({
+        componentName: this.data.name,
+        componentId: this.nodeId,
+        componentType: 'Component',
+      });
+      events.invokeComponentDidAppear({
+        componentName: this.data.name,
+        componentId: this.nodeId,
+        componentType: 'Component',
+      });
 
-        this.buttonsDidAppear(
-          _.concat(
-            this.data.options.topBar?.rightButtons || [],
-            this.data.options.topBar?.leftButtons || []
-          )
-        );
-        this.titleChanged(undefined, this.data.options.topBar?.title);
-      }, 0);
+      this.buttonsDidAppear(
+        _.concat(
+          this.data.options.topBar?.rightButtons || [],
+          this.data.options.topBar?.leftButtons || []
+        )
+      );
+      this.titleChanged(undefined, this.data.options.topBar?.title);
     } else {
       this.componentDidAppearPending = true;
     }
   }
 
   public componentDidDisappear() {
-    setTimeout(() => {
-      events.invokeComponentDidDisappear({
-        componentName: this.data.name,
-        componentId: this.nodeId,
-        componentType: 'Component',
-      });
+    events.invokeComponentDidDisappear({
+      componentName: this.data.name,
+      componentId: this.nodeId,
+      componentType: 'Component',
+    });
 
-      this.buttonsDidDisappear(
-        _.concat(
-          this.data.options.topBar?.rightButtons || [],
-          this.data.options.topBar?.leftButtons || []
-        )
-      );
-      this.titleChanged(this.data.options.topBar?.title);
-    }, 0);
+    this.buttonsDidDisappear(
+      _.concat(
+        this.data.options.topBar?.rightButtons || [],
+        this.data.options.topBar?.leftButtons || []
+      )
+    );
+    this.titleChanged(this.data.options.topBar?.title);
   }
 
   titleChanged(oldTitle: any, newTitle?: any) {
