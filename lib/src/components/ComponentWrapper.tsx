@@ -35,7 +35,7 @@ export class ComponentWrapper {
         return {
           allProps: {
             ...nextProps,
-            ...store.getPropsForId(prevState.componentId),
+            ...store.getPendingProps(prevState.componentId),
           },
         };
       }
@@ -70,6 +70,7 @@ export class ComponentWrapper {
 
       componentDidMount() {
         this._isMounted = true;
+        store.consumePendingProps(this.state.componentId);
       }
 
       componentWillUnmount() {
