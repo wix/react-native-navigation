@@ -23,12 +23,8 @@ export class Store {
     this.pendingPropsById[componentId] = newProps;
   }
 
-  getPendingProps(componentId: string) {
-    return this.pendingPropsById[componentId];
-  }
-
   getPropsForId(componentId: string) {
-    return this.propsById[componentId] || {};
+    return this.pendingPropsById[componentId] || this.propsById[componentId] || {};
   }
 
   consumePendingProps(componentId: string) {

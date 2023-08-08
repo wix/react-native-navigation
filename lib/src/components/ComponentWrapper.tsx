@@ -35,7 +35,7 @@ export class ComponentWrapper {
         return {
           allProps: {
             ...nextProps,
-            ...store.getPendingProps(prevState.componentId),
+            ...store.getPropsForId(prevState.componentId),
           },
         };
       }
