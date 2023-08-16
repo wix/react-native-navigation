@@ -40,6 +40,8 @@ function testTarget(scheme, device, OS = 'latest') {
   -configuration ${conf}
   -destination 'platform=iOS Simulator,name=${device},OS=${OS}'
   -derivedDataPath ./DerivedData/playground
+  -test-iterations 3
+  -retry-tests-on-failure
   -UseModernBuildSystem=YES
   ONLY_ACTIVE_ARCH=YES`);
 }
