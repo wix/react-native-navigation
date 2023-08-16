@@ -241,7 +241,7 @@
     [[[UIApplication sharedApplication] keyWindow] setRootViewController:_uut];
     [_uut pushViewController:pushedController animated:NO];
     [pushedController viewDidAppear:YES];
-    XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][0]
+    XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][1]
         valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
 }
 
