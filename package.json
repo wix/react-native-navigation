@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.36.0",
+  "version": "7.37.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -50,6 +50,9 @@
     "release": "node ./scripts/release",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
+  "overrides": {
+    "@babel/traverse": "7.22.6"
+  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
@@ -68,10 +71,10 @@
     "tslib": "1.9.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "7.22.9",
     "@babel/plugin-proposal-export-default-from": "7.10.1",
     "@babel/plugin-proposal-export-namespace-from": "7.10.1",
-    "@babel/runtime": "^7.20.0",
+    "@babel/runtime": "7.22.6",
     "@babel/types": "7.22.5",
     "@react-native/metro-config": "^0.73.0",
     "@react-native-community/blur": "^3.6.0",

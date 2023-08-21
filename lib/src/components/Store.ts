@@ -23,16 +23,15 @@ export class Store {
     this.pendingPropsById[componentId] = newProps;
   }
 
-  getPendingProps(componentId: string) {
-    return this.pendingPropsById[componentId];
+  getPropsForId(componentId: string) {
+    return this.pendingPropsById[componentId] || this.propsById[componentId] || {};
   }
 
-  getPropsForId(componentId: string) {
+  consumePendingProps(componentId: string) {
     if (this.pendingPropsById[componentId]) {
       this.propsById[componentId] = this.pendingPropsById[componentId];
       delete this.pendingPropsById[componentId];
     }
-    return this.propsById[componentId] || {};
   }
 
   mergeNewPropsForId(componentId: string, newProps: any) {

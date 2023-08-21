@@ -55,7 +55,7 @@ describe('LayoutTreeCrawler', () => {
 
   it('pass props to option processor', () => {
     const passProps = { someProp: 'here' };
-    when(mockedStore.getPendingProps('testId')).thenReturn(passProps);
+    when(mockedStore.getPropsForId('testId')).thenReturn(passProps);
     const node = {
       id: 'testId',
       type: LayoutType.Component,
