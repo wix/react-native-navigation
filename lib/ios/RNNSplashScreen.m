@@ -14,6 +14,8 @@
     if (launchStoryBoard != nil) { // load the splash from the storyboard that's defined in the
                                    // info.plist as the LaunchScreen
         @try {
+            // Remove .storyboard extension
+            launchStoryBoard = [launchStoryBoard stringByDeletingPathExtension];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard
                                                                  bundle:nil];
             UIViewController *launchVC = [storyboard instantiateInitialViewController];
