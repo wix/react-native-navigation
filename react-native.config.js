@@ -8,10 +8,6 @@ module.exports = {
         packageInstance: 'new NavigationPackage(reactNativeHost)',
       },
     },
-    assets: [],
-    hooks: {
-      postlink: 'node node_modules/react-native-navigation/autolink/postlink/run',
-    },
   },
   project: {
     android: {
