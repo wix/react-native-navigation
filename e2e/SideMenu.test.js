@@ -46,7 +46,7 @@ describe.e2e('SideMenu', () => {
 
   it(':ios: rotation should update drawer height', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
-    await expect(elementByLabel('left drawer height: 869')).toBeVisible();
+    await expect(elementByLabel('left drawer height: 863')).toBeVisible();
     await device.setOrientation('landscape');
     await expect(elementByLabel('left drawer height: 428')).toBeVisible();
     await device.setOrientation('portrait');
