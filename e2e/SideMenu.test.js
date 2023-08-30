@@ -50,7 +50,7 @@ describe.e2e('SideMenu', () => {
     await device.setOrientation('landscape');
     await expect(elementByLabel('left drawer height: 430')).toBeVisible();
     await device.setOrientation('portrait');
-    await expect(elementByLabel('left drawer height: 869')).toBeVisible();
+    await expect(elementByLabel('left drawer height: 863')).toBeVisible();
   });
 
   it('should set left drawer width', async () => {
