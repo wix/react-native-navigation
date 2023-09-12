@@ -3,8 +3,6 @@ package com.reactnativenavigation.utils
 import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import com.reactnativenavigation.BuildConfig
 
 val hitRect = Rect()
 
