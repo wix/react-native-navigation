@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { ComponentProps } from '../ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from '../constants';
@@ -34,9 +34,9 @@ export const ComponentScreen = connect(
         const bottomTabOptions = child.resolveOptions().bottomTab;
         return (
           <View key={`tab-${i}`}>
-            <Button
+            <TouchableOpacity
+              style={{padding:10}}
               testID={bottomTabOptions?.testID}
-              title={bottomTabOptions?.text || ''}
               onPress={() => {
                 events.invokeBottomTabPressed({
                   tabIndex: i,
@@ -44,13 +44,17 @@ export const ComponentScreen = connect(
                 if (_.defaultTo(bottomTabOptions?.selectTabOnPress, true))
                   switchTabByIndex(this.props.layoutNode.getBottomTabs(), i);
               }}
-            />
+            >
             <Text>{bottomTabOptions?.badge}</Text>
+            <Text>{bottomTabOptions?.text || ''}</Text>
+            </TouchableOpacity>
           </View>
         );
       });
 
-      return <View testID={bottomTabsOptions?.testID}>{buttons}</View>;
+      return <View 
+      testID={bottomTabsOptions?.testID} 
+      style={{flexDirection: 'row',justifyContent: 'center', width: '100%', backgroundColor: '#F0F2F5'}}>{buttons}</View>;
     }
 
     render() {
@@ -67,8 +71,8 @@ export const ComponentScreen = connect(
               backButtonOptions={this.props.layoutNode.resolveOptions().topBar?.backButton}
             />
           )}
-          {this.renderTabBar()}
           <Component componentId={this.props.layoutNode.nodeId} />
+          {this.renderTabBar()}
         </View>
       );
     }
