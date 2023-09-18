@@ -52,9 +52,12 @@ export const ComponentScreen = connect(
         );
       });
 
-      return <View 
-      testID={bottomTabsOptions?.testID} 
-      style={{flexDirection: 'row',justifyContent: 'center', width: '100%', backgroundColor: '#F0F2F5'}}>{buttons}</View>;
+      return (
+      <View 
+        testID={bottomTabsOptions?.testID} 
+        style={{flexDirection: 'row',justifyContent: 'center', width: '100%', backgroundColor: '#F0F2F5'}}>
+          {buttons}
+      </View>);
     }
 
     render() {
