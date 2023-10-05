@@ -82,9 +82,9 @@ public class UiUtils {
 
     public static void runOnMainThread(Runnable runnable) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            new Handler(Looper.getMainLooper()).postAtFrontOfQueue(runnable);
+            runnable.run();
         } else {
-            new Handler(Looper.getMainLooper()).post(runnable);
+            new Handler(Looper.getMainLooper()).postAtFrontOfQueue(runnable);
         }
     }
 
