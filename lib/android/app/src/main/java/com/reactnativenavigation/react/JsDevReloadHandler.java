@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import android.os.Build;
 
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.reactnativenavigation.utils.UiUtils;
@@ -49,7 +50,11 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
     }
 
 	public void onActivityResumed(Activity activity) {
-		activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST));
+		if (Build.VERSION.SDK_INT >= 34 && activity.getApplicationInfo().targetSdkVersion >= 34) {
+            activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST), Context.RECEIVER_EXPORTED);
+        } else {
+            activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST));
+        }
 	}
 
 	public void onActivityPaused(Activity activity) {
