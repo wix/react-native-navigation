@@ -96,6 +96,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         constants.putDouble(Constants.BOTTOM_TABS_HEIGHT_KEY, pxToDp(ctx, UiUtils.getBottomTabsHeight(ctx)));
         constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, pxToDp(ctx, SystemUiUtils.getStatusBarHeight(currentActivity)));
         constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
+        constants.putDouble(Constants.NAVIGATION_BAR_HEIGHT_KEY,
+                            pxToDp(ctx, UiUtils.getNavigationBarHeight(ctx)));
         return constants;
     }
 

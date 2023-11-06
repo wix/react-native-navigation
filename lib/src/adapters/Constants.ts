@@ -5,6 +5,7 @@ export interface NavigationConstants {
   backButtonId: string;
   topBarHeight: number;
   bottomTabsHeight: number;
+  navigationBarHeight: number;
 }
 
 export class Constants {
@@ -22,11 +23,13 @@ export class Constants {
   public readonly backButtonId: string;
   public readonly topBarHeight: number;
   public readonly bottomTabsHeight: number;
+  public readonly navigationBarHeight: number;
 
   private constructor(constants: NavigationConstants) {
     this.statusBarHeight = constants.statusBarHeight;
     this.topBarHeight = constants.topBarHeight;
     this.backButtonId = constants.backButtonId;
     this.bottomTabsHeight = constants.bottomTabsHeight;
+    this.navigationBarHeight = constants.navigationBarHeight;
   }
 }
