@@ -34,8 +34,11 @@ type FontWeight =
   | '900'
   | FontWeightIOS;
 export type LayoutOrientation =
+  | 'all'
+  | 'default'
   | 'portrait'
   | 'landscape'
+  | 'upsideDown'
   | 'sensor'
   | 'sensorLandscape'
   | 'sensorPortrait';
