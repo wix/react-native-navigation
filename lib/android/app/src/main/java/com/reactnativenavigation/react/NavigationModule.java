@@ -89,8 +89,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void getLaunchArgs(String commandId, Promise promise) {
         // This is work-around for the RN problem described here:
         // https://github.com/facebook/react-native/issues/37518
-        Activity activity = activity();
-        if (activity == null) {
+        if (activity() == null) {
             NullRNActivityWorkaround.waitForActivity(getReactApplicationContext());
         }
         promise.resolve(LaunchArgsParser.parse(activity()));
@@ -120,7 +119,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(Objects.requireNonNull(jsonParser.parse(rawLayoutTree).optJSONObject("root")));
-        runOnUIThread(() -> {
+        handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
         });
@@ -128,7 +127,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setDefaultOptions(ReadableMap options) {
-        runOnUIThread(() -> {
+        handle(() -> {
             Options defaultOptions = parse(options);
             layoutFactory.setDefaultOptions(defaultOptions);
             navigator().setDefaultOptions(defaultOptions);
@@ -137,13 +136,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void mergeOptions(String onComponentId, @Nullable ReadableMap options) {
-        runOnUIThread(() -> navigator().mergeOptions(onComponentId, parse(options)));
+        handle(() -> navigator().mergeOptions(onComponentId, parse(options)));
     }
 
     @ReactMethod
     public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
-        runOnUIThread(() -> {
+        handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().push(onComponentId, viewController, new NativeCommandListener("push", commandId, promise, eventEmitter, now));
         });
@@ -151,7 +150,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableArray children, Promise promise) {
-        runOnUIThread(() -> {
+        handle(() -> {
             ArrayList<ViewController<?>> _children = new ArrayList<>();
             for (int i = 0; i < children.size(); i++) {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
@@ -163,23 +162,23 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void pop(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        runOnUIThread(() -> navigator().pop(componentId, parse(mergeOptions), new NativeCommandListener("pop", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().pop(componentId, parse(mergeOptions), new NativeCommandListener("pop", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
     public void popTo(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        runOnUIThread(() -> navigator().popTo(componentId, parse(mergeOptions), new NativeCommandListener("popTo", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().popTo(componentId, parse(mergeOptions), new NativeCommandListener("popTo", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
     public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        runOnUIThread(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
     public void showModal(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
-        runOnUIThread(() -> {
+        handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().showModal(viewController, new NativeCommandListener("showModal", commandId, promise, eventEmitter, now));
         });
@@ -187,7 +186,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissModal(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        runOnUIThread(() -> {
+        handle(() -> {
             navigator().mergeOptions(componentId, parse(mergeOptions));
             navigator().dismissModal(componentId, new NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now));
         });
@@ -195,13 +194,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissAllModals(String commandId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        runOnUIThread(() -> navigator().dismissAllModals(parse(mergeOptions), new NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().dismissAllModals(parse(mergeOptions), new NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
     public void showOverlay(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
-        runOnUIThread(() -> {
+        handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
             navigator().showOverlay(viewController, new NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now));
         });
@@ -209,12 +208,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissOverlay(String commandId, String componentId, Promise promise) {
-        runOnUIThread(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
     }
 
     @ReactMethod
     public void dismissAllOverlays(String commandId, Promise promise) {
-        runOnUIThread(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
+        handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
     }
 
     @Override
@@ -236,7 +235,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
-    protected void runOnUIThread(Runnable task) {
+    protected void handle(Runnable task) {
         UiThread.post(() -> {
             if (getCurrentActivity() != null && !activity().isFinishing()) {
                 task.run();

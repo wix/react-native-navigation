@@ -69,13 +69,13 @@ public class NavigationModuleTest extends BaseTest {
         NavigationModule spy = spy(uut);
         when(spy.activity()).thenReturn(mock(NavigationActivity.class));
         Runnable runnable = mock(Runnable.class);
-        spy.runOnUIThread(runnable);
+        spy.handle(runnable);
         ShadowLooper.idleMainLooper();
         verify(runnable).run();
 
         when(spy.activity()).thenReturn(null);
         Runnable dontRun = mock(Runnable.class);
-        spy.runOnUIThread(dontRun);
+        spy.handle(dontRun);
         ShadowLooper.idleMainLooper();
         verify(dontRun, times(0)).run();
     }
