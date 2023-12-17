@@ -44,6 +44,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
+    private final NullRNActivityWorkaround nullRNActivityWorkaround;
 
     @SuppressWarnings("WeakerAccess")
     public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager, LayoutFactory layoutFactory) {
@@ -55,6 +56,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         this.reactInstanceManager = reactInstanceManager;
         this.jsonParser = jsonParser;
         this.layoutFactory = layoutFactory;
+        this.nullRNActivityWorkaround = new NullRNActivityWorkaround(reactContext);
+
         reactContext.addLifecycleEventListener(new LifecycleEventListenerAdapter() {
             @Override
             public void onHostPause() {
@@ -87,12 +90,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getLaunchArgs(String commandId, Promise promise) {
-        // This is work-around for the RN problem described here:
-        // https://github.com/facebook/react-native/issues/37518
-        if (activity() == null) {
-            NullRNActivityWorkaround.waitForActivity(getReactApplicationContext());
-        }
-        promise.resolve(LaunchArgsParser.parse(activity()));
+        Activity activity = nullRNActivityWorkaround.getActivity();
+        promise.resolve(LaunchArgsParser.parse(activity));
     }
 
     private WritableMap createNavigationConstantsMap() {
