@@ -4,7 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactApplicationContext
-import com.reactnativenavigation.utils.sleepSafe
+import com.reactnativenavigation.utils.busyRetry
 import java.lang.ref.WeakReference
 
 private const val ACTIVITY_WAIT_INTERVAL = 100L
@@ -43,13 +43,13 @@ class NullRNActivityWorkaround(reactAppContext: ReactApplicationContext) {
     }
 
     private fun waitForActivity() {
-        val activityReady = { (reactAppContext.get()?.hasCurrentActivity() ?: false) }
+        val isActivityReady = { (reactAppContext.get()?.hasCurrentActivity() ?: false) }
 
-        var tries = 0
-        while (tries < ACTIVITY_WAIT_TRIES && hasHost && !activityReady()) {
-            Log.d(LOG_TAG, "Busy-waiting for activity! Try: #$tries...")
-            sleepSafe(ACTIVITY_WAIT_INTERVAL)
-            tries++
+        busyRetry(ACTIVITY_WAIT_TRIES, ACTIVITY_WAIT_INTERVAL) { tries ->
+            if (!isActivityReady() && hasHost) {
+                Log.d(LOG_TAG, "Busy-waiting for activity! Try: #$tries...")
+                true
+            } else false
         }
     }
 }
