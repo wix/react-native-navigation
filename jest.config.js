@@ -1,7 +1,8 @@
 module.exports = {
   preset: 'react-native',
+  resolver: `${__dirname}/resolver.js`,
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable|react-native-reanimated)/)',
+    'node_modules/(?!(@react-native|react-native|mobx-react-lite|react-native-ui-lib|mobx|mobx-react|react-native-animatable|react-native-reanimated)/)',
   ],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',

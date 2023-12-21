@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { ComponentProps } from '../ComponentProps';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from '../Layouts/ParentNode';
-import { connect } from '../connect';
+import { observer } from 'remx';
 
-export const Stack = connect(
+export const Stack = observer(
   class extends Component<ComponentProps> {
     render() {
       const children = this.props.layoutNode.children;

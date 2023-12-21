@@ -118,7 +118,7 @@
     "react-redux": "5.x.x",
     "react-test-renderer": "18.2.0",
     "redux": "3.x.x",
-    "remx": "3.x.x",
+    "remx": "4.0.108-rc.4",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",

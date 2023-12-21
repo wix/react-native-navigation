@@ -5,9 +5,9 @@ import { VISIBLE_OVERLAY_TEST_ID } from '../constants';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
-import { connect } from '../connect';
+import { observer } from 'remx';
 
-export const Overlays = connect(
+export const Overlays = observer(
   class extends Component<ComponentProps> {
     render() {
       const children = LayoutStore.getOverlays();

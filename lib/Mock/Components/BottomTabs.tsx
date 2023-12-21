@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { LayoutComponent } from './LayoutComponent';
 import { ComponentProps } from '../ComponentProps';
-import { connect } from '../connect';
+import { observer } from 'remx';
 
-export const BottomTabs = connect(
+export const BottomTabs = observer(
   class extends Component<ComponentProps> {
     render() {
       return this.props.layoutNode.children.map((child) => {

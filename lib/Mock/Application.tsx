@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { connect } from './connect';
+import { observer } from 'remx';
 
 interface ApplicationProps {
   entryPoint: () => void;
 }
 
-export const Application = connect(
+export const Application = observer(
   class extends React.Component<ApplicationProps> {
     constructor(props: ApplicationProps) {
       super(props);
