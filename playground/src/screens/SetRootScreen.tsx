@@ -17,6 +17,7 @@ const {
   SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITH_BUTTONS,
+  SET_ROOT_AND_UPDATE_BUTTON_PROPS,
   ROUND_BUTTON,
 } = testIDs;
 
@@ -85,6 +86,11 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           label="Set Root with buttons"
           testID={SET_ROOT_WITH_BUTTONS}
           onPress={this.setRootWithButtons}
+        />
+        <Button
+          label="Set Root and update button props"
+          testID={SET_ROOT_AND_UPDATE_BUTTON_PROPS}
+          onPress={this.setRootAndUpdateProps}
         />
       </Root>
     );
@@ -314,4 +320,47 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
         },
       },
     });
+
+  setRootAndUpdateProps = async () => {
+    await Navigation.setRoot({
+      root: {
+        stack: {
+          options: {},
+          children: [
+            {
+              component: {
+                id: Screens.SetRoot,
+                name: Screens.SetRoot,
+                options: {
+                  animations: {
+                    setRoot: {
+                      waitForRender: true,
+                    },
+                  },
+                  topBar: {
+                    rightButtons: [
+                      {
+                        id: 'ROUND',
+                        testID: ROUND_BUTTON,
+                        component: {
+                          id: 'ROUND_COMPONENT',
+                          name: Screens.RoundButton,
+                          passProps: {
+                            title: 'Two',
+                            timesCreated: 1,
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    Navigation.updateProps('ROUND_COMPONENT', { title: 'Third' });
+  };
 }

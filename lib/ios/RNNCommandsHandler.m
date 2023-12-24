@@ -8,6 +8,7 @@
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
+#import "UIViewController+Utils.h"
 
 static NSString *const setRoot = @"setRoot";
 static NSString *const setStackRoot = @"setStackRoot";
@@ -91,9 +92,11 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *optionsWithDefault = vc.resolveOptionsWithDefault;
     vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender withDefault:NO];
 
+    _mainWindow.rootViewController = [UIViewController snapshotKeyWindow];
+    [self->_mainWindow.rootViewController destroy];
+
     __weak UIViewController *weakVC = vc;
     [vc setReactViewReadyCallback:^{
-      [self->_mainWindow.rootViewController destroy];
       self->_mainWindow.rootViewController = weakVC;
 
       [self->_setRootAnimator

@@ -5,7 +5,6 @@ import { IWrappedComponent } from './ComponentWrapper';
 export class Store {
   private componentsByName: Record<string, ComponentProvider> = {};
   private propsById: Record<string, any> = {};
-  private pendingPropsById: Record<string, any> = {};
   private componentsInstancesById: Record<string, IWrappedComponent> = {};
   private wrappedComponents: Record<string, React.ComponentClass<any>> = {};
   private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
@@ -19,19 +18,12 @@ export class Store {
     }
   }
 
-  setPendingProps(componentId: string, newProps: any) {
-    this.pendingPropsById[componentId] = newProps;
+  setProps(componentId: string, newProps: any) {
+    this.propsById[componentId] = newProps;
   }
 
   getPropsForId(componentId: string) {
-    return this.pendingPropsById[componentId] || this.propsById[componentId] || {};
-  }
-
-  consumePendingProps(componentId: string) {
-    if (this.pendingPropsById[componentId]) {
-      this.propsById[componentId] = this.pendingPropsById[componentId];
-      delete this.pendingPropsById[componentId];
-    }
+    return this.propsById[componentId] || {};
   }
 
   mergeNewPropsForId(componentId: string, newProps: any) {

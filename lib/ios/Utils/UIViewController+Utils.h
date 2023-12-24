@@ -3,6 +3,7 @@
 
 @interface UIViewController (Utils)
 
++ (instancetype)snapshotKeyWindow;
 - (void)forEachChild:(void (^)(UIViewController *child))perform;
 - (BOOL)isLastInStack;
 

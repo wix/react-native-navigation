@@ -102,29 +102,4 @@ describe('Store', () => {
 
     expect(uut.getPropsForId('component1')).toEqual({ foo: 'foo2', bar: 'bar' });
   });
-
-  it('clearing component props should not clear pending props', () => {
-    uut.updateProps('component1', { foo: 'foo2' });
-    uut.setPendingProps('component1', { foo: 'foo', bar: 'bar' });
-    uut.clearComponent('component1');
-
-    expect(uut.getPropsForId('component1')).toEqual({ foo: 'foo', bar: 'bar' });
-  });
-
-  it('should not clear pending props if not consumed', () => {
-    uut.setPendingProps('component1', { foo: 'foo', bar: 'bar' });
-    uut.getPropsForId('component1');
-    uut.clearComponent('component1');
-
-    expect(uut.getPropsForId('component1')).toEqual({ foo: 'foo', bar: 'bar' });
-  });
-
-  it('should clear pending props if consumed', () => {
-    uut.setPendingProps('component1', { foo: 'foo', bar: 'bar' });
-    uut.getPropsForId('component1');
-    uut.consumePendingProps('component1');
-    uut.clearComponent('component1');
-
-    expect(uut.getPropsForId('component1')).toEqual({});
-  });
 });

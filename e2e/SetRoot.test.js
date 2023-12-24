@@ -50,4 +50,12 @@ describe('SetRoot', () => {
     await expect(elementByLabel('Times created: 1')).toBeVisible();
     await elementById(TestIDs.OK_BUTTON).tap();
   });
+
+  it('set root and update props should update button props', async () => {
+    await expect(elementByLabel('Two')).toBeVisible();
+    await elementById(TestIDs.SET_ROOT_AND_UPDATE_BUTTON_PROPS).tap();
+    await expect(elementByLabel('Third')).toBeVisible();
+    await elementById(TestIDs.SET_ROOT_AND_UPDATE_BUTTON_PROPS).tap();
+    await expect(elementByLabel('Third')).toBeVisible();
+  });
 });

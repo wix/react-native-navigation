@@ -202,7 +202,7 @@ export class OptionsProcessor {
     if (endsWith(key, 'Buttons')) {
       forEach(value, (button) => {
         if (button.passProps && button.id) {
-          this.store.setPendingProps(button.id, button.passProps);
+          this.store.setProps(button.id, button.passProps);
           button.passProps = undefined;
         }
       });
@@ -214,7 +214,7 @@ export class OptionsProcessor {
       value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
       this.store.ensureClassForName(value.name);
       if (value.passProps) {
-        this.store.setPendingProps(value.componentId, value.passProps);
+        this.store.setProps(value.componentId, value.passProps);
       }
       options[key].passProps = undefined;
     }

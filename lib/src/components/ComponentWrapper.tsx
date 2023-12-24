@@ -70,7 +70,6 @@ export class ComponentWrapper {
 
       componentDidMount() {
         this._isMounted = true;
-        store.consumePendingProps(this.state.componentId);
       }
 
       componentWillUnmount() {
