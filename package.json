@@ -22,6 +22,7 @@
   "main": "lib/dist/src/index.js",
   "typings": "lib/dist/src/index.d.ts",
   "scripts": {
+    "postinstall": "node scripts/postinstall.js",
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
