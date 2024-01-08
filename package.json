@@ -201,7 +201,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone 11",
+        "name": "iPhone 13",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"

@@ -248,8 +248,8 @@
 - (void)testShowOverlay_invokeNavigationCommandEventWithLayout {
     [self.uut setReadyToReceiveCommands:true];
     OCMStub([self.overlayManager showOverlayWindow:[OCMArg any]]);
-    id mockedVC = [OCMockObject partialMockForObject:self.vc1];
-    OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(mockedVC);
+
+    OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(self.vc1);
 
     [[self.eventEmmiter expect] sendOnNavigationCommandCompletion:@"showOverlay"
                                                         commandId:[OCMArg any]];
