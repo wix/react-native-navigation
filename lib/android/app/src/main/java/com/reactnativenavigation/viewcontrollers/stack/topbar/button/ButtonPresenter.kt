@@ -193,11 +193,10 @@ open class ButtonPresenter(private val context: Context, private val button: But
                 it.tag = button.testId.get()
 
                 class WixAccessibilityDelegateCompat: AccessibilityDelegateCompat(){
-                    override fun onInitializeAccessibilityNodeInfo(
-                        host: View?,
-                        info: AccessibilityNodeInfoCompat?
-                    ) {
-                        super.onInitializeAccessibilityNodeInfo(host, info)
+                    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                        if (host != null) {
+                            super.onInitializeAccessibilityNodeInfo(host, info)
+                        }
 
                         // Expose the testID prop as the resource-id name of the view. Black-box E2E/UI testing
                         // frameworks, which interact with the UI through the accessibility framework, do not have
