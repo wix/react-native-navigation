@@ -17,8 +17,10 @@ steps:
         key: "remove-documentation-version"
         default: 'null'
         hint: 'Leave NULL if no version is specified'
-  
+
   - label: ":android: Android"
+    env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
     command:
     - "nvm install"
     - "npm install"
@@ -49,6 +51,7 @@ steps:
 
   - label: ":package: Publish"
     env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
     if: "build.pull_request.id == null"
     command:
     - "nvm install"
