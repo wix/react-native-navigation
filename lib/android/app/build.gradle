@@ -56,7 +56,7 @@ android {
                     def repeatLength = output.length()
                     println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
 
-                    println "see report at file://${t.reports.html.destination}/index.html"
+                    println "see report at file://${t.reports.html.outputLocation}/index.html"
                 }
             }
         }
