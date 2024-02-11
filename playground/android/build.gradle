@@ -36,3 +36,13 @@ allprojects {
         }
     }
 }
+
+subprojects {
+    afterEvaluate { p ->
+        if (p.hasProperty('android')) {
+            android {
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
+        }
+    }
+}
