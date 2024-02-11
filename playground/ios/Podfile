@@ -35,12 +35,11 @@ def all_pods
 end
 
 post_install do |installer|
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
-  end
-
-  react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
+  react_native_post_install(
+    installer,
+    "../../node_modules/react-native",
+    :mac_catalyst_enabled => false
+  )
 end
 
 target 'playground' do
