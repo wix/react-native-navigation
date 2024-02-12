@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 
   s.module_name  = 'ReactNativeNavigation'
   s.default_subspec = 'Core'
-  
+
   s.subspec 'Core' do |ss|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
     s.source_files    = 'lib/ios/**/*.{h,m,mm,cpp}'
@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   end
 
   if fabric_enabled
+    install_modules_dependencies(s)
     folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
     fabric_flags = fabric_enabled ? '-DRCT_NEW_ARCH_ENABLED' : ''
     s.pod_target_xcconfig = {
