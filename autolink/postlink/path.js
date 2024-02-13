@@ -6,8 +6,10 @@ var ignoreFolders = {
 exports.mainActivityJava = glob.sync('**/MainActivity.java', ignoreFolders)[0];
 exports.mainActivityKotlin = glob.sync('**/MainActivity.kt', ignoreFolders)[0];
 var mainApplicationJava = glob.sync('**/MainApplication.java', ignoreFolders)[0];
-exports.mainApplicationJava = mainApplicationJava;
-exports.rootGradle = mainApplicationJava.replace(/android\/app\/.*\.java/, 'android/build.gradle');
+var mainApplicationKotlin = glob.sync('**/MainApplication.kt', ignoreFolders)[0];
+var mainApplication = mainApplicationJava || mainApplicationKotlin
+exports.mainApplicationJava = mainApplication;
+exports.rootGradle = mainApplication.replace(/android\/app\/.*\.java/, 'android/build.gradle'); exports.mainApplicationJava = mainApplicationJava;
 
 var reactNativeVersion = require('../../../react-native/package.json').version;
 exports.appDelegate = glob.sync(
