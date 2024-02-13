@@ -8,7 +8,7 @@ exports.mainActivityKotlin = glob.sync('**/MainActivity.kt', ignoreFolders)[0];
 var mainApplicationJava = glob.sync('**/MainApplication.java', ignoreFolders)[0];
 var mainApplicationKotlin = glob.sync('**/MainApplication.kt', ignoreFolders)[0];
 var mainApplication = mainApplicationJava || mainApplicationKotlin
-exports.mainApplicationJava = mainApplication;
+exports.mainApplicationJava = mainApplicationJava;
 exports.rootGradle = mainApplication.replace(/android\/app\/.*\.java/, 'android/build.gradle'); exports.mainApplicationJava = mainApplicationJava;
 
 var reactNativeVersion = require('../../../react-native/package.json').version;
