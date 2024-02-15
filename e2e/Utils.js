@@ -15,11 +15,14 @@ const utils = {
     // return element(by.label(label)).atIndex(0);
     return element(by.text(label));
   },
-  elementById: (id) => {
-    return element(by.id(id));
-  },
-  elementByTraits: (traits) => {
-    return element(by.traits(traits));
+  elementById: (id) => element(by.id(id)),
+  elementByTraits: (traits) => element(by.traits(traits)),
+  elementByType: (type) => element(by.type(type)),
+  elementTopBar: () => {
+    const elementType = (device.getPlatform() === 'ios') ?
+      'UINavigationBar' :
+      'com.reactnativenavigation.views.stack.topbar.TopBar';
+    return utils.elementByType(elementType);
   },
   tapBackIos: () => {
     try {

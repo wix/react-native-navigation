@@ -71,7 +71,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         component?.layoutDirection = layoutDirection
         titleSubTitleBar.layoutDirection = layoutDirection
         rightButtonBar.layoutDirection = layoutDirection
-        leftButtonBar.layoutDirection = if(isRTL()) View.LAYOUT_DIRECTION_LTR else View.LAYOUT_DIRECTION_RTL
+        leftButtonBar.layoutDirection = if (isRTL()) View.LAYOUT_DIRECTION_RTL else layoutDirection
     }
 
     fun setSubTitleTextAlignment(alignment: Alignment) = titleSubTitleBar.setSubTitleAlignment(alignment)
