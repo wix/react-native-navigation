@@ -15,7 +15,7 @@ describe('Buttons', () => {
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
   });
 
-  it('should render top/navigation-bar buttons in the right order', async () => {
+  it.e2e('should render top/navigation-bar buttons in the right order', async () => {
     const snapshottedImagePath = `./e2e/assets/buttons_navbar.${device.getPlatform()}.png`;
     const actual = await elementTopBar().takeScreenshot('buttons_navbar');
     expectImagesToBeEqual(actual, snapshottedImagePath)
