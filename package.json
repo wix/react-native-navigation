@@ -87,7 +87,6 @@
     "@react-native-community/netinfo": "^5.9.4",
     "@testing-library/jest-native": "^5.4.2",
     "@testing-library/react-native": "^12.0.1",
-    "@types/detox": "17.14.3",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jasmine": "3.5.10",
     "@types/jest": "27.0.2",
