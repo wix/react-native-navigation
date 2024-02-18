@@ -10,6 +10,8 @@ import org.robolectric.*;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
+import com.reactnativenavigation.R;
+
 public class EnvironmentTest extends BaseTest {
     @Test
     public void assertJ() {
@@ -33,7 +35,7 @@ public class EnvironmentTest extends BaseTest {
 
     @Test
     public void androidR() {
-        assertThat(R.string.bottom_sheet_behavior).isNotZero();
+        assertThat(com.google.android.material.R.string.bottom_sheet_behavior).isNotZero();
     }
 
     @Test
