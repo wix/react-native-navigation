@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import com.reactnativenavigation.R;
 
 public class FragmentComponent implements ExternalComponent {
     private final FrameLayout content;

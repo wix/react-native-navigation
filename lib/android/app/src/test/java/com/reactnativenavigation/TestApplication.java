@@ -9,6 +9,7 @@ import com.facebook.react.ReactPackage;
 import java.util.Collections;
 import java.util.List;
 
+
 public class TestApplication extends Application implements ReactApplication {
     private final ReactNativeHost host = new ReactNativeHost(this) {
         @Override
@@ -25,7 +26,7 @@ public class TestApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        setTheme(R.style.Theme_AppCompat);
+        setTheme(androidx.appcompat.R.style.Theme_AppCompat);
     }
 
     @Override

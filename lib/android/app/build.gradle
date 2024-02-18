@@ -12,9 +12,9 @@ def safeExtGetFallbackLowerBound(prop, fallback) {
     Math.max(safeExtGet(prop,fallback),fallback)
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 33
+def DEFAULT_COMPILE_SDK_VERSION = 34
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 33
+def DEFAULT_TARGET_SDK_VERSION = 34
 def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
@@ -22,7 +22,7 @@ def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 android {
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = "34.0.0"
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
@@ -56,17 +56,17 @@ android {
                     def repeatLength = output.length()
                     println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
 
-                    println "see report at file://${t.reports.html.destination}/index.html"
+                    println "see report at file://${t.reports.html.outputLocation}/index.html"
                 }
             }
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     flavorDimensions "RNN.reactNativeVersion"
@@ -172,14 +172,14 @@ List reactNativeVersionComponents(rnPackageJsonFile) {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "androidx.core:core-ktx:1.6.1"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.annotation:annotation:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'com.google.android.material:material:1.11.0'
 
     implementation 'com.github.wix-playground:ahbottomnavigation:3.3.0'
 //    implementation project(':AHBottomNavigation')
