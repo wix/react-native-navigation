@@ -5,6 +5,7 @@ integration/
 playground/
 artifacts/
 scripts/
+!scripts/postinstall.js
 website/
 .travis.yml
 wallaby.js
