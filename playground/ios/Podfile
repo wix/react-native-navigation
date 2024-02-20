@@ -16,11 +16,11 @@ if linkage != nil
 end
 
 
-def all_pods
+def all_pods  
   config = use_native_modules!
-
+  
   flags = get_default_flags()
-
+  
   use_react_native!(
     :path => "../../node_modules/react-native",
     :hermes_enabled => flags[:hermes_enabled],
@@ -29,17 +29,21 @@ def all_pods
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
-
+  
   pod 'ReactNativeNavigation', :path => '../../'
   pod 'HMSegmentedControl'
 end
 
 post_install do |installer|
-  react_native_post_install(
-    installer,
-    "../../node_modules/react-native",
-    :mac_catalyst_enabled => false
-  )
+  react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
+  __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+  # This is to resolve "'shared_timed_mutex' is unavailable: introduced in iOS 10.0" error
+  installer.pods_project.targets.each do |t|
+    t.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+    end
+  end
 end
 
 target 'playground' do
