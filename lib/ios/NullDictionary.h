@@ -1,5 +1,5 @@
-#import "Dictionary.h"
+#import "RNNDictionary.h"
 
-@interface NullDictionary : Dictionary
+@interface NullDictionary : RNNDictionary
 
 @end
