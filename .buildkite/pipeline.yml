@@ -1,0 +1,61 @@
+steps:
+  - block: ":rocket: Release!"
+    prompt: "Fill out the details for release"
+    if: 'build.message =~ /^release\$/i'
+    fields:
+      - text: "VERSION"
+        key: "version"
+      - text: "NPM_TAG"
+        key: "npm-tag"
+        default: 'null'
+        required: false
+      - text: "BUILD_DOCUMENTATION_VERSION"
+        key: "build-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+      - text: "REMOVE_DOCUMENTATION_VERSION"
+        key: "remove-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+  
+  - label: ":android: Android"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run test-js"
+    - "npm run test-unit-android -- --release"
+    - "npm run test-e2e-android-multi -- --release --headless --verbose --ci"
+    key: "android_build"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/work/artifacts/**/*"
+
+  - label: ":ios: iOS - Unit"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run test-unit-ios -- --release"
+    key: "ios_unit"
+    timeout_in_minutes: 90
+
+  - label: ":ios: iOS - E2E"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run test-snapshot-ios -- --release"
+    - "npm run test-e2e-ios -- --release --multi --ci"
+    key: "ios_e2e"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/work/artifacts/**/*"
+
+  - label: ":package: Publish"
+    env:
+    if: "build.pull_request.id == null"
+    command:
+    - "nvm install"
+    - "npm install"
+    - "npm run release"
+    depends_on:
+    - "android_build"
+    - "ios_unit"
+    - "ios_e2e"
+    timeout_in_minutes: 90

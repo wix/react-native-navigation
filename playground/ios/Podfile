@@ -15,6 +15,9 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+# Execute the pre-install script before doing anything else
+system('node scripts/pre-install.js')
+
 
 def all_pods
   config = use_native_modules!
@@ -35,11 +38,15 @@ def all_pods
 end
 
 post_install do |installer|
-  react_native_post_install(
-    installer,
-    "../../node_modules/react-native",
-    :mac_catalyst_enabled => false
-  )
+  react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
+  __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+  # This is to resolve "'shared_timed_mutex' is unavailable: introduced in iOS 10.0" error
+  installer.pods_project.targets.each do |t|
+    t.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+    end
+  end
 end
 
 target 'playground' do
