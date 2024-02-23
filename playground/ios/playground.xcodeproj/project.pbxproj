@@ -1488,11 +1488,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-DRN_FABRIC_ENABLED",
+					" ",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
-					"-DRN_FABRIC_ENABLED",
+					" ",
 				);
 				OTHER_LDFLAGS = "";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
@@ -1545,11 +1545,11 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-DRN_FABRIC_ENABLED",
+					" ",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
-					"-DRN_FABRIC_ENABLED",
+					" ",
 				);
 				OTHER_LDFLAGS = "";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";

@@ -15,12 +15,15 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+# Execute the pre-install script before doing anything else
+system('node scripts/pre-install.js')
 
-def all_pods  
+
+def all_pods
   config = use_native_modules!
-  
+
   flags = get_default_flags()
-  
+
   use_react_native!(
     :path => "../../node_modules/react-native",
     :hermes_enabled => flags[:hermes_enabled],
@@ -29,7 +32,7 @@ def all_pods
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
-  
+
   pod 'ReactNativeNavigation', :path => '../../'
   pod 'HMSegmentedControl'
 end
