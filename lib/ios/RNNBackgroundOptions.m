@@ -5,10 +5,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.translucent = [BoolParser parse:dict key:@"translucent"];
-    self.blur = [BoolParser parse:dict key:@"blur"];
-    self.clipToBounds = [BoolParser parse:dict key:@"clipToBounds"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.translucent = [RNNBoolParser parse:dict key:@"translucent"];
+    self.blur = [RNNBoolParser parse:dict key:@"blur"];
+    self.clipToBounds = [RNNBoolParser parse:dict key:@"clipToBounds"];
     self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
 
     return self;

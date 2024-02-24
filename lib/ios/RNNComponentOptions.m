@@ -5,10 +5,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.name = [TextParser parse:dict key:@"name"];
-    self.componentId = [TextParser parse:dict key:@"componentId"];
-    self.alignment = [TextParser parse:dict key:@"alignment"];
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
+    self.name = [RNNTextParser parse:dict key:@"name"];
+    self.componentId = [RNNTextParser parse:dict key:@"componentId"];
+    self.alignment = [RNNTextParser parse:dict key:@"alignment"];
+    self.waitForRender = [RNNBoolParser parse:dict key:@"waitForRender"];
 
     return self;
 }

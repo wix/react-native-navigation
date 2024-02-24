@@ -11,7 +11,7 @@
              toVC:(UIViewController *)toVC
     containerView:(UIView *)containerView;
 
-+ (id<RNNDisplayLinkAnimatorDelegateProtocol>)createTransition:(TransitionOptions *)elementTransition
++ (id<RNNDisplayLinkAnimatorDelegateProtocol>)createTransition:(RNNTransitionOptions *)elementTransition
                                                view:(UIView *)view
                                       containerView:(UIView *)containerView;
 

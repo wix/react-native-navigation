@@ -12,9 +12,9 @@
     self.enable = [RNNBoolParser parse:dict key:@"enabled"];
     self.waitForRender = [RNNBoolParser parse:dict key:@"waitForRender"];
     self.duration = [RNNTimeIntervalParser parse:dict key:@"duration"];
-    self.sharedElementTransitions = [OptionsArrayParser parse:dict
+    self.sharedElementTransitions = [RNNOptionsArrayParser parse:dict
                                                           key:@"sharedElementTransitions"
-                                                      ofClass:SharedElementTransitionOptions.class];
+                                                      ofClass:RNNSharedElementTransitionOptions.class];
     self.elementTransitions = [RNNOptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:RNNElementTransitionOptions.class];

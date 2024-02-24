@@ -9,7 +9,7 @@
     if ([json[key] isEqual:@"NoColor"])
         return [RNNNoColor new];
     else if (json[key])
-        return [Color withValue:[RCTConvert UIColor:json[key]]];
+        return [RNNColor withValue:[RCTConvert UIColor:json[key]]];
 
     return [RNNNullColor new];
 }

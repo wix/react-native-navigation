@@ -6,25 +6,25 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.identifier = [TextParser parse:dict key:@"id"];
+    self.identifier = [RNNTextParser parse:dict key:@"id"];
     self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
-    self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
-    self.fontWeight = [TextParser parse:dict key:@"fontWeight"];
-    self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-    self.text = [TextParser parse:dict key:@"text"];
-    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
-    self.testID = [TextParser parse:dict key:@"testID"];
-    self.accessibilityLabel = [TextParser parse:dict key:@"accessibilityLabel"];
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.disabledColor = [ColorParser parse:dict key:@"disabledColor"];
-    self.icon = [ImageParser parse:dict key:@"icon"];
+    self.fontFamily = [RNNTextParser parse:dict key:@"fontFamily"];
+    self.fontWeight = [RNNTextParser parse:dict key:@"fontWeight"];
+    self.fontSize = [RNNNumberParser parse:dict key:@"fontSize"];
+    self.text = [RNNTextParser parse:dict key:@"text"];
+    self.sfSymbol = [RNNTextParser parse:dict key:@"sfSymbol"];
+    self.testID = [RNNTextParser parse:dict key:@"testID"];
+    self.accessibilityLabel = [RNNTextParser parse:dict key:@"accessibilityLabel"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.disabledColor = [RNNColorParser parse:dict key:@"disabledColor"];
+    self.icon = [RNNImageParser parse:dict key:@"icon"];
     self.iconInsets = [[RNNInsetsOptions alloc] initWithDict:dict[@"iconInsets"]];
-    self.enabled = [BoolParser parse:dict key:@"enabled"];
-    self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
+    self.enabled = [RNNBoolParser parse:dict key:@"enabled"];
+    self.selectTabOnPress = [RNNBoolParser parse:dict key:@"selectTabOnPress"];
     self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"]
                                                                  enabled:self.enabled];
-    self.systemItem = [TextParser parse:dict key:@"systemItem"];
-    self.disableIconTint = [BoolParser parse:dict key:@"disableIconTint"];
+    self.systemItem = [RNNTextParser parse:dict key:@"systemItem"];
+    self.disableIconTint = [RNNBoolParser parse:dict key:@"disableIconTint"];
 
     return self;
 }

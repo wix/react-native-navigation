@@ -1,20 +1,22 @@
 #import "RNNTransitionOptions.h"
+#import "RNNTransitionDetailsOptions.h"
+#import "RNNBoolParser.h"
 
 @implementation RNNTransitionOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.alpha = [[TransitionDetailsOptions alloc] initWithDict:dict[@"alpha"]];
-    self.x = [[TransitionDetailsOptions alloc] initWithDict:dict[@"x"]];
-    self.y = [[TransitionDetailsOptions alloc] initWithDict:dict[@"y"]];
-    self.translationX = [[TransitionDetailsOptions alloc] initWithDict:dict[@"translationX"]];
-    self.translationY = [[TransitionDetailsOptions alloc] initWithDict:dict[@"translationY"]];
-    self.rotationX = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationX"]];
-    self.rotationY = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationY"]];
+    self.alpha = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"alpha"]];
+    self.x = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"x"]];
+    self.y = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"y"]];
+    self.translationX = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"translationX"]];
+    self.translationY = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"translationY"]];
+    self.rotationX = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"rotationX"]];
+    self.rotationY = [[RNNTransitionDetailsOptions alloc] initWithDict:dict[@"rotationY"]];
 
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
-    self.enable = [BoolParser parse:dict key:@"enabled"];
+    self.waitForRender = [RNNBoolParser parse:dict key:@"waitForRender"];
+    self.enable = [RNNBoolParser parse:dict key:@"enabled"];
 
     return self;
 }

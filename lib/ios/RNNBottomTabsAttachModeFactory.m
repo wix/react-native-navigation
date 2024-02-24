@@ -15,10 +15,10 @@
     AttachMode attachMode =
         [[options withDefault:_defaultOptions].bottomTabs.tabsAttachMode withDefault:@"together"];
     switch (attachMode) {
-    case BottomTabsAttachModeAfterInitialTab: {
+    case RNNBottomTabsAttachModeAfterInitialTab: {
         return [RNNBottomTabsAfterInitialTabAttacher new];
     }
-    case BottomTabsAttachModeOnSwitchToTab: {
+    case RNNBottomTabsAttachModeOnSwitchToTab: {
         return [RNNBottomTabsOnSwitchToTabAttacher new];
     }
     default:

@@ -3,7 +3,7 @@
 @implementation RNNFloatTransition
 
 - (instancetype)initWithView:(UIView *)view
-           transitionDetails:(TransitionDetailsOptions *)transitionDetails {
+           transitionDetails:(RNNTransitionDetailsOptions *)transitionDetails {
     self = [self initWithView:view
                          from:transitionDetails.from
                            to:transitionDetails.to

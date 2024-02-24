@@ -12,7 +12,7 @@
     UIView *_containerView;
 }
 
-- (instancetype)initWithTransitionOptions:(TransitionOptions *)transitionOptions
+- (instancetype)initWithTransitionOptions:(RNNTransitionOptions *)transitionOptions
                                      view:(UIView *)view
                             containerView:(UIView *)containerView {
     self = [super init];
@@ -23,7 +23,7 @@
 }
 
 - (NSMutableArray<id<RNNDisplayLinkAnimation>> *)createAnimations:
-    (TransitionOptions *)transitionOptions {
+    (RNNTransitionOptions *)transitionOptions {
     NSMutableArray *animations = [NSMutableArray new];
     if (transitionOptions.alpha.hasAnimation) {
         [animations

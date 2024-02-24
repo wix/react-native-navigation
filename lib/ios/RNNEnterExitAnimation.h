@@ -7,8 +7,8 @@
 
 @property(nonatomic, strong) NSArray<RNNElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<RNNSharedElementTransitionOptions *> *sharedElementTransitions;
-@property(nonatomic, strong) TransitionOptions *enter;
-@property(nonatomic, strong) TransitionOptions *exit;
+@property(nonatomic, strong) RNNTransitionOptions *enter;
+@property(nonatomic, strong) RNNTransitionOptions *exit;
 
 - (NSTimeInterval)maxDuration;
 - (BOOL)hasAnimation;

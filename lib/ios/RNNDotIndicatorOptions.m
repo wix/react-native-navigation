@@ -7,9 +7,9 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.size = [NumberParser parse:dict key:@"size"];
-    self.visible = [BoolParser parse:dict key:@"visible"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.size = [RNNNumberParser parse:dict key:@"size"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
     return self;
 }
 

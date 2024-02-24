@@ -4,7 +4,7 @@
 
 @interface RNNElementAnimator : RNNBaseAnimator
 
-- (instancetype)initWithTransitionOptions:(TransitionOptions *)transitionOptions
+- (instancetype)initWithTransitionOptions:(RNNTransitionOptions *)transitionOptions
                                      view:(UIView *)view
                             containerView:(UIView *)containerView;
 

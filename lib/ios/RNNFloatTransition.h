@@ -1,10 +1,13 @@
-#import "RNNElementBaseTransition.h"
 #import <Foundation/Foundation.h>
+
+#import "RNNElementBaseTransition.h"
+#import "RNNTransitionDetailsOptions.h"
+#import "RNNDouble.h"
 
 @interface RNNFloatTransition : RNNElementBaseTransition
 
 - (instancetype)initWithView:(UIView *)view
-           transitionDetails:(TransitionDetailsOptions *)transitionDetails;
+           transitionDetails:(RNNTransitionDetailsOptions *)transitionDetails;
 
 - (instancetype)initWithView:(UIView *)view
                    fromFloat:(CGFloat)from

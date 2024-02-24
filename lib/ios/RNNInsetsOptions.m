@@ -5,10 +5,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.top = [DoubleParser parse:dict key:@"top"];
-    self.left = [DoubleParser parse:dict key:@"left"];
-    self.bottom = [DoubleParser parse:dict key:@"bottom"];
-    self.right = [DoubleParser parse:dict key:@"right"];
+    self.top = [RNNDoubleParser parse:dict key:@"top"];
+    self.left = [RNNDoubleParser parse:dict key:@"left"];
+    self.bottom = [RNNDoubleParser parse:dict key:@"bottom"];
+    self.right = [RNNDoubleParser parse:dict key:@"right"];
 
     return self;
 }
@@ -35,10 +35,10 @@
 
 + (RNNInsetsOptions *)withValue:(UIEdgeInsets)insets {
     RNNInsetsOptions *insetsOptions = RNNInsetsOptions.new;
-    insetsOptions.top = [Double withValue:insets.top];
-    insetsOptions.left = [Double withValue:insets.left];
-    insetsOptions.bottom = [Double withValue:insets.bottom];
-    insetsOptions.right = [Double withValue:insets.right];
+    insetsOptions.top = [RNNDouble withValue:insets.top];
+    insetsOptions.left = [RNNDouble withValue:insets.left];
+    insetsOptions.bottom = [RNNDouble withValue:insets.bottom];
+    insetsOptions.right = [RNNDouble withValue:insets.right];
 
     return insetsOptions;
 }

@@ -3,7 +3,7 @@
 #import "RNNBoolParser.h"
 #import "RNNDecelerateAccelerateInterpolator.h"
 #import "RNNDecelerateInterpolator.h"
-#import "FastOutSlowIn.h"
+#import "RNNFastOutSlowIn.h"
 #import "RNNInterpolatorProtocol.h"
 #import "RNNLinearInterpolator.h"
 #import "RNNNumberParser.h"
@@ -16,7 +16,7 @@
 RCT_CUSTOM_CONVERTER(id<RNNInterpolatorProtocol>, Interpolator, [RCTConvert interpolatorFromJson:json])
 
 + (id<RNNInterpolatorProtocol>)defaultInterpolator {
-    return [[LinearInterpolator alloc] init];
+    return [[RNNLinearInterpolator alloc] init];
 }
 
 #pragma mark Private
@@ -28,49 +28,49 @@ RCT_CUSTOM_CONVERTER(id<RNNInterpolatorProtocol>, Interpolator, [RCTConvert inte
     NSString *interpolation = json[@"type"] ? json[@"type"] : nil;
 
     id<RNNInterpolatorProtocol> (^interpolator)(void) = @{@"decelerate" : ^{
-        CGFloat factor = [[[NumberParser parse:json key:@"factor"]
+        CGFloat factor = [[[RNNNumberParser parse:json key:@"factor"]
             withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
-    return [[DecelerateInterpolator alloc] init:factor];
+    return [[RNNDecelerateInterpolator alloc] init:factor];
 }
 ,
         @"accelerate" : ^{
-          CGFloat factor = [[[NumberParser parse:json key:@"factor"]
+          CGFloat factor = [[[RNNNumberParser parse:json key:@"factor"]
               withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
-          return [[AccelerateInterpolator alloc] init:factor];
+          return [[RNNAccelerateInterpolator alloc] init:factor];
         },
         @"accelerateDecelerate" : ^{
-          return [[AccelerateDecelerateInterpolator alloc] init];
+          return [[RNNAccelerateDecelerateInterpolator alloc] init];
         },
         @"decelerateAccelerate" : ^{
-          return [[DecelerateAccelerateInterpolator alloc] init];
+          return [[RNNDecelerateAccelerateInterpolator alloc] init];
         },
         @"fastOutSlowIn" : ^{
-          return [FastOutSlowIn new];
+          return [RNNFastOutSlowIn new];
         },
         @"linear" : ^{
-          return [[LinearInterpolator alloc] init];
+          return [[RNNLinearInterpolator alloc] init];
         },
         @"overshoot" : ^{
-          CGFloat tension = [[[NumberParser parse:json key:@"tension"]
+          CGFloat tension = [[[RNNNumberParser parse:json key:@"tension"]
               withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
-          return [[OvershootInterpolator alloc] init:tension];
+          return [[RNNOvershootInterpolator alloc] init:tension];
         },
         @"spring" : ^{
-          CGFloat mass = [[[NumberParser parse:json key:@"mass"]
+          CGFloat mass = [[[RNNNumberParser parse:json key:@"mass"]
               withDefault:[NSNumber numberWithFloat:3.0f]] floatValue];
-          CGFloat damping = [[[NumberParser parse:json key:@"damping"]
+          CGFloat damping = [[[RNNNumberParser parse:json key:@"damping"]
               withDefault:[NSNumber numberWithFloat:500.0f]] floatValue];
-          CGFloat stiffness = [[[NumberParser parse:json key:@"stiffness"]
+          CGFloat stiffness = [[[RNNNumberParser parse:json key:@"stiffness"]
               withDefault:[NSNumber numberWithFloat:200.0f]] floatValue];
-          CGFloat allowsOverdamping = [[BoolParser parse:json
+          CGFloat allowsOverdamping = [[RNNBoolParser parse:json
                                                      key:@"allowsOverdamping"] withDefault:NO];
-          CGFloat initialVelocity = [[[NumberParser parse:json key:@"initialVelocity"]
+          CGFloat initialVelocity = [[[RNNNumberParser parse:json key:@"initialVelocity"]
               withDefault:[NSNumber numberWithFloat:0.0f]] floatValue];
-          return [[SpringInterpolator alloc] init:mass
-                                          damping:damping
-                                        stiffness:stiffness
-                                allowsOverdamping:allowsOverdamping
-                                  initialVelocity:initialVelocity];
+          return [[RNNSpringInterpolator alloc] init:mass
+                                             damping:damping
+                                           stiffness:stiffness
+                                   allowsOverdamping:allowsOverdamping
+                                     initialVelocity:initialVelocity];
         },
 }
 [interpolation];

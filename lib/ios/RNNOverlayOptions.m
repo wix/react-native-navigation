@@ -6,8 +6,8 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.interceptTouchOutside = [BoolParser parse:dict key:@"interceptTouchOutside"];
-    self.handleKeyboardEvents = [BoolParser parse:dict key:@"handleKeyboardEvents"];
+    self.interceptTouchOutside = [RNNBoolParser parse:dict key:@"interceptTouchOutside"];
+    self.handleKeyboardEvents = [RNNBoolParser parse:dict key:@"handleKeyboardEvents"];
 
     return self;
 }

@@ -7,8 +7,8 @@
 
     self.displayMode = dict[@"displayMode"];
     self.primaryEdge = dict[@"primaryEdge"];
-    self.minWidth = [NumberParser parse:dict key:@"minWidth"];
-    self.maxWidth = [NumberParser parse:dict key:@"maxWidth"];
+    self.minWidth = [RNNNumberParser parse:dict key:@"minWidth"];
+    self.maxWidth = [RNNNumberParser parse:dict key:@"maxWidth"];
     self.primaryBackgroundStyle = dict[@"primaryBackgroundStyle"];
     return self;
 }

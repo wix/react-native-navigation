@@ -4,9 +4,9 @@
 @implementation RNNSideMenuOpenGestureModeParser
 
 + (RNNSideMenuOpenMode *)parse:(NSDictionary *)json key:(NSString *)key {
-    return json[key] ? [[SideMenuOpenMode alloc]
-                           initWithValue:@([RCTConvert MMOpenDrawerGestureMode:json[key]])]
-                     : [[SideMenuOpenMode alloc] initWithValue:nil];
+  return json[key] ? [[RNNSideMenuOpenMode alloc]
+                      initWithValue:@([RCTConvert MMOpenDrawerGestureMode:json[key]])]
+      : [[RNNSideMenuOpenMode alloc] initWithValue:nil];
 }
 
 @end

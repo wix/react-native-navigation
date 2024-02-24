@@ -6,9 +6,9 @@
     self = [super initWithDict:dict];
     self.background =
         [[RNNScrollEdgeAppearanceBackgroundOptions alloc] initWithDict:dict[@"background"]];
-    self.active = [BoolParser parse:dict key:@"active"];
-    self.noBorder = [BoolParser parse:dict key:@"noBorder"];
-    self.borderColor = [ColorParser parse:dict key:@"borderColor"];
+    self.active = [RNNBoolParser parse:dict key:@"active"];
+    self.noBorder = [RNNBoolParser parse:dict key:@"noBorder"];
+    self.borderColor = [RNNColorParser parse:dict key:@"borderColor"];
 
     return self;
 }

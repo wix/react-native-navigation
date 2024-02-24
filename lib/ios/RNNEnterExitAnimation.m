@@ -6,14 +6,16 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.enter = [[TransitionOptions alloc] initWithDict:dict[@"enter"]];
-    self.exit = [[TransitionOptions alloc] initWithDict:dict[@"exit"]];
-    self.sharedElementTransitions = [OptionsArrayParser parse:dict
-                                                          key:@"sharedElementTransitions"
-                                                      ofClass:SharedElementTransitionOptions.class];
-    self.elementTransitions = [RNNOptionsArrayParser parse:dict
-                                                    key:@"elementTransitions"
-                                                ofClass:RNNElementTransitionOptions.class];
+    self.enter = [[RNNTransitionOptions alloc] initWithDict:dict[@"enter"]];
+    self.exit = [[RNNTransitionOptions alloc] initWithDict:dict[@"exit"]];
+    self.sharedElementTransitions = [RNNOptionsArrayParser 
+                                     parse:dict
+                                     key:@"sharedElementTransitions"
+                                     ofClass:RNNSharedElementTransitionOptions.class];
+    self.elementTransitions = [RNNOptionsArrayParser 
+                               parse:dict
+                               key:@"elementTransitions"
+                               ofClass:RNNElementTransitionOptions.class];
     return self;
 }
 

@@ -4,9 +4,9 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.radius = [NumberParser parse:dict key:@"radius"];
-    self.opacity = [NumberParser parse:dict key:@"opacity"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.radius = [RNNNumberParser parse:dict key:@"radius"];
+    self.opacity = [RNNNumberParser parse:dict key:@"opacity"];
     return self;
 }
 
