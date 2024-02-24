@@ -1,12 +1,12 @@
-#import "Image.h"
+#import "RNNImage.h"
 
-@interface Image ()
+@interface RNNImage ()
 
 @property(nonatomic, retain) UIImage *value;
 
 @end
 
-@implementation Image
+@implementation RNNImage
 
 - (UIImage *)get {
     return self.value;

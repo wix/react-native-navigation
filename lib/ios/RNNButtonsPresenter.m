@@ -26,8 +26,8 @@
 }
 
 - (void)applyLeftButtons:(NSArray<RNNButtonOptions *> *)leftButtons
-            defaultColor:(Color *)defaultColor
-    defaultDisabledColor:(Color *)defaultDisabledColor
+            defaultColor:(RNNColor *)defaultColor
+    defaultDisabledColor:(RNNColor *)defaultDisabledColor
                 animated:(BOOL)animated {
     [self setButtons:leftButtons
                         side:@"left"
@@ -37,8 +37,8 @@
 }
 
 - (void)applyRightButtons:(NSArray<RNNButtonOptions *> *)rightButtons
-             defaultColor:(Color *)defaultColor
-     defaultDisabledColor:(Color *)defaultDisabledColor
+             defaultColor:(RNNColor *)defaultColor
+     defaultDisabledColor:(RNNColor *)defaultDisabledColor
                  animated:(BOOL)animated {
     [self setButtons:rightButtons
                         side:@"right"
@@ -47,25 +47,25 @@
         defaultDisabledColor:defaultDisabledColor];
 }
 
-- (void)applyLeftButtonsColor:(Color *)color {
+- (void)applyLeftButtonsColor:(RNNColor *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
         [button mergeColor:color];
     }
 }
 
-- (void)applyRightButtonsColor:(Color *)color {
+- (void)applyRightButtonsColor:(RNNColor *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
         [button mergeColor:color];
     }
 }
 
-- (void)applyRightButtonsBackgroundColor:(Color *)color {
+- (void)applyRightButtonsBackgroundColor:(RNNColor *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
         [button mergeBackgroundColor:color];
     }
 }
 
-- (void)applyLeftButtonsBackgroundColor:(Color *)color {
+- (void)applyLeftButtonsBackgroundColor:(RNNColor *)color {
     for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
         [button mergeBackgroundColor:color];
     }
@@ -74,8 +74,8 @@
 - (void)setButtons:(NSArray<RNNButtonOptions *> *)buttons
                     side:(NSString *)side
                 animated:(BOOL)animated
-            defaultColor:(Color *)defaultColor
-    defaultDisabledColor:(Color *)defaultDisabledColor {
+            defaultColor:(RNNColor *)defaultColor
+    defaultDisabledColor:(RNNColor *)defaultDisabledColor {
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (RNNButtonOptions *button in buttons) {
         RNNUIBarButtonItem *barButtonItem = [_buttonBuilder

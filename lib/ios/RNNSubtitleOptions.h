@@ -2,11 +2,11 @@
 
 @interface RNNSubtitleOptions : RNNOptions
 
-@property(nonatomic, strong) Text *text;
+@property(nonatomic, strong) RNNText *text;
 @property(nonatomic, strong) RNNNumber *fontSize;
-@property(nonatomic, strong) Color *color;
-@property(nonatomic, strong) Text *fontFamily;
-@property(nonatomic, strong) Text *fontWeight;
-@property(nonatomic, strong) Text *alignment;
+@property(nonatomic, strong) RNNColor *color;
+@property(nonatomic, strong) RNNText *fontFamily;
+@property(nonatomic, strong) RNNText *fontWeight;
+@property(nonatomic, strong) RNNText *alignment;
 
 @end

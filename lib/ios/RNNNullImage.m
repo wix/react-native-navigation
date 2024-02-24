@@ -1,9 +1,10 @@
-#import "NullEnum.h"
+#import "RNNNullImage.h"
 
-@implementation NullEnum
+@implementation RNNNullImage
 
 - (instancetype)init {
     self = [super initWithValue:nil];
+
     return self;
 }
 

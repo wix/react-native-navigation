@@ -1,6 +1,6 @@
-#import "NullColor.h"
+#import "RNNNullColor.h"
 
-@implementation NullColor
+@implementation RNNNullColor
 
 - (instancetype)init {
     self = [super initWithValue:nil];

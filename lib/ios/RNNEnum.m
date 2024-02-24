@@ -1,6 +1,6 @@
-#import "Enum.h"
+#import "RNNEnum.h"
 
-@implementation Enum
+@implementation RNNEnum
 
 - (int)get {
     return [self convertString:super.get];

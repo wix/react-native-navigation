@@ -3,10 +3,10 @@
 
 @interface RNNSideMenuSideOptions : RNNOptions
 
-@property(nonatomic, strong) Bool *visible;
-@property(nonatomic, strong) Bool *enabled;
+@property(nonatomic, strong) RNNBool *visible;
+@property(nonatomic, strong) RNNBool *enabled;
 @property(nonatomic, strong) RNNDouble *width;
-@property(nonatomic, strong) Bool *shouldStretchDrawer;
+@property(nonatomic, strong) RNNBool *shouldStretchDrawer;
 @property(nonatomic, strong) RNNDouble *animationVelocity;
 
 @end

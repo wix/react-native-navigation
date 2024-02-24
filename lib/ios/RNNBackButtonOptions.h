@@ -2,20 +2,20 @@
 
 @interface RNNBackButtonOptions : RNNOptions
 
-@property(nonatomic, strong) Image *icon;
-@property(nonatomic, strong) Text *sfSymbol;
-@property(nonatomic, strong) Text *title;
-@property(nonatomic, strong) Text *fontFamily;
+@property(nonatomic, strong) RNNImage *icon;
+@property(nonatomic, strong) RNNText *sfSymbol;
+@property(nonatomic, strong) RNNText *title;
+@property(nonatomic, strong) RNNText *fontFamily;
 @property(nonatomic, strong) RNNNumber *fontSize;
-@property(nonatomic, strong) Text *transition;
-@property(nonatomic, strong) Text *testID;
-@property(nonatomic, strong) Color *color;
-@property(nonatomic, strong) Bool *showTitle;
-@property(nonatomic, strong) Bool *visible;
-@property(nonatomic, strong) Bool *enableMenu;
-@property(nonatomic, strong) Text *displayMode;
-@property(nonatomic, strong) Text *identifier;
-@property(nonatomic, strong) Bool *popStackOnPress;
+@property(nonatomic, strong) RNNText *transition;
+@property(nonatomic, strong) RNNText *testID;
+@property(nonatomic, strong) RNNColor *color;
+@property(nonatomic, strong) RNNBool *showTitle;
+@property(nonatomic, strong) RNNBool *visible;
+@property(nonatomic, strong) RNNBool *enableMenu;
+@property(nonatomic, strong) RNNText *displayMode;
+@property(nonatomic, strong) RNNText *identifier;
+@property(nonatomic, strong) RNNBool *popStackOnPress;
 
 - (BOOL)hasValue;
 

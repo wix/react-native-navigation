@@ -40,11 +40,11 @@
     self.deprecations = [[RNNDeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
     self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
 
-    self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
+    self.popGesture = [[RNNBool alloc] initWithValue:dict[@"popGesture"]];
     self.backgroundImage = [RNNImageParser parse:dict key:@"backgroundImage"];
     self.rootBackgroundImage = [RNNImageParser parse:dict key:@"rootBackgroundImage"];
-    self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
-    self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
+    self.modalPresentationStyle = [[RNNText alloc] initWithValue:dict[@"modalPresentationStyle"]];
+    self.modalTransitionStyle = [[RNNText alloc] initWithValue:dict[@"modalTransitionStyle"]];
 
     return self;
 }

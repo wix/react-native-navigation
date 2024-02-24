@@ -1,15 +1,15 @@
-#import "Color.h"
+#import "RNNColor.h"
 
-@interface Color ()
+@interface RNNColor ()
 
 @property(nonatomic, retain) UIColor *value;
 
 @end
 
-@implementation Color
+@implementation RNNColor
 
 + (instancetype)withColor:(UIColor *)value {
-    return [[Color alloc] initWithValue:value];
+    return [[RNNColor alloc] initWithValue:value];
 }
 
 - (instancetype)initWithValue:(UIColor *)value {

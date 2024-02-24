@@ -11,8 +11,8 @@
 @property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<RNNSharedElementTransitionOptions *> *sharedElementTransitions;
 
-@property(nonatomic, strong) Bool *enable;
-@property(nonatomic, strong) Bool *waitForRender;
+@property(nonatomic, strong) RNNBool *enable;
+@property(nonatomic, strong) RNNBool *waitForRender;
 @property(nonatomic, strong) RNNTimeInterval *duration;
 
 - (BOOL)hasCustomAnimation;

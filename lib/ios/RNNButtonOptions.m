@@ -1,5 +1,5 @@
 #import "RNNButtonOptions.h"
-#import "NullColor.h"
+#import "RNNNullColor.h"
 
 @implementation RNNButtonOptions
 
@@ -100,7 +100,7 @@
 
 - (UIColor *)resolveColor {
     if ([_disableIconTint withDefault:NO])
-        return NullColor.new.get;
+        return RNNNullColor.new.get;
     if (![_enabled withDefault:YES] && _disabledColor.hasValue)
         return _disabledColor.get;
     else
@@ -115,7 +115,7 @@
     return withDefault;
 }
 
-- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor {
+- (RNNButtonOptions *)withDefaultColor:(RNNColor *)color disabledColor:(RNNColor *)disabledColor {
     if (!self.color.hasValue)
         self.color = color;
     if (!self.disabledColor.hasValue)

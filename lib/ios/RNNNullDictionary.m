@@ -1,6 +1,6 @@
-#import "NullDictionary.h"
+#import "RNNNullDictionary.h"
 
-@implementation NullDictionary
+@implementation RNNNullDictionary
 
 - (instancetype)init {
     self = [super initWithValue:nil];

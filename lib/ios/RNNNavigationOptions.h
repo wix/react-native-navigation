@@ -35,11 +35,11 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) RNNDeprecationOptions *deprecations;
 @property(nonatomic, strong) WindowOptions *window;
 
-@property(nonatomic, strong) Bool *popGesture;
-@property(nonatomic, strong) Image *backgroundImage;
-@property(nonatomic, strong) Image *rootBackgroundImage;
-@property(nonatomic, strong) Text *modalPresentationStyle;
-@property(nonatomic, strong) Text *modalTransitionStyle;
+@property(nonatomic, strong) RNNBool *popGesture;
+@property(nonatomic, strong) RNNImage *backgroundImage;
+@property(nonatomic, strong) RNNImage *rootBackgroundImage;
+@property(nonatomic, strong) RNNText *modalPresentationStyle;
+@property(nonatomic, strong) RNNText *modalTransitionStyle;
 
 + (instancetype)emptyOptions;
 

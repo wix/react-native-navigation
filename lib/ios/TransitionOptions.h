@@ -12,8 +12,8 @@
 @property(nonatomic, strong) TransitionDetailsOptions *scaleY;
 @property(nonatomic, strong) TransitionDetailsOptions *rotationX;
 @property(nonatomic, strong) TransitionDetailsOptions *rotationY;
-@property(nonatomic, strong) Bool *waitForRender;
-@property(nonatomic, strong) Bool *enable;
+@property(nonatomic, strong) RNNBool *waitForRender;
+@property(nonatomic, strong) RNNBool *enable;
 
 - (BOOL)shouldWaitForRender;
 - (NSTimeInterval)maxDuration;

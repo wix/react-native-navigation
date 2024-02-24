@@ -1,6 +1,6 @@
-#import "NullDouble.h"
+#import "RNNNullIntNumber.h"
 
-@implementation NullDouble
+@implementation RNNNullIntNumber
 
 - (instancetype)init {
     self = [super initWithValue:nil];

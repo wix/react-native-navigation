@@ -1,7 +1,7 @@
 #import "RNNParam.h"
 #import <UIKit/UIKit.h>
 
-@interface Color : RNNParam
+@interface RNNColor : RNNParam
 
 + (instancetype)withColor:(UIColor *)value;
 

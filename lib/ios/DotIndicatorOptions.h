@@ -2,9 +2,9 @@
 
 @interface DotIndicatorOptions : RNNOptions
 
-@property(nonatomic, strong) Color *color;
+@property(nonatomic, strong) RNNColor *color;
 @property(nonatomic, strong) RNNNumber *size;
-@property(nonatomic, strong) Bool *visible;
+@property(nonatomic, strong) RNNBool *visible;
 
 - (bool)hasValue;
 

@@ -1,17 +1,17 @@
 #import "RNNColorParser.h"
 #import "NoColor.h"
-#import "NullColor.h"
+#import "RNNNullColor.h"
 #import <React/RCTConvert.h>
 
 @implementation RNNColorParser
 
-+ (Color *)parse:(NSDictionary *)json key:(NSString *)key {
++ (RNNColor *)parse:(NSDictionary *)json key:(NSString *)key {
     if ([json[key] isEqual:@"NoColor"])
         return [NoColor new];
     else if (json[key])
         return [Color withValue:[RCTConvert UIColor:json[key]]];
 
-    return [NullColor new];
+    return [RNNNullColor new];
 }
 
 @end

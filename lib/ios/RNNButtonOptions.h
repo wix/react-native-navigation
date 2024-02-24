@@ -5,30 +5,30 @@
 
 @interface RNNButtonOptions : RNNOptions
 
-@property(nonatomic, strong) Text *identifier;
-@property(nonatomic, strong) Text *fontFamily;
-@property(nonatomic, strong) Text *text;
-@property(nonatomic, strong) Text *systemItem;
-@property(nonatomic, strong) Text *accessibilityLabel;
+@property(nonatomic, strong) RNNText *identifier;
+@property(nonatomic, strong) RNNText *fontFamily;
+@property(nonatomic, strong) RNNText *text;
+@property(nonatomic, strong) RNNText *systemItem;
+@property(nonatomic, strong) RNNText *accessibilityLabel;
 @property(nonatomic, strong) RNNNumber *fontSize;
-@property(nonatomic, strong) Text *fontWeight;
-@property(nonatomic, strong) Text *testID;
-@property(nonatomic, strong) Color *color;
-@property(nonatomic, strong) Color *disabledColor;
-@property(nonatomic, strong) Image *icon;
-@property(nonatomic, strong) Text *sfSymbol;
-@property(nonatomic, strong) Bool *enabled;
+@property(nonatomic, strong) RNNText *fontWeight;
+@property(nonatomic, strong) RNNText *testID;
+@property(nonatomic, strong) RNNColor *color;
+@property(nonatomic, strong) RNNColor *disabledColor;
+@property(nonatomic, strong) RNNImage *icon;
+@property(nonatomic, strong) RNNText *sfSymbol;
+@property(nonatomic, strong) RNNBool *enabled;
 @property(nonatomic, strong) RNNInsetsOptions *iconInsets;
-@property(nonatomic, strong) Bool *selectTabOnPress;
+@property(nonatomic, strong) RNNBool *selectTabOnPress;
 @property(nonatomic, strong) RNNComponentOptions *component;
 @property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
-@property(nonatomic, strong) Bool *disableIconTint;
+@property(nonatomic, strong) RNNBool *disableIconTint;
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
 - (UIColor *)resolveColor;
 
-- (RNNButtonOptions *)withDefaultColor:(Color *)color disabledColor:(Color *)disabledColor;
+- (RNNButtonOptions *)withDefaultColor:(RNNColor *)color disabledColor:(RNNColor *)disabledColor;
 
 - (BOOL)shouldCreateCustomView;
 

@@ -1,15 +1,15 @@
-#import "Bool.h"
+#import "RNNBool.h"
 
-@interface Bool ()
+@interface RNNBool ()
 
 @property(nonatomic, retain) NSNumber *value;
 
 @end
 
-@implementation Bool
+@implementation RNNBool
 
 + (instancetype)withValue:(BOOL)value {
-    return [[Bool alloc] initWithBOOL:value];
+    return [[RNNBool alloc] initWithBOOL:value];
 }
 
 - (instancetype)initWithBOOL:(BOOL)boolValue {

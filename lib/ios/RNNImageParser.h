@@ -1,8 +1,8 @@
-#import "Image.h"
+#import "RNNImage.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNImageParser : NSObject
 
-+ (Image *)parse:(NSDictionary *)json key:(NSString *)key;
++ (RNNImage *)parse:(NSDictionary *)json key:(NSString *)key;
 
 @end

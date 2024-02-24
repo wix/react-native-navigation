@@ -1,6 +1,6 @@
-#import "NullText.h"
+#import "RNNNullEnum.h"
 
-@implementation NullText
+@implementation RNNNullEnum
 
 - (instancetype)init {
     self = [super initWithValue:nil];

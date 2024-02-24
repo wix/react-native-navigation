@@ -1,8 +1,8 @@
-#import "Text.h"
+#import "RNNText.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNTextParser : NSObject
 
-+ (Text *)parse:(NSDictionary *)json key:(NSString *)key;
++ (RNNText *)parse:(NSDictionary *)json key:(NSString *)key;
 
 @end

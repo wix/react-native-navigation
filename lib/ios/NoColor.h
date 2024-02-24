@@ -1,5 +1,5 @@
-#import "Color.h"
+#import "RNNColor.h"
 
-@interface NoColor : Color
+@interface NoColor : RNNColor
 
 @end

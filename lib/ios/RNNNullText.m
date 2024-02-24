@@ -1,10 +1,9 @@
-#import "NullImage.h"
+#import "RNNNullText.h"
 
-@implementation NullImage
+@implementation RNNNullText
 
 - (instancetype)init {
     self = [super initWithValue:nil];
-
     return self;
 }
 

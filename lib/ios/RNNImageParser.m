@@ -1,13 +1,13 @@
 #import "RNNImageParser.h"
-#import "NullImage.h"
+#import "RNNNullImage.h"
 #import <React/RCTConvert.h>
 
 @implementation RNNImageParser
 
-+ (Image *)parse:(NSDictionary *)json key:(NSString *)key {
++ (RNNImage *)parse:(NSDictionary *)json key:(NSString *)key {
     id data = json[key];
     if (!data) {
-        return [NullImage new];
+        return [RNNNullImage new];
     }
 
     UIImage *image;
@@ -24,7 +24,7 @@
         image = [RCTConvert UIImage:data];
     }
 
-    return [[Image alloc] initWithValue:image];
+    return [[RNNImage alloc] initWithValue:image];
 }
 
 @end

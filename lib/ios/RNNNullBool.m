@@ -1,6 +1,6 @@
-#import "NullBool.h"
+#import "RNNNullBool.h"
 
-@implementation NullBool
+@implementation RNNNullBool
 
 - (instancetype)init {
     self = [super initWithValue:nil];

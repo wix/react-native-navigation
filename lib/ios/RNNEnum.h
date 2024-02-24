@@ -1,7 +1,7 @@
 #import "RNNParam.h"
 #import <Foundation/Foundation.h>
 
-@interface Enum : RNNParam
+@interface RNNEnum : RNNParam
 
 - (int)get;
 
