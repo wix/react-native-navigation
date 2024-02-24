@@ -1,4 +1,4 @@
-#import "DisplayLinkAnimation.h"
+#import "RNNDisplayLinkAnimation.h"
 #import <Foundation/Foundation.h>
 
 @protocol DisplayLinkAnimatorDelegate <NSObject>

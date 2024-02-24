@@ -4,7 +4,7 @@
     NSMutableArray *_mutableAnimations;
 }
 
-- (void)setAnimations:(NSArray<id<DisplayLinkAnimation>> *)animations {
+- (void)setAnimations:(NSArray<id<RNNDisplayLinkAnimation>> *)animations {
     _animations = animations;
     _mutableAnimations = [NSMutableArray arrayWithArray:animations];
 }
@@ -14,7 +14,7 @@
     NSMutableIndexSet *discardedAnimations = [NSMutableIndexSet indexSet];
 
     for (int i = 0; i < _mutableAnimations.count; i++) {
-        id<DisplayLinkAnimation> animation = _mutableAnimations[i];
+        id<RNNDisplayLinkAnimation> animation = _mutableAnimations[i];
         if (elapsed < animation.duration + animation.startDelay && elapsed > animation.startDelay) {
             CGFloat p =
                 (elapsed - animation.startDelay) / (animation.duration - animation.startDelay);
@@ -33,7 +33,7 @@
 
 - (NSTimeInterval)maxDuration {
     CGFloat maxDuration = 0;
-    for (id<DisplayLinkAnimation> animation in _animations) {
+    for (id<RNNDisplayLinkAnimation> animation in _animations) {
         if (animation.duration + animation.startDelay > maxDuration) {
             maxDuration = animation.duration;
         }
@@ -44,7 +44,7 @@
 
 - (void)end {
     CATransform3D transform = CATransform3DIdentity;
-    for (id<DisplayLinkAnimation> animation in _mutableAnimations) {
+    for (id<RNNDisplayLinkAnimation> animation in _mutableAnimations) {
         if ([animation respondsToSelector:@selector(end)]) {
             transform = CATransform3DConcat(transform, [animation animateWithProgress:1]);
             [animation end];

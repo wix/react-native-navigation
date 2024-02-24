@@ -1,6 +1,6 @@
 #import "BottomTabsBasePresenter.h"
 #import "RNNBottomTabsController.h"
-#import "UIImage+utils.h"
+#import "UIImage+Utils.h"
 
 @implementation BottomTabsBasePresenter
 

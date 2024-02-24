@@ -9,7 +9,7 @@
 - (instancetype)initWithView:(UIView *)view
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator {
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     self = [super init];
     _view = view;
     _startDelay = startDelay;
@@ -34,7 +34,7 @@
     return CATransform3DIdentity;
 }
 
-- (id<Interpolator>)interpolator {
+- (id<RNNInterpolatorProtocol>)interpolator {
     return _interpolator;
 }
 

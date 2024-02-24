@@ -11,7 +11,7 @@
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
                        elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
                  sharedElementTransitions:
-                     (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                     (NSArray<RNNSharedElementTransitionOptions *> *)sharedElementTransitions
                                  duration:(CGFloat)duration
                                    bridge:(RCTBridge *)bridge;
 
@@ -21,6 +21,6 @@
 
 @property(nonatomic, strong) RNNEnterExitAnimation *content;
 @property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
-@property(nonatomic, strong) NSArray<SharedElementTransitionOptions *> *sharedElementTransitions;
+@property(nonatomic, strong) NSArray<RNNSharedElementTransitionOptions *> *sharedElementTransitions;
 
 @end

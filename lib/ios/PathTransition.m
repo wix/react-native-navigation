@@ -9,7 +9,7 @@
               toCornerRadius:(CGFloat)toCornerRadius
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator {
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     self = [super initWithView:view
                           from:fromPath
                             to:toPath

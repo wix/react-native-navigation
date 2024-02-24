@@ -1,5 +1,5 @@
 #import "ElementBaseTransition.h"
-#import "FloatTransition.h"
+#import "RNNFloatTransition.h"
 
 @interface ColorTransition : ElementBaseTransition
 
@@ -8,7 +8,7 @@
                           to:(UIColor *)to
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator;
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
 @property(nonatomic, readonly, strong) UIColor *from;
 @property(nonatomic, readonly, strong) UIColor *to;

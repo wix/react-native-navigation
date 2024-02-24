@@ -1,11 +1,11 @@
 #import "RNNStackController.h"
 #import "RNNComponentViewController.h"
-#import "StackControllerDelegate.h"
+#import "RNNStackControllerDelegate.h"
 #import "UIViewController+Utils.h"
 
 @implementation RNNStackController {
     UIViewController *_presentedViewController;
-    StackControllerDelegate *_stackDelegate;
+    RNNStackControllerDelegate *_stackDelegate;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -22,7 +22,7 @@
                            presenter:presenter
                         eventEmitter:eventEmitter
                 childViewControllers:childViewControllers];
-    _stackDelegate = [[StackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
+    _stackDelegate = [[RNNStackControllerDelegate alloc] initWithEventEmitter:self.eventEmitter];
     self.delegate = _stackDelegate;
     self.navigationBar.prefersLargeTitles = YES;
     return self;

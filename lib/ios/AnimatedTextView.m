@@ -7,7 +7,7 @@
 
 - (instancetype)initElement:(UIView *)element
                   toElement:(UIView *)toElement
-          transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
+          transitionOptions:(RNNSharedElementTransitionOptions *)transitionOptions {
     self = [super initElement:element toElement:toElement transitionOptions:transitionOptions];
     _fromTextStorage = [element valueForKey:@"textStorage"];
     _toTextStorage = [toElement valueForKey:@"textStorage"];

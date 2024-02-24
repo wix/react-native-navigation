@@ -1,5 +1,5 @@
 #import "RNNBaseIconCreator.h"
-#import "UIImage+utils.h"
+#import "UIImage+Utils.h"
 
 @implementation RNNBaseIconCreator
 

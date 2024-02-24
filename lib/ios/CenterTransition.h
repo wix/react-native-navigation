@@ -10,6 +10,6 @@
                           to:(CGPoint)to
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator;
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
 @end

@@ -1,6 +1,6 @@
-#import "FloatTransition.h"
+#import "RNNFloatTransition.h"
 #import <Foundation/Foundation.h>
 
-@interface HorizontalTranslationTransition : FloatTransition
+@interface HorizontalTranslationTransition : RNNFloatTransition
 
 @end

@@ -1,6 +1,6 @@
 #import "RNNScreenTransitionsCreator.h"
 #import "DisplayLinkAnimatorDelegate.h"
-#import "ElementTransitionsCreator.h"
+#import "RNNElementTransitionsCreator.h"
 
 @implementation RNNScreenTransitionsCreator
 
@@ -10,18 +10,18 @@
                    contentTransition:(RNNEnterExitAnimation *)contentTransitionOptions
                   elementTransitions:
                       (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions {
-    NSArray *elementTransitions = [ElementTransitionsCreator create:elementTransitionsOptions
+    NSArray *elementTransitions = [RNNElementTransitionsCreator create:elementTransitionsOptions
                                                              fromVC:fromVC
                                                                toVC:toVC
                                                       containerView:containerView];
     id<DisplayLinkAnimatorDelegate> enterTransition =
-        [ElementTransitionsCreator createTransition:contentTransitionOptions.enter
+        [RNNElementTransitionsCreator createTransition:contentTransitionOptions.enter
                                                view:toVC.view
                                       containerView:containerView];
 
     id<DisplayLinkAnimatorDelegate> exitTransition;
     if (contentTransitionOptions.exit.hasAnimation) {
-        exitTransition = [ElementTransitionsCreator createTransition:contentTransitionOptions.exit
+        exitTransition = [RNNElementTransitionsCreator createTransition:contentTransitionOptions.exit
                                                                 view:fromVC.view
                                                        containerView:containerView];
     }

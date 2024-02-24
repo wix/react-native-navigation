@@ -46,7 +46,7 @@
         }
     }
 
-    for (SharedElementTransitionOptions *sharedElementTransition in self.sharedElementTransitions) {
+    for (RNNSharedElementTransitionOptions *sharedElementTransition in self.sharedElementTransitions) {
         if (sharedElementTransition.maxDuration > maxDuration) {
             maxDuration = sharedElementTransition.maxDuration;
         }

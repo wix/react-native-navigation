@@ -1,13 +1,13 @@
 #import "ScreenAnimationController.h"
-#import "DisplayLinkAnimator.h"
+#import "RNNDisplayLinkAnimator.h"
 #import "RNNScreenTransitionsCreator.h"
-#import "SharedElementAnimator.h"
+#import "RNNSharedElementAnimator.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation ScreenAnimationController {
     RCTBridge *_bridge;
     id<UIViewControllerContextTransitioning> _transitionContext;
-    SharedElementAnimator *_sharedElementAnimator;
+    RNNSharedElementAnimator *_sharedElementAnimator;
     BOOL _animate;
     CGFloat _duration;
 }
@@ -15,7 +15,7 @@
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
                        elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
                  sharedElementTransitions:
-                     (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                     (NSArray<RNNSharedElementTransitionOptions *> *)sharedElementTransitions
                                  duration:(CGFloat)duration
                                    bridge:(RCTBridge *)bridge {
     self = [super init];
@@ -61,7 +61,7 @@
                                            contentTransition:self.content
                                           elementTransitions:self.elementTransitions];
     _sharedElementAnimator =
-        [[SharedElementAnimator alloc] initWithTransitions:self.sharedElementTransitions
+        [[RNNSharedElementAnimator alloc] initWithTransitions:self.sharedElementTransitions
                                                     fromVC:fromVC
                                                       toVC:toVC
                                              containerView:containerView];
@@ -87,7 +87,7 @@
 
 - (void)animateTransitions:(NSArray<id<DisplayLinkAnimatorDelegate>> *)animators
     andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-    DisplayLinkAnimator *displayLinkAnimator = [[DisplayLinkAnimator alloc]
+    RNNDisplayLinkAnimator *displayLinkAnimator = [[RNNDisplayLinkAnimator alloc]
         initWithDisplayLinkAnimators:animators
                             duration:[self transitionDuration:transitionContext]];
 

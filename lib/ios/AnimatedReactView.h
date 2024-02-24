@@ -1,6 +1,6 @@
-#import "DisplayLinkAnimation.h"
+#import "RNNDisplayLinkAnimation.h"
 #import "RNNViewLocation.h"
-#import "SharedElementTransitionOptions.h"
+#import "RNNSharedElementTransitionOptions.h"
 
 @interface AnimatedReactView : UIView
 
@@ -11,10 +11,10 @@
 
 - (instancetype)initElement:(UIView *)element
                   toElement:(UIView *)toElement
-          transitionOptions:(SharedElementTransitionOptions *)transitionOptions;
+          transitionOptions:(RNNSharedElementTransitionOptions *)transitionOptions;
 
 - (void)reset;
 
-- (NSArray<id<DisplayLinkAnimation>> *)extraAnimations;
+- (NSArray<id<RNNDisplayLinkAnimation>> *)extraAnimations;
 
 @end

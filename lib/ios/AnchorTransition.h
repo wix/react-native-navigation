@@ -1,5 +1,5 @@
 #import "ElementBaseTransition.h"
-#import "Interpolator.h"
+#import "RNNInterpolatorProtocol.h"
 
 @interface AnchorTransition : ElementBaseTransition
 
@@ -8,7 +8,7 @@
                           to:(CGPoint)to
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator;
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
 @property(nonatomic, readonly) CGPoint from;
 @property(nonatomic, readonly) CGPoint to;

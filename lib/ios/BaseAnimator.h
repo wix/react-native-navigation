@@ -5,6 +5,6 @@
 
 @property(nonatomic, strong) UIView *view;
 
-@property(nonatomic, strong) NSArray<id<DisplayLinkAnimation>> *animations;
+@property(nonatomic, strong) NSArray<id<RNNDisplayLinkAnimation>> *animations;
 
 @end

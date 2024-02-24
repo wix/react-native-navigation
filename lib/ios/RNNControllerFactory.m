@@ -14,7 +14,7 @@
     RNNExternalComponentStore *_store;
     RCTBridge *_bridge;
     RNNReactComponentRegistry *_componentRegistry;
-    BottomTabsAttachModeFactory *_bottomTabsAttachModeFactory;
+    RNNBottomTabsAttachModeFactory *_bottomTabsAttachModeFactory;
 }
 
 #pragma mark public
@@ -24,7 +24,7 @@
                                   store:(RNNExternalComponentStore *)store
                       componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                               andBridge:(RCTBridge *)bridge
-            bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
+            bottomTabsAttachModeFactory:(RNNBottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
 
     self = [super init];
 
@@ -195,7 +195,7 @@
         [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
     RNNDotIndicatorPresenter *dotIndicatorPresenter =
         [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
-    BottomTabsBaseAttacher *bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
+    RNNBottomTabsBaseAttacher *bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
 
     return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
                                                        creator:_creator

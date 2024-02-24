@@ -1,6 +1,6 @@
 #import "RNNTabBarItemCreator.h"
 #import "RNNFontAttributesCreator.h"
-#import "UIImage+utils.h"
+#import "UIImage+Utils.h"
 
 @implementation RNNTabBarItemCreator
 

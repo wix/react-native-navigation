@@ -4,7 +4,7 @@
 #import "UIImageView+Transition.h"
 
 @implementation AnimatedImageView {
-    SharedElementTransitionOptions *_transitionOptions;
+    RNNSharedElementTransitionOptions *_transitionOptions;
     CGRect _originalBounds;
     CGPoint _originalCenter;
     UIViewContentMode _originalContentMode;
@@ -12,7 +12,7 @@
 
 - (instancetype)initElement:(UIView *)element
                   toElement:(UIView *)toElement
-          transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
+          transitionOptions:(RNNSharedElementTransitionOptions *)transitionOptions {
     self = [super initElement:element toElement:toElement transitionOptions:transitionOptions];
 
     _transitionOptions = transitionOptions;
@@ -40,11 +40,11 @@
     return nil;
 }
 
-- (NSArray<id<DisplayLinkAnimation>> *)extraAnimations {
+- (NSArray<id<RNNDisplayLinkAnimation>> *)extraAnimations {
     NSMutableArray *animations = NSMutableArray.new;
     CGFloat startDelay = [_transitionOptions.startDelay withDefault:0];
     CGFloat duration = [_transitionOptions.duration withDefault:300];
-    id<Interpolator> interpolator = _transitionOptions.interpolator;
+    id<RNNInterpolatorProtocol> interpolator = _transitionOptions.interpolator;
 
     // assumes that from.image is equal (in bounds at least) to the to.image UIImage.
     UIImage *fromImage = _fromImageView.image;

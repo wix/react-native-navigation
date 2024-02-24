@@ -11,7 +11,7 @@
 @implementation RNNBottomTabsController {
     NSUInteger _currentTabIndex;
     NSUInteger _previousTabIndex;
-    BottomTabsBaseAttacher *_bottomTabsAttacher;
+    RNNBottomTabsBaseAttacher *_bottomTabsAttacher;
     BOOL _tabBarNeedsRestore;
 }
 
@@ -24,7 +24,7 @@
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
-                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
+                bottomTabsAttacher:(RNNBottomTabsBaseAttacher *)bottomTabsAttacher {
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;

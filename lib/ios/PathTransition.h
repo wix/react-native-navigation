@@ -1,6 +1,6 @@
-#import "RectTransition.h"
+#import "RNNRectTransition.h"
 
-@interface PathTransition : RectTransition
+@interface PathTransition : RNNRectTransition
 
 @property(nonatomic) CGFloat fromCornerRadius;
 @property(nonatomic) CGFloat toCornerRadius;
@@ -12,6 +12,6 @@
               toCornerRadius:(CGFloat)toCornerRadius
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
-                interpolator:(id<Interpolator>)interpolator;
+                interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
 @end

@@ -13,12 +13,12 @@
     UIColor *_fromColor;
     NSInteger _zIndex;
     UIViewContentMode _originalContentMode;
-    SharedElementTransitionOptions *_transitionOptions;
+    RNNSharedElementTransitionOptions *_transitionOptions;
 }
 
 - (instancetype)initElement:(UIView *)element
                   toElement:(UIView *)toElement
-          transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
+          transitionOptions:(RNNSharedElementTransitionOptions *)transitionOptions {
     self.location = [[RNNViewLocation alloc] initWithFromElement:element toElement:toElement];
     self = [super initWithFrame:self.location.fromFrame];
     _transitionOptions = transitionOptions;
@@ -79,7 +79,7 @@
     [self removeFromSuperview];
 }
 
-- (NSArray<id<DisplayLinkAnimation>> *)extraAnimations {
+- (NSArray<id<RNNDisplayLinkAnimation>> *)extraAnimations {
     return @[];
 }
 

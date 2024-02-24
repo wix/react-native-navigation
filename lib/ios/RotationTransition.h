@@ -1,5 +1,5 @@
-#import "FloatTransition.h"
+#import "RNNFloatTransition.h"
 
-@interface RotationTransition : FloatTransition
+@interface RotationTransition : RNNFloatTransition
 
 @end

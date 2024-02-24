@@ -1,5 +1,5 @@
 #import "RNNStackPresenter.h"
-#import "InteractivePopGestureDelegate.h"
+#import "RNNInteractivePopGestureDelegate.h"
 #import "RNNCustomTitleView.h"
 #import "RNNReactBackgroundView.h"
 #import "RNNStackController.h"
@@ -11,7 +11,7 @@
     UIView *_customTopBarBackground;
     RNNReactView *_topBarBackgroundReactView;
     TopBarPresenter *_topBarPresenter;
-    InteractivePopGestureDelegate *_interactivePopGestureDelegate;
+    RNNInteractivePopGestureDelegate *_interactivePopGestureDelegate;
 }
 
 @property(nonatomic, weak) RNNStackController *stackController;
@@ -23,7 +23,7 @@
                            defaultOptions:(RNNNavigationOptions *)defaultOptions {
     self = [super initWithDefaultOptions:defaultOptions];
     _componentRegistry = componentRegistry;
-    _interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+    _interactivePopGestureDelegate = [RNNInteractivePopGestureDelegate new];
     return self;
 }
 

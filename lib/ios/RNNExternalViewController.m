@@ -1,5 +1,5 @@
 #import "RNNExternalViewController.h"
-#import "AnimationObserver.h"
+#import "RNNAnimationObserver.h"
 
 @implementation RNNExternalViewController {
     UIViewController *_boundViewController;
@@ -50,7 +50,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [[AnimationObserver sharedObserver] endAnimation];
+    [[RNNAnimationObserver sharedObserver] endAnimation];
     [self.eventEmitter sendComponentDidAppear:self.layoutInfo.componentId
                                 componentName:self.layoutInfo.name
                                 componentType:ComponentTypeScreen];

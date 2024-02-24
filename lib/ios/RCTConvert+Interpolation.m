@@ -1,33 +1,33 @@
-#import "AccelerateDecelerateInterpolator.h"
-#import "AccelerateInterpolator.h"
+#import "RNNAccelerateDecelerateInterpolator.h"
+#import "RNNAccelerateInterpolator.h"
 #import "BoolParser.h"
-#import "DecelerateAccelerateInterpolator.h"
-#import "DecelerateInterpolator.h"
+#import "RNNDecelerateAccelerateInterpolator.h"
+#import "RNNDecelerateInterpolator.h"
 #import "FastOutSlowIn.h"
-#import "Interpolator.h"
-#import "LinearInterpolator.h"
+#import "RNNInterpolatorProtocol.h"
+#import "RNNLinearInterpolator.h"
 #import "NumberParser.h"
-#import "OvershootInterpolator.h"
+#import "RNNOvershootInterpolator.h"
 #import "RCTConvert+Interpolation.h"
-#import "SpringInterpolator.h"
+#import "RNNSpringInterpolator.h"
 
 @implementation RCTConvert (Interpolation)
 
-RCT_CUSTOM_CONVERTER(id<Interpolator>, Interpolator, [RCTConvert interpolatorFromJson:json])
+RCT_CUSTOM_CONVERTER(id<RNNInterpolatorProtocol>, Interpolator, [RCTConvert interpolatorFromJson:json])
 
-+ (id<Interpolator>)defaultInterpolator {
++ (id<RNNInterpolatorProtocol>)defaultInterpolator {
     return [[LinearInterpolator alloc] init];
 }
 
 #pragma mark Private
 
-+ (id<Interpolator>)interpolatorFromJson:(id)json {
++ (id<RNNInterpolatorProtocol>)interpolatorFromJson:(id)json {
     if (json == nil || ![json isKindOfClass:[NSDictionary class]]) {
         return [RCTConvert defaultInterpolator];
     }
     NSString *interpolation = json[@"type"] ? json[@"type"] : nil;
 
-    id<Interpolator> (^interpolator)(void) = @{@"decelerate" : ^{
+    id<RNNInterpolatorProtocol> (^interpolator)(void) = @{@"decelerate" : ^{
         CGFloat factor = [[[NumberParser parse:json key:@"factor"]
             withDefault:[NSNumber numberWithFloat:1.0f]] floatValue];
     return [[DecelerateInterpolator alloc] init:factor];
