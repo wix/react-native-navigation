@@ -1,13 +1,13 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
-#import "ScreenAnimationController.h"
-#import "ScreenReversedAnimationController.h"
+#import "RNNScreenAnimationController.h"
+#import "RNNScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @interface RNNModalManager ()
-@property(nonatomic, strong) ScreenAnimationController *showModalTransitionDelegate;
-@property(nonatomic, strong) ScreenAnimationController *dismissModalTransitionDelegate;
+@property(nonatomic, strong) RNNScreenAnimationController *showModalTransitionDelegate;
+@property(nonatomic, strong) RNNScreenAnimationController *dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {

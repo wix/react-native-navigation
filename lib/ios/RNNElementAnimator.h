@@ -1,8 +1,8 @@
-#import "BaseAnimator.h"
+#import "RNNBaseAnimator.h"
 #import "RNNElementTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
-@interface RNNElementAnimator : BaseAnimator
+@interface RNNElementAnimator : RNNBaseAnimator
 
 - (instancetype)initWithTransitionOptions:(TransitionOptions *)transitionOptions
                                      view:(UIView *)view

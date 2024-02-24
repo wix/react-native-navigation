@@ -1,12 +1,12 @@
 #import "RNNElementAnimator.h"
-#import "ElementAlphaTransition.h"
-#import "ElementHorizontalTransition.h"
-#import "ElementVerticalTransition.h"
-#import "HorizontalTranslationTransition.h"
+#import "RNNElementAlphaTransition.h"
+#import "RNNElementHorizontalTransition.h"
+#import "RNNElementVerticalTransition.h"
+#import "RNNHorizontalTranslationTransition.h"
 #import "RNNElementFinder.h"
 #import "RNNTransition.h"
-#import "VerticalRotationTransition.h"
-#import "VerticalTranslationTransition.h"
+#import "RNNVerticalRotationTransition.h"
+#import "RNNVerticalTranslationTransition.h"
 
 @implementation RNNElementAnimator {
     UIView *_containerView;
@@ -27,35 +27,35 @@
     NSMutableArray *animations = [NSMutableArray new];
     if (transitionOptions.alpha.hasAnimation) {
         [animations
-            addObject:[[ElementAlphaTransition alloc] initWithView:self.view
+            addObject:[[RNNElementAlphaTransition alloc] initWithView:self.view
                                                  transitionDetails:transitionOptions.alpha]];
     }
 
     if (transitionOptions.x.hasAnimation) {
         [animations
-            addObject:[[ElementHorizontalTransition alloc] initWithView:self.view
+            addObject:[[RNNElementHorizontalTransition alloc] initWithView:self.view
                                                       transitionDetails:transitionOptions.x]];
     }
 
     if (transitionOptions.y.hasAnimation) {
-        [animations addObject:[[ElementVerticalTransition alloc] initWithView:self.view
+        [animations addObject:[[RNNElementVerticalTransition alloc] initWithView:self.view
                                                             transitionDetails:transitionOptions.y]];
     }
 
     if (transitionOptions.translationX.hasAnimation) {
-        [animations addObject:[[HorizontalTranslationTransition alloc]
+        [animations addObject:[[RNNHorizontalTranslationTransition alloc]
                                        initWithView:self.view
                                   transitionDetails:transitionOptions.translationX]];
     }
 
     if (transitionOptions.translationY.hasAnimation) {
-        [animations addObject:[[VerticalTranslationTransition alloc]
+        [animations addObject:[[RNNVerticalTranslationTransition alloc]
                                        initWithView:self.view
                                   transitionDetails:transitionOptions.translationY]];
     }
 
     if (transitionOptions.rotationY.hasAnimation) {
-        [animations addObject:[[VerticalRotationTransition alloc]
+        [animations addObject:[[RNNVerticalRotationTransition alloc]
                                        initWithView:self.view
                                   transitionDetails:transitionOptions.rotationY]];
     }

@@ -1,7 +1,7 @@
-#import "ElementBaseTransition.h"
+#import "RNNElementBaseTransition.h"
 #import <Foundation/Foundation.h>
 
-@interface RNNFloatTransition : ElementBaseTransition
+@interface RNNFloatTransition : RNNElementBaseTransition
 
 - (instancetype)initWithView:(UIView *)view
            transitionDetails:(TransitionDetailsOptions *)transitionDetails;

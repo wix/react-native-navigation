@@ -1,5 +1,5 @@
-#import "AnimatedReactView.h"
-#import "DisplayLinkAnimatorDelegate.h"
+#import "RNNAnimatedReactView.h"
+#import "RNNDisplayLinkAnimatorDelegateProtocol.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNSharedElementAnimator : NSObject
@@ -10,7 +10,7 @@
                                toVC:(UIViewController *)toVC
                       containerView:(UIView *)containerView;
 
-- (NSArray<DisplayLinkAnimatorDelegate> *)create;
+- (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)create;
 
 - (void)animationEnded;
 

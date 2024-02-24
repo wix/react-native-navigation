@@ -1,4 +1,4 @@
-#import "DisplayLinkAnimatorDelegate.h"
+#import "RNNDisplayLinkAnimatorDelegateProtocol.h"
 #import <Foundation/Foundation.h>
 
 typedef void (^CompletionBlock)(void);
@@ -9,10 +9,10 @@ typedef void (^CompletionBlock)(void);
 @property(nonatomic, copy) CompletionBlock onStart;
 
 - (instancetype)initWithDisplayLinkAnimators:
-                    (NSArray<id<DisplayLinkAnimatorDelegate>> *)displayLinkAnimators
+                    (NSArray<id<RNNDisplayLinkAnimatorDelegateProtocol>> *)displayLinkAnimators
                                     duration:(CGFloat)duration;
 
-- (instancetype)initWithDisplayLinkAnimator:(id<DisplayLinkAnimatorDelegate>)displayLinkAnimators
+- (instancetype)initWithDisplayLinkAnimator:(id<RNNDisplayLinkAnimatorDelegateProtocol>)displayLinkAnimators
                                    duration:(CGFloat)duration;
 
 - (void)start;

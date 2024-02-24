@@ -1,15 +1,16 @@
 #import "RNNElementBaseTransition.h"
+#import "RNNInterpolatorProtocol.h"
 
-@interface RNNRectTransition : RNNElementBaseTransition
+@interface RNNAnchorTransition : RNNElementBaseTransition
 
 - (instancetype)initWithView:(UIView *)view
-                        from:(CGRect)from
-                          to:(CGRect)to
+                        from:(CGPoint)from
+                          to:(CGPoint)to
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
                 interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
-@property(nonatomic, readonly) CGRect from;
-@property(nonatomic, readonly) CGRect to;
+@property(nonatomic, readonly) CGPoint from;
+@property(nonatomic, readonly) CGPoint to;
 
 @end

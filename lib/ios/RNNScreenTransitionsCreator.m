@@ -1,5 +1,5 @@
 #import "RNNScreenTransitionsCreator.h"
-#import "DisplayLinkAnimatorDelegate.h"
+#import "RNNDisplayLinkAnimatorDelegateProtocol.h"
 #import "RNNElementTransitionsCreator.h"
 
 @implementation RNNScreenTransitionsCreator
@@ -14,12 +14,12 @@
                                                              fromVC:fromVC
                                                                toVC:toVC
                                                       containerView:containerView];
-    id<DisplayLinkAnimatorDelegate> enterTransition =
+    id<RNNDisplayLinkAnimatorDelegateProtocol> enterTransition =
         [RNNElementTransitionsCreator createTransition:contentTransitionOptions.enter
                                                view:toVC.view
                                       containerView:containerView];
 
-    id<DisplayLinkAnimatorDelegate> exitTransition;
+    id<RNNDisplayLinkAnimatorDelegateProtocol> exitTransition;
     if (contentTransitionOptions.exit.hasAnimation) {
         exitTransition = [RNNElementTransitionsCreator createTransition:contentTransitionOptions.exit
                                                                 view:fromVC.view

@@ -1,10 +1,10 @@
-#import "AnimatedReactView.h"
+#import "RNNAnimatedReactView.h"
 #import "RNNSharedElementTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNAnimatedViewFactory : NSObject
 
-+ (AnimatedReactView *)createFromElement:(UIView *)element
++ (RNNAnimatedReactView *)createFromElement:(UIView *)element
                                toElement:(UIView *)toElement
                        transitionOptions:(RNNSharedElementTransitionOptions *)transitionOptions;
 

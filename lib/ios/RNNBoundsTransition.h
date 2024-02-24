@@ -1,6 +1,9 @@
 #import "RNNElementBaseTransition.h"
 
-@interface RNNRectTransition : RNNElementBaseTransition
+@interface RNNBoundsTransition : RNNElementBaseTransition
+
+@property(nonatomic) CGRect fromBounds;
+@property(nonatomic) CGRect toBounds;
 
 - (instancetype)initWithView:(UIView *)view
                         from:(CGRect)from
@@ -8,8 +11,5 @@
                   startDelay:(NSTimeInterval)startDelay
                     duration:(NSTimeInterval)duration
                 interpolator:(id<RNNInterpolatorProtocol>)interpolator;
-
-@property(nonatomic, readonly) CGRect from;
-@property(nonatomic, readonly) CGRect to;
 
 @end

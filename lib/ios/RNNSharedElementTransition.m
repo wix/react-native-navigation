@@ -1,15 +1,15 @@
 #import "RNNSharedElementTransition.h"
-#import "AnchorTransition.h"
-#import "AnimatedTextView.h"
+#import "RNNAnchorTransition.h"
+#import "RNNAnimatedTextView.h"
 #import "RNNAnimatedViewFactory.h"
-#import "BoundsTransition.h"
-#import "CenterTransition.h"
-#import "ColorTransition.h"
+#import "RNNBoundsTransition.h"
+#import "RNNCenterTransition.h"
+#import "RNNColorTransition.h"
 #import "RNNCornerRadiusTransition.h"
-#import "PathTransition.h"
+#import "RNNPathTransition.h"
 #import "RNNRectTransition.h"
-#import "RotationTransition.h"
-#import "TextStorageTransition.h"
+#import "RNNRotationTransition.h"
+#import "RNNTextStorageTransition.h"
 #import "RNNTransformRectTransition.h"
 #import "UIImageView+Transition.h"
 
@@ -35,7 +35,7 @@
     return self;
 }
 
-- (AnimatedReactView *)createAnimatedView:(RNNSharedElementTransitionOptions *)transitionOptions
+- (RNNAnimatedReactView *)createAnimatedView:(RNNSharedElementTransitionOptions *)transitionOptions
                                  fromView:(UIView *)fromView
                                    toView:(UIView *)toView {
     return [RNNAnimatedViewFactory createFromElement:fromView
@@ -50,7 +50,7 @@
     id<RNNInterpolatorProtocol> interpolator = _transitionOptions.interpolator;
 
     if (!CGRectEqualToRect(self.view.location.fromBounds, self.view.location.toBounds)) {
-        [animations addObject:[[BoundsTransition alloc] initWithView:self.view
+        [animations addObject:[[RNNBoundsTransition alloc] initWithView:self.view
                                                                 from:self.view.location.fromBounds
                                                                   to:self.view.location.toBounds
                                                           startDelay:startDelay
@@ -59,7 +59,7 @@
     }
 
     if (!CGPointEqualToPoint(self.view.location.fromCenter, self.view.location.toCenter)) {
-        [animations addObject:[[CenterTransition alloc] initWithView:self.view
+        [animations addObject:[[RNNCenterTransition alloc] initWithView:self.view
                                                                 from:self.view.location.fromCenter
                                                                   to:self.view.location.toCenter
                                                           startDelay:startDelay
@@ -68,7 +68,7 @@
     }
 
     if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {
-        [animations addObject:[[ColorTransition alloc] initWithView:self.view
+        [animations addObject:[[RNNColorTransition alloc] initWithView:self.view
                                                                from:_fromView.backgroundColor
                                                                  to:_toView.backgroundColor
                                                          startDelay:startDelay
@@ -76,11 +76,11 @@
                                                        interpolator:interpolator]];
     }
 
-    if ([self.view isKindOfClass:AnimatedTextView.class]) {
-        [animations addObject:[[TextStorageTransition alloc]
+    if ([self.view isKindOfClass:RNNAnimatedTextView.class]) {
+        [animations addObject:[[RNNTextStorageTransition alloc]
                                   initWithView:self.view
-                                          from:((AnimatedTextView *)self.view).fromTextStorage
-                                            to:((AnimatedTextView *)self.view).toTextStorage
+                                          from:((RNNAnimatedTextView *)self.view).fromTextStorage
+                                            to:((RNNAnimatedTextView *)self.view).toTextStorage
                                     startDelay:startDelay
                                       duration:duration
                                   interpolator:interpolator]];
@@ -88,7 +88,7 @@
 
     if (!CGRectEqualToRect(self.view.location.fromPath, self.view.location.toPath)) {
         [animations
-            addObject:[[PathTransition alloc] initWithView:self.view
+            addObject:[[RNNPathTransition alloc] initWithView:self.view
                                                   fromPath:self.view.location.fromPath
                                                     toPath:self.view.location.toPath
                                           fromCornerRadius:self.view.location.fromCornerRadius

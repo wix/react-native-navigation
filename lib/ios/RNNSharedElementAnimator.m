@@ -1,6 +1,6 @@
 #import "RNNSharedElementAnimator.h"
 #import "RNNAnimatedViewFactory.h"
-#import "BaseAnimator.h"
+#import "RNNBaseAnimator.h"
 #import "NSArray+utils.h"
 #import "RNNElementFinder.h"
 #import "RNNSharedElementTransition.h"
@@ -28,9 +28,9 @@
     return self;
 }
 
-- (NSArray<DisplayLinkAnimatorDelegate> *)create {
-    NSMutableArray<DisplayLinkAnimatorDelegate> *transitions =
-        [NSMutableArray<DisplayLinkAnimatorDelegate> new];
+- (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)create {
+    NSMutableArray<RNNDisplayLinkAnimatorDelegateProtocol> *transitions =
+        [NSMutableArray<RNNDisplayLinkAnimatorDelegateProtocol> new];
     for (RNNSharedElementTransitionOptions *transitionOptions in _sharedElementTransitions) {
         UIView *fromView =
             [RNNElementFinder findElementForId:transitionOptions.fromId
@@ -50,7 +50,7 @@
         [transitions addObject:sharedElementAnimator];
     }
 
-    NSArray<DisplayLinkAnimatorDelegate> *sortedTransitions = [self sortByZIndex:transitions];
+    NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *sortedTransitions = [self sortByZIndex:transitions];
     [self addSharedElementViews:sortedTransitions toContainerView:_containerView];
     _transitions = transitions;
 
@@ -63,17 +63,17 @@
     }
 }
 
-- (void)addSharedElementViews:(NSArray<BaseAnimator *> *)animators
+- (void)addSharedElementViews:(NSArray<RNNBaseAnimator *> *)animators
               toContainerView:(UIView *)containerView {
-    for (BaseAnimator *animator in animators) {
+    for (RNNBaseAnimator *animator in animators) {
         [containerView addSubview:animator.view];
     }
 }
 
-- (NSArray<DisplayLinkAnimatorDelegate> *)sortByZIndex:
-    (NSArray<DisplayLinkAnimatorDelegate> *)animators {
-    return (NSArray<DisplayLinkAnimatorDelegate> *)[animators
-        sortedArrayUsingComparator:^NSComparisonResult(BaseAnimator *a, BaseAnimator *b) {
+- (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)sortByZIndex:
+    (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)animators {
+    return (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)[animators
+        sortedArrayUsingComparator:^NSComparisonResult(RNNBaseAnimator *a, RNNBaseAnimator *b) {
           id first = [a.view valueForKey:@"reactZIndex"];
           id second = [b.view valueForKey:@"reactZIndex"];
           return [first compare:second];

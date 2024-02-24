@@ -1,15 +1,15 @@
 #import "RNNDisplayLinkAnimator.h"
 
 @implementation RNNDisplayLinkAnimator {
-    NSArray<id<DisplayLinkAnimatorDelegate>> *_animators;
-    NSMutableArray<id<DisplayLinkAnimatorDelegate>> *_activeAnimators;
+    NSArray<id<RNNDisplayLinkAnimatorDelegateProtocol>> *_animators;
+    NSMutableArray<id<RNNDisplayLinkAnimatorDelegateProtocol>> *_activeAnimators;
     CADisplayLink *_displayLink;
     NSDate *_startDate;
     CGFloat _duration;
 }
 
 - (instancetype)initWithDisplayLinkAnimators:
-                    (NSArray<id<DisplayLinkAnimatorDelegate>> *)displayLinkAnimators
+                    (NSArray<id<RNNDisplayLinkAnimatorDelegateProtocol>> *)displayLinkAnimators
                                     duration:(CGFloat)duration {
     self = [super init];
     _animators = displayLinkAnimators;
@@ -18,7 +18,7 @@
     return self;
 }
 
-- (instancetype)initWithDisplayLinkAnimator:(id<DisplayLinkAnimatorDelegate>)displayLinkAnimator
+- (instancetype)initWithDisplayLinkAnimator:(id<RNNDisplayLinkAnimatorDelegateProtocol>)displayLinkAnimator
                                    duration:(CGFloat)duration {
     self = [self initWithDisplayLinkAnimators:@[ displayLinkAnimator ] duration:duration];
     return self;
@@ -31,9 +31,9 @@
     [_displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSDefaultRunLoopMode];
 }
 
-- (CGFloat)maxDuration:(NSArray<id<DisplayLinkAnimatorDelegate>> *)displayLinkAnimators {
+- (CGFloat)maxDuration:(NSArray<id<RNNDisplayLinkAnimatorDelegateProtocol>> *)displayLinkAnimators {
     CGFloat maxDuration = 0;
-    for (id<DisplayLinkAnimatorDelegate> animator in displayLinkAnimators) {
+    for (id<RNNDisplayLinkAnimatorDelegateProtocol> animator in displayLinkAnimators) {
         if (animator.maxDuration > maxDuration) {
             maxDuration = animator.maxDuration;
         }
@@ -64,7 +64,7 @@
 
 - (void)updateAnimators:(NSTimeInterval)elapsed {
     for (int i = 0; i < _activeAnimators.count; i++) {
-        id<DisplayLinkAnimatorDelegate> animator = _activeAnimators[i];
+        id<RNNDisplayLinkAnimatorDelegateProtocol> animator = _activeAnimators[i];
         if (elapsed < animator.maxDuration) {
             [animator updateAnimations:elapsed];
         } else {
@@ -73,14 +73,14 @@
     }
 }
 
-- (void)deactivateAnimator:(id<DisplayLinkAnimatorDelegate>)animator {
+- (void)deactivateAnimator:(id<RNNDisplayLinkAnimatorDelegateProtocol>)animator {
     [animator end];
     [_activeAnimators removeObject:animator];
 }
 
 - (void)end {
     for (int i = 0; i < _activeAnimators.count; i++) {
-        id<DisplayLinkAnimatorDelegate> animator = _activeAnimators[i];
+        id<RNNDisplayLinkAnimatorDelegateProtocol> animator = _activeAnimators[i];
         [animator end];
     }
 

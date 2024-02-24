@@ -4,13 +4,13 @@
 
 @implementation RNNElementTransitionsCreator
 
-+ (NSArray<DisplayLinkAnimatorDelegate> *)
++ (NSArray<RNNDisplayLinkAnimatorDelegateProtocol> *)
            create:(NSArray<RNNElementTransitionOptions *> *)elementTransitions
            fromVC:(UIViewController *)fromVC
              toVC:(UIViewController *)toVC
     containerView:(UIView *)containerView {
-    NSMutableArray<DisplayLinkAnimatorDelegate> *transitions =
-        [NSMutableArray<DisplayLinkAnimatorDelegate> new];
+    NSMutableArray<RNNDisplayLinkAnimatorDelegateProtocol> *transitions =
+        [NSMutableArray<RNNDisplayLinkAnimatorDelegateProtocol> new];
     for (RNNElementTransitionOptions *transitionOptions in elementTransitions) {
         UIView *element = [self findElementById:transitionOptions.elementId
                                          fromVC:fromVC
@@ -25,7 +25,7 @@
     return transitions;
 }
 
-+ (id<DisplayLinkAnimatorDelegate>)createTransition:(RNNElementTransitionOptions *)transitionOptions
++ (id<RNNDisplayLinkAnimatorDelegateProtocol>)createTransition:(RNNElementTransitionOptions *)transitionOptions
                                                view:(UIView *)view
                                       containerView:(UIView *)containerView {
     RNNElementAnimator *elementAnimator =
