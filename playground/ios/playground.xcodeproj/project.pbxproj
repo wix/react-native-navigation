@@ -1229,6 +1229,25 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-blur\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo\"",
 				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit/YogaKit.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/RCTTypeSafety/RCTTypeSafety.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React/React-Core.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/ReactCommon/ReactCommon.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React_Codegen/React-Codegen.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React_NativeModulesApple/React-NativeModulesApple.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/folly/RCT-Folly.modulemap\"",
+					"-fmodule-map-file=\"${PODS_ROOT}/Headers/Public/yoga/Yoga.modulemap\"",
+					"$(inherited)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-Wno-comma",
+					"-Wno-shorten-64-to-32",
+					"-DREACT_NATIVE_MINOR_VERSION=72",
+					"-DREANIMATED_VERSION=3.4.1",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1486,14 +1505,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)  ";
 				OTHER_LDFLAGS = "";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1543,14 +1556,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)  ";
 				OTHER_LDFLAGS = "";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
 				SDKROOT = iphoneos;
