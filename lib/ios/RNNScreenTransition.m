@@ -6,9 +6,9 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.topBar = [[ElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
+    self.topBar = [[RNNElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
     self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
-    self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
+    self.bottomTabs = [[RNNElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
     self.enable = [RNNBoolParser parse:dict key:@"enabled"];
     self.waitForRender = [RNNBoolParser parse:dict key:@"waitForRender"];
     self.duration = [RNNTimeIntervalParser parse:dict key:@"duration"];
@@ -17,7 +17,7 @@
                                                       ofClass:SharedElementTransitionOptions.class];
     self.elementTransitions = [RNNOptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
-                                                ofClass:ElementTransitionOptions.class];
+                                                ofClass:RNNElementTransitionOptions.class];
 
     return self;
 }
@@ -62,7 +62,7 @@
         maxDuration = [self.bottomTabs maxDuration];
     }
 
-    for (ElementTransitionOptions *elementTransition in self.elementTransitions) {
+    for (RNNElementTransitionOptions *elementTransition in self.elementTransitions) {
         if (elementTransition.maxDuration > maxDuration) {
             maxDuration = elementTransition.maxDuration;
         }

@@ -1,9 +1,9 @@
 #import "RNNDotIndicatorParser.h"
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 
 @implementation RNNDotIndicatorParser
-+ (DotIndicatorOptions *)parse:(NSDictionary *)dict {
-    return [[DotIndicatorOptions alloc] initWithDict:dict[@"dotIndicator"]];
++ (RNNDotIndicatorOptions *)parse:(NSDictionary *)dict {
+    return [[RNNDotIndicatorOptions alloc] initWithDict:dict[@"dotIndicator"]];
 }
 
 @end

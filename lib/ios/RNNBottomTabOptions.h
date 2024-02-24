@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@class DotIndicatorOptions;
+@class RNNDotIndicatorOptions;
 
 @interface RNNBottomTabOptions : RNNOptions
 
@@ -8,7 +8,7 @@
 @property(nonatomic, strong) RNNText *text;
 @property(nonatomic, strong) RNNText *badge;
 @property(nonatomic, strong) RNNColor *badgeColor;
-@property(nonatomic, strong) DotIndicatorOptions *dotIndicator;
+@property(nonatomic, strong) RNNDotIndicatorOptions *dotIndicator;
 @property(nonatomic, strong) RNNText *fontFamily;
 @property(nonatomic, strong) RNNText *fontWeight;
 @property(nonatomic, strong) RNNText *testID;

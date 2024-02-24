@@ -9,7 +9,7 @@
                        containerView:(UIView *)containerView
                    contentTransition:(RNNEnterExitAnimation *)contentTransitionOptions
                   elementTransitions:
-                      (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions {
+                      (NSArray<RNNElementTransitionOptions *> *)elementTransitionsOptions {
     NSArray *elementTransitions = [RNNElementTransitionsCreator create:elementTransitionsOptions
                                                              fromVC:fromVC
                                                                toVC:toVC

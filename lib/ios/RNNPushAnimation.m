@@ -53,7 +53,7 @@
     [view.layer addAnimation:animation forKey:animationName];
 }
 
-- (void)animateElement:(ElementTransitionOptions *)element
+- (void)animateElement:(RNNElementTransitionOptions *)element
                   view:(UIView *)view
            elementName:(NSString *)elementName {
     [self animationWithKeyPath:@"position.x"

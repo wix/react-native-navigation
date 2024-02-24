@@ -1,6 +1,6 @@
-#import "ElementTransitionOptions.h"
+#import "RNNElementTransitionOptions.h"
 
-@implementation ElementTransitionOptions
+@implementation RNNElementTransitionOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];

@@ -13,7 +13,7 @@
                                                       ofClass:SharedElementTransitionOptions.class];
     self.elementTransitions = [RNNOptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
-                                                ofClass:ElementTransitionOptions.class];
+                                                ofClass:RNNElementTransitionOptions.class];
     return self;
 }
 
@@ -40,7 +40,7 @@
     if (self.exit.maxDuration > maxDuration)
         maxDuration = self.exit.maxDuration;
 
-    for (ElementTransitionOptions *elementTransition in self.elementTransitions) {
+    for (RNNElementTransitionOptions *elementTransition in self.elementTransitions) {
         if (elementTransition.maxDuration > maxDuration) {
             maxDuration = elementTransition.maxDuration;
         }

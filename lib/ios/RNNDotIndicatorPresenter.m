@@ -1,5 +1,5 @@
 #import "RNNDotIndicatorPresenter.h"
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 #import "RNNNavigationOptions.h"
 #import "UITabBarController+RNNUtils.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -34,7 +34,7 @@
     }
 }
 
-- (void)apply:(UIViewController *)child options:(DotIndicatorOptions *)options {
+- (void)apply:(UIViewController *)child options:(RNNDotIndicatorOptions *)options {
     if (![options hasValue])
         return;
 
@@ -64,7 +64,7 @@
     [self applyConstraints:options badge:indicator tabBar:bottomTabs index:index];
 }
 
-- (UIView *)createIndicator:(DotIndicatorOptions *)options {
+- (UIView *)createIndicator:(RNNDotIndicatorOptions *)options {
     UIView *indicator = [UIView new];
     indicator.translatesAutoresizingMaskIntoConstraints = NO;
     indicator.layer.cornerRadius = [[options.size withDefault:@6] floatValue] / 2;
@@ -73,7 +73,7 @@
     return indicator;
 }
 
-- (void)applyConstraints:(DotIndicatorOptions *)options
+- (void)applyConstraints:(RNNDotIndicatorOptions *)options
                    badge:(UIView *)badge
                   tabBar:(UITabBarController *)bottomTabs
                    index:(int)index {
@@ -87,7 +87,7 @@
     ]];
 }
 
-- (BOOL)currentIndicatorEquals:(UIViewController *)child options:(DotIndicatorOptions *)options {
+- (BOOL)currentIndicatorEquals:(UIViewController *)child options:(RNNDotIndicatorOptions *)options {
     if (![self hasIndicator:child])
         return NO;
     UIView *currentIndicator = [self getCurrentIndicator:child];

@@ -1,6 +1,6 @@
-#import "WindowOptions.h"
+#import "RNNWindowOptions.h"
 
-@implementation WindowOptions
+@implementation RNNWindowOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
@@ -8,7 +8,7 @@
     return self;
 }
 
-- (void)mergeOptions:(WindowOptions *)options {
+- (void)mergeOptions:(RNNWindowOptions *)options {
     if (options.backgroundColor.hasValue)
         self.backgroundColor = options.backgroundColor;
 }

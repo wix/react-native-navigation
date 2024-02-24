@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface WindowOptions : RNNOptions
+@interface RNNWindowOptions : RNNOptions
 
 @property(nonatomic, strong) RNNColor *backgroundColor;
 

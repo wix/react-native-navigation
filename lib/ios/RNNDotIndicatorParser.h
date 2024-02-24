@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-@class DotIndicatorOptions;
+@class RNNDotIndicatorOptions;
 
 @interface RNNDotIndicatorParser : NSObject
-+ (DotIndicatorOptions *)parse:(NSDictionary *)dict;
++ (RNNDotIndicatorOptions *)parse:(NSDictionary *)dict;
 @end

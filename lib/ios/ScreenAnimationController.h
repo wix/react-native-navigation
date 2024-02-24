@@ -9,7 +9,7 @@
                 RCTUIManagerObserver>
 
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
-                       elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
+                       elementTransitions:(NSArray<RNNElementTransitionOptions *> *)elementTransitions
                  sharedElementTransitions:
                      (NSArray<RNNSharedElementTransitionOptions *> *)sharedElementTransitions
                                  duration:(CGFloat)duration
@@ -20,7 +20,7 @@
                        containerView:(UIView *)containerView;
 
 @property(nonatomic, strong) RNNEnterExitAnimation *content;
-@property(nonatomic, strong) NSArray<ElementTransitionOptions *> *elementTransitions;
+@property(nonatomic, strong) NSArray<RNNElementTransitionOptions *> *elementTransitions;
 @property(nonatomic, strong) NSArray<RNNSharedElementTransitionOptions *> *sharedElementTransitions;
 
 @end

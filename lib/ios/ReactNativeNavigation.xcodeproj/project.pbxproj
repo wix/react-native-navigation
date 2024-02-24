@@ -35,10 +35,10 @@
 		2DCD9196200014A900EDC75D /* RNNBridgeManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */; };
 		3098702E6833E5CC16D91CE3 /* NoColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 309874C5B132A51A03DAA3BF /* NoColor.h */; };
 		3098730BC3B4DE41104D9CC4 /* RNNDotIndicatorPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 309878B02F15ECDD1A286722 /* RNNDotIndicatorPresenter.h */; };
-		30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987122507D8CBF16624F93 /* DotIndicatorOptions.h */; };
+		30987680135A8C78E62D5B8E /* RNNDotIndicatorOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 30987122507D8CBF16624F93 /* RNNDotIndicatorOptions.h */; };
 		309878CC9D33CE1CF991EBD1 /* NoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 309877ADF638DF25FF0DA8A1 /* NoColor.m */; };
 		309879812219F6EDD2AECAC6 /* RNNTestNoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 309871A6C468B5DC1D0CA495 /* RNNTestNoColor.m */; };
-		30987AB5137F264FA06DA289 /* DotIndicatorOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 309876223177761614786DCC /* DotIndicatorOptions.m */; };
+		30987AB5137F264FA06DA289 /* RNNDotIndicatorOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 309876223177761614786DCC /* RNNDotIndicatorOptions.m */; };
 		30987B23F288EB3A78B7F27C /* RNNDotIndicatorPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 30987E66AA7AB38E7370F8C8 /* RNNDotIndicatorPresenter.m */; };
 		30987CA5048A48D6CE76B06C /* RNNDotIndicatorParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 309871FBA64AD937CEF3E191 /* RNNDotIndicatorParser.h */; };
 		30987D71FB4FEEAC8D8978E8 /* RNNDotIndicatorParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 309874E37C7E9764C7B694E5 /* RNNDotIndicatorParser.m */; };
@@ -288,8 +288,8 @@
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */; };
 		50A246372395399700A192C5 /* RNNModalOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A246352395399700A192C5 /* RNNModalOptions.h */; };
 		50A246382395399700A192C5 /* RNNModalOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A246362395399700A192C5 /* RNNModalOptions.m */; };
-		50A4962323FD51B900F4816D /* WindowOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4962123FD51B900F4816D /* WindowOptions.h */; };
-		50A4962423FD51B900F4816D /* WindowOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A4962223FD51B900F4816D /* WindowOptions.m */; };
+		50A4962323FD51B900F4816D /* RNNWindowOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4962123FD51B900F4816D /* RNNWindowOptions.h */; };
+		50A4962423FD51B900F4816D /* RNNWindowOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A4962223FD51B900F4816D /* RNNWindowOptions.m */; };
 		50A5628A23DDAB5A0027C219 /* ScreenAnimationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A5628823DDAB5A0027C219 /* ScreenAnimationController.h */; };
 		50A5628B23DDAB5A0027C219 /* ScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A5628923DDAB5A0027C219 /* ScreenAnimationController.m */; };
 		50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */; };
@@ -367,8 +367,8 @@
 		50E38DD723A7A2BE009817F6 /* RNNAnimatedViewFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E38DD523A7A2BE009817F6 /* RNNAnimatedViewFactory.h */; };
 		50E38DDD23A7A306009817F6 /* AnimatedImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E38DDB23A7A306009817F6 /* AnimatedImageView.h */; };
 		50E38DDE23A7A306009817F6 /* AnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E38DDC23A7A306009817F6 /* AnimatedImageView.m */; };
-		50E5F78D223F9FAF002AFEAD /* ElementTransitionOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E5F78B223F9FAF002AFEAD /* ElementTransitionOptions.h */; };
-		50E5F78E223F9FAF002AFEAD /* ElementTransitionOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E5F78C223F9FAF002AFEAD /* ElementTransitionOptions.m */; };
+		50E5F78D223F9FAF002AFEAD /* RNNElementTransitionOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E5F78B223F9FAF002AFEAD /* RNNElementTransitionOptions.h */; };
+		50E5F78E223F9FAF002AFEAD /* RNNElementTransitionOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E5F78C223F9FAF002AFEAD /* RNNElementTransitionOptions.m */; };
 		50E5F791223FA04C002AFEAD /* TransitionDetailsOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E5F78F223FA04C002AFEAD /* TransitionDetailsOptions.h */; };
 		50E5F792223FA04C002AFEAD /* TransitionDetailsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E5F790223FA04C002AFEAD /* TransitionDetailsOptions.m */; };
 		50E99C422704A7170006D4D1 /* RNNTabBarItemIOS15Creator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E99C402704A7170006D4D1 /* RNNTabBarItemIOS15Creator.h */; };
@@ -560,12 +560,12 @@
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
 		2DCD9193200014A900EDC75D /* RNNBridgeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManager.h; sourceTree = "<group>"; };
 		2DCD9194200014A900EDC75D /* RNNBridgeManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBridgeManager.mm; sourceTree = "<group>"; };
-		30987122507D8CBF16624F93 /* DotIndicatorOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotIndicatorOptions.h; sourceTree = "<group>"; };
+		30987122507D8CBF16624F93 /* RNNDotIndicatorOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNDotIndicatorOptions.h; sourceTree = "<group>"; };
 		309871A6C468B5DC1D0CA495 /* RNNTestNoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestNoColor.m; sourceTree = "<group>"; };
 		309871FBA64AD937CEF3E191 /* RNNDotIndicatorParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNDotIndicatorParser.h; sourceTree = "<group>"; };
 		309874C5B132A51A03DAA3BF /* NoColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoColor.h; sourceTree = "<group>"; };
 		309874E37C7E9764C7B694E5 /* RNNDotIndicatorParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNDotIndicatorParser.m; sourceTree = "<group>"; };
-		309876223177761614786DCC /* DotIndicatorOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotIndicatorOptions.m; sourceTree = "<group>"; };
+		309876223177761614786DCC /* RNNDotIndicatorOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNDotIndicatorOptions.m; sourceTree = "<group>"; };
 		30987758777622B7D6CCD695 /* RNNDotIndicatorPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNDotIndicatorPresenterTest.m; sourceTree = "<group>"; };
 		309877ADF638DF25FF0DA8A1 /* NoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoColor.m; sourceTree = "<group>"; };
 		309878B02F15ECDD1A286722 /* RNNDotIndicatorPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNDotIndicatorPresenter.h; sourceTree = "<group>"; };
@@ -819,8 +819,8 @@
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.m; sourceTree = "<group>"; };
 		50A246352395399700A192C5 /* RNNModalOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalOptions.h; sourceTree = "<group>"; };
 		50A246362395399700A192C5 /* RNNModalOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalOptions.m; sourceTree = "<group>"; };
-		50A4962123FD51B900F4816D /* WindowOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowOptions.h; sourceTree = "<group>"; };
-		50A4962223FD51B900F4816D /* WindowOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowOptions.m; sourceTree = "<group>"; };
+		50A4962123FD51B900F4816D /* RNNWindowOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNWindowOptions.h; sourceTree = "<group>"; };
+		50A4962223FD51B900F4816D /* RNNWindowOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNWindowOptions.m; sourceTree = "<group>"; };
 		50A5628823DDAB5A0027C219 /* ScreenAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenAnimationController.h; sourceTree = "<group>"; };
 		50A5628923DDAB5A0027C219 /* ScreenAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenAnimationController.m; sourceTree = "<group>"; };
 		50AB0B1A2255F8640039DAED /* UIViewController+LayoutProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LayoutProtocol.h"; sourceTree = "<group>"; };
@@ -899,8 +899,8 @@
 		50E38DD523A7A2BE009817F6 /* RNNAnimatedViewFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimatedViewFactory.h; sourceTree = "<group>"; };
 		50E38DDB23A7A306009817F6 /* AnimatedImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatedImageView.h; sourceTree = "<group>"; };
 		50E38DDC23A7A306009817F6 /* AnimatedImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimatedImageView.m; sourceTree = "<group>"; };
-		50E5F78B223F9FAF002AFEAD /* ElementTransitionOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ElementTransitionOptions.h; sourceTree = "<group>"; };
-		50E5F78C223F9FAF002AFEAD /* ElementTransitionOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ElementTransitionOptions.m; sourceTree = "<group>"; };
+		50E5F78B223F9FAF002AFEAD /* RNNElementTransitionOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNElementTransitionOptions.h; sourceTree = "<group>"; };
+		50E5F78C223F9FAF002AFEAD /* RNNElementTransitionOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNElementTransitionOptions.m; sourceTree = "<group>"; };
 		50E5F78F223FA04C002AFEAD /* TransitionDetailsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransitionDetailsOptions.h; sourceTree = "<group>"; };
 		50E5F790223FA04C002AFEAD /* TransitionDetailsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransitionDetailsOptions.m; sourceTree = "<group>"; };
 		50E99C402704A7170006D4D1 /* RNNTabBarItemIOS15Creator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarItemIOS15Creator.h; sourceTree = "<group>"; };
@@ -1316,84 +1316,84 @@
 		504AFE611FFE52EF0076E904 /* Options */ = {
 			isa = PBXGroup;
 			children = (
-				504AFE621FFE53070076E904 /* RNNOptions.h */,
-				504AFE631FFE53070076E904 /* RNNOptions.m */,
-				50C085E9259143F200B0502C /* RNNButtonsParser.h */,
-				50C085EA259143F200B0502C /* RNNButtonsParser.m */,
-				50C085ED2591FC5000B0502C /* RNNIconBackgroundOptions.h */,
-				50C085EE2591FC5000B0502C /* RNNIconBackgroundOptions.m */,
-				50A4962123FD51B900F4816D /* WindowOptions.h */,
-				50A4962223FD51B900F4816D /* WindowOptions.m */,
-				4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */,
-				4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */,
-				E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */,
-				E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */,
-				50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */,
-				50175CD0207A2AA1004FE91B /* RNNComponentOptions.m */,
-				A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */,
-				A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */,
-				50887C1320ECC5C200D06111 /* RNNButtonOptions.h */,
-				50887C1420ECC5C200D06111 /* RNNButtonOptions.m */,
+				50E5F78B223F9FAF002AFEAD /* RNNElementTransitionOptions.h */,
+				50E5F78C223F9FAF002AFEAD /* RNNElementTransitionOptions.m */,
+				50451D072042E20600695F00 /* RNNAnimationsOptions.h */,
+				50451D082042E20600695F00 /* RNNAnimationsOptions.m */,
 				502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */,
 				502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */,
-				50570B242061473D006A1B5C /* RNNTitleOptions.h */,
-				50570B252061473D006A1B5C /* RNNTitleOptions.m */,
-				50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */,
-				50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */,
-				50E5F78B223F9FAF002AFEAD /* ElementTransitionOptions.h */,
-				50E5F78C223F9FAF002AFEAD /* ElementTransitionOptions.m */,
-				50E5F78F223FA04C002AFEAD /* TransitionDetailsOptions.h */,
-				50E5F790223FA04C002AFEAD /* TransitionDetailsOptions.m */,
-				50AD1CDE23CB428400FF3134 /* TransitionOptions.h */,
-				50AD1CDF23CB428400FF3134 /* TransitionOptions.m */,
-				50C23E6025F51BAA0045A047 /* RNNEnterExitAnimation.h */,
-				50C23E6125F51BAA0045A047 /* RNNEnterExitAnimation.m */,
-				5048862B20BE976D000908DE /* RNNLayoutOptions.h */,
-				5048862C20BE976D000908DE /* RNNLayoutOptions.m */,
-				50BE951120B5A787004F5DF5 /* RNNStatusBarOptions.h */,
-				50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */,
 				50EB4ED52068EBE000D6ED34 /* RNNBackgroundOptions.h */,
 				50EB4ED62068EBE000D6ED34 /* RNNBackgroundOptions.m */,
-				A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */,
-				A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */,
 				50EB933F1FE14A3E00BD8EEE /* RNNBottomTabOptions.h */,
 				50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */,
+				A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */,
+				A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */,
+				50887C1320ECC5C200D06111 /* RNNButtonOptions.h */,
+				50887C1420ECC5C200D06111 /* RNNButtonOptions.m */,
+				50C085E9259143F200B0502C /* RNNButtonsParser.h */,
+				50C085EA259143F200B0502C /* RNNButtonsParser.m */,
+				50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */,
+				50175CD0207A2AA1004FE91B /* RNNComponentOptions.m */,
+				50FCD83523FC102200000DD0 /* RNNDeprecationOptions.h */,
+				50FCD83623FC102200000DD0 /* RNNDeprecationOptions.m */,
+				30987122507D8CBF16624F93 /* RNNDotIndicatorOptions.h */,
+				309876223177761614786DCC /* RNNDotIndicatorOptions.m */,
+				50C23E6025F51BAA0045A047 /* RNNEnterExitAnimation.h */,
+				50C23E6125F51BAA0045A047 /* RNNEnterExitAnimation.m */,
+				50C085ED2591FC5000B0502C /* RNNIconBackgroundOptions.h */,
+				50C085EE2591FC5000B0502C /* RNNIconBackgroundOptions.m */,
+				506317AC220B550600B26FC3 /* RNNInsetsOptions.h */,
+				506317AD220B550600B26FC3 /* RNNInsetsOptions.m */,
+				4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */,
+				4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */,
+				5048862B20BE976D000908DE /* RNNLayoutOptions.h */,
+				5048862C20BE976D000908DE /* RNNLayoutOptions.m */,
+				50A246352395399700A192C5 /* RNNModalOptions.h */,
+				50A246362395399700A192C5 /* RNNModalOptions.m */,
+				E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */,
+				E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */,
+				504AFE621FFE53070076E904 /* RNNOptions.h */,
+				504AFE631FFE53070076E904 /* RNNOptions.m */,
+				50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */,
+				50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */,
+				E3458D3C20BD9CA10023149B /* RNNPreviewOptions.h */,
+				E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */,
+				50415CB820553B8E00BB682E /* RNNScreenTransition.h */,
+				50415CB920553B8E00BB682E /* RNNScreenTransition.m */,
+				91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */,
+				91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */,
 				500623A325B7003A0086AB39 /* RNNShadowOptions.h */,
 				500623A425B7003A0086AB39 /* RNNShadowOptions.m */,
-				507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */,
-				507F43C81FF4F9CC00D9425B /* RNNTopTabOptions.m */,
-				504AFE721FFFF0540076E904 /* RNNTopTabsOptions.h */,
-				504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */,
+				507E7D55201DDD3000444E6C /* RNNSharedElementAnimationOptions.h */,
+				507E7D56201DDD3000444E6C /* RNNSharedElementAnimationOptions.m */,
+				50D3A37023B8D77C00717F95 /* RNNSharedElementTransitionOptions.h */,
+				50D3A37123B8D77C00717F95 /* RNNSharedElementTransitionOptions.m */,
 				50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */,
 				50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */,
 				5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */,
 				5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */,
-				50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */,
-				50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */,
-				507E7D55201DDD3000444E6C /* RNNSharedElementAnimationOptions.h */,
-				507E7D56201DDD3000444E6C /* RNNSharedElementAnimationOptions.m */,
-				E8E5182C1F83A48B000467AC /* RNNTransitionStateHolder.h */,
-				E8E5182D1F83A48B000467AC /* RNNTransitionStateHolder.m */,
-				50451D072042E20600695F00 /* RNNAnimationsOptions.h */,
-				50451D082042E20600695F00 /* RNNAnimationsOptions.m */,
-				50415CB820553B8E00BB682E /* RNNScreenTransition.h */,
-				50415CB920553B8E00BB682E /* RNNScreenTransition.m */,
 				E33AC20620B5C49E0090DB8A /* RNNSplitViewOptions.h */,
 				E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */,
-				E3458D3C20BD9CA10023149B /* RNNPreviewOptions.h */,
-				E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */,
-				506317AC220B550600B26FC3 /* RNNInsetsOptions.h */,
-				506317AD220B550600B26FC3 /* RNNInsetsOptions.m */,
-				309876223177761614786DCC /* DotIndicatorOptions.m */,
-				30987122507D8CBF16624F93 /* DotIndicatorOptions.h */,
-				50A246352395399700A192C5 /* RNNModalOptions.h */,
-				50A246362395399700A192C5 /* RNNModalOptions.m */,
-				50D3A37023B8D77C00717F95 /* RNNSharedElementTransitionOptions.h */,
-				50D3A37123B8D77C00717F95 /* RNNSharedElementTransitionOptions.m */,
-				50FCD83523FC102200000DD0 /* RNNDeprecationOptions.h */,
-				50FCD83623FC102200000DD0 /* RNNDeprecationOptions.m */,
-				91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */,
-				91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */,
+				50BE951120B5A787004F5DF5 /* RNNStatusBarOptions.h */,
+				50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */,
+				50C4A494206BDDBB00DB292E /* RNNSubtitleOptions.h */,
+				50C4A495206BDDBB00DB292E /* RNNSubtitleOptions.m */,
+				50570B242061473D006A1B5C /* RNNTitleOptions.h */,
+				50570B252061473D006A1B5C /* RNNTitleOptions.m */,
+				A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */,
+				A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */,
+				507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */,
+				507F43C81FF4F9CC00D9425B /* RNNTopTabOptions.m */,
+				504AFE721FFFF0540076E904 /* RNNTopTabsOptions.h */,
+				504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */,
+				E8E5182C1F83A48B000467AC /* RNNTransitionStateHolder.h */,
+				E8E5182D1F83A48B000467AC /* RNNTransitionStateHolder.m */,
+				50E5F78F223FA04C002AFEAD /* TransitionDetailsOptions.h */,
+				50E5F790223FA04C002AFEAD /* TransitionDetailsOptions.m */,
+				50AD1CDE23CB428400FF3134 /* TransitionOptions.h */,
+				50AD1CDF23CB428400FF3134 /* TransitionOptions.m */,
+				50A4962123FD51B900F4816D /* RNNWindowOptions.h */,
+				50A4962223FD51B900F4816D /* RNNWindowOptions.m */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -1825,7 +1825,7 @@
 				26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */,
 				5012241A21736678000F5F98 /* RNNImage.h in Headers */,
 				506A2B1420973DFD00F43A95 /* RNNErrorHandler.h in Headers */,
-				50A4962323FD51B900F4816D /* WindowOptions.h in Headers */,
+				50A4962323FD51B900F4816D /* RNNWindowOptions.h in Headers */,
 				50A5628A23DDAB5A0027C219 /* ScreenAnimationController.h in Headers */,
 				503A8A0923BB86200094D1C4 /* RNNTimeIntervalParser.h in Headers */,
 				263905B01E4C6F440023D7D3 /* MMDrawerController+Subclass.h in Headers */,
@@ -1857,7 +1857,7 @@
 				50E02BDD21A6EE7900A43942 /* RNNSideMenuOpenGestureModeParser.h in Headers */,
 				5022EDB52405224B00852BA6 /* BottomTabPresenter.h in Headers */,
 				5038A3B5216DF602009280BC /* UINavigationController+RNNOptions.h in Headers */,
-				50E5F78D223F9FAF002AFEAD /* ElementTransitionOptions.h in Headers */,
+				50E5F78D223F9FAF002AFEAD /* RNNElementTransitionOptions.h in Headers */,
 				509416AB23A11CB20036092C /* RNNNullEnum.h in Headers */,
 				50FCD83723FC102200000DD0 /* RNNDeprecationOptions.h in Headers */,
 				60FB405C2B8A090E0094F118 /* RNNFastOutSlowIn.h in Headers */,
@@ -2018,7 +2018,7 @@
 				50706E6D20CE7CA5003345C3 /* UIImage+Utils.h in Headers */,
 				50A246372395399700A192C5 /* RNNModalOptions.h in Headers */,
 				50996C6D23AA68B900008F89 /* RNNDisplayLinkAnimator.h in Headers */,
-				30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */,
+				30987680135A8C78E62D5B8E /* RNNDotIndicatorOptions.h in Headers */,
 				30987CA5048A48D6CE76B06C /* RNNDotIndicatorParser.h in Headers */,
 				3098730BC3B4DE41104D9CC4 /* RNNDotIndicatorPresenter.h in Headers */,
 				5095BB722416A3B900C4CD41 /* RNNConvert.h in Headers */,
@@ -2169,7 +2169,7 @@
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
 				5012240B21735959000F5F98 /* RNNSideMenuPresenter.m in Sources */,
 				502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */,
-				50E5F78E223F9FAF002AFEAD /* ElementTransitionOptions.m in Sources */,
+				50E5F78E223F9FAF002AFEAD /* RNNElementTransitionOptions.m in Sources */,
 				B84F6E4C252C5ECE007D78A1 /* RNNDecelerateInterpolator.m in Sources */,
 				7365071221E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.m in Sources */,
 				5012241B21736678000F5F98 /* RNNImage.m in Sources */,
@@ -2232,7 +2232,7 @@
 				5038A3BA216DFCFD009280BC /* UITabBarController+RNNOptions.m in Sources */,
 				5030B62123D5B4CB008F1642 /* LNInterpolable.m in Sources */,
 				50A246382395399700A192C5 /* RNNModalOptions.m in Sources */,
-				50A4962423FD51B900F4816D /* WindowOptions.m in Sources */,
+				50A4962423FD51B900F4816D /* RNNWindowOptions.m in Sources */,
 				50E38DDE23A7A306009817F6 /* AnimatedImageView.m in Sources */,
 				263905B21E4C6F440023D7D3 /* MMDrawerController.m in Sources */,
 				50644A2120E11A720026709C /* RNNConstants.m in Sources */,
@@ -2378,7 +2378,7 @@
 				E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */,
 				5012242B217372B3000F5F98 /* RNNImageParser.m in Sources */,
 				50ACB2CD2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.m in Sources */,
-				30987AB5137F264FA06DA289 /* DotIndicatorOptions.m in Sources */,
+				30987AB5137F264FA06DA289 /* RNNDotIndicatorOptions.m in Sources */,
 				30987D71FB4FEEAC8D8978E8 /* RNNDotIndicatorParser.m in Sources */,
 				50CED44E239EA78700C42EE2 /* TopBarAppearancePresenter.m in Sources */,
 				50ACB2C92525FA1D00ABDBE2 /* ScreenReversedAnimationController.m in Sources */,

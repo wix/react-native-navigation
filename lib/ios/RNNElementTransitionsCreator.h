@@ -6,7 +6,7 @@
 @interface RNNElementTransitionsCreator : NSObject
 
 + (NSArray<DisplayLinkAnimatorDelegate> *)
-           create:(NSArray<ElementTransitionOptions *> *)elementTransitions
+           create:(NSArray<RNNElementTransitionOptions *> *)elementTransitions
            fromVC:(UIViewController *)fromVC
              toVC:(UIViewController *)toVC
     containerView:(UIView *)containerView;

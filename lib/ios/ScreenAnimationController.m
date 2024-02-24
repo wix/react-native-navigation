@@ -13,7 +13,7 @@
 }
 
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
-                       elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
+                       elementTransitions:(NSArray<RNNElementTransitionOptions *> *)elementTransitions
                  sharedElementTransitions:
                      (NSArray<RNNSharedElementTransitionOptions *> *)sharedElementTransitions
                                  duration:(CGFloat)duration

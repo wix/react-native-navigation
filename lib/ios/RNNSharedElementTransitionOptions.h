@@ -1,7 +1,7 @@
-#import "ElementTransitionOptions.h"
+#import "RNNElementTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
-@interface RNNSharedElementTransitionOptions : ElementTransitionOptions
+@interface RNNSharedElementTransitionOptions : RNNElementTransitionOptions
 
 @property(nonatomic, strong) NSString *fromId;
 @property(nonatomic, strong) NSString *toId;

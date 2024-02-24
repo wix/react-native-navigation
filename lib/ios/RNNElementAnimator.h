@@ -1,5 +1,5 @@
 #import "BaseAnimator.h"
-#import "ElementTransitionOptions.h"
+#import "RNNElementTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNElementAnimator : BaseAnimator
@@ -9,6 +9,6 @@
                             containerView:(UIView *)containerView;
 
 - (NSMutableArray<id<RNNDisplayLinkAnimation>> *)createAnimations:
-    (ElementTransitionOptions *)transitionOptions;
+    (RNNElementTransitionOptions *)transitionOptions;
 
 @end

@@ -1,9 +1,9 @@
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 #import "RNNNullBool.h"
 #import "RNNNullColor.h"
 #import "RNNNullNumber.h"
 
-@implementation DotIndicatorOptions
+@implementation RNNDotIndicatorOptions
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
@@ -20,7 +20,7 @@
     return self;
 }
 
-- (void)mergeOptions:(DotIndicatorOptions *)options {
+- (void)mergeOptions:(RNNDotIndicatorOptions *)options {
     if (options.color.hasValue)
         self.color = options.color;
     if (options.size.hasValue)

@@ -1,5 +1,5 @@
 #import "RNNBottomTabOptions.h"
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 #import "RNNDotIndicatorParser.h"
 
 @implementation RNNBottomTabOptions

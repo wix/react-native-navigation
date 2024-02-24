@@ -13,7 +13,7 @@
 #import "RNNTopBarOptions.h"
 #import "RNNTopTabOptions.h"
 #import "RNNTopTabsOptions.h"
-#import "WindowOptions.h"
+#import "RNNWindowOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 
@@ -33,7 +33,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) RNNSplitViewOptions *splitView;
 @property(nonatomic, strong) RNNModalOptions *modal;
 @property(nonatomic, strong) RNNDeprecationOptions *deprecations;
-@property(nonatomic, strong) WindowOptions *window;
+@property(nonatomic, strong) RNNWindowOptions *window;
 
 @property(nonatomic, strong) RNNBool *popGesture;
 @property(nonatomic, strong) RNNImage *backgroundImage;

@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface DotIndicatorOptions : RNNOptions
+@interface RNNDotIndicatorOptions : RNNOptions
 
 @property(nonatomic, strong) RNNColor *color;
 @property(nonatomic, strong) RNNNumber *size;
