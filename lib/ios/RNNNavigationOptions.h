@@ -1,4 +1,4 @@
-#import "DeprecationOptions.h"
+#import "RNNDeprecationOptions.h"
 #import "RNNAnimationsOptions.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNBottomTabsOptions.h"
@@ -32,7 +32,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) RNNLayoutOptions *layout;
 @property(nonatomic, strong) RNNSplitViewOptions *splitView;
 @property(nonatomic, strong) RNNModalOptions *modal;
-@property(nonatomic, strong) DeprecationOptions *deprecations;
+@property(nonatomic, strong) RNNDeprecationOptions *deprecations;
 @property(nonatomic, strong) WindowOptions *window;
 
 @property(nonatomic, strong) Bool *popGesture;

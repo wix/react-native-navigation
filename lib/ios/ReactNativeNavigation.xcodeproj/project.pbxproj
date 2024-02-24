@@ -401,8 +401,8 @@
 		50F72E20260745DF0096758A /* TransformRectTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F72E1E260745DF0096758A /* TransformRectTransition.m */; };
 		50F72E552607468C0096758A /* PathTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F72E532607468C0096758A /* PathTransition.h */; };
 		50F72E562607468C0096758A /* PathTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F72E542607468C0096758A /* PathTransition.m */; };
-		50FCD83723FC102200000DD0 /* DeprecationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FCD83523FC102200000DD0 /* DeprecationOptions.h */; };
-		50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FCD83623FC102200000DD0 /* DeprecationOptions.m */; };
+		50FCD83723FC102200000DD0 /* RNNDeprecationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FCD83523FC102200000DD0 /* RNNDeprecationOptions.h */; };
+		50FCD83823FC102200000DD0 /* RNNDeprecationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FCD83623FC102200000DD0 /* RNNDeprecationOptions.m */; };
 		651E1F8A21FD624600DFEA19 /* UISplitViewController+RNNOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 651E1F8921FD624600DFEA19 /* UISplitViewController+RNNOptions.m */; };
 		651E1F8D21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 651E1F8C21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m */; };
 		7365071121E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7365070F21E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h */; };
@@ -936,8 +936,8 @@
 		50F72E1E260745DF0096758A /* TransformRectTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransformRectTransition.m; sourceTree = "<group>"; };
 		50F72E532607468C0096758A /* PathTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathTransition.h; sourceTree = "<group>"; };
 		50F72E542607468C0096758A /* PathTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathTransition.m; sourceTree = "<group>"; };
-		50FCD83523FC102200000DD0 /* DeprecationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationOptions.h; sourceTree = "<group>"; };
-		50FCD83623FC102200000DD0 /* DeprecationOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeprecationOptions.m; sourceTree = "<group>"; };
+		50FCD83523FC102200000DD0 /* RNNDeprecationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNDeprecationOptions.h; sourceTree = "<group>"; };
+		50FCD83623FC102200000DD0 /* RNNDeprecationOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNDeprecationOptions.m; sourceTree = "<group>"; };
 		651E1F8821FD611600DFEA19 /* UISplitViewController+RNNOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISplitViewController+RNNOptions.h"; sourceTree = "<group>"; };
 		651E1F8921FD624600DFEA19 /* UISplitViewController+RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISplitViewController+RNNOptions.m"; sourceTree = "<group>"; };
 		651E1F8B21FD63F400DFEA19 /* RNNSplitViewControllerPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewControllerPresenter.h; sourceTree = "<group>"; };
@@ -1394,8 +1394,8 @@
 				50A246362395399700A192C5 /* RNNModalOptions.m */,
 				50D3A37023B8D77C00717F95 /* SharedElementTransitionOptions.h */,
 				50D3A37123B8D77C00717F95 /* SharedElementTransitionOptions.m */,
-				50FCD83523FC102200000DD0 /* DeprecationOptions.h */,
-				50FCD83623FC102200000DD0 /* DeprecationOptions.m */,
+				50FCD83523FC102200000DD0 /* RNNDeprecationOptions.h */,
+				50FCD83623FC102200000DD0 /* RNNDeprecationOptions.m */,
 				91CB34BE250EC7F7000C132B /* RNNSearchBarOptions.m */,
 				91CB34C5250ED303000C132B /* RNNSearchBarOptions.h */,
 			);
@@ -1867,7 +1867,7 @@
 				5038A3B5216DF602009280BC /* UINavigationController+RNNOptions.h in Headers */,
 				50E5F78D223F9FAF002AFEAD /* ElementTransitionOptions.h in Headers */,
 				509416AB23A11CB20036092C /* NullEnum.h in Headers */,
-				50FCD83723FC102200000DD0 /* DeprecationOptions.h in Headers */,
+				50FCD83723FC102200000DD0 /* RNNDeprecationOptions.h in Headers */,
 				E5F6C3A422DB4D0F0093C2CE /* UIColor+RNNUtils.h in Headers */,
 				5038A3C1216E1E66009280BC /* RNNFontAttributesCreator.h in Headers */,
 				5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */,
@@ -2327,7 +2327,7 @@
 				50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */,
 				50ACDEC72875C23D00C29069 /* RNNDynamicIconCreator.m in Sources */,
 				50F72E562607468C0096758A /* PathTransition.m in Sources */,
-				50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */,
+				50FCD83823FC102200000DD0 /* RNNDeprecationOptions.m in Sources */,
 				50BCB29223F2C7CD00D6C8E5 /* AnchorTransition.m in Sources */,
 				50344D2923A03DB4004B6A7C /* BottomTabsAttachMode.m in Sources */,
 				501224072173592D000F5F98 /* RNNBottomTabsPresenter.m in Sources */,
