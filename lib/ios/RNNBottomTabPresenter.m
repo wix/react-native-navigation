@@ -1,9 +1,9 @@
-#import "BottomTabPresenter.h"
+#import "RNNBottomTabPresenter.h"
 #import "RNNTabBarItemCreator.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter {
+@implementation RNNBottomTabPresenter {
     RNNTabBarItemCreator *_tabCreator;
 }
 

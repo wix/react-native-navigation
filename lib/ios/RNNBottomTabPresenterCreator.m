@@ -1,11 +1,11 @@
-#import "BottomTabPresenterCreator.h"
+#import "RNNBottomTabPresenterCreator.h"
 #import "RNNTabBarItemCreator.h"
 #import "RNNTabBarItemAppearanceCreator.h"
 #import "RNNTabBarItemIOS15Creator.h"
 
-@implementation BottomTabPresenterCreator
+@implementation RNNBottomTabPresenterCreator
 
-+ (BottomTabPresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
++ (RNNBottomTabPresenter *)createWithDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     RNNTabBarItemCreator *tabCreator;
     if (@available(iOS 15.0, *)) {
         tabCreator = [RNNTabBarItemIOS15Creator new];
@@ -15,7 +15,7 @@
         tabCreator = [RNNTabBarItemCreator new];
     }
 
-    return [[BottomTabPresenter alloc] initWithDefaultOptions:defaultOptions tabCreator:tabCreator];
+    return [[RNNBottomTabPresenter alloc] initWithDefaultOptions:defaultOptions tabCreator:tabCreator];
 }
 
 @end

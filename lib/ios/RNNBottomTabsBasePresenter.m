@@ -1,8 +1,8 @@
-#import "BottomTabsBasePresenter.h"
+#import "RNNBottomTabsBasePresenter.h"
 #import "RNNBottomTabsController.h"
 #import "UIImage+Utils.h"
 
-@implementation BottomTabsBasePresenter
+@implementation RNNBottomTabsBasePresenter
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];

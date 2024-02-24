@@ -1,6 +1,6 @@
 #import "RNNControllerFactory.h"
-#import "BottomTabPresenterCreator.h"
-#import "BottomTabsPresenterCreator.h"
+#import "RNNBottomTabPresenterCreator.h"
+#import "RNNBottomTabsPresenterCreator.h"
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
 #import "RNNExternalViewController.h"
@@ -188,11 +188,11 @@
     RNNLayoutInfo *layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions *options =
         [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-    BottomTabsBasePresenter *presenter =
-        [BottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
+    RNNBottomTabsBasePresenter *presenter =
+        [RNNBottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
     NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
-    BottomTabPresenter *bottomTabPresenter =
-        [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
+    RNNBottomTabPresenter *bottomTabPresenter =
+        [RNNBottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
     RNNDotIndicatorPresenter *dotIndicatorPresenter =
         [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
     RNNBottomTabsBaseAttacher *bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];

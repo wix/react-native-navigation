@@ -1,12 +1,12 @@
-#import "TopBarAppearancePresenter.h"
+#import "RNNTopBarAppearancePresenter.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIViewController+LayoutProtocol.h"
 
-@interface TopBarAppearancePresenter ()
+@interface RNNTopBarAppearancePresenter ()
 
 @end
 
-@implementation TopBarAppearancePresenter
+@implementation RNNTopBarAppearancePresenter
 
 @synthesize borderColor = _borderColor;
 @synthesize scrollEdgeBorderColor = _scrollEdgeBorderColor;

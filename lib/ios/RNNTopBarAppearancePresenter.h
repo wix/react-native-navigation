@@ -1,8 +1,8 @@
-#import "TopBarPresenter.h"
+#import "RNNTopBarPresenter.h"
 #import <UIKit/UIKit.h>
 
 API_AVAILABLE(ios(13.0))
-@interface TopBarAppearancePresenter : TopBarPresenter
+@interface RNNTopBarAppearancePresenter : RNNTopBarPresenter
 
 @property(nonatomic, strong) UIColor *borderColor;
 @property(nonatomic) BOOL showBorder;

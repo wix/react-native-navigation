@@ -1,7 +1,7 @@
 #import "RNNBasePresenter.h"
 #import "RNNTopBarOptions.h"
 
-@interface TopBarPresenter : RNNBasePresenter
+@interface RNNTopBarPresenter : RNNBasePresenter
 
 - (void)applyOptions:(RNNTopBarOptions *)options;
 

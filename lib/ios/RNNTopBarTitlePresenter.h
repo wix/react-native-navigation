@@ -2,7 +2,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import <Foundation/Foundation.h>
 
-@interface TopBarTitlePresenter : RNNBasePresenter
+@interface RNNTopBarTitlePresenter : RNNBasePresenter
 
 - (void)applyOptionsOnInit:(RNNTopBarOptions *)options;
 

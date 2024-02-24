@@ -90,16 +90,16 @@
 		501E0217213E7EA3003365C5 /* RNNReactView.h in Headers */ = {isa = PBXBuildFile; fileRef = 501E0215213E7EA3003365C5 /* RNNReactView.h */; };
 		501E0218213E7EA3003365C5 /* RNNReactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 501E0216213E7EA3003365C5 /* RNNReactView.m */; };
 		50206A6D21AFE75400B7BB1A /* RNNSideMenuParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50206A6C21AFE75400B7BB1A /* RNNSideMenuParserTest.m */; };
-		5022EDB52405224B00852BA6 /* BottomTabPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDB32405224B00852BA6 /* BottomTabPresenter.h */; };
-		5022EDB62405224B00852BA6 /* BottomTabPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDB42405224B00852BA6 /* BottomTabPresenter.m */; };
-		5022EDBD2405237100852BA6 /* BottomTabPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDBB2405237100852BA6 /* BottomTabPresenterCreator.h */; };
-		5022EDBE2405237100852BA6 /* BottomTabPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDBC2405237100852BA6 /* BottomTabPresenterCreator.m */; };
+		5022EDB52405224B00852BA6 /* RNNBottomTabPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDB32405224B00852BA6 /* RNNBottomTabPresenter.h */; };
+		5022EDB62405224B00852BA6 /* RNNBottomTabPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDB42405224B00852BA6 /* RNNBottomTabPresenter.m */; };
+		5022EDBD2405237100852BA6 /* RNNBottomTabPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDBB2405237100852BA6 /* RNNBottomTabPresenterCreator.h */; };
+		5022EDBE2405237100852BA6 /* RNNBottomTabPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDBC2405237100852BA6 /* RNNBottomTabPresenterCreator.m */; };
 		5022EDC124053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDBF24053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.h */; };
 		5022EDC224053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDC024053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.m */; };
-		5022EDC524054C6100852BA6 /* BottomTabsAppearancePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDC324054C6100852BA6 /* BottomTabsAppearancePresenter.h */; };
-		5022EDC624054C6100852BA6 /* BottomTabsAppearancePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDC424054C6100852BA6 /* BottomTabsAppearancePresenter.m */; };
-		5022EDC924054C8A00852BA6 /* BottomTabsPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDC724054C8A00852BA6 /* BottomTabsPresenterCreator.h */; };
-		5022EDCA24054C8A00852BA6 /* BottomTabsPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDC824054C8A00852BA6 /* BottomTabsPresenterCreator.m */; };
+		5022EDC524054C6100852BA6 /* RNNBottomTabsAppearancePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDC324054C6100852BA6 /* RNNBottomTabsAppearancePresenter.h */; };
+		5022EDC624054C6100852BA6 /* RNNBottomTabsAppearancePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDC424054C6100852BA6 /* RNNBottomTabsAppearancePresenter.m */; };
+		5022EDC924054C8A00852BA6 /* RNNBottomTabsPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5022EDC724054C8A00852BA6 /* RNNBottomTabsPresenterCreator.h */; };
+		5022EDCA24054C8A00852BA6 /* RNNBottomTabsPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDC824054C8A00852BA6 /* RNNBottomTabsPresenterCreator.m */; };
 		502CB46E20CD1DDA0019B2FE /* RNNBackButtonOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */; };
 		502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */; };
 		502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */; };
@@ -168,8 +168,8 @@
 		50415CBB20553B8E00BB682E /* RNNScreenTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50415CB920553B8E00BB682E /* RNNScreenTransition.m */; };
 		504189572506144D004A6BC7 /* RNNSetRootAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 504189552506144D004A6BC7 /* RNNSetRootAnimator.h */; };
 		504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 504189562506144D004A6BC7 /* RNNSetRootAnimator.m */; };
-		5041DC3E2417BBBA0033312F /* BottomTabsBasePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */; };
-		5041DC3F2417BBBA0033312F /* BottomTabsBasePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */; };
+		5041DC3E2417BBBA0033312F /* RNNBottomTabsBasePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5041DC3C2417BBBA0033312F /* RNNBottomTabsBasePresenter.h */; };
+		5041DC3F2417BBBA0033312F /* RNNBottomTabsBasePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041DC3D2417BBBA0033312F /* RNNBottomTabsBasePresenter.m */; };
 		50451D052042DAEB00695F00 /* RNNPushAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D032042DAEB00695F00 /* RNNPushAnimation.h */; };
 		50451D062042DAEB00695F00 /* RNNPushAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 50451D042042DAEB00695F00 /* RNNPushAnimation.m */; };
 		50451D092042E20600695F00 /* RNNAnimationsOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50451D072042E20600695F00 /* RNNAnimationsOptions.h */; };
@@ -214,8 +214,8 @@
 		50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */; };
 		50588B8C23AAC2FF001F6A5E /* RNNDisplayLinkAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50588B8A23AAC2FF001F6A5E /* RNNDisplayLinkAnimation.h */; };
 		505963F722676A0000EBB63C /* RNNLayoutManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 505963F622676A0000EBB63C /* RNNLayoutManagerTest.m */; };
-		505C640223E074860078AFC0 /* TopBarTitlePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 505C640023E074860078AFC0 /* TopBarTitlePresenter.h */; };
-		505C640323E074860078AFC0 /* TopBarTitlePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 505C640123E074860078AFC0 /* TopBarTitlePresenter.m */; };
+		505C640223E074860078AFC0 /* RNNTopBarTitlePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 505C640023E074860078AFC0 /* RNNTopBarTitlePresenter.h */; };
+		505C640323E074860078AFC0 /* RNNTopBarTitlePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 505C640123E074860078AFC0 /* RNNTopBarTitlePresenter.m */; };
 		505EDD32214E4BE80071C7DE /* RNNNavigationControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */; };
 		505EDD34214E7B7B0071C7DE /* RNNLeafProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 505EDD33214E7A6A0071C7DE /* RNNLeafProtocol.h */; };
 		505EDD3C214FA8000071C7DE /* RNNComponentPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 505EDD3A214FA8000071C7DE /* RNNComponentPresenter.h */; };
@@ -338,12 +338,12 @@
 		50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */; };
 		50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */; };
 		50CE8503217C6C9B00084EBF /* RNNSideMenuPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CE8502217C6C9B00084EBF /* RNNSideMenuPresenterTest.m */; };
-		50CED449239EA56100C42EE2 /* TopBarPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED447239EA56100C42EE2 /* TopBarPresenterCreator.h */; };
-		50CED44A239EA56100C42EE2 /* TopBarPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED448239EA56100C42EE2 /* TopBarPresenterCreator.m */; };
-		50CED44D239EA78700C42EE2 /* TopBarAppearancePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED44B239EA78700C42EE2 /* TopBarAppearancePresenter.h */; };
-		50CED44E239EA78700C42EE2 /* TopBarAppearancePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED44C239EA78700C42EE2 /* TopBarAppearancePresenter.m */; };
-		50CED451239F9DFC00C42EE2 /* TopBarPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED44F239F9DFC00C42EE2 /* TopBarPresenter.h */; };
-		50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED450239F9DFC00C42EE2 /* TopBarPresenter.m */; };
+		50CED449239EA56100C42EE2 /* RNNTopBarPresenterCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED447239EA56100C42EE2 /* RNNTopBarPresenterCreator.h */; };
+		50CED44A239EA56100C42EE2 /* RNNTopBarPresenterCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED448239EA56100C42EE2 /* RNNTopBarPresenterCreator.m */; };
+		50CED44D239EA78700C42EE2 /* RNNTopBarAppearancePresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED44B239EA78700C42EE2 /* RNNTopBarAppearancePresenter.h */; };
+		50CED44E239EA78700C42EE2 /* RNNTopBarAppearancePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED44C239EA78700C42EE2 /* RNNTopBarAppearancePresenter.m */; };
+		50CED451239F9DFC00C42EE2 /* RNNTopBarPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CED44F239F9DFC00C42EE2 /* RNNTopBarPresenter.h */; };
+		50CED452239F9DFC00C42EE2 /* RNNTopBarPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CED450239F9DFC00C42EE2 /* RNNTopBarPresenter.m */; };
 		50CF23392405668C0098042D /* UINavigationController+RNNCommands.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */; };
 		50CF233A2405668C0098042D /* UINavigationController+RNNCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */; };
 		50D031342005149000386B3D /* RNNOverlayManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D031322005149000386B3D /* RNNOverlayManager.h */; };
@@ -619,16 +619,16 @@
 		501E0215213E7EA3003365C5 /* RNNReactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNReactView.h; sourceTree = "<group>"; };
 		501E0216213E7EA3003365C5 /* RNNReactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNReactView.m; sourceTree = "<group>"; };
 		50206A6C21AFE75400B7BB1A /* RNNSideMenuParserTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuParserTest.m; sourceTree = "<group>"; };
-		5022EDB32405224B00852BA6 /* BottomTabPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabPresenter.h; sourceTree = "<group>"; };
-		5022EDB42405224B00852BA6 /* BottomTabPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabPresenter.m; sourceTree = "<group>"; };
-		5022EDBB2405237100852BA6 /* BottomTabPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabPresenterCreator.h; sourceTree = "<group>"; };
-		5022EDBC2405237100852BA6 /* BottomTabPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabPresenterCreator.m; sourceTree = "<group>"; };
+		5022EDB32405224B00852BA6 /* RNNBottomTabPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabPresenter.h; sourceTree = "<group>"; };
+		5022EDB42405224B00852BA6 /* RNNBottomTabPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabPresenter.m; sourceTree = "<group>"; };
+		5022EDBB2405237100852BA6 /* RNNBottomTabPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabPresenterCreator.h; sourceTree = "<group>"; };
+		5022EDBC2405237100852BA6 /* RNNBottomTabPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabPresenterCreator.m; sourceTree = "<group>"; };
 		5022EDBF24053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarItemAppearanceCreator.h; sourceTree = "<group>"; };
 		5022EDC024053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarItemAppearanceCreator.m; sourceTree = "<group>"; };
-		5022EDC324054C6100852BA6 /* BottomTabsAppearancePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsAppearancePresenter.h; sourceTree = "<group>"; };
-		5022EDC424054C6100852BA6 /* BottomTabsAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsAppearancePresenter.m; sourceTree = "<group>"; };
-		5022EDC724054C8A00852BA6 /* BottomTabsPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsPresenterCreator.h; sourceTree = "<group>"; };
-		5022EDC824054C8A00852BA6 /* BottomTabsPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsPresenterCreator.m; sourceTree = "<group>"; };
+		5022EDC324054C6100852BA6 /* RNNBottomTabsAppearancePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsAppearancePresenter.h; sourceTree = "<group>"; };
+		5022EDC424054C6100852BA6 /* RNNBottomTabsAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsAppearancePresenter.m; sourceTree = "<group>"; };
+		5022EDC724054C8A00852BA6 /* RNNBottomTabsPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsPresenterCreator.h; sourceTree = "<group>"; };
+		5022EDC824054C8A00852BA6 /* RNNBottomTabsPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsPresenterCreator.m; sourceTree = "<group>"; };
 		502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBackButtonOptions.h; sourceTree = "<group>"; };
 		502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBackButtonOptions.m; sourceTree = "<group>"; };
 		502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
@@ -699,8 +699,8 @@
 		50415CB920553B8E00BB682E /* RNNScreenTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNScreenTransition.m; sourceTree = "<group>"; };
 		504189552506144D004A6BC7 /* RNNSetRootAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSetRootAnimator.h; sourceTree = "<group>"; };
 		504189562506144D004A6BC7 /* RNNSetRootAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSetRootAnimator.m; sourceTree = "<group>"; };
-		5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsBasePresenter.h; sourceTree = "<group>"; };
-		5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabsBasePresenter.m; sourceTree = "<group>"; };
+		5041DC3C2417BBBA0033312F /* RNNBottomTabsBasePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsBasePresenter.h; sourceTree = "<group>"; };
+		5041DC3D2417BBBA0033312F /* RNNBottomTabsBasePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsBasePresenter.m; sourceTree = "<group>"; };
 		50451D032042DAEB00695F00 /* RNNPushAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPushAnimation.h; sourceTree = "<group>"; };
 		50451D042042DAEB00695F00 /* RNNPushAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNPushAnimation.m; sourceTree = "<group>"; };
 		50451D072042E20600695F00 /* RNNAnimationsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimationsOptions.h; sourceTree = "<group>"; };
@@ -744,8 +744,8 @@
 		50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleViewHelper.m; sourceTree = "<group>"; };
 		50588B8A23AAC2FF001F6A5E /* RNNDisplayLinkAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNDisplayLinkAnimation.h; sourceTree = "<group>"; };
 		505963F622676A0000EBB63C /* RNNLayoutManagerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutManagerTest.m; sourceTree = "<group>"; };
-		505C640023E074860078AFC0 /* TopBarTitlePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopBarTitlePresenter.h; sourceTree = "<group>"; };
-		505C640123E074860078AFC0 /* TopBarTitlePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarTitlePresenter.m; sourceTree = "<group>"; };
+		505C640023E074860078AFC0 /* RNNTopBarTitlePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarTitlePresenter.h; sourceTree = "<group>"; };
+		505C640123E074860078AFC0 /* RNNTopBarTitlePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarTitlePresenter.m; sourceTree = "<group>"; };
 		505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerTest.m; sourceTree = "<group>"; };
 		505EDD33214E7A6A0071C7DE /* RNNLeafProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNLeafProtocol.h; sourceTree = "<group>"; };
 		505EDD3A214FA8000071C7DE /* RNNComponentPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNComponentPresenter.h; sourceTree = "<group>"; };
@@ -868,12 +868,12 @@
 		50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuOptions.h; sourceTree = "<group>"; };
 		50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuOptions.m; sourceTree = "<group>"; };
 		50CE8502217C6C9B00084EBF /* RNNSideMenuPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuPresenterTest.m; sourceTree = "<group>"; };
-		50CED447239EA56100C42EE2 /* TopBarPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopBarPresenterCreator.h; sourceTree = "<group>"; };
-		50CED448239EA56100C42EE2 /* TopBarPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarPresenterCreator.m; sourceTree = "<group>"; };
-		50CED44B239EA78700C42EE2 /* TopBarAppearancePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopBarAppearancePresenter.h; sourceTree = "<group>"; };
-		50CED44C239EA78700C42EE2 /* TopBarAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarAppearancePresenter.m; sourceTree = "<group>"; };
-		50CED44F239F9DFC00C42EE2 /* TopBarPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopBarPresenter.h; sourceTree = "<group>"; };
-		50CED450239F9DFC00C42EE2 /* TopBarPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarPresenter.m; sourceTree = "<group>"; };
+		50CED447239EA56100C42EE2 /* RNNTopBarPresenterCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarPresenterCreator.h; sourceTree = "<group>"; };
+		50CED448239EA56100C42EE2 /* RNNTopBarPresenterCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarPresenterCreator.m; sourceTree = "<group>"; };
+		50CED44B239EA78700C42EE2 /* RNNTopBarAppearancePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarAppearancePresenter.h; sourceTree = "<group>"; };
+		50CED44C239EA78700C42EE2 /* RNNTopBarAppearancePresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarAppearancePresenter.m; sourceTree = "<group>"; };
+		50CED44F239F9DFC00C42EE2 /* RNNTopBarPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarPresenter.h; sourceTree = "<group>"; };
+		50CED450239F9DFC00C42EE2 /* RNNTopBarPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarPresenter.m; sourceTree = "<group>"; };
 		50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RNNCommands.h"; sourceTree = "<group>"; };
 		50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNCommands.m"; sourceTree = "<group>"; };
 		50D031322005149000386B3D /* RNNOverlayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayManager.h; sourceTree = "<group>"; };
@@ -1502,26 +1502,26 @@
 				651E1F8C21FD642100DFEA19 /* RNNSplitViewControllerPresenter.m */,
 				30987E66AA7AB38E7370F8C8 /* RNNDotIndicatorPresenter.m */,
 				309878B02F15ECDD1A286722 /* RNNDotIndicatorPresenter.h */,
-				50CED447239EA56100C42EE2 /* TopBarPresenterCreator.h */,
-				50CED448239EA56100C42EE2 /* TopBarPresenterCreator.m */,
-				50CED44B239EA78700C42EE2 /* TopBarAppearancePresenter.h */,
-				50CED44C239EA78700C42EE2 /* TopBarAppearancePresenter.m */,
-				50CED44F239F9DFC00C42EE2 /* TopBarPresenter.h */,
-				50CED450239F9DFC00C42EE2 /* TopBarPresenter.m */,
-				505C640023E074860078AFC0 /* TopBarTitlePresenter.h */,
-				505C640123E074860078AFC0 /* TopBarTitlePresenter.m */,
-				5022EDB32405224B00852BA6 /* BottomTabPresenter.h */,
-				5022EDB42405224B00852BA6 /* BottomTabPresenter.m */,
-				5022EDC324054C6100852BA6 /* BottomTabsAppearancePresenter.h */,
-				5022EDC424054C6100852BA6 /* BottomTabsAppearancePresenter.m */,
-				5041DC3C2417BBBA0033312F /* BottomTabsBasePresenter.h */,
-				5041DC3D2417BBBA0033312F /* BottomTabsBasePresenter.m */,
-				5022EDBB2405237100852BA6 /* BottomTabPresenterCreator.h */,
-				5022EDBC2405237100852BA6 /* BottomTabPresenterCreator.m */,
+				50CED447239EA56100C42EE2 /* RNNTopBarPresenterCreator.h */,
+				50CED448239EA56100C42EE2 /* RNNTopBarPresenterCreator.m */,
+				50CED44B239EA78700C42EE2 /* RNNTopBarAppearancePresenter.h */,
+				50CED44C239EA78700C42EE2 /* RNNTopBarAppearancePresenter.m */,
+				50CED44F239F9DFC00C42EE2 /* RNNTopBarPresenter.h */,
+				50CED450239F9DFC00C42EE2 /* RNNTopBarPresenter.m */,
+				505C640023E074860078AFC0 /* RNNTopBarTitlePresenter.h */,
+				505C640123E074860078AFC0 /* RNNTopBarTitlePresenter.m */,
+				5022EDB32405224B00852BA6 /* RNNBottomTabPresenter.h */,
+				5022EDB42405224B00852BA6 /* RNNBottomTabPresenter.m */,
+				5022EDC324054C6100852BA6 /* RNNBottomTabsAppearancePresenter.h */,
+				5022EDC424054C6100852BA6 /* RNNBottomTabsAppearancePresenter.m */,
+				5041DC3C2417BBBA0033312F /* RNNBottomTabsBasePresenter.h */,
+				5041DC3D2417BBBA0033312F /* RNNBottomTabsBasePresenter.m */,
+				5022EDBB2405237100852BA6 /* RNNBottomTabPresenterCreator.h */,
+				5022EDBC2405237100852BA6 /* RNNBottomTabPresenterCreator.m */,
 				21B85E5E1F44482A00B314B5 /* RNNButtonsPresenter.h */,
 				21B85E5C1F44480200B314B5 /* RNNButtonsPresenter.m */,
-				5022EDC724054C8A00852BA6 /* BottomTabsPresenterCreator.h */,
-				5022EDC824054C8A00852BA6 /* BottomTabsPresenterCreator.m */,
+				5022EDC724054C8A00852BA6 /* RNNBottomTabsPresenterCreator.h */,
+				5022EDC824054C8A00852BA6 /* RNNBottomTabsPresenterCreator.m */,
 			);
 			name = Presenters;
 			sourceTree = "<group>";
@@ -1812,7 +1812,7 @@
 				5006E12C27974B8900D106A6 /* RNNModalHostViewManagerHandler.h in Headers */,
 				5060DE73219DAD7E00D0C052 /* ReactNativeNavigation.h in Headers */,
 				506BF7CE26067B0500A22755 /* RNNAnimatedUIImageView.h in Headers */,
-				5022EDBD2405237100852BA6 /* BottomTabPresenterCreator.h in Headers */,
+				5022EDBD2405237100852BA6 /* RNNBottomTabPresenterCreator.h in Headers */,
 				507ACB1523F44E5200829911 /* RNNComponentRootView.h in Headers */,
 				5061B6C723D48449008B9827 /* RNNVerticalRotationTransition.h in Headers */,
 				50EB4ED72068EBE000D6ED34 /* RNNBackgroundOptions.h in Headers */,
@@ -1841,7 +1841,7 @@
 				50E38DDD23A7A306009817F6 /* RNNAnimatedImageView.h in Headers */,
 				7B4928081E70415400555040 /* RNNCommandsHandler.h in Headers */,
 				50495942216F5E5D006D2B81 /* RNNNullBool.h in Headers */,
-				5041DC3E2417BBBA0033312F /* BottomTabsBasePresenter.h in Headers */,
+				5041DC3E2417BBBA0033312F /* RNNBottomTabsBasePresenter.h in Headers */,
 				263905AE1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h in Headers */,
 				5012241621736667000F5F98 /* RNNColor.h in Headers */,
 				7365071121E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h in Headers */,
@@ -1855,7 +1855,7 @@
 				50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */,
 				5012240A21735959000F5F98 /* RNNSideMenuPresenter.h in Headers */,
 				50E02BDD21A6EE7900A43942 /* RNNSideMenuOpenGestureModeParser.h in Headers */,
-				5022EDB52405224B00852BA6 /* BottomTabPresenter.h in Headers */,
+				5022EDB52405224B00852BA6 /* RNNBottomTabPresenter.h in Headers */,
 				5038A3B5216DF602009280BC /* UINavigationController+RNNOptions.h in Headers */,
 				50E5F78D223F9FAF002AFEAD /* RNNElementTransitionOptions.h in Headers */,
 				509416AB23A11CB20036092C /* RNNNullEnum.h in Headers */,
@@ -1878,7 +1878,7 @@
 				507F43C51FF4F17C00D9425B /* RNNTopTabsViewController.h in Headers */,
 				501223D72173590F000F5F98 /* RNNStackPresenter.h in Headers */,
 				50495946216F5FB5006D2B81 /* RNNTextParser.h in Headers */,
-				5022EDC524054C6100852BA6 /* BottomTabsAppearancePresenter.h in Headers */,
+				5022EDC524054C6100852BA6 /* RNNBottomTabsAppearancePresenter.h in Headers */,
 				503A8A1923BCB2ED0094D1C4 /* RNNReactButtonView.h in Headers */,
 				505EDD3C214FA8000071C7DE /* RNNComponentPresenter.h in Headers */,
 				502CB46E20CD1DDA0019B2FE /* RNNBackButtonOptions.h in Headers */,
@@ -1925,7 +1925,7 @@
 				E5F6C3AC22DB4D0F0093C2CE /* UITabBarController+RNNUtils.h in Headers */,
 				5038A3C6216E2D93009280BC /* RNNNumber.h in Headers */,
 				503A8A0123BB7B810094D1C4 /* RNNElementAnimator.h in Headers */,
-				50CED44D239EA78700C42EE2 /* TopBarAppearancePresenter.h in Headers */,
+				50CED44D239EA78700C42EE2 /* RNNTopBarAppearancePresenter.h in Headers */,
 				50D3A37223B8D77C00717F95 /* RNNSharedElementTransitionOptions.h in Headers */,
 				50C085F325939F6200B0502C /* RNNButtonBuilder.h in Headers */,
 				50DD9154274FC6E200B4C917 /* RNNAnimationObserver.h in Headers */,
@@ -1934,7 +1934,7 @@
 				E5F6C3A522DB4D0F0093C2CE /* UIViewController+Utils.h in Headers */,
 				60FB40582B8A08EF0094F118 /* RNNDictionary.h in Headers */,
 				50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */,
-				505C640223E074860078AFC0 /* TopBarTitlePresenter.h in Headers */,
+				505C640223E074860078AFC0 /* RNNTopBarTitlePresenter.h in Headers */,
 				503A8A0D23BC9BC50094D1C4 /* RNNElementVerticalTransition.h in Headers */,
 				5039559B2174867000B0A663 /* RNNDoubleParser.h in Headers */,
 				503A90BD25DD550600BB6A74 /* RNNIconDrawer.h in Headers */,
@@ -1954,7 +1954,7 @@
 				50ACB2CC2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.h in Headers */,
 				390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */,
 				B84F6E52252C5ECE007D78A1 /* RNNDecelerateAccelerateInterpolator.h in Headers */,
-				5022EDC924054C8A00852BA6 /* BottomTabsPresenterCreator.h in Headers */,
+				5022EDC924054C8A00852BA6 /* RNNBottomTabsPresenterCreator.h in Headers */,
 				263905B11E4C6F440023D7D3 /* MMDrawerController.h in Headers */,
 				506C2532244F0C6B00820F5B /* RNNRotationTransition.h in Headers */,
 				263905B31E4C6F440023D7D3 /* MMDrawerVisualState.h in Headers */,
@@ -1967,12 +1967,12 @@
 				5038A374216CDDB6009280BC /* UIViewController+RNNSideMenuController.h in Headers */,
 				50CF23392405668C0098042D /* UINavigationController+RNNCommands.h in Headers */,
 				E8A5CD621F49114F00E89D0D /* RNNElement.h in Headers */,
-				50CED449239EA56100C42EE2 /* TopBarPresenterCreator.h in Headers */,
+				50CED449239EA56100C42EE2 /* RNNTopBarPresenterCreator.h in Headers */,
 				5012240E21735999000F5F98 /* RNNBasePresenter.h in Headers */,
 				50495952216F62BD006D2B81 /* RNNNullNumber.h in Headers */,
 				50E99C422704A7170006D4D1 /* RNNTabBarItemIOS15Creator.h in Headers */,
 				5012242221736883000F5F98 /* RNNNullColor.h in Headers */,
-				50CED451239F9DFC00C42EE2 /* TopBarPresenter.h in Headers */,
+				50CED451239F9DFC00C42EE2 /* RNNTopBarPresenter.h in Headers */,
 				B8415321251E088100467F37 /* RNNLinearInterpolator.h in Headers */,
 				50570B262061473D006A1B5C /* RNNTitleOptions.h in Headers */,
 				5030B62723D5B54E008F1642 /* LNInterpolable.h in Headers */,
@@ -2178,7 +2178,7 @@
 				50DE2E46238EA14E005CD5F4 /* NSArray+utils.m in Sources */,
 				50495943216F5E5D006D2B81 /* RNNNullBool.m in Sources */,
 				506BF65D2600AE4200A22755 /* RNNCenterTransition.m in Sources */,
-				5022EDBE2405237100852BA6 /* BottomTabPresenterCreator.m in Sources */,
+				5022EDBE2405237100852BA6 /* RNNBottomTabPresenterCreator.m in Sources */,
 				5038A3C7216E2D93009280BC /* RNNNumber.m in Sources */,
 				E5F6C3A622DB4D0F0093C2CE /* UIViewController+Utils.m in Sources */,
 				5048862E20BE976D000908DE /* RNNLayoutOptions.m in Sources */,
@@ -2193,7 +2193,7 @@
 				503A8A0623BB850A0094D1C4 /* RNNTimeInterval.m in Sources */,
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */,
 				5061B6C823D48449008B9827 /* RNNVerticalRotationTransition.m in Sources */,
-				5022EDB62405224B00852BA6 /* BottomTabPresenter.m in Sources */,
+				5022EDB62405224B00852BA6 /* RNNBottomTabPresenter.m in Sources */,
 				503955982174864E00B0A663 /* RNNNullDouble.m in Sources */,
 				E8DA24411F97459B00CD552B /* RNNElementFinder.m in Sources */,
 				503A8A2223BCE9C60094D1C4 /* RNNReactBackgroundView.m in Sources */,
@@ -2208,7 +2208,7 @@
 				50495953216F62BD006D2B81 /* RNNNullNumber.m in Sources */,
 				50D3A36F23B8D6C600717F95 /* RNNSharedElementAnimator.m in Sources */,
 				5012242721737278000F5F98 /* RNNNullImage.m in Sources */,
-				5022EDC624054C6100852BA6 /* BottomTabsAppearancePresenter.m in Sources */,
+				5022EDC624054C6100852BA6 /* RNNBottomTabsAppearancePresenter.m in Sources */,
 				50E99C432704A7170006D4D1 /* RNNTabBarItemIOS15Creator.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
 				504189582506144D004A6BC7 /* RNNSetRootAnimator.m in Sources */,
@@ -2260,7 +2260,7 @@
 				504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */,
 				506BF7CF26067B0500A22755 /* RNNAnimatedUIImageView.m in Sources */,
 				50175CD2207A2AA1004FE91B /* RNNComponentOptions.m in Sources */,
-				505C640323E074860078AFC0 /* TopBarTitlePresenter.m in Sources */,
+				505C640323E074860078AFC0 /* RNNTopBarTitlePresenter.m in Sources */,
 				50EA541F23B00E03006F881A /* RNNStackControllerDelegate.m in Sources */,
 				50E02BDC21A6EE7900A43942 /* RNNSideMenuOpenGestureModeParser.m in Sources */,
 				7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */,
@@ -2285,7 +2285,7 @@
 				50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */,
 				500623A625B7003A0086AB39 /* RNNShadowOptions.m in Sources */,
 				50EF5BC724D1878D009CBFD0 /* RNNModalManagerEventHandler.m in Sources */,
-				5022EDCA24054C8A00852BA6 /* BottomTabsPresenterCreator.m in Sources */,
+				5022EDCA24054C8A00852BA6 /* RNNBottomTabsPresenterCreator.m in Sources */,
 				507F43CA1FF4F9CC00D9425B /* RNNTopTabOptions.m in Sources */,
 				26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */,
 				5064495E20DC62B90026709C /* RNNSideMenuSideOptions.m in Sources */,
@@ -2316,7 +2316,7 @@
 				5039558C2174829400B0A663 /* RNNIntNumberParser.m in Sources */,
 				507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */,
 				50706E6E20CE7CA5003345C3 /* UIImage+Utils.m in Sources */,
-				50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */,
+				50CED452239F9DFC00C42EE2 /* RNNTopBarPresenter.m in Sources */,
 				50ACDEC72875C23D00C29069 /* RNNDynamicIconCreator.m in Sources */,
 				50F72E562607468C0096758A /* RNNPathTransition.m in Sources */,
 				50FCD83823FC102200000DD0 /* RNNDeprecationOptions.m in Sources */,
@@ -2345,7 +2345,7 @@
 				5049594B216F5FE6006D2B81 /* RNNNullText.m in Sources */,
 				5047E4F52267568800908DD3 /* RNNExternalComponentStore.m in Sources */,
 				50BCB27A23F29F8D00D6C8E5 /* RNNElementFrameTransition.m in Sources */,
-				50CED44A239EA56100C42EE2 /* TopBarPresenterCreator.m in Sources */,
+				50CED44A239EA56100C42EE2 /* RNNTopBarPresenterCreator.m in Sources */,
 				A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */,
 				5012241721736667000F5F98 /* RNNColor.m in Sources */,
 				263905AF1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m in Sources */,
@@ -2380,10 +2380,10 @@
 				50ACB2CD2525FC7400ABDBE2 /* RNNScreenTransitionsCreator.m in Sources */,
 				30987AB5137F264FA06DA289 /* RNNDotIndicatorOptions.m in Sources */,
 				30987D71FB4FEEAC8D8978E8 /* RNNDotIndicatorParser.m in Sources */,
-				50CED44E239EA78700C42EE2 /* TopBarAppearancePresenter.m in Sources */,
+				50CED44E239EA78700C42EE2 /* RNNTopBarAppearancePresenter.m in Sources */,
 				50ACB2C92525FA1D00ABDBE2 /* RNNScreenReversedAnimationController.m in Sources */,
 				30987B23F288EB3A78B7F27C /* RNNDotIndicatorPresenter.m in Sources */,
-				5041DC3F2417BBBA0033312F /* BottomTabsBasePresenter.m in Sources */,
+				5041DC3F2417BBBA0033312F /* RNNBottomTabsBasePresenter.m in Sources */,
 				5022EDC224053C9F00852BA6 /* RNNTabBarItemAppearanceCreator.m in Sources */,
 				507ACB1223F44D1E00829911 /* RNNComponentView.m in Sources */,
 				5017D9F3239D2FCB00B74047 /* RNNBottomTabsOnSwitchToTabAttacher.m in Sources */,

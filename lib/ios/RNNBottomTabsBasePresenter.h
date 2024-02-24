@@ -5,7 +5,7 @@
 #import "UIViewController+Utils.h"
 #import <Foundation/Foundation.h>
 
-@interface BottomTabsBasePresenter : RNNBasePresenter
+@interface RNNBottomTabsBasePresenter : RNNBasePresenter
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent;
 

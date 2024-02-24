@@ -1,4 +1,4 @@
-#import "BottomTabPresenter.h"
+#import "RNNBottomTabPresenter.h"
 #import "RNNBottomTabsBaseAttacher.h"
 #import "RNNBottomTabsPresenter.h"
 #import "RNNDotIndicatorPresenter.h"
@@ -14,7 +14,7 @@
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions
                          presenter:(RNNBasePresenter *)presenter
-                bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
+                bottomTabPresenter:(RNNBottomTabPresenter *)bottomTabPresenter
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers

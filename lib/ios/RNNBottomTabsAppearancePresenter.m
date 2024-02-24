@@ -1,8 +1,8 @@
-#import "BottomTabsAppearancePresenter.h"
+#import "RNNBottomTabsAppearancePresenter.h"
 #import "UIColor+RNNUtils.h"
 #import "UIImage+Utils.h"
 
-@implementation BottomTabsAppearancePresenter
+@implementation RNNBottomTabsAppearancePresenter
 
 #pragma mark - public
 

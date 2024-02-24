@@ -1,9 +1,9 @@
-#import "TopBarTitlePresenter.h"
+#import "RNNTopBarTitlePresenter.h"
 #import "RNNReactTitleView.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation TopBarTitlePresenter {
+@implementation RNNTopBarTitlePresenter {
     RNNReactTitleView *_customTitleView;
     RNNTitleViewHelper *_titleViewHelper;
 }
