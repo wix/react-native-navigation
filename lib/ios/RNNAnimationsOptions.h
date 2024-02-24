@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 #import "RNNScreenTransition.h"
-#import "TransitionOptions.h"
+#import "RNNTransitionOptions.h"
 
 @interface RNNAnimationsOptions : RNNOptions
 

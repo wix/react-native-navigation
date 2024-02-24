@@ -1,7 +1,7 @@
-#import "TransitionDetailsOptions.h"
+#import "RNNTransitionDetailsOptions.h"
 #import "RCTConvert+Interpolation.h"
 
-@implementation TransitionDetailsOptions
+@implementation RNNTransitionDetailsOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
@@ -15,7 +15,7 @@
     return self;
 }
 
-- (void)mergeOptions:(TransitionDetailsOptions *)options {
+- (void)mergeOptions:(RNNTransitionDetailsOptions *)options {
     if (options.from.hasValue)
         self.from = options.from;
     if (options.to.hasValue)

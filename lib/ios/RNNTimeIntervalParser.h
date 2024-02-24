@@ -1,4 +1,4 @@
-#import "RNNRNNTimeInterval.h"
+#import "RNNTimeInterval.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNTimeIntervalParser : NSObject

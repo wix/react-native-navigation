@@ -1,4 +1,4 @@
-#import "TransitionOptions.h"
+#import "RNNTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
 typedef void (^RNNAnimationEndedBlock)(void);

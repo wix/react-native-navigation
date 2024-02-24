@@ -1,6 +1,6 @@
 #import "RNNEnterExitAnimation.h"
 #import "RNNSharedElementTransitionOptions.h"
-#import "TransitionOptions.h"
+#import "RNNTransitionOptions.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNEnterExitAnimation : RNNOptions

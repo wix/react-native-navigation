@@ -1,6 +1,6 @@
-#import "NoColor.h"
+#import "RNNNoColor.h"
 
-@implementation NoColor
+@implementation RNNNoColor
 
 - (BOOL)hasValue {
     return YES;

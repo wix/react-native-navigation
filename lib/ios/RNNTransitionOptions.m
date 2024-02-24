@@ -1,6 +1,6 @@
-#import "TransitionOptions.h"
+#import "RNNTransitionOptions.h"
 
-@implementation TransitionOptions
+@implementation RNNTransitionOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
@@ -19,7 +19,7 @@
     return self;
 }
 
-- (void)mergeOptions:(TransitionOptions *)options {
+- (void)mergeOptions:(RNNTransitionOptions *)options {
     [self.alpha mergeOptions:options.alpha];
     [self.x mergeOptions:options.x];
     [self.y mergeOptions:options.y];

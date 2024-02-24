@@ -1,7 +1,6 @@
 #import "RNNDisplayLinkAnimation.h"
 #import "RNNInterpolatorProtocol.h"
 #import "RNNInterpolator.h"
-#import "TransitionDetailsOptions.h"
 #import <Foundation/Foundation.h>
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)

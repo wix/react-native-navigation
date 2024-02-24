@@ -1,4 +1,4 @@
-#import "RNNRNNIntNumber.h"
+#import "RNNIntNumber.h"
 #import <Foundation/Foundation.h>
 
 @interface RNNIntNumberParser : NSObject

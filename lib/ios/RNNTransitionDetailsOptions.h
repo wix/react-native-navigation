@@ -1,7 +1,7 @@
 #import "RNNInterpolatorProtocol.h"
 #import "RNNOptions.h"
 
-@interface TransitionDetailsOptions : RNNOptions
+@interface RNNTransitionDetailsOptions : RNNOptions
 
 @property(nonatomic, strong) RNNDouble *from;
 @property(nonatomic, strong) RNNDouble *to;
