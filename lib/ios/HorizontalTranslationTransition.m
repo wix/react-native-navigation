@@ -14,11 +14,11 @@
     return self.view.frame.origin.x;
 }
 
-- (CGFloat)calculateFrom:(Double *)from {
+- (CGFloat)calculateFrom:(RNNDouble *)from {
     return from.hasValue ? from.get : 0;
 }
 
-- (CGFloat)calculateTo:(Double *)to {
+- (CGFloat)calculateTo:(RNNDouble *)to {
     return to.hasValue ? to.get : 0;
 }
 

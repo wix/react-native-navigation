@@ -41,8 +41,8 @@
     self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
 
     self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
-    self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
-    self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
+    self.backgroundImage = [RNNImageParser parse:dict key:@"backgroundImage"];
+    self.rootBackgroundImage = [RNNImageParser parse:dict key:@"rootBackgroundImage"];
     self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
     self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
 

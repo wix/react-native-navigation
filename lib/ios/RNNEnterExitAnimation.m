@@ -1,5 +1,5 @@
 #import "RNNEnterExitAnimation.h"
-#import "OptionsArrayParser.h"
+#import "RNNOptionsArrayParser.h"
 
 @implementation RNNEnterExitAnimation
 
@@ -11,7 +11,7 @@
     self.sharedElementTransitions = [OptionsArrayParser parse:dict
                                                           key:@"sharedElementTransitions"
                                                       ofClass:SharedElementTransitionOptions.class];
-    self.elementTransitions = [OptionsArrayParser parse:dict
+    self.elementTransitions = [RNNOptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:ElementTransitionOptions.class];
     return self;

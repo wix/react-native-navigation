@@ -10,8 +10,8 @@
 
 @property(nonatomic, strong) Color *color;
 @property(nonatomic, strong) Color *disabledColor;
-@property(nonatomic, strong) Number *cornerRadius;
-@property(nonatomic, strong) Number *width;
-@property(nonatomic, strong) Number *height;
+@property(nonatomic, strong) RNNNumber *cornerRadius;
+@property(nonatomic, strong) RNNNumber *width;
+@property(nonatomic, strong) RNNNumber *height;
 
 @end

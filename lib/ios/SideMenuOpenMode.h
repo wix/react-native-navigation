@@ -1,5 +1,5 @@
-#import "Number.h"
+#import "RNNNumber.h"
 
-@interface SideMenuOpenMode : Number
+@interface SideMenuOpenMode : RNNNumber
 
 @end

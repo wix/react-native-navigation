@@ -13,7 +13,7 @@
 
 @property(nonatomic, strong) Bool *enable;
 @property(nonatomic, strong) Bool *waitForRender;
-@property(nonatomic, strong) TimeInterval *duration;
+@property(nonatomic, strong) RNNTimeInterval *duration;
 
 - (BOOL)hasCustomAnimation;
 - (BOOL)shouldWaitForRender;

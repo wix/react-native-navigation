@@ -1,5 +1,5 @@
-#import "Double.h"
+#import "RNNDouble.h"
 
-@interface NullDouble : Double
+@interface NullDouble : RNNDouble
 
 @end

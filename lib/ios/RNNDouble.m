@@ -1,0 +1,29 @@
+#import "RNNDouble.h"
+
+@interface RNNDouble ()
+
+@property(nonatomic, retain) NSNumber *value;
+
+@end
+
+@implementation RNNDouble
+
++ (instancetype)withValue:(double)value {
+    return [[self.class alloc] initWithValue:@(value)];
+}
+
+- (double)get {
+    return [[super get] doubleValue];
+}
+
+- (double)withDefault:(double)defaultValue {
+    if (self.value) {
+        return [self.value doubleValue];
+    } else if (defaultValue) {
+        return defaultValue;
+    }
+
+    return 0;
+}
+
+@end

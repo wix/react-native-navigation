@@ -4,16 +4,16 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
-    self.visible = [BoolParser parse:dict key:@"visible"];
-    self.focus = [BoolParser parse:dict key:@"focus"];
-    self.hideOnScroll = [BoolParser parse:dict key:@"hideOnScroll"];
-    self.hideTopBarOnFocus = [BoolParser parse:dict key:@"hideTopBarOnFocus"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
+    self.focus = [RNNBoolParser parse:dict key:@"focus"];
+    self.hideOnScroll = [RNNBoolParser parse:dict key:@"hideOnScroll"];
+    self.hideTopBarOnFocus = [RNNBoolParser parse:dict key:@"hideTopBarOnFocus"];
     self.obscuresBackgroundDuringPresentation =
-        [BoolParser parse:dict key:@"obscuresBackgroundDuringPresentation"];
-    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
-    self.tintColor = [ColorParser parse:dict key:@"tintColor"];
-    self.placeholder = [TextParser parse:dict key:@"placeholder"];
-    self.cancelText = [TextParser parse:dict key:@"cancelText"];
+        [RNNBoolParser parse:dict key:@"obscuresBackgroundDuringPresentation"];
+    self.backgroundColor = [RNNColorParser parse:dict key:@"backgroundColor"];
+    self.tintColor = [RNNColorParser parse:dict key:@"tintColor"];
+    self.placeholder = [RNNTextParser parse:dict key:@"placeholder"];
+    self.cancelText = [RNNTextParser parse:dict key:@"cancelText"];
     return self;
 }
 

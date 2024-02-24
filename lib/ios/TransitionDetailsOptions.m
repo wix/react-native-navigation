@@ -6,10 +6,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.from = [DoubleParser parse:dict key:@"from"];
-    self.to = [DoubleParser parse:dict key:@"to"];
-    self.startDelay = [TimeIntervalParser parse:dict key:@"startDelay"];
-    self.duration = [TimeIntervalParser parse:dict key:@"duration"];
+    self.from = [RNNDoubleParser parse:dict key:@"from"];
+    self.to = [RNNDoubleParser parse:dict key:@"to"];
+    self.startDelay = [RNNTimeIntervalParser parse:dict key:@"startDelay"];
+    self.duration = [RNNTimeIntervalParser parse:dict key:@"duration"];
     self.interpolator = [RCTConvert Interpolator:dict[@"interpolation"]];
 
     return self;

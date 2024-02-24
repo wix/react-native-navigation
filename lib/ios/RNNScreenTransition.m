@@ -1,5 +1,5 @@
 #import "RNNScreenTransition.h"
-#import "OptionsArrayParser.h"
+#import "RNNOptionsArrayParser.h"
 
 @implementation RNNScreenTransition
 
@@ -9,13 +9,13 @@
     self.topBar = [[ElementTransitionOptions alloc] initWithDict:dict[@"topBar"]];
     self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
     self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
-    self.enable = [BoolParser parse:dict key:@"enabled"];
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
-    self.duration = [TimeIntervalParser parse:dict key:@"duration"];
+    self.enable = [RNNBoolParser parse:dict key:@"enabled"];
+    self.waitForRender = [RNNBoolParser parse:dict key:@"waitForRender"];
+    self.duration = [RNNTimeIntervalParser parse:dict key:@"duration"];
     self.sharedElementTransitions = [OptionsArrayParser parse:dict
                                                           key:@"sharedElementTransitions"
                                                       ofClass:SharedElementTransitionOptions.class];
-    self.elementTransitions = [OptionsArrayParser parse:dict
+    self.elementTransitions = [RNNOptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:ElementTransitionOptions.class];
 

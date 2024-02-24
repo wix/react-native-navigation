@@ -4,7 +4,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
-    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
+    self.backgroundColor = [RNNColorParser parse:dict key:@"backgroundColor"];
     return self;
 }
 

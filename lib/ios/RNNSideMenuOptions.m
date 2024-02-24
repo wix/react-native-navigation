@@ -1,5 +1,5 @@
 #import "RNNSideMenuOptions.h"
-#import "SideMenuOpenGestureModeParser.h"
+#import "RNNSideMenuOpenGestureModeParser.h"
 
 @implementation RNNSideMenuOptions
 
@@ -9,7 +9,7 @@
     self.left = [[RNNSideMenuSideOptions alloc] initWithDict:dict[@"left"]];
     self.right = [[RNNSideMenuSideOptions alloc] initWithDict:dict[@"right"]];
     self.animationType = [TextParser parse:dict key:@"animationType"];
-    self.openGestureMode = [SideMenuOpenGestureModeParser parse:dict key:@"openGestureMode"];
+    self.openGestureMode = [RNNSideMenuOpenGestureModeParser parse:dict key:@"openGestureMode"];
 
     return self;
 }

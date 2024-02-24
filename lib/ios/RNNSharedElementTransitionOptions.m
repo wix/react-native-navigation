@@ -1,7 +1,7 @@
 #import "RNNSharedElementTransitionOptions.h"
 #import "RCTConvert+Interpolation.h"
 #import "RNNUtils.h"
-#import "TimeIntervalParser.h"
+#import "RNNTimeIntervalParser.h"
 
 @implementation RNNSharedElementTransitionOptions
 
@@ -10,8 +10,8 @@
 
     self.fromId = [transition objectForKey:@"fromId"];
     self.toId = [transition objectForKey:@"toId"];
-    self.startDelay = [TimeIntervalParser parse:transition key:@"startDelay"];
-    self.duration = [TimeIntervalParser parse:transition key:@"duration"];
+    self.startDelay = [RNNTimeIntervalParser parse:transition key:@"startDelay"];
+    self.duration = [RNNTimeIntervalParser parse:transition key:@"duration"];
     self.interpolator = [RCTConvert Interpolator:transition[@"interpolation"]];
 
     return self;

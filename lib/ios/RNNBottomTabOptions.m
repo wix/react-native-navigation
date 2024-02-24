@@ -1,6 +1,6 @@
 #import "RNNBottomTabOptions.h"
 #import "DotIndicatorOptions.h"
-#import "DotIndicatorParser.h"
+#import "RNNDotIndicatorParser.h"
 
 @implementation RNNBottomTabOptions
 
@@ -16,7 +16,7 @@
     self.accessibilityLabel = [TextParser parse:dict key:@"accessibilityLabel"];
     self.badgeColor = [ColorParser parse:dict key:@"badgeColor"];
 
-    self.dotIndicator = [DotIndicatorParser parse:dict];
+    self.dotIndicator = [RNNDotIndicatorParser parse:dict];
 
     self.icon = [ImageParser parse:dict key:@"icon"];
     self.selectedIcon = [ImageParser parse:dict key:@"selectedIcon"];

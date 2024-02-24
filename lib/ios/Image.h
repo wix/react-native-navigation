@@ -1,7 +1,7 @@
-#import "Param.h"
+#import "RNNParam.h"
 #import <UIKit/UIKit.h>
 
-@interface Image : Param
+@interface Image : RNNParam
 
 - (UIImage *)get;
 

@@ -1,5 +1,5 @@
-#import "IntNumber.h"
+#import "RNNIntNumber.h"
 
-@interface NullIntNumber : IntNumber
+@interface NullIntNumber : RNNIntNumber
 
 @end

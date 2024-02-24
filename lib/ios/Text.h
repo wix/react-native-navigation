@@ -1,5 +1,5 @@
-#import "Param.h"
+#import "RNNParam.h"
 
-@interface Text : Param
+@interface Text : RNNParam
 
 @end

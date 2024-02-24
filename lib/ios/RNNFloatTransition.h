@@ -13,9 +13,9 @@
                     duration:(NSTimeInterval)duration
                 interpolator:(id<RNNInterpolatorProtocol>)interpolator;
 
-- (CGFloat)calculateFrom:(Double *)from;
+- (CGFloat)calculateFrom:(RNNDouble *)from;
 
-- (CGFloat)calculateTo:(Double *)to;
+- (CGFloat)calculateTo:(RNNDouble *)to;
 
 @property(readonly) CGFloat initialValue;
 @property(nonatomic) CGFloat from;
