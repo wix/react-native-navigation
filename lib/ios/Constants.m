@@ -7,7 +7,8 @@
     return @{
         @"topBarHeight" : @([self topBarHeight]),
         @"statusBarHeight" : @([self statusBarHeight]),
-        @"bottomTabsHeight" : @([self bottomTabsHeight])
+        @"bottomTabsHeight" : @([self bottomTabsHeight]),
+        @"navigationBarHeight" : @(0)
     };
 }
 
