@@ -32,6 +32,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private PermissionListener mPermissionListener;
 
     protected Navigator navigator;
+    protected RootPresenter rootPresenter;
 
     private OnBackPressedCallback callback;
 
@@ -42,11 +43,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             return;
         }
         addDefaultSplashLayout();
+        rootPresenter = new RootPresenter();
         navigator = new Navigator(this,
                 new ChildControllersRegistry(),
                 new ModalStack(this),
                 new OverlayManager(),
-                new RootPresenter()
+                rootPresenter
         );
         navigator.bindViews();
         getReactGateway().onActivityCreated(this);
