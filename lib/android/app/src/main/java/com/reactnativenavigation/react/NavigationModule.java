@@ -1,5 +1,9 @@
 package com.reactnativenavigation.react;
 
+import static com.reactnativenavigation.utils.UiUtils.pxToDp;
+
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -32,10 +36,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.reactnativenavigation.utils.UiUtils.pxToDp;
-
-import android.app.Activity;
-
 public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
 
@@ -44,6 +44,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
+    private final NullRNActivityWorkaround nullRNActivityWorkaround;
 
     @SuppressWarnings("WeakerAccess")
     public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager, LayoutFactory layoutFactory) {
@@ -55,6 +56,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         this.reactInstanceManager = reactInstanceManager;
         this.jsonParser = jsonParser;
         this.layoutFactory = layoutFactory;
+        this.nullRNActivityWorkaround = new NullRNActivityWorkaround(reactContext);
+
         reactContext.addLifecycleEventListener(new LifecycleEventListenerAdapter() {
             @Override
             public void onHostPause() {
@@ -87,7 +90,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getLaunchArgs(String commandId, Promise promise) {
-        promise.resolve(LaunchArgsParser.parse(activity()));
+        Activity activity = nullRNActivityWorkaround.getActivity();
+        promise.resolve(LaunchArgsParser.parse(activity));
     }
 
     private WritableMap createNavigationConstantsMap() {
@@ -211,6 +215,15 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
     }
 
+    @Override
+    public void onCatalystInstanceDestroy() {
+        final NavigationActivity navigationActivity = activity();
+        if (navigationActivity != null) {
+            navigationActivity.onCatalystInstanceDestroy();
+        }
+        super.onCatalystInstanceDestroy();
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }
@@ -231,14 +244,5 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     protected NavigationActivity activity() {
         return (NavigationActivity) getCurrentActivity();
-    }
-
-    @Override
-    public void onCatalystInstanceDestroy() {
-        final NavigationActivity navigationActivity = activity();
-        if (navigationActivity != null) {
-            navigationActivity.onCatalystInstanceDestroy();
-        }
-        super.onCatalystInstanceDestroy();
     }
 }
