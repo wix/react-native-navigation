@@ -3,10 +3,12 @@
 #import "ElementHorizontalTransition.h"
 #import "ElementVerticalTransition.h"
 #import "HorizontalTranslationTransition.h"
+#import "HorizontalScaleTransition.h"
 #import "RNNElementFinder.h"
 #import "Transition.h"
 #import "VerticalRotationTransition.h"
 #import "VerticalTranslationTransition.h"
+#import "VerticalScaleTransition.h"
 
 @implementation ElementAnimator {
     UIView *_containerView;
@@ -58,6 +60,18 @@
         [animations addObject:[[VerticalRotationTransition alloc]
                                        initWithView:self.view
                                   transitionDetails:transitionOptions.rotationY]];
+    }
+
+    if (transitionOptions.scaleX.hasAnimation) {
+        [animations addObject:[[HorizontalScaleTransition alloc]
+                                       initWithView:self.view
+                                  transitionDetails:transitionOptions.scaleX]];
+    }
+
+    if (transitionOptions.scaleY.hasAnimation) {
+        [animations addObject:[[VerticalScaleTransition alloc]
+                                       initWithView:self.view
+                                  transitionDetails:transitionOptions.scaleY]];
     }
 
     return animations;
