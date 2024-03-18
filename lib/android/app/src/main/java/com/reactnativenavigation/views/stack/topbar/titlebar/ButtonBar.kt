@@ -25,13 +25,6 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
 
     override fun onViewAdded(child: View) {
         super.onViewAdded(child)
-        enableOverflowForReactButtonViews(child)
-    }
-
-    private fun enableOverflowForReactButtonViews(child: View) {
-        if (child is ActionMenuView) {
-            (child as ViewGroup).clipChildren = false
-        }
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
