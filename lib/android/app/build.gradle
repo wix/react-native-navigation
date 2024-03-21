@@ -73,43 +73,43 @@ android {
     productFlavors {
         reactNative51 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "51")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "51")
         }
         reactNative55 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "55")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "55")
         }
         reactNative56 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "56")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "56")
         }
         reactNative57 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "57")
         }
         reactNative57_5 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "57")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "57")
         }
         reactNative60 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "60")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "60")
         }
         reactNative62 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "62")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "62")
         }
         reactNative63 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "63")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "63")
         }
         reactNative68 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "68")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "68")
         }
         reactNative71 {
             dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "71")
+            buildConfigField("int", "REACT_NATIVE_VERSION_MINOR", "71")
         }
     }
 
