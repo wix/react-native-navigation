@@ -194,8 +194,8 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
                 class WixAccessibilityDelegateCompat: AccessibilityDelegateCompat(){
                     override fun onInitializeAccessibilityNodeInfo(
-                        host: View?,
-                        info: AccessibilityNodeInfoCompat?
+                        host: View,
+                        info: AccessibilityNodeInfoCompat
                     ) {
                         super.onInitializeAccessibilityNodeInfo(host, info)
 
