@@ -2,7 +2,7 @@
 
 @interface RNNOverlayOptions : RNNOptions
 
-@property(nonatomic, strong) Bool *interceptTouchOutside;
-@property(nonatomic, strong) Bool *handleKeyboardEvents;
+@property(nonatomic, strong) RNNBool *interceptTouchOutside;
+@property(nonatomic, strong) RNNBool *handleKeyboardEvents;
 
 @end

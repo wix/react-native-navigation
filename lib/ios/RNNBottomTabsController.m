@@ -2,7 +2,7 @@
 #import "UITabBarController+RNNUtils.h"
 
 @interface RNNBottomTabsController ()
-@property(nonatomic, strong) BottomTabPresenter *bottomTabPresenter;
+@property(nonatomic, strong) RNNBottomTabPresenter *bottomTabPresenter;
 @property(nonatomic, strong) RNNDotIndicatorPresenter *dotIndicatorPresenter;
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressRecognizer;
 
@@ -11,7 +11,7 @@
 @implementation RNNBottomTabsController {
     NSUInteger _currentTabIndex;
     NSUInteger _previousTabIndex;
-    BottomTabsBaseAttacher *_bottomTabsAttacher;
+    RNNBottomTabsBaseAttacher *_bottomTabsAttacher;
     BOOL _tabBarNeedsRestore;
 }
 
@@ -20,11 +20,11 @@
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions
                          presenter:(RNNBasePresenter *)presenter
-                bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
+                bottomTabPresenter:(RNNBottomTabPresenter *)bottomTabPresenter
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
-                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
+                bottomTabsAttacher:(RNNBottomTabsBaseAttacher *)bottomTabsAttacher {
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;

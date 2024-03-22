@@ -1,21 +1,21 @@
 #import "RNNIconBackgroundOptions.h"
 
 @implementation RNNIconBackgroundOptions {
-    Bool *_enabled;
+    RNNBool *_enabled;
 }
 
-- (instancetype)initWithDict:(NSDictionary *)dict enabled:(Bool *)enabled {
+- (instancetype)initWithDict:(NSDictionary *)dict enabled:(RNNBool *)enabled {
     self = [super initWithDict:dict];
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.disabledColor = [ColorParser parse:dict key:@"disabledColor"];
-    self.cornerRadius = [NumberParser parse:dict key:@"cornerRadius"];
-    self.width = [NumberParser parse:dict key:@"width"];
-    self.height = [NumberParser parse:dict key:@"height"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.disabledColor = [RNNColorParser parse:dict key:@"disabledColor"];
+    self.cornerRadius = [RNNNumberParser parse:dict key:@"cornerRadius"];
+    self.width = [RNNNumberParser parse:dict key:@"width"];
+    self.height = [RNNNumberParser parse:dict key:@"height"];
     [self setEnabled:enabled];
     return self;
 }
 
-- (void)setEnabled:(Bool *)enabled {
+- (void)setEnabled:(RNNBool *)enabled {
     _enabled = enabled;
 }
 

@@ -23,13 +23,13 @@
     }
 }
 
-- (void)rnn_setMinWidth:(Number *)minWidth {
+- (void)rnn_setMinWidth:(RNNNumber *)minWidth {
     if (minWidth.hasValue) {
         [self setMinimumPrimaryColumnWidth:[[minWidth get] doubleValue]];
     }
 }
 
-- (void)rnn_setMaxWidth:(Number *)maxWidth {
+- (void)rnn_setMaxWidth:(RNNNumber *)maxWidth {
     if (maxWidth.hasValue) {
         [self setMaximumPrimaryColumnWidth:[[maxWidth get] doubleValue]];
     }

@@ -5,10 +5,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.reactTag = [NumberParser parse:dict key:@"reactTag"];
-    self.height = [NumberParser parse:dict key:@"height"];
-    self.width = [NumberParser parse:dict key:@"width"];
-    self.commit = [BoolParser parse:dict key:@"commit"];
+    self.reactTag = [RNNNumberParser parse:dict key:@"reactTag"];
+    self.height = [RNNNumberParser parse:dict key:@"height"];
+    self.width = [RNNNumberParser parse:dict key:@"width"];
+    self.commit = [RNNBoolParser parse:dict key:@"commit"];
     self.actions = dict[@"actions"];
 
     return self;

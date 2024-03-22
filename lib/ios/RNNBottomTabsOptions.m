@@ -5,26 +5,27 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.visible = [BoolParser parse:dict key:@"visible"];
-    self.currentTabIndex = [IntNumberParser parse:dict key:@"currentTabIndex"];
-    self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
-    self.animate = [BoolParser parse:dict key:@"animate"];
-    self.tabColor = [ColorParser parse:dict key:@"tabColor"];
-    self.selectedTabColor = [ColorParser parse:dict key:@"selectedTabColor"];
-    self.translucent = [BoolParser parse:dict key:@"translucent"];
-    self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
-    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
-    self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-    self.testID = [TextParser parse:dict key:@"testID"];
-    self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
-    self.barStyle = [TextParser parse:dict key:@"barStyle"];
-    self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
-    self.titleDisplayMode = [TextParser parse:dict key:@"titleDisplayMode"];
-    self.tabsAttachMode = (BottomTabsAttachMode *)[EnumParser parse:dict
-                                                                key:@"tabsAttachMode"
-                                                            ofClass:BottomTabsAttachMode.class];
-    self.borderColor = [ColorParser parse:dict key:@"borderColor"];
-    self.borderWidth = [NumberParser parse:dict key:@"borderWidth"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
+    self.currentTabIndex = [RNNIntNumberParser parse:dict key:@"currentTabIndex"];
+    self.drawBehind = [RNNBoolParser parse:dict key:@"drawBehind"];
+    self.animate = [RNNBoolParser parse:dict key:@"animate"];
+    self.tabColor = [RNNColorParser parse:dict key:@"tabColor"];
+    self.selectedTabColor = [RNNColorParser parse:dict key:@"selectedTabColor"];
+    self.translucent = [RNNBoolParser parse:dict key:@"translucent"];
+    self.hideShadow = [RNNBoolParser parse:dict key:@"hideShadow"];
+    self.backgroundColor = [RNNColorParser parse:dict key:@"backgroundColor"];
+    self.fontSize = [RNNNumberParser parse:dict key:@"fontSize"];
+    self.testID = [RNNTextParser parse:dict key:@"testID"];
+    self.currentTabId = [RNNTextParser parse:dict key:@"currentTabId"];
+    self.barStyle = [RNNTextParser parse:dict key:@"barStyle"];
+    self.fontFamily = [RNNTextParser parse:dict key:@"fontFamily"];
+    self.titleDisplayMode = [RNNTextParser parse:dict key:@"titleDisplayMode"];
+    self.tabsAttachMode = (RNNBottomTabsAttachMode *)[RNNEnumParser
+                                                      parse:dict
+                                                        key:@"tabsAttachMode"
+                                                    ofClass:RNNBottomTabsAttachMode.class];
+    self.borderColor = [RNNColorParser parse:dict key:@"borderColor"];
+    self.borderWidth = [RNNNumberParser parse:dict key:@"borderWidth"];
     self.shadow = [[RNNShadowOptions alloc] initWithDict:dict[@"shadow"]];
 
     return self;

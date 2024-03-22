@@ -3,10 +3,10 @@
 
 @interface RNNBackgroundOptions : RNNOptions
 
-@property(nonatomic, strong) Color *color;
-@property(nonatomic, strong) Bool *translucent;
-@property(nonatomic, strong) Bool *blur;
-@property(nonatomic, strong) Bool *clipToBounds;
+@property(nonatomic, strong) RNNColor *color;
+@property(nonatomic, strong) RNNBool *translucent;
+@property(nonatomic, strong) RNNBool *blur;
+@property(nonatomic, strong) RNNBool *clipToBounds;
 @property(nonatomic, strong) RNNComponentOptions *component;
 
 @end

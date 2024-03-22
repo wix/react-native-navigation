@@ -1,5 +1,5 @@
-#import "BottomTabPresenter.h"
-#import "BottomTabsBaseAttacher.h"
+#import "RNNBottomTabPresenter.h"
+#import "RNNBottomTabsBaseAttacher.h"
 #import "RNNBottomTabsPresenter.h"
 #import "RNNDotIndicatorPresenter.h"
 #import "RNNEventEmitter.h"
@@ -14,11 +14,11 @@
                            options:(RNNNavigationOptions *)options
                     defaultOptions:(RNNNavigationOptions *)defaultOptions
                          presenter:(RNNBasePresenter *)presenter
-                bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
+                bottomTabPresenter:(RNNBottomTabPresenter *)bottomTabPresenter
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
-                bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher;
+                bottomTabsAttacher:(RNNBottomTabsBaseAttacher *)bottomTabsAttacher;
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 

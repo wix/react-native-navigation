@@ -4,7 +4,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
-    self.swipeToDismiss = [BoolParser parse:dict key:@"swipeToDismiss"];
+    self.swipeToDismiss = [RNNBoolParser parse:dict key:@"swipeToDismiss"];
     return self;
 }
 

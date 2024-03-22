@@ -1,11 +1,11 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
-#import "TopBarTitlePresenter.h"
+#import "RNNTopBarTitlePresenter.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
 
 @implementation RNNComponentPresenter {
-    TopBarTitlePresenter *_topBarTitlePresenter;
+    RNNTopBarTitlePresenter *_topBarTitlePresenter;
     RNNButtonsPresenter *_buttonsPresenter;
 }
 
@@ -14,7 +14,7 @@
                          buttonsPresenter:(RNNButtonsPresenter *)buttonsPresenter {
     self = [super initWithComponentRegistry:componentRegistry defaultOptions:defaultOptions];
     _topBarTitlePresenter =
-        [[TopBarTitlePresenter alloc] initWithComponentRegistry:componentRegistry
+        [[RNNTopBarTitlePresenter alloc] initWithComponentRegistry:componentRegistry
                                                  defaultOptions:defaultOptions];
     _buttonsPresenter = buttonsPresenter;
     return self;

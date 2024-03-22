@@ -1,13 +1,13 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
-#import "ScreenAnimationController.h"
-#import "ScreenReversedAnimationController.h"
+#import "RNNScreenAnimationController.h"
+#import "RNNScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @interface RNNModalManager ()
-@property(nonatomic, strong) ScreenAnimationController *showModalTransitionDelegate;
-@property(nonatomic, strong) ScreenAnimationController *dismissModalTransitionDelegate;
+@property(nonatomic, strong) RNNScreenAnimationController *showModalTransitionDelegate;
+@property(nonatomic, strong) RNNScreenAnimationController *dismissModalTransitionDelegate;
 @end
 
 @implementation RNNModalManager {
@@ -50,7 +50,7 @@
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         RNNEnterExitAnimation *enterExitAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
-        _showModalTransitionDelegate = [[ScreenAnimationController alloc]
+        _showModalTransitionDelegate = [[RNNScreenAnimationController alloc]
             initWithContentTransition:enterExitAnimationOptions
                    elementTransitions:enterExitAnimationOptions.elementTransitions
              sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
@@ -86,7 +86,7 @@
         RNNEnterExitAnimation *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
         if (dismissModalOptions.hasAnimation) {
-            _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
+            _dismissModalTransitionDelegate = [[RNNScreenAnimationController alloc]
                 initWithContentTransition:dismissModalOptions
                        elementTransitions:dismissModalOptions.elementTransitions
                  sharedElementTransitions:dismissModalOptions.sharedElementTransitions
@@ -125,7 +125,7 @@
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         RNNEnterExitAnimation *enterExitAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
-        _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
+        _dismissModalTransitionDelegate = [[RNNScreenReversedAnimationController alloc]
             initWithContentTransition:enterExitAnimationOptions
                    elementTransitions:enterExitAnimationOptions.elementTransitions
              sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions

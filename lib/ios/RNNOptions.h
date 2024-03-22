@@ -1,13 +1,13 @@
-#import "BoolParser.h"
-#import "ColorParser.h"
-#import "DictionaryParser.h"
-#import "DoubleParser.h"
-#import "EnumParser.h"
-#import "ImageParser.h"
-#import "IntNumberParser.h"
-#import "NumberParser.h"
-#import "TextParser.h"
-#import "TimeIntervalParser.h"
+#import "RNNBoolParser.h"
+#import "RNNColorParser.h"
+#import "RNNDictionaryParser.h"
+#import "RNNDoubleParser.h"
+#import "RNNEnumParser.h"
+#import "RNNImageParser.h"
+#import "RNNIntNumberParser.h"
+#import "RNNNumberParser.h"
+#import "RNNTextParser.h"
+#import "RNNTimeIntervalParser.h"
 #import <React/RCTConvert.h>
 #import <UIKit/UIKit.h>
 

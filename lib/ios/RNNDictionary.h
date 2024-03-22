@@ -1,5 +1,5 @@
-#import "Param.h"
+#import "RNNParam.h"
 
-@interface RNNDictionary : Param
+@interface RNNDictionary : RNNParam
 
 @end

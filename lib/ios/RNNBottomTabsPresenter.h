@@ -1,5 +1,5 @@
-#import "BottomTabsBasePresenter.h"
+#import "RNNBottomTabsBasePresenter.h"
 
-@interface RNNBottomTabsPresenter : BottomTabsBasePresenter
+@interface RNNBottomTabsPresenter : RNNBottomTabsBasePresenter
 
 @end

@@ -1,0 +1,42 @@
+#import "RNNColor.h"
+
+@interface RNNColor ()
+
+@property(nonatomic, retain) UIColor *value;
+
+@end
+
+@implementation RNNColor
+
++ (instancetype)withColor:(UIColor *)value {
+    return [[RNNColor alloc] initWithValue:value];
+}
+
+- (instancetype)initWithValue:(UIColor *)value {
+    return [super initWithValue:value];
+}
+
+- (UIColor *)get {
+    return self.value;
+}
+
+- (UIColor *)withDefault:(id)defaultValue {
+    return [super withDefault:defaultValue];
+}
+
+- (NSString *)description {
+    return [self hexStringFromColor:[self withDefault:nil]];
+}
+
+- (NSString *)hexStringFromColor:(UIColor *)color {
+    const CGFloat *components = CGColorGetComponents(color.CGColor);
+
+    CGFloat r = components[0];
+    CGFloat g = components[1];
+    CGFloat b = components[2];
+
+    return [NSString
+        stringWithFormat:@"#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255)];
+}
+
+@end

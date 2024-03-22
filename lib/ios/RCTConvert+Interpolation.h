@@ -1,12 +1,12 @@
-#import "Interpolator.h"
+#import "RNNInterpolatorProtocol.h"
 #import <React/RCTConvert.h>
 
 @interface RCTConvert (Interpolation)
 
-+ (id<Interpolator>)Interpolator:(id)json;
++ (id<RNNInterpolatorProtocol>)Interpolator:(id)json;
 
-+ (id<Interpolator>)interpolatorFromJson:(id)json;
++ (id<RNNInterpolatorProtocol>)interpolatorFromJson:(id)json;
 
-+ (id<Interpolator>)defaultInterpolator;
++ (id<RNNInterpolatorProtocol>)defaultInterpolator;
 
 @end

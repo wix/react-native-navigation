@@ -2,9 +2,9 @@
 
 @interface RNNShadowOptions : RNNOptions
 
-@property(nonatomic, strong) Color *color;
-@property(nonatomic, strong) Number *radius;
-@property(nonatomic, strong) Number *opacity;
+@property(nonatomic, strong) RNNColor *color;
+@property(nonatomic, strong) RNNNumber *radius;
+@property(nonatomic, strong) RNNNumber *opacity;
 
 - (BOOL)hasValue;
 

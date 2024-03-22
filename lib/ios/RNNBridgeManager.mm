@@ -80,7 +80,7 @@
                                                         store:_store
                                             componentRegistry:_componentRegistry
                                                     andBridge:bridge
-                                  bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
+                                  bottomTabsAttachModeFactory:[RNNBottomTabsAttachModeFactory new]];
     RNNSetRootAnimator *setRootAnimator = [RNNSetRootAnimator new];
     _commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory
                                                                layoutManager:_layoutManager

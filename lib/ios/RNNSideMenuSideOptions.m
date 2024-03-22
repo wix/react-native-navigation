@@ -5,11 +5,11 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.visible = [BoolParser parse:dict key:@"visible"];
-    self.enabled = [BoolParser parse:dict key:@"enabled"];
-    self.width = [DoubleParser parse:dict key:@"width"];
-    self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
-    self.animationVelocity = [DoubleParser parse:dict key:@"animationVelocity"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
+    self.enabled = [RNNBoolParser parse:dict key:@"enabled"];
+    self.width = [RNNDoubleParser parse:dict key:@"width"];
+    self.shouldStretchDrawer = [RNNBoolParser parse:dict key:@"shouldStretchDrawer"];
+    self.animationVelocity = [RNNDoubleParser parse:dict key:@"animationVelocity"];
 
     return self;
 }

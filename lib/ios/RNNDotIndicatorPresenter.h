@@ -1,4 +1,4 @@
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 #import "RNNNavigationOptions.h"
 #import <Foundation/Foundation.h>
 
@@ -7,7 +7,7 @@
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
-- (void)apply:(UIViewController *)child options:(DotIndicatorOptions *)options;
+- (void)apply:(UIViewController *)child options:(RNNDotIndicatorOptions *)options;
 
 - (void)bottomTabsDidLayoutSubviews:(UITabBarController *)bottomTabs;
 

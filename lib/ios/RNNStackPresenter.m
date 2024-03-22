@@ -1,17 +1,17 @@
 #import "RNNStackPresenter.h"
-#import "InteractivePopGestureDelegate.h"
+#import "RNNInteractivePopGestureDelegate.h"
 #import "RNNCustomTitleView.h"
 #import "RNNReactBackgroundView.h"
 #import "RNNStackController.h"
-#import "TopBarPresenterCreator.h"
+#import "RNNTopBarPresenterCreator.h"
 #import "UINavigationController+RNNOptions.h"
 
 @interface RNNStackPresenter () {
     RNNReactComponentRegistry *_componentRegistry;
     UIView *_customTopBarBackground;
     RNNReactView *_topBarBackgroundReactView;
-    TopBarPresenter *_topBarPresenter;
-    InteractivePopGestureDelegate *_interactivePopGestureDelegate;
+    RNNTopBarPresenter *_topBarPresenter;
+    RNNInteractivePopGestureDelegate *_interactivePopGestureDelegate;
 }
 
 @property(nonatomic, weak) RNNStackController *stackController;
@@ -23,14 +23,14 @@
                            defaultOptions:(RNNNavigationOptions *)defaultOptions {
     self = [super initWithDefaultOptions:defaultOptions];
     _componentRegistry = componentRegistry;
-    _interactivePopGestureDelegate = [InteractivePopGestureDelegate new];
+    _interactivePopGestureDelegate = [RNNInteractivePopGestureDelegate new];
     return self;
 }
 
 - (void)bindViewController:(UINavigationController *)boundViewController {
     [super bindViewController:boundViewController];
     _topBarPresenter =
-        [TopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
+        [RNNTopBarPresenterCreator createWithBoundedNavigationController:self.stackController];
     _interactivePopGestureDelegate.navigationController = boundViewController;
     _interactivePopGestureDelegate.originalDelegate =
         boundViewController.interactivePopGestureRecognizer.delegate;

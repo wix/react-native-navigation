@@ -1,6 +1,6 @@
 #import "RNNControllerFactory.h"
-#import "BottomTabPresenterCreator.h"
-#import "BottomTabsPresenterCreator.h"
+#import "RNNBottomTabPresenterCreator.h"
+#import "RNNBottomTabsPresenterCreator.h"
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
 #import "RNNExternalViewController.h"
@@ -14,7 +14,7 @@
     RNNExternalComponentStore *_store;
     RCTBridge *_bridge;
     RNNReactComponentRegistry *_componentRegistry;
-    BottomTabsAttachModeFactory *_bottomTabsAttachModeFactory;
+    RNNBottomTabsAttachModeFactory *_bottomTabsAttachModeFactory;
 }
 
 #pragma mark public
@@ -24,7 +24,7 @@
                                   store:(RNNExternalComponentStore *)store
                       componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                               andBridge:(RCTBridge *)bridge
-            bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
+            bottomTabsAttachModeFactory:(RNNBottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
 
     self = [super init];
 
@@ -188,14 +188,14 @@
     RNNLayoutInfo *layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
     RNNNavigationOptions *options =
         [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-    BottomTabsBasePresenter *presenter =
-        [BottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
+    RNNBottomTabsBasePresenter *presenter =
+        [RNNBottomTabsPresenterCreator createWithDefaultOptions:_defaultOptions];
     NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
-    BottomTabPresenter *bottomTabPresenter =
-        [BottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
+    RNNBottomTabPresenter *bottomTabPresenter =
+        [RNNBottomTabPresenterCreator createWithDefaultOptions:_defaultOptions];
     RNNDotIndicatorPresenter *dotIndicatorPresenter =
         [[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:_defaultOptions];
-    BottomTabsBaseAttacher *bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
+    RNNBottomTabsBaseAttacher *bottomTabsAttacher = [_bottomTabsAttachModeFactory fromOptions:options];
 
     return [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
                                                        creator:_creator
