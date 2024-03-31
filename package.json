@@ -155,8 +155,7 @@
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 13 Pro Max",
-          "os": "15.5"
+          "type": "iPhone 15 Pro Max"
         }
       },
       "genymotion.emulator.name": {
@@ -200,7 +199,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone 13",
+        "name": "iPhone 15",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
