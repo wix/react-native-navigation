@@ -114,9 +114,6 @@ android {
         reactNative71 {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "71")
-            kotlinOptions {
-                jvmTarget = JavaVersion.VERSION_17
-            }
         }
     }
 
