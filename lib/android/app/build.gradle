@@ -66,7 +66,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        if (reactNativeMinorVersion() >= 73) {
+            jvmTarget = JavaVersion.VERSION_17
+        } else {
+            jvmTarget = JavaVersion.VERSION_11
+        }
     }
 
     flavorDimensions "RNN.reactNativeVersion"
@@ -110,6 +114,9 @@ android {
         reactNative71 {
             dimension "RNN.reactNativeVersion"
             buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "71")
+            kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_17
+            }
         }
     }
 
@@ -120,6 +127,11 @@ android {
             setIgnore(true)
         }
     }
+}
+
+int reactNativeMinorVersion() {
+    List reactNativeVersionComponents = reactNativeVersionComponents(findReactNativePackageJson())
+    reactNativeVersionComponents[1].toInteger()
 }
 
 String resolveFlavor() {
