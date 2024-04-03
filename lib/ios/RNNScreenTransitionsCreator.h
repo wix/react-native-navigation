@@ -8,6 +8,6 @@
                        containerView:(UIView *)containerView
                    contentTransition:(RNNEnterExitAnimation *)contentTransitionOptions
                   elementTransitions:
-                      (NSArray<ElementTransitionOptions *> *)elementTransitionsOptions;
+                      (NSArray<RNNElementTransitionOptions *> *)elementTransitionsOptions;
 
 @end

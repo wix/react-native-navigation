@@ -1,7 +1,7 @@
 #import "RNNUIBarButtonItem.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 #import "RNNFontAttributesCreator.h"
-#import "UIImage+utils.h"
+#import "UIImage+Utils.h"
 
 @interface RNNUIBarButtonItem ()
 
@@ -152,12 +152,12 @@
         self.image = [self.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 
-- (void)mergeBackgroundColor:(Color *)color {
+- (void)mergeBackgroundColor:(RNNColor *)color {
     _buttonOptions.iconBackground.color = color;
     [self redrawIcon];
 }
 
-- (void)mergeColor:(Color *)color {
+- (void)mergeColor:(RNNColor *)color {
     _buttonOptions.color = color;
     [self applyColor:color.get];
     [self redrawIcon];

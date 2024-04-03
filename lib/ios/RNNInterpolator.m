@@ -6,7 +6,7 @@
 + (CGPoint)fromPoint:(CGPoint)from
              toPoint:(CGPoint)to
              precent:(CGFloat)p
-        interpolator:(id<Interpolator>)interpolator {
+        interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     return CGPointMake(RNNInterpolate(from.x, to.x, p, interpolator),
                        RNNInterpolate(from.y, to.y, p, interpolator));
 }
@@ -21,14 +21,14 @@
 + (CGFloat)fromFloat:(CGFloat)from
              toFloat:(CGFloat)to
              precent:(CGFloat)precent
-        interpolator:(id<Interpolator>)interpolator {
+        interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     return RNNInterpolate(from, to, precent, interpolator);
 }
 
 + (CGRect)fromRect:(CGRect)from
             toRect:(CGRect)to
            precent:(CGFloat)p
-      interpolator:(id<Interpolator>)interpolator {
+      interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     return CGRectMake(RNNInterpolate(from.origin.x, to.origin.x, p, interpolator),
                       RNNInterpolate(from.origin.y, to.origin.y, p, interpolator),
                       RNNInterpolate(from.size.width, to.size.width, p, interpolator),
@@ -38,7 +38,7 @@
 + (CATransform3D)fromTransform:(CATransform3D)from
                    toTransform:(CATransform3D)to
                        precent:(CGFloat)p
-                  interpolator:(id<Interpolator>)interpolator {
+                  interpolator:(id<RNNInterpolatorProtocol>)interpolator {
     CATransform3D transform = CATransform3DIdentity;
 
     transform.m11 = [RNNInterpolator fromFloat:from.m11
@@ -117,7 +117,7 @@
  - from) * fraction`, where fraction represents the percent the animation has
  completed.
  */
-static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, id<Interpolator> interpolator) {
+static CGFloat RNNInterpolate(CGFloat from, CGFloat to, CGFloat p, id<RNNInterpolatorProtocol> interpolator) {
     return from + [interpolator interpolate:p] * (to - from);
 }
 

@@ -1,19 +1,21 @@
 #import "RNNEnterExitAnimation.h"
-#import "OptionsArrayParser.h"
+#import "RNNOptionsArrayParser.h"
 
 @implementation RNNEnterExitAnimation
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.enter = [[TransitionOptions alloc] initWithDict:dict[@"enter"]];
-    self.exit = [[TransitionOptions alloc] initWithDict:dict[@"exit"]];
-    self.sharedElementTransitions = [OptionsArrayParser parse:dict
-                                                          key:@"sharedElementTransitions"
-                                                      ofClass:SharedElementTransitionOptions.class];
-    self.elementTransitions = [OptionsArrayParser parse:dict
-                                                    key:@"elementTransitions"
-                                                ofClass:ElementTransitionOptions.class];
+    self.enter = [[RNNTransitionOptions alloc] initWithDict:dict[@"enter"]];
+    self.exit = [[RNNTransitionOptions alloc] initWithDict:dict[@"exit"]];
+    self.sharedElementTransitions = [RNNOptionsArrayParser 
+                                     parse:dict
+                                     key:@"sharedElementTransitions"
+                                     ofClass:RNNSharedElementTransitionOptions.class];
+    self.elementTransitions = [RNNOptionsArrayParser 
+                               parse:dict
+                               key:@"elementTransitions"
+                               ofClass:RNNElementTransitionOptions.class];
     return self;
 }
 
@@ -40,13 +42,13 @@
     if (self.exit.maxDuration > maxDuration)
         maxDuration = self.exit.maxDuration;
 
-    for (ElementTransitionOptions *elementTransition in self.elementTransitions) {
+    for (RNNElementTransitionOptions *elementTransition in self.elementTransitions) {
         if (elementTransition.maxDuration > maxDuration) {
             maxDuration = elementTransition.maxDuration;
         }
     }
 
-    for (SharedElementTransitionOptions *sharedElementTransition in self.sharedElementTransitions) {
+    for (RNNSharedElementTransitionOptions *sharedElementTransition in self.sharedElementTransitions) {
         if (sharedElementTransition.maxDuration > maxDuration) {
             maxDuration = sharedElementTransition.maxDuration;
         }

@@ -1,5 +1,5 @@
 #import "RNNCommandsHandler.h"
-#import "AnimationObserver.h"
+#import "RNNAnimationObserver.h"
 #import "RNNAssert.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
@@ -207,7 +207,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         __weak UIViewController *weakNewVC = newVc;
         [newVc setReactViewReadyCallback:^{
           if (animated && !waitForRender)
-              [[AnimationObserver sharedObserver] beginAnimation];
+              [[RNNAnimationObserver sharedObserver] beginAnimation];
           [fromVC.stack push:weakNewVC
                        onTop:fromVC
                     animated:animated
@@ -380,7 +380,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         UIModalTransitionStyle:[withDefault.modalTransitionStyle withDefault:@"coverVertical"]];
 
     if (animated && !waitForRender)
-        [[AnimationObserver sharedObserver] beginAnimation];
+        [[RNNAnimationObserver sharedObserver] beginAnimation];
     [newVc setReactViewReadyCallback:^{
       [self->_modalManager showModal:weakNewVC
                             animated:animated

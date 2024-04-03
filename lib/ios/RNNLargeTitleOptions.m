@@ -5,11 +5,11 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-    self.visible = [BoolParser parse:dict key:@"visible"];
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
-    self.fontWeight = [TextParser parse:dict key:@"fontWeight"];
+    self.fontSize = [RNNNumberParser parse:dict key:@"fontSize"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.fontFamily = [RNNTextParser parse:dict key:@"fontFamily"];
+    self.fontWeight = [RNNTextParser parse:dict key:@"fontWeight"];
 
     return self;
 }

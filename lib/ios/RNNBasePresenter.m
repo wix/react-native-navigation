@@ -1,5 +1,5 @@
 #import "RNNBasePresenter.h"
-#import "DotIndicatorOptions.h"
+#import "RNNDotIndicatorOptions.h"
 #import "RNNReactComponentRegistry.h"
 #import "RNNTabBarItemCreator.h"
 #import "UIViewController+LayoutProtocol.h"

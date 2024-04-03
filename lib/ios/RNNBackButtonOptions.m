@@ -5,20 +5,20 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
 
-    self.identifier = [TextParser parse:dict key:@"identifier"];
-    self.icon = [ImageParser parse:dict key:@"icon"];
-    self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
-    self.title = [TextParser parse:dict key:@"title"];
-    self.transition = [TextParser parse:dict key:@"transition"];
-    self.color = [ColorParser parse:dict key:@"color"];
-    self.showTitle = [BoolParser parse:dict key:@"showTitle"];
-    self.visible = [BoolParser parse:dict key:@"visible"];
-    self.testID = [TextParser parse:dict key:@"testID"];
-    self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
-    self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-    self.enableMenu = [BoolParser parse:dict key:@"enableMenu"];
-    self.displayMode = [TextParser parse:dict key:@"displayMode"];
-    self.popStackOnPress = [BoolParser parse:dict key:@"popStackOnPress"];
+    self.identifier = [RNNTextParser parse:dict key:@"identifier"];
+    self.icon = [RNNImageParser parse:dict key:@"icon"];
+    self.sfSymbol = [RNNTextParser parse:dict key:@"sfSymbol"];
+    self.title = [RNNTextParser parse:dict key:@"title"];
+    self.transition = [RNNTextParser parse:dict key:@"transition"];
+    self.color = [RNNColorParser parse:dict key:@"color"];
+    self.showTitle = [RNNBoolParser parse:dict key:@"showTitle"];
+    self.visible = [RNNBoolParser parse:dict key:@"visible"];
+    self.testID = [RNNTextParser parse:dict key:@"testID"];
+    self.fontFamily = [RNNTextParser parse:dict key:@"fontFamily"];
+    self.fontSize = [RNNNumberParser parse:dict key:@"fontSize"];
+    self.enableMenu = [RNNBoolParser parse:dict key:@"enableMenu"];
+    self.displayMode = [RNNTextParser parse:dict key:@"displayMode"];
+    self.popStackOnPress = [RNNBoolParser parse:dict key:@"popStackOnPress"];
 
     return self;
 }

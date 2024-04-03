@@ -10,7 +10,7 @@
     self.showModal = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"showModal"]];
     self.dismissModal = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"dismissModal"]];
     self.setStackRoot = [[RNNScreenTransition alloc] initWithDict:dict[@"setStackRoot"]];
-    self.setRoot = [[TransitionOptions alloc] initWithDict:dict[@"setRoot"]];
+    self.setRoot = [[RNNTransitionOptions alloc] initWithDict:dict[@"setRoot"]];
 
     return self;
 }

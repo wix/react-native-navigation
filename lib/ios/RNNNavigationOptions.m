@@ -37,14 +37,14 @@
     self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
     self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
     self.modal = [[RNNModalOptions alloc] initWithDict:dict[@"modal"]];
-    self.deprecations = [[DeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
-    self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
+    self.deprecations = [[RNNDeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
+    self.window = [[RNNWindowOptions alloc] initWithDict:dict[@"window"]];
 
-    self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
-    self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
-    self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
-    self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
-    self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
+    self.popGesture = [[RNNBool alloc] initWithValue:dict[@"popGesture"]];
+    self.backgroundImage = [RNNImageParser parse:dict key:@"backgroundImage"];
+    self.rootBackgroundImage = [RNNImageParser parse:dict key:@"rootBackgroundImage"];
+    self.modalPresentationStyle = [[RNNText alloc] initWithValue:dict[@"modalPresentationStyle"]];
+    self.modalTransitionStyle = [[RNNText alloc] initWithValue:dict[@"modalTransitionStyle"]];
 
     return self;
 }

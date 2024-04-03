@@ -1,4 +1,4 @@
-#import "Number.h"
+#import "RNNNumber.h"
 #import <UIKit/UIKit.h>
 
 @interface UISplitViewController (RNNOptions)
@@ -7,9 +7,9 @@
 
 - (void)rnn_setPrimaryEdge:(NSString *)primaryEdge;
 
-- (void)rnn_setMinWidth:(Number *)minWidth;
+- (void)rnn_setMinWidth:(RNNNumber *)minWidth;
 
-- (void)rnn_setMaxWidth:(Number *)maxWidth;
+- (void)rnn_setMaxWidth:(RNNNumber *)maxWidth;
 
 - (void)rnn_setPrimaryBackgroundStyle:(NSString *)style;
 

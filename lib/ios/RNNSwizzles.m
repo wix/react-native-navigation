@@ -7,7 +7,7 @@
 //
 
 #import "RNNSwizzles.h"
-#import "AnimationObserver.h"
+#import "RNNAnimationObserver.h"
 @import ObjectiveC;
 @import UIKit;
 
@@ -40,10 +40,10 @@ static void __RNN_setFrame_orig(UIScrollView *self, SEL _cmd, CGRect frame) {
 }
 
 static void __RNN_didMoveToWindow(UIView *self, SEL _cmd) {
-    if (![[AnimationObserver sharedObserver] isAnimating] || !self.window) {
+    if (![[RNNAnimationObserver sharedObserver] isAnimating] || !self.window) {
         __SWZ_didMoveToWindow_orig(self, _cmd);
     } else {
-        [[AnimationObserver sharedObserver] registerAnimationEndedBlock:^{
+        [[RNNAnimationObserver sharedObserver] registerAnimationEndedBlock:^{
           __SWZ_didMoveToWindow_orig(self, _cmd);
         }];
     }

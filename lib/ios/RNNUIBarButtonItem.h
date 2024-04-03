@@ -26,8 +26,8 @@ typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 - (instancetype)initWithSystemItem:(RNNButtonOptions *)buttonOptions
                            onPress:(RNNButtonPressCallback)onPress;
 
-- (void)mergeColor:(Color *)color;
-- (void)mergeBackgroundColor:(Color *)color;
+- (void)mergeColor:(RNNColor *)color;
+- (void)mergeBackgroundColor:(RNNColor *)color;
 
 - (void)notifyWillAppear;
 - (void)notifyDidAppear;

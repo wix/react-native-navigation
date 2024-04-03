@@ -1,0 +1,35 @@
+#import "RNNTransitionDetailsOptions.h"
+#import "RCTConvert+Interpolation.h"
+
+@implementation RNNTransitionDetailsOptions
+
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    self = [super initWithDict:dict];
+
+    self.from = [RNNDoubleParser parse:dict key:@"from"];
+    self.to = [RNNDoubleParser parse:dict key:@"to"];
+    self.startDelay = [RNNTimeIntervalParser parse:dict key:@"startDelay"];
+    self.duration = [RNNTimeIntervalParser parse:dict key:@"duration"];
+    self.interpolator = [RCTConvert Interpolator:dict[@"interpolation"]];
+
+    return self;
+}
+
+- (void)mergeOptions:(RNNTransitionDetailsOptions *)options {
+    if (options.from.hasValue)
+        self.from = options.from;
+    if (options.to.hasValue)
+        self.to = options.to;
+    if (options.startDelay.hasValue)
+        self.startDelay = options.startDelay;
+    if (options.duration.hasValue)
+        self.duration = options.duration;
+    if (options.interpolator)
+        self.interpolator = options.interpolator;
+}
+
+- (BOOL)hasAnimation {
+    return self.from.hasValue || self.to.hasValue;
+}
+
+@end

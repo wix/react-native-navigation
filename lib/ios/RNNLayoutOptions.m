@@ -6,11 +6,11 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super initWithDict:dict];
-    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
-    self.componentBackgroundColor = [ColorParser parse:dict key:@"componentBackgroundColor"];
-    self.direction = [TextParser parse:dict key:@"direction"];
+    self.backgroundColor = [RNNColorParser parse:dict key:@"backgroundColor"];
+    self.componentBackgroundColor = [RNNColorParser parse:dict key:@"componentBackgroundColor"];
+    self.direction = [RNNTextParser parse:dict key:@"direction"];
     self.orientation = dict[@"orientation"];
-    self.autoHideHomeIndicator = [BoolParser parse:dict key:@"autoHideHomeIndicator"];
+    self.autoHideHomeIndicator = [RNNBoolParser parse:dict key:@"autoHideHomeIndicator"];
     self.insets = [[RNNInsetsOptions alloc] initWithDict:dict[@"insets"]];
     return self;
 }

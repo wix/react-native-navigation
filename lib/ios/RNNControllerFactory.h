@@ -1,5 +1,5 @@
 
-#import "BottomTabsAttachModeFactory.h"
+#import "RNNBottomTabsAttachModeFactory.h"
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNExternalComponentStore.h"
@@ -15,7 +15,7 @@
                                   store:(RNNExternalComponentStore *)store
                       componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                               andBridge:(RCTBridge *)bridge
-            bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory;
+            bottomTabsAttachModeFactory:(RNNBottomTabsAttachModeFactory *)bottomTabsAttachModeFactory;
 
 - (UIViewController *)createLayout:(NSDictionary *)layout;
 
