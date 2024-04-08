@@ -22,7 +22,7 @@ def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 android {
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = "34.0.0"
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
@@ -56,7 +56,7 @@ android {
                     def repeatLength = output.length()
                     println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
 
-                    println "see report at file://${t.reports.html.destination}/index.html"
+                    println "see report at file://${t.reports.html.outputLocation}/index.html"
                 }
             }
         }
@@ -66,7 +66,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        if (reactNativeMinorVersion() >= 73) {
+            jvmTarget = JavaVersion.VERSION_17
+        } else {
+            jvmTarget = JavaVersion.VERSION_11
+        }
     }
 
     flavorDimensions "RNN.reactNativeVersion"
@@ -120,6 +124,11 @@ android {
             setIgnore(true)
         }
     }
+}
+
+int reactNativeMinorVersion() {
+    List reactNativeVersionComponents = reactNativeVersionComponents(findReactNativePackageJson())
+    reactNativeVersionComponents[1].toInteger()
 }
 
 String resolveFlavor() {

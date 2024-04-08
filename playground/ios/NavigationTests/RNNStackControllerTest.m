@@ -238,7 +238,7 @@
     RNNComponentViewController *pushedController =
         [RNNComponentViewController createWithComponentId:@"pushedController"];
     pushedController.options.topBar.backButton.testID = [Text withValue:@"TestID"];
-    [[[UIApplication sharedApplication] keyWindow] setRootViewController:_uut];
+	UIApplication.sharedApplication.keyWindow.rootViewController = _uut;
     [_uut pushViewController:pushedController animated:NO];
     [pushedController viewDidAppear:YES];
     XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][0]

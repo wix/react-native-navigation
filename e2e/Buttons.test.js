@@ -1,13 +1,24 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementById, elementByLabel } = Utils;
+const {
+  elementById,
+  elementByLabel,
+  elementTopBar,
+  expectImagesToBeEqual,
+} = Utils;
 
 describe('Buttons', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
+  });
+
+  it.e2e('should render top/navigation-bar buttons in the right order', async () => {
+    const snapshottedImagePath = `./e2e/assets/buttons_navbar.${device.getPlatform()}.png`;
+    const actual = await elementTopBar().takeScreenshot('buttons_navbar');
+    expectImagesToBeEqual(actual, snapshottedImagePath)
   });
 
   it(':android: should not effect left buttons when hiding back button', async () => {

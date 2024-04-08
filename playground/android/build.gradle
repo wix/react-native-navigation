@@ -2,13 +2,13 @@
 
 buildscript {
     ext {
-        kotlinVersion = "1.7.10"
+        kotlinVersion = "1.8.10"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 33
-        buildToolsVersion = "33.0.0"
+        compileSdkVersion = 34
+        buildToolsVersion = "34.0.0"
         minSdkVersion = 21
-        targetSdkVersion = 33
+        targetSdkVersion = 34
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
     }
@@ -33,6 +33,16 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         flatDir {
             dirs "$rootProject.projectDir/libs"
+        }
+    }
+}
+
+subprojects {
+    afterEvaluate { p ->
+        if (p.hasProperty('android')) {
+            android {
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
         }
     }
 }

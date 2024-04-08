@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.37.2",
+  "version": "7.39.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -76,14 +76,16 @@
     "@babel/plugin-proposal-export-namespace-from": "7.10.1",
     "@babel/runtime": "7.22.6",
     "@babel/types": "7.22.5",
-    "@react-native/metro-config": "^0.73.0",
+    "@babel/preset-env": "^7.22.9",
+    "@react-native/metro-config": "^0.73.2",
+    "@react-native/babel-preset": "^0.73.18",
+    "@react-native/typescript-config": "^0.73.1",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/eslint-config": "2.0.0",
     "@react-native-community/netinfo": "^5.9.4",
     "@testing-library/jest-native": "^5.4.2",
     "@testing-library/react-native": "^12.0.1",
-    "@types/detox": "17.14.3",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jasmine": "3.5.10",
     "@types/jest": "27.0.2",
@@ -95,7 +97,7 @@
     "@typescript-eslint/parser": "4.33.0",
     "babel-jest": "^27.0.0",
     "clang-format": "^1.4.0",
-    "detox": "20.9.0",
+    "detox": "20.19.5",
     "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "7.32.0",
     "eslint-config-prettier": "6.11.0",
@@ -110,10 +112,10 @@
     "pngjs": "^6.0.0",
     "prettier": "2.1.2",
     "react": "18.2.0",
-    "react-native": "0.72.3",
+    "react-native": "0.73.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.10.1",
-    "react-native-reanimated": "3.4.1",
+    "react-native-reanimated": "^3.8.1",
     "react-native-ui-lib": "7.3.6",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.2.0",
@@ -156,7 +158,8 @@
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 13 Pro Max"
+          "type": "iPhone 13 Pro Max",
+          "os": "15.5"
         }
       },
       "genymotion.emulator.name": {
@@ -200,7 +203,7 @@
       "ios.none": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "type": "ios.none",
-        "name": "iPhone 11",
+        "name": "iPhone 13",
         "session": {
           "server": "ws://localhost:8099",
           "sessionId": "playground"
