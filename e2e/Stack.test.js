@@ -81,6 +81,8 @@ describe('Stack', () => {
     await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
     await expect(elementByLabel('Title')).toBeVisible();
     await expect(elementByLabel('Subtitle')).toBeVisible();
+    await expect(elementById(`${TestIDs.TOPBAR_ID}.title`)).toBeVisible();
+    await expect(elementById(`${TestIDs.TOPBAR_ID}.subtitle`)).toBeVisible();
   });
 
   it.e2e('screen lifecycle', async () => {

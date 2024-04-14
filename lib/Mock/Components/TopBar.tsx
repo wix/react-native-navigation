@@ -26,13 +26,16 @@ export const TopBar = class extends Component<TopBarProps> {
 
   render() {
     const topBarOptions = this.props.topBarOptions;
+    const topbarTestId = topBarOptions?.testID;
+    const titleTestId = topbarTestId ? { testID: `${topbarTestId}.title` } : {};
+    const subtitleTestId = topbarTestId ? { testID: `${topbarTestId}.subtitle` } : {};
     if (topBarOptions?.visible === false) return null;
     else {
       const component = topBarOptions?.title?.component;
       return (
-        <View testID={topBarOptions?.testID}>
-          <Text>{topBarOptions?.title?.text}</Text>
-          <Text>{topBarOptions?.subtitle?.text}</Text>
+        <View testID={topbarTestId}>
+          <Text {...titleTestId}>{topBarOptions?.title?.text}</Text>
+          <Text {...subtitleTestId}>{topBarOptions?.subtitle?.text}</Text>
           {this.renderButtons(topBarOptions?.leftButtons)}
           {this.renderButtons(topBarOptions?.rightButtons)}
           {component &&
