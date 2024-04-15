@@ -1,6 +1,7 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import fs from 'fs';
+const exec = require('shell-utils').exec;
 
 const {
   elementById,
