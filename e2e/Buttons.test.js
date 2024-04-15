@@ -34,7 +34,7 @@ describe('Buttons', () => {
 
     function pushSnapshots() {
       setupGit();
-      exec.execSync(`git checkout aws-m2-ci}`);
+      exec.execSync(`git checkout aws-m2-ci`);
       exec.execSync(`git add ${snapshottedImagePath}`);
       exec.execSync(`git commit -m "Update snapshots [ci skip]"`);
       exec.execSync(`git push deploy aws-m2-ci`);
