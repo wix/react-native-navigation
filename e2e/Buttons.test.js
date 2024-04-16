@@ -1,7 +1,5 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
-import fs from 'fs';
-const exec = require('shell-utils').exec;
 
 const {
   elementById,
@@ -20,37 +18,6 @@ describe('Buttons', () => {
   it.e2e('should render top/navigation-bar buttons in the right order', async () => {
     const snapshottedImagePath = `./e2e/assets/buttons_navbar.${device.getPlatform()}.png`;
     const actual = await elementTopBar().takeScreenshot('buttons_navbar');
-
-    // save file from path `actual` to `snapshottedImagePath`
-    fs.copyFileSync(actual, snapshottedImagePath);
-
-    // push commit to git
-    pushSnapshots();
-    // const remoteUrl = new RegExp(`https?://(\\S+)`).exec(exec.execSyncRead(`git remote -v`))[1];
-    // await exec.execSync(`git commit -am "chore: update snapshot ${snapshottedImagePath}"`);
-    // await exec.execSync(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
-    // await exec.execSync(`git push deploy ${BRANCH}`);
-
-
-    function pushSnapshots() {
-      setupGit();
-      exec.execSync(`git checkout aws-m2-ci`);
-      exec.execSync(`git add ${snapshottedImagePath}`);
-      exec.execSync(`git commit -m "Update snapshots [ci skip]"`);
-      exec.execSync(`git push deploy aws-m2-ci`);
-    }
-
-    function setupGit() {
-      exec.execSyncSilent(`git config --global push.default simple`);
-      exec.execSyncSilent(`git config --global user.email "${process.env.GIT_EMAIL}"`);
-      exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
-      const remoteUrl = new RegExp(`https?://(\\S+)`).exec(exec.execSyncRead(`git remote -v`))[1];
-      exec.execSyncSilent(
-        `git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`
-      );
-    }
-
-
     expectImagesToBeEqual(actual, snapshottedImagePath)
   });
 
