@@ -33,7 +33,7 @@
     "start": "node ./scripts/start",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
-    "pod-install": "cd playground/ios && BUNDLE_GEMFILE=../../Gemfile BUNDLE_PATH=~/gems/ bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
+    "pod-install": "cd playground/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
     "pod-install-old-arch": "cd playground/ios && pod install",
     "test-unit-ios": "node ./scripts/test-unit --ios",
     "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
