@@ -1,20 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
-#import <React/RCTBridgeDelegate.h>
-
-@class RCTSurfacePresenterBridgeAdapter;
-@class RCTTurboModuleManager;
-
-@interface RNNAppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
-
-@property(nonatomic, strong) UIWindow *window;
-
-#if RCT_NEW_ARCH_ENABLED
-
-/// The TurboModule manager
-@property(nonatomic, strong) RCTTurboModuleManager *turboModuleManager;
-@property(nonatomic, strong) RCTSurfacePresenterBridgeAdapter *bridgeAdapter;
-
+#if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
+#import <React-RCTAppDelegate/RCTAppDelegate.h>
+#elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
+// for importing the header from framework, the dash will be transformed to underscore
+#import <React_RCTAppDelegate/RCTAppDelegate.h>
 #endif
+
+@interface RNNAppDelegate : RCTAppDelegate
 
 @end

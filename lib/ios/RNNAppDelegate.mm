@@ -3,7 +3,6 @@
 
 #if RCT_NEW_ARCH_ENABLED
 #import "RCTAppSetupUtils.h"
-#import "RCTLegacyInteropComponents.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
@@ -50,8 +49,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
         [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge
                                                 contextContainer:_contextContainer];
     bridge.surfacePresenter = self.bridgeAdapter.surfacePresenter;
-
-    [self unstable_registerLegacyComponents];
 #endif
 
     [ReactNativeNavigation bootstrapWithBridge:bridge];
@@ -71,12 +68,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
         std::make_shared<facebook::react::RuntimeScheduler>(RCTRuntimeExecutorFromBridge(bridge));
     std::shared_ptr<facebook::react::CallInvoker> callInvoker =
         std::make_shared<facebook::react::RuntimeSchedulerCallInvoker>(_runtimeScheduler);
-    self.turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
+    RCTTurboModuleManager* turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
                                                                    delegate:self
                                                                   jsInvoker:callInvoker];
     _contextContainer->erase("RuntimeScheduler");
     _contextContainer->insert("RuntimeScheduler", _runtimeScheduler);
-    return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager, _runtimeScheduler);
+    return RCTAppSetupDefaultJsExecutorFactory(bridge, turboModuleManager, _runtimeScheduler);
 }
 
 #pragma mark RCTTurboModuleManagerDelegate
@@ -109,14 +106,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)fabricEnabled {
     return YES;
-}
-
-#pragma mark - New Arch Utilities
-
-- (void)unstable_registerLegacyComponents {
-    for (NSString *legacyComponent in [RCTLegacyInteropComponents legacyInteropComponents]) {
-        [RCTLegacyViewManagerInteropComponentView supportLegacyViewManagerWithName:legacyComponent];
-    }
 }
 
 #endif

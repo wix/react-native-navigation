@@ -7,7 +7,7 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+# flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -25,7 +25,7 @@ def all_pods
     :path => "../../node_modules/react-native",
     :hermes_enabled => flags[:hermes_enabled],
     :fabric_enabled => flags[:fabric_enabled],
-    :flipper_configuration => FlipperConfiguration.enabled,
+    # :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -38,24 +38,25 @@ post_install do |installer|
   react_native_post_install(
     installer,
     "../../node_modules/react-native",
-    :mac_catalyst_enabled => false
+    :mac_catalyst_enabled => false,
+    # :ccache_enabled => true
   )
 end
 
-def __apply_Xcode_15_3_flipper_post_install_workaround(installer)
-  installer.pods_project.targets.each do |target|
-    if target.name == 'Flipper'
-      file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
-      contents = File.read(file_path)
-      unless contents.include?('#include <functional>')
-        File.open(file_path, 'w') do |file|
-          file.puts('#include <functional>')
-          file.puts(contents)
-        end
-      end
-    end
-  end
-end
+# def __apply_Xcode_15_3_flipper_post_install_workaround(installer)
+#   installer.pods_project.targets.each do |target|
+#     if target.name == 'Flipper'
+#       file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
+#       contents = File.read(file_path)
+#       unless contents.include?('#include <functional>')
+#         File.open(file_path, 'w') do |file|
+#           file.puts('#include <functional>')
+#           file.puts(contents)
+#         end
+#       end
+#     end
+#   end
+# end
 
 def __apply_Xcode_15_unary_binary_error_workaround(installer)
   installer.pods_project.targets.each do |target|
