@@ -32,7 +32,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 #ifdef RCT_NEW_ARCH_ENABLED
 @interface RNNReactView
-    : RCTSurfaceHostingProxyRootView <RCTRootViewDelegate, RNNComponentProtocol>
+    : RCTSurfaceHostingView <RCTRootViewDelegate, RNNComponentProtocol>
 #else
 @interface RNNReactView : RCTRootView <RCTRootViewDelegate, RNNComponentProtocol>
 #endif
@@ -54,6 +54,13 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property (atomic, readonly) NSString *moduleName;
+@property (atomic, copy, readwrite) NSDictionary *properties;
+@property (nonatomic, strong, readonly) UIView *view;
+@property (nonatomic, strong, readonly) UIView *contentView;
+@property (nonatomic, assign) RCTRootViewSizeFlexibility sizeFlexibility;
+@property (atomic, readwrite, weak, nullable) id<RCTSurfaceDelegate> delegate;
+@property (nonatomic, assign) BOOL passThroughTouches;
 
 - (void)invalidate;
 

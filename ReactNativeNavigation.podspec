@@ -46,9 +46,10 @@ Pod::Spec.new do |s|
     s.dependency "RCT-Folly"
     s.dependency "RCTRequired"
     s.dependency "RCTTypeSafety"
-    s.dependency "ReactCommon/turbomodule/core"
+    s.dependency "ReactCommon"
     s.dependency "React-runtimeexecutor"
     s.dependency "React-rncore"
+    s.dependency "React-RuntimeCore"
   end
 
   s.dependency 'React-Core'

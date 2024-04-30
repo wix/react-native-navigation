@@ -1,6 +1,5 @@
 import React from 'react';
-import { Platform, PlatformOSType } from 'react-native';
-import { Button, ButtonProps } from 'react-native-ui-lib';
+import { Platform, PlatformOSType, Button, ButtonProps } from 'react-native';
 
 type RnnButtonProps = {
   platform?: PlatformOSType;

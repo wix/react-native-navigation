@@ -115,7 +115,6 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.10.1",
     "react-native-reanimated": "3.9.0-rc.1",
-    "react-native-ui-lib": "7.3.6",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.2.0",
     "redux": "3.x.x",
@@ -228,6 +227,14 @@
         "app": "android.release",
         "device": "genymotion.emulator.name"
       }
+    }
+  },
+  "codegenConfig": {
+    "name": "rnnavigation",
+    "type": "all",
+    "jsSrcsDir": "./lib/src",
+    "android": {
+      "javaPackageName": "wix.rnn.specs"
     }
   }
 }

@@ -178,6 +178,12 @@ const customAnimations: AnimationOptions = {
   },
 };
 
+const defaultAnimations: AnimationOptions = {
+  setRoot: {
+    waitForRender: true
+  }
+}
+
 export default {
-  ...(useSlideAnimation ? slideAnimations : useCustomAnimations ? customAnimations : {}),
+  ...(useSlideAnimation ? slideAnimations : useCustomAnimations ? customAnimations : defaultAnimations),
 };

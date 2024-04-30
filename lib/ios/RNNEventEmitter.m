@@ -155,9 +155,6 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 #pragma mark private
 
 - (void)send:(NSString *)eventName body:(id)body {
-    if (self.bridge == nil) {
-        return;
-    }
     [self sendEventWithName:eventName body:body];
 }
 

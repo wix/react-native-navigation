@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
 import { NavigationConstants } from './Constants';
+import RNNCommandsModule from './NativeRNNCommandsModule';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
@@ -24,7 +24,7 @@ interface NativeCommandsModule {
 export class NativeCommandsSender {
   private readonly nativeCommandsModule: NativeCommandsModule;
   constructor() {
-    this.nativeCommandsModule = NativeModules.RNNBridgeModule;
+    this.nativeCommandsModule = RNNCommandsModule;
   }
 
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
