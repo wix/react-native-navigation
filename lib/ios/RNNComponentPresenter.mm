@@ -237,7 +237,7 @@
 - (void)renderComponents:(RNNNavigationOptions *)options
                  perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-    [_topBarTitlePresenter renderComponents:withDefault.topBar perform:readyBlock];
+    [_topBarTitlePresenter renderComponents:(RNNNavigationOptions *)withDefault.topBar perform:readyBlock];
 }
 
 - (void)dealloc {

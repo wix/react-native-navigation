@@ -182,7 +182,7 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
 #ifdef RCT_NEW_ARCH_ENABLED
         return self.surface.delegate;
 #else
-        return self.appProperties;
+        return self.delegate;
 #endif
     }
 }

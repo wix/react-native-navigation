@@ -9,6 +9,8 @@ typedef UIViewController * (^RNNExternalHostViewCreator)(NSDictionary *props, RC
 
 @interface RNNTurboManager : NSObject
 
+@property(readonly, nonatomic, strong) RCTHost *host;
+
 - (instancetype)initWithHost:(RCTHost *)host mainWindow:(UIWindow *)mainWindow;
 
 - (UIViewController *)findComponentForId:(NSString *)componentId;

@@ -15,6 +15,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 #ifdef RCT_NEW_ARCH_ENABLED
 + (void)bootstrapWithHost:(RCTHost *)host;
 + (void)registerExternalHostComponent:(NSString *)name callback:(RNNExternalHostViewCreator)callback;
++ (RCTHost *)getHost;
 #endif
 
 + (void)bootstrapWithBridge:(RCTBridge *)bridge;

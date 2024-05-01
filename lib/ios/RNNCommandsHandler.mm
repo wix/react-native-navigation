@@ -197,9 +197,22 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                 newVc.preferredContentSize = size;
             }
             RCTExecuteOnMainQueue(^{
-              UIView *view = [[ReactNativeNavigation getBridge].uiManager
-                  viewForReactTag:optionsWithDefault.preview.reactTag.get];
-              [rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
+                UIView *view = nil;
+#ifdef RCT_NEW_ARCH_ENABLED
+                RCTHost *host = [ReactNativeNavigation getHost];
+                
+                if (host != nil) {
+                    view = [host.surfacePresenter.mountingManager.componentViewRegistry
+                        findComponentViewWithTag: [optionsWithDefault.preview.reactTag.get integerValue]];
+                } else {
+                    view = [[ReactNativeNavigation getBridge].uiManager
+                        viewForReactTag:optionsWithDefault.preview.reactTag.get];
+                }
+#else
+                view = [[ReactNativeNavigation getBridge].uiManager
+                    viewForReactTag:optionsWithDefault.preview.reactTag.get];
+#endif
+                [rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
             });
         }
     } else {

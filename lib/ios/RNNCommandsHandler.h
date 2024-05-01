@@ -6,6 +6,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurfacePresenter.h>
+#import <React/RCTMountingManager.h>
+#import <React/RCTComponentViewRegistry.h>
+#endif
+
 @interface RNNCommandsHandler : NSObject
 
 - (instancetype)initWithControllerFactory:(RNNControllerFactory *)controllerFactory

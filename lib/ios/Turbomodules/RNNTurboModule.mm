@@ -1,6 +1,6 @@
+#ifdef RCT_NEW_ARCH_ENABLED
 #import "RNNTurboModule.h"
 #import "RNNTurboCommandsHandler.h"
-#import <React/RCTBridge+Private.h>
 #import <ReactCommon/RCTTurboModule.h>
 
 @implementation RNNTurboModule
@@ -14,10 +14,10 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)setDefaultOptions:(NSDictionary *)options {
-    printf("Here");
     RCTExecuteOnMainQueue(^{
       [[RNNTurboCommandsHandler sharedInstance] setDefaultOptions:options completion: nil];
     });
 }
 
 @end
+#endif

@@ -2,11 +2,12 @@
 #import "RNNUtils.h"
 
 @implementation RNNEventEmitter {
+    RCTEventEmitter *_emitter;
     NSInteger _appLaunchedListenerCount;
     BOOL _appLaunchedEventDeferred;
 }
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE()
 
 static NSString *const AppLaunched = @"RNN.AppLaunched";
 static NSString *const CommandCompleted = @"RNN.CommandCompleted";
@@ -157,5 +158,20 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 - (void)send:(NSString *)eventName body:(id)body {
     [self sendEventWithName:eventName body:body];
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRNNEventEmitterSpecJSI>(params);
+}
+
+- (instancetype)initWithHost:(RCTHost *)host {
+    if (self = [self init]) {
+        _host =  host;
+    }
+    return self;
+}
+#endif
 
 @end

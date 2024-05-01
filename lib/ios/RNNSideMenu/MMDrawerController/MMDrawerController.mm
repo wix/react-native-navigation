@@ -283,7 +283,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         self.centerViewController = controller;
     }
 
-    if ((openside = [coder decodeIntegerForKey:MMDrawerOpenSideKey])) {
+    if ((openside = (MMDrawerSide)[coder decodeIntegerForKey:MMDrawerOpenSideKey])) {
         [self openDrawerSide:openside animated:false completion:nil];
     }
 }

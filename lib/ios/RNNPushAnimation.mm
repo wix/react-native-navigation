@@ -29,7 +29,7 @@
     [self animateElement:self.screenTransition.topBar
                     view:toViewController.navigationController.navigationBar
              elementName:@"topBar"];
-    [self animateElement:self.screenTransition.content
+    [self animateElement:(ElementTransitionOptions *)self.screenTransition.content
                     view:toViewController.view
              elementName:@"content"];
     [self animateElement:self.screenTransition.bottomTabs

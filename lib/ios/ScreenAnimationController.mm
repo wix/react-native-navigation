@@ -4,6 +4,10 @@
 #import "SharedElementAnimator.h"
 #import "UIViewController+LayoutProtocol.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#include <React/RCTSurfacePresenter.h>
+#include <React/RCTMountingManager.h>
+#endif
 
 @implementation ScreenAnimationController {
     RCTBridge *_bridge;
@@ -51,7 +55,7 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
 #ifdef RCT_NEW_ARCH_ENABLED
     if (_host != nil) {
-        // TODO: do research how to replace uiModule observer
+        [_host.surfacePresenter addObserver:self];
     } else {
         [_bridge.uiManager.observerCoordinator addObserver:self];
     }
@@ -138,6 +142,13 @@
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
     return _duration;
 }
+
+// TODO: TEST THIS
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
+    [self performAnimationOnce];
+}
+#endif
 
 - (void)uiManagerDidPerformMounting:(RCTUIManager *)manager {
     [self performAnimationOnce];

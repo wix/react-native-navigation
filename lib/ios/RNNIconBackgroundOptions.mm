@@ -37,7 +37,7 @@
 }
 
 - (RNNIconBackgroundOptions *)copyWithZone:(NSZone *)zone {
-    RNNIconBackgroundOptions *newOptions = RNNIconBackgroundOptions.new;
+    RNNIconBackgroundOptions *newOptions = [RNNIconBackgroundOptions new];
     newOptions.color = self.color.copy;
     newOptions.disabledColor = self.disabledColor.copy;
     newOptions.cornerRadius = self.cornerRadius.copy;

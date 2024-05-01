@@ -6,12 +6,16 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#import <React/RCTSurfacePresenterStub.h>
 #endif
 
 
 @interface ScreenAnimationController
     : NSObject <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
-                RCTUIManagerObserver>
+#ifdef RCT_NEW_ARCH_ENABLED
+RCTSurfacePresenterObserver,
+#endif
+RCTUIManagerObserver>
 
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
                        elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions

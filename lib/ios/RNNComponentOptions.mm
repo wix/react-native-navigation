@@ -14,7 +14,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    RNNComponentOptions *newOptions = RNNComponentOptions.new;
+    RNNComponentOptions *newOptions = [RNNComponentOptions new];
     newOptions.name = self.name.copy;
     newOptions.componentId = self.componentId.copy;
     newOptions.alignment = self.alignment.copy;

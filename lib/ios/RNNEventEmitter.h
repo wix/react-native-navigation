@@ -1,9 +1,20 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <React/RCTEventDispatcher.h>
 
-@interface RNNEventEmitter : RCTEventEmitter <RCTBridgeModule>
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <rnnavigation/rnnavigation.h>
+#endif
+
+@class RCTHost;
+
+@interface RNNEventEmitter : RCTEventEmitter
+#ifdef RCT_NEW_ARCH_ENABLED
+                            <NativeRNNEventEmitterSpec>
+
+- (instancetype)initWithHost:(RCTHost *)host;
+
+@property(nonatomic, strong, readonly) RCTHost *host;
+#endif
 
 - (void)sendOnAppLaunched;
 

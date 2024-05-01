@@ -15,7 +15,6 @@
 
 @interface RNNTurboManager ()
 
-@property(nonatomic, strong, readwrite) RCTHost *host;
 @property(nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property(nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
 @property(nonatomic, strong, readonly) RNNLayoutManager *layoutManager;
@@ -23,6 +22,7 @@
 @property(nonatomic, strong, readonly) RNNModalManager *modalManager;
 @property(nonatomic, strong, readonly) RNNModalHostViewManagerHandler *modalHostViewHandler;
 @property(nonatomic, strong, readonly) RNNCommandsHandler *commandsHandler;
+@property(nonatomic, strong, readonly) RNNEventEmitter *eventEmitter;
 
 @end
 
@@ -37,9 +37,21 @@
         _overlayManager = [RNNOverlayManager new];
         _store = [RNNExternalComponentStore new];
         
-        RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(onJavaScriptLoaded)
+                                                     name:@"RCTInstanceDidLoadBundle"
+                                                   object:nil];
+        
+        // TODO: investigate which new event is fired
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(onJavaScriptWillLoad)
+                                                     name:RCTJavaScriptWillStartLoadingNotification
+                                                   object:nil];
+        
+        _eventEmitter = [[RNNEventEmitter alloc] initWithHost:_host];
+        
         RNNModalManagerEventHandler *modalManagerEventHandler =
-            [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
+            [[RNNModalManagerEventHandler alloc] initWithEventEmitter:_eventEmitter];
         
         _modalManager = [[RNNModalManager alloc] initWithHost:_host
                                                  eventHandler:modalManagerEventHandler];
@@ -48,22 +60,22 @@
         _layoutManager = [[RNNLayoutManager alloc] init];
 
         id<RNNComponentViewCreator> rootViewCreator =
-            [[RNNReactRootViewCreator alloc] initWithHost:_host eventEmitter:eventEmitter];
+            [[RNNReactRootViewCreator alloc] initWithHost:_host eventEmitter:_eventEmitter];
         
         _componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
         
         RNNControllerFactory *controllerFactory =
             [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator
-                                                     eventEmitter:eventEmitter
+                                                     eventEmitter:_eventEmitter
                                                             store:_store
                                                 componentRegistry:_componentRegistry
-                                                        andHost:_host
+                                                          andHost:_host
                                       bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
         
         RNNSetRootAnimator *setRootAnimator = [RNNSetRootAnimator new];
         _commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory
                                                                    layoutManager:_layoutManager
-                                                                    eventEmitter:eventEmitter
+                                                                    eventEmitter:_eventEmitter
                                                                     modalManager:_modalManager
                                                                   overlayManager:_overlayManager
                                                                  setRootAnimator:setRootAnimator
@@ -81,6 +93,18 @@
 
 - (UIViewController *)findComponentForId:(NSString *)componentId {
     return [_layoutManager findComponentForId:componentId];
+}
+
+- (void)onJavaScriptWillLoad {
+    [_componentRegistry clear];
+}
+
+- (void)onJavaScriptLoaded {
+    [_commandsHandler setReadyToReceiveCommands:true];
+    // TODO: Refactor
+//    [_modalHostViewHandler
+//        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
+    [_eventEmitter sendOnAppLaunched];
 }
 
 @end

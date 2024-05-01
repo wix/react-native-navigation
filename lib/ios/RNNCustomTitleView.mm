@@ -2,7 +2,7 @@
 
 @interface RNNCustomTitleView ()
 
-@property(nonatomic, strong) RCTRootView *subView;
+@property(nonatomic, strong) RNNReactView *subView;
 @property(nonatomic, strong) NSString *alignment;
 
 @end
@@ -10,7 +10,7 @@
 @implementation RNNCustomTitleView
 
 - (instancetype)initWithFrame:(CGRect)frame
-                      subView:(RCTRootView *)subView
+                      subView:(RNNReactView *)subView
                     alignment:(NSString *)alignment {
     self = [super init];
 
@@ -53,6 +53,11 @@
     return _alignment ? _alignment : @"center";
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)surface:(RCTSurface *)surface didChangeIntrinsicSize:(CGSize)intrinsicSize {
+    // TODO: FILL WITH DATA
+}
+#else
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     if ([self.alignment isEqualToString:@"center"]) {
         [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
@@ -62,5 +67,6 @@
                                           rootView.intrinsicContentSize.height)];
     }
 }
+#endif
 
 @end

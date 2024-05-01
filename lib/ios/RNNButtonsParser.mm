@@ -6,7 +6,7 @@
     if (!buttons)
         return nil;
     if ([buttons isKindOfClass:[NSArray class]]) {
-        NSMutableArray *buttonsArray = NSMutableArray.new;
+        NSMutableArray *buttonsArray = [NSMutableArray new];
         for (NSDictionary *buttonDict in buttons) {
             [buttonsArray addObject:[self parseButton:buttonDict]];
         }

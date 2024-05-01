@@ -39,7 +39,7 @@
                                                              style:nil
                                                            variant:nil
                                                    scaleMultiplier:1.0];
-    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     if (centered)
         paragraphStyle.alignment = NSTextAlignmentCenter;
 

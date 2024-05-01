@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTBridge.h>
 #if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
 #import <React-RCTAppDelegate/RCTAppDelegate.h>
 #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)

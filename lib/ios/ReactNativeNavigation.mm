@@ -49,6 +49,14 @@
     self.turboManager = [[RNNTurboManager alloc] initWithHost:host mainWindow:[self mainWindow]];
     [RNNSplashScreen showOnWindow:[self mainWindow]];
 }
+
++ (RCTHost *)getHost {
+    if ([ReactNativeNavigation sharedInstance].turboManager == nil) {
+        return nil;
+    }
+    
+    return [[ReactNativeNavigation sharedInstance].turboManager host];
+}
 #endif
 
 #pragma mark - bridge

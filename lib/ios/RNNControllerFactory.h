@@ -22,7 +22,7 @@
                            eventEmitter:(RNNEventEmitter *)eventEmitter
                                   store:(RNNExternalComponentStore *)store
                       componentRegistry:(RNNReactComponentRegistry *)componentRegistry
-                              andHost:(RCTHost *)host
+                                andHost:(RCTHost *)host
             bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory;
 #endif
 

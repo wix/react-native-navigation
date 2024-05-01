@@ -2,6 +2,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class RCTHost;
+
 @interface StackControllerDelegate : NSObject <UINavigationControllerDelegate>
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter;
