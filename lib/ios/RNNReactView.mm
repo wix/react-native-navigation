@@ -1,6 +1,10 @@
 #import "RNNReactView.h"
 #import <React/RCTRootContentView.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTFabricSurface.h>
+#endif
+
 @implementation RNNReactView {
     BOOL _isAppeared;
 }
@@ -11,10 +15,9 @@
                   eventEmitter:(RNNEventEmitter *)eventEmitter
                sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-    self = [super initWithBridge:bridge
-                      moduleName:moduleName
-               initialProperties:initialProperties
-                 sizeMeasureMode:sizeMeasureMode];
+  RCTFabricSurface *surface = [[RCTFabricSurface alloc] initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
+  self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+  [surface start];
 #else
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
