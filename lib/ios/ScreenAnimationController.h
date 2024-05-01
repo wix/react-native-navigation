@@ -4,6 +4,11 @@
 #import <React/RCTUIManagerObserverCoordinator.h>
 #import <React/RCTUIManagerUtils.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#endif
+
+
 @interface ScreenAnimationController
     : NSObject <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
                 RCTUIManagerObserver>
@@ -14,6 +19,15 @@
                      (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
                                  duration:(CGFloat)duration
                                    bridge:(RCTBridge *)bridge;
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
+                       elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
+                 sharedElementTransitions:
+                     (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                                 duration:(CGFloat)duration
+                                   host:(RCTHost *)host;
+#endif
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC
                                 toVC:(UIViewController *)toVC

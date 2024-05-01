@@ -21,8 +21,6 @@ function start() {
   registerScreens();
   addProcessors();
   setDefaultOptions();
-  console.log('started!');
-  // setDefaultOptions();
   // Navigation.events().registerAppLaunchedListener(async () => {
   //   Navigation.dismissAllModals();
   //   setRoot();

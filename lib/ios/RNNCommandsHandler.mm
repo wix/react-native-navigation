@@ -140,7 +140,9 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [RNNDefaultOptionsHelper recursivelySetDefaultOptions:defaultOptions
                                      onRootViewController:rootViewController];
 
-    completion();
+    if (completion != nil) {
+        completion();
+    }
 }
 
 - (void)push:(NSString *)componentId
@@ -248,7 +250,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *options = newVC.resolveOptionsWithDefault;
     newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault:NO]);
 
-    __weak typeof(RNNEventEmitter *) weakEventEmitter = _eventEmitter;
+    __weak RNNEventEmitter *weakEventEmitter = _eventEmitter;
     __weak UIViewController *weakNewVC = newVC;
     [newVC setReactViewReadyCallback:^{
       [fromVC.stack setStackChildren:childViewControllers

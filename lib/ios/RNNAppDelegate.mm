@@ -1,7 +1,7 @@
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-#if RCT_NEW_ARCH_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
 #import "RCTAppSetupUtils.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -33,7 +33,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @implementation RNNAppDelegate
 
-#if RCT_NEW_ARCH_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
 - (instancetype)init {
     if (self = [super init]) {
         _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
@@ -46,20 +46,24 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#if RCT_NEW_ARCH_ENABLED
-    RCTEnableTurboModule(true);
-#else
-    self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-#endif
-    
-#if RCT_NEW_ARCH_ENABLED
+    RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
     self.rootViewFactory = [self createRCTRootViewFactory];
     
-    self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
+#ifdef RCT_NEW_ARCH_ENABLED
+    if (self.bridgelessEnabled) {
+        self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
+        
+        [ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
+        
+        return YES;
+    }
 #endif
+
+    // Force init bridge, ignoring generated RCTView
+    [self.rootViewFactory viewWithModuleName:self.moduleName];
     
     [ReactNativeNavigation bootstrapWithBridge:self.bridge];
-
+    
     return YES;
 }
 

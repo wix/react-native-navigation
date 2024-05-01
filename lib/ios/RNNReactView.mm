@@ -4,6 +4,7 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTFabricSurface.h>
+#import <React/RCTSurfacePresenterStub.h>
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #endif
 
@@ -39,6 +40,7 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
 @implementation RNNReactView {
     BOOL _isAppeared;
 }
+
 #ifdef RCT_NEW_ARCH_ENABLED
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
@@ -46,9 +48,9 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
                   eventEmitter:(RNNEventEmitter *)eventEmitter
                sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-  RNNAppDelegate* delegate = (RNNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-  RCTFabricSurface *surface = [delegate.rootViewFactory.reactHost createSurfaceWithModuleName:moduleName initialProperties: initialProperties];
+  RCTFabricSurface *surface = [[RCTFabricSurface alloc] initWithSurfacePresenter:(RCTSurfacePresenter *)bridge.surfacePresenter
+                                                                      moduleName:moduleName
+                                                               initialProperties:initialProperties];
     
   self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
 #else
@@ -74,6 +76,24 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
 
     return self;
 }
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithHost:(RCTHost *)host
+                    moduleName:(NSString *)moduleName
+             initialProperties:(NSDictionary *)initialProperties
+                  eventEmitter:(RNNEventEmitter *)eventEmitter
+               sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
+           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName initialProperties: initialProperties];
+    
+    self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+               
+    _reactViewReadyBlock = reactViewReadyBlock;
+    _eventEmitter = eventEmitter;
+               
+    return self;
+}
+#endif
 
 #pragma mark - RCTSurfaceDelegate
 

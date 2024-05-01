@@ -25,6 +25,6 @@ export interface Spec extends TurboModule {
     getLaunchArgs(commandId: string): Array<string>;
 }
 
-const commands = TurboModuleRegistry.get<Spec>("RNNCommandsModule") ?? NativeModules.RNNBridgeModule;
+const commands = TurboModuleRegistry.get<Spec>("RNNTurboModule") ?? NativeModules.RNNBridgeModule;
 
 export default commands;

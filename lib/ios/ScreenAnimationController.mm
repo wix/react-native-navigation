@@ -4,8 +4,12 @@
 #import "SharedElementAnimator.h"
 #import "UIViewController+LayoutProtocol.h"
 
+
 @implementation ScreenAnimationController {
     RCTBridge *_bridge;
+#ifdef RCT_NEW_ARCH_ENABLED
+    RCTHost *_host;
+#endif
     id<UIViewControllerContextTransitioning> _transitionContext;
     SharedElementAnimator *_sharedElementAnimator;
     BOOL _animate;
@@ -27,8 +31,34 @@
     return self;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
+                       elementTransitions:(NSArray<ElementTransitionOptions *> *)elementTransitions
+                 sharedElementTransitions:
+                     (NSArray<SharedElementTransitionOptions *> *)sharedElementTransitions
+                                 duration:(CGFloat)duration
+                                     host:(RCTHost *)host {
+    self = [super init];
+    _host = host;
+    _content = contentTransition;
+    _elementTransitions = elementTransitions;
+    _sharedElementTransitions = sharedElementTransitions;
+    _duration = duration;
+    return self;
+}
+#endif
+
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
+#ifdef RCT_NEW_ARCH_ENABLED
+    if (_host != nil) {
+        // TODO: do research how to replace uiModule observer
+    } else {
+        [_bridge.uiManager.observerCoordinator addObserver:self];
+    }
+#else
     [_bridge.uiManager.observerCoordinator addObserver:self];
+#endif
+    
     _animate = YES;
     _transitionContext = transitionContext;
     [self prepareTransitionContext:transitionContext];

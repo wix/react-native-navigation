@@ -1,14 +1,14 @@
 #pragma once
-
+#import "RNNCommandsHandler.h"
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <rnnavigation/rnnavigation.h>
 #else
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface RNNCommandsModule : NSObject
+@interface RNNTurboModule : NSObject
 #ifdef RCT_NEW_ARCH_ENABLED
-                          <NativeRNNCommandsModuleSpec>
+                          <NativeRNNTurboModuleSpec>
 #else
                           <RCTBridgeModule>
 #endif

@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern BOOL RNNIsMainQueue(void);
 
 #ifndef RNN_NSASSERT
@@ -27,3 +31,7 @@ extern BOOL RNNIsMainQueue(void);
 
 #define RNNAssertMainQueue()                                                                       \
     RNNAssert(RNNIsMainQueue(), @"This function must be called on the main queue")
+
+#ifdef __cplusplus
+}
+#endif

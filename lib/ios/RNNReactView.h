@@ -15,6 +15,7 @@
 #define ComponentTypeBackground @"TopBarBackground"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
+@class RCTHost;
 
 @protocol RNNComponentProtocol <NSObject>
 
@@ -50,6 +51,17 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
+#endif
+
+#pragma mark - Bridgeless
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithHost:(RCTHost *)host
+                  moduleName:(NSString *)moduleName
+           initialProperties:(NSDictionary *)initialProperties
+                eventEmitter:(RNNEventEmitter *)eventEmitter
+             sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
+         reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 #endif
 
 @property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;

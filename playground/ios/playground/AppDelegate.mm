@@ -11,11 +11,23 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [super application:application didFinishLaunchingWithOptions:launchOptions];
-    [ReactNativeNavigation
-        registerExternalComponent:@"RNNCustomComponent"
-                         callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
-                           return [[RNNCustomViewController alloc] initWithProps:props];
-                         }];
+	
+	if (self.bridgelessEnabled) {
+#ifdef RCT_NEW_ARCH_ENABLED
+		[ReactNativeNavigation
+			registerExternalHostComponent: @"RNNCustomComponent"
+							 callback:^UIViewController *(NSDictionary *props, RCTHost *host) {
+							   return [[RNNCustomViewController alloc] initWithProps:props];
+							 }];
+#endif
+	} else {
+		[ReactNativeNavigation
+			registerExternalComponent:@"RNNCustomComponent"
+							 callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+							   return [[RNNCustomViewController alloc] initWithProps:props];
+							 }];
+	}
+	
     return YES;
 }
 

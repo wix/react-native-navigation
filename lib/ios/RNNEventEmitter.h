@@ -3,7 +3,7 @@
 #import <React/RCTEventEmitter.h>
 #import <React/RCTEventDispatcher.h>
 
-@interface RNNEventEmitter : RCTEventEmitter
+@interface RNNEventEmitter : RCTEventEmitter <RCTBridgeModule>
 
 - (void)sendOnAppLaunched;
 
