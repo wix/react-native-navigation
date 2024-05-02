@@ -11,7 +11,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
                             <NativeRNNEventEmitterSpec>
 
-- (instancetype)initWithHost:(RCTHost *)host;
+- (void)setHost:(RCTHost *)host;
 
 @property(nonatomic, strong, readonly) RCTHost *host;
 #endif

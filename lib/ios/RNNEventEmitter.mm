@@ -166,11 +166,11 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
     return std::make_shared<facebook::react::NativeRNNEventEmitterSpecJSI>(params);
 }
 
-- (instancetype)initWithHost:(RCTHost *)host {
-    if (self = [self init]) {
-        _host =  host;
+- (void)setHost:(RCTHost *)host {
+    if (_host != nil) {
+        return;
     }
-    return self;
+    _host = host;
 }
 #endif
 

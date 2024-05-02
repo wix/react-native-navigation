@@ -48,7 +48,8 @@
                                                      name:RCTJavaScriptWillStartLoadingNotification
                                                    object:nil];
         
-        _eventEmitter = [[RNNEventEmitter alloc] initWithHost:_host];
+        _eventEmitter = [[_host moduleRegistry] moduleForName:"RNNEventEmitter"];
+        _eventEmitter.host = _host;
         
         RNNModalManagerEventHandler *modalManagerEventHandler =
             [[RNNModalManagerEventHandler alloc] initWithEventEmitter:_eventEmitter];
