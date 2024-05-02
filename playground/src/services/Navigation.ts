@@ -64,7 +64,7 @@ const compId = (selfOrCompId: SelfOrCompId): string => {
   return get(selfOrCompId, 'props.componentId', selfOrCompId);
 };
 
-const constants = Navigation.constants;
+const constants = Navigation.constants.bind(Navigation);
 
 const CustomNavigation = {
   mergeOptions,

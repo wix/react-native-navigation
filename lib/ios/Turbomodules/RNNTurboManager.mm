@@ -105,6 +105,10 @@
     // TODO: Refactor
 //    [_modalHostViewHandler
 //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
+    // TODO: Possibly will cause crashes in events with previous copy of emitter, need to test
+    _eventEmitter = [[_host moduleRegistry] moduleForName:"RNNEventEmitter"];
+    _eventEmitter.host = _host;
+    
     [_eventEmitter sendOnAppLaunched];
 }
 

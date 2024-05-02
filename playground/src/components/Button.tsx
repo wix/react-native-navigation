@@ -13,6 +13,8 @@ export default class RnnButton extends React.Component<RnnButtonProps> {
       return null;
     }
 
-    return <Button {...props} backgroundColor={props.testID ? undefined : '#65C888'} marginB-8 />;
+    console.log(props);
+
+    return <Button {...props} title={props.label ?? props.title} backgroundColor={props.testID ? undefined : '#65C888'} marginB-8 />;
   }
 }
