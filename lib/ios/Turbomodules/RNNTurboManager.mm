@@ -65,8 +65,8 @@
         
         _componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
         
-        RNNControllerFactory *controllerFactory =
-            [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator
+        RNNViewControllerFactory *controllerFactory =
+            [[RNNViewControllerFactory alloc] initWithRootViewCreator:rootViewCreator
                                                      eventEmitter:_eventEmitter
                                                             store:_store
                                                 componentRegistry:_componentRegistry
@@ -74,7 +74,7 @@
                                       bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
         
         RNNSetRootAnimator *setRootAnimator = [RNNSetRootAnimator new];
-        _commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory
+        _commandsHandler = [[RNNCommandsHandler alloc] initWithViewControllerFactory:controllerFactory
                                                                    layoutManager:_layoutManager
                                                                     eventEmitter:_eventEmitter
                                                                     modalManager:_modalManager

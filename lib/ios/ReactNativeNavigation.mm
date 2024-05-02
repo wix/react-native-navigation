@@ -4,7 +4,7 @@
 
 #import "RNNBridgeManager.h"
 #import "RNNLayoutManager.h"
-#import "RNNSplashScreen.h"
+#import "RNNSplashScreenViewController.h"
 
 @interface ReactNativeNavigation ()
 
@@ -47,7 +47,7 @@
 
 - (void)bootstrapWithHost:(RCTHost *)host {
     self.turboManager = [[RNNTurboManager alloc] initWithHost:host mainWindow:[self mainWindow]];
-    [RNNSplashScreen showOnWindow:[self mainWindow]];
+    [RNNSplashScreenViewController showOnWindow:[self mainWindow]];
 }
 
 + (RCTHost *)getHost {
@@ -84,7 +84,7 @@
 }
 
 - (void)bootstrapWithBridge:(RCTBridge *)bridge {
-    [RNNSplashScreen showOnWindow:[self mainWindow]];
+    [RNNSplashScreenViewController showOnWindow:[self mainWindow]];
 }
 
 #pragma mark - instance
