@@ -8,6 +8,7 @@
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
+#import "RNNUtils.h"
 
 static NSString *const setRoot = @"setRoot";
 static NSString *const setStackRoot = @"setStackRoot";
@@ -89,7 +90,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [_layoutManager addPendingViewController:vc];
 
     RNNNavigationOptions *optionsWithDefault = vc.resolveOptionsWithDefault;
-    vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender withDefault:NO];
+    vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]];
 
     __weak UIViewController *weakVC = vc;
     [vc setReactViewReadyCallback:^{
@@ -261,14 +262,14 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     UIViewController *fromVC = [_layoutManager findComponentForId:componentId];
 
     RNNNavigationOptions *options = newVC.resolveOptionsWithDefault;
-    newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault:NO]);
+    newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]]);
 
     __weak RNNEventEmitter *weakEventEmitter = _eventEmitter;
     __weak UIViewController *weakNewVC = newVC;
     [newVC setReactViewReadyCallback:^{
       [fromVC.stack setStackChildren:childViewControllers
                   fromViewController:fromVC
-                            animated:[options.animations.setStackRoot.enable withDefault:YES]
+                            animated:[options.animations.setStackRoot.enable withDefault: [RNNUtils getDefaultWaitForRender]]
                           completion:^{
                             [self->_layoutManager removePendingViewController:weakNewVC];
                             [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot

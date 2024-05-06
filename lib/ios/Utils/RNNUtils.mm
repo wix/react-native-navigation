@@ -2,6 +2,14 @@
 
 @implementation RNNUtils
 
++ (BOOL)getDefaultWaitForRender {
+#ifdef RCT_NEW_ARCH_ENABLED
+    return YES;
+#else
+    return NO;
+#endif
+}
+
 + (double)getDoubleOrKey:(NSDictionary *)dict
                  withKey:(NSString *)key
              withDefault:(double)defaultResult {

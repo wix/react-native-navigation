@@ -5,6 +5,7 @@
 #import "RNNStackController.h"
 #import "TopBarPresenterCreator.h"
 #import "UINavigationController+RNNOptions.h"
+#import "RNNUtils.h"
 
 @interface RNNStackPresenter () {
     RNNReactComponentRegistry *_componentRegistry;
@@ -182,7 +183,7 @@
                                        perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
     RNNStackController *stack = self.stackController;
-    if (![withDefault.topBar.background.component.waitForRender withDefault:NO] && readyBlock) {
+    if (![withDefault.topBar.background.component.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]] && readyBlock) {
         readyBlock();
         readyBlock = nil;
     }

@@ -1,4 +1,5 @@
 #import "RNNComponentOptions.h"
+#import "RNNUtils.h"
 
 @implementation RNNComponentOptions
 
@@ -8,7 +9,7 @@
     self.name = [TextParser parse:dict key:@"name"];
     self.componentId = [TextParser parse:dict key:@"componentId"];
     self.alignment = [TextParser parse:dict key:@"alignment"];
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
+    self.waitForRender = [Bool withValue:[[BoolParser parse:dict key:@"waitForRender"] withDefault:[RNNUtils getDefaultWaitForRender]]];
 
     return self;
 }

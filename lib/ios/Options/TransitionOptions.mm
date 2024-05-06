@@ -1,4 +1,5 @@
 #import "TransitionOptions.h"
+#import "RNNUtils.h"
 
 @implementation TransitionOptions
 
@@ -15,7 +16,7 @@
     self.rotationX = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationX"]];
     self.rotationY = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationY"]];
 
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
+    self.waitForRender = [Bool withValue:[[BoolParser parse:dict key:@"waitForRender"] withDefault:[RNNUtils getDefaultWaitForRender]]];
     self.enable = [BoolParser parse:dict key:@"enabled"];
 
     return self;
@@ -54,7 +55,7 @@
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender withDefault:NO] || self.hasAnimation;
+    return [self.waitForRender withDefault:[RNNUtils getDefaultWaitForRender]] || self.hasAnimation;
 }
 
 - (NSTimeInterval)maxDuration {
