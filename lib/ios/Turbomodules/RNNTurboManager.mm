@@ -1,3 +1,4 @@
+#ifdef RCT_NEW_ARCH_ENABLED
 #import <Foundation/Foundation.h>
 #import "RNNTurboManager.h"
 #import "RNNCommandsHandler.h"
@@ -8,10 +9,7 @@
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNTurboCommandsHandler.h"
-
-#ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
-#endif
 
 @interface RNNTurboManager ()
 
@@ -113,3 +111,4 @@
 }
 
 @end
+#endif

@@ -1,4 +1,3 @@
-#import "RNNSplitViewController.h"
 #import "UISplitViewController+RNNOptions.h"
 
 @implementation UISplitViewController (RNNOptions)

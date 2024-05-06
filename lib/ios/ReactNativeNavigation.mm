@@ -26,11 +26,15 @@
 }
 
 + (UIViewController *)findViewController:(NSString *)componentId {
+#ifdef RCT_NEW_ARCH_ENABLED
     if ([ReactNativeNavigation sharedInstance].turboManager == nil) {
         return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
     } else {
         return [[ReactNativeNavigation sharedInstance].turboManager findComponentForId:componentId];
     }
+#else
+    return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
+#endif
 }
 
 #pragma mark - turbomodules

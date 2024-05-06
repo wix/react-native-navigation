@@ -8,35 +8,6 @@
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #endif
 
-static RCTSurfaceSizeMeasureMode convertToSurfaceSizeMeasureMode(RCTRootViewSizeFlexibility sizeFlexibility)
-{
-  switch (sizeFlexibility) {
-    case RCTRootViewSizeFlexibilityWidthAndHeight:
-      return RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightUndefined;
-    case RCTRootViewSizeFlexibilityWidth:
-      return RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightExact;
-    case RCTRootViewSizeFlexibilityHeight:
-      return RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightUndefined;
-    case RCTRootViewSizeFlexibilityNone:
-      return RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightExact;
-  }
-}
-
-static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSizeMeasureMode sizeMeasureMode)
-{
-  switch (sizeMeasureMode) {
-    case RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightUndefined:
-      return RCTRootViewSizeFlexibilityWidthAndHeight;
-    case RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightExact:
-      return RCTRootViewSizeFlexibilityWidth;
-    case RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightUndefined:
-      return RCTRootViewSizeFlexibilityHeight;
-    case RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightExact:
-    default:
-      return RCTRootViewSizeFlexibilityNone;
-  }
-}
-
 @implementation RNNReactView {
     BOOL _isAppeared;
 }
@@ -85,27 +56,33 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
                sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName initialProperties: initialProperties];
-    
-    self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+    // Temporary stop to register delegate
+    //[surface stop];
                
+    self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+
+    //surface.delegate = self;
     _reactViewReadyBlock = reactViewReadyBlock;
     _eventEmitter = eventEmitter;
+    
+    [self reactViewReady];
+               
+    //[surface start];
                
     return self;
 }
 #endif
 
+#ifdef RCT_NEW_ARCH_ENABLED
 #pragma mark - RCTSurfaceDelegate
-
 - (void)surface:(__unused RCTSurface *)surface didChangeStage:(RCTSurfaceStage)stage
 {
   RCTExecuteOnMainQueue(^{
       [super surface:surface didChangeStage:stage];
-      [self reactViewReady];
+      //[self reactViewReady];
   });
 }
-    
-#ifndef RCT_NEW_ARCH_ENABLED
+#else
 - (void)contentDidAppear:(NSNotification *)notification {
     RNNReactView *appearedView = notification.object;
         
@@ -120,7 +97,10 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
         _reactViewReadyBlock();
         _reactViewReadyBlock = nil;
     }
+
+#ifndef RCT_NEW_ARCH_ENABLED
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+#endif
 }
 
 - (void)componentWillAppear {
@@ -155,13 +135,10 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
     [((RCTRootContentView *)self.contentView) invalidate];
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
 - (NSDictionary *)appProperties {
     @synchronized (self) {
-#ifdef RCT_NEW_ARCH_ENABLED
         return self.surface.properties;
-#else
-        return self.appProperties;
-#endif
     }
 }
     
@@ -169,58 +146,37 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
 {
     @synchronized (self)
     {
-#ifdef RCT_NEW_ARCH_ENABLED
         self.surface.properties = newValue;
-#else
-        self.appProperties = newValue;
-#endif
     }
 }
     
+// TODO: Remove delegate in bridgeful
 - (id<RCTSurfaceDelegate>)delegate {
-    @synchronized (self) {
-#ifdef RCT_NEW_ARCH_ENABLED
-        return self.surface.delegate;
-#else
-        return self.delegate;
-#endif
-    }
+    return self.surface.delegate;
 }
         
 - (void)setDelegate:(id<RCTSurfaceDelegate>)newValue
 {
     @synchronized (self)
     {
-#ifdef RCT_NEW_ARCH_ENABLED
         self.surface.delegate = newValue;
-#else
-        self.delegate = delegate;
-#endif
     }
 }
 
 - (NSString *)moduleName {
-#ifdef RCT_NEW_ARCH_ENABLED
     return self.surface.moduleName;
-#else
-    return self.moduleName;
-#endif
 }
     
 - (UIView *)view
 {
-#ifdef RCT_NEW_ARCH_ENABLED
     return (UIView *)super.surface.view;
-#else
-    return self.view;
-#endif
 }
 
 - (UIView *)contentView
 {
     return self;
 }
-    
+        
 - (RCTRootViewSizeFlexibility)sizeFlexibility
 {
     return convertToRootViewSizeFlexibility(super.sizeMeasureMode);
@@ -228,8 +184,10 @@ static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSiz
 
 - (void)setSizeFlexibility:(RCTRootViewSizeFlexibility)sizeFlexibility
 {
-    super.sizeMeasureMode = convertToSurfaceSizeMeasureMode(sizeFlexibility);
+   super.sizeMeasureMode = convertToSurfaceSizeMeasureMode(sizeFlexibility);
 }
+    
+#endif
     
 - (NSString *)componentId {
     return self.appProperties[@"componentId"];

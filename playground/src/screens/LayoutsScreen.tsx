@@ -29,10 +29,15 @@ interface State {
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationProps, State> {
+  state = {
+    componentDidAppear: false,
+  };
+
   constructor(props: NavigationProps) {
+    console.log('Start constructor')
     super(props);
     Navigation.events().bindComponent(this);
-    console.log('Subbed')
+    console.log('Subscribed')
     this.state = {
       componentDidAppear: false,
     };

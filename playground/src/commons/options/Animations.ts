@@ -179,5 +179,9 @@ const customAnimations: AnimationOptions = {
 };
 
 export default {
-  ...(useSlideAnimation ? slideAnimations : useCustomAnimations ? customAnimations : {}),
+  ...(useSlideAnimation ? slideAnimations : useCustomAnimations ? customAnimations : {
+    // setRoot: {
+    //   waitForRender: true
+    // }
+  }),
 };

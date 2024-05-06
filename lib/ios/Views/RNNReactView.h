@@ -14,6 +14,38 @@
 #define ComponentTypeButton @"TopBarButton"
 #define ComponentTypeBackground @"TopBarBackground"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+static RCTSurfaceSizeMeasureMode convertToSurfaceSizeMeasureMode(RCTRootViewSizeFlexibility sizeFlexibility)
+{
+  switch (sizeFlexibility) {
+    case RCTRootViewSizeFlexibilityWidthAndHeight:
+      return RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightUndefined;
+    case RCTRootViewSizeFlexibilityWidth:
+      return RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightExact;
+    case RCTRootViewSizeFlexibilityHeight:
+      return RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightUndefined;
+    case RCTRootViewSizeFlexibilityNone:
+      return RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightExact;
+  }
+}
+
+static RCTRootViewSizeFlexibility convertToRootViewSizeFlexibility(RCTSurfaceSizeMeasureMode sizeMeasureMode)
+{
+  switch (sizeMeasureMode) {
+    case RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightUndefined:
+      return RCTRootViewSizeFlexibilityWidthAndHeight;
+    case RCTSurfaceSizeMeasureModeWidthUndefined | RCTSurfaceSizeMeasureModeHeightExact:
+      return RCTRootViewSizeFlexibilityWidth;
+    case RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightUndefined:
+      return RCTRootViewSizeFlexibilityHeight;
+    case RCTSurfaceSizeMeasureModeWidthExact | RCTSurfaceSizeMeasureModeHeightExact:
+    default:
+      return RCTRootViewSizeFlexibilityNone;
+  }
+}
+
+#endif
+
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @class RCTHost;
 
@@ -33,7 +65,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 #ifdef RCT_NEW_ARCH_ENABLED
 @interface RNNReactView
-    : RCTSurfaceHostingView <RCTRootViewDelegate, RNNComponentProtocol>
+    : RCTSurfaceHostingView <RNNComponentProtocol, RCTSurfaceDelegate>
 #else
 @interface RNNReactView : RCTRootView <RCTRootViewDelegate, RNNComponentProtocol>
 #endif
@@ -62,10 +94,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
                 eventEmitter:(RNNEventEmitter *)eventEmitter
              sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
-#endif
 
-@property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
-@property(nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (atomic, readonly) NSString *moduleName;
 @property (atomic, copy, readwrite) NSDictionary *properties;
 @property (nonatomic, strong, readonly) UIView *view;
@@ -73,6 +102,11 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic, assign) RCTRootViewSizeFlexibility sizeFlexibility;
 @property (atomic, readwrite, weak, nullable) id<RCTSurfaceDelegate> delegate;
 @property (nonatomic, assign) BOOL passThroughTouches;
+
+#endif
+
+@property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+@property(nonatomic, strong) RNNEventEmitter *eventEmitter;
 
 - (void)invalidate;
 

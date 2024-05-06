@@ -46,10 +46,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
-    self.rootViewFactory = [self createRCTRootViewFactory];
     
 #ifdef RCT_NEW_ARCH_ENABLED
+    self.rootViewFactory = [self createRCTRootViewFactory];
+    
+    RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
+    
     if (self.bridgelessEnabled) {
         self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
         
@@ -57,10 +59,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
         
         return YES;
     }
+#else
+    self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 #endif
-
-    // Force init bridge, ignoring generated RCTView
-    [self.rootViewFactory viewWithModuleName:self.moduleName];
     
     [ReactNativeNavigation bootstrapWithBridge:self.bridge];
     
@@ -71,6 +72,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
     return [ReactNativeNavigation extraModulesForBridge:bridge];
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
 - (RCTRootViewFactory *)createRCTRootViewFactory
 {
   __weak __typeof(self) weakSelf = self;
@@ -97,6 +99,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
 }
+#endif
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
     [NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"

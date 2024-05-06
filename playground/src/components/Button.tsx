@@ -1,8 +1,10 @@
 import React from 'react';
-import { Platform, PlatformOSType, Button, ButtonProps } from 'react-native';
+import { Platform, PlatformOSType, ButtonProps, Text, Pressable } from 'react-native';
+import colors from '../commons/Colors';
 
 type RnnButtonProps = {
   platform?: PlatformOSType;
+  label?: string;
 } & ButtonProps;
 
 export default class RnnButton extends React.Component<RnnButtonProps> {
@@ -13,6 +15,10 @@ export default class RnnButton extends React.Component<RnnButtonProps> {
       return null;
     }
 
-    return <Button {...props} title={props.label ?? props.title} backgroundColor={props.testID ? undefined : '#65C888'} marginB-8 />;
+    return (
+      <Pressable {...props} style={{ backgroundColor: props.testID ? colors.accent.light : '#65C888', marginBottom: 8, alignItems: 'center', justifyContent: 'center', padding: 8, borderRadius: 8 }}>
+        <Text>{props.label ?? props.title}</Text>
+      </Pressable>
+    );
   }
 }
