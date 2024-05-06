@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets, Image as FastImage } from 'react-native';
 import {
   Navigation,
   NavigationFunctionComponent,
@@ -7,8 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import FastImage from 'react-native-fast-image';
-import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
+import Reanimated, { EasingNode, useSharedValue as useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
@@ -109,7 +108,6 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
       <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
         <ReanimatedFastImage
           source={car.image}
-          // @ts-ignore nativeID isn't included in react-native-fast-image props.
           nativeID={`image${car.id}Dest`}
           resizeMode="cover"
           style={StyleSheet.absoluteFill}

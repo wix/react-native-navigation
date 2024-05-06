@@ -1,8 +1,7 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
-import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image';
+import { StyleSheet, Text, Dimensions, ViewProps, Platform, Image as FastImage } from 'react-native';
+import Reanimated, { EasingNode, useSharedValue as useValue } from 'react-native-reanimated';
 import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';
@@ -71,7 +70,6 @@ export default function CarCard({
     <PressableScale weight="medium" onPress={onPress} style={containerStyle} {...passThroughProps}>
       <FastImage
         source={car.image}
-        // @ts-ignore nativeID isn't included in react-native-fast-image props.
         nativeID={`image${car.id}`}
         style={styles.image}
         resizeMode="cover"

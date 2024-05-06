@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import FastImage, { Source } from 'react-native-fast-image';
+import { StyleSheet, View, Text, Pressable, Image as FastImage, ImageProps } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 
 interface Props {
-  source: Source;
+  source: ImageProps['source'];
   sharedElementId: string;
 }
 

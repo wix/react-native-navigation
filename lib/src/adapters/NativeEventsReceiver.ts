@@ -25,7 +25,6 @@ export class NativeEventsReceiver {
     try {
       this.emitter = new NativeEventEmitter(RNNEventEmitter);
     } catch (e) {
-      console.log(e, 'HEY!')
       this.emitter = ({
         addListener: () => {
           return {
