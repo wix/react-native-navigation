@@ -17,7 +17,7 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
 } from '../interfaces/Events';
-import RNNEventEmitter from './NativeRNNEventEmitter';
+import RNNEventEmitter from './NativeRNNTurboEventEmitter';
 
 export class NativeEventsReceiver {
   private emitter: NativeEventEmitter;

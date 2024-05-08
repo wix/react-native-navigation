@@ -4,12 +4,20 @@
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
+#ifdef RCT_NEW_ARCH_ENABLED
+    RNNTurboEventEmitter *_eventEmitter;
+#else
     RNNEventEmitter *_eventEmitter;
+#endif
     UIViewController *_presentedViewController;
     BOOL _isPopping;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithEventEmitter:(RNNTurboEventEmitter *)eventEmitter {
+#else
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
+#endif
     self = [super init];
     _eventEmitter = eventEmitter;
     return self;

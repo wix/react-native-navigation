@@ -18,7 +18,7 @@
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
                sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
-           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {  
   RCTFabricSurface *surface = [[RCTFabricSurface alloc] initWithSurfacePresenter:(RCTSurfacePresenter *)bridge.surfacePresenter
                                                                       moduleName:moduleName
                                                                initialProperties:initialProperties];
@@ -79,7 +79,7 @@
 {
   RCTExecuteOnMainQueue(^{
       [super surface:surface didChangeStage:stage];
-      //[self reactViewReady];
+      [self reactViewReady];
   });
 }
 #else

@@ -2,7 +2,7 @@
 
 #import "RNNBridgeModule.h"
 #import "RNNComponentViewCreator.h"
-#import "RNNEventEmitter.h"
+#import "RNNBridgeEventEmitter.h"
 #import "RNNLayoutManager.h"
 #import "RNNModalHostViewManagerHandler.h"
 #import "RNNReactComponentRegistry.h"
@@ -61,7 +61,7 @@
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-    RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
+    RNNEventEmitter * eventEmitter = [[RNNBridgeEventEmitter alloc] init];
     
     RNNModalManagerEventHandler *modalManagerEventHandler =
         [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
@@ -109,7 +109,7 @@
     [_commandsHandler setReadyToReceiveCommands:true];
     [_modalHostViewHandler
         connectModalHostViewManager:[self.bridge moduleForClass:RCTModalHostViewManager.class]];
-    [[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
+    [[_bridge moduleForClass:[RNNBridgeEventEmitter class]] sendOnAppLaunched];
 }
 
 - (void)onBridgeWillReload {

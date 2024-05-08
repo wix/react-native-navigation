@@ -7,8 +7,6 @@
     BOOL _appLaunchedEventDeferred;
 }
 
-RCT_EXPORT_MODULE()
-
 static NSString *const AppLaunched = @"RNN.AppLaunched";
 static NSString *const CommandCompleted = @"RNN.CommandCompleted";
 static NSString *const BottomTabSelected = @"RNN.BottomTabSelected";
@@ -158,20 +156,5 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 - (void)send:(NSString *)eventName body:(id)body {
     [self sendEventWithName:eventName body:body];
 }
-
-#ifdef RCT_NEW_ARCH_ENABLED
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeRNNEventEmitterSpecJSI>(params);
-}
-
-- (void)setHost:(RCTHost *)host {
-    if (_host != nil) {
-        return;
-    }
-    _host = host;
-}
-#endif
 
 @end

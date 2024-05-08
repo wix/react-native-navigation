@@ -25,13 +25,21 @@ export interface Spec extends TurboModule {
     getLaunchArgs(commandId: string): Array<string>;
 }
 
-const _turboCommands = TurboModuleRegistry.get<Spec>("RNNTurboModule");
-const commands = _turboCommands ?? NativeModules.RNNBridgeModule;
+let commands: Spec | null = null;
+let isNewArchWithBridgeless = false;
 
-export const RCTAssertNewArchEnabled = () => {
-    if (!_turboCommands) throw new Error('Allowed only in New Architecture!');
+try {
+    // Running in bridge mode
+    commands = NativeModules.RNNBridgeModule;
+} catch (e) {
+    // Running in bridgeless, access to NativeModules is prohibited
+    isNewArchWithBridgeless = true;
+    commands = TurboModuleRegistry.get<Spec>("RNNTurboModule");
 }
 
-export const isRNNTurboModuleAvailable = !!_turboCommands;
+export const RCTAssertNewArchEnabled = () => {
+    if (!isNewArchWithBridgeless) throw new Error('Allowed only in New Architecture with Bridgeless!');
+}
 
+export const isRNNTurboModuleAvailable = isNewArchWithBridgeless;
 export default commands;
