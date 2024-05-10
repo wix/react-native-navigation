@@ -15,7 +15,7 @@ function registerScreens() {
   );
   Navigation.registerComponent(
     Screens.CarsListScreen,
-    () => require('./sharedElementCarDealer/CarsListScreen').default
+    () => gestureHandlerRootHOC(require('./sharedElementCarDealer/CarsListScreen').default)
   );
   Navigation.registerComponent(Screens.CarDetailsScreen, () =>
     gestureHandlerRootHOC(require('./sharedElementCarDealer/CarDetailsScreen').default)

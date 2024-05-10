@@ -53,7 +53,8 @@
     "@babel/traverse": "7.22.6"
   },
   "resolutions": {
-    "@types/react": "18.2.6"
+    "@types/react": "18.2.6",
+    "react-native-reanimated@3.10.0": "patch:react-native-reanimated@npm%3A3.10.0#./.yarn/patches/react-native-reanimated-npm-3.10.0-3e9c2abe21.patch"
   },
   "peerDependencies": {
     "react": "*",
@@ -109,7 +110,7 @@
     "prettier": "2.8.8",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "react-native-gesture-handler": "2.16.1",
+    "react-native-gesture-handler": "2.16.2",
     "react-native-reanimated": "3.10.0",
     "react-native-redash": "18.1.2",
     "react-redux": "9.1.2",

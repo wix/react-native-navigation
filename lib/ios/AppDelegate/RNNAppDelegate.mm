@@ -17,6 +17,7 @@
 #import <React/RCTBridge+Private.h>
 #import <React/RCTImageLoader.h>
 #import <React/RCTBridgeProxy.h>
+#import <React/RCTSurfacePresenter.h>
 #import <react/utils/ManagedObjectWrapper.h>
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";

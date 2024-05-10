@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets, Image as FastImage } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, Insets, Image, View } from 'react-native';
 import {
   Navigation,
   NavigationFunctionComponent,
@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import Reanimated, { EasingNode, useSharedValue as useValue } from 'react-native-reanimated';
+import Reanimated, { Easing, Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
@@ -15,7 +15,6 @@ import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
-const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
 
 const HEADER_HEIGHT = 300;
 const INDICATOR_INSETS: Insets = { top: HEADER_HEIGHT };
@@ -32,33 +31,27 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
     isClosing.current = true;
     Navigation.dismissModal(componentId);
   }, [componentId]);
+
   const dismissGesture = useDismissGesture(onClosePressed);
 
-  const scrollY = useValue(0);
-  const onScroll = useMemo(
-    () => Reanimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]),
+  const scrollY = useSharedValue(0);
+
+  const onScroll = useAnimatedScrollHandler((e) => {
+    scrollY.value = e.contentOffset.y;
+  });
+
+  const closeButtonStyle = useAnimatedStyle(
+    () => ({ opacity: dismissGesture.controlsOpacity.value }),
+    [dismissGesture.controlsOpacity]
+  );
+
+  const headerY = useDerivedValue(
+    () => interpolate(scrollY.value, [0, HEADER_HEIGHT], [0, -HEADER_HEIGHT], Extrapolation.CLAMP),
     [scrollY]
   );
 
-  const closeButtonStyle = useMemo(
-    () => [styles.closeButton, { opacity: dismissGesture.controlsOpacity }],
-    [dismissGesture.controlsOpacity]
-  );
-  const headerY = useMemo(
-    () =>
-      Reanimated.interpolateNode(scrollY, {
-        inputRange: [0, HEADER_HEIGHT],
-        outputRange: [0, -HEADER_HEIGHT],
-        extrapolateLeft: Reanimated.Extrapolate.CLAMP,
-        extrapolateRight: Reanimated.Extrapolate.EXTEND,
-      }),
-    [scrollY]
-  );
-  const imageStyle = useMemo(
-    () => [
-      styles.headerImage,
-      { borderRadius: dismissGesture.cardBorderRadius, transform: [{ translateY: headerY }] },
-    ],
+  const imageStyle = useAnimatedStyle(
+    () => ({ borderRadius: dismissGesture.cardBorderRadius.value, transform: [{ translateY: headerY.value }] }),
     [dismissGesture.cardBorderRadius, headerY]
   );
 
@@ -72,6 +65,10 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
         },
         options: {
           animations: buildFullScreenSharedElementAnimations(car),
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
+          modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext
         },
       },
     });
@@ -79,11 +76,10 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
 
   useEffect(() => {
     setTimeout(() => {
-      Reanimated.timing(dismissGesture.controlsOpacity, {
-        toValue: 1,
+      dismissGesture.controlsOpacity.value = withTiming(1, {
         duration: 300,
-        easing: EasingNode.linear,
-      }).start();
+        easing: Easing.linear
+      });
     }, SET_DURATION);
   }, [dismissGesture.controlsOpacity]);
 
@@ -96,6 +92,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
         scrollEventThrottle={1}
         scrollIndicatorInsets={INDICATOR_INSETS}
         indicatorStyle="black"
+        nativeID='description'
       >
         <Text style={styles.title} nativeID={`title${car.id}Dest`}>
           {car.name}
@@ -105,55 +102,39 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           <Text style={styles.buyText}>Buy</Text>
         </PressableScale>
       </Reanimated.ScrollView>
-      <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
-        <ReanimatedFastImage
+      <ReanimatedTouchableOpacity style={[styles.headerImage, imageStyle]} onPress={openImage}>
+        <Image
           source={car.image}
           nativeID={`image${car.id}Dest`}
-          resizeMode="cover"
-          style={StyleSheet.absoluteFill}
+          style={{ width: '100%', height: '100%' }}
         />
       </ReanimatedTouchableOpacity>
-      <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
+      <ReanimatedTouchableOpacity style={[styles.closeButton, closeButtonStyle]} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </ReanimatedTouchableOpacity>
     </DismissableView>
   );
 };
-CarDetailsScreen.options = {
-  statusBar: {
-    visible: false,
-  },
-  topBar: {
-    visible: false,
-  },
-  bottomTabs: {
-    visible: false,
-  },
-  layout: {
-    componentBackgroundColor: 'transparent',
-    backgroundColor: 'transparent',
-  },
-  window: {
-    backgroundColor: 'transparent',
-  },
-  modalTransitionStyle: OptionsModalTransitionStyle.coverVertical,
-  modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext,
-};
+
 export default CarDetailsScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.light,
+    backgroundColor: 'transparent',
+    overflow: 'hidden'
   },
   headerImage: {
     position: 'absolute',
     height: HEADER_HEIGHT,
     width: Dimensions.get('window').width,
+    overflow: 'hidden',
   },
   content: {
     paddingTop: HEADER_HEIGHT,
     paddingHorizontal: 25,
+    backgroundColor: colors.background.light,
+    height: '100%'
   },
   title: {
     fontSize: 32,

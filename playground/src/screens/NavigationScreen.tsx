@@ -24,7 +24,7 @@ const {
   BACK_BUTTON_SCREEN_BTN,
 } = testIDs;
 
-interface Props extends NavigationProps {}
+interface Props extends NavigationProps { }
 
 export default class NavigationScreen extends NavigationComponent<Props> {
   static options() {

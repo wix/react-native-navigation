@@ -1,7 +1,7 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, Text, Dimensions, ViewProps, Platform, Image as FastImage } from 'react-native';
-import Reanimated, { EasingNode, useSharedValue as useValue } from 'react-native-reanimated';
+import { StyleSheet, Text, Dimensions, ViewProps, Platform, Image } from 'react-native';
+import Reanimated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';
@@ -9,7 +9,7 @@ import { Navigation } from 'react-native-navigation';
 
 type CarCardProps = {
   car: CarItem;
-  parentComponentId: string;
+  modalComponentId: string;
   onCarPressed: () => unknown;
 } & ViewProps;
 
@@ -20,7 +20,7 @@ const TEXT_BANNER_OPACITY = Platform.select({
 
 export default function CarCard({
   car,
-  parentComponentId,
+  modalComponentId,
   style,
   onCarPressed,
   ...passThroughProps
@@ -29,52 +29,55 @@ export default function CarCard({
 
   const color = useMemo(() => hexToRgba(car.color, TEXT_BANNER_OPACITY), [car.color]);
 
-  const textContainerOpacity = useValue(1);
+  const textContainerOpacity = useSharedValue(1);
 
   const containerStyle = useMemo(() => [styles.container, style], [style]);
-  const textContainerStyle = useMemo(
-    () => [styles.textContainer, { opacity: textContainerOpacity, backgroundColor: color }],
+
+  const textContainerStyle = useAnimatedStyle(
+    () => ({ opacity: textContainerOpacity.value, backgroundColor: color }),
     [color, textContainerOpacity]
   );
 
   const onPress = useCallback(() => {
     onCarPressed();
     isTextHidden.current = true;
-    Reanimated.timing(textContainerOpacity, {
-      toValue: 0,
+    textContainerOpacity.value = withTiming(0, {
       duration: 300,
-      easing: EasingNode.linear,
-    }).start();
+      easing: Easing.linear
+    });
   }, [onCarPressed, textContainerOpacity]);
   const onFocus = useCallback(() => {
     if (isTextHidden.current === true) {
       isTextHidden.current = false;
-      Reanimated.timing(textContainerOpacity, {
-        toValue: 1,
+      textContainerOpacity.value = withTiming(1, {
         duration: 300,
-        easing: EasingNode.linear,
-      }).start();
+        easing: Easing.linear
+      });
     }
   }, [textContainerOpacity]);
 
   useEffect(() => {
-    const subscription = Navigation.events().registerComponentDidAppearListener(
-      ({ componentId }) => {
-        if (componentId === parentComponentId) onFocus();
+    const subscription = Navigation.events().registerModalDismissedListener(
+      ({ componentId: modalId }) => {
+        console.log(modalComponentId, modalId)
+        if (modalId === modalComponentId) {
+          console.log('here')
+          onFocus();
+        }
       }
     );
     return () => subscription.remove();
-  }, [onFocus, parentComponentId]);
+  }, [onFocus, modalComponentId]);
 
   return (
     <PressableScale weight="medium" onPress={onPress} style={containerStyle} {...passThroughProps}>
-      <FastImage
+      <Image
         source={car.image}
         nativeID={`image${car.id}`}
         style={styles.image}
         resizeMode="cover"
       />
-      <Reanimated.View style={textContainerStyle}>
+      <Reanimated.View style={[styles.textContainer, textContainerStyle]}>
         {Platform.OS === 'ios' && <BlurView blurType="light" style={StyleSheet.absoluteFill} />}
         <Text
           nativeID={`title${car.id}`}
@@ -94,8 +97,7 @@ export default function CarCard({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 35,
-    alignSelf: 'center',
+    //alignSelf: 'center',
     width: Dimensions.get('window').width * 0.9,
     height: 350,
     borderRadius: 20,

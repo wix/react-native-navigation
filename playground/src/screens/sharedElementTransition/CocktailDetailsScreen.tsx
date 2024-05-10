@@ -8,7 +8,7 @@ import testIDs from '../../testIDs';
 
 const { COCKTAILS_DETAILS_HEADER, PUSH_DETAILS_BTN } = testIDs;
 
-interface Props extends NavigationProps, CocktailItem {}
+interface Props extends NavigationProps, CocktailItem { }
 
 export default class CocktailDetailsScreen extends React.Component<Props> {
   static options(): Options {
@@ -105,12 +105,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
   },
   image: {
-    height: SIZE,
-    width: SIZE,
+    height: SIZE * 2,
+    width: SIZE * 2,
     zIndex: 1,
     // transform: [{ rotate: '45deg' }],
     marginLeft: 24,
-    marginBottom: -24,
+    marginBottom: -24
     // borderRadius: 20,
   },
 });

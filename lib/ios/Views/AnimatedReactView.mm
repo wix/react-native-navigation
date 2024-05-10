@@ -2,6 +2,11 @@
 #import "UIView+Utils.h"
 #import <React/UIView+React.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTImageComponentView.h>
+#import <React/RCTParagraphComponentView.h>
+#endif
+
 @implementation AnimatedReactView {
     UIView *_originalParent;
     CGRect _originalFrame;
@@ -26,7 +31,11 @@
     _toElement.hidden = YES;
     _fromColor = element.backgroundColor;
     _zIndex = toElement.reactZIndex;
-    [self hijackReactElement:element];
+    
+    // ????
+    if ([element isKindOfClass:[RCTImageComponentView class]] || [element isKindOfClass:[RCTParagraphComponentView class]]) {
+        [self hijackReactElement:element];
+    }
 
     return self;
 }

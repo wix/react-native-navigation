@@ -5,6 +5,7 @@
 #import "RNNElementFinder.h"
 #import "SharedElementTransition.h"
 #import "UIViewController+LayoutProtocol.h"
+#import <React/RCTImageComponentView.h>
 
 @implementation SharedElementAnimator {
     NSArray<SharedElementTransitionOptions *> *_sharedElementTransitions;
@@ -35,13 +36,27 @@
         UIView *fromView =
             [RNNElementFinder findElementForId:transitionOptions.fromId
                                         inView:_fromVC.presentedComponentViewController.reactView];
+        
         UIView *toView =
             [RNNElementFinder findElementForId:transitionOptions.toId
                                         inView:_toVC.presentedComponentViewController.reactView];
+
         if (fromView == nil || toView == nil) {
             continue;
         }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+        auto castedFromView = (RCTViewComponentView *)fromView;
+        auto castedToView = (RCTViewComponentView *)toView;
+        
+        if ([castedToView respondsToSelector:@selector(props)] && [castedFromView respondsToSelector:@selector(props)]) {
+            castedToView.reactZIndex = ((facebook::react::ViewProps *)castedToView.props.get())->zIndex.value_or(0);
+            castedFromView.reactZIndex = ((facebook::react::ViewProps *)castedFromView.props.get())->zIndex.value_or(0);
+            
+            printf("%d %d\n", castedFromView.reactZIndex, castedToView.reactZIndex);
+        }
+#endif
+        
         SharedElementTransition *sharedElementAnimator =
             [[SharedElementTransition alloc] initWithTransitionOptions:transitionOptions
                                                               fromView:fromView

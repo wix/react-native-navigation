@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import Reanimated, { EasingNode } from 'react-native-reanimated';
+import Reanimated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
 import { SET_DURATION } from './Constants';
@@ -26,20 +26,20 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
     isClosing.current = true;
     Navigation.dismissModal(componentId);
   }, [componentId]);
+
   const dismissGesture = useDismissGesture(onClosePressed);
 
-  const closeButtonStyle = useMemo(
-    () => [styles.closeButton, { opacity: dismissGesture.controlsOpacity }],
+  const closeButtonStyle = useAnimatedStyle(
+    () => ({ opacity: dismissGesture.controlsOpacity.value }),
     [dismissGesture.controlsOpacity]
   );
 
   useEffect(() => {
     setTimeout(() => {
-      Reanimated.timing(dismissGesture.controlsOpacity, {
-        toValue: 1,
+      dismissGesture.controlsOpacity.value = withTiming(1, {
         duration: 300,
-        easing: EasingNode.linear,
-      }).start();
+        easing: Easing.linear
+      });
     }, SET_DURATION);
   }, [dismissGesture.controlsOpacity]);
 
@@ -63,10 +63,11 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
         numberOfLines={3}
         lineBreakMode="tail"
         ellipsizeMode="tail"
+        nativeID='description'
       >
         {car.description}
       </Text>
-      <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
+      <ReanimatedTouchableOpacity style={[styles.closeButton, closeButtonStyle]} onPress={onClosePressed}>
         <Text style={styles.closeButtonText}>x</Text>
       </ReanimatedTouchableOpacity>
     </DismissableView>

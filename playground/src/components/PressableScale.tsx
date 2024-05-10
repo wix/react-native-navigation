@@ -5,11 +5,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Reanimated, { useValue } from 'react-native-reanimated';
+import Reanimated, { useSharedValue, WithSpringConfig, withSpring, useAnimatedStyle } from 'react-native-reanimated';
 
 export interface PressableScaleProps
   extends TouchableWithoutFeedbackProps,
-    Partial<Omit<Reanimated.SpringConfig, 'toValue' | 'mass'>> {
+  Partial<Omit<WithSpringConfig, 'mass'>> {
   children: React.ReactNode;
   /**
    * The value to scale to when the Pressable is being pressed.
@@ -60,9 +60,9 @@ export default function PressableScale(props: PressableScaleProps): React.ReactE
     }
   }, [weight]);
 
-  const scale = useValue(1);
-  const touchableStyle = useMemo(() => ({ transform: [{ scale: scale }] }), [scale]);
-  const springConfig = useMemo<Omit<Reanimated.SpringConfig, 'toValue'>>(
+  const scale = useSharedValue(1);
+  const touchableStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }), [scale]);
+  const springConfig = useMemo<WithSpringConfig>(
     () => ({
       damping,
       mass,
@@ -76,20 +76,14 @@ export default function PressableScale(props: PressableScaleProps): React.ReactE
 
   const onPressIn = useCallback(
     (event: GestureResponderEvent) => {
-      Reanimated.spring(scale, {
-        toValue: activeScale,
-        ...springConfig,
-      }).start();
+      scale.value = withSpring(activeScale, springConfig);
       _onPressIn?.(event);
     },
     [_onPressIn, activeScale, scale, springConfig]
   );
   const onPressOut = useCallback(
     (event: GestureResponderEvent) => {
-      Reanimated.spring(scale, {
-        toValue: 1,
-        ...springConfig,
-      }).start();
+      scale.value = withSpring(1, springConfig);
       _onPressOut?.(event);
     },
     [_onPressOut, scale, springConfig]

@@ -62,12 +62,12 @@ export default class CocktailsListScreen extends NavigationComponent {
                   duration: LONG_DURATION,
                   interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
-                {
-                  fromId: `title${item.id}`,
-                  toId: `title${item.id}Dest`,
-                  duration: LONG_DURATION,
-                  interpolation: { type: 'spring', ...SPRING_CONFIG },
-                },
+                // {
+                //   fromId: `title${item.id}`,
+                //   toId: `title${item.id}Dest`,
+                //   duration: LONG_DURATION,
+                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
+                // },
                 {
                   fromId: `backdrop${item.id}`,
                   toId: 'backdrop',
@@ -104,12 +104,12 @@ export default class CocktailsListScreen extends NavigationComponent {
                   duration: LONG_DURATION * POP_MULTIPLIER,
                   interpolation: { type: 'spring', ...SPRING_CONFIG },
                 },
-                {
-                  fromId: `title${item.id}Dest`,
-                  toId: `title${item.id}`,
-                  duration: LONG_DURATION * POP_MULTIPLIER,
-                  interpolation: { type: 'spring', ...SPRING_CONFIG },
-                },
+                // {
+                //   fromId: `title${item.id}Dest`,
+                //   toId: `title${item.id}`,
+                //   duration: LONG_DURATION * POP_MULTIPLIER,
+                //   interpolation: { type: 'spring', ...SPRING_CONFIG },
+                // },
                 {
                   fromId: 'backdrop',
                   toId: `backdrop${item.id}`,
