@@ -29,13 +29,20 @@ interface State {
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationProps, State> {
+  state = {
+    componentDidAppear: false,
+  };
+
   constructor(props: NavigationProps) {
+    console.log('Start constructor')
     super(props);
     Navigation.events().bindComponent(this);
+    console.log('Subscribed')
     this.state = {
       componentDidAppear: false,
     };
   }
+
   componentWillAppear() {
     console.log('componentWillAppear:', this.props.componentId);
   }
@@ -69,12 +76,12 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
   render() {
     return (
       <Root componentId={this.props.componentId}>
-        <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
-        <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
-        <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
+        <Button title="Stack" testID={STACK_BTN} onPress={this.stack} />
+        <Button title="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button title="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
+        <Button title="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
-          label="SplitView"
+          title="SplitView"
           testID={SPLIT_VIEW_BUTTON}
           platform="ios"
           onPress={this.splitView}

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Platform, SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native';
-import { NavigationFunctionComponent } from 'react-native-navigation';
+import { Platform, ScrollView, StyleSheet, View, Text, FlatList } from 'react-native';
+import { NavigationFunctionComponent, OptionsModalPresentationStyle } from 'react-native-navigation';
 import cars, { CarItem } from '../../assets/cars';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
@@ -20,21 +20,21 @@ const STORY_SIZE = 60;
 const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
   const onCarPressed = useCallback((car: CarItem) => {
     Navigation.showModal({
-      stack: {
-        children: [
-          {
-            component: {
-              name: Screens.CarDetailsScreen,
-              passProps: { car: car },
-              options: {
-                animations: buildSharedElementAnimations(car),
-              },
-            },
+      component: {
+        id: 'CarDetailsModal',
+        name: Screens.CarDetailsScreen,
+        passProps: { car: car },
+        options: {
+          animations: buildSharedElementAnimations(car),
+          layout: {
+            componentBackgroundColor: 'transparent'
           },
-        ],
-      },
+          modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext
+        },
+      }
     });
   }, []);
+
   const onCarStoryPressed = useCallback((car: CarItem) => {
     Navigation.showModal({
       component: {
@@ -42,17 +42,21 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
         passProps: { car: car },
         options: {
           animations: buildStorySharedElementAnimations(car),
+          layout: {
+            componentBackgroundColor: 'transparent'
+          },
+          modalPresentationStyle: OptionsModalPresentationStyle.overCurrentContext
         },
       },
     });
   }, []);
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        contentInsetAdjustmentBehavior="never"
-      >
+    <FlatList<any>
+      data={cars}
+      keyExtractor={c => c.id}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ListHeaderComponent={() => (
         <ScrollView horizontal={true} style={styles.storyScrollView}>
           {cars.map((car) => (
             <PressableScale
@@ -77,16 +81,17 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
             </PressableScale>
           ))}
         </ScrollView>
-        {cars.map((car) => (
-          <CarCard
-            key={car.id}
-            parentComponentId={componentId}
-            onCarPressed={() => onCarPressed(car)}
-            car={car}
-          />
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+      )}
+      contentContainerStyle={{ paddingHorizontal: 20 }}
+      renderItem={({ item: car }) => (
+        <CarCard
+          key={car.id}
+          modalComponentId={'CarDetailsModal'}
+          onCarPressed={() => onCarPressed(car)}
+          car={car}
+        />
+      )}
+    />
   );
 };
 
@@ -109,11 +114,11 @@ CarsListScreen.options = {
 export default CarsListScreen;
 
 const styles = StyleSheet.create({
-  scrollContent: {
-    paddingVertical: 25,
-  },
   storyScrollView: {
-    paddingLeft: 20,
+    paddingVertical: 20
+  },
+  separator: {
+    height: 20
   },
   storyContainer: {
     width: STORY_SIZE,

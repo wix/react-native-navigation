@@ -54,8 +54,6 @@ dependencies {
 
     implementation("com.facebook.react:react-android")
 
-    implementation project(':react-native-fast-image')
-
     implementation project(':react-native-navigation')
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }

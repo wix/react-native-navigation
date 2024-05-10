@@ -246,3 +246,5 @@ Mock.js
 Mock.d.ts
 
 Gemfile.lock
+
+.yarn/cache

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, TextInput } from 'react-native';
-import { ColorPalette, Switch } from 'react-native-ui-lib';
+// import { ColorPalette, Switch } from 'react-native-ui-lib';
 import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -77,40 +77,40 @@ export default class SystemUiOptions extends React.Component<NavigationProps, St
           <Image style={style.image} source={require('../../img/city.png')} fadeDuration={0} />
 
           <Text>Navigation & Status Bar Color</Text>
-          <ColorPalette
+          {/* <ColorPalette
             value={this.state.selectedColor}
             onValueChange={this.onPaletteValueChange}
             colors={colors}
-          />
+          /> */}
           <View style={style.translucentSwitch}>
             <Text>Translucent: </Text>
-            <Switch value={this.state.translucent} onValueChange={this.onTranslucentChanged} />
+            {/* <Switch value={this.state.translucent} onValueChange={this.onTranslucentChanged} /> */}
           </View>
 
           <View style={style.translucentSwitch}>
             <Text>Light Status Bar Icons: </Text>
-            <Switch
+            {/* <Switch
               value={this.state.darkStatusBarScheme}
               onValueChange={this.toggleStatusBarColorScheme}
-            />
+            /> */}
           </View>
           <View style={style.translucentSwitch}>
             <Text>Draw Behind: </Text>
-            <Switch value={this.state.drawBehind} onValueChange={this.onDrawBehindValueChanged} />
+            {/* <Switch value={this.state.drawBehind} onValueChange={this.onDrawBehindValueChanged} /> */}
           </View>
           <View style={style.translucentSwitch}>
             <Text>StatusBar Visible: </Text>
-            <Switch
+            {/* <Switch
               value={this.state.statusBarVisible}
               onValueChange={this.onStatusBarVisibilityValueChanged}
-            />
+            /> */}
           </View>
           <View style={style.translucentSwitch}>
             <Text>NavigationBar Visible: </Text>
-            <Switch
+            {/* <Switch
               value={this.state.navigationBarVisible}
               onValueChange={this.onNavBarVisibilityValueChanged}
-            />
+            /> */}
           </View>
           <TextInput
             style={style.input}

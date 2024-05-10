@@ -10,11 +10,11 @@ import {
   ViewStyle,
   LayoutChangeEvent,
 } from 'react-native';
-import { Keyboard } from 'react-native-ui-lib';
+// import { Keyboard } from 'react-native-ui-lib';
 import flags from '../flags';
 import testIDs from '../testIDs';
 
-const KeyboardAwareInsetsView = Keyboard.KeyboardAwareInsetsView;
+// const KeyboardAwareInsetsView = Keyboard.KeyboardAwareInsetsView;
 const { showTextInputToTestKeyboardInteraction } = flags;
 
 type RootProps = {
@@ -32,7 +32,7 @@ const Root = ({ children, componentId, footer, style, testID, onLayout }: RootPr
       {children}
       <Footer componentId={componentId} footer={footer} />
     </ScrollView>
-    {showTextInputToTestKeyboardInteraction && <KeyboardAwareInsetsView />}
+    {/* {showTextInputToTestKeyboardInteraction && <KeyboardAwareInsetsView />} */}
   </SafeAreaView>
 );
 

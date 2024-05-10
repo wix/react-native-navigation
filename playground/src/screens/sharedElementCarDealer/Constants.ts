@@ -41,6 +41,22 @@ export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
           interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
       ],
+      elementTransitions: [
+        {
+          id: 'description',
+          alpha: {
+            to: 0,
+            duration: SET_DURATION / 2,
+          },
+        },
+        {
+          id: 'blur',
+          alpha: {
+            to: 0,
+            duration: SET_DURATION / 2,
+          },
+        },
+      ],
     },
   };
 }
@@ -100,6 +116,22 @@ export function buildStorySharedElementAnimations(car: CarItem): AnimationOption
           interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
       ],
+      elementTransitions: [
+        {
+          id: 'description',
+          alpha: {
+            to: 0,
+            duration: SET_DURATION / 2,
+          },
+        },
+        {
+          id: 'blur',
+          alpha: {
+            to: 0,
+            duration: SET_DURATION / 2,
+          },
+        },
+      ],
     },
   };
 }
@@ -135,6 +167,15 @@ export function buildFullScreenSharedElementAnimations(car: CarItem): AnimationO
           interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
       ],
+      elementTransitions: [
+        {
+          id: 'bg',
+          alpha: {
+            to: 0,
+            duration: SET_DURATION / 2,
+          },
+        },
+      ]
     },
   };
 }

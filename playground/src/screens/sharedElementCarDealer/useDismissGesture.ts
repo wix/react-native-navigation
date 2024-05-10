@@ -1,16 +1,14 @@
-import { usePanGestureHandler, useValue, timing } from 'react-native-redash';
-import { useMemo } from 'react';
-import Reanimated, {
-  Extrapolate,
-  useCode,
-  cond,
-  eq,
-  set,
+import {
   Easing,
-  greaterOrEq,
-  call,
+  SharedValue,
+  interpolate,
+  useSharedValue,
+  Extrapolation,
+  useDerivedValue,
+  withTiming,
+  runOnJS,
 } from 'react-native-reanimated';
-import { State } from 'react-native-gesture-handler';
+import { State, Gesture, PanGesture } from 'react-native-gesture-handler';
 import { Dimensions } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -21,12 +19,15 @@ export type GestureHandlerType = {
 };
 
 export interface DismissGestureState {
-  gestureHandler: GestureHandlerType;
-  dismissAnimationProgress: Reanimated.Value<number>;
-  controlsOpacity: Reanimated.Value<number>;
-  cardBorderRadius: Reanimated.Node<number>;
-  viewScale: Reanimated.Node<number>;
+  gestureHandler: PanGesture;
+  dismissAnimationProgress: SharedValue<number>;
+  controlsOpacity: SharedValue<number>;
+  cardBorderRadius: SharedValue<number>;
+  viewScale: SharedValue<number>;
 }
+
+const GESTURE_HANDLER_RANGE: number = 20;
+const GESTURE_HANDLER_FAIL_RANGE: [failOffsetXStart: number, failOffsetXEnd: number] = [-20, 20];
 
 /**
  * Use a drag-down-to-dismiss gesture powered by native animations (Reanimated)
@@ -35,78 +36,44 @@ export interface DismissGestureState {
  */
 export default function useDismissGesture(navigateBack: () => void): DismissGestureState {
   // TODO: Maybe experiment with some translateX?
-  const gestureHandler = usePanGestureHandler();
-  const dismissAnimationProgress = useValue(0); // Animation from 0 -> 1, where 1 is dismiss.
-  const controlsOpacity = useValue(0); // Extra opacity setting for controls to interactively fade out on drag down
-  const enableGesture = useValue<0 | 1>(1); // Overrides gestureHandler.state to not trigger State.END cond() block when already released and navigating back
+  const dismissAnimationProgress = useSharedValue(0); // Animation from 0 -> 1, where 1 is dismiss.
+  const controlsOpacity = useSharedValue(0); // Extra opacity setting for controls to interactively fade out on drag down
+  const enableGesture = useSharedValue<0 | 1>(1); // Overrides gestureHandler.state to not trigger State.END cond() block when already released and navigating back
 
-  const cardBorderRadius = useMemo(() => {
-    return Reanimated.interpolateNode(dismissAnimationProgress, {
-      inputRange: [0, 1],
-      outputRange: [0, 30],
-      extrapolate: Extrapolate.CLAMP,
-    });
-  }, [dismissAnimationProgress]);
-  const viewScale = useMemo(() => {
-    return Reanimated.interpolateNode(dismissAnimationProgress, {
-      inputRange: [0, 1],
-      outputRange: [1, 0.8],
-      extrapolate: Extrapolate.CLAMP,
-    });
-  }, [dismissAnimationProgress]);
+  const cardBorderRadius = useDerivedValue(() => interpolate(dismissAnimationProgress.value, [0, 1], [0, 30], Extrapolation.CLAMP), [dismissAnimationProgress]);
 
-  useCode(
-    () => [
-      cond(eq(enableGesture, 1), [
-        cond(eq(gestureHandler.state, State.ACTIVE), [
-          set(
-            dismissAnimationProgress,
-            Reanimated.interpolateNode(gestureHandler.translation.y, {
-              inputRange: [0, SCREEN_HEIGHT * 0.2],
-              outputRange: [0, 1],
-            })
-          ),
-          set(
-            controlsOpacity,
-            Reanimated.interpolateNode(gestureHandler.translation.y, {
-              inputRange: [0, SCREEN_HEIGHT * 0.1, SCREEN_HEIGHT * 0.2],
-              outputRange: [1, 0, 0],
-            })
-          ),
-        ]),
-        cond(eq(gestureHandler.state, State.END), [
-          set(
-            dismissAnimationProgress,
-            timing({
-              from: dismissAnimationProgress,
-              to: 0,
-              duration: 200,
-              easing: Easing.out(Easing.ease),
-            })
-          ),
-          set(
-            controlsOpacity,
-            timing({ from: controlsOpacity, to: 1, duration: 200, easing: Easing.linear })
-          ),
-        ]),
-      ]),
-      cond(greaterOrEq(dismissAnimationProgress, 1), [
-        set(enableGesture, 0),
-        call([], navigateBack),
-      ]),
-    ],
-    [
-      controlsOpacity,
-      dismissAnimationProgress,
-      enableGesture,
-      gestureHandler.state,
-      gestureHandler.translation.y,
-      navigateBack,
-    ]
-  );
+  const viewScale = useDerivedValue(() => interpolate(dismissAnimationProgress.value, [0, 1], [1, 0.8], Extrapolation.CLAMP), [dismissAnimationProgress]);
+
+  const gestureHandler = Gesture.Pan()
+    .maxPointers(1)
+    .failOffsetX(GESTURE_HANDLER_FAIL_RANGE)
+    .activeOffsetY(GESTURE_HANDLER_RANGE)
+    .onChange(event => {
+      if (!!enableGesture.value && event.state === State.ACTIVE) {
+        dismissAnimationProgress.value = interpolate(event.translationY, [0, SCREEN_HEIGHT * 0.2], [0, 1]);
+        controlsOpacity.value = interpolate(event.translationY, [0, SCREEN_HEIGHT * 0.1, SCREEN_HEIGHT * 0.2], [1, 0, 0]);
+
+        if (dismissAnimationProgress.value >= 1) {
+          enableGesture.value = 0;
+          runOnJS(navigateBack)();
+        }
+      }
+    })
+    .onEnd(event => {
+      if (!!enableGesture.value && event.state === State.END) {
+        dismissAnimationProgress.value = withTiming(0, {
+          duration: 200,
+          easing: Easing.out(Easing.ease)
+        });
+        controlsOpacity.value = withTiming(1, {
+          duration: 200,
+          easing: Easing.linear
+        })
+      }
+    });
 
   return {
-    gestureHandler: gestureHandler.gestureHandler,
+    gestureHandler: gestureHandler,
     dismissAnimationProgress,
     controlsOpacity,
     cardBorderRadius,

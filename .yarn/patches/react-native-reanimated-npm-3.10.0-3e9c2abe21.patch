@@ -1,0 +1,16 @@
+diff --git a/Common/cpp/NativeModules/NativeReanimatedModule.cpp b/Common/cpp/NativeModules/NativeReanimatedModule.cpp
+index a1ace04a3f6ceb721383d4ba59a64b4e9d1f4bf0..73e3b0dba4b8c96f71a18ef4de9c3b1b53c9ac1c 100644
+--- a/Common/cpp/NativeModules/NativeReanimatedModule.cpp
++++ b/Common/cpp/NativeModules/NativeReanimatedModule.cpp
+@@ -692,7 +692,10 @@ void NativeReanimatedModule::performOperations() {
+ 
+           for (const auto &[shadowNode, props] : copiedOperationsQueue) {
+             const ShadowNodeFamily &family = shadowNode->getFamily();
+-            react_native_assert(family.getSurfaceId() == surfaceId_);
++            //react_native_assert(family.getSurfaceId() == surfaceId_);
++            if(family.getSurfaceId() != surfaceId_) {
++              return nullptr;
++            }
+ 
+ #if REACT_NATIVE_MINOR_VERSION >= 73
+             // Fix for catching nullptr returned from commit hook was
