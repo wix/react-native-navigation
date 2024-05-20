@@ -1,8 +1,23 @@
+import jestExpect from 'expect';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, sleep } = Utils;
+
+const driver = {
+  root: {
+    navToTitleAndSubtitle: async () => {
+      await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
+      return driver.titleWithSubtitle;
+    },
+  },
+
+  titleWithSubtitle: {
+    title: () => elementByLabel('Title'),
+    subtitle: () => elementByLabel('Subtitle'),
+  },
+};
 
 describe('Stack', () => {
   beforeEach(async () => {
@@ -78,11 +93,22 @@ describe('Stack', () => {
   });
 
   it('push title with subtitle', async () => {
-    await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
-    await expect(elementByLabel('Title')).toBeVisible();
-    await expect(elementByLabel('Subtitle')).toBeVisible();
-    await expect(elementById(`${TestIDs.TOPBAR_ID}.title`)).toBeVisible();
-    await expect(elementById(`${TestIDs.TOPBAR_ID}.subtitle`)).toBeVisible();
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
+    await expect(innerDriver.title()).toBeVisible();
+    await expect(innerDriver.subtitle()).toBeVisible();
+  });
+
+  it('push title & subtitle with derived test IDs', async () => {
+    const expectedTitleId = `${TestIDs.TOPBAR_ID}.title`;
+    const expectedSubtitleId = `${TestIDs.TOPBAR_ID}.subtitle`;
+
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
+
+    const titleAttr = await innerDriver.title().getAttributes();
+    jestExpect(titleAttr.identifier).toEqual(expectedTitleId);
+
+    const subtitleAttr = await innerDriver.subtitle().getAttributes();
+    jestExpect(subtitleAttr.identifier).toEqual(expectedSubtitleId);
   });
 
   it.e2e('screen lifecycle', async () => {

@@ -181,6 +181,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTestId(String testId) {
         setTag(testId);
+        titleAndButtonsContainer.setTestId(testId);
     }
 
     public void setTitleTextColor(@ColorInt int color) {
