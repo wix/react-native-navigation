@@ -14,8 +14,12 @@ const driver = {
   },
 
   titleWithSubtitle: {
-    title: () => elementByLabel('Title'),
-    subtitle: () => elementByLabel('Subtitle'),
+    titleId: `${TestIDs.TOPBAR_ID}.title`,
+    subtitleId: `${TestIDs.TOPBAR_ID}.subtitle`,
+    title: () => elementById(driver.titleWithSubtitle.titleId),
+    titleByLabel: () => elementByLabel('Title'),
+    subtitle: () => elementById(driver.titleWithSubtitle.subtitleId),
+    subtitleByLabel: () => elementByLabel('Subtitle'),
   },
 };
 
@@ -94,21 +98,24 @@ describe('Stack', () => {
 
   it('push title with subtitle', async () => {
     const innerDriver = await driver.root.navToTitleAndSubtitle();
+    await expect(innerDriver.titleByLabel()).toBeVisible();
+    await expect(innerDriver.subtitleByLabel()).toBeVisible();
+  });
+
+  it('push title & subtitle with derived test IDs', async () => {
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
     await expect(innerDriver.title()).toBeVisible();
     await expect(innerDriver.subtitle()).toBeVisible();
   });
 
-  it('push title & subtitle with derived test IDs', async () => {
-    const expectedTitleId = `${TestIDs.TOPBAR_ID}.title`;
-    const expectedSubtitleId = `${TestIDs.TOPBAR_ID}.subtitle`;
-
+  it.e2e('push title & subtitle with derived test IDs (strict e2e)', async () => {
     const innerDriver = await driver.root.navToTitleAndSubtitle();
 
-    const titleAttr = await innerDriver.title().getAttributes();
-    jestExpect(titleAttr.identifier).toEqual(expectedTitleId);
+    const titleAttr = await innerDriver.titleByLabel().getAttributes();
+    jestExpect(titleAttr.identifier).toEqual(innerDriver.titleId);
 
-    const subtitleAttr = await innerDriver.subtitle().getAttributes();
-    jestExpect(subtitleAttr.identifier).toEqual(expectedSubtitleId);
+    const subtitleAttr = await innerDriver.subtitleByLabel().getAttributes();
+    jestExpect(subtitleAttr.identifier).toEqual(innerDriver.subtitleId);
   });
 
   it.e2e('screen lifecycle', async () => {
