@@ -35,11 +35,18 @@ def all_pods
 end
 
 post_install do |installer|
-  react_native_post_install(
-    installer,
-    "../../node_modules/react-native",
-    :mac_catalyst_enabled => false
-  )
+  __apply_Xcode_15_3_flipper_post_install_workaround(installer)
+
+  react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
+
+  __apply_Xcode_15_unary_binary_error_workaround(installer)
+
+  # This is to resolve "'shared_timed_mutex' is unavailable: introduced in iOS 10.0" error
+  installer.pods_project.targets.each do |t|
+    t.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+    end
+  end
 end
 
 def __apply_Xcode_15_3_flipper_post_install_workaround(installer)
