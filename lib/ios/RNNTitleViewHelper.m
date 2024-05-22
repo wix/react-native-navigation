@@ -136,9 +136,10 @@
         UIColor *color = _subtitleOptions.color.get;
         subtitleLabel.textColor = color;
     }
-	
-	if (_parentTestID && _parentTestID.hasValue && ((NSString *) _parentTestID.get).length > 0) {
-        subtitleLabel.accessibilityLabel = [NSString stringWithFormat:@"%@.subtitle", _parentTestID.get];
+
+    if (_parentTestID && _parentTestID.hasValue && ((NSString *)_parentTestID.get).length > 0) {
+        subtitleLabel.accessibilityIdentifier =
+            [NSString stringWithFormat:@"%@.subtitle", _parentTestID.get];
     }
 
     [self.titleView addSubview:subtitleLabel];
@@ -180,8 +181,9 @@
         titleLabel.textColor = color;
     }
 
-    if (_parentTestID && _parentTestID.hasValue && ((NSString *) _parentTestID.get).length > 0) {
-        titleLabel.accessibilityLabel = [NSString stringWithFormat:@"%@.title", _parentTestID.get];
+    if (_parentTestID && _parentTestID.hasValue && ((NSString *)_parentTestID.get).length > 0) {
+        titleLabel.accessibilityIdentifier =
+            [NSString stringWithFormat:@"%@.title", _parentTestID.get];
     }
 
     [self.titleView addSubview:titleLabel];
