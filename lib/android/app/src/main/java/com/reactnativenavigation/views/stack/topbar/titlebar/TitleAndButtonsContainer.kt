@@ -99,6 +99,10 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         clearComponent()
     }
 
+    fun setTestId(testId: String) {
+        titleSubTitleBar.setTestId(testId)
+    }
+
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
