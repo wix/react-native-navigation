@@ -21,6 +21,7 @@ def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 android {
+    namespace 'com.reactnativenavigation'
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
     buildToolsVersion = "34.0.0"
     defaultConfig {
@@ -62,8 +63,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        if (reactNativeMinorVersion() >= 73) {
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
+        } else {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
     }
     kotlinOptions {
         if (reactNativeMinorVersion() >= 73) {
