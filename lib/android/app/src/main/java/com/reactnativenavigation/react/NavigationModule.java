@@ -67,14 +67,18 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             @Override
             public void onHostResume() {
                 eventEmitter = new EventEmitter(reactContext);
-                navigator().setEventEmitter(eventEmitter);
-                layoutFactory.init(
-                        activity(),
-                        eventEmitter,
-                        navigator().getChildRegistry(),
-                        ((NavigationApplication) activity().getApplication()).getExternalComponents()
-                );
-                UiUtils.runOnMainThread(() -> navigator().onHostResume());
+                final Navigator currentNavigator=navigator();
+                final NavigationActivity navigationActivity=activity();
+                if(currentNavigator!=null && navigationActivity!=null){
+                    currentNavigator.setEventEmitter(eventEmitter);
+                    layoutFactory.init(
+                            navigationActivity,
+                            eventEmitter,
+                            currentNavigator.getChildRegistry(),
+                            ((NavigationApplication) navigationActivity.getApplication()).getExternalComponents()
+                    );
+                    UiUtils.runOnMainThread(currentNavigator::onHostResume);
+                }
             }
         });
     }
@@ -87,7 +91,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getLaunchArgs(String commandId, Promise promise) {
-        promise.resolve(LaunchArgsParser.parse(activity()));
+        final NavigationActivity navigationActivity=activity();
+        if(navigationActivity!=null)
+        {
+            promise.resolve(LaunchArgsParser.parse(navigationActivity));
+        }
+        else{
+            promise.reject(new NullPointerException());
+        }
     }
 
     private WritableMap createNavigationConstantsMap() {
@@ -116,7 +127,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(Objects.requireNonNull(jsonParser.parse(rawLayoutTree).optJSONObject("root")));
         handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
-            navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
+            }
         });
     }
 
@@ -125,13 +139,21 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> {
             Options defaultOptions = parse(options);
             layoutFactory.setDefaultOptions(defaultOptions);
-            navigator().setDefaultOptions(defaultOptions);
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.setDefaultOptions(defaultOptions);
+            }
         });
     }
 
     @ReactMethod
     public void mergeOptions(String onComponentId, @Nullable ReadableMap options) {
-        handle(() -> navigator().mergeOptions(onComponentId, parse(options)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.mergeOptions(onComponentId, parse(options));
+            }
+        });
     }
 
     @ReactMethod
@@ -139,7 +161,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
-            navigator().push(onComponentId, viewController, new NativeCommandListener("push", commandId, promise, eventEmitter, now));
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.push(onComponentId, viewController, new NativeCommandListener("push", commandId, promise, eventEmitter, now));
+            }
         });
     }
 
@@ -151,23 +176,41 @@ public class NavigationModule extends ReactContextBaseJavaModule {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
                 _children.add(layoutFactory.create(layoutTree));
             }
-            navigator().setStackRoot(onComponentId, _children, new NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now));
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.setStackRoot(onComponentId, _children, new NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now));
+            }
         });
     }
 
     @ReactMethod
     public void pop(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        handle(() -> navigator().pop(componentId, parse(mergeOptions), new NativeCommandListener("pop", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.pop(componentId, parse(mergeOptions), new NativeCommandListener("pop", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     @ReactMethod
     public void popTo(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        handle(() -> navigator().popTo(componentId, parse(mergeOptions), new NativeCommandListener("popTo", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.popTo(componentId, parse(mergeOptions), new NativeCommandListener("popTo", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     @ReactMethod
     public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.popToRoot(componentId, parse(mergeOptions), new NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     @ReactMethod
@@ -175,21 +218,32 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
-            navigator().showModal(viewController, new NativeCommandListener("showModal", commandId, promise, eventEmitter, now));
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.showModal(viewController, new NativeCommandListener("showModal", commandId, promise, eventEmitter, now));
+            }
         });
     }
 
     @ReactMethod
     public void dismissModal(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
         handle(() -> {
-            navigator().mergeOptions(componentId, parse(mergeOptions));
-            navigator().dismissModal(componentId, new NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now));
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.mergeOptions(componentId, parse(mergeOptions));
+                currentNavigator.dismissModal(componentId, new NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now));
+            }
         });
     }
 
     @ReactMethod
     public void dismissAllModals(String commandId, @Nullable ReadableMap mergeOptions, Promise promise) {
-        handle(() -> navigator().dismissAllModals(parse(mergeOptions), new NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.dismissAllModals(parse(mergeOptions), new NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     @ReactMethod
@@ -197,22 +251,39 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
-            navigator().showOverlay(viewController, new NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now));
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.showOverlay(viewController, new NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now));
+            }
         });
     }
 
     @ReactMethod
     public void dismissOverlay(String commandId, String componentId, Promise promise) {
-        handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.dismissOverlay(componentId, new NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     @ReactMethod
     public void dismissAllOverlays(String commandId, Promise promise) {
-        handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
+        handle(() -> {
+            Navigator currentNavigator=navigator();
+            if(currentNavigator!=null){
+                currentNavigator.dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now));
+            }
+        });
     }
 
     private Navigator navigator() {
-        return activity().getNavigator();
+        NavigationActivity navigationActivity=activity();
+        if(navigationActivity!=null){
+            return navigationActivity.getNavigator();
+        }
+        return null;
     }
 
     private Options parse(@Nullable ReadableMap mergeOptions) {
@@ -223,7 +294,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     protected void handle(Runnable task) {
         UiThread.post(() -> {
-            if (getCurrentActivity() != null && !activity().isFinishing()) {
+            NavigationActivity navigationActivity=activity();
+            if (getCurrentActivity() != null && navigationActivity!=null && !navigationActivity.isFinishing()) {
                 task.run();
             }
         });
