@@ -269,10 +269,11 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     }
 
     private void selectTab(int newIndex, boolean enableSelectionHistory) {
-        saveTabSelection(newIndex, enableSelectionHistory);
-        tabsAttacher.onTabSelected(tabs.get(newIndex));
+        final int nextIndex = Math.max(0, Math.min(newIndex, tabs.size() - 1));
+        saveTabSelection(nextIndex, enableSelectionHistory);
+        tabsAttacher.onTabSelected(tabs.get(nextIndex));
         getCurrentView().setVisibility(View.INVISIBLE);
-        bottomTabs.setCurrentItem(newIndex, false);
+        bottomTabs.setCurrentItem(nextIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
         getCurrentChild().onViewWillAppear();
         getCurrentChild().onViewDidAppear();
