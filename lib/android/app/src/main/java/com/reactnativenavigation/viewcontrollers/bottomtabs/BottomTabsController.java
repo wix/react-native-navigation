@@ -164,15 +164,18 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         final boolean childBack = !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
         final Options options = resolveCurrentOptions();
         if (!childBack) {
+            final int oldTabIndex = bottomTabs.getCurrentItem();
             if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.PrevSelection) {
                 if (!selectionStack.isEmpty()) {
                     final int prevSelectedTabIndex = selectionStack.poll();
                     selectTab(prevSelectedTabIndex, false);
+                    eventEmitter.emitBottomTabSelected(oldTabIndex, prevSelectedTabIndex);
                     return true;
                 }
             } else if (options.hardwareBack.getBottomTabOnPress() instanceof HwBackBottomTabsBehaviour.JumpToFirst) {
                 if (getSelectedIndex() != 0) {
                     selectTab(0, false);
+                    eventEmitter.emitBottomTabSelected(oldTabIndex, 0);
                     return true;
                 } else {
                     return false;
