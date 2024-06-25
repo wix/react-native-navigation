@@ -11,6 +11,12 @@ describe('BottomTabs', () => {
     await expect(elementByLabel('First Tab')).toBeVisible();
   });
 
+  it.e2e('should mount first tab first', async () => {
+    await expect(elementById(TestIDs.MOUNTED_SCREENS_TEXT)).toHaveText(
+      'Mounted screens: FirstBottomTabScreen, SecondBottomTabScreen'
+    );
+  });
+
   it('switch to tab by index', async () => {
     await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
     await expect(elementByLabel('First Tab')).toBeNotVisible();
