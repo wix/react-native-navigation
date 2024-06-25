@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { NavigationProps, Options } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -6,6 +6,17 @@ import Navigation from './../services/Navigation';
 import Screens from './Screens';
 import { component } from '../commons/Layouts';
 import testIDs from '../testIDs';
+import { Text } from 'react-native';
+
+export class MountedBottomTabScreensState {
+  static mountedBottomTabScreens: string[] = [];
+  static callback: (mountedBottomTabScreens: string[]) => void = () => {};
+
+  static addScreen(screen: string) {
+    this.mountedBottomTabScreens.push(screen);
+    this.callback(this.mountedBottomTabScreens);
+  }
+}
 
 const {
   SWITCH_TAB_BY_INDEX_BTN,
@@ -16,9 +27,14 @@ const {
   SHOW_TABS_BTN,
   HIDE_TABS_PUSH_BTN,
   FIRST_TAB_BAR_BUTTON,
+  MOUNTED_SCREENS_TEXT,
 } = testIDs;
 
-export default class FirstBottomTabScreen extends React.Component<NavigationProps> {
+interface NavigationState {
+  mountedBottomTabScreens: string[];
+}
+
+export default class FirstBottomTabScreen extends Component<NavigationProps, NavigationState> {
   static options(): Options {
     return {
       layout: {
@@ -36,6 +52,19 @@ export default class FirstBottomTabScreen extends React.Component<NavigationProp
         dotIndicator: { visible: true },
       },
     };
+  }
+
+  constructor(props: NavigationProps) {
+    super(props);
+    this.state = { mountedBottomTabScreens: [] };
+
+    MountedBottomTabScreensState.callback = (mountedBottomTabScreens: string[]) => {
+      this.setState({ mountedBottomTabScreens: mountedBottomTabScreens });
+    };
+  }
+
+  componentDidMount() {
+    MountedBottomTabScreensState.addScreen('FirstBottomTabScreen');
   }
 
   badgeVisible = true;
@@ -71,6 +100,10 @@ export default class FirstBottomTabScreen extends React.Component<NavigationProp
         />
         <Button label="Push" onPress={this.push} />
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
+
+        <Text testID={MOUNTED_SCREENS_TEXT}>
+          Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
+        </Text>
       </Root>
     );
   }
