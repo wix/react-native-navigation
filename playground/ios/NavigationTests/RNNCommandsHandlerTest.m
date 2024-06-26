@@ -554,8 +554,21 @@
            }];
 
     [self waitForExpectationsWithTimeout:10 handler:nil];
-    XCTAssertTrue(_vc1.isViewLoaded);
-    XCTAssertTrue(_vc2.isViewLoaded);
+
+	XCTAssertTrue(self->_vc1.isViewLoaded);
+
+	// Make sure the view is not loaded until the next main run loop.
+	XCTAssertFalse(self->_vc2.isViewLoaded);
+
+
+	// Wait for the next main run-loop.
+	XCTestExpectation *viewLoadedExpectation = [self expectationWithDescription:@"Wait for _vc2.isViewLoaded"];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		XCTAssertTrue(self->_vc2.isViewLoaded);
+		[viewLoadedExpectation fulfill];
+	});
+
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 - (void)testSetRoot_withAnimation {
