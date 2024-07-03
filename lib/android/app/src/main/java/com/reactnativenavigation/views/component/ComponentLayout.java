@@ -14,13 +14,14 @@ import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
+import com.reactnativenavigation.views.touch.TouchDelegateLayout;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
+public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener, TouchDelegateLayout {
 
     private boolean willAppearSent = false;
     private ReactView reactView;

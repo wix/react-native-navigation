@@ -1,7 +1,7 @@
 import { Navigation, Layout, Options, LayoutRoot } from 'react-native-navigation';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
-import { stack, component } from '../commons/Layouts';
+import { stack, component, sheet } from '../commons/Layouts';
 
 type ComponentIdProp = { props: { componentId: string } };
 type SelfOrCompId = string | ComponentIdProp;
@@ -31,8 +31,13 @@ const pop = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
 const showModal = (screen: string | Layout, options?: Options) =>
   Navigation.showModal(isString(screen) ? stack(component(screen, options)) : screen);
 
+const showSheet = (screen: string | Layout, options?: Options) =>
+  Navigation.showModal(isString(screen) ? sheet(screen, options) : screen);
+
 const dismissModal = (selfOrCompId: SelfOrCompId, mergeOptions?: Options) =>
   Navigation.dismissModal(compId(selfOrCompId), mergeOptions);
+
+const dismissSheet = dismissModal;
 
 const dismissAllModals = () => Navigation.dismissAllModals();
 
@@ -74,6 +79,8 @@ const CustomNavigation = {
   pop,
   popToRoot,
   showModal,
+  showSheet,
+  dismissSheet,
   dismissModal,
   dismissAllModals,
   showOverlay,

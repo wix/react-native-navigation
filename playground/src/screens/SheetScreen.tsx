@@ -1,31 +1,48 @@
 import { StyleSheet, TouchableOpacity, View, Text, ScrollView } from 'react-native';
-import { NavigationLayoutElements } from 'react-native-navigation';
+import { NavigationLayoutElements, NavigationProps } from 'react-native-navigation';
 import { useState } from 'react';
 import React from 'react';
+import Screens from './Screens';
+import Navigation from '../services/Navigation';
 
-export const TestScreen = () => {
+const SheetScreen = (props: NavigationProps) => {
   const [list, setList] = useState([{ title: 1 }]);
 
   return (
     <View style={styles.container}>
       <View style={styles.header} nativeID={NavigationLayoutElements.Header}>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text>FullScreen sheet</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            Navigation.showSheet(Screens.Sheet, { layout: { sheetFullScreen: true } });
+          }}
+        >
+          <Text style={styles.buttonText}>FullScreen</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text>Open Modal</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            Navigation.showModal(Screens.Modal);
+          }}
+        >
+          <Text style={styles.buttonText}>Open Modal</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => setList([{ title: list.length + 1 }, ...list])}
         >
-          <Text>Add Item</Text>
+          <Text style={styles.buttonText}>Add Item</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setList([...list.slice(0, 0), ...list.slice(0 + 1)])}>
-          <Text>Remove Item</Text>
+          <Text style={styles.buttonText}>Remove Item</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text>Go back</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            Navigation.dismissSheet(props.componentId);
+          }}
+        >
+          <Text style={styles.buttonText}>dismissModal</Text>
         </TouchableOpacity>
       </View>
 
@@ -44,11 +61,19 @@ export const TestScreen = () => {
   );
 };
 
+export default SheetScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  button: {},
+  button: {
+    paddingHorizontal: 6,
+  },
+  buttonText: {
+    color: '#FFF',
+    backgroundColor: 'blue',
+  },
   header: {
     height: 64,
     backgroundColor: 'red',

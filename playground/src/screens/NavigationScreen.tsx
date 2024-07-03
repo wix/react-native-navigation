@@ -104,30 +104,11 @@ export default class NavigationScreen extends NavigationComponent<Props> {
   showModal = () => Navigation.showModal(Screens.Modal);
 
   showSheet = (isFullScreen: boolean) => {
-    Navigation.showModal({
-      sheet: {
-        name: Screens.Sheet,
-        options: {
-          layout: {
-            componentBackgroundColor: 'transparent',
-            backgroundColor: Platform.OS === 'android' ? 'transparent' : '#10161F',
-            sheetFullScreen: isFullScreen,
-          },
-          modalPresentationStyle:
-            Platform.OS === 'android'
-              ? OptionsModalPresentationStyle.overCurrentContext
-              : OptionsModalPresentationStyle.overFullScreen,
-          animations: {
-            showModal: {
-              enter: { enabled: false },
-              exit: { enabled: false },
-            },
-            dismissModal: {
-              enter: { enabled: false },
-              exit: { enabled: false },
-            },
-          },
-        },
+    Navigation.showSheet(Screens.Sheet, {
+      layout: {
+        sheetFullScreen: isFullScreen,
+        sheetBackdropOpacity: 0.9,
+        sheetBorderTopRadius: 22,
       },
     });
   };

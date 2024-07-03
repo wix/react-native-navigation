@@ -16,7 +16,7 @@ export interface Sheet {
   /**
    * Properties to pass down to the component
    */
-  passProps?: object;
+  passProps?: any;
 }
 
 export interface LayoutComponent<P = {}> {
