@@ -89,7 +89,7 @@
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jasmine": "3.5.10",
     "@types/jest": "27.0.2",
-    "@types/lodash": "^4.14.149",
+    "@types/lodash": "4.14.149",
     "@types/react": "16.9.41",
     "@types/react-native": "0.63.1",
     "@types/react-test-renderer": "16.9.2",
