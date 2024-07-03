@@ -6,6 +6,7 @@ const SystemUiOptions = 'SystemUiOptions';
 const StatusBarFirstTab = 'StatusBarFirstTab';
 
 const Screens = {
+  Sheet: 'Sheet',
   Buttons: 'Buttons',
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',

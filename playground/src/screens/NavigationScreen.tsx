@@ -60,6 +60,8 @@ export default class NavigationScreen extends NavigationComponent<Props> {
       <Root componentId={this.props.componentId} testID={NAVIGATION_SCREEN}>
         <Button label="Set Root" testID={SET_ROOT_BTN} onPress={this.setRoot} />
         <Button label="Modal" testID={MODAL_BTN} onPress={this.showModal} />
+        <Button label="Sheet" testID={MODAL_BTN} onPress={() => this.showSheet(false)} />
+        <Button label="FullScreen Sheet" testID={MODAL_BTN} onPress={() => this.showSheet(true)} />
         <Button
           label="PageSheet modal"
           testID={PAGE_SHEET_MODAL_BTN}
@@ -100,6 +102,35 @@ export default class NavigationScreen extends NavigationComponent<Props> {
 
   setRoot = () => Navigation.showModal(Screens.SetRoot);
   showModal = () => Navigation.showModal(Screens.Modal);
+
+  showSheet = (isFullScreen: boolean) => {
+    Navigation.showModal({
+      sheet: {
+        name: Screens.Sheet,
+        options: {
+          layout: {
+            componentBackgroundColor: 'transparent',
+            backgroundColor: Platform.OS === 'android' ? 'transparent' : '#10161F',
+            sheetFullScreen: isFullScreen,
+          },
+          modalPresentationStyle:
+            Platform.OS === 'android'
+              ? OptionsModalPresentationStyle.overCurrentContext
+              : OptionsModalPresentationStyle.overFullScreen,
+          animations: {
+            showModal: {
+              enter: { enabled: false },
+              exit: { enabled: false },
+            },
+            dismissModal: {
+              enter: { enabled: false },
+              exit: { enabled: false },
+            },
+          },
+        },
+      },
+    });
+  };
 
   showPageSheetModal = () =>
     Navigation.showModal(Screens.Modal, {

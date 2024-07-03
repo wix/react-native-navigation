@@ -1,6 +1,12 @@
 // tslint:disable jsdoc-format
 import { ImageRequireSource, ImageSourcePropType, Insets, OpaqueColorValue } from 'react-native';
 
+export enum NavigationLayoutElements {
+  Header = 'NavigationLayoutHeader',
+  Content = 'NavigationLayoutContent',
+  Footer = 'NavigationLayoutFooter',
+}
+
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
 export declare type Color = string | symbol | ThemeColor | OpaqueColorValue | null;
@@ -200,6 +206,22 @@ export interface OptionsLayout {
    * #### (Android specific)
    */
   adjustResize?: boolean;
+
+  /**
+   * Set fullScreen for sheet, this for ignore calc size for sheet
+   * #### (Android specific)
+   */
+  sheetFullScreen?: boolean;
+
+  /**
+   * Set sheet backdrop opacity
+   */
+  sheetBackdropOpacity?: number;
+
+  /**
+   * Set sheet corner top radius
+   */
+  sheetBorderTopRadius?: number;
 }
 
 export enum OptionsModalPresentationStyle {
