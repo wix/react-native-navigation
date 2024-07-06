@@ -1,5 +1,5 @@
 import { EventsRegistry } from './events/EventsRegistry';
-import { ComponentProvider } from 'react-native';
+import { ComponentProvider, Platform, findNodeHandle } from 'react-native';
 import { NavigationConstants } from './adapters/Constants';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
@@ -10,6 +10,7 @@ import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { AppRegistryService } from './adapters/AppRegistryService';
+import { RefObject } from 'react';
 
 export class NavigationDelegate {
   private concreteNavigation: NavigationRoot;
@@ -94,10 +95,32 @@ export class NavigationDelegate {
    */
   public setupSheetContentNodes(
     componentId: string,
-    headerNode?: number | null,
-    contentNode?: number | null,
-    footerNode?: number | null
+    headerRef?: RefObject<any>,
+    contentRef?: RefObject<any>,
+    footerRef?: RefObject<any>
   ) {
+    if (contentRef === undefined) {
+      throw new Error('Cannot present sheet, because contentRef is undefined');
+    }
+
+    const headerNode = headerRef ? findNodeHandle(headerRef.current) : null;
+    const contentNode = contentRef ? findNodeHandle(contentRef.current) : null;
+    const footerNode = footerRef ? findNodeHandle(footerRef.current) : null;
+
+    if (Platform.OS === 'android') {
+      if (headerRef?.current) {
+        headerRef.current.setNativeProps({ nativeID: `SheetHeader-${headerNode}` });
+      }
+
+      if (footerRef?.current) {
+        footerRef.current.setNativeProps({ nativeID: `SheetFooter-${footerNode}` });
+      }
+
+      if (contentRef?.current) {
+        contentRef.current.setNativeProps({ nativeID: `SheetContent-${contentNode}` });
+      }
+    }
+
     return this.concreteNavigation.setupSheetContentNodes(
       componentId,
       headerNode,

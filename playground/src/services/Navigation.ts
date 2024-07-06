@@ -2,6 +2,7 @@ import { Navigation, Layout, Options, LayoutRoot } from 'react-native-navigation
 import get from 'lodash/get';
 import isString from 'lodash/isString';
 import { stack, component, sheet } from '../commons/Layouts';
+import { RefObject } from 'react';
 
 type ComponentIdProp = { props: { componentId: string } };
 type SelfOrCompId = string | ComponentIdProp;
@@ -58,10 +59,10 @@ const setStackRoot = (selfOrCompId: SelfOrCompId, root: Layout | Layout[]) =>
 
 const setupSheetContentNodes = (
   compId: string,
-  headerNode?: number | null,
-  contentNode?: number | null,
-  footerNode?: number | null
-) => Navigation.setupSheetContentNodes(compId, headerNode, contentNode, footerNode);
+  headerRef?: RefObject<any>,
+  contentRef?: RefObject<any>,
+  footerRef?: RefObject<any>
+) => Navigation.setupSheetContentNodes(compId, headerRef, contentRef, footerRef);
 
 const setRoot = (root: LayoutRoot | CompIdOrLayout) => {
   // If provided root is not a string and contain `root` property, it's a LayoutRoot.

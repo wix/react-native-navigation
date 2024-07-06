@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.sheet;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import com.facebook.react.ReactInstanceManager;
@@ -10,7 +9,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
 import com.reactnativenavigation.options.layout.LayoutOptions;
-import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
@@ -47,38 +45,45 @@ public class SheetViewController extends ChildController<SheetLayout> {
 
     public final SheetLayout sheetView;
 
-    private ReactFindViewUtil.OnViewFoundListener createOnViewFoundListener() {
+    private ReactFindViewUtil.OnViewFoundListener createOnViewFoundListener(int headerTag, int contentTag, int footerTag) {
         return new ReactFindViewUtil.OnViewFoundListener() {
             @Override
             public String getNativeId() {
-                return "NavigationLayoutContent";
+                return "SheetContent-"+contentTag;
             }
 
             @Override
             public void onViewFound(final View view) {
                 if (view instanceof ReactScrollView) {
                     scrollView = (ReactScrollView) view;
+                    contentView = (ViewGroup) scrollView.getChildAt(0);
+                    if (contentView != null) {
+                        getReactContext().runOnUiQueueThread((Runnable) () -> {
+                            setupFooterAndHeader(headerTag, footerTag);
+                            updateContentHeight();
+                        });
 
-                    // Wait access to first child
-                    scrollView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                        @Override
-                        public void onLayoutChange (View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                            scrollView.removeOnLayoutChangeListener(this);
-                            // Get first child as contentView
-                            contentView = (ViewGroup) scrollView.getChildAt(0);
+                        startListenLayoutChange();
+                    } else {
+                        // Wait access to first child
+                        scrollView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                            @Override
+                            public void onLayoutChange (View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                                scrollView.removeOnLayoutChangeListener(this);
+                                contentView = (ViewGroup) scrollView.getChildAt(0);
+                                getReactContext().runOnUiQueueThread((Runnable) () -> {
+                                    setupFooterAndHeader(headerTag, footerTag);
+                                    updateContentHeight();
+                                });
 
-                            getReactContext().runOnUiQueueThread((Runnable) () -> {
-                                setupFooterAndHeader();
-                                updateContentHeight();
-                            });
-
-                            startListenLayoutChange();
-                        }
-                    });
+                                startListenLayoutChange();
+                            }
+                        });
+                    }
                 } else if (view instanceof ViewGroup) {
                     contentView = (ViewGroup) view;
                     getReactContext().runOnUiQueueThread((Runnable) () -> {
-                        setupFooterAndHeader();
+                        setupFooterAndHeader(headerTag, footerTag);
                         updateContentHeight();
                     });
 
@@ -123,15 +128,22 @@ public class SheetViewController extends ChildController<SheetLayout> {
 
         if (layoutOptions.sheetFullScreen.isTrue()) {
             sheetView.present(0);
-        } else {
-            ReactFindViewUtil.addViewListener(createOnViewFoundListener());
         }
     }
 
-    private void setupFooterAndHeader() {
+    public void setupContentViews(int headerTag, int contentTag, int footerTag) {
+        LayoutOptions layoutOptions = resolveCurrentOptions(this.presenter.defaultOptions).layout;
+        if (layoutOptions.sheetFullScreen.isTrue()) {
+            return;
+        }
+
+        ReactFindViewUtil.addViewListener(createOnViewFoundListener(headerTag, contentTag, footerTag));
+    }
+
+    private void setupFooterAndHeader(int headerTag, int footerTag) {
         if(sheetView != null) {
-            headerView = (ViewGroup) ReactFindViewUtil.findView(sheetView, "NavigationLayoutHeader");
-            footerView = (ViewGroup) ReactFindViewUtil.findView(sheetView, "NavigationLayoutFooter");
+            headerView = (ViewGroup) ReactFindViewUtil.findView(sheetView, "SheetHeader-"+headerTag);
+            footerView = (ViewGroup) ReactFindViewUtil.findView(sheetView, "SheetFooter-"+footerTag);
         }
     }
 
@@ -152,19 +164,6 @@ public class SheetViewController extends ChildController<SheetLayout> {
         if (sheetView != null && contentHeight != newContentHeight) {
             contentHeight = newContentHeight;
             sheetView.present(newContentHeight);
-
-//            if (footerView != null) {
-//                int footerHeight = footerView.getHeight();
-//                int footerTop = footerView.getTop();
-////                // Calculate the new Y position for the footer
-////                int y = footerTop;// + (sheetView.getHeight() - contentHeight - footerTop);
-////
-////                if (y < 0) {
-////                    y = sheetView.getHeight() - footerHeight; // Ensure the footer stays within the screen bounds
-////                }
-////
-////                footerView.setY(y);
-//            }
         }
     }
 
