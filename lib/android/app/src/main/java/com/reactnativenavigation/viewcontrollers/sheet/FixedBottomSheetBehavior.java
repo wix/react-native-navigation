@@ -657,11 +657,16 @@ public class FixedBottomSheetBehavior<V extends View> extends CoordinatorLayout.
         // it is not the top most view of its parent. This is not necessary when the touch event is
         // happening over the scrolling content as nested scrolling logic handles that case.
         View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
+        boolean cantScroll = false;
+        if (scroll != null) {
+            cantScroll = !scroll.canScrollVertically(1) && !scroll.canScrollVertically(-1);
+        }
+
         return action == MotionEvent.ACTION_MOVE
                 && scroll != null
                 && !ignoreEvents
                 && state != STATE_DRAGGING
-                && !parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY())
+                && !cantScroll ? !parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY()) : true
                 && viewDragHelper != null
                 && initialY != INVALID_POSITION
                 && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
@@ -727,6 +732,7 @@ public class FixedBottomSheetBehavior<V extends View> extends CoordinatorLayout.
             int type) {
         if (type == ViewCompat.TYPE_NON_TOUCH) {
             // Ignore fling here. The ViewDragHelper handles it.
+
             return;
         }
         View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
