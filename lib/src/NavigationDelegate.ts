@@ -99,34 +99,43 @@ export class NavigationDelegate {
     contentRef?: RefObject<any>,
     footerRef?: RefObject<any>
   ) {
-    if (contentRef === undefined) {
-      throw new Error('Cannot present sheet, because contentRef is undefined');
-    }
+    const setup = () => {
+      if (contentRef === undefined) {
+        throw new Error('Cannot present sheet, because contentRef is undefined');
+      }
 
-    const headerNode = headerRef ? findNodeHandle(headerRef.current) : null;
-    const contentNode = contentRef ? findNodeHandle(contentRef.current) : null;
-    const footerNode = footerRef ? findNodeHandle(footerRef.current) : null;
+      const headerNode = headerRef ? findNodeHandle(headerRef.current) : null;
+      const contentNode = contentRef ? findNodeHandle(contentRef.current) : null;
+      const footerNode = footerRef ? findNodeHandle(footerRef.current) : null;
+
+      if (Platform.OS === 'android') {
+        if (headerRef?.current) {
+          headerRef.current.setNativeProps({ nativeID: `SheetHeader-${headerNode}` });
+        }
+
+        if (footerRef?.current) {
+          footerRef.current.setNativeProps({ nativeID: `SheetFooter-${footerNode}` });
+        }
+
+        if (contentRef?.current) {
+          contentRef.current.setNativeProps({ nativeID: `SheetContent-${contentNode}` });
+        }
+      }
+
+      this.concreteNavigation.setupSheetContentNodes(
+        componentId,
+        headerNode,
+        contentNode,
+        footerNode
+      );
+    };
 
     if (Platform.OS === 'android') {
-      if (headerRef?.current) {
-        headerRef.current.setNativeProps({ nativeID: `SheetHeader-${headerNode}` });
-      }
-
-      if (footerRef?.current) {
-        footerRef.current.setNativeProps({ nativeID: `SheetFooter-${footerNode}` });
-      }
-
-      if (contentRef?.current) {
-        contentRef.current.setNativeProps({ nativeID: `SheetContent-${contentNode}` });
-      }
+      // Wait all frames have flushed
+      requestAnimationFrame(setup);
+    } else {
+      setup();
     }
-
-    return this.concreteNavigation.setupSheetContentNodes(
-      componentId,
-      headerNode,
-      contentNode,
-      footerNode
-    );
   }
 
   /**
