@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Platform } from 'react-native';
 import { NavigationProps } from 'react-native-navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
 import React from 'react';
@@ -15,7 +15,7 @@ function useSetupSheetContent<
   contentRef?: React.RefObject<TContentRef>,
   footerRef?: React.RefObject<TFooterRef>
 ) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     Navigation.setupSheetContentNodes(componentId, headerRef, contentRef, footerRef);
   }, [componentId, contentRef, footerRef, headerRef]);
 }

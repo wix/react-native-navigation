@@ -213,7 +213,10 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setupSheetContentNodes(String componentId, int headerTag,  int contentTag,  int footerTag, Promise promise) {
-        handle(() -> navigator().setupSheetContentNodes(componentId, headerTag, contentTag, footerTag));
+        try {
+            navigator().setupSheetContentNodes(componentId, headerTag, contentTag, footerTag);
+        } catch(Exception e) {} // Nothing to do
+
         promise.resolve(null);
     }
 
