@@ -84,4 +84,9 @@
 
 - (void)dismissAllOverlays:(NSString *)commandId;
 
+- (void)setupSheetContentNodes:(NSString *)componentId
+                     headerTag:(NSNumber *)headerTag
+                    contentTag:(NSNumber *)contentTag
+                     footerTag:(NSNumber *)footerTag;
+
 @end

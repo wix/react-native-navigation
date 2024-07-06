@@ -1,24 +1,58 @@
-import { StyleSheet, TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { NavigationLayoutElements, NavigationProps } from 'react-native-navigation';
-import { useState } from 'react';
-import React from 'react';
-import Screens from './Screens';
+import { useLayoutEffect, useRef, useState } from 'react';
 import Navigation from '../services/Navigation';
+import Screens from './Screens';
+import React from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  ScrollView,
+  findNodeHandle,
+  Platform,
+} from 'react-native';
+
+function useSetupSheetContent<
+  THeaderRef extends React.Component<any, any>,
+  TContentRef extends React.Component<any, any>,
+  TFooterRef extends React.Component<any, any>
+>(
+  componentId: string,
+  headerRef?: React.RefObject<THeaderRef>,
+  contentRef?: React.RefObject<TContentRef>,
+  footerRef?: React.RefObject<TFooterRef>
+) {
+  useLayoutEffect(() => {
+    const headerNode = headerRef ? findNodeHandle(headerRef.current) : null;
+    const contentNode = contentRef ? findNodeHandle(contentRef.current) : null;
+    const footerNode = footerRef ? findNodeHandle(footerRef.current) : null;
+
+    Navigation.setupSheetContentNodes(componentId, headerNode, contentNode, footerNode);
+  }, [componentId, contentRef, footerRef, headerRef]);
+}
 
 const SheetScreen = (props: NavigationProps) => {
   const [list, setList] = useState([{ title: 1 }]);
+  const contentRef = useRef<ScrollView>(null);
+  const headerRef = useRef<View>(null);
+  const footerRef = useRef<View>(null);
+
+  useSetupSheetContent(props.componentId, headerRef, contentRef, footerRef);
 
   return (
     <View style={styles.container}>
-      <View style={styles.header} nativeID={NavigationLayoutElements.Header}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            Navigation.showSheet(Screens.Sheet, { layout: { sheetFullScreen: true } });
-          }}
-        >
-          <Text style={styles.buttonText}>FullScreen</Text>
-        </TouchableOpacity>
+      <View ref={headerRef} style={styles.header} nativeID={NavigationLayoutElements.Header}>
+        {Platform.OS === 'android' && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              Navigation.showSheet(Screens.Sheet, { layout: { sheetFullScreen: true } });
+            }}
+          >
+            <Text style={styles.buttonText}>FullScreen</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -46,7 +80,7 @@ const SheetScreen = (props: NavigationProps) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView nativeID={NavigationLayoutElements.Content} nestedScrollEnabled>
+      <ScrollView ref={contentRef} nativeID={NavigationLayoutElements.Content} nestedScrollEnabled>
         {list.map((i, key) => (
           <View style={styles.item} key={key}>
             <Text style={styles.itemText}>{i.title}</Text>
@@ -54,7 +88,7 @@ const SheetScreen = (props: NavigationProps) => {
         ))}
       </ScrollView>
 
-      <View nativeID={NavigationLayoutElements.Footer} style={styles.footer}>
+      <View ref={footerRef} nativeID={NavigationLayoutElements.Footer} style={styles.footer}>
         <Text style={styles.footerText}>FOOTER</Text>
       </View>
     </View>

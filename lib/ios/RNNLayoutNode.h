@@ -12,6 +12,7 @@
 
 + (instancetype)create:(NSDictionary *)json;
 
+- (BOOL)isSheet;
 - (BOOL)isComponent;
 - (BOOL)isExternalComponent;
 - (BOOL)isStack;

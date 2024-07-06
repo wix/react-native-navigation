@@ -5,6 +5,7 @@
 #import "RNNConvert.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "RNNErrorHandler.h"
+#import "RNNSheetViewController.h"
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
@@ -24,6 +25,7 @@ static NSString *const dismissOverlay = @"dismissOverlay";
 static NSString *const dismissAllOverlays = @"dismissAllOverlays";
 static NSString *const mergeOptions = @"mergeOptions";
 static NSString *const setDefaultOptions = @"setDefaultOptions";
+static NSString *const readyForPresentation = @"readyForPresentation";
 
 @interface RNNCommandsHandler ()
 
@@ -497,6 +499,19 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     [_overlayManager dismissAllOverlays];
     [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllOverlays commandId:commandId];
+}
+
+- (void)setupSheetContentNodes:(NSString *)componentId
+                     headerTag:(nonnull NSNumber *)headerTag
+                    contentTag:(nonnull NSNumber *)contentTag
+                     footerTag:(nonnull NSNumber *)footerTag {
+    UIViewController *viewController =
+        (UIViewController *)[_layoutManager findComponentForId:componentId];
+
+    if ([viewController isKindOfClass:[RNNSheetViewController class]]) {
+        RNNSheetViewController *sheetController = (RNNSheetViewController *)viewController;
+        [sheetController setupContentViews:headerTag contentTag:contentTag footerTag:footerTag];
+    }
 }
 
 #pragma mark - private

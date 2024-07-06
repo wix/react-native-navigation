@@ -56,6 +56,13 @@ const mergeOptions = (selfOrCompId: SelfOrCompId, options: Options) =>
 const setStackRoot = (selfOrCompId: SelfOrCompId, root: Layout | Layout[]) =>
   Navigation.setStackRoot(compId(selfOrCompId), root);
 
+const setupSheetContentNodes = (
+  compId: string,
+  headerNode?: number | null,
+  contentNode?: number | null,
+  footerNode?: number | null
+) => Navigation.setupSheetContentNodes(compId, headerNode, contentNode, footerNode);
+
 const setRoot = (root: LayoutRoot | CompIdOrLayout) => {
   // If provided root is not a string and contain `root` property, it's a LayoutRoot.
   if (!isString(root) && !!get(root, 'root')) {
@@ -93,6 +100,7 @@ const CustomNavigation = {
   TouchablePreview: Navigation.TouchablePreview,
   setStackRoot,
   constants,
+  setupSheetContentNodes,
 };
 
 export default CustomNavigation;

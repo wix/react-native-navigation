@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { NavigationConstants } from './Constants';
 
 interface NativeCommandsModule {
@@ -19,6 +19,12 @@ interface NativeCommandsModule {
   getLaunchArgs(commandId: string): Promise<any>;
   getNavigationConstants(): Promise<NavigationConstants>;
   getNavigationConstantsSync(): NavigationConstants;
+  setupSheetContentNodes(
+    componentId: string,
+    headerNode: number | null,
+    contentNode: number | null,
+    footerNode: number | null
+  ): Promise<any>;
 }
 
 export class NativeCommandsSender {
@@ -93,5 +99,23 @@ export class NativeCommandsSender {
 
   getNavigationConstantsSync() {
     return this.nativeCommandsModule.getNavigationConstantsSync();
+  }
+
+  setupSheetContentNodes(
+    componentId: string,
+    headerNode?: number | null,
+    contentNode?: number | null,
+    footerNode?: number | null
+  ) {
+    // Only for iOS, because on android we find elements with ReactFindViewUtil.Listener,
+    // in iOS we don't have access async find element by nativeID
+    if (Platform.OS === 'ios') {
+      this.nativeCommandsModule.setupSheetContentNodes(
+        componentId,
+        headerNode || 0,
+        contentNode || 0,
+        footerNode || 0
+      );
+    }
   }
 }
