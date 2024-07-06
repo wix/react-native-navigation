@@ -200,6 +200,8 @@ class SheetLayout(context: Context, private val reactView: ReactView) :
     fun hide() {
         if (isPresented) {
             behavior.state = FixedBottomSheetBehavior.STATE_HIDDEN
+        } else if (behavior.state == FixedBottomSheetBehavior.STATE_HIDDEN) {
+            activity?.navigator?.dismissModal(reactView.componentId, CommandListenerAdapter())
         }
     }
 
