@@ -27,6 +27,18 @@
         }
     }
 
+    if (@available(iOS 15.0, *)) {
+        if (bottomTabOptions.itemSpacing.hasValue) {
+            tabItem.scrollEdgeAppearance.stackedItemPositioning = UITabBarItemPositioningCentered;
+            tabItem.scrollEdgeAppearance.stackedItemSpacing = bottomTabOptions.itemSpacing.get;
+        }
+
+        if (bottomTabOptions.titlePositionVertical.hasValue) {
+            tabItem.scrollEdgeAppearance.stackedLayoutAppearance.normal.titlePositionAdjustment =
+                UIOffsetMake(0, bottomTabOptions.titlePositionVertical.get);
+        }
+    }
+
     tabItem.image = [self getIconImage:icon withTint:iconColor];
     tabItem.selectedImage = [self getSelectedIconImage:selectedIcon
                                      selectedIconColor:selectedIconColor];

@@ -32,6 +32,9 @@
     self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
     self.sfSelectedSymbol = [TextParser parse:dict key:@"sfSelectedSymbol"];
 
+    self.titlePositionVertical = [DoubleParser parse:dict key:@"titlePositionVertical"];
+    self.itemSpacing = [DoubleParser parse:dict key:@"itemSpacing"];
+
     return self;
 }
 
@@ -76,6 +79,10 @@
         self.sfSymbol = options.sfSymbol;
     if (options.sfSelectedSymbol.hasValue)
         self.sfSelectedSymbol = options.sfSelectedSymbol;
+    if (options.titlePositionVertical.hasValue)
+        self.titlePositionVertical = options.titlePositionVertical;
+    if (options.itemSpacing.hasValue)
+        self.itemSpacing = options.itemSpacing;
 }
 
 - (BOOL)hasValue {
@@ -85,7 +92,8 @@
            self.iconColor.hasValue || self.selectedIconColor.hasValue ||
            self.selectedTextColor.hasValue || self.iconInsets.hasValue || self.textColor.hasValue ||
            self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue ||
-           self.sfSelectedSymbol.hasValue;
+           self.sfSelectedSymbol.hasValue || self.titlePositionVertical.hasValue ||
+           self.itemSpacing.hasValue;
 }
 
 @end
