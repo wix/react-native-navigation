@@ -1,5 +1,24 @@
 import { Options } from './Options';
 
+export interface Sheet {
+  /**
+   * Set the screen's id so Navigation.mergeOptions can be used to update options
+   */
+  id?: string;
+  /**
+   * Name of your component
+   */
+  name: string | number;
+  /**
+   * Configure component options
+   */
+  options?: Options;
+  /**
+   * Properties to pass down to the component
+   */
+  passProps?: any;
+}
+
 export interface LayoutComponent<P = {}> {
   /**
    * Component reference id, Auto generated if empty
@@ -169,6 +188,11 @@ export interface ExternalComponent {
 }
 
 export interface Layout<P = {}> {
+  /**
+   * Sheet
+   */
+  sheet?: Sheet;
+
   /**
    * Set the component
    */

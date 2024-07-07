@@ -9,6 +9,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
+import com.reactnativenavigation.viewcontrollers.sheet.SheetViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ModalOverlay;
 
@@ -65,29 +66,46 @@ public class ModalStack {
     }
 
     public boolean dismissModal(String componentId, @Nullable ViewController<?> root, CommandListener listener) {
-        ViewController<?> toDismiss = findModalByComponentId(componentId);
+       ViewController<?> toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
-            boolean isDismissingTopModal = isTop(toDismiss);
-            modals.remove(toDismiss);
-            @Nullable ViewController<?> toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
-            if (isDismissingTopModal) {
-                if (toAdd == null) {
-                    listener.onError("Could not dismiss modal");
+            if (toDismiss instanceof SheetViewController) {
+                SheetViewController sheetViewController = (SheetViewController) toDismiss;
+
+                if (sheetViewController.sheetView.isPresented()) {
+                    sheetViewController.sheetView.hide();
                     return false;
                 }
+
+                return doDismissModal(toDismiss, root, listener);
+            } else {
+                return doDismissModal(toDismiss, root, listener);
             }
-            presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
-                @Override
-                public void onSuccess(String childId) {
-                    eventEmitter.emitModalDismissed(toDismiss.getId(), toDismiss.getCurrentComponentName(), 1);
-                    super.onSuccess(toDismiss.getId());
-                }
-            });
-            return true;
         } else {
             listener.onError("Nothing to dismiss");
             return false;
         }
+    }
+
+    public boolean doDismissModal(ViewController<?> toDismiss, @Nullable ViewController<?> root, CommandListener listener) {
+        boolean isDismissingTopModal = isTop(toDismiss);
+        modals.remove(toDismiss);
+        @Nullable ViewController<?> toAdd = isEmpty() ? root : isDismissingTopModal ? get(size() - 1) : null;
+        if (isDismissingTopModal) {
+            if (toAdd == null) {
+                listener.onError("Could not dismiss modal");
+                return false;
+            }
+        }
+
+        presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
+            @Override
+            public void onSuccess(String childId) {
+                eventEmitter.emitModalDismissed(toDismiss.getId(), toDismiss.getCurrentComponentName(), 1);
+                super.onSuccess(toDismiss.getId());
+            }
+        });
+
+        return true;
     }
 
     public void dismissAllModals(@Nullable ViewController<?> root, Options mergeOptions, CommandListener listener) {

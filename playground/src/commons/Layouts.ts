@@ -1,6 +1,7 @@
-import { Options, Layout } from 'react-native-navigation';
+import { Options, Layout, OptionsModalPresentationStyle } from 'react-native-navigation';
 import isString from 'lodash/isString';
 import isArray from 'lodash/isArray';
+import { Platform } from 'react-native';
 
 type CompIdOrLayout = string | Layout;
 
@@ -20,4 +21,40 @@ const component = <P = {}>(
     : (compIdOrLayout as Layout<P>);
 };
 
-export { stack, component };
+const sheet = <P = {}>(
+  compIdOrLayout: CompIdOrLayout,
+  options?: Options,
+  passProps?: P
+): Layout<P> => {
+  return isString(compIdOrLayout)
+    ? {
+        sheet: {
+          name: compIdOrLayout,
+          passProps,
+          options: {
+            ...options,
+            layout: {
+              componentBackgroundColor: '#FFF',
+              ...options?.layout,
+            },
+            modalPresentationStyle:
+              Platform.OS === 'android'
+                ? OptionsModalPresentationStyle.overCurrentContext
+                : OptionsModalPresentationStyle.overFullScreen,
+            animations: {
+              showModal: {
+                enter: { enabled: false },
+                exit: { enabled: false },
+              },
+              dismissModal: {
+                enter: { enabled: false },
+                exit: { enabled: false },
+              },
+            },
+          },
+        },
+      }
+    : (compIdOrLayout as Layout<P>);
+};
+
+export { stack, component, sheet };

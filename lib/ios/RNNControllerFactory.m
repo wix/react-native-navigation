@@ -4,6 +4,7 @@
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
 #import "RNNExternalViewController.h"
+#import "RNNSheetViewController.h"
 #import "RNNSideMenuController.h"
 #import "RNNSplitViewController.h"
 #import "RNNStackController.h"
@@ -104,6 +105,10 @@
         result = [self createSplitView:node];
     }
 
+    else if (node.isSheet) {
+        result = [self createSheet:node];
+    }
+
     if (!result) {
         @throw [NSException
             exceptionWithName:@"UnknownControllerType"
@@ -112,6 +117,36 @@
     }
 
     return result;
+}
+
+- (UIViewController *)createSheet:(RNNLayoutNode *)node {
+    RNNLayoutInfo *layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+    RNNNavigationOptions *options =
+        [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+
+    RNNButtonsPresenter *buttonsPresenter =
+        [[RNNButtonsPresenter alloc] initWithComponentRegistry:_componentRegistry
+                                                  eventEmitter:_eventEmitter];
+    RNNComponentPresenter *presenter =
+        [[RNNComponentPresenter alloc] initWithComponentRegistry:_componentRegistry
+                                                  defaultOptions:_defaultOptions
+                                                buttonsPresenter:buttonsPresenter];
+    RNNComponentViewController *RNComponent =
+        [[RNNComponentViewController alloc] initWithLayoutInfo:layoutInfo
+                                               rootViewCreator:_creator
+                                                  eventEmitter:_eventEmitter
+                                                     presenter:presenter
+                                                       options:options
+                                                defaultOptions:_defaultOptions];
+
+    RNNSheetViewController *component =
+        [[RNNSheetViewController alloc] initWithLayoutInfo:layoutInfo
+                                              eventEmitter:_eventEmitter
+                                                 presenter:presenter
+                                                   options:options
+                                            defaultOptions:_defaultOptions
+                                            viewController:RNComponent];
+    return component;
 }
 
 - (UIViewController *)createComponent:(RNNLayoutNode *)node {

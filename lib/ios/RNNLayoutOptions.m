@@ -12,10 +12,17 @@
     self.orientation = dict[@"orientation"];
     self.autoHideHomeIndicator = [BoolParser parse:dict key:@"autoHideHomeIndicator"];
     self.insets = [[RNNInsetsOptions alloc] initWithDict:dict[@"insets"]];
+    self.sheetBorderTopRadius = [NumberParser parse:dict key:@"sheetBorderTopRadius"];
+    self.sheetBackdropOpacity = [DoubleParser parse:dict key:@"sheetBackdropOpacity"];
+
     return self;
 }
 
 - (void)mergeOptions:(RNNLayoutOptions *)options {
+    if (options.sheetBorderTopRadius.hasValue)
+        self.sheetBorderTopRadius = options.sheetBorderTopRadius;
+    if (options.sheetBackdropOpacity.hasValue)
+        self.sheetBackdropOpacity = options.sheetBackdropOpacity;
     if (options.backgroundColor.hasValue)
         self.backgroundColor = options.backgroundColor;
     if (options.componentBackgroundColor.hasValue)
