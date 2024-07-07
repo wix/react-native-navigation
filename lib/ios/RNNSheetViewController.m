@@ -301,6 +301,7 @@
 - (void)updateContentSize:(CGFloat)height {
     CGFloat safeAreaBottom = self.keyboardHeight == 0 ? self.view.safeAreaInsets.bottom : 0;
     CGFloat adjustedHeight = MIN(self.contentMaximumHeight, height) + safeAreaBottom;
+    CGFloat prevHeight = self.containerFrame.size.height;
     self.containerFrame =
         CGRectMake(0, self.view.bounds.size.height - adjustedHeight - self.keyboardHeight,
                    self.view.bounds.size.width, adjustedHeight);
@@ -309,13 +310,21 @@
         0, 0, self.containerView.frame.size.width,
         self.footerView ? adjustedHeight - self.view.safeAreaInsets.bottom : adjustedHeight);
 
+    CGRect tempContainerFrame =
+        CGRectMake(0, self.containerFrame.origin.y, self.containerFrame.size.width, prevHeight);
+
+    BOOL updateDown = prevHeight > self.containerFrame.size.height;
+
     self.isAnimatePresentInProcess = YES;
     [self
         animate:^{
-          self.containerView.frame = self.containerFrame;
+          self.containerView.frame = updateDown ? tempContainerFrame : self.containerFrame;
         }
         velocity:0.0
         completion:^(BOOL finished) {
+          if (updateDown) {
+              self.containerView.frame = self.containerFrame;
+          }
           if (finished) {
               self.isAnimatePresentInProcess = NO;
           }
@@ -531,6 +540,7 @@
                                   self.containerFrame.size.height - _delta);
             _delta = 0;
         }
+        self.isAnimatePresentInProcess = YES;
 
         [self
             animateDraggingWithCompletion:^{
@@ -538,6 +548,7 @@
             }
             completion:^(BOOL finished) {
               self.containerView.frame = self.containerFrame;
+              self.isAnimatePresentInProcess = NO;
             }];
     }
 }
