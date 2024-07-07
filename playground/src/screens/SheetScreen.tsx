@@ -21,7 +21,7 @@ function useSetupSheetContent<
 }
 
 const SheetScreen = (props: NavigationProps) => {
-  const [list, setList] = useState([{ title: 1 }, { title: 1 }]);
+  const [list, setList] = useState([{ title: 1 }]);
   const contentRef = useRef<ScrollView>(null);
   const headerRef = useRef<View>(null);
   const footerRef = useRef<View>(null);
