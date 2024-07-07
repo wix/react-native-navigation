@@ -1073,6 +1073,16 @@ export interface OptionsBottomTab {
    * #### (iOS 13+ specific)
    */
   sfSelectedSymbol?: string;
+  /**
+   * Control horizontal spacing between Bottom bar items
+   * #### (iOS 15+ specific)
+   */
+  itemSpacing?: number;
+  /**
+   * Control vertical title position
+   * #### (iOS 15+ specific)
+   */
+  titlePositionVertical?: number;
 }
 
 export interface SideMenuSide {

@@ -25,6 +25,8 @@
 @property(nonatomic, strong) Bool *selectTabOnPress;
 @property(nonatomic, strong) Text *sfSymbol;
 @property(nonatomic, strong) Text *sfSelectedSymbol;
+@property(nonatomic, strong) Double *titlePositionVertical;
+@property(nonatomic, strong) Double *itemSpacing;
 
 - (BOOL)hasValue;
 
