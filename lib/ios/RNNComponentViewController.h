@@ -5,6 +5,7 @@
 #import "RNNLayoutNode.h"
 #import "RNNNavigationOptions.h"
 #import "RNNUIBarButtonItem.h"
+#import "UINavigationController+FixInteractivePopGestureRecognizer.h"
 #import "UIViewController+LayoutProtocol.h"
 
 typedef void (^PreviewCallback)(UIViewController *vc);
@@ -12,7 +13,8 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @interface RNNComponentViewController
     : UIViewController <RNNLayoutProtocol, UIViewControllerPreviewingDelegate,
                         UISearchResultsUpdating, UISearchBarDelegate,
-                        UINavigationControllerDelegate, UISplitViewControllerDelegate>
+                        UINavigationControllerDelegate, UISplitViewControllerDelegate,
+                        UIGestureRecognizerDelegate>
 
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property(nonatomic, retain) RNNLayoutInfo *layoutInfo;

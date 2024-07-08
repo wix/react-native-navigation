@@ -55,6 +55,24 @@
     [self componentDidDisappear];
 }
 
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    if (self.resolveOptions.popFullScreenGesture.hasValue &&
+        !self.resolveOptions.popFullScreenGesture.isFalse) {
+        [self.navigationController fixInteractivePopGestureRecognizerWithDelegate:self];
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+    shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if (self.resolveOptions.popFullScreenGesture.hasValue &&
+        !self.resolveOptions.popFullScreenGesture.isFalse) {
+        return [otherGestureRecognizer isKindOfClass:[PanDirectionGestureRecognizer class]];
+    } else {
+        return [self gestureRecognizer:gestureRecognizer
+            shouldRequireFailureOfGestureRecognizer:otherGestureRecognizer];
+    }
+}
+
 - (RNNNavigationOptions *)resolveOptions {
     RNNNavigationOptions *resolvedOptions = self.options.copy;
     UIViewController *parentViewController = self.parentViewController;

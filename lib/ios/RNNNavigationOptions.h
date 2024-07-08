@@ -36,6 +36,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) WindowOptions *window;
 
 @property(nonatomic, strong) Bool *popGesture;
+@property(nonatomic, strong) Bool *popFullScreenGesture;
 @property(nonatomic, strong) Image *backgroundImage;
 @property(nonatomic, strong) Image *rootBackgroundImage;
 @property(nonatomic, strong) Text *modalPresentationStyle;

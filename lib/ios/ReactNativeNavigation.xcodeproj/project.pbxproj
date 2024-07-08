@@ -452,6 +452,8 @@
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
 		AC507A2D2C38BC6700E8DB18 /* RNNSheetViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AC507A2B2C38BC6600E8DB18 /* RNNSheetViewController.h */; };
 		AC507A2E2C38BC6700E8DB18 /* RNNSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC507A2C2C38BC6700E8DB18 /* RNNSheetViewController.m */; };
+		AC6503DF2C3B645B00AE757F /* PanDirectionGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = AC6503DE2C3B645B00AE757F /* PanDirectionGestureRecognizer.m */; };
+		AC6503E22C3B64BB00AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = AC6503E12C3B64BB00AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.m */; };
 		B8415310251E07A600467F37 /* LinearInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B841530F251E07A600467F37 /* LinearInterpolator.m */; };
 		B841531D251E088100467F37 /* OvershootInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B8415316251E088100467F37 /* OvershootInterpolator.m */; };
 		B841531F251E088100467F37 /* SpringInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B8415318251E088100467F37 /* SpringInterpolator.m */; };
@@ -1004,6 +1006,10 @@
 		A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptions.m; sourceTree = "<group>"; };
 		AC507A2B2C38BC6600E8DB18 /* RNNSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSheetViewController.h; sourceTree = "<group>"; };
 		AC507A2C2C38BC6700E8DB18 /* RNNSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSheetViewController.m; sourceTree = "<group>"; };
+		AC6503DD2C3B643200AE757F /* PanDirectionGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PanDirectionGestureRecognizer.h; sourceTree = "<group>"; };
+		AC6503DE2C3B645B00AE757F /* PanDirectionGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PanDirectionGestureRecognizer.m; sourceTree = "<group>"; };
+		AC6503E02C3B648300AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FixInteractivePopGestureRecognizer.h"; sourceTree = "<group>"; };
+		AC6503E12C3B64BB00AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FixInteractivePopGestureRecognizer.m"; sourceTree = "<group>"; };
 		B841530F251E07A600467F37 /* LinearInterpolator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LinearInterpolator.m; sourceTree = "<group>"; };
 		B8415316251E088100467F37 /* OvershootInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OvershootInterpolator.m; sourceTree = "<group>"; };
 		B8415318251E088100467F37 /* SpringInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringInterpolator.m; sourceTree = "<group>"; };
@@ -1750,12 +1756,16 @@
 				5047E4F32267568700908DD3 /* RNNExternalComponentStore.m */,
 				7B4928061E70415400555040 /* RNNCommandsHandler.h */,
 				7B4928071E70415400555040 /* RNNCommandsHandler.m */,
+				AC6503DD2C3B643200AE757F /* PanDirectionGestureRecognizer.h */,
+				AC6503DE2C3B645B00AE757F /* PanDirectionGestureRecognizer.m */,
 				5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */,
 				5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */,
 				5038A3B3216DF602009280BC /* UINavigationController+RNNOptions.h */,
 				5038A3B4216DF602009280BC /* UINavigationController+RNNOptions.m */,
 				50CF23372405668C0098042D /* UINavigationController+RNNCommands.h */,
 				50CF23382405668C0098042D /* UINavigationController+RNNCommands.m */,
+				AC6503E02C3B648300AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.h */,
+				AC6503E12C3B64BB00AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.m */,
 				5038A3B7216DFCFD009280BC /* UITabBarController+RNNOptions.h */,
 				5038A3B8216DFCFD009280BC /* UITabBarController+RNNOptions.m */,
 				651E1F8821FD611600DFEA19 /* UISplitViewController+RNNOptions.h */,
@@ -2212,9 +2222,11 @@
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
 				5012240B21735959000F5F98 /* RNNSideMenuPresenter.m in Sources */,
 				502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */,
+				AC6503DF2C3B645B00AE757F /* PanDirectionGestureRecognizer.m in Sources */,
 				50E5F78E223F9FAF002AFEAD /* ElementTransitionOptions.m in Sources */,
 				B84F6E4C252C5ECE007D78A1 /* DecelerateInterpolator.m in Sources */,
 				7365071221E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.m in Sources */,
+				AC6503E22C3B64BB00AE757F /* UINavigationController+FixInteractivePopGestureRecognizer.m in Sources */,
 				5012241B21736678000F5F98 /* Image.m in Sources */,
 				B841531D251E088100467F37 /* OvershootInterpolator.m in Sources */,
 				503A8FEE25DD397400BB6A74 /* RNNIconCreator.m in Sources */,

@@ -1555,6 +1555,12 @@ setRoot: {
    */
   preview?: OptionsPreview;
   /**
+   * Enable or disable swipe back to pop full screen gesture
+   * #### (iOS specific)
+   * @default false
+   */
+  popFullScreenGesture?: boolean;
+  /**
    * Enable or disable swipe back to pop gesture
    * #### (iOS specific)
    * @default true

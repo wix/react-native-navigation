@@ -40,6 +40,7 @@
     self.deprecations = [[DeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
     self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
 
+    self.popFullScreenGesture = [[Bool alloc] initWithValue:dict[@"popFullScreenGesture"]];
     self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
     self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
     self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
@@ -73,6 +74,8 @@
 
     if (options.popGesture.hasValue)
         result.popGesture = options.popGesture;
+    if (options.popFullScreenGesture.hasValue)
+        result.popFullScreenGesture = options.popFullScreenGesture;
     if (options.backgroundImage.hasValue)
         result.backgroundImage = options.backgroundImage;
     if (options.rootBackgroundImage.hasValue)
@@ -103,6 +106,7 @@
     [newOptions.deprecations mergeOptions:self.deprecations];
     [newOptions.window mergeOptions:self.window];
 
+    newOptions.popFullScreenGesture = self.popFullScreenGesture;
     newOptions.popGesture = self.popGesture;
     newOptions.backgroundImage = self.backgroundImage;
     newOptions.rootBackgroundImage = self.rootBackgroundImage;

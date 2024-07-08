@@ -7,6 +7,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 
 const {
+  TOGGLE_POP_FULLSCREEN_BTN,
   CHANGE_TITLE_BTN,
   HIDE_TOP_BAR_BTN,
   SHOW_TOP_BAR_BTN,
@@ -56,6 +57,7 @@ export default class Options extends NavigationComponent<Props> {
 
   state = {
     isAndroidNavigationBarVisible: true,
+    popFullScreenGesture: false,
   };
 
   render() {
@@ -65,6 +67,11 @@ export default class Options extends NavigationComponent<Props> {
         <Button label="Hide TopBar" testID={HIDE_TOP_BAR_BTN} onPress={this.hideTopBar} />
         <Button label="Show TopBar" testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
+        <Button
+          label={`${this.state.popFullScreenGesture ? 'Disable' : 'Enable'} pop fullScreen`}
+          testID={TOGGLE_POP_FULLSCREEN_BTN}
+          onPress={this.togglePopFullScreenGesture}
+        />
         <Button
           label="Hide TopBar in DefaultOptions"
           testID={HIDE_TOPBAR_DEFAULT_OPTIONS}
@@ -238,6 +245,13 @@ export default class Options extends NavigationComponent<Props> {
       bottomTab: {
         testID: REPLACED_TAB,
       },
+    });
+  };
+
+  togglePopFullScreenGesture = () => {
+    this.setState({ popFullScreenGesture: !this.state.popFullScreenGesture });
+    Navigation.mergeOptions(this, {
+      popFullScreenGesture: !this.state.popFullScreenGesture,
     });
   };
 }
