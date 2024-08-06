@@ -20,7 +20,8 @@ export const LayoutComponent = class extends Component<ComponentProps> {
   }
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     throw new Error(
-      `Error while trying to render layout ${this.props.layoutNode.nodeId} of type ${this.props.layoutNode.type}: ${error}\n${errorInfo?.componentStack}`
+      `Error while trying to render layout ${this.props.layoutNode.nodeId} of type ${this.props.layoutNode.type}: ${error}\n${errorInfo?.componentStack}`,
+      {cause: error}
     );
   }
 };
