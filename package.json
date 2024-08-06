@@ -50,9 +50,6 @@
     "release": "node ./scripts/release",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
-  "overrides": {
-    "@babel/traverse": "7.22.6"
-  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
