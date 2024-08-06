@@ -15,6 +15,7 @@ const {
   HIDE_TOPBAR_DEFAULT_OPTIONS,
   SHOW_YELLOW_BOX_BTN,
   SET_REACT_TITLE_VIEW,
+  SET_TITLE_UNDEFINED,
   GOTO_BUTTONS_SCREEN,
   GOTO_SEARCHBAR_SCREEN,
   GOTO_SEARCHBAR_MODAL,
@@ -74,6 +75,11 @@ export default class Options extends NavigationComponent<Props> {
           label="Set React Title View"
           testID={SET_REACT_TITLE_VIEW}
           onPress={this.setReactTitleView}
+        />
+        <Button
+          label="Set Title Undefined"
+          testID={SET_TITLE_UNDEFINED}
+          onPress={this.setTitleUndefined}
         />
         <Button
           label="Show Yellow Box"
@@ -183,6 +189,12 @@ export default class Options extends NavigationComponent<Props> {
       },
     });
   };
+  setTitleUndefined = () =>
+    Navigation.mergeOptions(this, {
+      topBar: {
+        title: undefined,
+      },
+    });
 
   setReactTitleView = () =>
     Navigation.mergeOptions(this, {

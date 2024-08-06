@@ -19,6 +19,12 @@ describe('Options', () => {
     await expect(elementByLabel('Title Changed')).toBeVisible();
   });
 
+  it('handle undefined title', async () => {
+    await expect(elementByLabel('Styling Options')).toBeVisible();
+    await elementById(TestIDs.SET_TITLE_UNDEFINED).tap();
+    await expect(elementByLabel('Styling Options')).not.toBeVisible();
+  });
+
   it('hides TopBar when pressing on Hide TopBar and shows it when pressing on Show TopBar', async () => {
     await elementById(TestIDs.HIDE_TOP_BAR_BTN).tap();
     await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
