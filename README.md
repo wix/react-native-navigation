@@ -28,7 +28,7 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 - [Chat with us](https://discord.gg/DhkZjq2)
 - [Contributing](https://wix.github.io/react-native-navigation/docs/meta-contributing)
 
-# Requirements
+# Requirementsss
 
 Apps using React Native Navigation may target iOS 11 and Android 5.0 (API 21). You may use Windows, macOS or Linux as your development operating system.
 
