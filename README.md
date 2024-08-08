@@ -13,7 +13,7 @@
 
 </p>
 <p align="center">
-  <a href="https://twitter.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow on Twitter"></a>
+  <a href="https://twittersfsdf.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow on Twitter"></a>
   <a href="https://discord.gg/DhkZjq2"><img src="https://img.shields.io/discord/242515947020222464.svg?color=%237289da&label=Chat%20on%20Discrd&style=flat-square" alt="Chat on Discord"></a>
   <a href="https://stackoverflow.com/questions/tagged/wix-react-native-navigation"><img src="https://img.shields.io/stackexchange/stackoverflow/t/wix-react-native-navigation.svg?style=flat-square" alt="StackExchange"></a>
 </p>
