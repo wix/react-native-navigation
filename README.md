@@ -35,3 +35,4 @@ sdfdsfsfdsf
 # Installationaaassssfsfsdfsdfsfsf
 
 As `react-native-navigation` is a native navigation library - integrating it into your app will require editing native files. Follow the installation guides in the [documentation](https://wix.github.io/react-native-navigation/).
+sfdf
