@@ -12,7 +12,7 @@
   <a href="https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/"><img src="https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg?style=flat-square" alt="NPM snapshot version"></a>
 
 </p>
-<p align="center">
+<p align="censfdsfter">
   <a href="https://twittersfsdf.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow on Twitter"></a>
   <a href="https://discord.gg/DhkZjq2"><img src="https://img.shields.io/discord/242515947020222464.svg?color=%237289da&label=Chat%20on%20Discrd&style=flat-square" alt="Chat on Discord"></a>
   <a href="https://stackoverflow.com/questions/tagged/wix-react-native-navigation"><img src="https://img.shields.io/stackexchange/stackoverflow/t/wix-react-native-navigation.svg?style=flat-square" alt="StackExchange"></a>
