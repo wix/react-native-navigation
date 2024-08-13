@@ -458,7 +458,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun `setTitleFontSiz sets units to DIP when allowFontScaling == false`() {
+    fun `setTitleFontSize sets units to DIP when allowFontScaling == false`() {
         uut.setTitleFontSize(18f, false)
         assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
     }
