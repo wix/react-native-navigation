@@ -22,6 +22,7 @@ const {
   STACK_COMMANDS_BTN,
   SET_ROOT_NAVIGATION_TAB,
   POP_BTN,
+  PUSH_TITLE_WITH_FONT_SCALING,
 } = testIDs;
 
 export default class StackScreen extends React.Component<NavigationProps> {
@@ -64,6 +65,11 @@ export default class StackScreen extends React.Component<NavigationProps> {
           label="Push Title With Subtitle"
           testID={PUSH_TITLE_WITH_SUBTITLE}
           onPress={this.pushTitleWithSubtitle}
+        />
+        <Button
+          label="Push Title With Font Scaling"
+          testID={PUSH_TITLE_WITH_FONT_SCALING}
+          onPress={this.pushTitleWithFontScaling}
         />
         <Button label="Set Stack Root" testID={SET_STACK_ROOT_BTN} onPress={this.setStackRoot} />
         <Button
@@ -127,6 +133,21 @@ export default class StackScreen extends React.Component<NavigationProps> {
             },
             subtitle: {
               text: 'Subtitle',
+            },
+          },
+        },
+      },
+    });
+
+  pushTitleWithFontScaling = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.Stack,
+        options: {
+          topBar: {
+            title: {
+              text: 'Title with font scaling',
+              allowFontScaling: true,
             },
           },
         },
