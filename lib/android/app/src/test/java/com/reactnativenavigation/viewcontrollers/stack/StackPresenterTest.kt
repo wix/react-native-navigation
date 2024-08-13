@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
+import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.fakes.IconResolverFake
@@ -33,9 +34,8 @@ import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.kotlin.*
 import org.robolectric.shadows.ShadowLooper
-import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StackPresenterTest : BaseTest() {
