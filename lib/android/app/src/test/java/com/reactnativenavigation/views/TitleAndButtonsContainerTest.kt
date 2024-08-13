@@ -2,6 +2,7 @@ package com.reactnativenavigation.views
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +24,14 @@ import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
+import org.robolectric.annotation.Config
 import kotlin.math.roundToInt
 import kotlin.test.assertFalse
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
+@Config(sdk = [30])
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
@@ -426,7 +429,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
     @Test
     fun setTitleFontSize_changesTitleFontSize() {
-        uut.setTitleFontSize(1f)
+        uut.setTitleFontSize(1f, false)
         Assertions.assertThat(getTitleSubtitleView().getTitleTxtView().textSize).isEqualTo(1f)
     }
 
@@ -448,7 +451,17 @@ class TitleAndButtonsContainerTest : BaseTest() {
         assertThat(getTitleSubtitleView().getSubTitleTxtView().currentTextColor).isEqualTo(Color.YELLOW)
     }
 
+    @Test
+    fun `setTitleFontSize sets units to SP when allowFontScaling == true`() {
+        uut.setTitleFontSize(18f, true)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
+    }
 
+    @Test
+    fun `setTitleFontSiz sets units to DIP when allowFontScaling == false`() {
+        uut.setTitleFontSize(18f, false)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+    }
 
     @Test
     fun getTitle_returnCurrentTextInTitleTextView() {
