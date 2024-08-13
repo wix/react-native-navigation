@@ -46,7 +46,13 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         }
     }
 
-    fun setTitleFontSize(size: Float) = titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
+    fun setTitleFontSize(size: Float, allowFontScaling: Boolean) {
+        if (allowFontScaling) {
+            titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        } else {
+            titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
+        }
+    }
 
     fun setSubtitleFontSize(size: Float) = subTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
 

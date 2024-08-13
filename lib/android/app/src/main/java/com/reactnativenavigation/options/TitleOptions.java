@@ -2,7 +2,9 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Fraction;
+import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.NullText;
@@ -15,6 +17,7 @@ import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
+import com.reactnativenavigation.options.parsers.BoolParser;
 
 import org.json.JSONObject;
 
@@ -32,6 +35,7 @@ public class TitleOptions {
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
         options.height = NumberParser.parse(json, "height");
         options.topMargin = NumberParser.parse(json, "topMargin");
+        options.allowFontScaling = BoolParser.parse(json, "allowFontScaling");
 
         return options;
     }
@@ -44,6 +48,7 @@ public class TitleOptions {
     public ComponentOptions component = new ComponentOptions();
     public Number height = new NullNumber();
     public Number topMargin = new NullNumber();
+    public Bool allowFontScaling = new NullBool();
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) {
@@ -61,6 +66,7 @@ public class TitleOptions {
         if (other.component.hasValue()) component = other.component;
         if (other.height.hasValue()) height = other.height;
         if (other.topMargin.hasValue()) topMargin = other.topMargin;
+        if (other.allowFontScaling.hasValue()) allowFontScaling = other.allowFontScaling;
     }
 
     void mergeWithDefault(TitleOptions defaultOptions) {
@@ -72,5 +78,6 @@ public class TitleOptions {
         component.mergeWithDefault(defaultOptions.component);
         if (!height.hasValue()) height = defaultOptions.height;
         if (!topMargin.hasValue()) topMargin = defaultOptions.topMargin;
+        if (!allowFontScaling.hasValue()) allowFontScaling = defaultOptions.allowFontScaling;
     }
 }

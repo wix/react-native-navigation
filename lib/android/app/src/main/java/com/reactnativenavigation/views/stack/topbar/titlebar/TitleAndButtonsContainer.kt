@@ -80,7 +80,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     fun setBackgroundColor(color: ThemeColour) = if (color.hasValue()) setBackgroundColor(color.get()) else Unit
 
-    fun setTitleFontSize(size: Float) = titleSubTitleBar.setTitleFontSize(size)
+    fun setTitleFontSize(size: Float, allowFontScaling: Boolean) = titleSubTitleBar.setTitleFontSize(size, allowFontScaling)
 
     fun setTitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = titleSubTitleBar.setTitleTypeface(typefaceLoader, font)
 

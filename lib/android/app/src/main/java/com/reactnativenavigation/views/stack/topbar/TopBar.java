@@ -27,6 +27,7 @@ import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
+import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
@@ -188,8 +189,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleAndButtonsContainer.setTitleColor(color);
     }
 
-    public void setTitleFontSize(double size) {
-        titleAndButtonsContainer.setTitleFontSize((float) size);
+    public void setTitleFontSize(double size, boolean allowFontScaling) {
+        titleAndButtonsContainer.setTitleFontSize((float) size, allowFontScaling);
     }
 
     public void setTitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
@@ -351,7 +352,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
         final double DEFAULT_TITLE_FONT_SIZE = 18;
         this.setTitle(titleOptions.text.get(""));
-        this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
+        this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE), titleOptions.allowFontScaling.isTrue());
         this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
         this.setTitleTypeface(typefaceLoader, titleOptions.font);
         this.setTitleAlignment(titleOptions.alignment);
