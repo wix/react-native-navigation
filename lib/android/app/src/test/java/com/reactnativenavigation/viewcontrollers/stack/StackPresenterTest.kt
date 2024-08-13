@@ -7,14 +7,12 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
-import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.*
 import com.reactnativenavigation.options.*
 import com.reactnativenavigation.options.params.*
-import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.utils.*
@@ -35,9 +33,9 @@ import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.*
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class StackPresenterTest : BaseTest() {
@@ -495,6 +493,7 @@ class StackPresenterTest : BaseTest() {
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
+        defaultOptions.topBar.title.allowFontScaling = Bool(true);
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
@@ -502,7 +501,7 @@ class StackPresenterTest : BaseTest() {
         val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
-        verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleFontSize(9.0, true)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
@@ -541,7 +540,7 @@ class StackPresenterTest : BaseTest() {
         val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
-        verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleFontSize(9.0, false)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
