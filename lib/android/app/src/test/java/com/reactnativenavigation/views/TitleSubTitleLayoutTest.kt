@@ -1,17 +1,20 @@
 package com.reactnativenavigation.views
 
 import android.app.Activity
+import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.AssertionsForInterfaceTypes.*
 import org.junit.Test
+import org.robolectric.annotation.Config
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
 
+@Config(sdk = [30])
 class TitleSubTitleLayoutTest : BaseTest() {
     private val testId = "mock-testId"
 
@@ -47,5 +50,17 @@ class TitleSubTitleLayoutTest : BaseTest() {
         uut.setTestId("")
         assertThat(uut.getTitleTxtView().tag).isNull()
         assertThat(uut.getSubTitleTxtView().tag).isNull()
+    }
+
+    @Test
+    fun `setTitleFontSize should use SP when allowFontScaling == true`() {
+        uut.setTitleFontSize(18f, true)
+        assertThat(uut.getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
+    }
+
+    @Test
+    fun `setTitleFontSize should use DIP when allowFontScaling == false`() {
+        uut.setTitleFontSize(18f, false)
+        assertThat(uut.getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
     }
 }
