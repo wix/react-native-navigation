@@ -189,8 +189,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleAndButtonsContainer.setTitleColor(color);
     }
 
-    public void setTitleFontSize(double size, boolean allowFontScaling) {
-        titleAndButtonsContainer.setTitleFontSize((float) size, allowFontScaling);
+    public void setTitleFontSize(double size) {
+        titleAndButtonsContainer.setTitleFontSize((float) size);
+    }
+
+    public void setTitleAllowFontScaling(boolean enabled) {
+        titleAndButtonsContainer.setTitleAllowFontScaling(enabled);
     }
 
     public void setTitleTypeface(TypefaceLoader typefaceLoader, FontOptions font) {
@@ -352,7 +356,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void applyTitleOptions(TitleOptions titleOptions, TypefaceLoader typefaceLoader) {
         final double DEFAULT_TITLE_FONT_SIZE = 18;
         this.setTitle(titleOptions.text.get(""));
-        this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE), titleOptions.allowFontScaling.isTrue());
+        this.setTitleFontSize(titleOptions.fontSize.get(DEFAULT_TITLE_FONT_SIZE));
+        this.setTitleAllowFontScaling(titleOptions.allowFontScaling.isTrue());
         this.setTitleTextColor(titleOptions.color.get(DEFAULT_TITLE_COLOR));
         this.setTitleTypeface(typefaceLoader, titleOptions.font);
         this.setTitleAlignment(titleOptions.alignment);

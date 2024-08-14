@@ -602,7 +602,9 @@ public class StackPresenter {
         if (resolveOptions.title.color.hasValue())
             topBar.setTitleTextColor(resolveOptions.title.color.get());
         if (resolveOptions.title.fontSize.hasValue())
-            topBar.setTitleFontSize(resolveOptions.title.fontSize.get(), resolveOptions.title.allowFontScaling.isTrue());
+            topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
+        if (resolveOptions.title.allowFontScaling.hasValue())
+            topBar.setTitleAllowFontScaling(resolveOptions.title.allowFontScaling.isTrue());
         if (resolveOptions.title.font.hasValue())
             topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 

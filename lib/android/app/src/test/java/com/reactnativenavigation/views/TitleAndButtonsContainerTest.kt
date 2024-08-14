@@ -429,7 +429,7 @@ class TitleAndButtonsContainerTest : BaseTest() {
 
     @Test
     fun setTitleFontSize_changesTitleFontSize() {
-        uut.setTitleFontSize(1f, false)
+        uut.setTitleFontSize(1f)
         Assertions.assertThat(getTitleSubtitleView().getTitleTxtView().textSize).isEqualTo(1f)
     }
 
@@ -452,14 +452,22 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
-    fun `setTitleFontSize sets units to SP when allowFontScaling == true`() {
-        uut.setTitleFontSize(18f, true)
+    fun `setTitleAllowFontScaling - when using default value, should have font size units set to DIP`() {
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+    }
+
+    @Test
+    fun `setTitleAllowFontScaling - when set to true, should set font size units to SP`() {
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+        uut.setTitleAllowFontScaling(true)
         assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
     }
 
     @Test
-    fun `setTitleFontSize sets units to DIP when allowFontScaling == false`() {
-        uut.setTitleFontSize(18f, false)
+    fun `setTitleAllowFontScaling - when set to false, should set font size units to DIP`() {
+        uut.setTitleAllowFontScaling(true)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
+        uut.setTitleAllowFontScaling(false)
         assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
     }
 

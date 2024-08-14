@@ -501,7 +501,8 @@ class StackPresenterTest : BaseTest() {
         val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
-        verify(topBar).setTitleFontSize(9.0, true)
+        verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleAllowFontScaling(true)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
@@ -530,6 +531,7 @@ class StackPresenterTest : BaseTest() {
     fun mergeChildOptions_resolvedTitleFontOptionsAreApplied() {
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
+        defaultOptions.topBar.title.allowFontScaling = Bool(false)
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
@@ -540,7 +542,8 @@ class StackPresenterTest : BaseTest() {
         val title = (topBar.titleAndButtonsContainer.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
-        verify(topBar).setTitleFontSize(9.0, false)
+        verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleAllowFontScaling(false)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
