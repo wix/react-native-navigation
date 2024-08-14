@@ -50,9 +50,6 @@
     "release": "node ./scripts/release",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
-  "overrides": {
-    "@babel/traverse": "7.22.6"
-  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
@@ -125,7 +122,7 @@
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
-    "typescript": "4.4.3"
+    "typescript": "5.5.4"
   },
   "husky": {
     "hooks": {
