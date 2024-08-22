@@ -223,7 +223,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     protected void handle(Runnable task) {
         UiThread.post(() -> {
-            if (getCurrentActivity() != null && !activity().isFinishing()) {
+            NavigationActivity activity = activity();
+            if (activity != null && !activity.isFinishing()) {
                 task.run();
             }
         });
