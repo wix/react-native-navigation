@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion rootProject.ext.get("targetSdkVersion")
         versionCode 1
         versionName "1.0"
