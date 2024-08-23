@@ -450,6 +450,8 @@
 		9FDA2AC024F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */; };
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
+		AC507A2D2C38BC6700E8DB18 /* RNNSheetViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AC507A2B2C38BC6600E8DB18 /* RNNSheetViewController.h */; };
+		AC507A2E2C38BC6700E8DB18 /* RNNSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC507A2C2C38BC6700E8DB18 /* RNNSheetViewController.m */; };
 		B8415310251E07A600467F37 /* LinearInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B841530F251E07A600467F37 /* LinearInterpolator.m */; };
 		B841531D251E088100467F37 /* OvershootInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B8415316251E088100467F37 /* OvershootInterpolator.m */; };
 		B841531F251E088100467F37 /* SpringInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = B8415318251E088100467F37 /* SpringInterpolator.m */; };
@@ -1000,6 +1002,8 @@
 		A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarOptions.h; sourceTree = "<group>"; };
 		A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsOptions.h; sourceTree = "<group>"; };
 		A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptions.m; sourceTree = "<group>"; };
+		AC507A2B2C38BC6600E8DB18 /* RNNSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSheetViewController.h; sourceTree = "<group>"; };
+		AC507A2C2C38BC6700E8DB18 /* RNNSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSheetViewController.m; sourceTree = "<group>"; };
 		B841530F251E07A600467F37 /* LinearInterpolator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LinearInterpolator.m; sourceTree = "<group>"; };
 		B8415316251E088100467F37 /* OvershootInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OvershootInterpolator.m; sourceTree = "<group>"; };
 		B8415318251E088100467F37 /* SpringInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringInterpolator.m; sourceTree = "<group>"; };
@@ -1724,6 +1728,8 @@
 		D8AFADB41BEE6F3F00A4592D = {
 			isa = PBXGroup;
 			children = (
+				AC507A2B2C38BC6600E8DB18 /* RNNSheetViewController.h */,
+				AC507A2C2C38BC6700E8DB18 /* RNNSheetViewController.m */,
 				B841530E251E078000467F37 /* Interpolators */,
 				E5F6C39B22DB4CB90093C2CE /* Utils */,
 				214545271F4DC7ED006E8DA1 /* Helpers */,
@@ -1949,6 +1955,7 @@
 				E8DA24401F97459B00CD552B /* RNNElementFinder.h in Headers */,
 				509416A723A11C630036092C /* EnumParser.h in Headers */,
 				50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */,
+				AC507A2D2C38BC6700E8DB18 /* RNNSheetViewController.h in Headers */,
 				50D031342005149000386B3D /* RNNOverlayManager.h in Headers */,
 				50E5F7952240EBD6002AFEAD /* RNNAnimationsTransitionDelegate.h in Headers */,
 				50F72E552607468C0096758A /* PathTransition.h in Headers */,
@@ -2256,6 +2263,7 @@
 				503A8A1A23BCB2ED0094D1C4 /* RNNReactButtonView.m in Sources */,
 				50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */,
 				50DD9155274FC6E200B4C917 /* AnimationObserver.m in Sources */,
+				AC507A2E2C38BC6700E8DB18 /* RNNSheetViewController.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
 				5082CC3423CDC3B800FD2B6A /* HorizontalTranslationTransition.m in Sources */,
 				50495957216F6B3D006D2B81 /* DictionaryParser.m in Sources */,

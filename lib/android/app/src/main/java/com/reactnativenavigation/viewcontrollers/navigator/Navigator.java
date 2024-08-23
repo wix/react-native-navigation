@@ -23,6 +23,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayManager;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
+import com.reactnativenavigation.viewcontrollers.sheet.SheetViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
@@ -246,6 +247,13 @@ public class Navigator extends ParentController<ViewGroup> {
             }
         } else {
             listener.onError("Failed to execute stack command. Stack " + fromId + " not found.");
+        }
+    }
+
+    public void setupSheetContentNodes(String componentId, int headerTag,  int contentTag,  int footerTag) {
+        SheetViewController sheetController = (SheetViewController)findController(componentId);
+        if (sheetController != null) {
+            sheetController.setupContentViews(headerTag, contentTag, footerTag);
         }
     }
 

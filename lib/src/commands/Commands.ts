@@ -27,6 +27,20 @@ export class Commands {
     private readonly optionsCrawler: OptionsCrawler
   ) {}
 
+  public setupSheetContentNodes(
+    componentId: string,
+    headerNode?: number | null,
+    contentNode?: number | null,
+    footerNode?: number | null
+  ) {
+    return this.nativeCommandsSender.setupSheetContentNodes(
+      componentId,
+      headerNode,
+      contentNode,
+      footerNode
+    );
+  }
+
   public setRoot(simpleApi: LayoutRoot) {
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input.root);

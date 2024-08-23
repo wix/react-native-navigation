@@ -6,6 +6,7 @@ import com.reactnativenavigation.options.OrientationOptions
 import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.BoolParser
+import com.reactnativenavigation.options.parsers.FloatParser
 import com.reactnativenavigation.options.parsers.NumberParser
 import org.json.JSONObject
 
@@ -18,6 +19,15 @@ class LayoutOptions {
 
     @JvmField
     var topMargin: Number = NullNumber()
+
+    @JvmField
+    var sheetFullScreen: Bool = NullBool()
+
+    @JvmField
+    var sheetBackdropOpacity: FloatParam = NullFloatParam()
+
+    @JvmField
+    var sheetBorderTopRadius: Number = NullNumber()
 
     @JvmField
     var adjustResize: Bool = NullBool()
@@ -38,6 +48,9 @@ class LayoutOptions {
         if (other.orientation.hasValue()) orientation = other.orientation
         if (other.direction.hasValue()) direction = other.direction
         if (other.adjustResize.hasValue()) adjustResize = other.adjustResize
+        if (other.sheetFullScreen.hasValue()) sheetFullScreen = other.sheetFullScreen
+        if (other.sheetBackdropOpacity.hasValue()) sheetBackdropOpacity = other.sheetBackdropOpacity
+        if (other.sheetBorderTopRadius.hasValue()) sheetBorderTopRadius = other.sheetBorderTopRadius
         insets.merge(other.insets, null)
     }
 
@@ -48,6 +61,9 @@ class LayoutOptions {
         if (!orientation.hasValue()) orientation = defaultOptions.orientation
         if (!direction.hasValue()) direction = defaultOptions.direction
         if (!adjustResize.hasValue()) adjustResize = defaultOptions.adjustResize
+        if (!sheetFullScreen.hasValue()) sheetFullScreen = defaultOptions.sheetFullScreen
+        if (!sheetBackdropOpacity.hasValue()) sheetBackdropOpacity = defaultOptions.sheetBackdropOpacity
+        if (!sheetBorderTopRadius.hasValue()) sheetBorderTopRadius = defaultOptions.sheetBorderTopRadius
         insets.merge(null, defaultOptions.insets)
 
     }
@@ -64,8 +80,11 @@ class LayoutOptions {
             result.orientation = OrientationOptions.parse(json)
             result.direction = LayoutDirection.fromString(json.optString("direction", ""))
             result.adjustResize = BoolParser.parse(json, "adjustResize")
+            result.sheetFullScreen = BoolParser.parse(json, "sheetFullScreen")
+            result.sheetBorderTopRadius = NumberParser.parse(json, "sheetBorderTopRadius")
+            result.sheetBackdropOpacity = FloatParser.parse(json, "sheetBackdropOpacity")
             return result
         }
     }
-
+    
 }

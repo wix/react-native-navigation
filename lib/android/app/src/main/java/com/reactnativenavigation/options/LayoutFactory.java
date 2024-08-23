@@ -22,6 +22,8 @@ import com.reactnativenavigation.viewcontrollers.component.ComponentViewControll
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
+import com.reactnativenavigation.viewcontrollers.sheet.SheetPresenter;
+import com.reactnativenavigation.viewcontrollers.sheet.SheetViewController;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
@@ -32,6 +34,7 @@ import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentViewCreator;
+import com.reactnativenavigation.views.sheet.SheetViewCreator;
 import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
@@ -82,6 +85,8 @@ public class LayoutFactory {
 				return createComponent(node);
 			case ExternalComponent:
 				return createExternalComponent(context, node);
+			case Sheet:
+				return createSheet(node);
 			case Stack:
 				return createStack(node);
 			case BottomTabs:
@@ -99,6 +104,21 @@ public class LayoutFactory {
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
+	}
+
+	private ViewController<?> createSheet(LayoutNode node) {
+		String id = node.id;
+		String name = node.data.optString("name");
+		return new SheetViewController(activity,
+				childRegistry,
+				id,
+				name,
+				new SheetViewCreator(reactInstanceManager),
+				parseOptions(node.getOptions()),
+				new Presenter(activity, defaultOptions),
+				new SheetPresenter(defaultOptions),
+				reactInstanceManager
+		);
 	}
 
 	private ViewController<?> createSideMenuRoot(LayoutNode node) {

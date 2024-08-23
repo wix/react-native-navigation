@@ -9,6 +9,7 @@ import {
   LayoutSideMenu,
   LayoutSplitView,
   ExternalComponent,
+  Sheet,
 } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
@@ -32,8 +33,23 @@ export class LayoutTreeParser {
       return this.externalComponent(api.externalComponent);
     } else if (api.splitView) {
       return this.splitView(api.splitView);
+    } else if (api.sheet) {
+      return this.sheet(api.sheet);
     }
     throw new Error(`unknown LayoutType "${Object.keys(api)}"`);
+  }
+
+  private sheet(api: Sheet): LayoutNode {
+    return {
+      id: api.id || this.uniqueIdProvider.generate(LayoutType.Sheet),
+      type: LayoutType.Sheet,
+      data: {
+        name: api.name.toString(),
+        options: api.options,
+        passProps: api.passProps,
+      },
+      children: [],
+    };
   }
 
   private topTabs(api: LayoutTopTabs): LayoutNode {

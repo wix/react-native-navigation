@@ -13,6 +13,9 @@
     return node;
 }
 
+- (BOOL)isSheet {
+    return [self.type isEqualToString:@"Sheet"];
+}
 - (BOOL)isComponent {
     return [self.type isEqualToString:@"Component"];
 }

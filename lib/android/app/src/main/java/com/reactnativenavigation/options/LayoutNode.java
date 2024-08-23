@@ -7,6 +7,7 @@ import java.util.List;
 
 public class LayoutNode {
 	public enum Type {
+        Sheet,
 		Component,
         ExternalComponent,
 		Stack,
