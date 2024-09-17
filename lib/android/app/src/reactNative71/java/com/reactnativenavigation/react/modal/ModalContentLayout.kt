@@ -49,17 +49,17 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
             updateFirstChildView()
         }
     }
-    override fun onChildStartedNativeGesture(child: View, androidEvent: MotionEvent?) {
+    override fun onChildStartedNativeGesture(child: View, androidEvent: MotionEvent) {
         mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
     }
-    override fun onChildStartedNativeGesture(androidEvent: MotionEvent?) {
+    override fun onChildStartedNativeGesture(androidEvent: MotionEvent) {
         mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
     }
-    override fun onChildEndedNativeGesture(child: View, androidEvent: MotionEvent?) {
+    override fun onChildEndedNativeGesture(child: View, androidEvent: MotionEvent) {
         mJSTouchDispatcher.onChildEndedNativeGesture(androidEvent, this.getEventDispatcher())
     }
     override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-    private fun getEventDispatcher(): EventDispatcher? {
+    private fun getEventDispatcher(): EventDispatcher {
         val reactContext: ReactContext = this.getReactContext()
         return reactContext.getNativeModule(UIManagerModule::class.java)!!.eventDispatcher
     }
@@ -73,12 +73,12 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
         return this.context as ReactContext
     }
 
-    override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher())
         return super.onInterceptTouchEvent(event)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher())
         super.onTouchEvent(event)
         return true
