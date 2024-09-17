@@ -6,10 +6,12 @@ import com.reactnativenavigation.options.Options
 
 class LayoutDirectionApplier {
     fun apply(root: ViewController<*>, options: Options, instanceManager: ReactInstanceManager) {
-        if (options.layout.direction.hasValue() && instanceManager.currentReactContext != null) {
-            root.activity.window.decorView.layoutDirection = options.layout.direction.get()
-            I18nUtil.getInstance().allowRTL(instanceManager.currentReactContext, options.layout.direction.isRtl)
-            I18nUtil.getInstance().forceRTL(instanceManager.currentReactContext, options.layout.direction.isRtl)
+        if (options.layout.direction.hasValue()) {
+            instanceManager.currentReactContext?.let { context ->
+                root.activity.window.decorView.layoutDirection = options.layout.direction.get()
+                I18nUtil.getInstance().allowRTL(context, options.layout.direction.isRtl)
+                I18nUtil.getInstance().forceRTL(context, options.layout.direction.isRtl)
+           }
         }
     }
 }
