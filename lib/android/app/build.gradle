@@ -44,6 +44,9 @@ android {
         unitTests.includeAndroidResources = true
         unitTests.all { t ->
             maxHeapSize = "4g"
+            reports {
+                html.required true
+            }
             testLogging {
                 events "PASSED", "SKIPPED", "FAILED"
                 exceptionFormat TestExceptionFormat.FULL
