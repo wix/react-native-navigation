@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -19,6 +21,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.component.Renderable;
 
 import androidx.annotation.RestrictTo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView, Renderable {
@@ -64,7 +69,29 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
 
     @Override
     public void destroy() {
+        // get current children and id
+        ViewGroup rootViewGroup = getRootViewGroup();
+        int childCount = rootViewGroup.getChildCount();
+        int id = rootViewGroup.getId();
+        List<View> children = new ArrayList<>();
+        for (int i = 0; i < childCount; i++) {
+            children.add(rootViewGroup.getChildAt(i));
+        }
+
+        // since RN 0.71.x unmount will remove all children and reset the id
+        // which cause the onDropViewInstance not called.
         unmountReactApplication();
+
+        // restore removed children and revert the id since RN 0.71.x
+        //  then the onDropViewInstance will be called.
+        //  and NativeViewHierarchyManager will help to remove these children later.
+        for (int i = 0; i < children.size(); i++) {
+            View child = children.get(i);
+            if (rootViewGroup.indexOfChild(child) < 0) {
+                rootViewGroup.addView(child);
+            }
+        }
+        rootViewGroup.setId(id);
     }
 
     public void sendComponentWillStart(ComponentType type) {
