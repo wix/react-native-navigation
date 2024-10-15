@@ -521,6 +521,40 @@
     XCTAssertTrue(_vc2.isViewLoaded);
 }
 
+- (void)testSetRoot_withBottomTabsAttachModeOnSwitchToTabWithCustomIndex {
+    [self.uut setReadyToReceiveCommands:true];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.tabsAttachMode =
+        [[BottomTabsAttachMode alloc] initWithValue:@"onSwitchToTab"];
+    options.animations.setRoot.waitForRender = [[Bool alloc] initWithBOOL:YES];
+    options.bottomTabs.currentTabIndex = [IntNumber withValue:@1];
+
+    BottomTabsBaseAttacher *attacher =
+        [[[BottomTabsAttachModeFactory alloc] initWithDefaultOptions:nil] fromOptions:options];
+    RNNBottomTabsController *tabBarController =
+        [[RNNBottomTabsController alloc] initWithLayoutInfo:nil
+                                                    creator:nil
+                                                    options:options
+                                             defaultOptions:[RNNNavigationOptions emptyOptions]
+                                                  presenter:[RNNBasePresenter new]
+                                         bottomTabPresenter:nil
+                                      dotIndicatorPresenter:nil
+                                               eventEmitter:_eventEmmiter
+                                       childViewControllers:@[ _vc1, _vc2 ]
+                                         bottomTabsAttacher:attacher];
+    [tabBarController viewWillAppear:YES];
+    OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(tabBarController);
+
+    [self.uut setRoot:@{}
+            commandId:@""
+           completion:^(NSString *componentId){
+           }];
+    XCTAssertFalse(_vc1.isViewLoaded);
+    XCTAssertTrue(_vc2.isViewLoaded);
+    [tabBarController setSelectedIndex:0];
+    XCTAssertTrue(_vc1.isViewLoaded);
+}
+
 - (void)testSetRoot_withBottomTabsAttachModeAfterInitialTab {
     [self.uut setReadyToReceiveCommands:true];
     RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];

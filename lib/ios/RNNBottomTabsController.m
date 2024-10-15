@@ -29,6 +29,11 @@
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
 
+    if ([options.bottomTabs.currentTabIndex hasValue]) {
+        _currentTabIndex = [options.bottomTabs.currentTabIndex get];
+        _previousTabIndex = _currentTabIndex;
+    }
+
     self = [super initWithLayoutInfo:layoutInfo
                              creator:creator
                              options:options
