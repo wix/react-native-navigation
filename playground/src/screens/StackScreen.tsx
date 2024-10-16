@@ -121,6 +121,7 @@ export default class StackScreen extends React.Component<NavigationProps> {
         name: Screens.Pushed,
         options: {
           topBar: {
+            testID: testIDs.TOPBAR_ID,
             title: {
               text: 'Title',
             },

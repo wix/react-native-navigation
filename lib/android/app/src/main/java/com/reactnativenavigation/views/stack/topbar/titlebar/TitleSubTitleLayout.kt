@@ -75,6 +75,16 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         }
     }
 
+    fun setTestId(testId: String) {
+        if (testId.isEmpty()) {
+            this.titleTextView.tag = null
+            this.subTitleTextView.tag = null
+        } else {
+            this.titleTextView.tag = "$testId.title"
+            this.subTitleTextView.tag = "$testId.subtitle"
+        }
+    }
+
     fun getTitle() = (this.titleTextView.text ?: "").toString()
 
     fun clear() {

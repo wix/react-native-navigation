@@ -18,9 +18,11 @@
 
 @property(nonatomic, strong) RNNTitleOptions *titleOptions;
 @property(nonatomic, strong) RNNSubtitleOptions *subtitleOptions;
+@property(nonatomic, strong) Text *parentTestID;
 
 - (instancetype)initWithTitleViewOptions:(RNNOptions *)titleOptions
                          subTitleOptions:(RNNOptions *)subtitleOptions
+                            parentTestID:(Text *)parentTestID
                           viewController:(UIViewController *)viewController;
 
 - (void)setup;

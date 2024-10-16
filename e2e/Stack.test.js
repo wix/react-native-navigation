@@ -1,8 +1,27 @@
+import jestExpect from 'expect';
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, sleep } = Utils;
+
+const driver = {
+  root: {
+    navToTitleAndSubtitle: async () => {
+      await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
+      return driver.titleWithSubtitle;
+    },
+  },
+
+  titleWithSubtitle: {
+    titleId: `${TestIDs.TOPBAR_ID}.title`,
+    subtitleId: `${TestIDs.TOPBAR_ID}.subtitle`,
+    title: () => elementById(driver.titleWithSubtitle.titleId),
+    titleByLabel: () => elementByLabel('Title'),
+    subtitle: () => elementById(driver.titleWithSubtitle.subtitleId),
+    subtitleByLabel: () => elementByLabel('Subtitle'),
+  },
+};
 
 describe('Stack', () => {
   beforeEach(async () => {
@@ -78,9 +97,25 @@ describe('Stack', () => {
   });
 
   it('push title with subtitle', async () => {
-    await elementById(TestIDs.PUSH_TITLE_WITH_SUBTITLE).tap();
-    await expect(elementByLabel('Title')).toBeVisible();
-    await expect(elementByLabel('Subtitle')).toBeVisible();
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
+    await expect(innerDriver.titleByLabel()).toBeVisible();
+    await expect(innerDriver.subtitleByLabel()).toBeVisible();
+  });
+
+  it('push title & subtitle with derived test IDs', async () => {
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
+    await expect(innerDriver.title()).toBeVisible();
+    await expect(innerDriver.subtitle()).toBeVisible();
+  });
+
+  it.e2e('push title & subtitle with derived test IDs (strict e2e)', async () => {
+    const innerDriver = await driver.root.navToTitleAndSubtitle();
+
+    const titleAttr = await innerDriver.titleByLabel().getAttributes();
+    jestExpect(titleAttr.identifier).toEqual(innerDriver.titleId);
+
+    const subtitleAttr = await innerDriver.subtitleByLabel().getAttributes();
+    jestExpect(subtitleAttr.identifier).toEqual(innerDriver.subtitleId);
   });
 
   it.e2e('screen lifecycle', async () => {

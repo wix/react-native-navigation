@@ -6,6 +6,7 @@ import Screens from './Screens';
 import Navigation from './../services/Navigation';
 import { stack, component } from './../commons/Layouts';
 import testIDs from '../testIDs';
+import { MountedBottomTabScreensState } from './FirstBottomTabScreen';
 
 const {
   SIDE_MENU_INSIDE_BOTTOM_TABS_BTN,
@@ -38,6 +39,10 @@ export default class SecondBottomTabScreen extends React.Component<NavigationPro
         },
       },
     };
+  }
+
+  componentDidMount() {
+    MountedBottomTabScreensState.addScreen('SecondBottomTabScreen');
   }
 
   render() {

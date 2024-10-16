@@ -17,6 +17,7 @@
            reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
   RCTFabricSurface *surface = [[RCTFabricSurface alloc] initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
   self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+  [surface start];
 #else
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName

@@ -47,6 +47,7 @@
         _titleViewHelper =
             [[RNNTitleViewHelper alloc] initWithTitleViewOptions:options.title
                                                  subTitleOptions:options.subtitle
+                                                    parentTestID:options.testID
                                                   viewController:self.boundViewController];
 
         if (options.title.text.hasValue) {

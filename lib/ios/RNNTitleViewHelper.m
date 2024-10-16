@@ -38,12 +38,14 @@
 
 - (instancetype)initWithTitleViewOptions:(RNNTitleOptions *)titleOptions
                          subTitleOptions:(RNNSubtitleOptions *)subtitleOptions
+                            parentTestID:(Text *)parentTestID
                           viewController:(UIViewController *)viewController {
     self = [super init];
     if (self) {
         self.viewController = viewController;
         self.titleOptions = titleOptions;
         self.subtitleOptions = subtitleOptions;
+        self.parentTestID = parentTestID;
     }
     return self;
 }
@@ -81,7 +83,7 @@
     if (self.title) {
         self.titleView.titleLabel = [self setupTitle];
     }
-
+	
     [self centerTitleView:navigationBarBounds
                titleLabel:self.titleView.titleLabel
             subtitleLabel:self.titleView.subtitleLabel];
@@ -135,6 +137,11 @@
         subtitleLabel.textColor = color;
     }
 
+    if (_parentTestID && _parentTestID.hasValue && ((NSString *)_parentTestID.get).length > 0) {
+        subtitleLabel.accessibilityIdentifier =
+            [NSString stringWithFormat:@"%@.subtitle", _parentTestID.get];
+    }
+
     [self.titleView addSubview:subtitleLabel];
 
     return subtitleLabel;
@@ -172,6 +179,11 @@
     if (_titleOptions.color.hasValue) {
         UIColor *color = _titleOptions.color.get;
         titleLabel.textColor = color;
+    }
+
+    if (_parentTestID && _parentTestID.hasValue && ((NSString *)_parentTestID.get).length > 0) {
+        titleLabel.accessibilityIdentifier =
+            [NSString stringWithFormat:@"%@.title", _parentTestID.get];
     }
 
     [self.titleView addSubview:titleLabel];
