@@ -554,8 +554,7 @@
            completion:^(NSString *componentId){
            }];
 
-	// TODO: for some reason the controller always loads the default controller (index 0), regardless the initial value.
-	XCTAssertTrue(_vc1.isViewLoaded);
+	XCTAssertFalse(_vc1.isViewLoaded);
 	XCTAssertTrue(_vc2.isViewLoaded);
 	XCTAssertFalse(_vc3.isViewLoaded);
 
