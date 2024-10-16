@@ -29,18 +29,21 @@
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
 
-    if ([options.bottomTabs.currentTabIndex hasValue]) {
-        _currentTabIndex = [options.bottomTabs.currentTabIndex get];
-        _previousTabIndex = _currentTabIndex;
+    self = [super initWithLayoutInfo:layoutInfo
+                           creator:creator
+                           options:options
+                    defaultOptions:defaultOptions
+                         presenter:presenter
+                      eventEmitter:eventEmitter
+              childViewControllers:childViewControllers];
+
+    IntNumber *currentTabIndex = options.bottomTabs.currentTabIndex;
+    if ([currentTabIndex hasValue]) {
+      NSUInteger currentTabIndexValue = [currentTabIndex get];
+      _previousTabIndex = currentTabIndexValue;
+      _currentTabIndex = currentTabIndexValue;
     }
 
-    self = [super initWithLayoutInfo:layoutInfo
-                             creator:creator
-                             options:options
-                      defaultOptions:defaultOptions
-                           presenter:presenter
-                        eventEmitter:eventEmitter
-                childViewControllers:childViewControllers];
     if (@available(iOS 13.0, *)) {
         self.tabBar.standardAppearance = [UITabBarAppearance new];
     }
