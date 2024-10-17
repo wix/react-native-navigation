@@ -165,6 +165,18 @@ export class NavigationRoot {
   }
 
   /**
+   * Send event for start presentatioin sheet
+   */
+  public setupSheetContentNodes(
+    componentId: string,
+    headerNode?: number | null,
+    contentNode?: number | null,
+    footerNode?: number | null
+  ) {
+    return this.commands.setupSheetContentNodes(componentId, headerNode, contentNode, footerNode);
+  }
+
+  /**
    * Reset the app to a new layout
    */
   public setRoot(layout: LayoutRoot): Promise<string> {

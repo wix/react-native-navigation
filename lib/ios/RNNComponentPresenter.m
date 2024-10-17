@@ -1,5 +1,6 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
+#import "RNNSheetViewController.h"
 #import "TopBarTitlePresenter.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
@@ -55,12 +56,25 @@
     [viewController
         setInterceptTouchOutside:[withDefault.overlay.interceptTouchOutside withDefault:YES]];
 
-    if (@available(iOS 13.0, *)) {
-        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
-                                               withDefault:UIColor.systemBackgroundColor]];
+    if ([viewController isKindOfClass:[RNNSheetViewController class]]) {
+        RNNSheetViewController *sheetController = (RNNSheetViewController *)viewController;
+        [sheetController setSheetBackgroundColor:[withDefault.layout.componentBackgroundColor
+                                                     withDefault:UIColor.whiteColor]];
+
+        [sheetController
+            setBackdropOpacity:[withDefault.layout.sheetBackdropOpacity withDefault:0.6]];
+        [sheetController
+            setCornerTopRadius:[withDefault.layout.sheetBorderTopRadius withDefault:@16]];
+
     } else {
-        [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
-                                               withDefault:viewController.view.backgroundColor]];
+        if (@available(iOS 13.0, *)) {
+            [viewController setBackgroundColor:[withDefault.layout.componentBackgroundColor
+                                                   withDefault:UIColor.systemBackgroundColor]];
+        } else {
+            [viewController
+                setBackgroundColor:[withDefault.layout.componentBackgroundColor
+                                       withDefault:viewController.view.backgroundColor]];
+        }
     }
 
     if ([withDefault.topBar.searchBar.visible withDefault:NO]) {
@@ -166,8 +180,26 @@
         [viewController setTopBarPrefersLargeTitle:mergeOptions.topBar.largeTitle.visible.get];
     }
 
+    if ([viewController isKindOfClass:[RNNSheetViewController class]]) {
+        RNNSheetViewController *sheetController = (RNNSheetViewController *)viewController;
+
+        if (mergeOptions.layout.sheetBackdropOpacity.hasValue) {
+            [sheetController setBackdropOpacity:mergeOptions.layout.sheetBackdropOpacity.get];
+        }
+
+        if (mergeOptions.layout.sheetBorderTopRadius.hasValue) {
+            [sheetController setCornerTopRadius:mergeOptions.layout.sheetBorderTopRadius.get];
+        }
+    }
+
     if (mergeOptions.layout.componentBackgroundColor.hasValue) {
-        [viewController setBackgroundColor:mergeOptions.layout.componentBackgroundColor.get];
+        if ([viewController isKindOfClass:[RNNSheetViewController class]]) {
+            RNNSheetViewController *sheetController = (RNNSheetViewController *)viewController;
+            [sheetController
+                setSheetBackgroundColor:mergeOptions.layout.componentBackgroundColor.get];
+        } else {
+            [viewController setBackgroundColor:mergeOptions.layout.componentBackgroundColor.get];
+        }
     }
 
     if (mergeOptions.bottomTab.badgeColor.hasValue) {

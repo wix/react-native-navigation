@@ -211,6 +211,15 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         handle(() -> navigator().dismissAllOverlays(new NativeCommandListener("dismissAllOverlays", commandId, promise, eventEmitter, now)));
     }
 
+    @ReactMethod
+    public void setupSheetContentNodes(String componentId, int headerTag,  int contentTag,  int footerTag, Promise promise) {
+        try {
+            navigator().setupSheetContentNodes(componentId, headerTag, contentTag, footerTag);
+        } catch(Exception e) {} // Nothing to do
+
+        promise.resolve(null);
+    }
+
     private Navigator navigator() {
         return activity().getNavigator();
     }

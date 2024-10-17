@@ -9,4 +9,5 @@ export enum LayoutType {
   TopTabs = 'TopTabs',
   ExternalComponent = 'ExternalComponent',
   SplitView = 'SplitView',
+  Sheet = 'Sheet',
 }

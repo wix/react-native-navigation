@@ -24,7 +24,7 @@ import androidx.annotation.RestrictTo;
 public class ReactView extends ReactRootView implements IReactView, Renderable {
 
     private final ReactInstanceManager reactInstanceManager;
-    private final String componentId;
+    public final String componentId;
     private final String componentName;
     private boolean isAttachedToReactInstance = false;
     private final JSTouchDispatcher jsTouchDispatcher;

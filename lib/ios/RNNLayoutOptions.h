@@ -4,6 +4,8 @@
 
 @property(nonatomic, strong) Color *backgroundColor;
 @property(nonatomic, strong) Color *componentBackgroundColor;
+@property(nonatomic, strong) Number *sheetBorderTopRadius;
+@property(nonatomic, strong) Double *sheetBackdropOpacity;
 @property(nonatomic, strong) Text *direction;
 @property(nonatomic, strong) id orientation;
 @property(nonatomic, strong) Bool *autoHideHomeIndicator;

@@ -1,6 +1,7 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
+#import "RNNSheetViewController.h"
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -75,6 +76,12 @@
             animated:(BOOL)animated
           completion:(RNNTransitionCompletionBlock)completion {
     if (viewController) {
+        if ([viewController isKindOfClass:[RNNSheetViewController class]]) {
+            RNNSheetViewController *sheetVC = (RNNSheetViewController *)viewController;
+            [sheetVC dismiss];
+            return;
+        }
+
         [_pendingModalIdsToDismiss addObject:viewController];
         [self removePendingNextModalIfOnTop:completion animated:animated];
     }

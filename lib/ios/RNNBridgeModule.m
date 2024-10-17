@@ -252,4 +252,18 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getNavigationConstantsSync) {
     return c;
 }
 
+RCT_EXPORT_METHOD(setupSheetContentNodes
+                  : (NSString *)componentId
+                  : (nonnull NSNumber *)headerTag
+                  : (nonnull NSNumber *)contentTag
+                  : (nonnull NSNumber *)footerTag
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    [self->_commandsHandler setupSheetContentNodes:componentId
+                                         headerTag:headerTag
+                                        contentTag:contentTag
+                                         footerTag:footerTag];
+    resolve(nil);
+}
+
 @end
