@@ -82,6 +82,8 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
 
     fun setTitleFontSize(size: Float) = titleSubTitleBar.setTitleFontSize(size)
 
+    fun setTitleAllowFontScaling(enabled: Boolean) = titleSubTitleBar.setTitleAllowFontScaling(enabled)
+
     fun setTitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = titleSubTitleBar.setTitleTypeface(typefaceLoader, font)
 
     fun setSubtitleTypeface(typefaceLoader: TypefaceLoader, font: FontOptions) = titleSubTitleBar.setSubtitleTypeface(typefaceLoader, font)
