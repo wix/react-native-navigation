@@ -13,6 +13,8 @@
     NSUInteger _previousTabIndex;
     BottomTabsBaseAttacher *_bottomTabsAttacher;
     BOOL _tabBarNeedsRestore;
+    RNNNavigationOptions *_options;
+    BOOL _didFinishSetup;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -28,14 +30,24 @@
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
+    _options = options;
+    _didFinishSetup = NO;
+
+    IntNumber *currentTabIndex = options.bottomTabs.currentTabIndex;
+    if ([currentTabIndex hasValue]) {
+      NSUInteger currentTabIndexValue = [currentTabIndex get];
+      _previousTabIndex = currentTabIndexValue;
+      _currentTabIndex = currentTabIndexValue;
+    }
 
     self = [super initWithLayoutInfo:layoutInfo
-                             creator:creator
-                             options:options
-                      defaultOptions:defaultOptions
-                           presenter:presenter
-                        eventEmitter:eventEmitter
-                childViewControllers:childViewControllers];
+                           creator:creator
+                           options:options
+                    defaultOptions:defaultOptions
+                         presenter:presenter
+                      eventEmitter:eventEmitter
+              childViewControllers:childViewControllers];
+
     if (@available(iOS 13.0, *)) {
         self.tabBar.standardAppearance = [UITabBarAppearance new];
     }
@@ -52,6 +64,7 @@
                                                       action:@selector(handleLongPressGesture:)];
     [self.tabBar addGestureRecognizer:self.longPressRecognizer];
 
+    _didFinishSetup = YES;
     return self;
 }
 
@@ -124,8 +137,15 @@
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
-    _currentTabIndex = selectedIndex;
-    [super setSelectedIndex:selectedIndex];
+    IntNumber *currentTabIndex = _options.bottomTabs.currentTabIndex;
+    if ([currentTabIndex hasValue] && !_didFinishSetup) {
+        NSUInteger currentTabIndexValue = [currentTabIndex get];
+        _currentTabIndex = currentTabIndexValue;
+    } else {
+        _currentTabIndex = selectedIndex;
+    }
+
+    [super setSelectedIndex:_currentTabIndex];
 }
 
 - (UIViewController *)selectedViewController {

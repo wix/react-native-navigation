@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.40.2-pretester",
+  "version": "7.40.3",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -77,7 +77,7 @@
     "@react-native/metro-config": "^0.73.2",
     "@react-native/babel-preset": "^0.73.18",
     "@react-native/typescript-config": "^0.73.1",
-    "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/blur": "^4.4.1",
     "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/eslint-config": "2.0.0",
     "@react-native-community/netinfo": "^5.9.4",
