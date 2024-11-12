@@ -1,5 +1,9 @@
 import { Options } from './Options';
 
+export interface InnerLayoutComponent<P = {}> extends LayoutComponent<P> {
+  processedByNavigation?: boolean;
+}
+
 export interface LayoutComponent<P = {}> {
   /**
    * Component reference id, Auto generated if empty

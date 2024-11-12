@@ -31,6 +31,7 @@ export class Commands {
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input.root);
     const processedRoot = this.layoutProcessor.process(input.root, CommandName.SetRoot);
+    this.optionsCrawler.crawl(processedRoot);
     const root = this.layoutTreeParser.parse(processedRoot);
 
     const modals = map(input.modals, (modal) => {

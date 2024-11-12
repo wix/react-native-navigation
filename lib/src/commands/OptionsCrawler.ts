@@ -4,6 +4,7 @@ import isFunction from 'lodash/isFunction';
 import { Store } from '../components/Store';
 import { Options } from '../interfaces/Options';
 import {
+  InnerLayoutComponent,
   Layout,
   LayoutBottomTabs,
   LayoutComponent,
@@ -75,9 +76,11 @@ export class OptionsCrawler {
     return (component as ComponentWithOptions).options !== undefined;
   }
 
-  private applyStaticOptions(layout: LayoutComponent) {
+  private applyStaticOptions(layout: InnerLayoutComponent) {
+    if (layout.processedByNavigation) return;
     const staticOptions = this.staticOptionsIfPossible(layout);
     layout.options = merge({}, staticOptions, layout.options);
+    layout.processedByNavigation = true;
   }
 
   private staticOptionsIfPossible(layout: LayoutComponent) {
@@ -85,7 +88,7 @@ export class OptionsCrawler {
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
     if (reactComponent && this.isComponentWithOptions(reactComponent)) {
       return isFunction(reactComponent.options)
-        ? reactComponent.options({ componentId: layout.id, ...layout.passProps } || {})
+        ? reactComponent.options({ componentId: layout.id, ...layout.passProps })
         : reactComponent.options;
     }
     return {};
