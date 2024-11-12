@@ -140,7 +140,14 @@ describe('Commands', () => {
         root: { component: { name: 'com.example.MyScreen' } },
       });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen', options: {}, id: 'Component+UNIQUE_ID' } },
+        {
+          component: {
+            name: 'com.example.MyScreen',
+            options: {},
+            id: 'Component+UNIQUE_ID',
+            processedByNavigation: true,
+          },
+        },
         CommandName.SetRoot
       );
     });
@@ -168,6 +175,7 @@ describe('Commands', () => {
             id: 'Component+UNIQUE_ID',
             name: 'com.example.MyScreen',
             options: { topBar: { visible: false } },
+            processedByNavigation: true,
           },
         },
         CommandName.SetRoot
@@ -326,7 +334,14 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: {},
+            processedByNavigation: true,
+          },
+        },
         CommandName.ShowModal
       );
     });
@@ -437,7 +452,14 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: {},
+            processedByNavigation: true,
+          },
+        },
         CommandName.Push
       );
     });
@@ -573,7 +595,14 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: {},
+            processedByNavigation: true,
+          },
+        },
         CommandName.SetStackRoot
       );
     });
@@ -619,7 +648,14 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { id: 'Component+UNIQUE_ID', name: 'com.example.MyScreen', options: {} } },
+        {
+          component: {
+            id: 'Component+UNIQUE_ID',
+            name: 'com.example.MyScreen',
+            options: {},
+            processedByNavigation: true,
+          },
+        },
         CommandName.ShowOverlay
       );
     });
