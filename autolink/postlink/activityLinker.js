@@ -54,16 +54,20 @@ class ActivityLinker {
   }
 
   _removeGetMainComponentName(contents) {
-    var match = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/.exec(
-      contents
-    );
-    if (match) {
-      debugn('   Removing getMainComponentName function');
-      return contents.replace(
-        /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/,
-        ''
-      );
+    var javaRegex = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/;
+    var javaMatch = javaRegex.exec(contents);
+    if (javaMatch) {
+      debugn('   [Java] Removing getMainComponentName function');
+      return contents.replace(javaRegex, '');
     }
+
+    var kotlinRegex = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*override\sfun\sgetMainComponentName\(\):\sString\s=\s.+/;
+    var kotlinMatch = kotlinRegex.exec(contents);
+    if (kotlinMatch) {
+      debugn('   [Kotlin] Removing getMainComponentName function');
+      return contents.replace(kotlinRegex, '');
+    }
+
     warnn('   getMainComponentName function was not found.');
     return contents;
   }
@@ -78,13 +82,20 @@ class ActivityLinker {
       debugn('   Extending NavigationActivity');
       return activityContent
         .replace(/extends\s+ReactActivity\s*/, 'extends NavigationActivity ')
+        .replace(/ReactActivity\(\)/, 'NavigationActivity()')
         .replace(
           /public\s+MainActivityDelegate\s*\(\s*ReactActivity\s+activity,\s*String\s+mainComponentName\s*\)/,
           'public MainActivityDelegate(NavigationActivity activity, String mainComponentName)'
         )
         .replace(
+          // Java
           'import com.facebook.react.ReactActivity;',
           'import com.reactnativenavigation.NavigationActivity;'
+        )
+        .replace(
+          // Kotlin
+          /import\scom\.facebook\.react\.ReactActivity\n/,
+          'import com.reactnativenavigation.NavigationActivity\n'
         );
     }
 
@@ -94,30 +105,34 @@ class ActivityLinker {
   }
 
   _doesActivityExtendReactActivity(activityContent) {
-    return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
+    return (
+      /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent) ||
+      /class\sMainActivity\s?:\s?ReactActivity\(\)/.test(activityContent)
+    );
   }
 
   _hasAlreadyExtendNavigationActivity(activityContent) {
-    return /public\s+class\s+MainActivity\s+extends\s+NavigationActivity\s*/.test(activityContent);
+    return (
+      /public\s+class\s+MainActivity\s+extends\s+NavigationActivity\s*/.test(activityContent) ||
+      /class\sMainActivity\s:\sNavigationActivity\(\)\s\{/.test(activityContent)
+    );
   }
 
   _removeCreateReactActivityDelegate(activityContent) {
-    if (this._hasCreateReactActivityDelegate(activityContent)) {
-      debugn('   Removing createReactActivityDelegate function');
-      return activityContent.replace(
-        /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/,
-        ''
-      );
-    } else {
-      warnn('   createReactActivityDelegate is already not defined in MainActivity');
-      return activityContent;
+    var javaRegex = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/;
+    if (javaRegex.test(activityContent)) {
+      debugn('   [Java] Removing createReactActivityDelegate function');
+      return activityContent.replace(javaRegex, '');
     }
-  }
 
-  _hasCreateReactActivityDelegate(activityContent) {
-    return /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/.test(
-      activityContent
-    );
+    var kotlinRegex = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*override\sfun\screateReactActivityDelegate\(\):\sReactActivityDelegate\s=\s+DefaultReactActivityDelegate\(this,\smainComponentName,\sfabricEnabled\)/;
+    if (kotlinRegex.test(activityContent)) {
+      debugn('   [Kotlin] Removing createReactActivityDelegate function');
+      return activityContent.replace(kotlinRegex, '');
+    }
+
+    warnn('   createReactActivityDelegate is already not defined in MainActivity');
+    return activityContent;
   }
 }
 

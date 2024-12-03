@@ -71,9 +71,16 @@ class ApplicationLinker {
           /extends\s+Application\s+implements\s+ReactApplication/gi,
           'extends NavigationApplication'
         )
+        .replace(/:\sApplication\(\),\sReactApplication/, ': NavigationApplication()')
         .replace(
+          // Java
           'import com.facebook.react.ReactApplication;',
           'import com.reactnativenavigation.NavigationApplication;'
+        )
+        .replace(
+          // Kotlin
+          'import com.facebook.react.ReactApplication',
+          'import com.reactnativenavigation.NavigationApplication'
         );
     }
 
@@ -88,13 +95,18 @@ class ApplicationLinker {
   }
 
   _doesExtendApplication(applicationContent) {
-    return /\s+MainApplication\s+extends\s+Application\s+implements\s+ReactApplication\s+/.test(
-      applicationContent
+    return (
+      /\s+MainApplication\s+extends\s+Application\s+implements\s+ReactApplication\s+/.test(
+        applicationContent
+      ) || /class\sMainApplication\s:\sApplication\(\),\sReactApplication/.test(applicationContent)
     );
   }
 
   _hasAlreadyLinkedApplication(applicationContent) {
-    return /\s+extends\s+NavigationApplication\s+/.test(applicationContent);
+    return (
+      /\s+extends\s+NavigationApplication\s+/.test(applicationContent) ||
+      /class\sMainApplication\s:\sNavigationApplication\(\)/.test(applicationContent)
+    );
   }
 
   _extendNavigationHost(applicationContent) {
@@ -114,10 +126,17 @@ class ApplicationLinker {
     } else if (this._doesExtendDefaultReactNativeHost(applicationContent)) {
       debugn('   Changing host implementation to NavigationReactNativeHost');
       return applicationContent
-        .replace('new DefaultReactNativeHost(this)', 'new NavigationReactNativeHost(this)')
+        .replace('new DefaultReactNativeHost(this)', 'new NavigationReactNativeHost(this)') // Java
+        .replace('DefaultReactNativeHost(this)', 'NavigationReactNativeHost(this)') // Kotlin
         .replace(
+          // Java
           'import com.facebook.react.defaults.DefaultReactNativeHost;',
           'import com.facebook.react.defaults.DefaultReactNativeHost;\nimport com.reactnativenavigation.react.NavigationReactNativeHost;'
+        )
+        .replace(
+          // Kotlin
+          /import\scom\.facebook\.react\.defaults\.DefaultReactNativeHost\n/,
+          'import com.facebook.react.defaults.DefaultReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost\n'
         );
     }
 
@@ -129,27 +148,43 @@ class ApplicationLinker {
   }
 
   _doesExtendDefaultReactNativeHost(applicationContent) {
-    return /\s*new DefaultReactNativeHost\(this\)\s*/.test(applicationContent);
+    return (
+      /\s*new DefaultReactNativeHost\(this\)\s*/.test(applicationContent) ||
+      /DefaultReactNativeHost\(this\)/.test(applicationContent)
+    );
   }
 
   _hasAlreadyLinkedNavigationHost(applicationContent) {
-    return /\s*new NavigationReactNativeHost\(this\)\s*/.test(applicationContent);
+    return (
+      /\s*new NavigationReactNativeHost\(this\)\s*/.test(applicationContent) ||
+      /NavigationReactNativeHost\(this\)/.test(applicationContent)
+    );
   }
 
   _removeSOLoaderInit(applicationContent) {
     if (this._isSOLoaderInitCalled(applicationContent)) {
       debugn('   Removing call to SOLoader.init()');
-      return applicationContent.replace(
-        /SoLoader.init\(\s*this\s*,\s*[/* native exopackage */]*\s*false\s*\);/,
-        ''
-      );
+      return applicationContent
+        .replace(
+          // Java
+          /SoLoader.init\(\s*this\s*,\s*[/* native exopackage */]*\s*false\s*\);/,
+          ''
+        )
+        .replace(
+          // Kotlin
+          /SoLoader\.init\(this,\sfalse\)/,
+          ''
+        );
     }
     warnn('   SOLoader.init() is not called, skipping.');
     return applicationContent;
   }
 
   _isSOLoaderInitCalled(applicationContent) {
-    return /SoLoader.init\(this,\s*[/* native exopackage */]*\s*false\);/.test(applicationContent);
+    return (
+      /SoLoader.init\(this,\s*[/* native exopackage */]*\s*false\);/.test(applicationContent) ||
+      /SoLoader\.init\(this,\sfalse\)/.test(applicationContent)
+    );
   }
 }
 
