@@ -5,6 +5,7 @@
 #import "RNNStackController.h"
 #import "TopBarPresenterCreator.h"
 #import "UINavigationController+RNNOptions.h"
+#import "RCTConvert+UIBarStyle.h"
 
 @interface RNNStackPresenter () {
     RNNReactComponentRegistry *_componentRegistry;

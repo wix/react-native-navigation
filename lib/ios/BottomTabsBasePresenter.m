@@ -1,6 +1,7 @@
 #import "BottomTabsBasePresenter.h"
 #import "RNNBottomTabsController.h"
 #import "UIImage+utils.h"
+#import "RCTConvert+UIBarStyle.h"
 
 @implementation BottomTabsBasePresenter
 

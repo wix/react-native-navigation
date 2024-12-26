@@ -12,6 +12,8 @@
 		2145452A1F4DC85F006E8DA1 /* RCTHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 214545291F4DC85F006E8DA1 /* RCTHelpers.m */; };
 		21B85E5D1F44480200B314B5 /* RNNButtonsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B85E5C1F44480200B314B5 /* RNNButtonsPresenter.m */; };
 		21B85E5F1F44482A00B314B5 /* RNNButtonsPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 21B85E5E1F44482A00B314B5 /* RNNButtonsPresenter.h */; };
+		22998C1C2D1E116F0005D728 /* RCTConvert+UIBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 22998C1B2D1E116F0005D728 /* RCTConvert+UIBarStyle.m */; };
+		22998C1D2D1E116F0005D728 /* RCTConvert+UIBarStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 22998C1A2D1E116F0005D728 /* RCTConvert+UIBarStyle.h */; };
 		261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 261F0E621E6EC94900989DE2 /* RNNModalManager.h */; };
 		261F0E651E6EC94900989DE2 /* RNNModalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 261F0E631E6EC94900989DE2 /* RNNModalManager.m */; };
 		263905AE1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058A1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h */; };
@@ -543,6 +545,8 @@
 		214545291F4DC85F006E8DA1 /* RCTHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTHelpers.m; sourceTree = "<group>"; };
 		21B85E5C1F44480200B314B5 /* RNNButtonsPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonsPresenter.m; sourceTree = "<group>"; };
 		21B85E5E1F44482A00B314B5 /* RNNButtonsPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNButtonsPresenter.h; sourceTree = "<group>"; };
+		22998C1A2D1E116F0005D728 /* RCTConvert+UIBarStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIBarStyle.h"; sourceTree = "<group>"; };
+		22998C1B2D1E116F0005D728 /* RCTConvert+UIBarStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIBarStyle.m"; sourceTree = "<group>"; };
 		261F0E621E6EC94900989DE2 /* RNNModalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNModalManager.h; sourceTree = "<group>"; };
 		261F0E631E6EC94900989DE2 /* RNNModalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNModalManager.m; sourceTree = "<group>"; };
 		2639058A1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
@@ -1126,6 +1130,8 @@
 				9FDA2ABF24F2A43B005678CC /* RCTConvert+SideMenuOpenGestureMode.m */,
 				7365070F21E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h */,
 				7365071021E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.m */,
+				22998C1A2D1E116F0005D728 /* RCTConvert+UIBarStyle.h */,
+				22998C1B2D1E116F0005D728 /* RCTConvert+UIBarStyle.m */,
 				5030B62823D5C9AF008F1642 /* RCTConvert+Interpolation.h */,
 				9F8E06B424EBDB48004BDA83 /* RCTConvert+Interpolation.m */,
 				506BF6962600B72D00A22755 /* UIImageView+Transition.h */,
@@ -1921,6 +1927,7 @@
 				7B1126A31E2D2B6C00F9B03B /* RNNSplashScreen.h in Headers */,
 				50C23E6225F51BAA0045A047 /* RNNEnterExitAnimation.h in Headers */,
 				5038A3D2216E364C009280BC /* Text.h in Headers */,
+				22998C1D2D1E116F0005D728 /* RCTConvert+UIBarStyle.h in Headers */,
 				261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */,
 				50344D2823A03DB4004B6A7C /* BottomTabsAttachMode.h in Headers */,
 				5082CC3323CDC3B800FD2B6A /* HorizontalTranslationTransition.h in Headers */,
@@ -2296,6 +2303,7 @@
 				5030B62223D5B4CB008F1642 /* Color+Interpolation.m in Sources */,
 				50395594217485B000B0A663 /* Double.m in Sources */,
 				504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */,
+				22998C1C2D1E116F0005D728 /* RCTConvert+UIBarStyle.m in Sources */,
 				506BF7CF26067B0500A22755 /* AnimatedUIImageView.m in Sources */,
 				50175CD2207A2AA1004FE91B /* RNNComponentOptions.m in Sources */,
 				505C640323E074860078AFC0 /* TopBarTitlePresenter.m in Sources */,
