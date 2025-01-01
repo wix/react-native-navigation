@@ -518,7 +518,7 @@ class BottomTabsControllerTest : BaseTest() {
         createChildren()
         tabs = mutableListOf(child1, child2, child3, child4, child5)
         defaultOptions.bottomTabsOptions = bottomTabsOptions
-        presenter = Mockito.spy(BottomTabsPresenter(tabs, defaultOptions, BottomTabsAnimator()))
+        presenter = Mockito.spy(BottomTabsPresenter(tabs, defaultOptions, BottomTabsAppearanceAnimator()))
         bottomTabPresenter =
             Mockito.spy(BottomTabPresenter(activity, tabs, mock(), TypefaceLoaderMock(), defaultOptions))
         tabsAttacher = Mockito.spy(BottomTabsAttacher(tabs, presenter, defaultOptions))

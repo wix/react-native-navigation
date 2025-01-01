@@ -233,7 +233,7 @@ public class StackPresenter {
 
         topBar.setBorderHeight(topBarOptions.borderHeight.get(0d));
         topBar.setBorderColor(topBarOptions.borderColor.get(DEFAULT_BORDER_COLOR));
-        topBar.setBackgroundColor(topBarOptions.background.color.get(Color.WHITE));
+        topBarController.setBackgroundColor(topBarOptions, Color.WHITE);
 
         if (topBarOptions.background.component.hasValue()) {
             View createdComponent = findBackgroundComponent(topBarOptions.background.component);
@@ -417,18 +417,18 @@ public class StackPresenter {
         }
     }
 
-    public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController<?> appearing,
-            Options appearingOptions) {
+    public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController<?> appearing, Options appearingOptions) {
         return CollectionUtils.asList(
-                topBarController.getPushAnimation(appearingOptions,
-                        getTopBarTranslationAnimationDelta(stack, appearing)),
-                perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions)));
+                topBarController.getPushAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearing)),
+                perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions))
+        );
     }
 
     public List<Animator> getAdditionalPopAnimations(Options appearingOptions, Options disappearingOptions) {
         return CollectionUtils.asList(
                 topBarController.getPopAnimation(appearingOptions, disappearingOptions),
-                perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions)));
+                perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions))
+        );
     }
 
     public List<Animator> getAdditionalSetRootAnimations(StackController stack, ViewController<?> appearing,
@@ -618,9 +618,7 @@ public class StackPresenter {
         if (resolveOptions.subtitle.font.hasValue()) {
             topBar.setSubtitleTypeface(typefaceLoader, resolveOptions.subtitle.font);
         }
-
-        if (topBarOptions.background.color.hasValue())
-            topBar.setBackgroundColor(topBarOptions.background.color.get());
+        topBarController.setBackgroundColor(topBarOptions);
 
         if (topBarOptions.background.component.hasValue()) {
             if (backgroundControllers.containsKey(component)) {

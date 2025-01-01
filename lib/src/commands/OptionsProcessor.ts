@@ -117,7 +117,7 @@ export class OptionsProcessor {
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
-    if (isEqual(key, 'color') || endsWith(key, 'Color')) {
+    if ((isEqual(key, 'color') || endsWith(key, 'Color')) && !isEqual(key, 'bkgColor')) {
       if (Platform.OS === 'ios') this.processColorIOS(key, value, options);
       else this.processColorAndroid(key, value, options);
     }

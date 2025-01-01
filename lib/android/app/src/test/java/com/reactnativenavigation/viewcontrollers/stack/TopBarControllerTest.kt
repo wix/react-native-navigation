@@ -16,7 +16,7 @@ import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.TitleBarHelper
 import com.reactnativenavigation.utils.resetViewProperties
-import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAnimator
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAppearanceAnimator
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.views.stack.StackLayout
@@ -33,13 +33,13 @@ class TopBarControllerTest : BaseTest() {
     private lateinit var textButton1: ButtonOptions
     private lateinit var textButton2: ButtonOptions
     private lateinit var componentButton: ButtonOptions
-    private lateinit var animator: TopBarAnimator
+    private lateinit var animator: TopBarAppearanceAnimator
     private val topBar: View
         get() = uut.view
 
     override fun beforeEach() {
         activity = newActivity()
-        animator = spy(TopBarAnimator())
+        animator = spy(TopBarAppearanceAnimator())
         uut = createTopBarController()
         val stack = mock<StackLayout>()
         uut.createView(activity, stack)

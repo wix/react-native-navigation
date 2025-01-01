@@ -1,5 +1,8 @@
 package com.reactnativenavigation.views.stack.topbar;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -31,7 +34,6 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.ContextKt;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -41,9 +43,6 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsCont
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import org.jetbrains.annotations.NotNull;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {

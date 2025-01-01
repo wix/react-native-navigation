@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 class BottomTabsPresenter(
     private val tabs: List<ViewController<*>>,
     private var defaultOptions: Options,
-    val animator: BottomTabsAnimator
+    val animator: BottomTabsAppearanceAnimator
 ) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
     private lateinit var bottomTabsContainer: BottomTabsContainer
