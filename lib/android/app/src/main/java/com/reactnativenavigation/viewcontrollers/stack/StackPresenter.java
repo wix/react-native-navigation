@@ -417,16 +417,21 @@ public class StackPresenter {
         }
     }
 
-    public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController<?> appearing, Options appearingOptions) {
+    public List<Animator> getAdditionalPushAnimations(
+            StackController stack,
+            ViewController<?> appearingCtrl,
+            Options appearingOptions) {
         return CollectionUtils.asList(
-                topBarController.getPushAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearing)),
+                topBarController.getPushAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearingCtrl)),
+                perform(appearingCtrl.getStatusBarController(), null, sbc -> sbc.getStatusBarPushAnimation(appearingOptions)),
                 perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions))
-        );
+            );
     }
 
-    public List<Animator> getAdditionalPopAnimations(Options appearingOptions, Options disappearingOptions) {
+    public List<Animator> getAdditionalPopAnimations(Options appearingOptions, Options disappearingOptions, ViewController<?> appearingCtrl) {
         return CollectionUtils.asList(
                 topBarController.getPopAnimation(appearingOptions, disappearingOptions),
+                perform(appearingCtrl.getStatusBarController(), null, sbc -> sbc.getStatusBarPopAnimation(appearingOptions, disappearingOptions)),
                 perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions))
         );
     }

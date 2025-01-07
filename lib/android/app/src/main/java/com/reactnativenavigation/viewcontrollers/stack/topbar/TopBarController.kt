@@ -3,14 +3,12 @@ package com.reactnativenavigation.viewcontrollers.stack.topbar
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.MenuItem
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
-import com.reactnativenavigation.options.ColorAnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.TopBarOptions
 import com.reactnativenavigation.options.animations.ViewAnimationOptions
@@ -177,10 +175,7 @@ open class TopBarController(private val appearAnimator: TopBarAppearanceAnimator
         val targetColor = topBarOptions.background.color
         val colorAnimOptions = topBarAnimOptions.colorAnimOptions
 
-        if (topBarAnimOptions.enabled.isTrue &&
-            targetColor.hasValue() &&
-            view.background is ColorDrawable) {
-
+        if (targetColor.hasValue() && view.background is ColorDrawable) {
             return colorAnimOptions.getAnimation(
                 view,
                 (view.background as ColorDrawable).color,

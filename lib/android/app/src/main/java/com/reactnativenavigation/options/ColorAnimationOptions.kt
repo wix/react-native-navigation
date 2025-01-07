@@ -1,7 +1,7 @@
 package com.reactnativenavigation.options
 
-import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.view.View
 import com.reactnativenavigation.options.params.NullNumber
 import com.reactnativenavigation.options.params.Number
@@ -15,19 +15,30 @@ class ColorAnimationOptions {
 
     fun hasValue() = parsed
 
-    fun getAnimation(view: View, from: Int, to: Int): Animator? =
+    fun getAnimation(from: Int, to: Int): ValueAnimator? = getAnimation(null, from, to)
+
+    fun getAnimation(view: View?, from: Int, to: Int): ValueAnimator? =
         if (hasValue()) {
+            createObjectAnimator(view, from, to)
+        } else {
+            null
+        }
+
+    private fun createObjectAnimator(view: View?, from: Int, to: Int) =
+        if (view == null) {
+            ObjectAnimator.ofArgb(from, to)
+        } else {
             ObjectAnimator.ofArgb(
                 view,
                 view.BkgColorProperty,
                 from,
                 to,
-            ).also {
-                if (duration.hasValue()) {
-                    it.duration = duration.get().toLong()
-                }
+            )
+        }.also {
+            if (duration.hasValue()) {
+                it.duration = duration.get().toLong()
             }
-        } else null
+        }
 
     companion object {
         fun parse(json: JSONObject?): ColorAnimationOptions {

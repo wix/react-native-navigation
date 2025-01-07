@@ -69,10 +69,17 @@ export default class PushedScreen extends NavigationComponent<Props> {
           color: PushedScreen.topBarColors[0],
         },
       },
+      statusBar: {
+        backgroundColor: PushedScreen.topBarColors[0],
+      },
       animations: {
         push: {
           topBar: {
-            enabled: true,
+            bkgColor: {
+              duration: 250,
+            },
+          },
+          statusBar: {
             bkgColor: {
               duration: 250,
             },
@@ -80,7 +87,9 @@ export default class PushedScreen extends NavigationComponent<Props> {
         },
         pop: {
           topBar: {
-            enabled: true,
+            bkgColor: {},
+          },
+          statusBar: {
             bkgColor: {},
           },
         },
@@ -167,6 +176,10 @@ export default class PushedScreen extends NavigationComponent<Props> {
                   this.getStackPosition() % PushedScreen.topBarColors.length
                 ],
             },
+          },
+          statusBar: {
+            backgroundColor:
+              PushedScreen.topBarColors[this.getStackPosition() % PushedScreen.topBarColors.length],
           },
         },
       },

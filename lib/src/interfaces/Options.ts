@@ -1291,6 +1291,14 @@ export interface TopBarAnimationOptions extends ViewAnimationOptions {
   bkgColor?: ColorAnimationOptions;
 }
 
+export interface StatusBarAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animation of the status-bar's background color, in case its background color
+   * has been explicitly specified.
+   */
+  bkgColor?: ColorAnimationOptions;
+}
+
 export interface EnterExitAnimationOptions {
   /**
    * Animate opening component
@@ -1353,6 +1361,16 @@ export interface StackAnimationOptions {
     | {
         enter?: TopBarAnimationOptions;
         exit?: TopBarAnimationOptions;
+      };
+  /**
+   * Configure animations for the status bar (typically aligned
+   * with the top-bar's)
+   */
+  statusBar?:
+    | StatusBarAnimationOptions
+    | {
+        enter?: StatusBarAnimationOptions;
+        exit?: StatusBarAnimationOptions;
       };
   /**
    * Configure animations for the bottom tabs
