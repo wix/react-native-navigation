@@ -1,20 +1,21 @@
 package com.reactnativenavigation.utils;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.facebook.react.views.view.ReactViewBackgroundDrawable;
+import androidx.annotation.Nullable;
+
+import com.facebook.react.common.annotations.UnstableReactNativeAPI;
+import com.facebook.react.uimanager.drawable.CSSBackgroundDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
-
-public class ViewUtils {
+@UnstableReactNativeAPI public class ViewUtils {
     @Nullable
     public static <T extends View> T findChildByClass(ViewGroup root, Class<T> clazz) {
         for (int i = 0; i < root.getChildCount(); i++) {
@@ -108,8 +109,8 @@ public class ViewUtils {
     }
 
     public static int getBackgroundColor(View view) {
-        if (view.getBackground() instanceof ReactViewBackgroundDrawable) {
-            return ((ReactViewBackgroundDrawable) view.getBackground()).getColor();
+        if (view.getBackground() instanceof CSSBackgroundDrawable) {
+            return ((CSSBackgroundDrawable) view.getBackground()).getColor();
         }
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
     }

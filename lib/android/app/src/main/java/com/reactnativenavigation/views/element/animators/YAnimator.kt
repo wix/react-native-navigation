@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
@@ -5,6 +7,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.View.TRANSLATION_Y
 import android.view.ViewGroup
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils

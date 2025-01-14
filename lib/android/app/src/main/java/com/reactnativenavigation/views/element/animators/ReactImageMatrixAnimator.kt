@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.view.View
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.drawable.ScalingUtils.InterpolatingScaleType
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.facebook.react.views.image.ImageResizeMode
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
@@ -14,6 +15,7 @@ import com.reactnativenavigation.utils.ViewUtils
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+@OptIn(UnstableReactNativeAPI::class)
 class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactImageView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactImageView, toChild: ReactImageView): Boolean {
         return !ViewUtils.areDimensionsEqual(from, to)

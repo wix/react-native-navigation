@@ -18,6 +18,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.ReactConstants;
 import com.facebook.react.views.text.ReactFontManager;
 import com.facebook.react.views.text.ReactTextShadowNode;
 import java.util.ArrayList;
@@ -96,12 +97,12 @@ public class ReactTypefaceUtils {
 
     int want = 0;
     if ((weight == Typeface.BOLD)
-        || ((oldStyle & Typeface.BOLD) != 0 && weight == ReactTextShadowNode.UNSET)) {
+        || ((oldStyle & Typeface.BOLD) != 0 && weight == ReactConstants.UNSET)) {
       want |= Typeface.BOLD;
     }
 
     if ((style == Typeface.ITALIC)
-        || ((oldStyle & Typeface.ITALIC) != 0 && style == ReactTextShadowNode.UNSET)) {
+        || ((oldStyle & Typeface.ITALIC) != 0 && style == ReactConstants.UNSET)) {
       want |= Typeface.ITALIC;
     }
 

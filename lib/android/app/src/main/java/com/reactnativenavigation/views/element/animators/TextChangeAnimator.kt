@@ -5,11 +5,13 @@ import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.facebook.react.views.text.ReactTextView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.*
 import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper
 
+@OptIn(UnstableReactNativeAPI::class)
 class TextChangeAnimator(from: View, to: View) : PropertyAnimatorCreator<ReactTextView>(from, to) {
     override fun shouldAnimateProperty(fromChild: ReactTextView, toChild: ReactTextView): Boolean {
         val fromXy = ViewUtils.getLocationOnScreen(from)

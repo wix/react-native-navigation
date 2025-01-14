@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.viewcontrollers.stack.topbar
 
 import android.animation.Animator
@@ -5,6 +7,7 @@ import android.content.Context
 import android.view.MenuItem
 import android.view.View
 import androidx.viewpager.widget.ViewPager
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options

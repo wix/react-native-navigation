@@ -1,9 +1,12 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.views.element.animators
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.graphics.Rect
 import android.view.View
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.facebook.react.views.image.ReactImageView
 import com.reactnativenavigation.options.SharedElementTransitionOptions
 import com.reactnativenavigation.utils.ViewUtils

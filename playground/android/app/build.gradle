@@ -1,10 +1,12 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: "kotlin-android"
 
 react {
     root = file("../../../")
     reactNativeDir = file("../../../node_modules/react-native")
     codegenDir = file("../../../node_modules/@react-native/codegen")
+    autolinkLibrariesWithApp()
 }
 
 
@@ -22,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion rootProject.ext.get("targetSdkVersion")
         versionCode 1
         versionName "1.0"
@@ -66,11 +68,6 @@ dependencies {
    } else {
        implementation jscFlavor
    }
-
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
 }
 
 task copyDownloadableDepsToLibs(type: Copy) {
@@ -78,5 +75,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
-applyNativeModulesAppBuildGradle(project)

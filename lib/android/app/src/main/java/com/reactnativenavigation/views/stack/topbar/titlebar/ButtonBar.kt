@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.views.stack.topbar.titlebar
 
 import android.content.Context
@@ -11,12 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.reactnativenavigation.utils.ObjectUtils
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 
 open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
-    var shouldAnimate: Boolean=false
+    var shouldAnimate: Boolean = false
 
     init {
         super.setContentInsetsAbsolute(0, 0)
@@ -28,7 +31,11 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
     }
 
     override fun setLayoutDirection(layoutDirection: Int) {
-        ObjectUtils.perform(ViewUtils.findChildByClass(this, ActionMenuView::class.java), { buttonsContainer: ActionMenuView -> buttonsContainer.layoutDirection = layoutDirection })
+        ObjectUtils.perform(
+            ViewUtils.findChildByClass(this, ActionMenuView::class.java),
+            { buttonsContainer: ActionMenuView ->
+                buttonsContainer.layoutDirection = layoutDirection
+            })
         super.setLayoutDirection(layoutDirection)
     }
 
@@ -36,23 +43,22 @@ open class ButtonBar internal constructor(context: Context) : Toolbar(context) {
         get() = menu.size()
 
     fun addButton(menuItem: Int, intId: Int, order: Int, styledText: SpannableString): MenuItem? {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
-        return this.menu?.add(menuItem,
-                intId,
-                order,
-                styledText)
+        if (shouldAnimate) TransitionManager.beginDelayedTransition(this, AutoTransition())
+        return this.menu?.add(
+            menuItem,
+            intId,
+            order,
+            styledText
+        )
     }
 
     fun removeButton(buttonId: Int) {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
+        if (shouldAnimate) TransitionManager.beginDelayedTransition(this, AutoTransition())
         menu.removeItem(buttonId)
     }
 
     open fun clearButtons() {
-        if(shouldAnimate)
-        TransitionManager.beginDelayedTransition(this,AutoTransition())
+        if (shouldAnimate) TransitionManager.beginDelayedTransition(this, AutoTransition())
         clearBackButton()
         if (menu.size() > 0) menu.clear()
     }

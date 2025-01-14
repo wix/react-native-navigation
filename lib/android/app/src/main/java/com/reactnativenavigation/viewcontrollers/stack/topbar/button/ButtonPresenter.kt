@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.viewcontrollers.stack.topbar.button
 
 import android.content.Context
@@ -18,6 +20,7 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.doOnPreDraw
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.utils.ArrayUtils

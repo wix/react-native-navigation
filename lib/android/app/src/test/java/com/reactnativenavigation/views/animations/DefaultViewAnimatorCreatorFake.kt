@@ -1,8 +1,11 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.views.animations
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.reactnativenavigation.utils.ViewUtils
 
 class DefaultViewAnimatorCreatorFake : ViewAnimatorCreator {

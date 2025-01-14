@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.views.element
 
 import android.animation.Animator
@@ -10,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions

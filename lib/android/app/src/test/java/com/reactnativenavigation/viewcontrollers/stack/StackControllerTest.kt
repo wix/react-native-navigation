@@ -1,3 +1,5 @@
+@file:OptIn(UnstableReactNativeAPI::class)
+
 package com.reactnativenavigation.viewcontrollers.stack
 
 import android.animation.AnimatorSet
@@ -6,6 +8,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.facebook.react.common.annotations.UnstableReactNativeAPI
 import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
