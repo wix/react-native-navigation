@@ -16,6 +16,7 @@ export const events = {
   bottomTabPressed: [(_event: BottomTabPressedEvent) => {}],
   commandCompleted: [(_event: CommandCompletedEvent) => {}],
   screenPopped: [(_event: ScreenPoppedEvent) => {}],
+
   invokeComponentWillAppear: (event: ComponentWillAppearEvent) => {
     events.componentWillAppear &&
       events.componentWillAppear.forEach((listener) => {
