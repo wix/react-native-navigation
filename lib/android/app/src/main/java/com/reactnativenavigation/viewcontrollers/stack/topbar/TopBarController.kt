@@ -17,12 +17,16 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
+import com.reactnativenavigation.views.animations.ColorAnimator
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 
 
-open class TopBarController(private val appearAnimator: TopBarAppearanceAnimator = TopBarAppearanceAnimator()) {
+open class TopBarController(
+    private val appearAnimator: TopBarAppearanceAnimator = TopBarAppearanceAnimator(),
+    private val colorAnimator: ColorAnimator = ColorAnimator(),
+) {
     lateinit var view: TopBar
     private lateinit var leftButtonBar: ButtonBar
     private lateinit var rightButtonBar: ButtonBar
@@ -76,7 +80,7 @@ open class TopBarController(private val appearAnimator: TopBarAppearanceAnimator
 
         mutableListOf(
             getAppearancePushAnimation(topBarOptions, topBarAnimOptions, additionalDy),
-            getBkgColorAnimation(topBarOptions, topBarAnimOptions.enter)?.also {
+            getBkgColorAnimation(topBarOptions)?.also {
                 isBkgAnimated = true
             },
         ).filterNotNull().let {
@@ -96,7 +100,7 @@ open class TopBarController(private val appearAnimator: TopBarAppearanceAnimator
 
         mutableListOf(
             getAppearancePopAnimation(topBarOptions, topBarAnimOptions),
-            getBkgColorAnimation(topBarOptions, topBarAnimOptions.exit)?.also {
+            getBkgColorAnimation(topBarOptions)?.also {
                 isBkgAnimated = true
             },
         ).filterNotNull().let {
@@ -171,12 +175,11 @@ open class TopBarController(private val appearAnimator: TopBarAppearanceAnimator
         return TopBar(context)
     }
 
-    private fun getBkgColorAnimation(topBarOptions: TopBarOptions, topBarAnimOptions: AnimationOptions): Animator? {
+    private fun getBkgColorAnimation(topBarOptions: TopBarOptions): Animator? {
         val targetColor = topBarOptions.background.color
-        val colorAnimOptions = topBarAnimOptions.colorAnimOptions
 
         if (targetColor.hasValue() && view.background is ColorDrawable) {
-            return colorAnimOptions.getAnimation(
+            return colorAnimator.getAnimation(
                 view,
                 (view.background as ColorDrawable).color,
                 targetColor.get()

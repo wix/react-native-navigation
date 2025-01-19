@@ -15,7 +15,6 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.ColorAnimationOptions;
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
@@ -28,17 +27,25 @@ import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarPresenter;
+import com.reactnativenavigation.views.animations.ColorAnimator;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Presenter implements StatusBarPresenter {
     private final Activity activity;
+    private final ColorAnimator colorAnimator;
+
     private Options defaultOptions;
     private Boolean isStatusBarColorAnimated = false;
 
     public Presenter(Activity activity, Options defaultOptions) {
+        this(activity, defaultOptions, new ColorAnimator());
+    }
+
+    public Presenter(Activity activity, Options defaultOptions, ColorAnimator colorAnimator) {
         this.activity = activity;
+        this.colorAnimator = colorAnimator;
         this.defaultOptions = defaultOptions;
     }
 
@@ -144,11 +151,10 @@ public class Presenter implements StatusBarPresenter {
 
     private Animator getStatusBarColorAnimation(StatusBarOptions statusBarOptions, AnimationOptions statusBarAnimOptions) {
         ThemeColour targetColor = statusBarOptions.backgroundColor;
-        ColorAnimationOptions colorAnimOptions = statusBarAnimOptions.getColorAnimOptions();
 
-        if (targetColor.hasValue() && colorAnimOptions.hasValue()) {
+        if (targetColor.hasValue()) {
             boolean translucent = statusBarOptions.translucent.isTrue();
-            ValueAnimator animator = colorAnimOptions.getAnimation(
+            ValueAnimator animator = colorAnimator.getAnimation(
                     getCurrentStatusBarBackgroundColor(),
                     targetColor.get()
             );

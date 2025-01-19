@@ -25,7 +25,6 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
     @JvmField var waitForRender: Bool = NullBool()
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
-    var colorAnimOptions = ColorAnimationOptions()
     private var propertyAnimOptions = HashSet<ValueAnimationOptions>()
 
     init {
@@ -42,7 +41,6 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
                 "waitForRender" -> waitForRender = BoolParser.parse(json, key)
                 "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
                 "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
-                "bkgColor" -> colorAnimOptions = ColorAnimationOptions.parse(json)
                 else -> propertyAnimOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
             }
         }
@@ -55,7 +53,6 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
         if (other.propertyAnimOptions.isNotEmpty()) propertyAnimOptions = other.propertyAnimOptions
         if (other.sharedElements.hasValue()) sharedElements = other.sharedElements
         if (other.elementTransitions.hasValue()) elementTransitions = other.elementTransitions
-        if (other.colorAnimOptions.hasValue()) colorAnimOptions = other.colorAnimOptions
     }
 
     fun mergeWithDefault(defaultOptions: AnimationOptions) {
@@ -65,7 +62,6 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
         if (propertyAnimOptions.isEmpty()) propertyAnimOptions = defaultOptions.propertyAnimOptions
         if (!sharedElements.hasValue()) sharedElements = defaultOptions.sharedElements
         if (!elementTransitions.hasValue()) elementTransitions = defaultOptions.elementTransitions
-        if (!colorAnimOptions.hasValue()) colorAnimOptions = defaultOptions.colorAnimOptions
     }
 
     fun hasValue() = id.hasValue()
@@ -74,7 +70,6 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
             || sharedElements.hasValue()
             || elementTransitions.hasValue()
             || propertyAnimOptions.isNotEmpty()
-            || colorAnimOptions.hasValue()
 
     fun getAnimation(view: View) = getAnimation(view, AnimatorSet())
 

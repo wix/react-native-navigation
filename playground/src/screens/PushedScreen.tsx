@@ -72,28 +72,6 @@ export default class PushedScreen extends NavigationComponent<Props> {
       statusBar: {
         backgroundColor: PushedScreen.topBarColors[0],
       },
-      animations: {
-        push: {
-          topBar: {
-            bkgColor: {
-              duration: 250,
-            },
-          },
-          statusBar: {
-            bkgColor: {
-              duration: 250,
-            },
-          },
-        },
-        pop: {
-          topBar: {
-            bkgColor: {},
-          },
-          statusBar: {
-            bkgColor: {},
-          },
-        },
-      },
     };
   }
 
