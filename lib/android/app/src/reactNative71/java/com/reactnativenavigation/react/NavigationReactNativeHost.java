@@ -1,5 +1,7 @@
 package com.reactnativenavigation.react;
 
+import android.app.Application;
+
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
@@ -25,7 +27,7 @@ public abstract class NavigationReactNativeHost extends DefaultReactNativeHost i
         }
     };
 
-    public NavigationReactNativeHost(NavigationApplication application) {
+    public NavigationReactNativeHost(Application application) {
         super(application);
     }
 

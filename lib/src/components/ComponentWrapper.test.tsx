@@ -5,6 +5,7 @@ import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
 import { mock, verify, instance } from 'ts-mockito';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
+import { ReactTestRendererJSON } from 'react-test-renderer';
 
 describe('ComponentWrapper', () => {
   const componentName = 'example.MyComponent';
@@ -75,7 +76,7 @@ describe('ComponentWrapper', () => {
     );
     expect(NavigationComponent).not.toBeInstanceOf(MyComponent);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(tree.toJSON()!.children).toEqual(['Hello, World!']);
+    expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['Hello, World!']);
   });
 
   it('injects props from wrapper into original component', () => {
@@ -89,7 +90,7 @@ describe('ComponentWrapper', () => {
     const tree = renderer.create(
       <NavigationComponent componentId={'component1'} text={'yo'} renderCount={renderCount} />
     );
-    expect(tree.toJSON()!.children).toEqual(['yo']);
+    expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['yo']);
     expect(renderCount).toHaveBeenCalledTimes(1);
   });
 
@@ -309,7 +310,7 @@ describe('ComponentWrapper', () => {
         reduxStore
       );
       const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
-      expect(tree.toJSON()!.children).toEqual(['it just works']);
+      expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['it just works']);
       expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
   });

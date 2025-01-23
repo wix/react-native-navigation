@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.reactnativenavigation.NavigationActivity;
 
@@ -14,10 +15,12 @@ public class ReactGateway {
 	private final ReactNativeHost host;
 	private final NavigationReactInitializer initializer;
 	private final JsDevReloadHandler jsDevReloadHandler;
+    private final ReactInstanceUtils reactInstanceUtils;
 
-    public ReactGateway(ReactNativeHost host) {
-        this.host = host;
-        initializer = new NavigationReactInitializer(host.getReactInstanceManager(), host.getUseDeveloperSupport());
+    public ReactGateway(ReactApplication reactApplication) {
+        reactInstanceUtils = new ReactInstanceUtils(reactApplication);
+        this.host = reactApplication.getReactNativeHost();
+        initializer = new NavigationReactInitializer(reactInstanceUtils, host.getUseDeveloperSupport());
         jsDevReloadHandler = new JsDevReloadHandler(host.getReactInstanceManager().getDevSupportManager());
         if (host instanceof BundleDownloadListenerProvider) {
             ((BundleDownloadListenerProvider) host).setBundleLoaderListener(jsDevReloadHandler);

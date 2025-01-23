@@ -19,7 +19,7 @@ public class TestReactView extends ReactView implements IReactView {
         super(context, null, "", "");
     }
 
-    @Override
+
     public void startReactApplication(ReactInstanceManager reactInstanceManager, String moduleName, @Nullable Bundle initialProperties, @Nullable String initialUITemplate) {
 
     }

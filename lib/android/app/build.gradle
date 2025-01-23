@@ -204,6 +204,8 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
+    implementation 'org.jooq:joor-java-8:0.9.15'
+
     if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
         // tests only for our playground
         testImplementation 'junit:junit:4.13.2'

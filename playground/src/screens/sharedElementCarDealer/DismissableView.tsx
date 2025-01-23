@@ -3,7 +3,7 @@ import Animated from 'react-native-reanimated';
 import { StyleSheet, ViewProps } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { DismissGestureState } from './useDismissGesture';
-import { BlurView } from '@react-native-community/blur';
+//import { BlurView } from '@react-native-community/blur';
 
 export interface DismissableViewProps extends ViewProps {
   dismissGestureState: DismissGestureState;
@@ -29,7 +29,7 @@ export default function DismissableView(props: DismissableViewProps): ReactEleme
 
   return (
     <>
-      <BlurView style={StyleSheet.absoluteFill} blurAmount={25} blurRadius={25} blurType="light" />
+      {/*<BlurView style={StyleSheet.absoluteFill} blurAmount={25} blurRadius={25} blurType="light" />*/}
       <PanGestureHandler
         {...dismissGestureState.gestureHandler}
         maxPointers={1}

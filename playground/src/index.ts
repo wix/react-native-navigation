@@ -1,3 +1,10 @@
-import { start } from './app';
+//import { start } from './app';
+import { AppNew } from './AppNew';
 
-start();
+//start();
+
+import { AppRegistry } from 'react-native';
+
+AppRegistry.registerComponent("example", () => AppNew);
+
+
