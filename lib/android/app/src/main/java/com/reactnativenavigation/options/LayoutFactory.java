@@ -7,6 +7,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
+import com.reactnativenavigation.react.ReactInstanceUtils;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
 public class LayoutFactory {
 	private Activity activity;
 	private ChildControllersRegistry childRegistry;
-	private final ReactInstanceManager reactInstanceManager;
+	private final ReactInstanceUtils reactInstanceUtils;
 	private EventEmitter eventEmitter;
 	private Map<String, ExternalComponentCreator> externalComponentCreators;
 	private @NonNull Options defaultOptions = new Options();
@@ -63,8 +64,8 @@ public class LayoutFactory {
 		this.defaultOptions = defaultOptions;
 	}
 
-	public LayoutFactory(final ReactInstanceManager reactInstanceManager) {
-		this.reactInstanceManager = reactInstanceManager;
+	public LayoutFactory(final ReactInstanceUtils reactInstanceUtils) {
+		this.reactInstanceUtils = reactInstanceUtils;
 	}
 
 	public void init(Activity activity, EventEmitter eventEmitter, ChildControllersRegistry childRegistry, Map<String, ExternalComponentCreator> externalComponentCreators) {
@@ -76,7 +77,7 @@ public class LayoutFactory {
 	}
 
 	public ViewController<?> create(final LayoutNode node) {
-		final ReactContext context = reactInstanceManager.getCurrentReactContext();
+		final ReactContext context = reactInstanceUtils.getContext();
 		switch (node.type) {
 			case Component:
 				return createComponent(node);
@@ -164,7 +165,7 @@ public class LayoutFactory {
 				childRegistry,
 				id,
 				name,
-				new ComponentViewCreator(reactInstanceManager),
+				new ComponentViewCreator(),
 				parseOptions(node.getOptions()),
 				new Presenter(activity, defaultOptions),
 				new ComponentPresenter(defaultOptions)
@@ -179,7 +180,6 @@ public class LayoutFactory {
 				new Presenter(activity, defaultOptions),
 				externalComponent,
 				externalComponentCreators.get(externalComponent.name.get()),
-				reactInstanceManager,
 				new EventEmitter(context),
 				new ExternalComponentPresenter(),
 				parseOptions(node.getOptions())
@@ -194,9 +194,9 @@ public class LayoutFactory {
 				.setId(node.id)
 				.setInitialOptions(parseOptions(node.getOptions()))
 				.setStackPresenter(new StackPresenter(activity,
-						new TitleBarReactViewCreator(reactInstanceManager),
-						new TopBarBackgroundViewCreator(reactInstanceManager),
-						new TitleBarButtonCreator(reactInstanceManager),
+						new TitleBarReactViewCreator(),
+						new TopBarBackgroundViewCreator(),
+						new TitleBarButtonCreator(),
 						new IconResolver(activity, new ImageLoader()),
 						new TypefaceLoader(activity),
 						new RenderChecker(),
@@ -243,7 +243,7 @@ public class LayoutFactory {
 	}
 
     private Options parseOptions(JSONObject jsonOptions) {
-        Context context = reactInstanceManager.getCurrentReactContext();
+        Context context = reactInstanceUtils.getContext();
         if (context == null) {
             context = activity == null ? NavigationApplication.instance : activity;
         }

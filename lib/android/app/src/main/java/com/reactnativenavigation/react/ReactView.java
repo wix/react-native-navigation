@@ -4,42 +4,48 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactRootView;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactHost;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.config.ReactFeatureFlags;
-import com.facebook.react.uimanager.JSTouchDispatcher;
-import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.interfaces.fabric.ReactSurface;
+import com.facebook.react.runtime.ReactSurfaceView;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.common.UIManagerType;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.component.Renderable;
 
-import androidx.annotation.RestrictTo;
-
 @SuppressLint("ViewConstructor")
-public class ReactView extends ReactRootView implements IReactView, Renderable {
+public class ReactView extends FrameLayout implements IReactView, Renderable {
 
-    private final ReactInstanceManager reactInstanceManager;
     private final String componentId;
     private final String componentName;
     private boolean isAttachedToReactInstance = false;
-    private final JSTouchDispatcher jsTouchDispatcher;
 
-    public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
+    private final ReactSurface reactSurface;
+
+    public ReactView(final Context context, String componentId, String componentName) {
         super(context);
-        this.reactInstanceManager = reactInstanceManager;
         this.componentId = componentId;
         this.componentName = componentName;
-        jsTouchDispatcher = new JSTouchDispatcher(this);
-        // Suppress forRemoval warning
-        setIsFabric(ReactFeatureFlags.enableFabricRenderer);
+
+        final Bundle opts = new Bundle();
+        opts.putString("componentId", componentId);
+        ReactHost host = ((ReactApplication)context.getApplicationContext()).getReactHost();
+        reactSurface = host.createSurface(context, componentName, opts);
+        addView(reactSurface.getView(), new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
-    @Override
+
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         start();
@@ -48,9 +54,12 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     public void start() {
         if (isAttachedToReactInstance) return;
         isAttachedToReactInstance = true;
-        final Bundle opts = new Bundle();
-        opts.putString("componentId", componentId);
-        startReactApplication(reactInstanceManager, componentName, opts);
+
+        reactSurface.start();
+    }
+
+    private ReactSurfaceView getReactSurfaceView() {
+        return (ReactSurfaceView) reactSurface.getView();
     }
 
     @Override
@@ -59,28 +68,26 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     }
 
     @Override
-    public ReactView asView() {
+    public ViewGroup asView() {
         return this;
     }
 
     @Override
     public void destroy() {
-        unmountReactApplication();
+        reactSurface.stop();
     }
 
     public void sendComponentWillStart(ComponentType type) {
-        this.post(()->{
-            if (this.reactInstanceManager == null) return;
-            ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        post(() -> {
+            ReactContext currentReactContext = getReactSurfaceView().getCurrentReactContext();
             if (currentReactContext != null)
                 new EventEmitter(currentReactContext).emitComponentWillAppear(componentId, componentName, type);
         });
     }
 
     public void sendComponentStart(ComponentType type) {
-        this.post(()->{
-            if (this.reactInstanceManager == null) return;
-            ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+       post(() -> {
+           ReactContext currentReactContext = getReactSurfaceView().getCurrentReactContext();
             if (currentReactContext != null) {
                 new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
             }
@@ -88,8 +95,7 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
     }
 
     public void sendComponentStop(ComponentType type) {
-        if (this.reactInstanceManager == null) return;
-        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        ReactContext currentReactContext = getReactSurfaceView().getCurrentReactContext();
         if (currentReactContext != null) {
             new EventEmitter(currentReactContext).emitComponentDidDisappear(componentId, componentName, type);
         }
@@ -97,8 +103,7 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
-        if (this.reactInstanceManager == null) return;
-        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        ReactContext currentReactContext = getReactSurfaceView().getCurrentReactContext();
         if (currentReactContext != null) {
             new EventEmitter(currentReactContext).emitOnNavigationButtonPressed(componentId, buttonId);
         }
@@ -109,19 +114,23 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         return new ScrollEventListener(getEventDispatcher());
     }
 
-    @Override
     public void dispatchTouchEventToJs(MotionEvent event) {
-        jsTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+        getReactSurfaceView().onTouchEvent(event);
     }
 
     @Override
     public boolean isRendered() {
-        return getChildCount() >= 1;
+        return getReactSurfaceView().getChildCount() >= 1;
     }
 
+    @Nullable
     public EventDispatcher getEventDispatcher() {
-        ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
-        return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        ReactContext currentReactContext = getReactSurfaceView().getCurrentReactContext();
+        if (currentReactContext == null) {
+            return null;
+        }
+
+        return UIManagerHelper.getEventDispatcher(currentReactContext, UIManagerType.FABRIC);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

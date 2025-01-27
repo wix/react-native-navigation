@@ -24,15 +24,21 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 public class ExternalComponentViewController extends ChildController<ExternalComponentLayout> {
     private final ExternalComponent externalComponent;
     private final ExternalComponentCreator componentCreator;
-    private ReactInstanceManager reactInstanceManager;
     private final EventEmitter emitter;
     private final ExternalComponentPresenter presenter;
 
-    public ExternalComponentViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, ExternalComponent externalComponent, ExternalComponentCreator componentCreator, ReactInstanceManager reactInstanceManager, EventEmitter emitter, ExternalComponentPresenter externalComponentPresenter, Options initialOptions) {
+    public ExternalComponentViewController(Activity activity,
+                                           ChildControllersRegistry childRegistry,
+                                           String id,
+                                           Presenter presenter,
+                                           ExternalComponent externalComponent,
+                                           ExternalComponentCreator componentCreator,
+                                           EventEmitter emitter,
+                                           ExternalComponentPresenter externalComponentPresenter,
+                                           Options initialOptions) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.externalComponent = externalComponent;
         this.componentCreator = componentCreator;
-        this.reactInstanceManager = reactInstanceManager;
         this.emitter = emitter;
         this.presenter = externalComponentPresenter;
     }
@@ -42,7 +48,7 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
         ExternalComponentLayout content = new ExternalComponentLayout(getActivity());
         enableDrawingBehindStatusBar(content);
         content.addView(componentCreator
-                .create(getActivity(), reactInstanceManager, externalComponent.passProps)
+                .create(getActivity(), externalComponent.passProps)
                 .asView(), CoordinatorLayoutUtils.matchParentWithBehaviour(new BehaviourDelegate(this)));
         return content;
     }

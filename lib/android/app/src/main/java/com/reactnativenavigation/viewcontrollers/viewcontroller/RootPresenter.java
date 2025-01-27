@@ -15,6 +15,8 @@ import kotlin.jvm.functions.Function0;
 
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
+import android.content.Context;
+
 public class RootPresenter {
     private final RootAnimator animator;
     private CoordinatorLayout rootLayout;
@@ -34,8 +36,8 @@ public class RootPresenter {
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
 
-    public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
-        layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
+    public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener, Context context) {
+        layoutDirectionApplier.apply(appearingRoot, defaultOptions, context);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
         AnimationOptions enter = options.animations.setRoot.getEnter();

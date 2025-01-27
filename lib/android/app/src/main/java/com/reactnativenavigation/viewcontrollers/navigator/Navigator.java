@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,7 +144,7 @@ public class Navigator extends ParentController<ViewGroup> {
 
     }
 
-    public void setRoot(final ViewController<?> appearing, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
+    public void setRoot(final ViewController<?> appearing, CommandListener commandListener) {
         previousRoot = root;
         modalStack.destroy();
         final boolean removeSplashView = isRootNotCreated();
@@ -160,7 +161,7 @@ public class Navigator extends ParentController<ViewGroup> {
                 destroyPreviousRoot();
                 super.onSuccess(childId);
             }
-        }, reactInstanceManager);
+        }, getActivity());
     }
 
     public void mergeOptions(final String componentId, Options options) {

@@ -1,9 +1,12 @@
 package com.reactnativenavigation.react;
 
+import static com.reactnativenavigation.utils.UiUtils.pxToDp;
+
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -32,27 +35,21 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.reactnativenavigation.utils.UiUtils.pxToDp;
-
-import android.app.Activity;
-
 public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
 
     private final Now now = new Now();
-    private final ReactInstanceManager reactInstanceManager;
     private final JSONParser jsonParser;
     private final LayoutFactory layoutFactory;
     private EventEmitter eventEmitter;
 
     @SuppressWarnings("WeakerAccess")
-    public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager, LayoutFactory layoutFactory) {
-        this(reactContext, reactInstanceManager, new JSONParser(), layoutFactory);
+    public NavigationModule(ReactApplicationContext reactContext,  LayoutFactory layoutFactory) {
+        this(reactContext, new JSONParser(), layoutFactory);
     }
 
-    public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager, JSONParser jsonParser, LayoutFactory layoutFactory) {
+    public NavigationModule(ReactApplicationContext reactContext,  JSONParser jsonParser, LayoutFactory layoutFactory) {
         super(reactContext);
-        this.reactInstanceManager = reactInstanceManager;
         this.jsonParser = jsonParser;
         this.layoutFactory = layoutFactory;
         reactContext.addLifecycleEventListener(new LifecycleEventListenerAdapter() {
@@ -116,7 +113,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(Objects.requireNonNull(jsonParser.parse(rawLayoutTree).optJSONObject("root")));
         handle(() -> {
             final ViewController<?> viewController = layoutFactory.create(layoutTree);
-            navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
+            navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now));
         });
     }
 

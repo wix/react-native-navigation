@@ -18,8 +18,8 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 public class TitleBarReactButtonView extends ReactView {
     private final ComponentOptions component;
 
-    public TitleBarReactButtonView(Context context, ReactInstanceManager reactInstanceManager, ComponentOptions component) {
-        super(context, reactInstanceManager, component.componentId.get(), component.name.get());
+    public TitleBarReactButtonView(Context context, ComponentOptions component) {
+        super(context, component.componentId.get(), component.name.get());
         this.component = component;
     }
 
@@ -28,9 +28,9 @@ public class TitleBarReactButtonView extends ReactView {
         
         //This is a workaround, ReactNative throws exception when views have ids, On android MenuItems 
         // With ActionViews like this got an id, see #7253
-        if (!this.isAttachedToWindow() || this.getReactInstanceManager() == null) {
-            this.setId(View.NO_ID);
-        }
+//        if (!this.isAttachedToWindow() || this.getReactInstanceManager() == null) {
+//            this.setId(View.NO_ID);
+//        }
 
         super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(heightMeasureSpec, component.height));
     }
