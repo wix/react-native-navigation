@@ -3,7 +3,6 @@
 
 #if RCT_NEW_ARCH_ENABLED
 
-#import "RCTLegacyInteropComponents.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
