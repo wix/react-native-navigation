@@ -6,13 +6,8 @@ import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 
-const {
-  HIDE_TOP_BAR_BTN,
-  SHOW_TOP_BAR_BTN,
-  SHOW_SEARCH_BAR_BTN,
-  HIDE_SEARCH_BAR_BTN,
-  TOP_BAR,
-} = testIDs;
+const { HIDE_TOP_BAR_BTN, SHOW_TOP_BAR_BTN, SHOW_SEARCH_BAR_BTN, HIDE_SEARCH_BAR_BTN, TOP_BAR } =
+  testIDs;
 
 interface Props extends NavigationProps {}
 

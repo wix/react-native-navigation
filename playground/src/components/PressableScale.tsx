@@ -24,9 +24,8 @@ export interface PressableScaleProps
   weight?: 'light' | 'medium' | 'heavy';
 }
 
-const ReanimatedTouchableWithoutFeedback = Reanimated.createAnimatedComponent(
-  TouchableWithoutFeedback
-);
+const ReanimatedTouchableWithoutFeedback =
+  Reanimated.createAnimatedComponent(TouchableWithoutFeedback);
 
 /**
  * A Pressable that scales down when pressed. Uses the JS Pressability API.

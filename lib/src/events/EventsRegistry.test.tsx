@@ -19,9 +19,9 @@ describe('EventsRegistry', () => {
   it('exposes appLaunched event', () => {
     const subscription = {};
     const cb = jest.fn();
-    (mockNativeEventsReceiver.registerAppLaunchedListener as jest.MockedFunction<
-      any
-    >).mockReturnValueOnce(subscription);
+    (
+      mockNativeEventsReceiver.registerAppLaunchedListener as jest.MockedFunction<any>
+    ).mockReturnValueOnce(subscription);
 
     const result = uut.registerAppLaunchedListener(cb);
 
