@@ -23,6 +23,7 @@ public class ChildControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = spy(new ChildControllersRegistry());
         presenter = Mockito.mock(Presenter.class);
         uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options()) {

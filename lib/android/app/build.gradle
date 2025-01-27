@@ -215,5 +215,7 @@ dependencies {
         testImplementation 'org.mockito:mockito-inline:3.4.0'
         testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
         testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+        testImplementation "io.mockk:mockk:1.13.16"
+
     }
 }

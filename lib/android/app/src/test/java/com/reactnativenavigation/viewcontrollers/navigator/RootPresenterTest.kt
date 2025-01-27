@@ -38,6 +38,7 @@ class RootPresenterTest : BaseTest() {
     private lateinit var root1View: SimpleViewController.SimpleView
     private lateinit var root2View: SimpleViewController.SimpleView
     override fun beforeEach() {
+        super.beforeEach()
         activityController = newActivityController(TestActivity::class.java)
         activity = activityController.create().get()
         reactInstanceManager = Mockito.mock(ReactInstanceManager::class.java)
@@ -221,7 +222,7 @@ class RootPresenterTest : BaseTest() {
     fun setRoot_appliesLayoutDirection() {
         val listener = Mockito.spy(CommandListenerAdapter())
         uut.setRoot(root, null, defaultOptions, listener, reactInstanceManager)
-        Mockito.verify(layoutDirectionApplier).apply(root, defaultOptions, reactInstanceManager)
+        Mockito.verify(layoutDirectionApplier).apply(root, defaultOptions)
     }
 
     private fun createAnimator(): RootAnimator {

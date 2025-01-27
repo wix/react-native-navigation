@@ -38,6 +38,7 @@ class TopBarControllerTest : BaseTest() {
         get() = uut.view
 
     override fun beforeEach() {
+        super.beforeEach()
         activity = newActivity()
         animator = spy(TopBarAnimator())
         uut = createTopBarController()
