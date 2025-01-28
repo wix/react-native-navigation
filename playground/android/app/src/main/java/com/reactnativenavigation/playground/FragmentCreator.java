@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 
 public class FragmentCreator implements ExternalComponentCreator {
     @Override
-    public ExternalComponent create(FragmentActivity activity, ReactInstanceManager reactInstanceManager, JSONObject props) {
+    public ExternalComponent create(FragmentActivity activity, JSONObject props) {
         return new FragmentComponent(activity, props);
     }
 }

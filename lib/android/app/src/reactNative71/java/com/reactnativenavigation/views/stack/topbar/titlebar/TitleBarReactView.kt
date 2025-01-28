@@ -9,8 +9,8 @@ import com.facebook.react.ReactInstanceManager
 import com.reactnativenavigation.react.ReactView
 
 @SuppressLint("ViewConstructor")
-class TitleBarReactView(context: Context?, reactInstanceManager: ReactInstanceManager?, componentId: String?,
-                        componentName: String?) : ReactView(context, reactInstanceManager, componentId, componentName) {
+class TitleBarReactView(context: Context?, componentId: String?,
+                        componentName: String?) : ReactView(context, componentId, componentName) {
     var centered: Boolean = false
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var titleHeightMeasureSpec: Int
