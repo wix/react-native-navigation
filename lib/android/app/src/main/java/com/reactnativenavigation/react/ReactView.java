@@ -36,7 +36,7 @@ public class ReactView extends ReactRootView implements IReactView, Renderable {
         this.componentId = componentId;
         this.componentName = componentName;
         jsTouchDispatcher = new JSTouchDispatcher(this);
-        setIsFabric(ReactNativeFeatureFlags.enableFabricRenderer());
+        setIsFabric(ReactFeatureFlags.enableFabricRenderer);
     }
 
     @Override
