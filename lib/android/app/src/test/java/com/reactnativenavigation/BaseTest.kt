@@ -20,9 +20,6 @@ import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeightDp
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
 import org.assertj.core.api.Java6Assertions
 import org.junit.After
 import org.junit.Before
