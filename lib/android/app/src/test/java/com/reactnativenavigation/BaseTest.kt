@@ -37,7 +37,7 @@ import org.robolectric.shadows.ShadowLooper
 import java.util.Arrays
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], application = TestApplication::class)
+@Config(sdk = [34], application = TestApplication::class)
 abstract class BaseTest {
     private val handler = Handler(Looper.getMainLooper())
     private val shadowMainLooper: ShadowLooper = Shadows.shadowOf(Looper.getMainLooper())
