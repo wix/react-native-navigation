@@ -5,6 +5,7 @@
 #import "RNNStackController.h"
 #import "TopBarPresenterCreator.h"
 #import "UINavigationController+RNNOptions.h"
+#import "RNNConvert.h"
 
 @interface RNNStackPresenter () {
     RNNReactComponentRegistry *_componentRegistry;
@@ -67,8 +68,8 @@
     [_interactivePopGestureDelegate setEnabled:[withDefault.popGesture withDefault:YES]];
     stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
-    //[stack
-    //    setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
+    [stack
+        setBarStyle:[RNNConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
     [stack setRootBackgroundImage:[withDefault.rootBackgroundImage withDefault:nil]];
     [stack setNavigationBarTestId:[withDefault.topBar.testID withDefault:nil]];
     [stack setNavigationBarVisible:[withDefault.topBar.visible withDefault:YES]
