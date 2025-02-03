@@ -55,6 +55,9 @@ export class NativeCommandsSender {
         LayoutStore.getLayoutById(componentId).getStack().children
       ) as ComponentNode;
       LayoutStore.pop(componentId);
+      events.invokeScreenPopped({
+        componentId,
+      });
       resolve(poppedChild.nodeId);
       this.reportCommandCompletion(CommandName.Pop, commandId);
     });

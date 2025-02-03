@@ -152,8 +152,9 @@ export class NativeEventsReceiver {
   }
 
   public registerScreenPoppedListener(
-    _callback: (event: ScreenPoppedEvent) => void
+    callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
+    events.screenPopped.push(callback);
     return {
       remove: () => {},
     } as EmitterSubscription;
