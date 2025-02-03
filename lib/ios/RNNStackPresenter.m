@@ -127,7 +127,7 @@
     }
 
     if (mergeOptions.topBar.barStyle.hasValue) {
-        [stack setBarStyle:[RCTConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
+        [stack setBarStyle:[RNNConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
     }
 
     if (mergeOptions.topBar.background.clipToBounds.hasValue) {
