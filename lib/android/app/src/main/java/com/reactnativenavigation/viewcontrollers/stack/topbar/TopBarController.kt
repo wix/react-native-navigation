@@ -187,16 +187,16 @@ open class TopBarController(
     }
 
     private fun getBkgColorAnimation(topBarOptions: TopBarOptions): Animator? {
-        if (RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
-            val targetColor = topBarOptions.background.color
+        val targetColor = topBarOptions.background.color
 
-            if (targetColor.hasValue() && view.background is ColorDrawable) {
-                return colorAnimator.getAnimation(
-                    view,
-                    (view.background as ColorDrawable).color,
-                    targetColor.get()
-                )
-            }
+        if (targetColor.hasValue()
+            && view.background is ColorDrawable
+            && RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+            return colorAnimator.getAnimation(
+                view,
+                (view.background as ColorDrawable).color,
+                targetColor.get()
+            )
         }
         return null
     }
