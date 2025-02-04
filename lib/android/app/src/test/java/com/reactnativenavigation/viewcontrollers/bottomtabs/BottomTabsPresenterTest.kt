@@ -22,7 +22,7 @@ class BottomTabsPresenterTest : BaseTest() {
     private lateinit var uut: BottomTabsPresenter
     private lateinit var bottomTabs: BottomTabs
     private lateinit var bottomTabsContainer: BottomTabsContainer
-    private lateinit var animator: BottomTabsAppearanceAnimator
+    private lateinit var animator: BottomTabsAnimator
     private lateinit var tabSelector: TabSelector
 
     override fun beforeEach() {
@@ -35,7 +35,7 @@ class BottomTabsPresenterTest : BaseTest() {
         bottomTabsContainer = mock()
         bottomTabs = mock()
         whenever(bottomTabsContainer.bottomTabs).thenReturn(bottomTabs)
-        animator = spy(BottomTabsAppearanceAnimator(bottomTabs))
+        animator = spy(BottomTabsAnimator(bottomTabs))
         uut = BottomTabsPresenter(tabs, Options(), animator)
         tabSelector = mock()
         uut.bindView(bottomTabsContainer, tabSelector)

@@ -141,19 +141,17 @@ public class Presenter implements StatusBarPresenter {
     @Override
     public Animator getStatusBarPushAnimation(@NotNull Options appearingOptions) {
         StatusBarOptions statusBarOptions = appearingOptions.statusBar;
-        AnimationOptions statusBarAnimOptions = appearingOptions.animations.push.statusBar.enter;
-        return getStatusBarColorAnimation(statusBarOptions, statusBarAnimOptions);
+        return getStatusBarColorAnimation(statusBarOptions);
     }
 
     @androidx.annotation.Nullable
     @Override
     public Animator getStatusBarPopAnimation(@NonNull Options appearingOptions, @NonNull Options disappearingOptions) {
         StatusBarOptions statusBarOptions = appearingOptions.statusBar;
-        AnimationOptions statusBarAnimOptions = disappearingOptions.animations.pop.statusBar.exit;
-        return getStatusBarColorAnimation(statusBarOptions, statusBarAnimOptions);
+        return getStatusBarColorAnimation(statusBarOptions);
     }
 
-    private Animator getStatusBarColorAnimation(StatusBarOptions statusBarOptions, AnimationOptions statusBarAnimOptions) {
+    private Animator getStatusBarColorAnimation(StatusBarOptions statusBarOptions) {
         if (RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION)) {
             ThemeColour targetColor = statusBarOptions.backgroundColor;
 

@@ -323,15 +323,6 @@ export class OptionsProcessor {
       };
     }
     if (
-      animation.statusBar &&
-      !has(animation, 'statusBar.enter') &&
-      !has(animation, 'statusBar.exit')
-    ) {
-      parentOptions.pop!!.statusBar = {
-        exit: animation.statusBar as ViewAnimationOptions,
-      };
-    }
-    if (
       animation.bottomTabs &&
       !has(animation, 'bottomTabs.enter') &&
       !has(animation, 'bottomTabs.exit')

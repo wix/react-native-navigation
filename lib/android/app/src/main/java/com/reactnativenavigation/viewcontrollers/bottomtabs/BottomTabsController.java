@@ -50,7 +50,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabsPresenter presenter;
     private final BottomTabPresenter tabPresenter;
 
-    public BottomTabsAppearanceAnimator getAnimator() {
+    public BottomTabsAnimator getAnimator() {
         return presenter.getAnimator();
     }
 

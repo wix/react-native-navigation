@@ -13,7 +13,6 @@ open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
     @JvmField var content = ViewAnimationOptions()
     @JvmField var bottomTabs = ViewAnimationOptions()
     @JvmField var topBar = ViewAnimationOptions()
-    @JvmField var statusBar = ViewAnimationOptions()
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
 
@@ -23,7 +22,6 @@ open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
 
     fun mergeWith(other: StackAnimationOptions) {
         topBar.mergeWith(other.topBar)
-        statusBar.mergeWith(other.statusBar)
         content.mergeWith(other.content)
         bottomTabs.mergeWith(other.bottomTabs)
         sharedElements.mergeWith(other.sharedElements)
@@ -36,7 +34,6 @@ open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
         content.mergeWithDefault(defaultOptions.content)
         bottomTabs.mergeWithDefault(defaultOptions.bottomTabs)
         topBar.mergeWithDefault(defaultOptions.topBar)
-        statusBar.mergeWithDefault(defaultOptions.statusBar)
         sharedElements.mergeWithDefault(defaultOptions.sharedElements)
         elementTransitions.mergeWithDefault(defaultOptions.elementTransitions)
         if (!enabled.hasValue()) enabled = defaultOptions.enabled
@@ -44,11 +41,11 @@ open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
     }
 
     fun hasEnterValue(): Boolean {
-        return topBar.enter.hasValue() || statusBar.enter.hasValue() || content.enter.hasValue() || bottomTabs.enter.hasValue() || waitForRender.hasValue()
+        return topBar.enter.hasValue() || content.enter.hasValue() || bottomTabs.enter.hasValue() || waitForRender.hasValue()
     }
 
     fun hasExitValue(): Boolean {
-        return topBar.exit.hasValue() || statusBar.exit.hasValue() || content.exit.hasValue() || bottomTabs.exit.hasValue() || waitForRender.hasValue()
+        return topBar.exit.hasValue() || content.exit.hasValue() || bottomTabs.exit.hasValue() || waitForRender.hasValue()
     }
 
     private fun parse(json: JSONObject?) {
@@ -56,7 +53,6 @@ open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
         content = ViewAnimationOptions(json.optJSONObject("content"))
         bottomTabs = ViewAnimationOptions(json.optJSONObject("bottomTabs"))
         topBar = ViewAnimationOptions(json.optJSONObject("topBar"))
-        statusBar = ViewAnimationOptions(json.optJSONObject("statusBar"))
         enabled = BoolParser.parseFirst(json, "enabled", "enable")
         waitForRender = BoolParser.parse(json, "waitForRender")
         sharedElements = SharedElements.parse(json)

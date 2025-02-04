@@ -28,7 +28,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAppearanceAnimator;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAnimator;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
@@ -587,7 +587,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs(List<ViewController<?>> tabs) {
-        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, new Options(), new BottomTabsAppearanceAnimator());
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, new Options(), new BottomTabsAnimator());
         return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsAttacher(tabs, bottomTabsPresenter, Options.EMPTY), bottomTabsPresenter, new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new TypefaceLoaderMock(), new Options())) {
             @NonNull
             @Override

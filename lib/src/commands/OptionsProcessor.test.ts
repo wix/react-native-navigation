@@ -881,42 +881,6 @@ describe('navigation options', () => {
         });
       });
 
-      it('topBar color animation is left as is', () => {
-        const options: Options = {
-          animations: {
-            push: {
-              topBar: {
-                enter: {
-                  bkgColor: {
-                    duration: 314,
-                  },
-                },
-                exit: {
-                  bkgColor: {
-                    duration: 666,
-                  },
-                },
-              },
-            },
-          },
-        };
-        uut.processOptions(CommandName.SetRoot, options);
-        expect(options.animations!!.push).toStrictEqual({
-          topBar: {
-            enter: {
-              bkgColor: {
-                duration: 314,
-              },
-            },
-            exit: {
-              bkgColor: {
-                duration: 666,
-              },
-            },
-          },
-        });
-      });
-
       it('Options not related to views are left as is', () => {
         performOnViewsInvolvedInStackAnimation(() => {
           const options: Options = {
