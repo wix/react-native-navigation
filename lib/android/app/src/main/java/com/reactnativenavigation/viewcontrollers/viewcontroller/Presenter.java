@@ -1,5 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
+import static com.reactnativenavigation.utils.StubAnimationListener.onAnimatorEnd;
+
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -37,7 +39,7 @@ public class Presenter implements StatusBarPresenter {
     private final ColorAnimator colorAnimator;
 
     private Options defaultOptions;
-    private Boolean isStatusBarColorAnimated = false;
+    private Boolean hasPendingColorAnim = false;
 
     public Presenter(Activity activity, Options defaultOptions) {
         this(activity, defaultOptions, new ColorAnimator());
@@ -125,7 +127,7 @@ public class Presenter implements StatusBarPresenter {
     private void applyStatusBarOptions(ViewController viewController, Options options) {
         StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
 
-        if (!isStatusBarColorAnimated) {
+        if (!hasPendingColorAnim) {
             setStatusBarBackgroundColor(statusBar);
         }
         setTextColorScheme(statusBar);
@@ -159,16 +161,18 @@ public class Presenter implements StatusBarPresenter {
                     targetColor.get()
             );
 
-            if (animator != null) {
-                animator.addUpdateListener(animation ->
-                        setStatusBarBackgroundColor((int) animation.getAnimatedValue(), translucent));
+            animator.addUpdateListener(animation ->
+                    setStatusBarBackgroundColor((int) animation.getAnimatedValue(), translucent));
 
-                isStatusBarColorAnimated = true;
-                return animator;
-            }
+            animator.addListener(onAnimatorEnd(animation -> {
+                hasPendingColorAnim = false;
+                return null;
+            }));
+
+            hasPendingColorAnim = true;
+            return animator;
         }
-
-        isStatusBarColorAnimated = false;
+        hasPendingColorAnim = false;
         return null;
     }
 

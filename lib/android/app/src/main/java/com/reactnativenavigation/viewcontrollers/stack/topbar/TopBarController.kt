@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.view.MenuItem
 import android.view.View
+import androidx.core.animation.addListener
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
@@ -31,7 +32,7 @@ open class TopBarController(
     private lateinit var leftButtonBar: ButtonBar
     private lateinit var rightButtonBar: ButtonBar
 
-    private var isBkgAnimated = false
+    private var hasPendingColorAnim = false
 
     val height: Int
         get() = view.height
@@ -57,7 +58,7 @@ open class TopBarController(
     fun setBackgroundColor(topBarOptions: TopBarOptions, defaultColor: Int) {
         val color = topBarOptions.background.color
 
-        if (!isBkgAnimated) {
+        if (!hasPendingColorAnim) {
             view.setBackgroundColor(color.get(defaultColor)!!)
         }
     }
@@ -65,7 +66,7 @@ open class TopBarController(
     fun setBackgroundColor(topBarOptions: TopBarOptions) {
         val color = topBarOptions.background.color
 
-        if (color.hasValue() && !isBkgAnimated) {
+        if (color.hasValue() && !hasPendingColorAnim) {
             view.setBackgroundColor(color.get())
         }
     }
@@ -76,12 +77,16 @@ open class TopBarController(
         val topBarOptions = appearingOptions.topBar
         val topBarAnimOptions = appearingOptions.animations.push.topBar
 
-        isBkgAnimated = false
+        hasPendingColorAnim = false
 
         mutableListOf(
             getAppearancePushAnimation(topBarOptions, topBarAnimOptions, additionalDy),
-            getBkgColorAnimation(topBarOptions)?.also {
-                isBkgAnimated = true
+            getBkgColorAnimation(topBarOptions)?.apply {
+                hasPendingColorAnim = true
+
+                addListener(onEnd = {
+                    hasPendingColorAnim = false
+                })
             },
         ).filterNotNull().let {
             return if (it.isNotEmpty()) {
@@ -96,12 +101,16 @@ open class TopBarController(
         val topBarOptions = appearingOptions.topBar
         val topBarAnimOptions = disappearingOptions.animations.pop.topBar
 
-        isBkgAnimated = false
+        hasPendingColorAnim = false
 
         mutableListOf(
             getAppearancePopAnimation(topBarOptions, topBarAnimOptions),
-            getBkgColorAnimation(topBarOptions)?.also {
-                isBkgAnimated = true
+            getBkgColorAnimation(topBarOptions)?.apply {
+                hasPendingColorAnim = true
+
+                addListener(onEnd = {
+                    hasPendingColorAnim = false
+                })
             },
         ).filterNotNull().let {
             return if (it.isNotEmpty()) {
