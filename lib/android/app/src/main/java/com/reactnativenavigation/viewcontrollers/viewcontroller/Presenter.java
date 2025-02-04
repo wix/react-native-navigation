@@ -16,6 +16,8 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 
+import com.reactnativenavigation.RNNFeatureToggles;
+import com.reactnativenavigation.RNNToggles;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
@@ -152,25 +154,27 @@ public class Presenter implements StatusBarPresenter {
     }
 
     private Animator getStatusBarColorAnimation(StatusBarOptions statusBarOptions, AnimationOptions statusBarAnimOptions) {
-        ThemeColour targetColor = statusBarOptions.backgroundColor;
+        if (RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION)) {
+            ThemeColour targetColor = statusBarOptions.backgroundColor;
 
-        if (targetColor.hasValue()) {
-            boolean translucent = statusBarOptions.translucent.isTrue();
-            ValueAnimator animator = colorAnimator.getAnimation(
-                    getCurrentStatusBarBackgroundColor(),
-                    targetColor.get()
-            );
+            if (targetColor.hasValue()) {
+                boolean translucent = statusBarOptions.translucent.isTrue();
+                ValueAnimator animator = colorAnimator.getAnimation(
+                        getCurrentStatusBarBackgroundColor(),
+                        targetColor.get()
+                );
 
-            animator.addUpdateListener(animation ->
-                    setStatusBarBackgroundColor((int) animation.getAnimatedValue(), translucent));
+                animator.addUpdateListener(animation ->
+                        setStatusBarBackgroundColor((int) animation.getAnimatedValue(), translucent));
 
-            animator.addListener(onAnimatorEnd(animation -> {
-                hasPendingColorAnim = false;
-                return null;
-            }));
+                animator.addListener(onAnimatorEnd(animation -> {
+                    hasPendingColorAnim = false;
+                    return null;
+                }));
 
-            hasPendingColorAnim = true;
-            return animator;
+                hasPendingColorAnim = true;
+                return animator;
+            }
         }
         hasPendingColorAnim = false;
         return null;

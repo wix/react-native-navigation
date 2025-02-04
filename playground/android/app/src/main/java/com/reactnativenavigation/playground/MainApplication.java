@@ -8,11 +8,13 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.RNNToggles;
 import com.reactnativenavigation.react.NavigationPackage;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainApplication extends NavigationApplication {
@@ -47,6 +49,11 @@ public class MainApplication extends NavigationApplication {
                 }
             };
 
+    public MainApplication() {
+        super(new HashMap<>() {{
+            put(RNNToggles.TOP_BAR_COLOR_ANIMATION, true);
+        }});
+    }
 
     @Override
     public void onCreate() {

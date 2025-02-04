@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.animation.addListener
 import androidx.viewpager.widget.ViewPager
+import com.reactnativenavigation.RNNFeatureToggles
+import com.reactnativenavigation.RNNToggles.TOP_BAR_COLOR_ANIMATION
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
@@ -185,14 +187,16 @@ open class TopBarController(
     }
 
     private fun getBkgColorAnimation(topBarOptions: TopBarOptions): Animator? {
-        val targetColor = topBarOptions.background.color
+        if (RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+            val targetColor = topBarOptions.background.color
 
-        if (targetColor.hasValue() && view.background is ColorDrawable) {
-            return colorAnimator.getAnimation(
-                view,
-                (view.background as ColorDrawable).color,
-                targetColor.get()
-            )
+            if (targetColor.hasValue() && view.background is ColorDrawable) {
+                return colorAnimator.getAnimation(
+                    view,
+                    (view.background as ColorDrawable).color,
+                    targetColor.get()
+                )
+            }
         }
         return null
     }

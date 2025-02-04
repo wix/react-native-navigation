@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.view.View
 import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.RNNFeatureToggles
+import com.reactnativenavigation.RNNToggles
 import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
@@ -30,7 +32,7 @@ import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
 import java.util.*
 
-private const val BKG_COLOR = 0x123456
+private const val BKG_COLOR = 0x010203
 
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
@@ -46,6 +48,8 @@ class TopBarControllerTest : BaseTest() {
         get() = uut.view
 
     override fun beforeEach() {
+        super.beforeEach()
+
         activity = newActivity()
         appearAnimator = spy(TopBarAppearanceAnimator())
         colorAnimator = mock<ColorAnimator>()
@@ -55,6 +59,7 @@ class TopBarControllerTest : BaseTest() {
             createView(activity, stack)
         }
         createButtons()
+        initFeatureToggles()
     }
 
     @Test
@@ -207,6 +212,18 @@ class TopBarControllerTest : BaseTest() {
     }
 
     @Test
+    fun getPushAnimation_givenFalseFeatureToggle_returnsNoColorAnimator() {
+        val options = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
+        val colorAnimator = ValueAnimator()
+        givenColorAnimator(colorAnimator, BKG_COLOR)
+        givenTopBarBackgroundAsColor()
+        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION to false)
+
+        val result = uut.getPushAnimation(options)
+        assertThat(result).isNull()
+    }
+
+    @Test
     fun getPushAnimation_givenNonStaticBkg_returnsNoColorAnimator() {
         val options = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
         val colorAnimator = ValueAnimator()
@@ -246,25 +263,6 @@ class TopBarControllerTest : BaseTest() {
     }
 
     @Test
-    fun getPopAnimation_givenNonStaticBkg_returnsNoColorAnimator() {
-        val colorAnimator = ValueAnimator()
-        val appearOpts = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
-        val disappearOpts = OptionHelper.emptyOptions()
-        givenColorAnimator(colorAnimator, BKG_COLOR)
-        givenTopBarBackgroundAsDrawableResource()
-
-        val result = uut.getPopAnimation(appearOpts, disappearOpts)
-        assertThat(result).isNull()
-    }
-
-    @Test
-    fun getPopAnimation_givenAnimDisabled_returnsNull() {
-        val appearing = Options()
-        val disappearing = OptionHelper.builder().topBar().disabledAnim().build()
-        assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
-    }
-
-    @Test
     fun getPopAnimation_returnsColorAnimator() {
         val colorAnimator = ValueAnimator()
         val appearOpts = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
@@ -279,6 +277,38 @@ class TopBarControllerTest : BaseTest() {
             assertThat(childAnimations).hasSize(1)
             assertThat(childAnimations[0]).isEqualTo(colorAnimator)
         }
+    }
+
+    @Test
+    fun getPopAnimation_givenFalseFeatureToggle_returnsNoColorAnimator() {
+        val colorAnimator = ValueAnimator()
+        val appearOpts = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
+        val disappearOpts = OptionHelper.emptyOptions()
+        givenColorAnimator(colorAnimator, BKG_COLOR)
+        givenTopBarBackgroundAsColor()
+        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION to false)
+
+        val result = uut.getPopAnimation(appearOpts, disappearOpts)
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun getPopAnimation_givenNonStaticBkg_returnsNoColorAnimator() {
+        val colorAnimator = ValueAnimator()
+        val appearOpts = OptionHelper.builder().topBar().withColor(BKG_COLOR).build()
+        val disappearOpts = OptionHelper.emptyOptions()
+        givenColorAnimator(colorAnimator, BKG_COLOR)
+        givenTopBarBackgroundAsDrawableResource()
+
+        val result = uut.getPopAnimation(appearOpts, disappearOpts)
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun getPopAnimation_givenAnimDisabled_returnsNull() {
+        val appearing = Options()
+        val disappearing = OptionHelper.builder().topBar().withDisabledAnim().build()
+        assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
     }
 
     @Test
@@ -324,6 +354,12 @@ class TopBarControllerTest : BaseTest() {
         componentButton.id = "customBtn"
         componentButton.component.name = Text("com.rnn.customBtn")
         componentButton.component.componentId = Text("component4")
+    }
+
+    private fun initFeatureToggles() {
+        RNNFeatureToggles.init(
+            RNNToggles.TOP_BAR_COLOR_ANIMATION to true
+        )
     }
 
     private fun createTextButton(id: String): ButtonOptions {
@@ -374,5 +410,10 @@ class TopBarControllerTest : BaseTest() {
 
     private fun givenTopBarBackgroundAsDrawableResource() {
         topBar.setBackgroundResource(0)
+    }
+
+    private fun givenFeatureToggleOverrides(vararg overrides: Pair<RNNToggles, Boolean>) {
+        RNNFeatureToggles.clear()
+        RNNFeatureToggles.init(*overrides)
     }
 }

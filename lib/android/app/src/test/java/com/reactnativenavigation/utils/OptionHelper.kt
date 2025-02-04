@@ -18,7 +18,7 @@ object OptionHelper {
     }
 
     fun builder() = OptionsBuilder()
-    fun emptyOptions(): Options = Options.EMPTY.copy()
+    fun emptyOptions(): Options = builder().build()
 }
 
 class OptionsBuilder internal constructor() {
@@ -27,12 +27,12 @@ class OptionsBuilder internal constructor() {
     fun topBar() = TopBarBuilder()
     fun build(): Options = options
 
-    inner class TopBarBuilder() {
+    inner class TopBarBuilder {
         fun withColor(color: Int): OptionsBuilder {
             options.topBar.background.color = aThemeColor(color)
             return this@OptionsBuilder
         }
-        fun disabledAnim(): OptionsBuilder {
+        fun withDisabledAnim(): OptionsBuilder {
             options.topBar.animate = Bool(false)
             return this@OptionsBuilder
         }
