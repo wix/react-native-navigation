@@ -1,3 +1,4 @@
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -6,8 +7,6 @@ require Pod::Executable.execute_command('node', ['-p',
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
-
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -25,7 +24,6 @@ def all_pods
     :path => "../../node_modules/react-native",
     :hermes_enabled => flags[:hermes_enabled],
     :fabric_enabled => flags[:fabric_enabled],
-    :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -35,41 +33,7 @@ def all_pods
 end
 
 post_install do |installer|
-  __apply_Xcode_15_3_flipper_post_install_workaround(installer)
-
   react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
-
-  __apply_Xcode_15_unary_binary_error_workaround(installer)
-
-  # This is to resolve "'shared_timed_mutex' is unavailable: introduced in iOS 10.0" error
-  installer.pods_project.targets.each do |t|
-    t.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
-    end
-  end
-end
-
-def __apply_Xcode_15_3_flipper_post_install_workaround(installer)
-  installer.pods_project.targets.each do |target|
-    if target.name == 'Flipper'
-      file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
-      contents = File.read(file_path)
-      unless contents.include?('#include <functional>')
-        File.open(file_path, 'w') do |file|
-          file.puts('#include <functional>')
-          file.puts(contents)
-        end
-      end
-    end
-  end
-end
-
-def __apply_Xcode_15_unary_binary_error_workaround(installer)
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
-    end
-  end
 end
 
 target 'playground' do

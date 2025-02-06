@@ -42,9 +42,7 @@ export default class StackCommandsScreen extends NavigationComponent<NavigationP
         name: Screens.Pushed,
       },
     })
-      .then(
-        (pushId) => new Promise<string>((resolve) => setTimeout(() => resolve(pushId), 100))
-      )
+      .then((pushId) => new Promise<string>((resolve) => setTimeout(() => resolve(pushId), 100)))
       .then((pushId) => {
         this.setState({
           pushPromiseResult: `push promise resolved with: ${pushId}`,

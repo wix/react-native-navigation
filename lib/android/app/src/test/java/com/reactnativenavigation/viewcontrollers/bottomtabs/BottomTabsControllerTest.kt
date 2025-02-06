@@ -536,7 +536,7 @@ class BottomTabsControllerTest : BaseTest() {
         Mockito.`when`(child5.handleBack(any())).thenReturn(true)
     }
 
-    private fun spyOnStack(initialChild: ViewController<*>?): StackController {
+    private fun spyOnStack(initialChild: ViewController<*>): StackController {
         val build = TestUtils.newStackController(activity)
             .setInitialOptions(tabOptions)
             .build()

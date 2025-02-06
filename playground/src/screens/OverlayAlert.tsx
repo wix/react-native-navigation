@@ -5,12 +5,8 @@ import { component } from '../commons/Layouts';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const {
-  OVERLAY_ALERT_HEADER,
-  DISMISS_BTN,
-  SET_INTERCEPT_TOUCH,
-  DISMISS_ALL_OVERLAYS_BUTTON,
-} = testIDs;
+const { OVERLAY_ALERT_HEADER, DISMISS_BTN, SET_INTERCEPT_TOUCH, DISMISS_ALL_OVERLAYS_BUTTON } =
+  testIDs;
 
 interface Props extends NavigationProps {
   incrementDismissedOverlays: any;

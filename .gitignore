@@ -244,3 +244,4 @@ Mock.js
 Mock.d.ts
 
 Gemfile.lock
+/playground/ios/.xcode.env.local

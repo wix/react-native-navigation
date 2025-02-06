@@ -24,6 +24,7 @@ public class TitleBarButtonControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         Activity activity = newActivity();
         titleBar = new ButtonBar(activity);
 
