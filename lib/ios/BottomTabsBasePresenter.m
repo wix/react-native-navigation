@@ -1,5 +1,6 @@
 #import "BottomTabsBasePresenter.h"
 #import "RNNBottomTabsController.h"
+#import "RNNConvert.h"
 #import "UIImage+utils.h"
 
 @implementation BottomTabsBasePresenter
@@ -29,7 +30,7 @@
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor withDefault:nil]
                    translucent:[withDefault.bottomTabs.translucent withDefault:NO]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
-    [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:[withDefault.bottomTabs.barStyle
+    [bottomTabs setTabBarStyle:[RNNConvert UIBarStyle:[withDefault.bottomTabs.barStyle
                                                           withDefault:@"default"]]];
     [self applyTabBarBorder:withDefault.bottomTabs];
     [self applyTabBarShadow:withDefault.bottomTabs.shadow];
@@ -60,7 +61,7 @@
     }
 
     if (mergeOptions.bottomTabs.barStyle.hasValue) {
-        [bottomTabs setTabBarStyle:[RCTConvert UIBarStyle:mergeOptions.bottomTabs.barStyle.get]];
+        [bottomTabs setTabBarStyle:[RNNConvert UIBarStyle:mergeOptions.bottomTabs.barStyle.get]];
     }
 
     if (mergeOptions.bottomTabs.translucent.hasValue) {

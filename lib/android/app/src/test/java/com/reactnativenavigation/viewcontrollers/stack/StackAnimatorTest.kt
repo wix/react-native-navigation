@@ -25,6 +25,7 @@ class StackAnimatorTest : BaseTest() {
     private lateinit var commandAnimator: AnimatorSet
 
     override fun beforeEach() {
+        super.beforeEach()
         activity = newActivity()
         val transitionAnimatorCreator = mock<TransitionAnimatorCreator> { }
         uut = object : StackAnimator(activity, transitionAnimatorCreator) {

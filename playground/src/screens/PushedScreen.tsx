@@ -12,6 +12,7 @@ import Root from '../components/Root';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 import Screens from './Screens';
+import { NativeEventSubscription } from 'react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter';
 
 const {
   PUSHED_SCREEN_HEADER,
@@ -46,6 +47,8 @@ export default class PushedScreen extends NavigationComponent<Props> {
     '#D4A5A5',
     '#C3B1E1',
   ];
+
+  backHandlerSubscription: NativeEventSubscription | null = null;
 
   static options(): Options {
     return {
@@ -246,9 +249,14 @@ export default class PushedScreen extends NavigationComponent<Props> {
       },
     ]);
 
-  addBackHandler = () => BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  addBackHandler = () => {
+    this.backHandlerSubscription = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backHandler
+    );
+  };
 
-  removeBackHandler = () => BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  removeBackHandler = () => this.backHandlerSubscription?.remove();
 
   backHandler = () => {
     this.setState({

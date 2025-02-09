@@ -32,4 +32,8 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle, (@{
                    }),
                    UIModalPresentationFullScreen, integerValue)
 
+RCT_ENUM_CONVERTER(UIBarStyle,
+                   (@{@"default" : @(UIBarStyleDefault), @"black" : @(UIBarStyleBlack)}),
+                   UIBarStyleDefault, integerValue)
+
 @end

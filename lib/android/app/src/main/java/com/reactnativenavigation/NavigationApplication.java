@@ -4,11 +4,13 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
 import java.util.Collections;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,11 @@ public abstract class NavigationApplication extends Application implements React
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        SoLoader.init(this, false);
+        try {
+            SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         reactGateway = createReactGateway();
 	}
 

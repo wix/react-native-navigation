@@ -2,8 +2,7 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
 #if RCT_NEW_ARCH_ENABLED
-#import "RCTAppSetupUtils.h"
-#import "RCTLegacyInteropComponents.h"
+
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>

@@ -1,7 +1,7 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById } = Utils;
+const { elementByLabel, elementById, sleep } = Utils;
 
 describe('static lifecycle events', () => {
   beforeEach(async () => {
@@ -93,6 +93,9 @@ describe('static lifecycle events', () => {
     await elementById(TestIDs.SET_ROOT_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
+    // This sleep is needed in order to synchronize the test rendered with state changes. We can remove it after moving
+    // our mock to work with act(()=>{}) from react-test-renderer
+    await sleep(10);
     await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
   });
 
