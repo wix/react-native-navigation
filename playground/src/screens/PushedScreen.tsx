@@ -38,6 +38,16 @@ interface Props extends NavigationProps {
 }
 
 export default class PushedScreen extends NavigationComponent<Props> {
+  static topBarColors = [
+    '#FFB3BA',
+    '#FFDFBA',
+    '#FFFFBA',
+    '#BAFFC9',
+    '#BAE1FF',
+    '#D4A5A5',
+    '#C3B1E1',
+  ];
+
   backHandlerSubscription: NativeEventSubscription | null = null;
 
   static options(): Options {
@@ -58,6 +68,12 @@ export default class PushedScreen extends NavigationComponent<Props> {
           testID: BACK_BUTTON,
           enableMenu: false,
         },
+        background: {
+          color: PushedScreen.topBarColors[0],
+        },
+      },
+      statusBar: {
+        backgroundColor: PushedScreen.topBarColors[0],
       },
     };
   }
@@ -135,6 +151,16 @@ export default class PushedScreen extends NavigationComponent<Props> {
             title: {
               text: `Pushed ${this.getStackPosition() + 1}`,
             },
+            background: {
+              color:
+                PushedScreen.topBarColors[
+                  this.getStackPosition() % PushedScreen.topBarColors.length
+                ],
+            },
+          },
+          statusBar: {
+            backgroundColor:
+              PushedScreen.topBarColors[this.getStackPosition() % PushedScreen.topBarColors.length],
           },
         },
       },

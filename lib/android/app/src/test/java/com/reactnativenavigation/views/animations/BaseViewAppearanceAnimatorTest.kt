@@ -11,22 +11,22 @@ import org.mockito.kotlin.spy
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-class BaseViewAnimatorTest : BaseTest() {
-    private lateinit var uut: BaseViewAnimator<View>
+class BaseViewAppearanceAnimatorTest : BaseTest() {
+    private lateinit var uut: BaseViewAppearanceAnimator<View>
     private lateinit var view: View
     private lateinit var defaultAnimatorCreator: ViewAnimatorCreator
 
     private val defaultShowAnimator: Animator
-        get() = defaultAnimatorCreator.getShowAnimator(view, BaseViewAnimator.HideDirection.Up, 0f)
+        get() = defaultAnimatorCreator.getShowAnimator(view, BaseViewAppearanceAnimator.HideDirection.Up, 0f)
     private val defaultHideAnimator: Animator
-        get() = defaultAnimatorCreator.getHideAnimator(view, BaseViewAnimator.HideDirection.Up, 0f)
+        get() = defaultAnimatorCreator.getHideAnimator(view, BaseViewAppearanceAnimator.HideDirection.Up, 0f)
 
 
     override fun beforeEach() {
         view = View(newActivity())
         defaultAnimatorCreator = DefaultViewAnimatorCreatorFake()
-        uut = BaseViewAnimator(
-                hideDirection = BaseViewAnimator.HideDirection.Up,
+        uut = BaseViewAppearanceAnimator(
+                hideDirection = BaseViewAppearanceAnimator.HideDirection.Up,
                 view = view,
                 defaultAnimatorCreator = defaultAnimatorCreator
         )

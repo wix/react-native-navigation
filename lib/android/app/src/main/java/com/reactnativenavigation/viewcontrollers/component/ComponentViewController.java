@@ -1,28 +1,29 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 
-import com.reactnativenavigation.utils.LogKt;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
-import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.SystemUiUtils;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.child.ChildController;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.component.ComponentLayout;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.utils.SystemUiUtils;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
-public class ComponentViewController extends ChildController<ComponentLayout> {
+public class ComponentViewController extends ChildController<ComponentLayout> implements StatusBarController {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
@@ -62,6 +63,29 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public void setDefaultOptions(Options defaultOptions) {
         super.setDefaultOptions(defaultOptions);
         presenter.setDefaultOptions(defaultOptions);
+    }
+
+    @Override
+    public StatusBarController getStatusBarController() {
+        return this;
+    }
+
+    @Nullable
+    @Override
+    public Animator getStatusBarPushAnimation(@NonNull Options appearingOptions) {
+        if (super.presenter != null) {
+            return super.presenter.getStatusBarPushAnimation(appearingOptions);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Animator getStatusBarPopAnimation(@NonNull Options appearingOptions, @NonNull Options disappearingOptions) {
+        if (super.presenter != null) {
+            return super.presenter.getStatusBarPopAnimation(appearingOptions, disappearingOptions);
+        }
+        return null;
     }
 
     @Override

@@ -9,5 +9,4 @@
 
 + (UIBarStyle)UIBarStyle:(id)json;
 
-
 @end
