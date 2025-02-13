@@ -77,8 +77,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? VERSION
     : semver.gt(packageVersion, currentPublished)
-    ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
-    : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+      ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
+      : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -143,7 +143,7 @@ function updatePackageJsonGit(version) {
 }
 
 function draftGitRelease(version) {
-  exec.execSync(`npx gren release --tags=${version}`);
+  // exec.execSync(`npx gren release --tags=${version}`);
   exec.execSync(`sleep 30`);
   // For some unknown reason, gren release works well only when calling it twice.
   exec.execSync(`npx gren release --tags=${version}`);
