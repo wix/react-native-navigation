@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "999.999.1-test",
+  "version": "7.41.0-tag",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
