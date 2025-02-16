@@ -3,52 +3,19 @@ package com.reactnativenavigation.react.modal
 import android.content.Context
 import android.view.MotionEvent
 import android.view.View
-import com.facebook.react.bridge.*
-import com.facebook.react.uimanager.*
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.uimanager.JSTouchDispatcher
+import com.facebook.react.uimanager.RootView
+import com.facebook.react.uimanager.UIManagerHelper
+import com.facebook.react.uimanager.common.UIManagerType
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.views.view.ReactViewGroup
 
 
 class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
-    private var hasAdjustedSize = false
-    private var viewWidth = 0
-    private var viewHeight = 0
+
     private val mJSTouchDispatcher = JSTouchDispatcher(this)
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        viewWidth = w
-        viewHeight = h
-        this.updateFirstChildView()
-    }
-    private fun updateFirstChildView() {
-        if (this.childCount > 0) {
-            hasAdjustedSize = false
-            val viewTag = getChildAt(0).id
-            val reactContext: ReactContext = this.getReactContext()
-            reactContext.runOnNativeModulesQueueThread(object : GuardedRunnable(reactContext) {
-                override fun runGuarded() {
-                    val uiManager = this@ModalContentLayout.getReactContext().getNativeModule(
-                            UIManagerModule::class.java
-                    ) as UIManagerModule
-                    uiManager.updateNodeSize(
-                            viewTag,
-                            this@ModalContentLayout.viewWidth,
-                            this@ModalContentLayout.viewHeight
-                    )
-                }
-            })
-        } else {
-            hasAdjustedSize = true
-        }
-    }
-
-    override fun addView(child: View?, index: Int, params: LayoutParams?) {
-        super.addView(child, index, params)
-        if (hasAdjustedSize) {
-            updateFirstChildView()
-        }
-    }
     override fun onChildStartedNativeGesture(child: View, androidEvent: MotionEvent) {
         mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
     }
@@ -61,9 +28,8 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
     override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
     private fun getEventDispatcher(): EventDispatcher {
         val reactContext: ReactContext = this.getReactContext()
-        return reactContext.getNativeModule(UIManagerModule::class.java)!!.eventDispatcher
+        return UIManagerHelper.getEventDispatcher(reactContext, UIManagerType.FABRIC) ?: throw IllegalStateException("EventDispatcher for Fabric UI Manager is not found")
     }
-
 
     override fun handleException(t: Throwable?) {
         getReactContext().handleException(RuntimeException(t))
