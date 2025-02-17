@@ -81,6 +81,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    if (@available(iOS 18, *))
+    {
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        {
+            self.traitOverrides.horizontalSizeClass = UIUserInterfaceSizeClassUnspecified;
+        }
+    }
 }
 
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
