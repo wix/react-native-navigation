@@ -19,8 +19,7 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/src/index.js",
-  "typings": "lib/dist/src/index.d.ts",
+  "main": "lib/src/index.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -65,6 +64,8 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
+    "react-native-redash": "^12.6.1",
+    "reanimated-color-picker": "^3.0.6",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -116,7 +117,6 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
     "react-native-reanimated": "3.16.7",
-    "react-native-ui-lib": "7.3.6",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.3.1",
     "redux": "3.x.x",
