@@ -19,6 +19,8 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
 
     private val titleTextView = SingleLineTextView(context, DEFAULT_TITLE_FONT_SIZE_DP)
     private val subTitleTextView = SingleLineTextView(context, DEFAULT_SUBTITLE_FONT_SIZE_DP)
+    private var titleAllowFontScaling = false
+    private var titleFontSize = DEFAULT_TITLE_FONT_SIZE_DP
 
     init {
         this.orientation = VERTICAL
@@ -46,7 +48,16 @@ class TitleSubTitleLayout(context: Context) : LinearLayout(context) {
         }
     }
 
-    fun setTitleFontSize(size: Float) = titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
+    fun setTitleFontSize(size: Float) {
+        val unit = if(this.titleAllowFontScaling) TypedValue.COMPLEX_UNIT_SP else TypedValue.COMPLEX_UNIT_DIP
+        this.titleFontSize = size
+        titleTextView.setTextSize(unit, size)
+    }
+
+    fun setTitleAllowFontScaling(enabled: Boolean) {
+        this.titleAllowFontScaling = enabled
+        this.setTitleFontSize(this.titleFontSize)
+    }
 
     fun setSubtitleFontSize(size: Float) = subTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size)
 

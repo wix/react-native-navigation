@@ -2,6 +2,7 @@ package com.reactnativenavigation.views
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +24,14 @@ import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
+import org.robolectric.annotation.Config
 import kotlin.math.roundToInt
 import kotlin.test.assertFalse
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
+@Config(sdk = [30])
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
@@ -448,7 +451,25 @@ class TitleAndButtonsContainerTest : BaseTest() {
         assertThat(getTitleSubtitleView().getSubTitleTxtView().currentTextColor).isEqualTo(Color.YELLOW)
     }
 
+    @Test
+    fun `setTitleAllowFontScaling - when using default value, should have font size units set to DIP`() {
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+    }
 
+    @Test
+    fun `setTitleAllowFontScaling - when set to true, should set font size units to SP`() {
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+        uut.setTitleAllowFontScaling(true)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
+    }
+
+    @Test
+    fun `setTitleAllowFontScaling - when set to false, should set font size units to DIP`() {
+        uut.setTitleAllowFontScaling(true)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_SP)
+        uut.setTitleAllowFontScaling(false)
+        assertThat(getTitleSubtitleView().getTitleTxtView().textSizeUnit).isEqualTo(TypedValue.COMPLEX_UNIT_DIP)
+    }
 
     @Test
     fun getTitle_returnCurrentTextInTitleTextView() {
