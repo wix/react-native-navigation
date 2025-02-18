@@ -3,17 +3,17 @@ package com.reactnativenavigation.viewcontrollers.externalcomponent;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import androidx.fragment.app.FragmentActivity;
 import android.widget.FrameLayout;
 
-import com.facebook.react.ReactInstanceManager;
+import androidx.fragment.app.FragmentActivity;
+
 import com.reactnativenavigation.R;
 
 import org.json.JSONObject;
 
 public class FragmentCreatorMock implements ExternalComponentCreator {
     @Override
-    public ExternalComponent create(FragmentActivity activity, ReactInstanceManager reactInstanceManager, JSONObject props) {
+    public ExternalComponent create(FragmentActivity activity,JSONObject props) {
         return createContent(activity);
     }
 

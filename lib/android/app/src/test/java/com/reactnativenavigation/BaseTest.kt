@@ -49,6 +49,7 @@ abstract class BaseTest {
     @Before
     open fun beforeEach() {
         mockReactNativeFeatureFlags = mockStatic(ReactNativeFeatureFlags::class.java)
+        mockReactNativeFeatureFlags?.close()
 
         NavigationApplication.instance = Mockito.mock(NavigationApplication::class.java)
         mockConfiguration = Mockito.mock(Configuration::class.java)
@@ -82,7 +83,6 @@ abstract class BaseTest {
     @CallSuper
     fun afterEach() {
         idleMainLooper()
-        mockReactNativeFeatureFlags?.close()
     }
 
     fun newActivity(): Activity {
