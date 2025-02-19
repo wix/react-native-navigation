@@ -165,7 +165,7 @@
       "genymotion.emulator.name": {
         "type": "android.genycloud",
         "device": {
-          "recipeUUID": "a50a71d6-da90-4c67-bdfa-5b602b0bbd15"
+          "recipeUUID": "9baf12f9-a645-4ffa-a688-0e92584d6194"
         }
       },
       "emulator": {
