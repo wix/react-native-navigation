@@ -83,6 +83,8 @@ abstract class BaseTest {
     @CallSuper
     fun afterEach() {
         idleMainLooper()
+        mockReactNativeFeatureFlags?.close()
+        RNNFeatureToggles.clear();
     }
 
     fun newActivity(): Activity {

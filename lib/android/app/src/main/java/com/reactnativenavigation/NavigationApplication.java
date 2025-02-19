@@ -9,6 +9,7 @@ import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
+import java.util.Collections;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,14 +18,23 @@ import androidx.annotation.NonNull;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
-	private ReactGateway reactGateway;
 	public static NavigationApplication instance;
-	final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
+
+	private final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
+	private ReactGateway reactGateway;
+
+    public NavigationApplication() {
+        this(Collections.emptyMap());
+    }
+
+    public NavigationApplication(Map<RNNToggles, Boolean> featureToggleOverrides) {
+        instance = this;
+        RNNFeatureToggles.init(featureToggleOverrides);
+    }
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        instance = this;
         try {
             SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
         } catch (IOException e) {

@@ -20,6 +20,8 @@ import {
   OptionsSearchBar,
   OptionsTopBar,
   StackAnimationOptions,
+  StatusBarAnimationOptions,
+  TopBarAnimationOptions,
   ViewAnimationOptions,
 } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
@@ -117,7 +119,7 @@ export class OptionsProcessor {
   }
 
   private processColor(key: string, value: any, options: Record<string, any>) {
-    if (isEqual(key, 'color') || endsWith(key, 'Color')) {
+    if ((isEqual(key, 'color') || endsWith(key, 'Color')) && !isEqual(key, 'bkgColor')) {
       if (Platform.OS === 'ios') this.processColorIOS(key, value, options);
       else this.processColorAndroid(key, value, options);
     }
@@ -399,7 +401,16 @@ export class OptionsProcessor {
     }
     if (animation.topBar && !has(animation, 'topBar.enter') && !has(animation, 'topBar.exit')) {
       parentOptions.push!!.topBar = {
-        enter: animation.topBar as ViewAnimationOptions,
+        enter: animation.topBar as TopBarAnimationOptions,
+      };
+    }
+    if (
+      animation.statusBar &&
+      !has(animation, 'statusBar.enter') &&
+      !has(animation, 'statusBar.exit')
+    ) {
+      parentOptions.push!!.statusBar = {
+        enter: animation.statusBar as StatusBarAnimationOptions,
       };
     }
     if (
