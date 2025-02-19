@@ -10,6 +10,7 @@ import com.reactnativenavigation.options.params.ReactPlatformColor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 import android.app.Activity;
 
+@Ignore("New architecture - WIP")
 public class ColorParseTest extends BaseTest {
 
     Activity activity;

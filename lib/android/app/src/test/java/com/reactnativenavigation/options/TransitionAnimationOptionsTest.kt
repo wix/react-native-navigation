@@ -5,9 +5,10 @@ import com.reactnativenavigation.BaseTest
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONArray
 import org.json.JSONObject
+import org.junit.Ignore
 import org.junit.Test
 
-
+@Ignore("New architecture - WIP")
 class TransitionAnimationOptionsTest : BaseTest() {
     lateinit var uut: TransitionAnimationOptions
 

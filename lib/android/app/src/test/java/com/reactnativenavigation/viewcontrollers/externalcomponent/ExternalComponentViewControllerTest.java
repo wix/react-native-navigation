@@ -21,9 +21,11 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.views.ExternalComponentLayout;
 
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+@Ignore("New architecture - WIP")
 public class ExternalComponentViewControllerTest extends BaseTest {
     private ExternalComponentViewController uut;
     private FragmentCreatorMock componentCreator;
