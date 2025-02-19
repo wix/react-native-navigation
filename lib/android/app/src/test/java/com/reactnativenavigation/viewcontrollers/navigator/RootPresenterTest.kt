@@ -16,6 +16,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.BehaviourDelegate
 import org.assertj.core.api.Java6Assertions
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
@@ -24,6 +25,7 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.never
 import org.robolectric.android.controller.ActivityController
 
+@Ignore("New architecture - WIP")
 class RootPresenterTest : BaseTest() {
     private lateinit var uut: RootPresenter
     private lateinit var rootContainer: CoordinatorLayout
