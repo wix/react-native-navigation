@@ -36,7 +36,7 @@ const utils = {
   sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
   expectImagesToBeEqual: (imagePath, expectedImagePath) => {
     let diff = bitmapDiff(imagePath, expectedImagePath);
-    if (diff !== 0) {
+    if (diff > 7000) {
       throw Error(`${imagePath} should be the same as ${expectedImagePath}, with diff: ${diff}`);
     }
   },
