@@ -20,9 +20,6 @@ import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeightDp
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
 import org.assertj.core.api.Java6Assertions
 import org.junit.After
 import org.junit.Before
@@ -52,6 +49,7 @@ abstract class BaseTest {
     @Before
     open fun beforeEach() {
         mockReactNativeFeatureFlags = mockStatic(ReactNativeFeatureFlags::class.java)
+        mockReactNativeFeatureFlags?.close()
 
         NavigationApplication.instance = Mockito.mock(NavigationApplication::class.java)
         mockConfiguration = Mockito.mock(Configuration::class.java)
@@ -86,6 +84,7 @@ abstract class BaseTest {
     fun afterEach() {
         idleMainLooper()
         mockReactNativeFeatureFlags?.close()
+        RNNFeatureToggles.clear();
     }
 
     fun newActivity(): Activity {

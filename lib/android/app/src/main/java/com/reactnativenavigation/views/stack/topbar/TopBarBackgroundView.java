@@ -9,7 +9,7 @@ import com.reactnativenavigation.react.ReactView;
 @SuppressLint("ViewConstructor")
 public class TopBarBackgroundView extends ReactView {
 
-    public TopBarBackgroundView(Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
-        super(context, reactInstanceManager, componentId, componentName);
+    public TopBarBackgroundView(Context context, String componentId, String componentName) {
+        super(context,  componentId, componentName);
     }
 }

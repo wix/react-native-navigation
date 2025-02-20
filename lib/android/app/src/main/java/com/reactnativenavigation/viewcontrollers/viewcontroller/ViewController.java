@@ -27,6 +27,7 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.component.Component;
@@ -89,6 +90,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.initialOptions = initialOptions;
         this.overlay = overlay;
         options = initialOptions.copy();
+    }
+
+    public StatusBarController getStatusBarController() {
+        return null;
     }
 
     public void setWaitForRender(Bool waitForRender) {

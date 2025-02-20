@@ -121,17 +121,23 @@ object SystemUiUtils {
         @ColorInt color: Int,
         translucent: Boolean
     ) {
-        val opaqueColor = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            Color.BLACK
-        }else{
-            val colorAlpha = Color.alpha(color)
-            val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
-            val red: Int = Color.red(color)
-            val green: Int = Color.green(color)
-            val blue: Int = Color.blue(color)
-            Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
-        }
+        val opaqueColor =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                Color.BLACK
+            } else {
+                val colorAlpha = Color.alpha(color)
+                val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
+                val red: Int = Color.red(color)
+                val green: Int = Color.green(color)
+                val blue: Int = Color.blue(color)
+                Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
+            }
         window?.statusBarColor = opaqueColor
+    }
+
+    @JvmStatic
+    fun getStatusBarColor(window: Window?): Int? {
+        return window?.statusBarColor
     }
 
     @JvmStatic

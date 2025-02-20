@@ -13,11 +13,11 @@ class DefaultViewAnimatorCreator : ViewAnimatorCreator {
     }
 
     override fun getShowAnimator(
-            view: View,
-            hideDirection: BaseViewAnimator.HideDirection,
-            translationStart: Float
+        view: View,
+        hideDirection: BaseViewAppearanceAnimator.HideDirection,
+        translationStart: Float
     ): Animator {
-        val direction = if (hideDirection == BaseViewAnimator.HideDirection.Up) 1 else -1
+        val direction = if (hideDirection == BaseViewAppearanceAnimator.HideDirection.Up) 1 else -1
         return ObjectAnimator.ofFloat(
                 view,
                 View.TRANSLATION_Y,
@@ -30,11 +30,11 @@ class DefaultViewAnimatorCreator : ViewAnimatorCreator {
     }
 
     override fun getHideAnimator(
-            view: View,
-            hideDirection: BaseViewAnimator.HideDirection,
-            additionalDy: Float
+        view: View,
+        hideDirection: BaseViewAppearanceAnimator.HideDirection,
+        additionalDy: Float
     ): Animator {
-        val direction = if (hideDirection == BaseViewAnimator.HideDirection.Up) -1 else 1
+        val direction = if (hideDirection == BaseViewAppearanceAnimator.HideDirection.Up) -1 else 1
         return ObjectAnimator.ofFloat(
                 view,
                 View.TRANSLATION_Y,

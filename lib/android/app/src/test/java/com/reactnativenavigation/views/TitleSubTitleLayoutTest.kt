@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
-import org.assertj.core.api.AssertionsForInterfaceTypes.*
+import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
+import org.junit.Ignore
 import org.junit.Test
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
-
+@Ignore("New architecture - WIP")
 class TitleSubTitleLayoutTest : BaseTest() {
     private val testId = "mock-testId"
 

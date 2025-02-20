@@ -50,9 +50,9 @@ class ValueAnimationOptions {
             to += this.to[animationValueAccessor!!(view)]
         }
         val animator = ObjectAnimator.ofFloat(view,
-                animProp,
-                from,
-                to
+            animProp,
+            from,
+            to
         )
         animator.interpolator = interpolator
         if (duration.hasValue()) animator.duration = duration.get().toLong()

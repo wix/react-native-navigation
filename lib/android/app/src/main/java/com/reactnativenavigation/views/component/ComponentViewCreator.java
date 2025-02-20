@@ -9,16 +9,9 @@ import com.reactnativenavigation.react.ReactComponentViewCreator;
 import com.reactnativenavigation.react.ReactView;
 
 public class ComponentViewCreator implements ReactViewCreator {
-
-    private ReactInstanceManager instanceManager;
-
-    public ComponentViewCreator(ReactInstanceManager instanceManager) {
-        this.instanceManager = instanceManager;
-	}
-
 	@Override
 	public IReactView create(Activity activity, String componentId, String componentName) {
-        ReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
+        ReactView reactView = new ReactComponentViewCreator().create(activity, componentId, componentName);
         return new ComponentLayout(activity, reactView);
 	}
 }

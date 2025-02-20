@@ -1267,11 +1267,36 @@ export interface IconInsets {
   right?: number;
 }
 
+export interface ColorAnimationOptions {
+  /**
+   * Color duration time; Default is as determined by the OS
+   */
+  duration?: number;
+}
+
 export interface ViewAnimationOptions extends ScreenAnimationOptions {
   /**
    * ID of the Top Bar we want to animate
    */
   id?: string;
+}
+
+export interface TopBarAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animation of the top-bar's background color, in case the top-bar background color
+   * has been explicitly specified.
+   *
+   * Applicable only in transition of screens with color (non-component) backgrounds.
+   */
+  bkgColor?: ColorAnimationOptions;
+}
+
+export interface StatusBarAnimationOptions extends ViewAnimationOptions {
+  /**
+   * Animation of the status-bar's background color, in case its background color
+   * has been explicitly specified.
+   */
+  bkgColor?: ColorAnimationOptions;
 }
 
 export interface EnterExitAnimationOptions {
@@ -1332,10 +1357,20 @@ export interface StackAnimationOptions {
    * Configure animations for the top bar
    */
   topBar?:
-    | ViewAnimationOptions
+    | TopBarAnimationOptions
     | {
-        enter?: ViewAnimationOptions;
-        exit?: ViewAnimationOptions;
+        enter?: TopBarAnimationOptions;
+        exit?: TopBarAnimationOptions;
+      };
+  /**
+   * Configure animations for the status bar (typically aligned
+   * with the top-bar's)
+   */
+  statusBar?:
+    | StatusBarAnimationOptions
+    | {
+        enter?: StatusBarAnimationOptions;
+        exit?: StatusBarAnimationOptions;
       };
   /**
    * Configure animations for the bottom tabs

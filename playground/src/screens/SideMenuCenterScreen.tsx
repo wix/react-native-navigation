@@ -73,7 +73,7 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         <Button
           label="Change Left Drawer Width"
           testID={CHANGE_LEFT_SIDE_MENU_WIDTH_BTN}
-          onPress={() => this.changeDrawerWidth('left', 50)}
+          onPress={() => this.changeDrawerWidth('left', 100)}
         />
         <Button
           label="Change Right Drawer Width"
