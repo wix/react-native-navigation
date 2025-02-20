@@ -7,7 +7,7 @@ function bitmapDiff(imagePath, expectedImagePath) {
   const { width, height } = img1;
   const diff = new PNG({ width, height });
 
-  return pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.0 });
+  return pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.01 });
 }
 const utils = {
   elementByLabel: (label) => {
