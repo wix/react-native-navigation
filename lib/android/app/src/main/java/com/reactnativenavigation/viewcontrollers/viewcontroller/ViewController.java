@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -27,7 +26,7 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarController;
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
 import com.reactnativenavigation.views.BehaviourAdapter;
 import com.reactnativenavigation.views.component.Component;
@@ -118,8 +117,20 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public abstract T createView();
 
+    public void setVisible(ViewController<?> previouslyVisible) {
+        getView().setVisibility(View.VISIBLE);
+    }
+
+    public void setInvisible() {
+        getView().setVisibility(View.INVISIBLE);
+    }
+
     public void setViewVisibilityListener(ViewVisibilityListener viewVisibilityListener) {
         this.viewVisibilityListener = viewVisibilityListener;
+    }
+
+    public ViewControllerVisibilityInfo getVisibilityInfo() {
+        return null;
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)

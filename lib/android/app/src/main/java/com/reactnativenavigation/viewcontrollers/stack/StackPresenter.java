@@ -37,6 +37,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
@@ -189,6 +190,11 @@ public class StackPresenter {
         destroyButtons(componentLeftButtons.get(child.getView()));
         componentRightButtons.remove(child.getView());
         componentLeftButtons.remove(child.getView());
+    }
+
+    public void switchFromViewController(Options options, ViewController<?> previouslyVisibleVC) {
+        Options optionsWithDefault = options.copy().withDefaultOptions(defaultOptions);
+        StatusBarPresenter.instance.switchFromViewController(optionsWithDefault.statusBar, previouslyVisibleVC);
     }
 
     private void destroyButtons(@Nullable Map<String, ButtonController> buttons) {
