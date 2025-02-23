@@ -4,9 +4,11 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.RNNFeatureToggles
 import com.reactnativenavigation.RNNToggles.TOP_BAR_COLOR_ANIMATION
@@ -20,6 +22,8 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.TopBarVisibilityInfo
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.animations.ColorAnimator
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
@@ -42,6 +46,13 @@ open class TopBarController(
         get() = rightButtonBar.buttonCount
     val leftButtonCount: Int
         get() = leftButtonBar.buttonCount
+
+    val visibilityInfo: TopBarVisibilityInfo
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            TopBarVisibilityInfo(view.isShown, getBackgroundColor())
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
@@ -70,6 +81,14 @@ open class TopBarController(
 
         if (color.hasValue() && !hasPendingColorAnim) {
             view.setBackgroundColor(color.get())
+        }
+    }
+
+    fun getBackgroundColor(): Int? {
+        return if (view.background is ColorDrawable) {
+            (view.background as ColorDrawable).color
+        } else {
+            null
         }
     }
 
@@ -130,6 +149,24 @@ open class TopBarController(
                 appearingOptions.topBar.visible,
                 additionalDy
         )
+    }
+
+    fun onSelected(previousVC: ViewController<*>?, currentVC: ViewController<*>?) {
+        if (!RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+            return
+        }
+
+        previousVC?.visibilityInfo?.topBarVisibilityInfo?.solidColor?.let { fromColor ->
+            visibilityInfo.solidColor?.let { toColor ->
+                colorAnimator.getAnimation(view, fromColor, toColor).apply {
+                    doOnEnd {
+                        hasPendingColorAnim = false
+                    }
+                    hasPendingColorAnim = true
+                    start()
+                }
+            }
+        }
     }
 
     fun show() {
