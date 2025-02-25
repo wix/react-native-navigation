@@ -27,6 +27,17 @@ public class BottomTabsLayout extends CoordinatorLayout {
         }
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (android.os.Build.VERSION.SDK_INT > 34) {
+            if (bottomTabsContainer != null) {
+                int systemBarInsets = getRootWindowInsets().getSystemWindowInsetBottom();
+                bottomTabsContainer.setPadding(0, 0, 0, systemBarInsets);
+            }
+        }
+    }
+
     public void addBottomTabsContainer(BottomTabsContainer bottomTabsContainer) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         lp.gravity = Gravity.BOTTOM;
