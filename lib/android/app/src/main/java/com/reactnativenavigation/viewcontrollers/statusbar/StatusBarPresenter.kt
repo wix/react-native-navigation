@@ -53,8 +53,8 @@ class StatusBarPresenter private constructor(
         setTextColorScheme(options)
     }
 
-    fun switchFromViewController(newOptions: StatusBarOptions, previousVC: ViewController<*>?) {
-        if (!isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION)) {
+    fun onSelectViewController(newOptions: StatusBarOptions, previousVC: ViewController<*>?) {
+        if (!isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             return
         }
 
@@ -69,13 +69,15 @@ class StatusBarPresenter private constructor(
         }
     }
 
-    fun getStatusBarPushAnimation(appearingOptions: Options): Animator? {
-        return getStatusBarColorAnimation(appearingOptions.statusBar)
-    }
+    fun getStatusBarPushAnimation(appearingOptions: Options): Animator? =
+        if (isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH)) {
+            getStatusBarColorAnimation(appearingOptions.statusBar)
+        } else null
 
-    fun getStatusBarPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? {
-        return getStatusBarColorAnimation(appearingOptions.statusBar)
-    }
+    fun getStatusBarPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? =
+        if (isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH)) {
+            getStatusBarColorAnimation(appearingOptions.statusBar)
+        } else null
 
     private fun setStatusBarBackgroundColor(statusBar: StatusBarOptions) {
         if (statusBar.backgroundColor.canApplyValue()) {
@@ -172,7 +174,7 @@ class StatusBarPresenter private constructor(
     }
 
     private fun getStatusBarColorAnimation(statusBarOptions: StatusBarOptions): Animator? {
-        if (isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION)) {
+        if (isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             getCurrentStatusBarBackgroundColor()?.let { currentColor ->
                 val targetColor = statusBarOptions.backgroundColor
 

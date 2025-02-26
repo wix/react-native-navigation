@@ -114,7 +114,15 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public abstract T createView();
 
-    public void setVisible(ViewController<?> previouslyVisible) {
+    public void onSelected(ViewController<?> previousVC) {
+        setVisible();
+    }
+
+    public void onDeselected() {
+        setInvisible();
+    }
+
+    public void setVisible() {
         getView().setVisibility(View.VISIBLE);
 
         onViewWillAppear();
@@ -131,7 +139,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @NonNull
     public ViewControllerVisibilityInfo getVisibilityInfo() {
-        return new ViewControllerVisibilityInfo(null, null);
+        return new ViewControllerVisibilityInfo(null);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)

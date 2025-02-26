@@ -31,7 +31,6 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.StatusBarVisibilityInfo;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.TopBarVisibilityInfo;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewControllerVisibilityInfo;
@@ -99,24 +98,18 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void setVisible(ViewController<?> previouslyVisibleVC) {
-        presenter.onSelected(previouslyVisibleVC, this);
-        topBarController.onSelected(previouslyVisibleVC, this);
+    public void onSelected(ViewController<?> previousVC) {
+        presenter.attachNewViewController(previousVC, this);
+        topBarController.attachNewViewController(previousVC, this);
 
-        super.setVisible(previouslyVisibleVC);
+        super.onSelected(previousVC);
     }
 
     @NonNull
     @Override
     public ViewControllerVisibilityInfo getVisibilityInfo() {
-        Options options = resolveCurrentOptions();
         TopBarVisibilityInfo topBarInfo = topBarController.getVisibilityInfo();
-        StatusBarVisibilityInfo statusBarInfo = new StatusBarVisibilityInfo(
-                options.statusBar.visible.isTrue(),
-                options.statusBar.backgroundColor.get(null),
-                options.statusBar.translucent.isTrue()
-        );
-        return new ViewControllerVisibilityInfo(topBarInfo, statusBarInfo);
+        return new ViewControllerVisibilityInfo(topBarInfo);
     }
 
     @Override

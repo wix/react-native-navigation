@@ -11,7 +11,7 @@ import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.RNNFeatureToggles
-import com.reactnativenavigation.RNNToggles.TOP_BAR_COLOR_ANIMATION
+import com.reactnativenavigation.RNNToggles
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
@@ -151,8 +151,8 @@ open class TopBarController(
         )
     }
 
-    fun onSelected(previousVC: ViewController<*>?, currentVC: ViewController<*>?) {
-        if (!RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+    fun attachNewViewController(previousVC: ViewController<*>?, newVC: ViewController<*>?) {
+        if (!RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             return
         }
 
@@ -228,7 +228,7 @@ open class TopBarController(
 
         if (targetColor.hasValue()
             && view.background is ColorDrawable
-            && RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+            && RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             return colorAnimator.getAnimation(
                 view,
                 (view.background as ColorDrawable).color,
