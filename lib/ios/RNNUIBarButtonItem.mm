@@ -3,6 +3,10 @@
 #import "RNNFontAttributesCreator.h"
 #import "UIImage+utils.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurface.h>
+#endif
+
 @interface RNNUIBarButtonItem ()
 
 @property(nonatomic, strong) NSLayoutConstraint *widthConstraint;
@@ -213,6 +217,18 @@
     }
 }
 
+
+#ifdef RCT_NEW_ARCH_ENABLED
+// TODO: Verify
+- (void)surface:(RCTSurface *)surface didChangeIntrinsicSize:(CGSize)intrinsicSize {
+	self.widthConstraint.constant = intrinsicSize.width;
+	self.heightConstraint.constant = intrinsicSize.height;
+	[surface setSize:intrinsicSize];
+	//[rootView setNeedsUpdateConstraints];
+	//[rootView updateConstraintsIfNeeded];
+	//surface.hidden = NO;
+}
+#else
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     self.widthConstraint.constant = rootView.intrinsicContentSize.width;
     self.heightConstraint.constant = rootView.intrinsicContentSize.height;
@@ -220,6 +236,7 @@
     [rootView updateConstraintsIfNeeded];
     rootView.hidden = NO;
 }
+#endif
 
 - (void)onButtonPressed:(RNNUIBarButtonItem *)barButtonItem {
     self.onPress(self.buttonId);

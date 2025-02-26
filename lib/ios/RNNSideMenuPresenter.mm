@@ -1,5 +1,5 @@
 #import "RNNSideMenuPresenter.h"
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 
 @implementation RNNSideMenuPresenter
 
@@ -130,8 +130,8 @@
     }
 }
 
-- (RNNSideMenuController *)sideMenuController {
-    return (RNNSideMenuController *)self.boundViewController;
+- (RNNSideMenuViewController *)sideMenuController {
+    return (RNNSideMenuViewController *)self.boundViewController;
 }
 
 @end

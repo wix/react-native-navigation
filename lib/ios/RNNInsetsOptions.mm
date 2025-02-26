@@ -14,7 +14,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    RNNInsetsOptions *newOptions = RNNInsetsOptions.new;
+    RNNInsetsOptions *newOptions = [RNNInsetsOptions new];
     newOptions.top = self.top.copy;
     newOptions.left = self.left.copy;
     newOptions.bottom = self.bottom.copy;
@@ -34,7 +34,7 @@
 }
 
 + (RNNInsetsOptions *)withValue:(UIEdgeInsets)insets {
-    RNNInsetsOptions *insetsOptions = RNNInsetsOptions.new;
+    RNNInsetsOptions *insetsOptions = [RNNInsetsOptions new];
     insetsOptions.top = [Double withValue:insets.top];
     insetsOptions.left = [Double withValue:insets.left];
     insetsOptions.bottom = [Double withValue:insets.bottom];

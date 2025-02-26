@@ -105,7 +105,7 @@
 
 - (void)applyTabBarBorder:(RNNBottomTabsOptions *)options {
     if (options.borderColor.hasValue || options.borderWidth.hasValue) {
-        self.tabBar.backgroundImage = UIImage.new;
+        self.tabBar.backgroundImage = [UIImage new];
         self.tabBar.shadowImage = [UIImage
             imageWithSize:CGSizeMake(1, [[options.borderWidth withDefault:@(1)] floatValue])
                     color:[options.borderColor withDefault:UIColor.blackColor]];

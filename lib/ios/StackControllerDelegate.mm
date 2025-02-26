@@ -4,12 +4,20 @@
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
+#ifdef RCT_NEW_ARCH_ENABLED
+	RNNTurboEventEmitter *_eventEmitter;
+#else
     RNNEventEmitter *_eventEmitter;
+#endif
     UIViewController *_presentedViewController;
     BOOL _isPopping;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithEventEmitter:(RNNTurboEventEmitter *)eventEmitter {
+#else
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
+#endif
     self = [super init];
     _eventEmitter = eventEmitter;
     return self;
@@ -63,21 +71,57 @@
     if (operation == UINavigationControllerOperationPush &&
         toVCOptionsWithDefault.animations.push.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = toVCOptionsWithDefault.animations.push;
-        return [[ScreenAnimationController alloc]
+#ifdef RCT_NEW_ARCH_ENABLED
+		if (_eventEmitter.host != nil) {
+			return [[ScreenAnimationController alloc]
+				initWithContentTransition:screenTransition.content
+					   elementTransitions:screenTransition.elementTransitions
+				 sharedElementTransitions:screenTransition.sharedElementTransitions
+								 duration:screenTransition.maxDuration
+								   host:_eventEmitter.host];
+		} else {
+			return [[ScreenAnimationController alloc]
+				initWithContentTransition:screenTransition.content
+					   elementTransitions:screenTransition.elementTransitions
+				 sharedElementTransitions:screenTransition.sharedElementTransitions
+								 duration:screenTransition.maxDuration
+								   bridge:_eventEmitter.bridge];
+		}
+#else
+		return [[ScreenAnimationController alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions
              sharedElementTransitions:screenTransition.sharedElementTransitions
                              duration:screenTransition.maxDuration
                                bridge:_eventEmitter.bridge];
+#endif
     } else if (operation == UINavigationControllerOperationPop &&
                fromVCOptionsWithDefault.animations.pop.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = fromVCOptionsWithDefault.animations.pop;
+#ifdef RCT_NEW_ARCH_ENABLED
+		if (_eventEmitter.host != nil) {
+			return [[ScreenReversedAnimationController alloc]
+				initWithContentTransition:screenTransition.content
+					   elementTransitions:screenTransition.elementTransitions
+				 sharedElementTransitions:screenTransition.sharedElementTransitions
+								 duration:screenTransition.maxDuration
+								   host:_eventEmitter.host];
+		} else {
+			return [[ScreenReversedAnimationController alloc]
+				initWithContentTransition:screenTransition.content
+					   elementTransitions:screenTransition.elementTransitions
+				 sharedElementTransitions:screenTransition.sharedElementTransitions
+								 duration:screenTransition.maxDuration
+								   bridge:_eventEmitter.bridge];
+		}
+#else
         return [[ScreenReversedAnimationController alloc]
             initWithContentTransition:screenTransition.content
                    elementTransitions:screenTransition.elementTransitions
              sharedElementTransitions:screenTransition.sharedElementTransitions
                              duration:screenTransition.maxDuration
                                bridge:_eventEmitter.bridge];
+#endif
     } else {
         return nil;
     }

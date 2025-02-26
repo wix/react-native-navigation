@@ -11,6 +11,18 @@
     };
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
++ (JS::NativeRNNTurboModule::Constants::Builder::Input)getTurboConstants {
+	JS::NativeRNNTurboModule::Constants::Builder::Input input = {
+		[self topBarHeight],
+		[self statusBarHeight],
+		[self bottomTabsHeight]
+	};
+
+	return input;
+}
+#endif
+
 + (CGFloat)topBarHeight {
     return [RCTPresentedViewController() getTopBarHeight];
 }

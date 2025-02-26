@@ -74,7 +74,7 @@
     UINavigationController *selectedChild = self.selectedViewController;
     if ([selectedChild isKindOfClass:UINavigationController.class] &&
         selectedChild.hidesBottomBarWhenPushed) {
-        [selectedChild pushViewController:UIViewController.new animated:NO];
+        [selectedChild pushViewController: [UIViewController new] animated:NO];
         [selectedChild popViewControllerAnimated:NO];
     }
 }

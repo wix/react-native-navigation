@@ -1,16 +1,16 @@
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import "MMDrawerVisualState.h"
 
-@interface RNNSideMenuController ()
+@interface RNNSideMenuViewController ()
 
 @property(nonatomic, strong) NSArray *childViewControllers;
-@property(readwrite) RNNSideMenuChildVC *center;
-@property(readwrite) RNNSideMenuChildVC *left;
-@property(readwrite) RNNSideMenuChildVC *right;
+@property(readwrite) RNNSideMenuViewController *center;
+@property(readwrite) RNNSideMenuViewController *left;
+@property(readwrite) RNNSideMenuViewController *right;
 
 @end
 
-@implementation RNNSideMenuController
+@implementation RNNSideMenuViewController
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
                            creator:(id<RNNComponentViewCreator>)creator
@@ -121,8 +121,8 @@
 - (void)setChildViewControllers:(NSArray *)childViewControllers {
     _childViewControllers = childViewControllers;
     for (id controller in childViewControllers) {
-        if ([controller isKindOfClass:[RNNSideMenuChildVC class]]) {
-            RNNSideMenuChildVC *child = (RNNSideMenuChildVC *)controller;
+        if ([controller isKindOfClass:[RNNSideMenuChildViewController class]]) {
+            RNNSideMenuChildViewController *child = (RNNSideMenuChildViewController *)controller;
 
             if (child.type == RNNSideMenuChildTypeCenter) {
                 self.center = child;

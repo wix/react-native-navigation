@@ -1,8 +1,8 @@
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-#if RCT_NEW_ARCH_ENABLED
-
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "RCTAppSetupUtils.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
@@ -13,121 +13,118 @@
 #import <react/config/ReactNativeConfig.h>
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
+#import <React/RCTSurfacePresenter.h>
+#import <React/RCTBridge+Private.h>
+#import <React/RCTImageLoader.h>
+#import <React/RCTBridgeProxy.h>
+#import <React/RCTSurfacePresenter.h>
+#import <react/utils/ManagedObjectWrapper.h>
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate, RCTCxxBridgeDelegate> {
-    std::shared_ptr<const facebook::react::ReactNativeConfig> _reactNativeConfig;
-    facebook::react::ContextContainer::Shared _contextContainer;
-    std::shared_ptr<facebook::react::RuntimeScheduler> _runtimeScheduler;
-}
+@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate, RCTCxxBridgeDelegate> {}
 @end
 
 #endif
 
 @implementation RNNAppDelegate
 
-#if RCT_NEW_ARCH_ENABLED
-- (instancetype)init {
-    if (self = [super init]) {
-        _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
-        _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
-        _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
-    }
-    return self;
-}
-#endif
-
 - (BOOL)application:(UIApplication *)application
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#if RCT_NEW_ARCH_ENABLED
-    RCTEnableTurboModule(true);
+	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	// Copied from RCTAppDelegate, it private inside it
+	self.rootViewFactory = [self createRCTRootViewFactory];
+
+#ifdef RCT_NEW_ARCH_ENABLED
+	RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
+	RCTSetNewArchEnabled(TRUE);
+
+	if (self.bridgelessEnabled) {
+		// Creating host instead of bridge
+		self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
+
+		[ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
+
+		return YES;
+	}
 #endif
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-#if RCT_NEW_ARCH_ENABLED
-    self.bridgeAdapter =
-        [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge
-                                                contextContainer:_contextContainer];
-    bridge.surfacePresenter = self.bridgeAdapter.surfacePresenter;
+	// Force RN to init all necessary modules instead of copy-pasting code (ex. bridge)
+	[self.rootViewFactory viewWithModuleName:@""];
 
-    [self unstable_registerLegacyComponents];
-#endif
+	[ReactNativeNavigation bootstrapWithBridge:self.bridge];
 
-    [ReactNativeNavigation bootstrapWithBridge:bridge];
-
-    return YES;
+	return YES;
 }
 
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-    return [ReactNativeNavigation extraModulesForBridge:bridge];
-}
+- (RCTRootViewFactory *)createRCTRootViewFactory
+{
+  __weak __typeof(self) weakSelf = self;
+  RCTBundleURLBlock bundleUrlBlock = ^{
+	RCTAppDelegate *strongSelf = weakSelf;
+	return strongSelf.bundleURL;
+  };
 
-#if RCT_NEW_ARCH_ENABLED
-#pragma mark - RCTCxxBridgeDelegate
-- (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:
-    (RCTBridge *)bridge {
-    _runtimeScheduler = _runtimeScheduler =
-        std::make_shared<facebook::react::RuntimeScheduler>(RCTRuntimeExecutorFromBridge(bridge));
-    std::shared_ptr<facebook::react::CallInvoker> callInvoker =
-        std::make_shared<facebook::react::RuntimeSchedulerCallInvoker>(_runtimeScheduler);
-    self.turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
-                                                                   delegate:self
-                                                                  jsInvoker:callInvoker];
-    _contextContainer->erase("RuntimeScheduler");
-    _contextContainer->insert("RuntimeScheduler", _runtimeScheduler);
-    return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager, _runtimeScheduler);
+  RCTRootViewFactoryConfiguration *configuration =
+	  [[RCTRootViewFactoryConfiguration alloc] initWithBundleURLBlock:bundleUrlBlock
+													   newArchEnabled:self.fabricEnabled
+												   turboModuleEnabled:self.turboModuleEnabled
+													bridgelessEnabled:self.bridgelessEnabled];
+
+  if (!self.bridgelessEnabled) {
+	  configuration.extraModulesForBridge = ^NSArray<id<RCTBridgeModule>> * _Nonnull(RCTBridge * _Nonnull bridge) {
+		  return [ReactNativeNavigation extraModulesForBridge:bridge];
+	  };
+  }
+
+  configuration.createRootViewWithBridge = ^UIView *(RCTBridge *bridge, NSString *moduleName, NSDictionary *initProps)
+  {
+	// Ignoring creation of default view, will initialize our custom UIViewController later
+	return nil;
+  };
+
+  configuration.createBridgeWithDelegate = ^RCTBridge *(id<RCTBridgeDelegate> delegate, NSDictionary *launchOptions)
+  {
+	return [weakSelf createBridgeWithDelegate:delegate launchOptions:launchOptions];
+  };
+
+#ifndef RCT_NEW_ARCH_ENABLED
+	return [[RCTRootViewFactory alloc] initWithConfiguration:configuration];
+  }
+#else
+  return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
 }
 
 #pragma mark RCTTurboModuleManagerDelegate
 
 - (Class)getModuleClassFromName:(const char *)name {
-    return RCTCoreModulesClassProvider(name);
+	return RCTCoreModulesClassProvider(name);
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)
-    getTurboModule:(const std::string &)name
-         jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker {
-    return nullptr;
+	getTurboModule:(const std::string &)name
+		 jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker {
+	return nullptr;
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)
-    getTurboModule:(const std::string &)name
-        initParams:(const facebook::react::ObjCTurboModule::InitParams &)params {
-    return nullptr;
+	getTurboModule:(const std::string &)name
+		initParams:(const facebook::react::ObjCTurboModule::InitParams &)params {
+	return nullptr;
 }
 
 - (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass {
-    return RCTAppSetupDefaultModuleFromClass(moduleClass);
+	return RCTAppSetupDefaultModuleFromClass(moduleClass);
 }
-
-#pragma mark - New Arch Enabled settings
-
-- (BOOL)turboModuleEnabled {
-    return YES;
-}
-
-- (BOOL)fabricEnabled {
-    return YES;
-}
-
-#pragma mark - New Arch Utilities
-
-- (void)unstable_registerLegacyComponents {
-    for (NSString *legacyComponent in [RCTLegacyInteropComponents legacyInteropComponents]) {
-        [RCTLegacyViewManagerInteropComponentView supportLegacyViewManagerWithName:legacyComponent];
-    }
-}
-
 #endif
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-    [NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
-                format:@"Subclasses must implement a valid sourceURLForBridge method"];
-    return nil;
+	[NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
+				format:@"Subclasses must implement a valid sourceURLForBridge method"];
+	return nil;
 }
 
 - (BOOL)concurrentRootEnabled {
-    return true;
+	return true;
 }
 
 @end

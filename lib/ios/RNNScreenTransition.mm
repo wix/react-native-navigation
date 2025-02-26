@@ -1,5 +1,6 @@
 #import "RNNScreenTransition.h"
 #import "OptionsArrayParser.h"
+#import "RNNUtils.h"
 
 @implementation RNNScreenTransition
 
@@ -10,7 +11,7 @@
     self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
     self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
     self.enable = [BoolParser parse:dict key:@"enabled"];
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
+	self.waitForRender = [Bool withValue: [[BoolParser parse:dict key:@"waitForRender"] withDefault: [RNNUtils getDefaultWaitForRender]]];
     self.duration = [TimeIntervalParser parse:dict key:@"duration"];
     self.sharedElementTransitions = [OptionsArrayParser parse:dict
                                                           key:@"sharedElementTransitions"
@@ -45,7 +46,7 @@
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender withDefault:NO] || self.hasCustomAnimation;
+	return [self.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]] || self.hasCustomAnimation;
 }
 
 - (NSTimeInterval)maxDuration {

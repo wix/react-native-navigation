@@ -1,10 +1,10 @@
 #import "MMDrawerController.h"
-#import "RNNSideMenuChildVC.h"
+#import "RNNSideMenuViewController.h"
 #import "RNNSideMenuPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <UIKit/UIKit.h>
 
-@interface RNNSideMenuController : MMDrawerController <RNNLayoutProtocol>
+@interface RNNSideMenuViewController : MMDrawerController <RNNLayoutProtocol>
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
                            creator:(id<RNNComponentViewCreator>)creator
@@ -14,9 +14,9 @@
                          presenter:(RNNBasePresenter *)presenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter;
 
-@property(readonly) RNNSideMenuChildVC *center;
-@property(readonly) RNNSideMenuChildVC *left;
-@property(readonly) RNNSideMenuChildVC *right;
+@property(readonly) RNNSideMenuViewController *center;
+@property(readonly) RNNSideMenuViewController *left;
+@property(readonly) RNNSideMenuViewController *right;
 
 - (void)side:(MMDrawerSide)side enabled:(BOOL)enabled;
 - (void)side:(MMDrawerSide)side visible:(BOOL)visible;

@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface RNNControllerFactory : NSObject
+@interface RNNViewControllerFactory : NSObject
 
 - (instancetype)initWithRootViewCreator:(id<RNNComponentViewCreator>)creator
                            eventEmitter:(RNNEventEmitter *)eventEmitter
@@ -16,6 +16,15 @@
                       componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                               andBridge:(RCTBridge *)bridge
             bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory;
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithRootViewCreator:(id<RNNComponentViewCreator>)creator
+						   eventEmitter:(RNNEventEmitter *)eventEmitter
+								  store:(RNNExternalComponentStore *)store
+					  componentRegistry:(RNNReactComponentRegistry *)componentRegistry
+								andHost:(RCTHost *)host
+			bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory;
+#endif
 
 - (UIViewController *)createLayout:(NSDictionary *)layout;
 

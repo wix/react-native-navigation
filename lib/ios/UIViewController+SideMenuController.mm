@@ -2,11 +2,11 @@
 
 @implementation UIViewController (SideMenuController)
 
-- (RNNSideMenuController *)sideMenuController {
+- (RNNSideMenuViewController *)sideMenuController {
     UIViewController *vc = self;
     while (vc) {
-        if ([vc isKindOfClass:[RNNSideMenuController class]]) {
-            return (RNNSideMenuController *)vc;
+        if ([vc isKindOfClass:[RNNSideMenuViewController class]]) {
+            return (RNNSideMenuViewController *)vc;
         }
 
         vc = vc.parentViewController;

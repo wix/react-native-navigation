@@ -14,6 +14,9 @@
     NSMutableArray *_pendingModalIdsToDismiss;
     NSMutableArray *_presentedModals;
     RCTBridge *_bridge;
+#ifdef RCT_NEW_ARCH_ENABLED
+	RCTHost *_host;
+#endif
     RNNModalManagerEventHandler *_eventHandler;
 }
 
@@ -31,6 +34,16 @@
     _eventHandler = eventHandler;
     return self;
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype _Nonnull)initWithHost:(RCTHost *_Nonnull)host
+						   eventHandler:(RNNModalManagerEventHandler *_Nonnull)eventHandler {
+	self = [self init];
+	_host = host;
+	_eventHandler = eventHandler;
+	return self;
+}
+#endif
 
 - (void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController
          animated:(BOOL)animated
@@ -50,13 +63,31 @@
     if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         RNNEnterExitAnimation *enterExitAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
+#ifdef RCT_NEW_ARCH_ENABLED
+		if (_host != nil) {
+			_showModalTransitionDelegate = [[ScreenAnimationController alloc]
+				initWithContentTransition:enterExitAnimationOptions
+					   elementTransitions:enterExitAnimationOptions.elementTransitions
+				 sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+								 duration:enterExitAnimationOptions.maxDuration
+								   host:_host];
+		} else {
+			_showModalTransitionDelegate = [[ScreenAnimationController alloc]
+				initWithContentTransition:enterExitAnimationOptions
+					   elementTransitions:enterExitAnimationOptions.elementTransitions
+				 sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+								 duration:enterExitAnimationOptions.maxDuration
+								   bridge:_bridge];
+		}
+#else
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
             initWithContentTransition:enterExitAnimationOptions
                    elementTransitions:enterExitAnimationOptions.elementTransitions
              sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
                              duration:enterExitAnimationOptions.maxDuration
                                bridge:_bridge];
-
+#endif
+		
         viewController.transitioningDelegate = _showModalTransitionDelegate;
     }
 
@@ -86,13 +117,31 @@
         RNNEnterExitAnimation *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
         if (dismissModalOptions.hasAnimation) {
+#ifdef RCT_NEW_ARCH_ENABLED
+			if (_host != nil) {
+				_dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
+												   initWithContentTransition:dismissModalOptions
+												   elementTransitions:dismissModalOptions.elementTransitions
+												   sharedElementTransitions:dismissModalOptions.sharedElementTransitions
+												   duration:dismissModalOptions.maxDuration
+												   host:_host];
+			} else {
+				_dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
+												   initWithContentTransition:dismissModalOptions
+												   elementTransitions:dismissModalOptions.elementTransitions
+												   sharedElementTransitions:dismissModalOptions.sharedElementTransitions
+												   duration:dismissModalOptions.maxDuration
+												   bridge:_bridge];
+
+			}
+#else
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
                 initWithContentTransition:dismissModalOptions
                        elementTransitions:dismissModalOptions.elementTransitions
                  sharedElementTransitions:dismissModalOptions.sharedElementTransitions
                                  duration:dismissModalOptions.maxDuration
                                    bridge:_bridge];
-
+#endif
             root.presentedViewController.transitioningDelegate = _dismissModalTransitionDelegate;
         }
 
@@ -125,12 +174,32 @@
     if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         RNNEnterExitAnimation *enterExitAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
+		
+#ifdef RCT_NEW_ARCH_ENABLED
+			if (_host != nil) {
+				_dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
+					initWithContentTransition:enterExitAnimationOptions
+						   elementTransitions:enterExitAnimationOptions.elementTransitions
+					 sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+									 duration:enterExitAnimationOptions.maxDuration
+									   host:_host];
+			} else {
+				_dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
+					initWithContentTransition:enterExitAnimationOptions
+						   elementTransitions:enterExitAnimationOptions.elementTransitions
+					 sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
+									 duration:enterExitAnimationOptions.maxDuration
+									   bridge:_bridge];
+
+			}
+#else
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
             initWithContentTransition:enterExitAnimationOptions
                    elementTransitions:enterExitAnimationOptions.elementTransitions
              sharedElementTransitions:enterExitAnimationOptions.sharedElementTransitions
                              duration:enterExitAnimationOptions.maxDuration
                                bridge:_bridge];
+#endif
 
         [self topViewControllerParent:modalToDismiss].transitioningDelegate =
             _dismissModalTransitionDelegate;

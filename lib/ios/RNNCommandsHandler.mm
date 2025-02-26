@@ -8,6 +8,7 @@
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
+#import "RNNUtils.h"
 
 static NSString *const setRoot = @"setRoot";
 static NSString *const setStackRoot = @"setStackRoot";
@@ -30,7 +31,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 @end
 
 @implementation RNNCommandsHandler {
-    RNNControllerFactory *_controllerFactory;
+	RNNViewControllerFactory *_controllerFactory;
     RNNLayoutManager *_layoutManager;
     RNNModalManager *_modalManager;
     RNNOverlayManager *_overlayManager;
@@ -39,7 +40,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNSetRootAnimator *_setRootAnimator;
 }
 
-- (instancetype)initWithControllerFactory:(RNNControllerFactory *)controllerFactory
+- (instancetype)initWithControllerFactory:(RNNViewControllerFactory *)controllerFactory
                             layoutManager:(RNNLayoutManager *)layoutManager
                              eventEmitter:(RNNEventEmitter *)eventEmitter
                              modalManager:(RNNModalManager *)modalManager
@@ -89,7 +90,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [_layoutManager addPendingViewController:vc];
 
     RNNNavigationOptions *optionsWithDefault = vc.resolveOptionsWithDefault;
-    vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender withDefault:NO];
+    vc.waitForRender = [optionsWithDefault.animations.setRoot.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]];
 
     __weak UIViewController *weakVC = vc;
     [vc setReactViewReadyCallback:^{
@@ -140,7 +141,9 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     [RNNDefaultOptionsHelper recursivelySetDefaultOptions:defaultOptions
                                      onRootViewController:rootViewController];
 
-    completion();
+	if (completion != nil) {
+		completion();
+	}
 }
 
 - (void)push:(NSString *)componentId
@@ -195,9 +198,22 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                 newVc.preferredContentSize = size;
             }
             RCTExecuteOnMainQueue(^{
-              UIView *view = [[ReactNativeNavigation getBridge].uiManager
-                  viewForReactTag:optionsWithDefault.preview.reactTag.get];
-              [rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
+				UIView *view = nil;
+#ifdef RCT_NEW_ARCH_ENABLED
+				RCTHost *host = [ReactNativeNavigation getHost];
+
+				if (host != nil) {
+					view = [host.surfacePresenter.mountingManager.componentViewRegistry
+						findComponentViewWithTag: [optionsWithDefault.preview.reactTag.get integerValue]];
+				} else {
+					view = [[ReactNativeNavigation getBridge].uiManager
+						viewForReactTag:optionsWithDefault.preview.reactTag.get];
+				}
+#else
+				view = [[ReactNativeNavigation getBridge].uiManager
+					viewForReactTag:optionsWithDefault.preview.reactTag.get];
+#endif
+				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
             });
         }
     } else {
@@ -246,14 +262,14 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     UIViewController *fromVC = [_layoutManager findComponentForId:componentId];
 
     RNNNavigationOptions *options = newVC.resolveOptionsWithDefault;
-    newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault:NO]);
+    newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]]);
 
     __weak typeof(RNNEventEmitter *) weakEventEmitter = _eventEmitter;
     __weak UIViewController *weakNewVC = newVC;
     [newVC setReactViewReadyCallback:^{
       [fromVC.stack setStackChildren:childViewControllers
                   fromViewController:fromVC
-                            animated:[options.animations.setStackRoot.enable withDefault:YES]
+                            animated:[options.animations.setStackRoot.enable withDefault: [RNNUtils getDefaultWaitForRender]]
                           completion:^{
                             [self->_layoutManager removePendingViewController:weakNewVC];
                             [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot

@@ -1,6 +1,12 @@
 #import "UIView+Utils.h"
+
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTImageComponentView.h>
+#import <React/RCTParagraphComponentView.h>
+#else
 #import <React/RCTImageView.h>
 #import <React/RCTTextView.h>
+#endif
 
 @implementation UIView (Utils)
 
@@ -13,9 +19,17 @@
 }
 
 - (ViewType)viewType {
+#ifdef RCT_NEW_ARCH_ENABLED
+	if ([self isKindOfClass:[RCTImageComponentView class]]) {
+#else
     if ([self isKindOfClass:[RCTImageView class]]) {
+#endif
         return ViewTypeImage;
+#ifdef RCT_NEW_ARCH_ENABLED
+	} else if ([self isKindOfClass:[RCTParagraphComponentView class]]) {
+#else
     } else if ([self isKindOfClass:[RCTTextView class]]) {
+#endif
         return ViewTypeText;
     } else if ([self isKindOfClass:[UIImageView class]]) {
         return ViewTypeUIImage;

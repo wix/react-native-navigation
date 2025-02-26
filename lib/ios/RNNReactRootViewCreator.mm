@@ -6,6 +6,9 @@
 
 @implementation RNNReactRootViewCreator {
     RCTBridge *_bridge;
+#ifdef RCT_NEW_ARCH_ENABLED
+	RCTHost *_host;
+#endif
     RNNEventEmitter *_eventEmitter;
 }
 
@@ -16,20 +19,40 @@
     return self;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithHost:(RCTHost *)host eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [super init];
+	_host = host;
+	_eventEmitter = eventEmitter;
+	return self;
+}
+#endif
+
 - (RNNReactView *)createRootView:(NSString *)name
                       rootViewId:(NSString *)rootViewId
                           ofType:(RNNComponentType)componentType
              reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     [self verifyRootViewId:rootViewId];
 #ifdef RCT_NEW_ARCH_ENABLED
-    return [[[self resolveComponentViewClass:componentType] alloc]
-             initWithBridge:_bridge
-                 moduleName:name
-          initialProperties:@{@"componentId" : rootViewId}
-               eventEmitter:_eventEmitter
-            sizeMeasureMode:RCTSurfaceSizeMeasureModeWidthExact |
-                            RCTSurfaceSizeMeasureModeHeightExact
-        reactViewReadyBlock:reactViewReadyBlock];
+	if (_host != nil) {
+		return [[[self resolveComponentViewClass:componentType] alloc]
+				   initWithHost:_host
+					 moduleName:name
+			  initialProperties:@{@"componentId" : rootViewId}
+				   eventEmitter:_eventEmitter
+				sizeMeasureMode:RCTSurfaceSizeMeasureModeWidthExact |
+								RCTSurfaceSizeMeasureModeHeightExact
+			reactViewReadyBlock:reactViewReadyBlock];
+	} else {
+		return [[[self resolveComponentViewClass:componentType] alloc]
+				 initWithBridge:_bridge
+					 moduleName:name
+			  initialProperties:@{@"componentId" : rootViewId}
+				   eventEmitter:_eventEmitter
+				sizeMeasureMode:RCTSurfaceSizeMeasureModeWidthExact |
+								RCTSurfaceSizeMeasureModeHeightExact
+			reactViewReadyBlock:reactViewReadyBlock];
+	}
 #else
     return [[[self resolveComponentViewClass:componentType] alloc]
              initWithBridge:_bridge

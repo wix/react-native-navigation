@@ -41,7 +41,7 @@
 }
 
 - (NSArray<id<DisplayLinkAnimation>> *)extraAnimations {
-    NSMutableArray *animations = NSMutableArray.new;
+    NSMutableArray *animations = [NSMutableArray new];
     CGFloat startDelay = [_transitionOptions.startDelay withDefault:0];
     CGFloat duration = [_transitionOptions.duration withDefault:300];
     id<Interpolator> interpolator = _transitionOptions.interpolator;

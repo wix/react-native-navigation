@@ -1,13 +1,14 @@
-#import "RNNSideMenuChildVC.h"
+#import "RNNSideMenuChildViewController.h"
 #import "UIViewController+LayoutProtocol.h"
-@interface RNNSideMenuChildVC ()
+
+@interface RNNSideMenuChildViewController ()
 
 @property(readwrite) RNNSideMenuChildType type;
 @property(nonatomic, retain) UIViewController<RNNLayoutProtocol> *child;
 
 @end
 
-@implementation RNNSideMenuChildVC
+@implementation RNNSideMenuChildViewController
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
                            creator:(id<RNNComponentViewCreator>)creator

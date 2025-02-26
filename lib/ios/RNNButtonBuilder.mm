@@ -11,9 +11,9 @@
     self = [super init];
     _componentRegistry = componentRegistry;
     if (@available(iOS 13.0, *)) {
-        _iconCreator = [[RNNDynamicIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
+        _iconCreator = [[RNNDynamicIconCreator alloc] initWithIconDrawer:[RNNIconDrawer new]];
     } else {
-        _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:RNNIconDrawer.new];
+        _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:[RNNIconDrawer new]];
     }
 
     return self;

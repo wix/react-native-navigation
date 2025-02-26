@@ -8,7 +8,7 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
     RNNSideMenuChildTypeRight,
 };
 
-@interface RNNSideMenuChildVC : UIViewController <RNNLayoutProtocol>
+@interface RNNSideMenuChildViewController : UIViewController <RNNLayoutProtocol>
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
                            creator:(id<RNNComponentViewCreator>)creator

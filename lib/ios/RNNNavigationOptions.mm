@@ -1,7 +1,7 @@
 #import "RNNNavigationOptions.h"
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNSplitViewOptions.h"
 #import "RNNStackController.h"

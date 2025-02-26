@@ -1,18 +1,21 @@
-#import "RNNControllerFactory.h"
+#import "RNNViewControllerFactory.h"
 #import "BottomTabPresenterCreator.h"
 #import "BottomTabsPresenterCreator.h"
 #import "RNNBottomTabsController.h"
 #import "RNNComponentViewController.h"
 #import "RNNExternalViewController.h"
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNStackController.h"
 #import "RNNTopTabsViewController.h"
 
-@implementation RNNControllerFactory {
+@implementation RNNViewControllerFactory {
     id<RNNComponentViewCreator> _creator;
     RNNExternalComponentStore *_store;
     RCTBridge *_bridge;
+#ifdef RCT_NEW_ARCH_ENABLED
+	RCTHost *_host;
+#endif
     RNNReactComponentRegistry *_componentRegistry;
     BottomTabsAttachModeFactory *_bottomTabsAttachModeFactory;
 }
@@ -37,6 +40,27 @@
 
     return self;
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithRootViewCreator:(id<RNNComponentViewCreator>)creator
+						   eventEmitter:(RNNEventEmitter *)eventEmitter
+								  store:(RNNExternalComponentStore *)store
+					  componentRegistry:(RNNReactComponentRegistry *)componentRegistry
+							  andHost:(RCTHost *)host
+			bottomTabsAttachModeFactory:(BottomTabsAttachModeFactory *)bottomTabsAttachModeFactory {
+
+	self = [super init];
+
+	_creator = creator;
+	_eventEmitter = eventEmitter;
+	_host = host;
+	_store = store;
+	_componentRegistry = componentRegistry;
+	_bottomTabsAttachModeFactory = bottomTabsAttachModeFactory;
+
+	return self;
+}
+#endif
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
     _defaultOptions = defaultOptions;
@@ -149,7 +173,12 @@
                                                   defaultOptions:_defaultOptions
                                                 buttonsPresenter:buttonsPresenter];
 
-    UIViewController *externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
+	UIViewController *externalVC =
+#ifdef RCT_NEW_ARCH_ENABLED
+	[_store getExternalHostComponent:layoutInfo host:_host];
+#else
+	[_store getExternalComponent:layoutInfo bridge:_bridge];
+#endif
 
     RNNExternalViewController *component =
         [[RNNExternalViewController alloc] initWithLayoutInfo:layoutInfo
@@ -238,8 +267,8 @@
 
     NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 
-    RNNSideMenuController *sideMenu =
-        [[RNNSideMenuController alloc] initWithLayoutInfo:layoutInfo
+	RNNSideMenuViewController *sideMenu =
+        [[RNNSideMenuViewController alloc] initWithLayoutInfo:layoutInfo
                                                   creator:_creator
                                      childViewControllers:childViewControllers
                                                   options:options
@@ -256,7 +285,7 @@
     RNNNavigationOptions *options =
         [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 
-    RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc]
+	RNNSideMenuChildViewController *sideMenuChild = [[RNNSideMenuChildViewController alloc]
          initWithLayoutInfo:layoutInfo
                     creator:_creator
                     options:options

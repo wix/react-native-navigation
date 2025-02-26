@@ -30,7 +30,7 @@
 }
 
 - (RNNButtonOptions *)copy {
-    RNNButtonOptions *newOptions = RNNButtonOptions.new;
+    RNNButtonOptions *newOptions = [RNNButtonOptions new];
     newOptions.identifier = self.identifier.copy;
     newOptions.component = self.component.copy;
     newOptions.fontFamily = self.fontFamily.copy;
@@ -100,7 +100,7 @@
 
 - (UIColor *)resolveColor {
     if ([_disableIconTint withDefault:NO])
-        return NullColor.new.get;
+        return [NullColor new].get;
     if (![_enabled withDefault:YES] && _disabledColor.hasValue)
         return _disabledColor.get;
     else

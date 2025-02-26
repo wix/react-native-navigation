@@ -2,6 +2,7 @@
 #import "RNNReactTitleView.h"
 #import "RNNTitleViewHelper.h"
 #import "UIViewController+RNNOptions.h"
+#import "RNNUtils.h"
 
 @implementation TopBarTitlePresenter {
     RNNReactTitleView *_customTitleView;
@@ -69,7 +70,7 @@
 - (void)setCustomNavigationTitleView:(RNNTopBarOptions *)options
                              perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     UIViewController<RNNLayoutProtocol> *viewController = self.boundViewController;
-    if (![options.title.component.waitForRender withDefault:NO] && readyBlock) {
+    if (![options.title.component.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]] && readyBlock) {
         readyBlock();
         readyBlock = nil;
     }

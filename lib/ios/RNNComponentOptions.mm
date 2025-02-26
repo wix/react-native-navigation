@@ -1,4 +1,5 @@
 #import "RNNComponentOptions.h"
+#import "RNNUtils.h"
 
 @implementation RNNComponentOptions
 
@@ -8,13 +9,13 @@
     self.name = [TextParser parse:dict key:@"name"];
     self.componentId = [TextParser parse:dict key:@"componentId"];
     self.alignment = [TextParser parse:dict key:@"alignment"];
-    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
+	self.waitForRender = [Bool withValue:[[BoolParser parse:dict key:@"waitForRender"] withDefault:[RNNUtils getDefaultWaitForRender]]];
 
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    RNNComponentOptions *newOptions = RNNComponentOptions.new;
+    RNNComponentOptions *newOptions = [RNNComponentOptions new];
     newOptions.name = self.name.copy;
     newOptions.componentId = self.componentId.copy;
     newOptions.alignment = self.alignment.copy;

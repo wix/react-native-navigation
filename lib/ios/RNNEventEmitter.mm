@@ -2,11 +2,10 @@
 #import "RNNUtils.h"
 
 @implementation RNNEventEmitter {
+	RCTEventEmitter *_emitter;
     NSInteger _appLaunchedListenerCount;
     BOOL _appLaunchedEventDeferred;
 }
-
-RCT_EXPORT_MODULE();
 
 static NSString *const AppLaunched = @"RNN.AppLaunched";
 static NSString *const CommandCompleted = @"RNN.CommandCompleted";
@@ -155,9 +154,6 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
 #pragma mark private
 
 - (void)send:(NSString *)eventName body:(id)body {
-    if (self.bridge == nil) {
-        return;
-    }
     [self sendEventWithName:eventName body:body];
 }
 

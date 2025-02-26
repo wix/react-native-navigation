@@ -1,8 +1,8 @@
 
-#import "RNNSplashScreen.h"
+#import "RNNSplashScreenViewController.h"
 #import <UIKit/UIKit.h>
 
-@implementation RNNSplashScreen
+@implementation RNNSplashScreenViewController
 
 + (void)showOnWindow:(UIWindow *)window {
     CGRect screenBounds = [UIScreen mainScreen].bounds;
@@ -20,7 +20,7 @@
                                                                  bundle:nil];
             UIViewController *launchVC = [storyboard instantiateInitialViewController];
 
-            viewController = [[RNNSplashScreen alloc] init];
+            viewController = [[RNNSplashScreenViewController alloc] init];
             [viewController addChildViewController:launchVC];
             [viewController.view addSubview:launchVC.view];
             [launchVC didMoveToParentViewController:viewController];
@@ -31,7 +31,7 @@
             if (splashView != nil) {
                 splashView.frame =
                     CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
-                viewController = [[RNNSplashScreen alloc] init];
+                viewController = [[RNNSplashScreenViewController alloc] init];
                 viewController.view = splashView;
             }
         }
@@ -77,7 +77,7 @@
         }
 
         if (image != nil) {
-            viewController = [[RNNSplashScreen alloc] init];
+            viewController = [[RNNSplashScreenViewController alloc] init];
             viewController.view = [[UIImageView alloc] initWithImage:image];
         }
     }
