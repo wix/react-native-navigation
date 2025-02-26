@@ -17,13 +17,12 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
-public class ComponentViewController extends ChildController<ComponentLayout> implements StatusBarController {
+public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
     private final ComponentPresenter presenter;
     private final ReactViewCreator viewCreator;
@@ -65,27 +64,16 @@ public class ComponentViewController extends ChildController<ComponentLayout> im
         presenter.setDefaultOptions(defaultOptions);
     }
 
+    @Nullable
     @Override
-    public StatusBarController getStatusBarController() {
-        return this;
+    public Animator getPushAnimations(Options appearingOptions) {
+        return this.presenter.getStatusBarPushAnimation(appearingOptions);
     }
 
     @Nullable
     @Override
-    public Animator getStatusBarPushAnimation(@NonNull Options appearingOptions) {
-        if (super.presenter != null) {
-            return super.presenter.getStatusBarPushAnimation(appearingOptions);
-        }
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public Animator getStatusBarPopAnimation(@NonNull Options appearingOptions, @NonNull Options disappearingOptions) {
-        if (super.presenter != null) {
-            return super.presenter.getStatusBarPopAnimation(appearingOptions, disappearingOptions);
-        }
-        return null;
+    public Animator getPopAnimations(Options appearingOptions, Options disappearingOptions) {
+        return this.presenter.getStatusBarPopAnimation(appearingOptions, disappearingOptions);
     }
 
     @Override

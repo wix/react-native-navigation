@@ -217,7 +217,7 @@ class TopBarControllerTest : BaseTest() {
         val colorAnimator = ValueAnimator()
         givenColorAnimator(colorAnimator, BKG_COLOR)
         givenTopBarBackgroundAsColor()
-        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION to false)
+        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to false)
 
         val result = uut.getPushAnimation(options)
         assertThat(result).isNull()
@@ -286,7 +286,7 @@ class TopBarControllerTest : BaseTest() {
         val disappearOpts = OptionHelper.emptyOptions()
         givenColorAnimator(colorAnimator, BKG_COLOR)
         givenTopBarBackgroundAsColor()
-        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION to false)
+        givenFeatureToggleOverrides(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to false)
 
         val result = uut.getPopAnimation(appearOpts, disappearOpts)
         assertThat(result).isNull()
@@ -358,7 +358,7 @@ class TopBarControllerTest : BaseTest() {
 
     private fun initFeatureToggles() {
         RNNFeatureToggles.init(
-            RNNToggles.TOP_BAR_COLOR_ANIMATION to true
+            RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to true
         )
     }
 
