@@ -1,6 +1,13 @@
 package com.reactnativenavigation.react;
 
-import com.facebook.react.ReactInstanceManager;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
@@ -9,22 +16,14 @@ import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.options.LayoutFactory;
 import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.options.parsers.JSONParser;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @LooperMode(LooperMode.Mode.PAUSED)
 public class NavigationModuleTest extends BaseTest {
@@ -45,7 +44,6 @@ public class NavigationModuleTest extends BaseTest {
 
         uut = spy(new NavigationModule(
                 reactApplicationContext,
-                mock(ReactInstanceManager.class),
                 jsonParser,
                 layoutFactory
         ));
@@ -61,7 +59,7 @@ public class NavigationModuleTest extends BaseTest {
 
         uut.setRoot("1", root, mock(Promise.class));
         ShadowLooper.idleMainLooper();
-        verify(navigator).setRoot(eq(rootViewController), any(), any());
+        verify(navigator).setRoot(eq(rootViewController), any());
     }
 
     @Test

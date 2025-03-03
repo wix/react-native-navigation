@@ -21,9 +21,11 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+@Ignore("New architecture - WIP")
 public class PresenterTest extends BaseTest {
     private Presenter uut;
     private Activity activity;

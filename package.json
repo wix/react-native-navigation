@@ -19,8 +19,7 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/src/index.js",
-  "typings": "lib/dist/src/index.d.ts",
+  "main": "lib/src/index.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -65,6 +64,9 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
+    "react-native-redash": "^12.6.1",
+    "reanimated-color-picker": "^3.0.6",
+    "ssim.js": "^3.5.0",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -96,7 +98,7 @@
     "@typescript-eslint/parser": "8.21.0",
     "babel-jest": "^27.0.0",
     "clang-format": "^1.4.0",
-    "detox": "20.32.0",
+    "detox": "20.33.0-prerelease.0",
     "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "6.11.0",
@@ -116,7 +118,6 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
     "react-native-reanimated": "3.16.7",
-    "react-native-ui-lib": "7.3.6",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.3.1",
     "redux": "3.x.x",
@@ -165,7 +166,7 @@
       "genymotion.emulator.name": {
         "type": "android.genycloud",
         "device": {
-          "recipeUUID": "a50a71d6-da90-4c67-bdfa-5b602b0bbd15"
+          "recipeUUID": "9baf12f9-a645-4ffa-a688-0e92584d6194"
         }
       },
       "emulator": {
@@ -223,6 +224,25 @@
       "android.emu.debug": {
         "app": "android.debug",
         "device": "emulator"
+      },
+      "android.manual": {
+        "device": "emulator",
+        "app": "android.debug",
+        "behavior": {
+          "launchApp": "manual"
+        },
+        "session": {
+          "autoStart": true,
+          "debugSynchronization": 0,
+          "server": "ws://localhost:8099",
+          "sessionId": "test"
+        },
+        "testRunner": {
+          "args": {
+            "testTimeout": 999999
+          }
+        },
+        "artifacts": false
       },
       "android.emu.release": {
         "app": "android.release",

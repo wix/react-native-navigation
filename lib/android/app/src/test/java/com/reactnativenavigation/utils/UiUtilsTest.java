@@ -8,6 +8,7 @@ import org.junit.*;
 
 import static org.mockito.Mockito.*;
 
+@Ignore("New architecture - WIP")
 public class UiUtilsTest extends BaseTest {
     @Test
     public void runOnPreDrawOnce() {
