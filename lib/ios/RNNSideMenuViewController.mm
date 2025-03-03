@@ -4,9 +4,9 @@
 @interface RNNSideMenuViewController ()
 
 @property(nonatomic, strong) NSArray *childViewControllers;
-@property(readwrite) RNNSideMenuViewController *center;
-@property(readwrite) RNNSideMenuViewController *left;
-@property(readwrite) RNNSideMenuViewController *right;
+@property(readwrite) RNNSideMenuChildViewController *center;
+@property(readwrite) RNNSideMenuChildViewController *left;
+@property(readwrite) RNNSideMenuChildViewController *right;
 
 @end
 

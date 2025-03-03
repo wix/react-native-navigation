@@ -5,6 +5,7 @@
 #import "RNNComponentViewController.h"
 #import "RNNExternalViewController.h"
 #import "RNNSideMenuViewController.h"
+#import "RNNSideMenuChildViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNStackController.h"
 #import "RNNTopTabsViewController.h"

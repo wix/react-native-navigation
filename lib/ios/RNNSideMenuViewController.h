@@ -1,5 +1,5 @@
 #import "MMDrawerController.h"
-#import "RNNSideMenuViewController.h"
+#import "RNNSideMenuChildViewController.h"
 #import "RNNSideMenuPresenter.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <UIKit/UIKit.h>
@@ -14,9 +14,9 @@
                          presenter:(RNNBasePresenter *)presenter
                       eventEmitter:(RNNEventEmitter *)eventEmitter;
 
-@property(readonly) RNNSideMenuViewController *center;
-@property(readonly) RNNSideMenuViewController *left;
-@property(readonly) RNNSideMenuViewController *right;
+@property(readonly) RNNSideMenuChildViewController *center;
+@property(readonly) RNNSideMenuChildViewController *left;
+@property(readonly) RNNSideMenuChildViewController *right;
 
 - (void)side:(MMDrawerSide)side enabled:(BOOL)enabled;
 - (void)side:(MMDrawerSide)side visible:(BOOL)visible;

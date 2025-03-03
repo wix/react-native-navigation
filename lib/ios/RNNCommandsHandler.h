@@ -14,7 +14,7 @@
 
 @interface RNNCommandsHandler : NSObject
 
-- (instancetype)initWithControllerFactory:(RNNViewControllerFactory *)controllerFactory
+- (instancetype)initWithViewControllerFactory:(RNNViewControllerFactory *)controllerFactory
                             layoutManager:(RNNLayoutManager *)layoutManager
                              eventEmitter:(RNNEventEmitter *)eventEmitter
                              modalManager:(RNNModalManager *)modalManager

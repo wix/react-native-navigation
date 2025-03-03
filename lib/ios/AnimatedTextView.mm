@@ -21,8 +21,13 @@
 	auto castedElement = (RCTParagraphComponentView *)element;
 	auto castedToElement = (RCTParagraphComponentView *)toElement;
 
-	_fromTextStorage = [castedElement textStorage];
-	_toTextStorage = [castedToElement textStorage];
+    // Extract NSAttributedString from the view
+    NSAttributedString *fromAttributedText = castedElement.attributedText;
+    NSAttributedString *toAttributedText = castedToElement.attributedText;
+
+    // Convert to NSTextStorage
+    _fromTextStorage = [[NSTextStorage alloc] initWithAttributedString:fromAttributedText];
+    _toTextStorage = [[NSTextStorage alloc] initWithAttributedString:toAttributedText];
 #else
     _fromTextStorage = [element valueForKey:@"textStorage"];
     _toTextStorage = [toElement valueForKey:@"textStorage"];

@@ -264,7 +264,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *options = newVC.resolveOptionsWithDefault;
     newVC.waitForRender = ([options.animations.setStackRoot.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]]);
 
-    __weak typeof(RNNEventEmitter *) weakEventEmitter = _eventEmitter;
+    __weak RNNEventEmitter *weakEventEmitter = _eventEmitter;
     __weak UIViewController *weakNewVC = newVC;
     [newVC setReactViewReadyCallback:^{
       [fromVC.stack setStackChildren:childViewControllers
