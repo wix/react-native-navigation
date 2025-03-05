@@ -194,7 +194,7 @@ public class StackPresenter {
 
     public void attachNewViewController(ViewController<?> previousVC, ViewController<?> newVC) {
         Options options = newVC.resolveCurrentOptions(defaultOptions);
-        StatusBarPresenter.instance.onSelectViewController(options.statusBar, previousVC);
+        StatusBarPresenter.instance.attachNewViewController(options.statusBar, previousVC);
     }
 
     private void destroyButtons(@Nullable Map<String, ButtonController> buttons) {

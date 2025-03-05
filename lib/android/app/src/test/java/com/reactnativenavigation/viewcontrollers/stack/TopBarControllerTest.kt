@@ -357,6 +357,7 @@ class TopBarControllerTest : BaseTest() {
     }
 
     private fun initFeatureToggles() {
+        RNNFeatureToggles.clear()
         RNNFeatureToggles.init(
             RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to true
         )

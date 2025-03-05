@@ -228,7 +228,7 @@ open class TopBarController(
 
         if (targetColor.hasValue()
             && view.background is ColorDrawable
-            && RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
+            && RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH)) {
             return colorAnimator.getAnimation(
                 view,
                 (view.background as ColorDrawable).color,
