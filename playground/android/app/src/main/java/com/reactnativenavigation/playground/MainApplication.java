@@ -49,7 +49,8 @@ public class MainApplication extends NavigationApplication {
 
     public MainApplication() {
         super(new HashMap<>() {{
-            put(RNNToggles.TOP_BAR_COLOR_ANIMATION, true);
+            put(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH, true);
+            put(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS, true);
         }});
     }
 
