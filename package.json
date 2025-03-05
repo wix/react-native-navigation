@@ -253,5 +253,13 @@
         "device": "genymotion.emulator.name"
       }
     }
+  },
+  "codegenConfig": {
+    "name": "rnnavigation",
+    "type": "all",
+    "jsSrcsDir": "./lib/src",
+    "android": {
+      "javaPackageName": "wix.rnn.specs"
+    }
   }
 }

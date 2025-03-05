@@ -40,7 +40,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNSetRootAnimator *_setRootAnimator;
 }
 
-- (instancetype)initWithControllerFactory:(RNNViewControllerFactory *)controllerFactory
+- (instancetype)initWithViewControllerFactory:(RNNViewControllerFactory *)controllerFactory
                             layoutManager:(RNNLayoutManager *)layoutManager
                              eventEmitter:(RNNEventEmitter *)eventEmitter
                              modalManager:(RNNModalManager *)modalManager
