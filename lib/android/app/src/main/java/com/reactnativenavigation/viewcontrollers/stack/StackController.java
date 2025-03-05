@@ -99,9 +99,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public void onSelected(ViewController<?> previousVC) {
-        presenter.attachNewViewController(previousVC, this);
-        topBarController.attachNewViewController(previousVC, this);
-
+        presenter.bindNewViewController(previousVC, this);
         super.onSelected(previousVC);
     }
 

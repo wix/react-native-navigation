@@ -151,13 +151,13 @@ open class TopBarController(
         )
     }
 
-    fun attachNewViewController(previousVC: ViewController<*>?, newVC: ViewController<*>?) {
+    fun bindNewViewController(previousVC: ViewController<*>?, newVC: ViewController<*>?) {
         if (!RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             return
         }
 
         previousVC?.visibilityInfo?.topBarVisibilityInfo?.solidColor?.let { fromColor ->
-            visibilityInfo.solidColor?.let { toColor ->
+            newVC?.visibilityInfo?.topBarVisibilityInfo?.solidColor?.let { toColor ->
                 colorAnimator.getAnimation(view, fromColor, toColor).apply {
                     doOnEnd {
                         hasPendingColorAnim = false

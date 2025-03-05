@@ -53,7 +53,7 @@ class StatusBarPresenter private constructor(
         setTextColorScheme(options)
     }
 
-    fun attachNewViewController(newOptions: StatusBarOptions, previousVC: ViewController<*>?) {
+    fun bindViewController(newOptions: StatusBarOptions) {
         if (!isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
             return
         }

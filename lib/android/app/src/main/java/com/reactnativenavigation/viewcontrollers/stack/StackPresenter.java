@@ -192,9 +192,10 @@ public class StackPresenter {
         componentLeftButtons.remove(child.getView());
     }
 
-    public void attachNewViewController(ViewController<?> previousVC, ViewController<?> newVC) {
+    public void bindNewViewController(ViewController<?> previousVC, ViewController<?> newVC) {
         Options options = newVC.resolveCurrentOptions(defaultOptions);
-        StatusBarPresenter.instance.attachNewViewController(options.statusBar, previousVC);
+        topBarController.bindNewViewController(previousVC, newVC);
+        StatusBarPresenter.instance.bindViewController(options.statusBar);
     }
 
     private void destroyButtons(@Nullable Map<String, ButtonController> buttons) {
