@@ -48,11 +48,7 @@ open class TopBarController(
         get() = leftButtonBar.buttonCount
 
     val visibilityInfo: TopBarVisibilityInfo
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            TopBarVisibilityInfo(view.isShown, getBackgroundColor())
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+        get() = TopBarVisibilityInfo(view.isShown, getBackgroundColor())
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
