@@ -518,12 +518,15 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 #pragma mark - private
 
 - (void)assertReady {
+#ifndef RCT_NEW_ARCH_ENABLED
     if (!self.readyToReceiveCommands) {
         [[NSException exceptionWithName:@"BridgeNotLoadedError"
                                  reason:@"Bridge not yet loaded! Send commands after "
                                         @"Navigation.events().onAppLaunched() has been called."
                                userInfo:nil] raise];
     }
+#endif
+    return;
 }
 
 @end
