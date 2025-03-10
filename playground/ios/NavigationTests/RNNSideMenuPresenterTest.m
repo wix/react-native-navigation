@@ -1,5 +1,5 @@
 #import "RNNSideMenuPresenter.h"
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
@@ -17,7 +17,7 @@
     [super setUp];
     self.uut = [[RNNSideMenuPresenter alloc] init];
     self.boundViewController =
-        [OCMockObject partialMockForObject:[[RNNSideMenuController alloc]
+        [OCMockObject partialMockForObject:[[RNNSideMenuViewController alloc]
                                                  initWithLayoutInfo:nil
                                                             creator:nil
                                                childViewControllers:@[
@@ -31,8 +31,8 @@
     self.options = [RNNNavigationOptions emptyOptions];
 }
 
-- (RNNSideMenuChildVC *)createChildVC:(RNNSideMenuChildType)type {
-    return [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil
+- (RNNSideMenuChildViewController *)createChildVC:(RNNSideMenuChildType)type {
+    return [[RNNSideMenuChildViewController alloc] initWithLayoutInfo:nil
                                                   creator:nil
                                                   options:nil
                                            defaultOptions:nil
