@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   if fabric_enabled
     install_modules_dependencies(s)
 
-    s.compiler_flags  = folly_compiler_flags + ' ' + '-DRCT_NEW_ARCH_ENABLED'
+    s.compiler_flags  = folly_compiler_flags + ' ' + '-DRCT_NEW_ARCH_ENABLED' + ' ' + '-DUSE_HERMES=1'
     s.requires_arc    = true
 
     s.dependency "React"
