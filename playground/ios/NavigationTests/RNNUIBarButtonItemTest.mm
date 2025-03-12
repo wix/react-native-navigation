@@ -11,20 +11,21 @@
 @implementation RNNUIBarButtonItemTest
 
 - (void)setUp {
-    _mockedIconDrawer = [OCMockObject partialMockForObject:RNNIconDrawer.new];
-    _iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:_mockedIconDrawer];
+	_mockedIconDrawer = [OCMockObject partialMockForObject:[[RNNIconDrawer alloc] init]];
+	_iconCreator = [[RNNIconCreator alloc] initWithIconDrawer:_mockedIconDrawer];
 }
+
 
 - (void)testInitCustomIcon_shouldDraw {
     CGSize size = CGSizeMake(40, 40);
     UIColor *backgroundColor = UIColor.redColor;
     UIColor *tineColor = UIColor.blueColor;
     CGFloat cornerRadius = 10;
-    UIImage *image = UIImage.new;
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+    UIImage *image = [UIImage new];
+    RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
     buttonOptions.icon = [Image withValue:image];
     buttonOptions.color = [Color withValue:tineColor];
-    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
+    buttonOptions.iconBackground = [RNNIconBackgroundOptions new];
     buttonOptions.iconBackground.width = buttonOptions.iconBackground.height =
         [Number withValue:@(40)];
     buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
@@ -45,12 +46,12 @@
 - (void)testInitCustomIcon_shouldFallbackToEnabledColors {
     UIColor *backgroundColor = UIColor.redColor;
     UIColor *tineColor = UIColor.blueColor;
-    UIImage *image = UIImage.new;
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+    UIImage *image = [UIImage new];
+    RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
     buttonOptions.enabled = [Bool withValue:NO];
     buttonOptions.icon = [Image withValue:image];
     buttonOptions.color = [Color withValue:tineColor];
-    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
+    buttonOptions.iconBackground = [RNNIconBackgroundOptions new];
     buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
     [[_mockedIconDrawer expect] draw:image
                           imageColor:tineColor
@@ -70,13 +71,13 @@
     UIColor *disabledBackgroundColor = UIColor.brownColor;
     UIColor *tineColor = UIColor.blueColor;
     UIColor *disabledTintColor = UIColor.yellowColor;
-    UIImage *image = UIImage.new;
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+	UIImage *image = [UIImage new];
+	RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
     buttonOptions.enabled = [Bool withValue:NO];
     buttonOptions.icon = [Image withValue:image];
     buttonOptions.color = [Color withValue:tineColor];
     buttonOptions.disabledColor = [Color withValue:disabledTintColor];
-    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
+    buttonOptions.iconBackground = [RNNIconBackgroundOptions new];
     buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
     buttonOptions.iconBackground.disabledColor = [Color withValue:disabledBackgroundColor];
 
@@ -96,10 +97,10 @@
 - (void)testInitCustomIcon_shouldReceiveSize {
     CGSize size = CGSizeMake(40, 40);
     UIColor *backgroundColor = UIColor.redColor;
-    UIImage *image = UIImage.new;
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
+	UIImage *image = [UIImage new];
+	RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
     buttonOptions.icon = [Image withValue:image];
-    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
+    buttonOptions.iconBackground = [RNNIconBackgroundOptions new];
     buttonOptions.iconBackground.width = buttonOptions.iconBackground.height =
         [Number withValue:@(40)];
     buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
@@ -119,10 +120,10 @@
     CGFloat cornerRadius = 10;
     UIImage *image = [self imageWithSize:size];
 
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
-    buttonOptions.iconBackground = RNNIconBackgroundOptions.new;
-    buttonOptions.iconBackground.width = NullNumber.new;
-    buttonOptions.iconBackground.height = NullNumber.new;
+    RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
+    buttonOptions.iconBackground = [RNNIconBackgroundOptions new];
+    buttonOptions.iconBackground.width = [NullNumber new];
+    buttonOptions.iconBackground.height = [NullNumber new];
     buttonOptions.icon = [Image withValue:image];
     buttonOptions.iconBackground.color = [Color withValue:backgroundColor];
     buttonOptions.iconBackground.cornerRadius = [Number withValue:@(cornerRadius)];
@@ -139,8 +140,8 @@
 - (void)testInitWithIcon_shouldApplyTintColor {
     UIColor *buttonColor = UIColor.redColor;
 
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
-    buttonOptions.icon = [Image withValue:UIImage.new];
+    RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
+    buttonOptions.icon = [Image withValue:[UIImage new]];
     buttonOptions.color = [Color withColor:buttonColor];
     RNNUIBarButtonItem *barButtonItem =
         [[RNNUIBarButtonItem alloc] initWithIcon:buttonOptions
@@ -153,8 +154,8 @@
 - (void)testInitWithIcon_shouldDisableTintColor {
     UIColor *buttonColor = UIColor.redColor;
 
-    RNNButtonOptions *buttonOptions = RNNButtonOptions.new;
-    buttonOptions.icon = [Image withValue:UIImage.new];
+	RNNButtonOptions *buttonOptions = [RNNButtonOptions new];
+	buttonOptions.icon = [Image withValue:[UIImage new]];
     buttonOptions.color = [Color withColor:buttonColor];
     buttonOptions.disableIconTint = [Bool withValue:YES];
     RNNUIBarButtonItem *barButtonItem =

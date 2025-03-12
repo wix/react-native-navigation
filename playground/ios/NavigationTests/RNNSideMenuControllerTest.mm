@@ -1,14 +1,14 @@
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import "RNNComponentViewController.h"
 #import "RNNTestRootViewCreator.h"
 #import <XCTest/XCTest.h>
 
 @interface RNNSideMenuControllerTest : XCTestCase
-@property(nonatomic, strong) RNNSideMenuController *uut;
+@property(nonatomic, strong) RNNSideMenuViewController *uut;
 @property(nonatomic, strong) RNNTestRootViewCreator *creator;
-@property(nonatomic, strong) RNNSideMenuChildVC *centerVC;
-@property(nonatomic, strong) RNNSideMenuChildVC *leftVC;
-@property(nonatomic, strong) RNNSideMenuChildVC *rightVC;
+@property(nonatomic, strong) RNNSideMenuChildViewController *centerVC;
+@property(nonatomic, strong) RNNSideMenuChildViewController *leftVC;
+@property(nonatomic, strong) RNNSideMenuChildViewController *rightVC;
 @end
 
 @implementation RNNSideMenuControllerTest
@@ -16,7 +16,7 @@
 - (void)setUp {
     [super setUp];
     _creator = [[RNNTestRootViewCreator alloc] init];
-    _leftVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil
+    _leftVC = [[RNNSideMenuChildViewController alloc] initWithLayoutInfo:nil
                                                      creator:nil
                                                      options:[RNNNavigationOptions emptyOptions]
                                               defaultOptions:nil
@@ -25,7 +25,7 @@
                                          childViewController:self.generateComponent
                                                         type:RNNSideMenuChildTypeLeft];
     [_leftVC.presenter bindViewController:_leftVC];
-    _rightVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil
+    _rightVC = [[RNNSideMenuChildViewController alloc] initWithLayoutInfo:nil
                                                       creator:nil
                                                       options:[RNNNavigationOptions emptyOptions]
                                                defaultOptions:nil
@@ -34,7 +34,7 @@
                                           childViewController:self.generateComponent
                                                          type:RNNSideMenuChildTypeRight];
     [_rightVC.presenter bindViewController:_rightVC];
-    _centerVC = [[RNNSideMenuChildVC alloc] initWithLayoutInfo:nil
+    _centerVC = [[RNNSideMenuChildViewController alloc] initWithLayoutInfo:nil
                                                        creator:nil
                                                        options:[RNNNavigationOptions emptyOptions]
                                                 defaultOptions:nil
@@ -43,7 +43,7 @@
                                            childViewController:self.generateComponent
                                                           type:RNNSideMenuChildTypeCenter];
     [_centerVC.presenter bindViewController:_centerVC];
-    self.uut = [[RNNSideMenuController alloc]
+    self.uut = [[RNNSideMenuViewController alloc]
           initWithLayoutInfo:nil
                      creator:nil
         childViewControllers:@[ _leftVC, _centerVC, _rightVC ]

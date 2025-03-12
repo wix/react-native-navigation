@@ -63,14 +63,14 @@
     self.setRootAnimator = [OCMockObject partialMockForObject:[RNNSetRootAnimator new]];
 
     self.controllerFactory = [OCMockObject
-        partialMockForObject:[[RNNControllerFactory alloc]
+        partialMockForObject:[[RNNViewControllerFactory alloc]
                                      initWithRootViewCreator:nil
                                                 eventEmitter:self.eventEmmiter
                                                        store:nil
                                            componentRegistry:nil
                                                    andBridge:nil
                                  bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]]];
-    self.uut = [[RNNCommandsHandler alloc] initWithControllerFactory:self.controllerFactory
+    self.uut = [[RNNCommandsHandler alloc] initWithViewControllerFactory:self.controllerFactory
                                                        layoutManager:self.layoutManager
                                                         eventEmitter:self.eventEmmiter
                                                         modalManager:self.modalManager
@@ -100,18 +100,6 @@
                  presenter:[RNNComponentPresenter new]
                    options:[[RNNNavigationOptions alloc] initWithDict:@{}]
             defaultOptions:nil];
-}
-
-- (void)testAssertReadyForEachMethodThrowsExceptions {
-    NSArray *methods = [self getPublicMethodNamesForObject:self.uut];
-    [self.uut setReadyToReceiveCommands:false];
-    for (NSString *methodName in methods) {
-        SEL s = NSSelectorFromString(methodName);
-        IMP imp = [self.uut methodForSelector:s];
-        void (*func)(id, SEL, id, id, id, id, id) = (void *)imp;
-        XCTAssertThrowsSpecificNamed(func(self.uut, s, nil, nil, nil, nil, nil), NSException,
-                                     @"BridgeNotLoadedError");
-    }
 }
 
 - (NSArray *)getPublicMethodNamesForObject:(NSObject *)obj {

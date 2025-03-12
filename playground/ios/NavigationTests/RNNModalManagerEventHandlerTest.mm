@@ -71,7 +71,7 @@
                                   childViewControllers:@[ child ]];
 
     [[_eventEmitter expect] sendModalsDismissedEvent:@"stack" numberOfModalsDismissed:@(2)];
-    [_uut dismissedMultipleModals:@[ UIViewController.new, child ]];
+    [_uut dismissedMultipleModals:@[ [UIViewController new], child ]];
     [_eventEmitter verify];
 }
 

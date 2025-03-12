@@ -10,6 +10,7 @@
 #import <React/RCTConvert.h>
 #import <ReactNativeNavigation/RNNComponentViewController.h>
 #import <XCTest/XCTest.h>
+#import "RNNNavigationOptions.h"
 
 @interface UIFont (Utils)
 

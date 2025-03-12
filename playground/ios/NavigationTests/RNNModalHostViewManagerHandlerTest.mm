@@ -24,14 +24,14 @@
 }
 
 - (void)testPresentationBlock_shouldShowModal {
-    UIViewController *vc = UIViewController.new;
+    UIViewController *vc = [UIViewController new];
     _modalHostViewManager.presentationBlock(nil, vc, NO, nil);
     XCTAssertEqual(vc, _modalManager.topPresentedVC);
 }
 
 - (void)testPresentationBlock_shouldShowAndDismissModal {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
-    UIViewController *vc = UIViewController.new;
+    UIViewController *vc = [UIViewController new];
     _modalHostViewManager.presentationBlock(nil, vc, NO, nil);
     XCTAssertEqual(vc, _modalManager.topPresentedVC);
     _modalHostViewManager.dismissalBlock(nil, vc, NO, ^{

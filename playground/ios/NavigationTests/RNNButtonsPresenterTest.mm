@@ -19,7 +19,7 @@ static UIImage *createTestImage(void) {
 @implementation RNNButtonsPresenterTest
 
 - (void)setUp {
-	_viewController = UIViewController.new;
+	_viewController = [UIViewController new];
 	__unused UINavigationController *navigationController =
 	[[UINavigationController alloc] initWithRootViewController:_viewController];
 	_uut = [[RNNButtonsPresenter alloc] initWithComponentRegistry:nil eventEmitter:nil];
@@ -64,7 +64,7 @@ static UIImage *createTestImage(void) {
 
 - (void)testApplyLeftButtonColor_shouldApplyTintColor {
 	RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
-	button.icon = [Image withValue:UIImage.new];
+	button.icon = [Image withValue:[UIImage new]];
 	[_uut applyLeftButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
 	[_uut applyLeftButtonsColor:[Color withValue:UIColor.redColor]];
 	XCTAssertEqual(_viewController.navigationItem.leftBarButtonItems.firstObject.tintColor,
@@ -87,7 +87,7 @@ static UIImage *createTestImage(void) {
 
 - (void)testApplyRightButtonColor_shouldApplyTintColor {
 	RNNButtonOptions *button = [self buttonWithDict:@{@"id" : @"buttonId"}];
-	button.icon = [Image withValue:UIImage.new];
+	button.icon = [Image withValue:[UIImage new]];
 	[_uut applyRightButtons:@[ button ] defaultColor:nil defaultDisabledColor:nil animated:NO];
 	[_uut applyRightButtonsColor:[Color withValue:UIColor.redColor]];
 	XCTAssertEqual(_viewController.navigationItem.rightBarButtonItems.firstObject.tintColor,

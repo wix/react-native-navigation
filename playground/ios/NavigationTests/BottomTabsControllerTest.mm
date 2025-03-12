@@ -294,7 +294,7 @@
 
 - (void)testShouldSelectViewController_returnTrueForMoreTab {
     XCTAssertTrue([self.uut tabBarController:self.uut
-                  shouldSelectViewController:UIViewController.new]);
+                  shouldSelectViewController:[UIViewController new]]);
 }
 
 - (void)testShouldSelectViewController_returnTrueByDefault {
@@ -333,7 +333,7 @@
     RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:nil
                                                creator:nil
-                                               options:RNNNavigationOptions.new
+                                               options:[RNNNavigationOptions new]
                                         defaultOptions:nil
                                              presenter:nil
                                           eventEmitter:nil

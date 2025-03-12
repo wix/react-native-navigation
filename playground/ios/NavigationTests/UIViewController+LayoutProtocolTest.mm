@@ -253,7 +253,7 @@
                                                     creator:nil
                                                     options:nil
                                              defaultOptions:nil
-                                                  presenter:RNNBasePresenter.new
+                                                  presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
                                                eventEmitter:nil
@@ -291,7 +291,7 @@
                                                     creator:nil
                                                     options:nil
                                              defaultOptions:nil
-                                                  presenter:RNNBasePresenter.new
+                                                  presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
                                                eventEmitter:nil

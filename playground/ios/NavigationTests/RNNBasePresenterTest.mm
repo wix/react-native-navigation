@@ -40,13 +40,15 @@
 }
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldNotCalledOnUITabBarController {
-    [self.uut bindViewController:self.mockBoundViewController];
-    self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
-    [[self.mockBoundViewController reject]
-        setTabBarItemBadge:[[RNNBottomTabOptions alloc] initWithDict:@{@"badge" : @"badge"}]];
-    [self.uut applyOptions:self.options];
-    [self.mockBoundViewController verify];
+	[self.uut bindViewController:self.mockBoundViewController];
+	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
+	RNNBottomTabOptions *tabOptions = [[RNNBottomTabOptions alloc] initWithDict:@{@"badge" : @"badge"}];
+	NSString *badgeValue = tabOptions.badge.get;
+	[[self.mockBoundViewController reject] setTabBarItemBadge:badgeValue];
+	[self.uut applyOptions:self.options];
+	[self.mockBoundViewController verify];
 }
+
 
 - (void)testApplyOptions_setTabBarItemBadgeShouldWhenNoValue {
     [self.uut bindViewController:self.mockBoundViewController];
