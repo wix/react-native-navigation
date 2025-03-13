@@ -624,14 +624,27 @@
                                                                    initialOptions:nil] ]];
 
     OCMStub([self.controllerFactory createLayout:[OCMArg any]]).andReturn(stack);
-
-    [(RNNSetRootAnimator *)[self.setRootAnimator expect] animate:_mainWindow
-                                                        duration:0.5
-                                                      completion:[OCMArg any]];
+	
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Wait for setRoot animation"];
+	
+	OCMStub([self.setRootAnimator animate:_mainWindow
+								 duration:0.5
+							   completion:[OCMArg any]])
+		.andDo(^(NSInvocation *invocation) {
+			[expectation fulfill];
+		});
+	
     [self.uut setRoot:@{}
             commandId:@""
            completion:^(NSString *componentId){
            }];
+	
+	[self waitForExpectationsWithTimeout:5 handler:^(NSError *error) {
+		if (error) {
+			XCTFail(@"Timeout: animate() was never called.");
+		}
+	}];
+	
     [_setRootAnimator verify];
 }
 

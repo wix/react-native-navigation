@@ -57,6 +57,15 @@
     [view addSubview:label];
     view.tag = [rootViewId intValue];
     view.backgroundColor = UIColor.redColor;
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		if (reactViewReadyBlock) {
+			reactViewReadyBlock();
+		} else {
+			NSLog(@"[ERROR] reactViewReadyBlock is nil! The push will not complete.");
+		}
+	});
+	
     return view;
 }
 
