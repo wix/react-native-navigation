@@ -4,12 +4,14 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.RNNFeatureToggles
-import com.reactnativenavigation.RNNToggles.TOP_BAR_COLOR_ANIMATION
+import com.reactnativenavigation.RNNToggles
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
@@ -20,6 +22,8 @@ import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.TopBarVisibilityInfo
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.animations.ColorAnimator
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
@@ -42,6 +46,9 @@ open class TopBarController(
         get() = rightButtonBar.buttonCount
     val leftButtonCount: Int
         get() = leftButtonBar.buttonCount
+
+    val visibilityInfo: TopBarVisibilityInfo
+        get() = TopBarVisibilityInfo(view.isShown, getBackgroundColor())
 
     fun createView(context: Context, parent: StackLayout): TopBar {
         if (!::view.isInitialized) {
@@ -70,6 +77,14 @@ open class TopBarController(
 
         if (color.hasValue() && !hasPendingColorAnim) {
             view.setBackgroundColor(color.get())
+        }
+    }
+
+    fun getBackgroundColor(): Int? {
+        return if (view.background is ColorDrawable) {
+            (view.background as ColorDrawable).color
+        } else {
+            null
         }
     }
 
@@ -132,6 +147,24 @@ open class TopBarController(
         )
     }
 
+    fun bindNewViewController(previousVC: ViewController<*>?, newVC: ViewController<*>?) {
+        if (!RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS)) {
+            return
+        }
+
+        previousVC?.visibilityInfo?.topBarVisibilityInfo?.solidColor?.let { fromColor ->
+            newVC?.visibilityInfo?.topBarVisibilityInfo?.solidColor?.let { toColor ->
+                colorAnimator.getAnimation(view, fromColor, toColor).apply {
+                    doOnEnd {
+                        hasPendingColorAnim = false
+                    }
+                    hasPendingColorAnim = true
+                    start()
+                }
+            }
+        }
+    }
+
     fun show() {
         if (ViewUtils.isVisible(view) || appearAnimator.isAnimatingShow()) return
         view.resetViewProperties()
@@ -191,7 +224,7 @@ open class TopBarController(
 
         if (targetColor.hasValue()
             && view.background is ColorDrawable
-            && RNNFeatureToggles.isEnabled(TOP_BAR_COLOR_ANIMATION)) {
+            && RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH)) {
             return colorAnimator.getAnimation(
                 view,
                 (view.background as ColorDrawable).color,

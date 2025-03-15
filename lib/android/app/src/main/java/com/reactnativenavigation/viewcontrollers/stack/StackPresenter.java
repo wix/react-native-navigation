@@ -37,6 +37,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
@@ -189,6 +190,12 @@ public class StackPresenter {
         destroyButtons(componentLeftButtons.get(child.getView()));
         componentRightButtons.remove(child.getView());
         componentLeftButtons.remove(child.getView());
+    }
+
+    public void bindNewViewController(ViewController<?> previousVC, ViewController<?> newVC) {
+        Options options = newVC.resolveCurrentOptions(defaultOptions);
+        topBarController.bindNewViewController(previousVC, newVC);
+        StatusBarPresenter.instance.bindViewController(options.statusBar);
     }
 
     private void destroyButtons(@Nullable Map<String, ButtonController> buttons) {
@@ -423,17 +430,17 @@ public class StackPresenter {
             Options appearingOptions) {
         return CollectionUtils.asList(
                 topBarController.getPushAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearingCtrl)),
-                perform(appearingCtrl.getStatusBarController(), null, sbc -> sbc.getStatusBarPushAnimation(appearingOptions)),
-                perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions))
-            );
+                perform(appearingCtrl, null, vc -> vc.getPushAnimations(appearingOptions)),
+                perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions)
+            ));
     }
 
     public List<Animator> getAdditionalPopAnimations(Options appearingOptions, Options disappearingOptions, ViewController<?> appearingCtrl) {
         return CollectionUtils.asList(
                 topBarController.getPopAnimation(appearingOptions, disappearingOptions),
-                perform(appearingCtrl.getStatusBarController(), null, sbc -> sbc.getStatusBarPopAnimation(appearingOptions, disappearingOptions)),
-                perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions))
-        );
+                perform(appearingCtrl, null, vc -> vc.getPopAnimations(appearingOptions, disappearingOptions)),
+                perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions)
+            ));
     }
 
     public List<Animator> getAdditionalSetRootAnimations(StackController stack, ViewController<?> appearing,
