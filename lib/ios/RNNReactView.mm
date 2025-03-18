@@ -125,10 +125,6 @@
     _isAppeared = NO;
 }
 
-- (void)invalidate {
-    [((RCTRootContentView *)self.contentView) invalidate];
-}
-
 #ifdef RCT_NEW_ARCH_ENABLED
 - (NSDictionary *)appProperties {
     @synchronized (self) {

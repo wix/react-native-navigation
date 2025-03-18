@@ -77,10 +77,6 @@
     [self renderReactViewIfNeeded];
 }
 
-- (void)destroyReactView {
-    [self.reactView invalidate];
-}
-
 - (void)renderReactViewIfNeeded {
     if (!self.reactView) {
         self.view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];

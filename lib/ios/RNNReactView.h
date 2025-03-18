@@ -108,6 +108,4 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
 
-- (void)invalidate;
-
 @end
