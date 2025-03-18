@@ -615,6 +615,8 @@ public class StackPresenter {
             topBar.setTitleTextColor(resolveOptions.title.color.get());
         if (resolveOptions.title.fontSize.hasValue())
             topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
+        if (resolveOptions.title.allowFontScaling.hasValue())
+            topBar.setTitleAllowFontScaling(resolveOptions.title.allowFontScaling.isTrue());
         if (resolveOptions.title.font.hasValue())
             topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
