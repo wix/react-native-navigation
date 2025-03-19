@@ -92,8 +92,6 @@
                            onPress:(RNNButtonPressCallback)onPress {
     self = [super initWithCustomView:reactView];
     [self applyOptions:buttonOptions];
-    reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-    reactView.hidden = CGRectEqualToRect(reactView.frame, CGRectZero);
 
     [NSLayoutConstraint deactivateConstraints:reactView.constraints];
     self.widthConstraint =
@@ -113,9 +111,6 @@
                                     multiplier:1.0
                                       constant:reactView.intrinsicContentSize.height];
     [NSLayoutConstraint activateConstraints:@[ self.widthConstraint, self.heightConstraint ]];
-    reactView.delegate = self;
-
-    reactView.backgroundColor = [UIColor clearColor];
 
     self.onPress = onPress;
     return self;
@@ -217,16 +212,15 @@
     }
 }
 
-
 #ifdef RCT_NEW_ARCH_ENABLED
 // TODO: Verify
 - (void)surface:(RCTSurface *)surface didChangeIntrinsicSize:(CGSize)intrinsicSize {
-	self.widthConstraint.constant = intrinsicSize.width;
-	self.heightConstraint.constant = intrinsicSize.height;
-	[surface setSize:intrinsicSize];
-	//[rootView setNeedsUpdateConstraints];
-	//[rootView updateConstraintsIfNeeded];
-	//surface.hidden = NO;
+    self.widthConstraint.constant = intrinsicSize.width;
+    self.heightConstraint.constant = intrinsicSize.height;
+    [surface setSize:intrinsicSize];
+    //[rootView setNeedsUpdateConstraints];
+    //[rootView updateConstraintsIfNeeded];
+    // surface.hidden = NO;
 }
 #else
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
