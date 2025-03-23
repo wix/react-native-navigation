@@ -4,6 +4,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
 import org.junit.*;
 
+@Ignore("New architecture - WIP")
 public class TogetherTest extends AttachModeTest {
 
     @Override

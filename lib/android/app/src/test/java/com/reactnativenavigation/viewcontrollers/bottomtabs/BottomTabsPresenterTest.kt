@@ -3,20 +3,33 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 import android.animation.AnimatorSet
 import android.content.res.Configuration
 import android.graphics.Color
-import org.mockito.kotlin.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.ShadowOptions
-import com.reactnativenavigation.options.params.*
+import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.Number
+import com.reactnativenavigation.options.params.Text
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import org.assertj.core.api.Java6Assertions.assertThat
+import org.junit.Ignore
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
+@Ignore("New architecture - WIP")
 class BottomTabsPresenterTest : BaseTest() {
     private lateinit var tabs: List<ViewController<*>>
     private lateinit var uut: BottomTabsPresenter

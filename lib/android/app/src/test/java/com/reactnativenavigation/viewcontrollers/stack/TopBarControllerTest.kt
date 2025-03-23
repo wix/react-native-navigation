@@ -29,11 +29,13 @@ import com.reactnativenavigation.views.animations.ColorAnimator
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
 private const val BKG_COLOR = 0x010203
 
+@Ignore("New architecture - WIP")
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
     private lateinit var activity: Activity

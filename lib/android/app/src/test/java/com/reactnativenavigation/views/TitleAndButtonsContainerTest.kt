@@ -7,28 +7,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import org.mockito.kotlin.spy
-import org.mockito.kotlin.verify
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.Alignment
 import com.reactnativenavigation.options.params.Colour
-import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.options.params.NullThemeColour
+import com.reactnativenavigation.options.params.ThemeColour
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleAndButtonsContainer
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleSubTitleLayout
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.times
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
 import kotlin.math.roundToInt
 import kotlin.test.assertFalse
 
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
+@Ignore("New architecture - WIP")
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity

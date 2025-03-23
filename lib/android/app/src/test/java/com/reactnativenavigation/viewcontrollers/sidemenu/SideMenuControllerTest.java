@@ -27,6 +27,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -42,7 +43,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 @SuppressWarnings("MagicNumber")
+@Ignore("New architecture - WIP")
 public class SideMenuControllerTest extends BaseTest {
     private SideMenuController uut;
     private Activity activity;

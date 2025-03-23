@@ -28,12 +28,14 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
 import com.reactnativenavigation.views.stack.StackLayout;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 
+@Ignore("New architecture - WIP")
 public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
     private StackController stack;

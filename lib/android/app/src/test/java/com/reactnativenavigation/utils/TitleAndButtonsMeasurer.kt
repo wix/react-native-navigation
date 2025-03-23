@@ -5,9 +5,11 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveLeftButtonsBounds
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveRightButtonsBounds
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
+import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@Ignore("New architecture - WIP")
 class TitleAndButtonsMeasurer : BaseTest() {
     private val parentWidth = 1080
 

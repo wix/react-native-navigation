@@ -8,7 +8,7 @@ class ModalFrameLayout(context: ReactContext) : FrameLayout(context) {
     val modalContentLayout = ModalContentLayout(context)
 
     init {
-        addView(modalContentLayout, MarginLayoutParams(MarginLayoutParams.WRAP_CONTENT, MarginLayoutParams.WRAP_CONTENT)
+        addView(modalContentLayout, MarginLayoutParams(MarginLayoutParams.MATCH_PARENT, MarginLayoutParams.MATCH_PARENT)
             .apply {
                 val translucent = context.currentActivity?.window?.let {
                     SystemUiUtils.isTranslucent(it)
