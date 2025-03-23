@@ -304,6 +304,11 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 @property(nonatomic, strong) UIColor *statusBarViewBackgroundColor;
 
 /**
+ Whether the side menu opens above the screen instead of pushing it aside.
+ */
+ @property (nonatomic, assign) BOOL openAboveScreen;
+
+/**
  The value determining panning range of centerView's bezel if the user can open drawer with
  'MMOpenDrawerGestureModeBezelPanningCenterView' or close drawer with
  'MMCloseDrawerGestureModeBezelPanningCenterView' .
@@ -318,13 +323,6 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
  By default, this is set 200.0f.
  */
 @property(nonatomic, assign) CGFloat panVelocityXAnimationThreshold;
-
-/**
- A boolean that determines whether the side menu opens above the screen instead of pushing it aside.
-
- By default, this is set to NO.
- */
-@property(nonatomic, assign) BOOL openAboveScreen;
 
 ///---------------------------------------
 /// @name Initializing a `MMDrawerController`
@@ -606,12 +604,5 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 - (void)setGestureShouldRecognizeTouchBlock:
     (BOOL (^)(MMDrawerController *drawerController, UIGestureRecognizer *gesture,
               UITouch *touch))gestureShouldRecognizeTouchBlock;
-
-/**
- Sets whether the side menu opens above the screen instead of pushing it aside.
-
- @param openAboveScreen A boolean value to set the behavior.
- */
-- (void)setOpenAboveScreen:(BOOL)openAboveScreen;
 
 @end
