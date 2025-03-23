@@ -25,7 +25,6 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] dismissAllModals:options
 														 commandId:commandId
 									completion:^{
-			//return;
 									}];
 	});
 }
@@ -34,7 +33,6 @@ RCT_EXPORT_MODULE()
 - (void)dismissAllOverlays:(NSString *)commandId {
 	RCTExecuteOnMainQueue(^{
 		[[RNNTurboCommandsHandler sharedInstance] dismissAllOverlays:commandId];
-	 // resolve(nil);
 	});
 }
 
@@ -45,7 +43,6 @@ RCT_EXPORT_MODULE()
 													 commandId:commandId
 												  mergeOptions:options
 													completion:^(NSString *componentId) {
-								  //resolve(componentId);
 													}
 													 rejection:nil];
 	});
@@ -57,7 +54,6 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] dismissOverlay:componentId
 													   commandId:commandId
 													  completion:^{
-									//resolve(@(1));
 													   }
 													   rejection:nil];
 	});
@@ -74,12 +70,10 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] mergeOptions:componentId
 								   options:options
 								completion:^{
-			//return componentId;
-								  //resolve(componentId);
 								}];
 	});
 
-	return @"Stub";
+	return componentId;
 }
 
 
@@ -89,12 +83,11 @@ RCT_EXPORT_MODULE()
 											commandId:commandId
 										 mergeOptions:(NSDictionary *)options
 										   completion:^{
-							//resolve(componentId);
 											}
 											rejection:nil];
 	});
 
-	return @"Stub";
+	return componentId;
 }
 
 
@@ -104,12 +97,11 @@ RCT_EXPORT_MODULE()
 											  commandId:commandId
 										   mergeOptions:options
 											 completion:^{
-												//resolve(componentId);
 											 }
 											 rejection:nil];
 	});
 
-	return @"Stub";
+	return componentId;
 }
 
 
@@ -119,12 +111,11 @@ RCT_EXPORT_MODULE()
 												  commandId:commandId
 											   mergeOptions:options
 												 completion:^{
-							  // resolve(componentId);
 												  }
 												  rejection:nil];
 	});
 
-	return @"Stub";
+	return componentId;
 }
 
 
@@ -134,12 +125,11 @@ RCT_EXPORT_MODULE()
 											 commandId:commandId
 												layout:layout
 											completion:^(NSString *pushedComponentId) {
-						  //resolve(pushedComponentId);
 						}
 											 rejection:nil];
 	});
 
-	return @"Stub";
+	return layout[@"id"];
 }
 
 
@@ -148,11 +138,10 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] setRoot:layout
 												commandId:commandId
 											   completion:^(NSString *componentId) {
-									//resolve(componentId);
 												}];
 	});
 
-	return @"Stub";
+	return layout[@"id"];
 }
 
 
@@ -162,12 +151,11 @@ RCT_EXPORT_MODULE()
 													 commandId:commandId
 													  children:(NSArray *)layout
 													completion:^{
-								  //resolve(componentId);
 								}
 													 rejection:nil];
 	});
 
-	return @"Stub";
+	return componentId;
 }
 
 
@@ -176,11 +164,10 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] showModal:layout
 												  commandId:commandId
 												  completion:^(NSString *componentId) {
-							   //resolve(componentId);
 												  }];
 	});
 
-	return @"Stub";
+	return layout[@"id"];
 }
 
 
@@ -189,11 +176,10 @@ RCT_EXPORT_MODULE()
 		[[RNNTurboCommandsHandler sharedInstance] showOverlay:layout
 													commandId:commandId
 												   completion:^(NSString *_Nonnull componentId) {
-								 //resolve(componentId);
 												   }];
 	});
 
-	return @"Stub";
+	return layout[@"id"];
 }
 
 - (facebook::react::ModuleConstants<JS::NativeRNNTurboModule::Constants>)constantsToExport {

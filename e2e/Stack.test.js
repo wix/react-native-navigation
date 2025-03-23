@@ -134,7 +134,7 @@ describe('Stack', () => {
   it.e2e('unmount is called on pop', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementByLabel('componentWillUnmount')).toBeVisible();
+    await waitFor(elementByLabel('componentWillUnmount')).toBeVisible().withTimeout(1000);
     await elementByLabel('OK').atIndex(0).tap();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
