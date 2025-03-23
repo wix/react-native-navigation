@@ -134,7 +134,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
         return  ((ReactApplication)getContext().getApplicationContext()).getReactHost();
     }
 
-    private ReactContext getReactContent() {
+    private ReactContext getReactContext() {
         return getReactHost().getCurrentReactContext();
     }
 }
