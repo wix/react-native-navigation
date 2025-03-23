@@ -51,8 +51,8 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 import org.json.JSONObject;
 
 public class LayoutFactory {
-    private final ReactHost reactHost;
-    private Activity activity;
+        private final ReactHost reactHost;
+        private Activity activity;
 	private ChildControllersRegistry childRegistry;
 	private EventEmitter eventEmitter;
 	private Map<String, ExternalComponentCreator> externalComponentCreators;
