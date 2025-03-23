@@ -39,19 +39,21 @@ const SideMenuLeftScreen: NavigationFunctionComponent<Props> = ({ componentId, m
 
   const push = () => Navigation.push('SideMenuCenter', Screens.Pushed);
 
-  const pushAndClose = () =>
+  const pushAndClose = () => {
+    close();
     Navigation.push('SideMenuCenter', {
       component: {
         name: Screens.Pushed,
-        options: {
-          sideMenu: {
-            left: {
-              visible: false,
-            },
-          },
-        },
+        // options: {
+        //   sideMenu: {
+        //     left: {
+        //       visible: false,
+        //     },
+        //   },
+        // },
       },
     });
+  };
 
   const close = () =>
     Navigation.mergeOptions(componentId, {
