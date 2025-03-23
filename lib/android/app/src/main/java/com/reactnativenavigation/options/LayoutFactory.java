@@ -60,8 +60,8 @@ public class LayoutFactory {
 	private TypefaceLoader typefaceManager;
 	
 	public LayoutFactory(ReactHost reactHost) {
-        this.reactHost = reactHost;
-    }
+            this.reactHost = reactHost;
+        }
 
 	public void setDefaultOptions(@NonNull Options defaultOptions) {
 		Assertions.assertNotNull(defaultOptions);
