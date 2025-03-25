@@ -127,6 +127,14 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 
 @interface MMDrawerController : UIViewController
 
+/**
+ Enum defining how the drawer opens
+ */
+ typedef NS_ENUM(NSInteger, MMDrawerOpenMode) {
+  MMDrawerOpenModePushContent = 0, // Original behavior - pushes content aside
+  MMDrawerOpenModeAboveContent = 1, // Overlay behavior - opens above content
+};
+
 ///---------------------------------------
 /// @name Accessing Drawer Container View Controller Properties
 ///---------------------------------------
@@ -214,13 +222,16 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 @property(nonatomic, assign) BOOL shouldStretchRightDrawer;
 
 /**
- A boolean that determines whether or not to open the drawer above the screen.
-
- By default, this value is set to NO.
- Enabling `openAboveScreen` will make the drawer open above the center view instead of pushing it aside.
+ * Specifies how the drawer should open relative to the center content.
+ * 
+ * Possible values:
+ * - MMDrawerOpenModePushContent: The drawer will push the center content aside when opening (traditional behavior).
+ * - MMDrawerOpenModeAboveContent: The drawer will open above the center content with a semi-transparent overlay.
+ *
+ * By default, this value is set to MMDrawerOpenModePushContent.
  */
-@property(nonatomic, assign) BOOL openAboveScreenLeftDrawer;
-@property(nonatomic, assign) BOOL openAboveScreenRightDrawer;
+@property(nonatomic, assign) MMDrawerOpenMode leftDrawerOpenMode;
+@property(nonatomic, assign) MMDrawerOpenMode rightDrawerOpenMode;
 
 /**
  The current open side of the drawer.
@@ -608,5 +619,7 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 - (void)setGestureShouldRecognizeTouchBlock:
     (BOOL (^)(MMDrawerController *drawerController, UIGestureRecognizer *gesture,
               UITouch *touch))gestureShouldRecognizeTouchBlock;
+
+- (void)side:(MMDrawerSide)drawerSide openMode:(MMDrawerOpenMode)openMode;
 
 @end

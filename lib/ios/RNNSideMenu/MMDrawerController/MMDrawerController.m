@@ -152,8 +152,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     CGFloat _maximumRightDrawerWidth;
     CGFloat _maximumLeftDrawerWidth;
     UIColor *_statusBarViewBackgroundColor;
-    BOOL _openAboveScreenLeftDrawer;
-    BOOL _openAboveScreenRightDrawer;
+    MMDrawerOpenMode _leftDrawerOpenMode;
+    MMDrawerOpenMode _rightDrawerOpenMode;
 }
 
 @property(nonatomic, assign, readwrite) MMDrawerSide openSide;
@@ -232,8 +232,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [self setShowsShadow:YES];
     [self setShouldStretchLeftDrawer:YES];
     [self setShouldStretchRightDrawer:YES];
-    [self setOpenAboveScreenLeftDrawer:NO];
-    [self setOpenAboveScreenRightDrawer:NO];
+    [self side:MMDrawerSideRight openMode:MMDrawerOpenModePushContent];
+    [self side:MMDrawerSideLeft openMode:MMDrawerOpenModePushContent];
 
     [self setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
     [self setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
@@ -343,12 +343,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         UIViewController *sideDrawerViewController = [self sideDrawerViewControllerForSide:visibleSide];
         [sideDrawerViewController beginAppearanceTransition:NO animated:animated];
         
-        // Check if this drawer should use overlay mode
-        BOOL useOverlayMode = (visibleSide == MMDrawerSideLeft) ? 
-                               self.openAboveScreenLeftDrawer : 
-                               self.openAboveScreenRightDrawer;
+        MMDrawerOpenMode openMode = (visibleSide == MMDrawerSideLeft) ? 
+                             self.leftDrawerOpenMode : 
+                             self.rightDrawerOpenMode;
         
-        if (useOverlayMode) {
+        if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
             // Get maximum drawer width
             CGFloat maximumDrawerWidth = (visibleSide == MMDrawerSideLeft) ? 
@@ -474,11 +473,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
         if (sideDrawerViewController) {
             // Check if this drawer should use overlay mode
-            BOOL useOverlayMode = (drawerSide == MMDrawerSideLeft) ? 
-                                   self.openAboveScreenLeftDrawer : 
-                                   self.openAboveScreenRightDrawer;
-            
-            if (useOverlayMode) {
+            MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
+                             self.leftDrawerOpenMode : 
+                             self.rightDrawerOpenMode;
+
+            if (openMode == MMDrawerOpenModeAboveContent) {
                 // OVERLAY MODE
                 CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
                                            self.maximumLeftDrawerWidth : 
@@ -1228,12 +1227,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [self.dummyStatusBarView setBackgroundColor:_statusBarViewBackgroundColor];
 }
 
-- (void)setOpenAboveScreenLeftDrawer:(BOOL)openAboveScreen {
-    _openAboveScreenLeftDrawer = openAboveScreen;
+- (void)setLeftDrawerOpenMode:(MMDrawerOpenMode)openMode {
+    _leftDrawerOpenMode = openMode;
 }
     
-- (void)setOpenAboveScreenRightDrawer:(BOOL)openAboveScreen {
-    _openAboveScreenRightDrawer = openAboveScreen;
+- (void)setRightDrawerOpenMode:(MMDrawerOpenMode)openMode {
+    _rightDrawerOpenMode = openMode;
 }
 
 - (void)setAnimatingDrawer:(BOOL)animatingDrawer {
@@ -1322,12 +1321,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     return _statusBarViewBackgroundColor;
 }
 
-- (BOOL)openAboveScreenRightDrawer {
-    return _openAboveScreenRightDrawer;
+- (MMDrawerOpenMode)rightDrawerOpenMode {
+    return _rightDrawerOpenMode;
 }
 
-- (BOOL)openAboveScreenLeftDrawer {
-    return _openAboveScreenLeftDrawer;
+- (MMDrawerOpenMode)leftDrawerOpenMode {
+    return _leftDrawerOpenMode;
 }
 
 #pragma mark - Gesture Handlers
@@ -1380,12 +1379,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         // Store which drawer we're working with for this gesture
         self.startingDrawerSide = drawerSide;
         
-        // Check if this drawer should use overlay mode
-        BOOL useOverlayMode = (drawerSide == MMDrawerSideLeft) ? 
-                            self.openAboveScreenLeftDrawer : 
-                            self.openAboveScreenRightDrawer;
-        
-        if (useOverlayMode) {
+        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
+                             self.leftDrawerOpenMode : 
+                             self.rightDrawerOpenMode;
+
+        if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
             UIViewController *drawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
             CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
@@ -1441,12 +1439,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             }
         }
         
-        // Check if this drawer should use overlay mode
-        BOOL useOverlayMode = (drawerSide == MMDrawerSideLeft) ? 
-                            self.openAboveScreenLeftDrawer : 
-                            self.openAboveScreenRightDrawer;
-        
-        if (useOverlayMode) {
+        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
+                             self.leftDrawerOpenMode : 
+                             self.rightDrawerOpenMode;
+
+        if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
             UIViewController *drawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
             if (!drawerViewController) {
@@ -1593,12 +1590,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             }
         }
         
-        // Check if this drawer should use overlay mode
-        BOOL useOverlayMode = (drawerSide == MMDrawerSideLeft) ? 
-                            self.openAboveScreenLeftDrawer : 
-                            self.openAboveScreenRightDrawer;
-        
-        if (useOverlayMode) {
+        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
+                             self.leftDrawerOpenMode : 
+                             self.rightDrawerOpenMode;
+
+        if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
             // Get drawer view controller
             UIViewController *drawerVC = [self sideDrawerViewControllerForSide:drawerSide];
@@ -1829,17 +1825,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     }
 }
 
-- (BOOL)shouldOpenAboveScreenForSide:(MMDrawerSide)drawerSide {
-    switch (drawerSide) {
-    case MMDrawerSideLeft:
-        return self.openAboveScreenLeftDrawer;
-        break;
-    case MMDrawerSideRight:
-        return self.openAboveScreenRightDrawer;
-        break;
-    default:
-        return NO;
-        break;
+- (void)side:(MMDrawerSide)drawerSide openMode:(MMDrawerOpenMode)openMode {
+    if (drawerSide == MMDrawerSideLeft) {
+        self.leftDrawerOpenMode = openMode;
+    } else if (drawerSide == MMDrawerSideRight) {
+        self.rightDrawerOpenMode = openMode;
     }
 }
 

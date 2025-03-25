@@ -350,7 +350,7 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           options: {
             sideMenu: {
               left: {
-                openAboveScreen: true,
+                openMode: 'aboveContent',
               },
             },
           },
@@ -383,7 +383,7 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           options: {
             sideMenu: {
               right: {
-                openAboveScreen: true,
+                openMode: 'aboveContent',
               },
             },
           },

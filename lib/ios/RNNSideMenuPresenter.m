@@ -1,5 +1,6 @@
 #import "RNNSideMenuPresenter.h"
 #import "RNNSideMenuController.h"
+#import "RNNSideMenuSideOptions.h"
 
 @implementation RNNSideMenuPresenter
 
@@ -53,10 +54,22 @@
     [self.sideMenuController.view
         setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
 
-    [self.sideMenuController
-        setOpenAboveScreenLeftDrawer:[withDefault.sideMenu.left.openAboveScreen withDefault:NO]];
-    [self.sideMenuController
-        setOpenAboveScreenRightDrawer:[withDefault.sideMenu.right.openAboveScreen withDefault:NO]];
+    if (withDefault.sideMenu.left.openMode.hasValue) {
+        NSString *openModeString = withDefault.sideMenu.left.openMode.get;
+        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
+        [self.sideMenuController side:MMDrawerSideLeft openMode:openMode];
+    } else {
+        [self.sideMenuController side:MMDrawerSideLeft openMode:MMDrawerOpenModePushContent];
+    }
+
+    if (withDefault.sideMenu.right.openMode.hasValue) {
+        NSString *openModeString = withDefault.sideMenu.right.openMode.get;
+        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
+        [self.sideMenuController side:MMDrawerSideRight openMode:openMode];
+    } else {
+        [self.sideMenuController side:MMDrawerSideRight openMode:MMDrawerOpenModePushContent];
+    }
+
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -117,14 +130,16 @@
             options.sideMenu.right.shouldStretchDrawer.get;
     }
 
-    if (options.sideMenu.left.openAboveScreen.hasValue) {
-        self.sideMenuController.openAboveScreenLeftDrawer =
-            options.sideMenu.left.openAboveScreen.get;
+    if (options.sideMenu.left.openMode.hasValue) {
+        NSString *openModeString = options.sideMenu.left.openMode.get;
+        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
+        [self.sideMenuController side:MMDrawerSideLeft openMode:openMode];
     }
 
-    if (options.sideMenu.right.openAboveScreen.hasValue) {
-        self.sideMenuController.openAboveScreenRightDrawer =
-            options.sideMenu.right.openAboveScreen.get;
+    if (options.sideMenu.right.openMode.hasValue) {
+        NSString *openModeString = options.sideMenu.right.openMode.get;
+        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
+        [self.sideMenuController side:MMDrawerSideRight openMode:openMode];
     }
 
     if (options.sideMenu.left.animationVelocity.hasValue) {
