@@ -347,6 +347,13 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
               },
             },
           },
+          options: {
+            sideMenu: {
+              left: {
+                openAboveScreen: true,
+              },
+            },
+          },
         },
       },
     });
@@ -370,6 +377,13 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
                     waitForRender: true,
                   },
                 },
+              },
+            },
+          },
+          options: {
+            sideMenu: {
+              right: {
+                openAboveScreen: true,
               },
             },
           },

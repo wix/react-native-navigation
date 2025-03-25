@@ -52,6 +52,11 @@
 
     [self.sideMenuController.view
         setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
+
+    [self.sideMenuController
+        setOpenAboveScreenLeftDrawer:[withDefault.sideMenu.left.openAboveScreen withDefault:NO]];
+    [self.sideMenuController
+        setOpenAboveScreenRightDrawer:[withDefault.sideMenu.right.openAboveScreen withDefault:NO]];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {
@@ -110,6 +115,16 @@
     if (options.sideMenu.right.shouldStretchDrawer.hasValue) {
         self.sideMenuController.shouldStretchRightDrawer =
             options.sideMenu.right.shouldStretchDrawer.get;
+    }
+
+    if (options.sideMenu.left.openAboveScreen.hasValue) {
+        self.sideMenuController.openAboveScreenLeftDrawer =
+            options.sideMenu.left.openAboveScreen.get;
+    }
+
+    if (options.sideMenu.right.openAboveScreen.hasValue) {
+        self.sideMenuController.openAboveScreenRightDrawer =
+            options.sideMenu.right.openAboveScreen.get;
     }
 
     if (options.sideMenu.left.animationVelocity.hasValue) {

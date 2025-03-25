@@ -214,6 +214,15 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
 @property(nonatomic, assign) BOOL shouldStretchRightDrawer;
 
 /**
+ A boolean that determines whether or not to open the drawer above the screen.
+
+ By default, this value is set to NO.
+ Enabling `openAboveScreen` will make the drawer open above the center view instead of pushing it aside.
+ */
+@property(nonatomic, assign) BOOL openAboveScreenLeftDrawer;
+@property(nonatomic, assign) BOOL openAboveScreenRightDrawer;
+
+/**
  The current open side of the drawer.
 
  Note this value will change as soon as a pan gesture opens a drawer, or when a open/close animation
@@ -302,11 +311,6 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController *dra
  By default, this is set `[UIColor blackColor]`.
  */
 @property(nonatomic, strong) UIColor *statusBarViewBackgroundColor;
-
-/**
- Whether the side menu opens above the screen instead of pushing it aside.
- */
- @property (nonatomic, assign) BOOL openAboveScreen;
 
 /**
  The value determining panning range of centerView's bezel if the user can open drawer with

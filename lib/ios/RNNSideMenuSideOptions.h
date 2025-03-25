@@ -8,5 +8,6 @@
 @property(nonatomic, strong) Double *width;
 @property(nonatomic, strong) Bool *shouldStretchDrawer;
 @property(nonatomic, strong) Double *animationVelocity;
+@property(nonatomic, strong) Bool *openAboveScreen;
 
 @end

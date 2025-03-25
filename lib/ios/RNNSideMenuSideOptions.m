@@ -10,6 +10,7 @@
     self.width = [DoubleParser parse:dict key:@"width"];
     self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
     self.animationVelocity = [DoubleParser parse:dict key:@"animationVelocity"];
+    self.openAboveScreen = [BoolParser parse:dict key:@"openAboveScreen"];
 
     return self;
 }
@@ -25,6 +26,8 @@
         self.shouldStretchDrawer = options.shouldStretchDrawer;
     if (options.animationVelocity.hasValue)
         self.animationVelocity = options.animationVelocity;
+    if (options.openAboveScreen.hasValue)
+        self.openAboveScreen = options.openAboveScreen;
 }
 
 @end

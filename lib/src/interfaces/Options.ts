@@ -1082,6 +1082,13 @@ export interface SideMenuSide {
    * @default true
    */
   shouldStretchDrawer?: boolean;
+  /**
+   * Configure the opening way of the side menu
+   * #### (iOS specific)
+   * @default false
+
+   */
+  openAboveScreen?: boolean;
 }
 
 export interface OptionsSideMenu {
