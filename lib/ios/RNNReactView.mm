@@ -5,11 +5,15 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #import <React/RCTFabricSurface.h>
-#import <React/RCTSurfacePresenterStub.h>
+#import <React/RCTSurfacePresenter.h>
+
 #endif
 
 @implementation RNNReactView {
     BOOL _isAppeared;
+    BOOL _isMounted;
+    BOOL _pendingWillAppear;
+    BOOL _pendingDidAppear;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -57,7 +61,7 @@
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName
                                                 initialProperties:initialProperties];
-
+             host.surfacePresenter.mountingManager.delegate = self;
     self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
 
     _reactViewReadyBlock = reactViewReadyBlock;
@@ -96,7 +100,9 @@
 }
 
 - (void)componentWillAppear {
-    if (!_isAppeared) {
+    if (!_isMounted) {
+        _pendingWillAppear = YES;
+    } else if (!_isAppeared) {
         [_eventEmitter sendComponentWillAppear:self.componentId
                                  componentName:self.moduleName
                                  componentType:self.componentType];
@@ -104,13 +110,15 @@
 }
 
 - (void)componentDidAppear {
-    if (!_isAppeared) {
+    if (!_isMounted) {
+        _pendingDidAppear = YES;
+    } else if (!_isAppeared) {
         [_eventEmitter sendComponentDidAppear:self.componentId
                                 componentName:self.moduleName
                                 componentType:self.componentType];
+    
+        _isAppeared = YES;
     }
-
-    _isAppeared = YES;
 }
 
 - (void)componentDidDisappear {
@@ -124,6 +132,24 @@
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
+
+- (void)mountingManager:(RCTMountingManager *)mountingManager willMountComponentsWithRootTag:(ReactTag)rootTag {
+    if (self.surface.rootTag == rootTag) {
+        _isMounted = YES;
+        if (_pendingWillAppear) {
+            [self componentWillAppear];
+        }
+    }
+}
+    
+- (void)mountingManager:(RCTMountingManager *)mountingManager didMountComponentsWithRootTag:(ReactTag)rootTag {
+    if (self.surface.rootTag == rootTag) {
+        if (_pendingDidAppear) {
+            [self componentDidAppear];
+        }
+    }
+}
+    
 - (NSDictionary *)appProperties {
     @synchronized(self) {
         return self.surface.properties;
