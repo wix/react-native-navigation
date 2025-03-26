@@ -3,9 +3,9 @@
 #import <React/RCTRootContentView.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
+#import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #import <React/RCTFabricSurface.h>
 #import <React/RCTSurfacePresenterStub.h>
-#import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #endif
 
 @implementation RNNReactView {
@@ -18,11 +18,12 @@
              initialProperties:(NSDictionary *)initialProperties
                   eventEmitter:(RNNEventEmitter *)eventEmitter
                sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
-                      reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-             RCTFabricSurface *surface = [[RCTFabricSurface alloc] initWithSurfacePresenter:(RCTSurfacePresenter *)bridge.surfacePresenter
-                                                                                 moduleName:moduleName
-                                                                          initialProperties:initialProperties];
-  self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
+           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    RCTFabricSurface *surface = [[RCTFabricSurface alloc]
+        initWithSurfacePresenter:(RCTSurfacePresenter *)bridge.surfacePresenter
+                      moduleName:moduleName
+               initialProperties:initialProperties];
+    self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
 #else
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
@@ -35,14 +36,13 @@
     _reactViewReadyBlock = reactViewReadyBlock;
     _eventEmitter = eventEmitter;
 
-
 #ifdef RCT_NEW_ARCH_ENABLED
     [surface start];
 #else
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(contentDidAppear:)
-                                          name:RCTContentDidAppearNotification
-                                          object:nil];
+                                             selector:@selector(contentDidAppear:)
+                                                 name:RCTContentDidAppearNotification
+                                               object:nil];
 #endif
 
     return self;
@@ -50,19 +50,18 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (instancetype)initWithHost:(RCTHost *)host
-                    moduleName:(NSString *)moduleName
-             initialProperties:(NSDictionary *)initialProperties
-                  eventEmitter:(RNNEventEmitter *)eventEmitter
-               sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
-           reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
-    RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName initialProperties: initialProperties];
+                  moduleName:(NSString *)moduleName
+           initialProperties:(NSDictionary *)initialProperties
+                eventEmitter:(RNNEventEmitter *)eventEmitter
+             sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
+         reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName
+                                                initialProperties:initialProperties];
 
     self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
 
     _reactViewReadyBlock = reactViewReadyBlock;
     _eventEmitter = eventEmitter;
-
-    [self reactViewReady];
 
     return self;
 }
@@ -70,12 +69,11 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #pragma mark - RCTSurfaceDelegate
-- (void)surface:(__unused RCTSurface *)surface didChangeStage:(RCTSurfaceStage)stage
-{
-  RCTExecuteOnMainQueue(^{
+- (void)surface:(__unused RCTSurface *)surface didChangeStage:(RCTSurfaceStage)stage {
+    RCTExecuteOnMainQueue(^{
       [super surface:surface didChangeStage:stage];
       [self reactViewReady];
-  });
+    });
 }
 #else
 
@@ -127,15 +125,13 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (NSDictionary *)appProperties {
-    @synchronized (self) {
+    @synchronized(self) {
         return self.surface.properties;
     }
 }
 
-- (void)setAppProperties:(NSDictionary *)newValue
-{
-    @synchronized (self)
-    {
+- (void)setAppProperties:(NSDictionary *)newValue {
+    @synchronized(self) {
         self.surface.properties = newValue;
     }
 }
@@ -145,10 +141,8 @@
     return self.surface.delegate;
 }
 
-- (void)setDelegate:(id<RCTSurfaceDelegate>)newValue
-{
-    @synchronized (self)
-    {
+- (void)setDelegate:(id<RCTSurfaceDelegate>)newValue {
+    @synchronized(self) {
         self.surface.delegate = newValue;
     }
 }
@@ -157,24 +151,20 @@
     return self.surface.moduleName;
 }
 
-- (UIView *)view
-{
+- (UIView *)view {
     return (UIView *)super.surface.view;
 }
 
-- (UIView *)contentView
-{
+- (UIView *)contentView {
     return self;
 }
 
-- (RCTRootViewSizeFlexibility)sizeFlexibility
-{
+- (RCTRootViewSizeFlexibility)sizeFlexibility {
     return convertToRootViewSizeFlexibility(super.sizeMeasureMode);
 }
 
-- (void)setSizeFlexibility:(RCTRootViewSizeFlexibility)sizeFlexibility
-{
-   super.sizeMeasureMode = convertToSurfaceSizeMeasureMode(sizeFlexibility);
+- (void)setSizeFlexibility:(RCTRootViewSizeFlexibility)sizeFlexibility {
+    super.sizeMeasureMode = convertToSurfaceSizeMeasureMode(sizeFlexibility);
 }
 
 #endif
