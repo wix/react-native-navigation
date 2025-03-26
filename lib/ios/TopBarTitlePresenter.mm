@@ -89,8 +89,6 @@
 
         viewController.navigationItem.titleView = nil;
         viewController.navigationItem.titleView = _customTitleView;
-        [_customTitleView componentWillAppear];
-        [_customTitleView componentDidAppear];
     } else {
         [_customTitleView removeFromSuperview];
         if (readyBlock) {

@@ -13,6 +13,8 @@
     BOOL _isMounted;
     BOOL _pendingWillAppear;
     BOOL _pendingDidAppear;
+    BOOL _willAppearOnce;
+    BOOL _didAppearOnce;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -99,15 +101,12 @@
 }
 
 - (void)componentWillAppear {
-    if (!_isMounted) {
-        _pendingWillAppear = YES;
-        return;
+    if (!_willAppearOnce) {
+        [_eventEmitter sendComponentWillAppear:self.componentId
+                                 componentName:self.moduleName
+                                 componentType:self.componentType];
+        _willAppearOnce = YES;
     }
-    
-    _pendingWillAppear = NO;
-    [_eventEmitter sendComponentWillAppear:self.componentId
-                             componentName:self.moduleName
-                             componentType:self.componentType];
 }
 
 - (void)componentDidAppear {
@@ -117,9 +116,12 @@
     }
     
     _pendingDidAppear = NO;
-    [_eventEmitter sendComponentDidAppear:self.componentId
-                            componentName:self.moduleName
-                            componentType:self.componentType];
+    if (!_didAppearOnce) {
+        [_eventEmitter sendComponentDidAppear:self.componentId
+                                componentName:self.moduleName
+                                componentType:self.componentType];
+        _didAppearOnce = YES;
+    }
 }
 
 - (void)componentDidDisappear {
@@ -179,7 +181,7 @@
 }
 
 - (UIView *)contentView {
-    return self;
+   return self;
 }
 
 - (RCTRootViewSizeFlexibility)sizeFlexibility {
