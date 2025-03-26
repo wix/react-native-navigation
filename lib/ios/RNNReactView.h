@@ -1,6 +1,6 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTSurfaceHostingProxyRootView.h>
-#import <React/RCTMountingManager.h>
+#import <React/RCTSurfacePresenterStub.h>
 #else
 #import <React/RCTRootView.h>
 #endif
@@ -66,7 +66,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 #ifdef RCT_NEW_ARCH_ENABLED
 @interface RNNReactView
-: RCTSurfaceHostingView <RNNComponentProtocol, RCTSurfaceDelegate, RCTMountingManagerDelegate>
+: RCTSurfaceHostingView <RNNComponentProtocol, RCTSurfaceDelegate, RCTSurfacePresenterObserver>
 #else
 @interface RNNReactView : RCTRootView <RCTRootViewDelegate, RNNComponentProtocol>
 #endif

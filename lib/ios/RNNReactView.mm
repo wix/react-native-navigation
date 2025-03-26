@@ -61,7 +61,7 @@
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName
                                                 initialProperties:initialProperties];
-             host.surfacePresenter.mountingManager.delegate = self;
+             [host.surfacePresenter addObserver:self];
     self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
 
     _reactViewReadyBlock = reactViewReadyBlock;
@@ -122,28 +122,26 @@
 }
 
 - (void)componentDidDisappear {
-    if (_isAppeared) {
-        [_eventEmitter sendComponentDidDisappear:self.componentId
-                                   componentName:self.moduleName
-                                   componentType:self.componentType];
-    }
+    [_eventEmitter sendComponentDidDisappear:self.componentId
+                               componentName:self.moduleName
+                               componentType:self.componentType];
 
     _isAppeared = NO;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
-- (void)mountingManager:(RCTMountingManager *)mountingManager willMountComponentsWithRootTag:(ReactTag)rootTag {
+- (void)willMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
-        _isMounted = YES;
         if (_pendingWillAppear) {
             [self componentWillAppear];
         }
     }
 }
     
-- (void)mountingManager:(RCTMountingManager *)mountingManager didMountComponentsWithRootTag:(ReactTag)rootTag {
+- (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
+        _isMounted = YES;
         if (_pendingDidAppear) {
             [self componentDidAppear];
         }
