@@ -10,7 +10,6 @@
 #endif
 
 @implementation RNNReactView {
-    BOOL _isAppeared;
     BOOL _isMounted;
     BOOL _pendingWillAppear;
     BOOL _pendingDidAppear;
@@ -102,31 +101,31 @@
 - (void)componentWillAppear {
     if (!_isMounted) {
         _pendingWillAppear = YES;
-    } else if (!_isAppeared) {
-        [_eventEmitter sendComponentWillAppear:self.componentId
-                                 componentName:self.moduleName
-                                 componentType:self.componentType];
+        return;
     }
+    
+    _pendingWillAppear = NO;
+    [_eventEmitter sendComponentWillAppear:self.componentId
+                             componentName:self.moduleName
+                             componentType:self.componentType];
 }
 
 - (void)componentDidAppear {
     if (!_isMounted) {
         _pendingDidAppear = YES;
-    } else if (!_isAppeared) {
-        [_eventEmitter sendComponentDidAppear:self.componentId
-                                componentName:self.moduleName
-                                componentType:self.componentType];
-    
-        _isAppeared = YES;
+        return;
     }
+    
+    _pendingDidAppear = NO;
+    [_eventEmitter sendComponentDidAppear:self.componentId
+                            componentName:self.moduleName
+                            componentType:self.componentType];
 }
 
 - (void)componentDidDisappear {
     [_eventEmitter sendComponentDidDisappear:self.componentId
                                componentName:self.moduleName
                                componentType:self.componentType];
-
-    _isAppeared = NO;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
