@@ -92,31 +92,6 @@
                            onPress:(RNNButtonPressCallback)onPress {
     self = [super initWithCustomView:reactView];
     [self applyOptions:buttonOptions];
-    reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-    reactView.hidden = CGRectEqualToRect(reactView.frame, CGRectZero);
-
-    [NSLayoutConstraint deactivateConstraints:reactView.constraints];
-    self.widthConstraint =
-        [NSLayoutConstraint constraintWithItem:reactView
-                                     attribute:NSLayoutAttributeWidth
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1.0
-                                      constant:reactView.intrinsicContentSize.width];
-    self.heightConstraint =
-        [NSLayoutConstraint constraintWithItem:reactView
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1.0
-                                      constant:reactView.intrinsicContentSize.height];
-    [NSLayoutConstraint activateConstraints:@[ self.widthConstraint, self.heightConstraint ]];
-    reactView.delegate = self;
-
-    reactView.backgroundColor = [UIColor clearColor];
-
     self.onPress = onPress;
     return self;
 }
