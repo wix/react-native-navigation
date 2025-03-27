@@ -93,8 +93,8 @@ typedef union {
     CGContextRelease(imageContext);
 
     BOOL imageEqual = YES;
-    FBComparePixel *p1 = referenceImagePixels;
-    FBComparePixel *p2 = imagePixels;
+	auto *p1 = static_cast<FBComparePixel *>(referenceImagePixels);
+	auto *p2 = static_cast<FBComparePixel *>(imagePixels);
 
     // Do a fast compare if we can
     if (overallTolerance == 0 && perPixelTolerance == 0) {
