@@ -17,6 +17,8 @@ const {
   SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITH_BUTTONS,
+  SET_ROOT_WITH_RIGHT_MENU,
+  SET_ROOT_WITH_LEFT_MENU,
   ROUND_BUTTON,
 } = testIDs;
 
@@ -88,12 +90,12 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
         />
         <Button
           label="Set Root with left menu"
-          testID={SET_ROOT_WITH_BUTTONS}
+          testID={SET_ROOT_WITH_LEFT_MENU}
           onPress={this.setRootWithLeftMenu}
         />
         <Button
           label="Set Root with right menu"
-          testID={SET_ROOT_WITH_BUTTONS}
+          testID={SET_ROOT_WITH_RIGHT_MENU}
           onPress={this.setRootWithRightMenu}
         />
       </Root>
