@@ -1183,8 +1183,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         _openSide = openSide;
         [self.centerContainerView setOpenSide:openSide];
         if (openSide == MMDrawerSideNone) {
-//            [self.leftDrawerViewController.view setHidden:YES];
-//            [self.rightDrawerViewController.view setHidden:YES];
+            [self.leftDrawerViewController.view setHidden:YES];
+            [self.rightDrawerViewController.view setHidden:YES];
         }
         [self setNeedsStatusBarAppearanceUpdateIfSupported];
     }

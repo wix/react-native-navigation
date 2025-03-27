@@ -125,7 +125,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
   };
 
   sideMenu = () =>
-    Navigation.push(this.props.componentId, {
+    Navigation.showModal({
       sideMenu: {
         left: {
           component: {
@@ -145,12 +145,12 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
             name: Screens.SideMenuRight,
           },
         },
-        // options: {
-        //   layout: {
-        //     orientation: ['portrait', 'landscape'],
-        //   },
-        //   // modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
-        // },
+        options: {
+          layout: {
+            orientation: ['portrait', 'landscape'],
+          },
+          modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
+        },
       },
     });
 

@@ -336,15 +336,22 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
             },
           },
           center: {
-            component: {
-              name: Screens.SideMenuCenter,
-              options: {
-                animations: {
-                  setRoot: {
-                    waitForRender: true,
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: Screens.SideMenuCenter,
+                    id: 'SideMenuCenter',
+                    options: {
+                      animations: {
+                        setRoot: {
+                          waitForRender: true,
+                        },
+                      },
+                    },
                   },
                 },
-              },
+              ],
             },
           },
           options: {
@@ -369,15 +376,22 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
             },
           },
           center: {
-            component: {
-              name: Screens.SideMenuCenter,
-              options: {
-                animations: {
-                  setRoot: {
-                    waitForRender: true,
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: Screens.SideMenuCenter,
+                    id: 'SideMenuCenter',
+                    options: {
+                      animations: {
+                        setRoot: {
+                          waitForRender: true,
+                        },
+                      },
+                    },
                   },
                 },
-              },
+              ],
             },
           },
           options: {
