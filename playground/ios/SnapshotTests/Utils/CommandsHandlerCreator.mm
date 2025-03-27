@@ -1,6 +1,6 @@
 #import "CommandsHandlerCreator.h"
 #import "RNNTestRootViewCreator.h"
-#import <ReactNativeNavigation/RNNControllerFactory.h>
+#import <ReactNativeNavigation/RNNViewControllerFactory.h>
 #import <ReactNativeNavigation/RNNEventEmitter.h>
 #import <ReactNativeNavigation/RNNLayoutManager.h>
 #import <ReactNativeNavigation/RNNModalManager.h>
@@ -15,15 +15,15 @@
     RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
     RNNOverlayManager *overlayManager = [RNNOverlayManager new];
     RNNModalManager *modalManager = [RNNModalManager new];
-    RNNControllerFactory *controllerFactory =
-        [[RNNControllerFactory alloc] initWithRootViewCreator:creator
+	RNNViewControllerFactory *controllerFactory =
+        [[RNNViewControllerFactory alloc] initWithRootViewCreator:creator
                                                  eventEmitter:eventEmmiter
                                                         store:nil
                                             componentRegistry:nil
                                                     andBridge:nil
                                   bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
     RNNCommandsHandler *commandsHandler =
-        [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory
+        [[RNNCommandsHandler alloc] initWithViewControllerFactory:controllerFactory
                                                 layoutManager:layoutManager
                                                  eventEmitter:eventEmmiter
                                                  modalManager:modalManager
