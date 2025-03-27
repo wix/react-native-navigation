@@ -175,15 +175,15 @@
 }
 
 - (void)notifyWillAppear {
-//    if ([self.customView isKindOfClass:[RNNReactView class]]) {
-//        [((RNNReactView *)self.customView) componentWillAppear];
-//    }
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentWillAppear];
+    }
 }
 
 - (void)notifyDidAppear {
-//    if ([self.customView isKindOfClass:[RNNReactView class]]) {
-//        [((RNNReactView *)self.customView) componentDidAppear];
-//    }
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentDidAppear];
+    }
 }
 
 - (void)notifyDidDisappear {

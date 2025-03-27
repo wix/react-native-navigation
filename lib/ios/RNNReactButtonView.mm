@@ -1,8 +1,6 @@
 #import "RNNReactButtonView.h"
 
-@implementation RNNReactButtonView {
-    BOOL _didAppearOnce;
-}
+@implementation RNNReactButtonView
 
 - (instancetype)initWithHost:(RCTHost *)host
                   moduleName:(NSString *)moduleName
@@ -17,23 +15,10 @@
     return self;
 }
 
-- (void)willMountComponentsWithRootTag:(NSInteger)rootTag {
-    if (self.surface.rootTag == rootTag) {
-        [super willMountComponentsWithRootTag:rootTag];
-        if (!_didAppearOnce) {
-            [self componentWillAppear];
-        }
-    }
-}
-
 - (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
         [super didMountComponentsWithRootTag:rootTag];
         [self sizeToFit];
-        if (!_didAppearOnce) {
-            [self componentDidAppear];
-            _didAppearOnce = YES;
-        }
     }
 }
 

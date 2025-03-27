@@ -11,10 +11,9 @@
 
 @implementation RNNReactView {
     BOOL _isMounted;
-    BOOL _pendingWillAppear;
     BOOL _pendingDidAppear;
-    BOOL _willAppearOnce;
-    BOOL _didAppearOnce;
+    BOOL _didAppear;
+    BOOL _willAppear;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -101,11 +100,12 @@
 }
 
 - (void)componentWillAppear {
-    if (!_willAppearOnce) {
+    if (!_willAppear) {
         [_eventEmitter sendComponentWillAppear:self.componentId
                                  componentName:self.moduleName
                                  componentType:self.componentType];
-        _willAppearOnce = YES;
+        
+        _willAppear = YES;
     }
 }
 
@@ -116,11 +116,11 @@
     }
     
     _pendingDidAppear = NO;
-    if (!_didAppearOnce) {
+    if (!_didAppear) {
         [_eventEmitter sendComponentDidAppear:self.componentId
                                 componentName:self.moduleName
                                 componentType:self.componentType];
-        _didAppearOnce = YES;
+        _didAppear = YES;
     }
 }
 
@@ -128,18 +128,12 @@
     [_eventEmitter sendComponentDidDisappear:self.componentId
                                componentName:self.moduleName
                                componentType:self.componentType];
+    _willAppear = NO;
+    _didAppear = NO;
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
-- (void)willMountComponentsWithRootTag:(NSInteger)rootTag {
-    if (self.surface.rootTag == rootTag) {
-        if (_pendingWillAppear) {
-            [self componentWillAppear];
-        }
-    }
-}
-    
 - (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
         _isMounted = YES;
