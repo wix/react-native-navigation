@@ -23,21 +23,21 @@
 		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.mm */; };
 		502734AF24F3E9BA0022163C /* ColorParserTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.mm */; };
 		503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */; };
-		50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */; };
-		50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */; };
+		50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */; };
+		50418978250788AE004A6BC7 /* FBSnapshotTestController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */; };
 		5041897A250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */; };
-		5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */; };
-		5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418971250788AE004A6BC7 /* UIImage+Snapshot.m */; };
-		5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.m */; };
-		5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.m */; };
+		5041897B250788AE004A6BC7 /* FBSnapshotTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */; };
+		5041897C250788AE004A6BC7 /* UIImage+Snapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */; };
+		5041897D250788AE004A6BC7 /* UIImage+Compare.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.mm */; };
+		5041897E250788AE004A6BC7 /* UIImage+Diff.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.mm */; };
 		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */; };
 		5064A388256A85EB00D7AC84 /* NSArray+utilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */; };
-		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
+		50650A23242FB0F800688104 /* CommandsHandlerCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */; };
 		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */; };
 		507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
-		507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E4888A2427DA4800B11A8E /* StackOptionsTest.m */; };
+		507C80E7242914C800F765F7 /* StackOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */; };
 		507C80E8242A1E6F00F765F7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 507C80EB242BC6FB00F765F7 /* LayoutCreator.m */; };
+		507C80EC242BC6FB00F765F7 /* LayoutCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */; };
 		50996C6823AA477400008F89 /* RNNRootViewControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50996C6723AA477400008F89 /* RNNRootViewControllerTest.mm */; };
 		50996C6923AA487800008F89 /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
 		50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.mm */; };
@@ -131,29 +131,29 @@
 		502734AE24F3E9110022163C /* ColorParserTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorParserTest.mm; sourceTree = "<group>"; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNModalManagerEventHandlerTest.mm; sourceTree = "<group>"; };
-		50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
+		50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestCasePlatform.mm; sourceTree = "<group>"; };
 		50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCase.h; sourceTree = "<group>"; };
-		5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestController.m; sourceTree = "<group>"; };
+		5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestController.mm; sourceTree = "<group>"; };
 		5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FBSnapshotTestCase-Info.plist"; sourceTree = "<group>"; };
-		5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCase.m; sourceTree = "<group>"; };
+		5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestCase.mm; sourceTree = "<group>"; };
 		5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCasePlatform.h; sourceTree = "<group>"; };
 		50418970250788AE004A6BC7 /* UIImage+Diff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Diff.h"; sourceTree = "<group>"; };
-		50418971250788AE004A6BC7 /* UIImage+Snapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Snapshot.m"; sourceTree = "<group>"; };
-		50418972250788AE004A6BC7 /* UIImage+Compare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Compare.m"; sourceTree = "<group>"; };
-		50418973250788AE004A6BC7 /* UIImage+Diff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Diff.m"; sourceTree = "<group>"; };
+		50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Snapshot.mm"; sourceTree = "<group>"; };
+		50418972250788AE004A6BC7 /* UIImage+Compare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Compare.mm"; sourceTree = "<group>"; };
+		50418973250788AE004A6BC7 /* UIImage+Diff.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Diff.mm"; sourceTree = "<group>"; };
 		50418974250788AE004A6BC7 /* UIImage+Compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compare.h"; sourceTree = "<group>"; };
 		50418975250788AE004A6BC7 /* UIImage+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Snapshot.h"; sourceTree = "<group>"; };
 		50418976250788AE004A6BC7 /* FBSnapshotTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestController.h; sourceTree = "<group>"; };
 		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNExternalViewControllerTests.mm; sourceTree = "<group>"; };
 		5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+utilsTest.mm"; sourceTree = "<group>"; usesTabs = 0; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
-		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
+		50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CommandsHandlerCreator.mm; sourceTree = "<group>"; };
 		5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
 		5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestingAppDelegate.mm; sourceTree = "<group>"; };
 		507C80DA2429111F00F765F7 /* SnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		507C80DE2429111F00F765F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507C80EA242BC6FB00F765F7 /* LayoutCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutCreator.h; sourceTree = "<group>"; };
-		507C80EB242BC6FB00F765F7 /* LayoutCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutCreator.m; sourceTree = "<group>"; };
+		507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LayoutCreator.mm; sourceTree = "<group>"; };
 		50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationIOS12Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50996C6123AA46DD00008F89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50996C6723AA477400008F89 /* RNNRootViewControllerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNRootViewControllerTest.mm; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 		50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RNNComponentViewController+Utils.mm"; sourceTree = "<group>"; };
 		50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNBottomTabsController+Helpers.h"; sourceTree = "<group>"; };
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RNNBottomTabsController+Helpers.mm"; sourceTree = "<group>"; };
-		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
+		50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StackOptionsTest.mm; sourceTree = "<group>"; };
 		50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSearchBarOptionsTest.mm; sourceTree = "<group>"; };
 		60BCFCC02B7F812F00FCDB38 /* libLLVM.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLLVM.dylib; path = usr/lib/libLLVM.dylib; sourceTree = SDKROOT; };
 		60BCFCCA2B7F817400FCDB38 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -285,11 +285,11 @@
 		50418967250788AE004A6BC7 /* FBSnapshotTestCase */ = {
 			isa = PBXGroup;
 			children = (
-				50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */,
+				50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */,
 				50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */,
-				5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */,
+				5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */,
 				5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */,
-				5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */,
+				5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */,
 				5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */,
 				5041896F250788AE004A6BC7 /* Categories */,
 				50418976250788AE004A6BC7 /* FBSnapshotTestController.h */,
@@ -301,9 +301,9 @@
 			isa = PBXGroup;
 			children = (
 				50418970250788AE004A6BC7 /* UIImage+Diff.h */,
-				50418971250788AE004A6BC7 /* UIImage+Snapshot.m */,
-				50418972250788AE004A6BC7 /* UIImage+Compare.m */,
-				50418973250788AE004A6BC7 /* UIImage+Diff.m */,
+				50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */,
+				50418972250788AE004A6BC7 /* UIImage+Compare.mm */,
+				50418973250788AE004A6BC7 /* UIImage+Diff.mm */,
 				50418974250788AE004A6BC7 /* UIImage+Compare.h */,
 				50418975250788AE004A6BC7 /* UIImage+Snapshot.h */,
 			);
@@ -315,7 +315,7 @@
 			children = (
 				50418967250788AE004A6BC7 /* FBSnapshotTestCase */,
 				507C80E9242BC6E200F765F7 /* Utils */,
-				50E4888A2427DA4800B11A8E /* StackOptionsTest.m */,
+				50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */,
 				507C80DE2429111F00F765F7 /* Info.plist */,
 			);
 			path = SnapshotTests;
@@ -325,9 +325,9 @@
 			isa = PBXGroup;
 			children = (
 				507C80EA242BC6FB00F765F7 /* LayoutCreator.h */,
-				507C80EB242BC6FB00F765F7 /* LayoutCreator.m */,
+				507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */,
 				50650A21242FB0F800688104 /* CommandsHandlerCreator.h */,
-				50650A22242FB0F800688104 /* CommandsHandlerCreator.m */,
+				50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -935,19 +935,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */,
+				50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm in Sources */,
 				5007B4362472D3CC0002AA4E /* RNNCustomViewController.mm in Sources */,
 				5007B4352472D3C90002AA4E /* RNNNativeViewController.mm in Sources */,
-				5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */,
+				5041897E250788AE004A6BC7 /* UIImage+Diff.mm in Sources */,
 				507C80E8242A1E6F00F765F7 /* AppDelegate.mm in Sources */,
-				5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */,
-				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
-				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
+				5041897C250788AE004A6BC7 /* UIImage+Snapshot.mm in Sources */,
+				507C80EC242BC6FB00F765F7 /* LayoutCreator.mm in Sources */,
+				507C80E7242914C800F765F7 /* StackOptionsTest.mm in Sources */,
 				507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.mm in Sources */,
-				50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */,
-				5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */,
-				5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */,
-				50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */,
+				50650A23242FB0F800688104 /* CommandsHandlerCreator.mm in Sources */,
+				5041897D250788AE004A6BC7 /* UIImage+Compare.mm in Sources */,
+				5041897B250788AE004A6BC7 /* FBSnapshotTestCase.mm in Sources */,
+				50418978250788AE004A6BC7 /* FBSnapshotTestController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
