@@ -1082,6 +1082,13 @@ export interface SideMenuSide {
    * @default true
    */
   shouldStretchDrawer?: boolean;
+  /**
+   * Configure the opening mode of the side menu
+   * #### (iOS specific)
+   * @default 'pushContent'
+
+   */
+  openMode?: 'pushContent' | 'aboveContent';
 }
 
 export interface OptionsSideMenu {
