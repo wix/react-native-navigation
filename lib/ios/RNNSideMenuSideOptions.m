@@ -10,7 +10,7 @@
     self.width = [DoubleParser parse:dict key:@"width"];
     self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
     self.animationVelocity = [DoubleParser parse:dict key:@"animationVelocity"];
-    self.openMode = [TextParser parse:dict key:@"openMode"];
+
     return self;
 }
 
@@ -25,24 +25,6 @@
         self.shouldStretchDrawer = options.shouldStretchDrawer;
     if (options.animationVelocity.hasValue)
         self.animationVelocity = options.animationVelocity;
-    if (options.openMode.hasValue)
-        self.openMode = options.openMode;
-}
-
-/**
- Converts a string open mode to the equivalent MMDrawerOpenMode enum value
- */
-MMDrawerOpenMode MMDrawerOpenModeFromString(NSString *openModeString) {
-    if (!openModeString) {
-        return MMDrawerOpenModePushContent; // Default
-    }
-    
-    if ([openModeString isEqualToString:@"aboveContent"]) {
-        return MMDrawerOpenModeAboveContent;
-    } else {
-        // Default or explicit "pushContent"
-        return MMDrawerOpenModePushContent;
-    }
 }
 
 @end
