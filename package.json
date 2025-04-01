@@ -260,7 +260,7 @@
     "type": "all",
     "jsSrcsDir": "./lib/src",
     "android": {
-      "javaPackageName": "wix.rnn.specs"
+      "javaPackageName": "com.reactnativenavigation.react"
     }
   }
 }
