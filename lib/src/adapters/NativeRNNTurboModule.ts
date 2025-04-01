@@ -9,8 +9,8 @@ export interface Spec extends TurboModule {
   };
 
   setRoot(commandId: string, layout: UnsafeObject): Promise<string>;
-  setDefaultOptions(options: UnsafeObject): Promise<void>;
-  mergeOptions(componentId: string, options: UnsafeObject): Promise<string>;
+  setDefaultOptions(options: UnsafeObject): void;
+  mergeOptions(componentId: string, options: UnsafeObject): void;
   push(commandId: string, componentId: string, layout: UnsafeObject): Promise<string>;
   pop(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
   popTo(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
