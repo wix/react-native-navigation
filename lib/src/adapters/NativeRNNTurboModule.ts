@@ -8,21 +8,21 @@ export interface Spec extends TurboModule {
     bottomTabsHeight: Double;
   };
 
-  setRoot(commandId: string, layout: UnsafeObject): string;
-  setDefaultOptions(options: UnsafeObject): void;
-  mergeOptions(componentId: string, options: UnsafeObject): string;
-  push(commandId: string, componentId: string, layout: UnsafeObject): string;
-  pop(commandId: string, componentId: string, options: UnsafeObject): string;
-  popTo(commandId: string, componentId: string, options: UnsafeObject): string;
-  popToRoot(commandId: string, componentId: string, options: UnsafeObject): string;
-  setStackRoot(commandId: string, componentId: string, layout: UnsafeObject): string;
-  showModal(commandId: string, layout: UnsafeObject): string;
-  dismissModal(commandId: string, componentId: string, options: UnsafeObject): void;
-  dismissAllModals(commandId: string, options: UnsafeObject): void;
-  showOverlay(commandId: string, layout: UnsafeObject): string;
-  dismissOverlay(commandId: string, componentId: string): void;
-  dismissAllOverlays(commandId: string): void;
-  getLaunchArgs(commandId: string): Array<string>;
+  setRoot(commandId: string, layout: UnsafeObject): Promise<string>;
+  setDefaultOptions(options: UnsafeObject): Promise<void>;
+  mergeOptions(componentId: string, options: UnsafeObject): Promise<string>;
+  push(commandId: string, componentId: string, layout: UnsafeObject): Promise<string>;
+  pop(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
+  popTo(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
+  popToRoot(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
+  setStackRoot(commandId: string, componentId: string, layout: UnsafeObject): Promise<string>;
+  showModal(commandId: string, layout: UnsafeObject): Promise<string>;
+  dismissModal(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
+  dismissAllModals(commandId: string, options: UnsafeObject): Promise<void>;
+  showOverlay(commandId: string, layout: UnsafeObject): Promise<string>;
+  dismissOverlay(commandId: string, componentId: string): Promise<void>;
+  dismissAllOverlays(commandId: string): Promise<void>;
+  getLaunchArgs(commandId: string): Promise<Array<string>>;
 }
 
 const isTurboModuleEnabled = (globalThis as any).__turboModuleProxy != null;
