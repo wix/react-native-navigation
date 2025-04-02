@@ -179,7 +179,7 @@ describe('Stack', () => {
   it.e2e('push promise is resolved with pushed ViewController id', async () => {
     await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();
+    await waitFor(elementByLabel('push promise resolved with: ChildId')).toBeVisible().withTimeout(1000);
     await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
   });
 
