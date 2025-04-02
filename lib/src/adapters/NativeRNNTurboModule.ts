@@ -15,7 +15,11 @@ export interface Spec extends TurboModule {
   pop(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
   popTo(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
   popToRoot(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
-  setStackRoot(commandId: string, componentId: string, layout: UnsafeObject): Promise<string>;
+  setStackRoot(
+    commandId: string,
+    componentId: string,
+    layout: Array<UnsafeObject>
+  ): Promise<string>;
   showModal(commandId: string, layout: UnsafeObject): Promise<string>;
   dismissModal(commandId: string, componentId: string, options: UnsafeObject): Promise<string>;
   dismissAllModals(commandId: string, options: UnsafeObject): Promise<void>;

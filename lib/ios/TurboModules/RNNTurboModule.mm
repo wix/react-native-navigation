@@ -32,14 +32,12 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)dismissAllOverlays:(NSString *)commandId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] dismissAllOverlays:commandId];
         resolve(nil);
     });
 }
-
 
 - (void)dismissModal:(NSString *)commandId componentId:(NSString *)componentId options:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
@@ -53,7 +51,6 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)dismissOverlay:(NSString *)commandId componentId:(NSString *)componentId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] dismissOverlay:componentId
@@ -65,21 +62,9 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)getLaunchArgs:(NSString *)commandId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     NSArray *args = [[NSProcessInfo processInfo] arguments];
     resolve(args);
-}
-
-
-- (void)mergeOptions:(NSString *)componentId options:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
-    RCTExecuteOnMainQueue(^{
-        [[RNNTurboCommandsHandler sharedInstance] mergeOptions:componentId
-                                   options:options
-                                completion:^{
-                                resolve(componentId);
-                                }];
-    });
 }
 
 
@@ -95,7 +80,6 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)popTo:(NSString *)commandId componentId:(NSString *)componentId options:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] popTo:componentId
@@ -107,7 +91,6 @@ RCT_EXPORT_MODULE()
                                              rejection:reject];
     });
 }
-
 
 - (void)popToRoot:(NSString *)commandId componentId:(NSString *)componentId options:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
@@ -121,7 +104,6 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)push:(NSString *)commandId componentId:(NSString *)componentId layout:(NSDictionary *)layout resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] push:componentId
@@ -134,16 +116,6 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
-- (void)setDefaultOptions:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
-    RCTExecuteOnMainQueue(^{
-        [[RNNTurboCommandsHandler sharedInstance] setDefaultOptions:options completion: ^() {
-            resolve(nil);
-        }];
-    });
-}
-
-
 - (void)setRoot:(NSString *)commandId layout:(NSDictionary *)layout resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] setRoot:layout
@@ -153,7 +125,6 @@ RCT_EXPORT_MODULE()
                                                 }];
     });
 }
-
 
 - (void)setStackRoot:(NSString *)commandId componentId:(NSString *)componentId layout:(NSDictionary *)layout resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
@@ -167,7 +138,6 @@ RCT_EXPORT_MODULE()
     });
 }
 
-
 - (void)showModal:(NSString *)commandId layout:(NSDictionary *)layout resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
         [[RNNTurboCommandsHandler sharedInstance] showModal:layout
@@ -177,7 +147,6 @@ RCT_EXPORT_MODULE()
                                                   }];
     });
 }
-
 
 - (void)showOverlay:(NSString *)commandId layout:(NSDictionary *)layout resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{
@@ -189,6 +158,20 @@ RCT_EXPORT_MODULE()
     });
 }
 
+- (void)mergeOptions:(NSString *)componentId options:(NSDictionary *)options { 
+    RCTExecuteOnMainQueue(^{
+        [[RNNTurboCommandsHandler sharedInstance] mergeOptions:componentId
+                                   options:options
+                                completion:^{}];
+    });
+}
+
+
+- (void)setDefaultOptions:(NSDictionary *)options { 
+    RCTExecuteOnMainQueue(^{
+        [[RNNTurboCommandsHandler sharedInstance] setDefaultOptions:options completion: ^() {}];
+    });
+}
 
 @end
 #endif
