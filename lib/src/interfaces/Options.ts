@@ -258,6 +258,7 @@ export interface OptionsTopBarTitle {
    * Font size
    */
   fontSize?: number;
+  allowFontScaling?: boolean;
   /**
    * Text color
    */

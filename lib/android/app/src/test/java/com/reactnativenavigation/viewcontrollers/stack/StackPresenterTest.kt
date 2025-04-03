@@ -14,7 +14,6 @@ import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.*
 import com.reactnativenavigation.options.*
 import com.reactnativenavigation.options.params.*
-import com.reactnativenavigation.options.params.Number
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.utils.*
@@ -36,7 +35,6 @@ import org.json.JSONObject
 import org.junit.Test
 import org.mockito.Mockito
 import org.robolectric.shadows.ShadowLooper
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -495,6 +493,7 @@ class StackPresenterTest : BaseTest() {
         parent.mergeOptions(parentOptions)
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
+        defaultOptions.topBar.title.allowFontScaling = Bool(true);
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
         toMerge.topBar.title.text = Text("New Title")
@@ -503,6 +502,7 @@ class StackPresenterTest : BaseTest() {
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleAllowFontScaling(true)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
@@ -531,6 +531,7 @@ class StackPresenterTest : BaseTest() {
     fun mergeChildOptions_resolvedTitleFontOptionsAreApplied() {
         val defaultOptions = Options()
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
+        defaultOptions.topBar.title.allowFontScaling = Bool(false)
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
         resolvedOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
@@ -542,6 +543,7 @@ class StackPresenterTest : BaseTest() {
         assertThat(title).isNotNull()
         assertThat(title.typeface).isEqualTo(SOME_TYPEFACE)
         verify(topBar).setTitleFontSize(9.0)
+        verify(topBar).setTitleAllowFontScaling(false)
         verify(topBar).setTitleTextColor(Color.RED)
     }
 
