@@ -17,6 +17,8 @@ const {
   SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITH_BUTTONS,
+  SET_ROOT_WITH_RIGHT_MENU,
+  SET_ROOT_WITH_LEFT_MENU,
   ROUND_BUTTON,
 } = testIDs;
 
@@ -85,6 +87,16 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           label="Set Root with buttons"
           testID={SET_ROOT_WITH_BUTTONS}
           onPress={this.setRootWithButtons}
+        />
+        <Button
+          label="Set Root with left menu"
+          testID={SET_ROOT_WITH_LEFT_MENU}
+          onPress={this.setRootWithLeftMenu}
+        />
+        <Button
+          label="Set Root with right menu"
+          testID={SET_ROOT_WITH_RIGHT_MENU}
+          onPress={this.setRootWithRightMenu}
         />
       </Root>
     );
@@ -311,6 +323,86 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
               },
             },
           ],
+        },
+      },
+    });
+
+  setRootWithLeftMenu = () =>
+    Navigation.setRoot({
+      root: {
+        sideMenu: {
+          left: {
+            component: {
+              id: 'sideMenu',
+              name: Screens.SideMenuLeft,
+            },
+          },
+          center: {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: Screens.SideMenuCenter,
+                    id: 'SideMenuCenter',
+                    options: {
+                      animations: {
+                        setRoot: {
+                          waitForRender: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          options: {
+            sideMenu: {
+              left: {
+                openMode: 'aboveContent',
+              },
+            },
+          },
+        },
+      },
+    });
+
+  setRootWithRightMenu = () =>
+    Navigation.setRoot({
+      root: {
+        sideMenu: {
+          right: {
+            component: {
+              id: 'sideMenu',
+              name: Screens.SideMenuRight,
+            },
+          },
+          center: {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: Screens.SideMenuCenter,
+                    id: 'SideMenuCenter',
+                    options: {
+                      animations: {
+                        setRoot: {
+                          waitForRender: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          options: {
+            sideMenu: {
+              right: {
+                openMode: 'aboveContent',
+              },
+            },
+          },
         },
       },
     });
