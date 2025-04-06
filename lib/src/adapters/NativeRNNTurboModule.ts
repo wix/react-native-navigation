@@ -1,4 +1,4 @@
-import { TurboModule, TurboModuleRegistry, NativeModules } from 'react-native';
+import { TurboModule, TurboModuleRegistry, NativeModules, Platform } from 'react-native';
 import { UnsafeObject, Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
@@ -31,9 +31,10 @@ export interface Spec extends TurboModule {
 
 const isTurboModuleEnabled = (globalThis as any).__turboModuleProxy != null;
 
-const commands = isTurboModuleEnabled
-  ? TurboModuleRegistry.get<Spec>('RNNTurboModule')
-  : NativeModules.RNNBridgeModule;
+const commands =
+  isTurboModuleEnabled && Platform.OS === 'ios'
+    ? TurboModuleRegistry.get<Spec>('RNNTurboModule')
+    : NativeModules.RNNBridgeModule;
 
 const isNewArchWithBridgeless = isTurboModuleEnabled;
 
