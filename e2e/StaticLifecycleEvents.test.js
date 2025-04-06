@@ -54,7 +54,7 @@ describe('static lifecycle events', () => {
     await elementByLabel('OK').tap();
   });
 
-  xit('top bar buttons willAppear didAppear didDisappear', async () => {
+/*  xit('top bar buttons willAppear didAppear didDisappear', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
@@ -70,7 +70,7 @@ describe('static lifecycle events', () => {
     await expect(
       elementByLabel('componentDidDisappear | CustomRoundedButton | TopBarButton')
     ).toBeVisible();
-  });
+  });*/
 
   it('top bar title willAppear didAppear didDisappear', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
