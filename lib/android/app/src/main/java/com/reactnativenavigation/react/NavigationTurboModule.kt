@@ -1,7 +1,9 @@
 package com.reactnativenavigation.react
 
+import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.NavigationApplication
@@ -17,6 +19,7 @@ import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.UiThread
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.Objects
 
 class NavigationTurboModule(
@@ -70,12 +73,14 @@ class NavigationTurboModule(
     }
 
     override fun setRoot(commandId: String, layout: ReadableMap, promise: Promise) {
+        Log.d("NavigationTurboModule", "setRoot ${Thread.currentThread()}")
         val layoutTree = LayoutNodeParser.parse(
             Objects.requireNonNull(
                 jsonParser.parse(layout).optJSONObject("root")
             )
         )
         handle {
+            Log.d("NavigationTurboModule", "setRoot handle ${Thread.currentThread()}")
             val viewController = layoutFactory.create(layoutTree)
             navigator().setRoot(
                 viewController,
@@ -161,11 +166,21 @@ class NavigationTurboModule(
     override fun setStackRoot(
         commandId: String,
         componentId: String,
-        children: ReadableMap,
+        children: ReadableArray,
         promise: Promise
     ) {
-        TODO("Not yet implemented")
-
+        handle {
+            val _children = ArrayList<ViewController<*>>()
+            for (i in 0..<children.size()) {
+                val layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)))
+                _children.add(layoutFactory.create(layoutTree))
+            }
+            navigator().setStackRoot(
+                componentId,
+                _children,
+                NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now)
+            )
+        }
     }
 
     override fun showModal(commandId: String, layout: ReadableMap, promise: Promise) {
