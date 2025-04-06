@@ -60,6 +60,8 @@ abstract class BaseTest {
         Mockito.`when`(res.getColor(ArgumentMatchers.anyInt())).thenReturn(0x00000)
         Mockito.`when`(res.getColor(ArgumentMatchers.anyInt(), ArgumentMatchers.any()))
             .thenReturn(0x00000)
+
+        RNNFeatureToggles.init()
     }
 
 

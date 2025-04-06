@@ -1,9 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
-import static com.reactnativenavigation.utils.StubAnimationListener.onAnimatorEnd;
+import static com.reactnativenavigation.utils.ColorUtils.isColorLight;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,44 +10,24 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.view.Window;
 
-import androidx.annotation.NonNull;
-
-import com.reactnativenavigation.RNNFeatureToggles;
-import com.reactnativenavigation.RNNToggles;
-import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
 import com.reactnativenavigation.options.StatusBarOptions;
-import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.options.layout.LayoutInsets;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
-import com.reactnativenavigation.viewcontrollers.stack.statusbar.StatusBarPresenter;
-import com.reactnativenavigation.views.animations.ColorAnimator;
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-public class Presenter implements StatusBarPresenter {
+public class Presenter {
     private final Activity activity;
-    private final ColorAnimator colorAnimator;
 
     private Options defaultOptions;
-    private Boolean hasPendingColorAnim = false;
 
     public Presenter(Activity activity, Options defaultOptions) {
-        this(activity, defaultOptions, new ColorAnimator());
-    }
-
-    public Presenter(Activity activity, Options defaultOptions, ColorAnimator colorAnimator) {
         this.activity = activity;
-        this.colorAnimator = colorAnimator;
         this.defaultOptions = defaultOptions;
     }
 
@@ -77,13 +55,13 @@ public class Presenter implements StatusBarPresenter {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
-        applyStatusBarOptions(view, withDefaultOptions);
+        applyStatusBarOptions(view, withDefaultOptions.statusBar);
         applyNavigationBarOptions(withDefaultOptions.navigationBar);
     }
 
     public void onViewBroughtToFront(ViewController<?> viewController, Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyStatusBarOptions(viewController, withDefaultOptions);
+        applyStatusBarOptions(viewController, withDefaultOptions.statusBar);
     }
 
     private void applyOrientation(OrientationOptions options) {
@@ -126,152 +104,12 @@ public class Presenter implements StatusBarPresenter {
         }
     }
 
-    private void applyStatusBarOptions(ViewController viewController, Options options) {
-        StatusBarOptions statusBar = options.copy().withDefaultOptions(defaultOptions).statusBar;
-
-        if (!hasPendingColorAnim) {
-            setStatusBarBackgroundColor(statusBar);
-        }
-        setTextColorScheme(statusBar);
-        setTranslucent(statusBar);
-        setStatusBarVisible(viewController, statusBar.visible);
+    private void applyStatusBarOptions(ViewController viewController, StatusBarOptions options) {
+        StatusBarPresenter.instance.applyOptions(viewController, options);
     }
 
-    @Nullable
-    @Override
-    public Animator getStatusBarPushAnimation(@NotNull Options appearingOptions) {
-        StatusBarOptions statusBarOptions = appearingOptions.statusBar;
-        return getStatusBarColorAnimation(statusBarOptions);
-    }
-
-    @androidx.annotation.Nullable
-    @Override
-    public Animator getStatusBarPopAnimation(@NonNull Options appearingOptions, @NonNull Options disappearingOptions) {
-        StatusBarOptions statusBarOptions = appearingOptions.statusBar;
-        return getStatusBarColorAnimation(statusBarOptions);
-    }
-
-    private Animator getStatusBarColorAnimation(StatusBarOptions statusBarOptions) {
-        if (RNNFeatureToggles.isEnabled(RNNToggles.TOP_BAR_COLOR_ANIMATION)) {
-            ThemeColour targetColor = statusBarOptions.backgroundColor;
-
-            if (targetColor.hasValue()) {
-                boolean translucent = statusBarOptions.translucent.isTrue();
-                ValueAnimator animator = colorAnimator.getAnimation(
-                        getCurrentStatusBarBackgroundColor(),
-                        targetColor.get()
-                );
-
-                animator.addUpdateListener(animation ->
-                        setStatusBarBackgroundColor((int) animation.getAnimatedValue(), translucent));
-
-                animator.addListener(onAnimatorEnd(animation -> {
-                    hasPendingColorAnim = false;
-                    return null;
-                }));
-
-                hasPendingColorAnim = true;
-                return animator;
-            }
-        }
-        hasPendingColorAnim = false;
-        return null;
-    }
-
-    private void setTranslucent(StatusBarOptions options) {
-        Window window = activity.getWindow();
-        if (options.translucent.isTrue()) {
-            SystemUiUtils.setStatusBarTranslucent(window);
-        } else if (SystemUiUtils.isTranslucent(window)) {
-            SystemUiUtils.clearStatusBarTranslucency(window);
-        }
-    }
-
-    private void setStatusBarVisible(ViewController viewController, Bool visible) {
-        final View view = viewController.view != null ? viewController.view : activity.getWindow().getDecorView();
-        if (visible.isFalse()) {
-            SystemUiUtils.hideStatusBar(activity.getWindow(), view);
-        } else {
-            SystemUiUtils.showStatusBar(activity.getWindow(), view);
-        }
-    }
-
-    private void setStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (statusBar.backgroundColor.canApplyValue()) {
-            final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
-            setStatusBarBackgroundColor(statusBarBackgroundColor, statusBar.translucent.isTrue());
-        }
-    }
-
-    private void setStatusBarBackgroundColor(int color, Boolean translucent) {
-        SystemUiUtils.setStatusBarColor(activity.getWindow(), color, translucent);
-    }
-
-    private boolean isDarkTextColorScheme(StatusBarOptions statusBar) {
-        if (statusBar.textColorScheme == TextColorScheme.Dark) {
-            return true;
-        } else if (statusBar.textColorScheme == TextColorScheme.Light) {
-            return false;
-        }
-
-        return isColorLight(getStatusBarBackgroundColor(statusBar));
-    }
-
-    private int getStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        int defaultColor = statusBar.visible.isTrueOrUndefined() ? Color.BLACK : Color.TRANSPARENT;
-        return statusBar.backgroundColor.get(defaultColor);
-    }
-
-    private int getCurrentStatusBarBackgroundColor() {
-        return SystemUiUtils.getStatusBarColor(activity.getWindow());
-    }
-
-    private void setTextColorScheme(StatusBarOptions statusBar) {
-        final View view = activity.getWindow().getDecorView();
-        //View.post is a Workaround, added to solve internal Samsung 
-        //Android 9 issues. For more info see https://github.com/wix/react-native-navigation/pull/7231
-        view.post(() -> {
-            SystemUiUtils.setStatusBarColorScheme(activity.getWindow(), view, isDarkTextColorScheme(statusBar));
-        });
-    }
-
-    private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
-        mergeStatusBarBackgroundColor(statusBar);
-        mergeTextColorScheme(statusBar);
-        mergeTranslucent(statusBar);
-        mergeStatusBarVisible(view, statusBar.visible);
-    }
-
-    private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
-        if (statusBar.backgroundColor.hasValue()) {
-            final int statusBarBackgroundColor = getStatusBarBackgroundColor(statusBar);
-            SystemUiUtils.setStatusBarColor(activity.getWindow(), statusBarBackgroundColor,
-                    statusBar.translucent.isTrue());
-        }
-    }
-
-    private void mergeTextColorScheme(StatusBarOptions statusBar) {
-        if (!statusBar.textColorScheme.hasValue()) return;
-        setTextColorScheme(statusBar);
-    }
-
-    private void mergeTranslucent(StatusBarOptions options) {
-        Window window = activity.getWindow();
-        if (options.translucent.isTrue()) {
-            SystemUiUtils.setStatusBarTranslucent(window);
-        } else if (options.translucent.isFalse() && SystemUiUtils.isTranslucent(window)) {
-            SystemUiUtils.clearStatusBarTranslucency(window);
-        }
-    }
-
-    private void mergeStatusBarVisible(View view, Bool visible) {
-        if (visible.hasValue()) {
-            if (visible.isTrue()) {
-                SystemUiUtils.showStatusBar(activity.getWindow(), view);
-            } else {
-                SystemUiUtils.hideStatusBar(activity.getWindow(), view);
-            }
-        }
+    private void mergeStatusBarOptions(View view, StatusBarOptions statusBarOptions) {
+        StatusBarPresenter.instance.mergeOptions(view, statusBarOptions);
     }
 
     private void applyNavigationBarOptions(NavigationBarOptions options) {
@@ -309,16 +147,10 @@ public class Presenter implements StatusBarPresenter {
         }
     }
 
-    private boolean isColorLight(int color) {
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        return darkness < 0.5;
-    }
-
     public void onConfigurationChanged(ViewController controller, Options options) {
         Options withDefault = options.withDefaultOptions(defaultOptions);
         setNavigationBarBackgroundColor(withDefault.navigationBar);
-        setStatusBarBackgroundColor(withDefault.statusBar);
-        setTextColorScheme(withDefault.statusBar);
+        StatusBarPresenter.instance.onConfigurationChanged(withDefault.statusBar);
         applyBackgroundColor(controller, withDefault);
     }
 }

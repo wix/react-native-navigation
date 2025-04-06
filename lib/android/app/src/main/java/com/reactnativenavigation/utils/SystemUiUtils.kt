@@ -3,7 +3,6 @@ package com.reactnativenavigation.utils
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.Rect
-import android.os.Build
 import android.view.View
 import android.view.Window
 import androidx.annotation.ColorInt
@@ -16,7 +15,6 @@ import kotlin.math.ceil
 
 object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
-    private const val STATUS_BAR_HEIGHT_L = 25
     internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
     var navigationBarDefaultColor = -1
@@ -38,7 +36,7 @@ object SystemUiUtils {
                     val contentViewTop = contentView.top
                     abs(contentViewTop - statusBarHeight)
                 }
-            } ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) STATUS_BAR_HEIGHT_M else STATUS_BAR_HEIGHT_L
+            } ?: STATUS_BAR_HEIGHT_M
             statusBarHeight
         }
         return res
@@ -77,8 +75,6 @@ object SystemUiUtils {
 
     @JvmStatic
     fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
-
         window?.let {
             WindowInsetsControllerCompat(window, view).isAppearanceLightStatusBars = isDark
            // Workaround: on devices with api 30 status bar icons flickers or get hidden when removing view
@@ -121,18 +117,17 @@ object SystemUiUtils {
         @ColorInt color: Int,
         translucent: Boolean
     ) {
-        val opaqueColor =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                Color.BLACK
-            } else {
-                val colorAlpha = Color.alpha(color)
-                val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
-                val red: Int = Color.red(color)
-                val green: Int = Color.green(color)
-                val blue: Int = Color.blue(color)
-                Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
-            }
-        window?.statusBarColor = opaqueColor
+        val colorAlpha = Color.alpha(color)
+        val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
+        val red: Int = Color.red(color)
+        val green: Int = Color.green(color)
+        val blue: Int = Color.blue(color)
+        val opaqueColor = Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
+        setStatusBarColor(window, opaqueColor)
+    }
+
+    fun setStatusBarColor(window: Window?, color: Int) {
+        window?.statusBarColor = color
     }
 
     @JvmStatic
