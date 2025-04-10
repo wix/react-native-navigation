@@ -1,6 +1,12 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
+import android.animation.Animator;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 public class ComponentPresenter extends ComponentPresenterBase {
@@ -34,5 +40,17 @@ public class ComponentPresenter extends ComponentPresenterBase {
         if (view == null) return;
         Options withDefault = options.withDefaultOptions(defaultOptions);
         setBackgroundColor(view, withDefault);
+    }
+
+    @Nullable
+    public Animator getStatusBarPushAnimation(@NonNull Options appearingOptions) {
+        Options appearingOptionsWithDefault = appearingOptions.copy().withDefaultOptions(defaultOptions);
+        return StatusBarPresenter.instance.getStatusBarPushAnimation(appearingOptionsWithDefault);
+    }
+
+    @Nullable
+    public Animator getStatusBarPopAnimation(@NonNull Options appearingOptions, @NonNull Options disappearingOptions) {
+        Options appearingOptionsWithDefault = appearingOptions.copy().withDefaultOptions(defaultOptions);
+        return StatusBarPresenter.instance.getStatusBarPopAnimation(appearingOptionsWithDefault, disappearingOptions);
     }
 }

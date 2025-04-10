@@ -29,9 +29,16 @@ interface Props extends NavigationProps {}
 export default class NavigationScreen extends NavigationComponent<Props> {
   static options() {
     return {
+      statusBar: {
+        backgroundColor: 'orange',
+        translucent: false,
+      },
       topBar: {
         title: {
           text: 'Navigation',
+        },
+        background: {
+          color: 'orange',
         },
       },
       bottomTab: {

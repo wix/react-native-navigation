@@ -64,18 +64,15 @@ const utils = {
 
   },
   expectImagesToBeNotEqual: (imagePath, expectedImagePath) => {
-    let isDifferent = false;
     try {
       bitmapDiff(imagePath, expectedImagePath);
     } catch (error) {
-      isDifferent = true;
+      return
     }
 
-    if (!isDifferent) {
-      throw new Error(
-        `Expected bitmaps at '${imagePath}' and '${expectedImagePath}' to be different`,
-      );
-    }
+    throw new Error(
+      `Expected bitmaps at '${imagePath}' and '${expectedImagePath}' to be different`,
+    );
   },
 };
 
