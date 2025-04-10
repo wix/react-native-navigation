@@ -27,6 +27,7 @@ import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsA
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.fakes.FakeParentController
 import com.reactnativenavigation.viewcontrollers.stack.StackController
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -69,6 +70,7 @@ class BottomTabsControllerTest : BaseTest() {
         activity = newActivity()
         childRegistry = ChildControllersRegistry()
         eventEmitter = Mockito.mock(EventEmitter::class.java)
+        StatusBarPresenter.init(activity)
         prepareViewsForTests()
         saveStatusBarHeight(63)
     }

@@ -19,7 +19,8 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/src/index.ts",
+  "main": "lib/dist/src/index.js",
+  "typings": "lib/dist/src/index.d.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -98,7 +99,7 @@
     "@typescript-eslint/parser": "8.21.0",
     "babel-jest": "^27.0.0",
     "clang-format": "^1.4.0",
-    "detox": "20.33.0-prerelease.0",
+    "detox": "20.34.4",
     "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "6.11.0",

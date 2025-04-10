@@ -37,22 +37,15 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 
     void onActivityPaused(NavigationActivity activity) {
         isActivityReadyForUi = false;
-        // TODO: Check it needed
-        //if (reactHost.hasStartedCreatingInitialContext()) {
         reactHost.onHostPause(activity);
-        //}
     }
 
     void onActivityDestroyed(NavigationActivity activity) {
         reactHost.removeReactInstanceEventListener(this);
-        //if (reactHost.gehasStartedCreatingInitialContext()) {
         reactHost.onHostDestroy(activity);
-        //}
     }
 
     private void prepareReactApp() {
-        // TODO: Check if needed
-        //if (shouldCreateContext()) {
         reactHost.start();
         if (waitingForAppLaunchEvent) {
             if (reactHost.getCurrentReactContext() != null) {

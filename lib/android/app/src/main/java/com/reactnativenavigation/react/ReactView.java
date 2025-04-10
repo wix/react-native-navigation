@@ -72,7 +72,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
 
     public void sendComponentWillStart(ComponentType type) {
         this.post(()->{
-            ReactContext currentReactContext = getReactContent();
+            ReactContext currentReactContext = getReactContext();
             if (currentReactContext != null)
                 new EventEmitter(currentReactContext).emitComponentWillAppear(componentId, componentName, type);
         });
@@ -80,7 +80,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
 
     public void sendComponentStart(ComponentType type) {
         this.post(()->{
-            ReactContext currentReactContext = getReactContent();
+            ReactContext currentReactContext = getReactContext();
             if (currentReactContext != null) {
                 new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
             }
@@ -88,7 +88,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     }
 
     public void sendComponentStop(ComponentType type) {
-        ReactContext currentReactContext = getReactContent();
+        ReactContext currentReactContext = getReactContext();
         if (currentReactContext != null) {
             new EventEmitter(currentReactContext).emitComponentDidDisappear(componentId, componentName, type);
         }
@@ -96,7 +96,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
-        ReactContext currentReactContext = getReactContent();
+        ReactContext currentReactContext = getReactContext();
         if (currentReactContext != null) {
             new EventEmitter(currentReactContext).emitOnNavigationButtonPressed(componentId, buttonId);
         }
@@ -121,7 +121,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     }
 
     public EventDispatcher getEventDispatcher() {
-        ReactContext reactContext = getReactContent();
+        ReactContext reactContext = getReactContext();
         return reactContext == null ? null : UIManagerHelper.getEventDispatcher(reactContext, UIManagerType.FABRIC);
     }
 
@@ -134,7 +134,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
         return  ((ReactApplication)getContext().getApplicationContext()).getReactHost();
     }
 
-    private ReactContext getReactContent() {
+    private ReactContext getReactContext() {
         return getReactHost().getCurrentReactContext();
     }
 }
