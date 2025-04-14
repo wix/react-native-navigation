@@ -48,10 +48,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    packagingOptions {
-        exclude "**/NativeRNNTurboEventEmitterSpec.**"
-        exclude "**/NativeRNNTurboModuleManagerSpec.**"
-    }
 }
 
 dependencies {

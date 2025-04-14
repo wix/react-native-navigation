@@ -17,6 +17,8 @@ interface NativeCommandsModule {
   dismissOverlay(commandId: string, componentId: string): Promise<any>;
   dismissAllOverlays(commandId: string): Promise<any>;
   getLaunchArgs(commandId: string): Promise<any>;
+  getNavigationConstants(): Promise<NavigationConstants>;
+  getNavigationConstantsSync(): NavigationConstants;
   // Turbo
   getConstants?: () => NavigationConstants;
 }
