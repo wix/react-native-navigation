@@ -44,6 +44,6 @@ export interface Spec extends TurboModule {
   getLaunchArgs(commandId: string): Promise<Array<string>>;
 }
 
-const commands = TurboModuleRegistry.get<Spec>('RNNTurboModule');
+const commands = TurboModuleRegistry.get<Spec>('RNNTurboModule')!;
 
 export default commands;

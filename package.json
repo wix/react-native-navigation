@@ -258,9 +258,6 @@
   "codegenConfig": {
     "name": "rnnavigation",
     "type": "all",
-    "jsSrcsDir": "./lib/src",
-    "android": {
-      "javaPackageName": "com.reactnativenavigation.react"
-    }
+    "jsSrcsDir": "./lib/src"
   }
 }

@@ -24,13 +24,7 @@ interface NativeCommandsModule {
 export class NativeCommandsSender implements NativeCommandsModule {
   private readonly nativeCommandsModule: Spec;
   constructor() {
-    const commands = RNNCommandsModule;
-    if (!commands) {
-      throw new Error(
-        'RNNCommandsModule is not available. Make sure you are using the new architecture.'
-      );
-    }
-    this.nativeCommandsModule = commands;
+    this.nativeCommandsModule = RNNCommandsModule;
   }
 
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
