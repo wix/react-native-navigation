@@ -121,7 +121,7 @@ class NavigationTurboModule(
     override fun pop(
         commandId: String,
         componentId: String,
-        options: ReadableMap,
+        options: ReadableMap?,
         promise: Promise
     ) {
         handle {
@@ -136,7 +136,7 @@ class NavigationTurboModule(
     override fun popTo(
         commandId: String,
         componentId: String,
-        options: ReadableMap,
+        options: ReadableMap?,
         promise: Promise
     ) {
         handle {
@@ -151,7 +151,7 @@ class NavigationTurboModule(
     override fun popToRoot(
         commandId: String,
         componentId: String,
-        options: ReadableMap,
+        options: ReadableMap?,
         promise: Promise
     ) {
         handle {
@@ -197,7 +197,7 @@ class NavigationTurboModule(
     override fun dismissModal(
         commandId: String,
         componentId: String,
-        options: ReadableMap,
+        options: ReadableMap?,
         promise: Promise
     ) {
         handle {
@@ -209,7 +209,7 @@ class NavigationTurboModule(
         }
     }
 
-    override fun dismissAllModals(commandId: String, options: ReadableMap, promise: Promise) {
+    override fun dismissAllModals(commandId: String, options: ReadableMap?, promise: Promise) {
         handle {
             navigator().dismissAllModals(
                 parse(options),
