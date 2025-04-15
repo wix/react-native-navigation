@@ -361,9 +361,9 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
               left: {
                 openMode: 'aboveContent',
               },
-              // right: {
-              //   openMode: 'aboveContent',
-              // },
+              right: {
+                openMode: 'aboveContent',
+              },
             },
           },
         },
