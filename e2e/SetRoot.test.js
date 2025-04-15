@@ -52,15 +52,11 @@ describe('SetRoot', () => {
   });
 });
 
-  it(':ios: set root with left and right side menus - left menu visibility', async () => {
+  it(':ios: set root with left and right side menus - menu visibility', async () => {
     await elementById(TestIDs.SET_ROOT_WITH_MENUS).tap();
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
     await expect(elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN)).toBeNotVisible();
-  });
-
-  it(':ios: set root with left and right side menus - right menu visibility', async () => {
-    await elementById(TestIDs.SET_ROOT_WITH_MENUS).tap();
     await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
     await elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN).tap();
     await expect(elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN)).toBeNotVisible();
