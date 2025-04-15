@@ -1086,7 +1086,6 @@ export interface SideMenuSide {
    * Configure the opening mode of the side menu
    * #### (iOS specific)
    * @default 'pushContent'
-
    */
   openMode?: 'pushContent' | 'aboveContent';
 }

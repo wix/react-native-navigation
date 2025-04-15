@@ -17,8 +17,7 @@ const {
   SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITH_BUTTONS,
-  SET_ROOT_WITH_RIGHT_MENU,
-  SET_ROOT_WITH_LEFT_MENU,
+  SET_ROOT_WITH_MENUS,
   ROUND_BUTTON,
 } = testIDs;
 
@@ -89,14 +88,9 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           onPress={this.setRootWithButtons}
         />
         <Button
-          label="Set Root with left menu"
-          testID={SET_ROOT_WITH_LEFT_MENU}
-          onPress={this.setRootWithLeftMenu}
-        />
-        <Button
-          label="Set Root with right menu"
-          testID={SET_ROOT_WITH_RIGHT_MENU}
-          onPress={this.setRootWithRightMenu}
+          label="Set Root with left and right menus"
+          testID={SET_ROOT_WITH_MENUS}
+          onPress={this.setRootWithLeftAndRightMenus}
         />
       </Root>
     );
@@ -327,7 +321,7 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
       },
     });
 
-  setRootWithLeftMenu = () =>
+  setRootWithLeftAndRightMenus = () =>
     Navigation.setRoot({
       root: {
         sideMenu: {
@@ -337,40 +331,6 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
               name: Screens.SideMenuLeft,
             },
           },
-          center: {
-            stack: {
-              children: [
-                {
-                  component: {
-                    name: Screens.SideMenuCenter,
-                    id: 'SideMenuCenter',
-                    options: {
-                      animations: {
-                        setRoot: {
-                          waitForRender: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          },
-          options: {
-            sideMenu: {
-              left: {
-                openMode: 'aboveContent',
-              },
-            },
-          },
-        },
-      },
-    });
-
-  setRootWithRightMenu = () =>
-    Navigation.setRoot({
-      root: {
-        sideMenu: {
           right: {
             component: {
               id: 'sideMenu',
@@ -398,9 +358,12 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           },
           options: {
             sideMenu: {
-              right: {
+              left: {
                 openMode: 'aboveContent',
               },
+              // right: {
+              //   openMode: 'aboveContent',
+              // },
             },
           },
         },

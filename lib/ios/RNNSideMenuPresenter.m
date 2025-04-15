@@ -54,22 +54,19 @@
     [self.sideMenuController.view
         setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
 
+    MMDrawerOpenMode openModeLeft = MMDrawerOpenModePushContent; // Default value
     if (withDefault.sideMenu.left.openMode.hasValue) {
         NSString *openModeString = withDefault.sideMenu.left.openMode.get;
-        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
-        [self.sideMenuController side:MMDrawerSideLeft openMode:openMode];
-    } else {
-        [self.sideMenuController side:MMDrawerSideLeft openMode:MMDrawerOpenModePushContent];
+        openModeLeft = MMDrawerOpenModeFromString(openModeString);
     }
+    [self.sideMenuController side:MMDrawerSideLeft openMode:openModeLeft];
 
+    MMDrawerOpenMode openModeRight = MMDrawerOpenModePushContent; // Default value
     if (withDefault.sideMenu.right.openMode.hasValue) {
         NSString *openModeString = withDefault.sideMenu.right.openMode.get;
-        MMDrawerOpenMode openMode = MMDrawerOpenModeFromString(openModeString);
-        [self.sideMenuController side:MMDrawerSideRight openMode:openMode];
-    } else {
-        [self.sideMenuController side:MMDrawerSideRight openMode:MMDrawerOpenModePushContent];
+        openModeRight = MMDrawerOpenModeFromString(openModeString);
     }
-
+    [self.sideMenuController side:MMDrawerSideRight openMode:openModeRight];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions {

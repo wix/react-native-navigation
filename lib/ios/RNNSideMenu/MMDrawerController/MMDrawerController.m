@@ -343,99 +343,23 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         UIViewController *sideDrawerViewController = [self sideDrawerViewControllerForSide:visibleSide];
         [sideDrawerViewController beginAppearanceTransition:NO animated:animated];
         
-        MMDrawerOpenMode openMode = (visibleSide == MMDrawerSideLeft) ? 
-                             self.leftDrawerOpenMode : 
-                             self.rightDrawerOpenMode;
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:visibleSide];
+
         
-        if (openMode == MMDrawerOpenModeAboveContent) {
-            // OVERLAY MODE
-            // Get maximum drawer width
-            CGFloat maximumDrawerWidth = (visibleSide == MMDrawerSideLeft) ? 
-                                        self.maximumLeftDrawerWidth : 
-                                        self.maximumRightDrawerWidth;
-            
-            // Prepare drawer frames
-            CGRect currentFrame = sideDrawerViewController.view.frame;
-            CGRect finalFrame = currentFrame;
-            
-            // Set final position based on side
-            if (visibleSide == MMDrawerSideLeft) {
-                finalFrame.origin.x = -maximumDrawerWidth; // Off-screen left
-            } else { // MMDrawerSideRight
-                finalFrame.origin.x = self.view.bounds.size.width; // Off-screen right
-            }
-            
-            // Ensure overlay is in view hierarchy
-            if (self.centerContentOverlay && self.centerContentOverlay.superview == nil) {
-                [self.centerContainerView addSubview:self.centerContentOverlay];
-                [self.centerContainerView bringSubviewToFront:self.centerContentOverlay];
-                self.centerContentOverlay.alpha = 0.5;
-            }
-            
-            // Calculate animation duration
-            CGFloat distance = ABS(currentFrame.origin.x - finalFrame.origin.x);
-            NSTimeInterval duration = MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
-            
-            // Animate closure
-            [UIView animateWithDuration:(animated ? duration : 0.0)
-                                  delay:0.0
-                                options:options
-                             animations:^{
-                                 [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                                 
-                                 // Move drawer off-screen
-                                 [sideDrawerViewController.view setFrame:finalFrame];
-                                 
-                                 // Fade out overlay
-                                 self.centerContentOverlay.alpha = 0.0;
-                                 
-                                 // Update visual state
-                                 [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:0.0];
-                             }
-                             completion:^(BOOL finished) {
-                                 // Complete appearance transition
-                                 [sideDrawerViewController endAppearanceTransition];
-                                 
-                                 // Update state
-                                 [self setOpenSide:MMDrawerSideNone];
-                                 [self resetDrawerVisualStateForDrawerSide:visibleSide];
-                                 
-                                 // Remove overlay
-                                 [self.centerContentOverlay removeFromSuperview];
-                                 
-                                 [self setAnimatingDrawer:NO];
-                                 if (completion) {
-                                     completion(finished);
-                                 }
-                             }];
+         if (openMode == MMDrawerOpenModeAboveContent) {
+            [self closeDrawerInOverlayMode:sideDrawerViewController
+                               visibleSide:visibleSide
+                                  animated:animated
+                                  velocity:velocity
+                          animationOptions:options
+                                completion:completion];
         } else {
-            // ORIGINAL PUSH MODE
-            CGRect newFrame = self.childControllerContainerView.bounds;
-            
-            CGFloat distance = ABS(CGRectGetMinX(self.centerContainerView.frame));
-            NSTimeInterval duration = MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
-            
-            [UIView animateWithDuration:(animated ? duration : 0.0)
-                                  delay:0.0
-                                options:options
-                             animations:^{
-                                 [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                                 [self.centerContainerView setFrame:newFrame];
-                                 [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:0.0];
-                             }
-                             completion:^(BOOL finished) {
-                                 // Complete appearance transition
-                                 [sideDrawerViewController endAppearanceTransition];
-                                 
-                                 // Update state
-                                 [self setOpenSide:MMDrawerSideNone];
-                                 [self resetDrawerVisualStateForDrawerSide:visibleSide];
-                                 [self setAnimatingDrawer:NO];
-                                 
-                                 if (completion) {
-                                     completion(finished);
-                                 }
-                             }];
+            [self closeDrawerInPushMode:sideDrawerViewController
+                            visibleSide:visibleSide
+                               animated:animated
+                               velocity:velocity
+                       animationOptions:options
+                             completion:completion];
         }
     }
 }
@@ -473,128 +397,22 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
         if (sideDrawerViewController) {
             // Check if this drawer should use overlay mode
-            MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
-                             self.leftDrawerOpenMode : 
-                             self.rightDrawerOpenMode;
+            MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
             if (openMode == MMDrawerOpenModeAboveContent) {
-                // OVERLAY MODE
-                CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
-                                           self.maximumLeftDrawerWidth : 
-                                           self.maximumRightDrawerWidth;
-                
-                // Configure drawer frames
-                CGRect drawerFrame = sideDrawerViewController.view.frame;
-                CGRect initialFrame = sideDrawerViewController.view.frame;
-                
-                // Set proper width
-                drawerFrame.size.width = maximumDrawerWidth;
-                initialFrame.size.width = maximumDrawerWidth;
-                
-                // Set proper positions
-                if (drawerSide == MMDrawerSideLeft) {
-                    drawerFrame.origin.x = 0; // Final position
-                    
-                    if (self.openSide != drawerSide) {
-                        initialFrame.origin.x = -maximumDrawerWidth; // Start off-screen
-                        [sideDrawerViewController.view setFrame:initialFrame];
-                    }
-                } else { // MMDrawerSideRight
-                    CGFloat screenWidth = self.view.bounds.size.width;
-                    drawerFrame.origin.x = screenWidth - maximumDrawerWidth; // Final position
-                    
-                    if (self.openSide != drawerSide) {
-                        initialFrame.origin.x = screenWidth; // Start off-screen
-                        [sideDrawerViewController.view setFrame:initialFrame];
-                    }
-                }
-                
-                // Setup overlay
-                [self setupCenterContentOverlay];
-                [self.centerContainerView addSubview:self.centerContentOverlay];
-                [self.centerContainerView bringSubviewToFront:self.centerContentOverlay];
-                self.centerContentOverlay.alpha = 0.0; // Start transparent
-                
-                // Make sure drawer is visible and in front
-                sideDrawerViewController.view.hidden = NO;
-                [self.childControllerContainerView bringSubviewToFront:sideDrawerViewController.view];
-                
-                // Calculate animation duration
-                CGFloat distance = ABS(initialFrame.origin.x - drawerFrame.origin.x);
-                NSTimeInterval duration = MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
-                
-                // Animate opening
-                [UIView animateWithDuration:(animated ? duration : 0.0)
-                                      delay:0.0
-                                    options:options
-                                 animations:^{
-                                     [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                                     
-                                     // Move drawer to final position
-                                     [sideDrawerViewController.view setFrame:drawerFrame];
-                                     
-                                     // Fade in overlay
-                                     self.centerContentOverlay.alpha = 0.5;
-                                     
-                                     // Update visual state
-                                     [self updateDrawerVisualStateForDrawerSide:drawerSide percentVisible:1.0];
-                                 }
-                                 completion:^(BOOL finished) {
-                                     // Complete appearance transition
-                                     if (drawerSide != self.openSide) {
-                                         [sideDrawerViewController endAppearanceTransition];
-                                     }
-                                     
-                                     // Update state
-                                     [self setOpenSide:drawerSide];
-                                     [self resetDrawerVisualStateForDrawerSide:drawerSide];
-                                     [self setAnimatingDrawer:NO];
-                                     
-                                     if (completion) {
-                                         completion(finished);
-                                     }
-                                 }];
+                [self openDrawerInOverlayMode:sideDrawerViewController
+                                   drawerSide:drawerSide
+                                     animated:animated
+                                     velocity:velocity
+                             animationOptions:options
+                                   completion:completion];
             } else {
-                // ORIGINAL PUSH MODE
-                CGRect newFrame;
-                CGRect oldFrame = self.centerContainerView.frame;
-                
-                if (drawerSide == MMDrawerSideLeft) {
-                    newFrame = self.centerContainerView.frame;
-                    newFrame.origin.x = self.maximumLeftDrawerWidth;
-                } else {
-                    newFrame = self.centerContainerView.frame;
-                    newFrame.origin.x = 0 - self.maximumRightDrawerWidth;
-                }
-                
-                // Calculate animation duration
-                CGFloat distance = ABS(CGRectGetMinX(oldFrame) - newFrame.origin.x);
-                NSTimeInterval duration = MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
-                
-                // Animate center container
-                [UIView animateWithDuration:(animated ? duration : 0.0)
-                                      delay:0.0
-                                    options:options
-                                 animations:^{
-                                     [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                                     [self.centerContainerView setFrame:newFrame];
-                                     [self updateDrawerVisualStateForDrawerSide:drawerSide percentVisible:1.0];
-                                 }
-                                 completion:^(BOOL finished) {
-                                     // Complete appearance transition
-                                     if (drawerSide != self.openSide) {
-                                         [sideDrawerViewController endAppearanceTransition];
-                                     }
-                                     
-                                     // Update state
-                                     [self setOpenSide:drawerSide];
-                                     [self resetDrawerVisualStateForDrawerSide:drawerSide];
-                                     [self setAnimatingDrawer:NO];
-                                     
-                                     if (completion) {
-                                         completion(finished);
-                                     }
-                                 }];
+                [self openDrawerInPushMode:sideDrawerViewController
+                               drawerSide:drawerSide
+                                 animated:animated
+                                 velocity:velocity
+                         animationOptions:options
+                               completion:completion];
             }
         }
     }
@@ -1379,16 +1197,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         // Store which drawer we're working with for this gesture
         self.startingDrawerSide = drawerSide;
         
-        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
-                             self.leftDrawerOpenMode : 
-                             self.rightDrawerOpenMode;
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
         if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
             UIViewController *drawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
-            CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
-                                        self.maximumLeftDrawerWidth : 
-                                        self.maximumRightDrawerWidth;
+            CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
             
             // Store current drawer frame
             self.startingPanRect = drawerViewController.view.frame;
@@ -1439,9 +1253,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             }
         }
         
-        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
-                             self.leftDrawerOpenMode : 
-                             self.rightDrawerOpenMode;
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
         if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
@@ -1450,9 +1262,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                 return;
             }
             
-            CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
-                                        self.maximumLeftDrawerWidth : 
-                                        self.maximumRightDrawerWidth;
+            CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
             
             // Calculate new drawer position
             CGRect newFrame = drawerViewController.view.frame;
@@ -1589,10 +1399,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                 drawerSide = (velocity.x > 0) ? MMDrawerSideLeft : MMDrawerSideRight;
             }
         }
-        
-        MMDrawerOpenMode openMode = (drawerSide == MMDrawerSideLeft) ? 
-                             self.leftDrawerOpenMode : 
-                             self.rightDrawerOpenMode;
+
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
         if (openMode == MMDrawerOpenModeAboveContent) {
             // OVERLAY MODE
@@ -1608,9 +1416,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             // Get position and velocity
             CGFloat currentX = drawerVC.view.frame.origin.x;
             CGPoint velocity = [panGesture velocityInView:self.view];
-            CGFloat maximumDrawerWidth = (drawerSide == MMDrawerSideLeft) ? 
-                                    self.maximumLeftDrawerWidth : 
-                                    self.maximumRightDrawerWidth;
+            CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
             
             // Determine if drawer should open or close
             BOOL shouldOpen = NO;
@@ -2145,4 +1951,263 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     return (CGRectContainsPoint(rightBezelRect, point) &&
             [self isPointContainedWithinCenterViewContentRect:point]);
 }
+
+// Helper method to determine drawer open mode based on side
+- (MMDrawerOpenMode)drawerOpenModeForSide:(MMDrawerSide)drawerSide {
+    return (drawerSide == MMDrawerSideLeft) ? self.leftDrawerOpenMode : self.rightDrawerOpenMode;
+}
+
+// Helper method to get maximum drawer width for a side
+- (CGFloat)maximumDrawerWidthForSide:(MMDrawerSide)drawerSide {
+    return (drawerSide == MMDrawerSideLeft) ? self.maximumLeftDrawerWidth : self.maximumRightDrawerWidth;
+}
+
+// Helper method to calculate animation duration based on distance and velocity
+- (NSTimeInterval)animationDurationForDistance:(CGFloat)distance velocity:(CGFloat)velocity {
+    return MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
+}
+
+// Helper method to handle completion logic for drawer opening
+- (void)completeDrawerOpeningForSide:(MMDrawerSide)drawerSide
+          sideDrawerViewController:(UIViewController *)sideDrawerViewController
+                         finished:(BOOL)finished
+                       completion:(void (^)(BOOL finished))completion {
+    
+    // Complete appearance transition
+    if (drawerSide != self.openSide) {
+        [sideDrawerViewController endAppearanceTransition];
+    }
+    
+    // Update state
+    [self setOpenSide:drawerSide];
+    [self resetDrawerVisualStateForDrawerSide:drawerSide];
+    [self setAnimatingDrawer:NO];
+    
+    if (completion) {
+        completion(finished);
+    }
+}
+
+// Helper method for opening drawer in overlay mode
+- (void)openDrawerInOverlayMode:(UIViewController *)sideDrawerViewController
+                     drawerSide:(MMDrawerSide)drawerSide
+                       animated:(BOOL)animated
+                       velocity:(CGFloat)velocity
+               animationOptions:(UIViewAnimationOptions)options
+                     completion:(void (^)(BOOL finished))completion {
+    
+    CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
+    
+    // Configure drawer frames
+    CGRect drawerFrame = sideDrawerViewController.view.frame;
+    CGRect initialFrame = sideDrawerViewController.view.frame;
+    
+    // Set proper width
+    drawerFrame.size.width = maximumDrawerWidth;
+    initialFrame.size.width = maximumDrawerWidth;
+    
+    // Set proper positions
+    if (drawerSide == MMDrawerSideLeft) {
+        drawerFrame.origin.x = 0; // Final position
+        
+        if (self.openSide != drawerSide) {
+            initialFrame.origin.x = -maximumDrawerWidth; // Start off-screen
+            [sideDrawerViewController.view setFrame:initialFrame];
+        }
+    } else { // MMDrawerSideRight
+        CGFloat screenWidth = self.view.bounds.size.width;
+        drawerFrame.origin.x = screenWidth - maximumDrawerWidth; // Final position
+        
+        if (self.openSide != drawerSide) {
+            initialFrame.origin.x = screenWidth; // Start off-screen
+            [sideDrawerViewController.view setFrame:initialFrame];
+        }
+    }
+    
+    // Setup overlay
+    [self setupCenterContentOverlay];
+    [self.centerContainerView addSubview:self.centerContentOverlay];
+    [self.centerContainerView bringSubviewToFront:self.centerContentOverlay];
+    self.centerContentOverlay.alpha = 0.0; // Start transparent
+    
+    // Make sure drawer is visible and in front
+    sideDrawerViewController.view.hidden = NO;
+    [self.childControllerContainerView bringSubviewToFront:sideDrawerViewController.view];
+    
+    // Calculate animation duration
+    CGFloat distance = ABS(initialFrame.origin.x - drawerFrame.origin.x);
+    NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
+    
+    // Animate opening
+    [UIView animateWithDuration:(animated ? duration : 0.0)
+                          delay:0.0
+                        options:options
+                     animations:^{
+                         [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                         
+                         // Move drawer to final position
+                         [sideDrawerViewController.view setFrame:drawerFrame];
+                         
+                         // Fade in overlay
+                         self.centerContentOverlay.alpha = 0.5;
+                         
+                         // Update visual state
+                         [self updateDrawerVisualStateForDrawerSide:drawerSide percentVisible:1.0];
+                     }
+                     completion:^(BOOL finished) {
+                         [self completeDrawerOpeningForSide:drawerSide
+                                   sideDrawerViewController:sideDrawerViewController
+                                                  finished:finished
+                                                completion:completion];
+                     }];
+}
+
+// Helper method for opening drawer in push mode
+- (void)openDrawerInPushMode:(UIViewController *)sideDrawerViewController
+                  drawerSide:(MMDrawerSide)drawerSide
+                    animated:(BOOL)animated
+                    velocity:(CGFloat)velocity
+            animationOptions:(UIViewAnimationOptions)options
+                  completion:(void (^)(BOOL finished))completion {
+    
+    CGRect newFrame;
+    CGRect oldFrame = self.centerContainerView.frame;
+    
+    if (drawerSide == MMDrawerSideLeft) {
+        newFrame = self.centerContainerView.frame;
+        newFrame.origin.x = self.maximumLeftDrawerWidth;
+    } else {
+        newFrame = self.centerContainerView.frame;
+        newFrame.origin.x = 0 - self.maximumRightDrawerWidth;
+    }
+    
+    // Calculate animation duration
+    CGFloat distance = ABS(CGRectGetMinX(oldFrame) - newFrame.origin.x);
+    NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
+    
+    // Animate center container
+    [UIView animateWithDuration:(animated ? duration : 0.0)
+                          delay:0.0
+                        options:options
+                     animations:^{
+                         [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                         [self.centerContainerView setFrame:newFrame];
+                         [self updateDrawerVisualStateForDrawerSide:drawerSide percentVisible:1.0];
+                     }
+                     completion:^(BOOL finished) {
+                         [self completeDrawerOpeningForSide:drawerSide
+                                   sideDrawerViewController:sideDrawerViewController
+                                                  finished:finished
+                                                completion:completion];
+                     }];
+}
+
+// Helper method to handle completion logic for drawer closing
+- (void)completeDrawerClosingForSide:(MMDrawerSide)visibleSide
+         sideDrawerViewController:(UIViewController *)sideDrawerViewController
+                        finished:(BOOL)finished
+                      completion:(void (^)(BOOL finished))completion {
+    
+    // Complete appearance transition
+    [sideDrawerViewController endAppearanceTransition];
+    
+    // Update state
+    [self setOpenSide:MMDrawerSideNone];
+    [self resetDrawerVisualStateForDrawerSide:visibleSide];
+    [self setAnimatingDrawer:NO];
+    
+    if (completion) {
+        completion(finished);
+    }
+}
+
+// Helper method for closing drawer in overlay mode
+- (void)closeDrawerInOverlayMode:(UIViewController *)sideDrawerViewController
+                     visibleSide:(MMDrawerSide)visibleSide
+                        animated:(BOOL)animated
+                        velocity:(CGFloat)velocity
+                animationOptions:(UIViewAnimationOptions)options
+                      completion:(void (^)(BOOL finished))completion {
+    
+    // Get maximum drawer width
+    CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:visibleSide];
+    
+    // Prepare drawer frames
+    CGRect currentFrame = sideDrawerViewController.view.frame;
+    CGRect finalFrame = currentFrame;
+    
+    // Set final position based on side
+    if (visibleSide == MMDrawerSideLeft) {
+        finalFrame.origin.x = -maximumDrawerWidth; // Off-screen left
+    } else { // MMDrawerSideRight
+        finalFrame.origin.x = self.view.bounds.size.width; // Off-screen right
+    }
+    
+    // Ensure overlay is in view hierarchy
+    if (self.centerContentOverlay && self.centerContentOverlay.superview == nil) {
+        [self.centerContainerView addSubview:self.centerContentOverlay];
+        [self.centerContainerView bringSubviewToFront:self.centerContentOverlay];
+        self.centerContentOverlay.alpha = 0.5;
+    }
+    
+    // Calculate animation duration
+    CGFloat distance = ABS(currentFrame.origin.x - finalFrame.origin.x);
+    NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
+    
+    // Animate closure
+    [UIView animateWithDuration:(animated ? duration : 0.0)
+                          delay:0.0
+                        options:options
+                     animations:^{
+                         [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                         
+                         // Move drawer off-screen
+                         [sideDrawerViewController.view setFrame:finalFrame];
+                         
+                         // Fade out overlay
+                         self.centerContentOverlay.alpha = 0.0;
+                         
+                         // Update visual state
+                         [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:0.0];
+                     }
+                     completion:^(BOOL finished) {
+                         [self completeDrawerClosingForSide:visibleSide
+                                  sideDrawerViewController:sideDrawerViewController
+                                                 finished:finished
+                                               completion:completion];
+                         
+                         // Remove overlay
+                         [self.centerContentOverlay removeFromSuperview];
+                     }];
+}
+
+// Helper method for closing drawer in push mode
+- (void)closeDrawerInPushMode:(UIViewController *)sideDrawerViewController
+                  visibleSide:(MMDrawerSide)visibleSide
+                     animated:(BOOL)animated
+                     velocity:(CGFloat)velocity
+             animationOptions:(UIViewAnimationOptions)options
+                   completion:(void (^)(BOOL finished))completion {
+    
+    CGRect newFrame = self.childControllerContainerView.bounds;
+    
+    CGFloat distance = ABS(CGRectGetMinX(self.centerContainerView.frame));
+    NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
+    
+    [UIView animateWithDuration:(animated ? duration : 0.0)
+                          delay:0.0
+                        options:options
+                     animations:^{
+                         [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                         [self.centerContainerView setFrame:newFrame];
+                         [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:0.0];
+                     }
+                     completion:^(BOOL finished) {
+                         [self completeDrawerClosingForSide:visibleSide
+                                  sideDrawerViewController:sideDrawerViewController
+                                                 finished:finished
+                                               completion:completion];
+                     }];
+}
+
 @end
