@@ -23,7 +23,6 @@ class ModalAnimatorTest : BaseTest() {
     private lateinit var mockDefaultAnimation: StackAnimationOptions
     private lateinit var screenAnimationListener: ScreenAnimationListener
     override fun beforeEach() {
-        super.beforeEach()
         val mockTransitionAnimatorCreator = spy(TransitionAnimatorCreator())
         val childRegistry = mock<ChildControllersRegistry>()
         val enter = spy(AnimationOptions())

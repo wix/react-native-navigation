@@ -40,7 +40,6 @@ public abstract class AttachModeTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        super.beforeEach();
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         parent = new CoordinatorLayout(activity);

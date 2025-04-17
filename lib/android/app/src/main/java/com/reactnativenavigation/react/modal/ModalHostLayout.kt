@@ -34,7 +34,7 @@ open class ModalHostLayout(reactContext: ThemedReactContext) : ViewGroup(reactCo
     }
 
     @TargetApi(23)
-    override fun dispatchProvideStructure(structure: ViewStructure) {
+    override fun dispatchProvideStructure(structure: ViewStructure?) {
         mHostView.dispatchProvideStructure(structure)
     }
 

@@ -23,14 +23,14 @@ export class NativeEventsReceiver {
   constructor() {
     try {
       this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
-    } catch {
-      this.emitter = {
+    } catch (e) {
+      this.emitter = ({
         addListener: () => {
           return {
             remove: () => undefined,
           };
         },
-      } as any as NativeEventEmitter;
+      } as any) as NativeEventEmitter;
     }
   }
 
