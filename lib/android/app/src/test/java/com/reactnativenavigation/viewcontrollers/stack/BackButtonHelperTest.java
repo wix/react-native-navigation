@@ -29,7 +29,6 @@ public class BackButtonHelperTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        super.beforeEach();
         uut = new BackButtonHelper();
         Activity activity = newActivity();
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();

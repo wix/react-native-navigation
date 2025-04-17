@@ -20,7 +20,6 @@ public class ChildControllersRegistryTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        super.beforeEach();
         Activity activity = newActivity();
         uut = new ChildControllersRegistry();
         child1 = spy(new SimpleViewController(activity, uut, "child1", new Options()));
