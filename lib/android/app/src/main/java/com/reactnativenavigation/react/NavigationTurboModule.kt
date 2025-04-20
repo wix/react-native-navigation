@@ -73,14 +73,12 @@ class NavigationTurboModule(
     }
 
     override fun setRoot(commandId: String, layout: ReadableMap, promise: Promise) {
-        Log.d("NavigationTurboModule", "setRoot ${Thread.currentThread()}")
         val layoutTree = LayoutNodeParser.parse(
             Objects.requireNonNull(
                 jsonParser.parse(layout).optJSONObject("root")
             )
         )
         handle {
-            Log.d("NavigationTurboModule", "setRoot handle ${Thread.currentThread()}")
             val viewController = layoutFactory.create(layoutTree)
             navigator().setRoot(
                 viewController,
