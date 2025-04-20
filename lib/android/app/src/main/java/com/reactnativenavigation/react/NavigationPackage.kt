@@ -26,10 +26,10 @@ class NavigationPackage() : BaseReactPackage() {
 
     override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
         mapOf(NavigationTurboModule.NAME to ReactModuleInfo(
-            _name = NavigationTurboModule.NAME,
-            _className = NavigationTurboModule.NAME,
-            _canOverrideExistingModule = false,
-            _needsEagerInit = false,
+            name = NavigationTurboModule.NAME,
+            className = NavigationTurboModule.NAME,
+            canOverrideExistingModule = false,
+            needsEagerInit = false,
             isCxxModule = false,
             isTurboModule = true
         ))
