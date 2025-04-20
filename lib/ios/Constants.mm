@@ -16,7 +16,8 @@
 	JS::NativeRNNTurboModule::Constants::Builder::Input input = {
 		[self topBarHeight],
 		[self statusBarHeight],
-		[self bottomTabsHeight]
+		[self bottomTabsHeight],
+        [self backButtonId]
 	};
 
 	return input;
@@ -33,6 +34,11 @@
 
 + (CGFloat)bottomTabsHeight {
     return [UIApplication.sharedApplication.delegate.window.rootViewController getBottomTabsHeight];
+}
+
++ (NSString*)backButtonId {
+    // This property is used only in android but we have to add it for compatability in turbo modules
+    return @"";
 }
 
 @end
