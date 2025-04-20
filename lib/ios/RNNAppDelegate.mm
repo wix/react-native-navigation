@@ -1,3 +1,4 @@
+
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
@@ -38,6 +39,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #ifdef RCT_NEW_ARCH_ENABLED
 	RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
 	RCTSetNewArchEnabled(TRUE);
+
 
 	if (self.bridgelessEnabled) {
 		// Creating host instead of bridge
@@ -113,7 +115,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 }
 
 - (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass {
-	return RCTAppSetupDefaultModuleFromClass(moduleClass);
+	return RCTAppSetupDefaultModuleFromClass(moduleClass, self.dependencyProvider);
 }
 #endif
 
