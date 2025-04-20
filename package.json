@@ -258,9 +258,6 @@
   "codegenConfig": {
     "name": "rnnavigation",
     "type": "all",
-    "jsSrcsDir": "./lib/src",
-    "android": {
-      "javaPackageName": "wix.rnn.specs"
-    }
+    "jsSrcsDir": "./lib/src"
   }
 }

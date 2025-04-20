@@ -1,5 +1,5 @@
 import { NavigationConstants } from './Constants';
-import RNNCommandsModule from './NativeRNNTurboModule';
+import RNNCommandsModule, { Spec } from './NativeRNNTurboModule';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
@@ -9,7 +9,7 @@ interface NativeCommandsModule {
   pop(commandId: string, componentId: string, options?: object): Promise<any>;
   popTo(commandId: string, componentId: string, options?: object): Promise<any>;
   popToRoot(commandId: string, componentId: string, options?: object): Promise<any>;
-  setStackRoot(commandId: string, onComponentId: string, layout: object): Promise<any>;
+  setStackRoot(commandId: string, onComponentId: string, layout: object[]): Promise<any>;
   showModal(commandId: string, layout: object): Promise<any>;
   dismissModal(commandId: string, componentId: string, options?: object): Promise<any>;
   dismissAllModals(commandId: string, options?: object): Promise<any>;
@@ -23,8 +23,8 @@ interface NativeCommandsModule {
   getConstants?: () => NavigationConstants;
 }
 
-export class NativeCommandsSender {
-  private readonly nativeCommandsModule: NativeCommandsModule;
+export class NativeCommandsSender implements NativeCommandsModule {
+  private readonly nativeCommandsModule: Spec;
   constructor() {
     this.nativeCommandsModule = RNNCommandsModule;
   }
@@ -57,7 +57,7 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.popToRoot(commandId, componentId, options);
   }
 
-  setStackRoot(commandId: string, onComponentId: string, layout: object) {
+  setStackRoot(commandId: string, onComponentId: string, layout: object[]) {
     return this.nativeCommandsModule.setStackRoot(commandId, onComponentId, layout);
   }
 
@@ -90,10 +90,10 @@ export class NativeCommandsSender {
   }
 
   getNavigationConstants() {
-    return this.nativeCommandsModule.getNavigationConstants();
+    return Promise.resolve(this.nativeCommandsModule.getConstants());
   }
 
   getNavigationConstantsSync() {
-    return this.nativeCommandsModule.getNavigationConstantsSync();
+    return this.nativeCommandsModule.getConstants();
   }
 }
