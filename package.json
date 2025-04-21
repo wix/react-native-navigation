@@ -121,6 +121,7 @@
     "redux": "3.x.x",
     "remx": "3.x.x",
     "semver": "5.x.x",
+    "setimmediate": "^1.0.5",
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
