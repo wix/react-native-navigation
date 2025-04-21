@@ -67,6 +67,7 @@
     "react-lifecycles-compat": "^3.0.4",
     "react-native-redash": "^12.6.1",
     "reanimated-color-picker": "^3.0.6",
+    "setimmediate": "^1.0.5",
     "ssim.js": "^3.5.0",
     "tslib": "1.9.3"
   },
@@ -115,7 +116,7 @@
     "react-native": "0.77.2",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
-    "react-native-reanimated": "3.16.7",
+    "react-native-reanimated": "3.17.4",
     "react-redux": "5.x.x",
     "react-test-renderer": "18.3.1",
     "redux": "3.x.x",
