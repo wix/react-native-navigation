@@ -103,6 +103,7 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-formatter-codeframe": "^7.32.1",
     "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-jest": "^28.11.0",
     "github-release-notes": "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58",
     "husky": "4.2.5",
     "identity-obj-proxy": "3.0.0",
