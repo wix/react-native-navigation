@@ -100,7 +100,6 @@
 }
 
 - (void)componentWillAppear {
-    NSLog(@"willAppear %@", self.moduleName);
     if (!_willAppear) {
         [_eventEmitter sendComponentWillAppear:self.componentId
                                  componentName:self.moduleName
@@ -111,7 +110,6 @@
 }
 
 - (void)componentDidAppear {
-    NSLog(@"componentDidAppear %@", self.moduleName);
     if (!_isMounted) {
         _pendingDidAppear = YES;
         return;

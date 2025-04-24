@@ -50,7 +50,6 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
   listeners: (EmitterSubscription | EventSubscription)[] = [];
 
   componentDidMount() {
-    console.log("test-componentDidMount");
     // eslint-disable-next-line consistent-this
     _overlayInstance = this;
   }
@@ -64,7 +63,6 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
   }
 
   addEvent(event: Event) {
-    console.log(`test-'addEvent', ${JSON.stringify(event)}`);
     this.events.push(event);
     this.setState({
       events: this.events,
@@ -72,7 +70,6 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
   }
 
   clearEvents() {
-    console.log("test-clearEvents");
     this.events = [];
     this.setState({
       events: this.events,
@@ -81,7 +78,6 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
 
   constructor(props: OverlayProps) {
     super(props);
-    console.log("test-constructor");
     this.events = [];
     this.state = {
       text: 'nothing yet',

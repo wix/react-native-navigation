@@ -1,4 +1,4 @@
-import { TurboModule, TurboModuleRegistry, NativeModule } from 'react-native';
+import { TurboModule, TurboModuleRegistry, NativeModules, NativeModule } from 'react-native';
 
 export interface Spec extends TurboModule {
   addListener: (eventType: string) => void;
@@ -7,6 +7,12 @@ export interface Spec extends TurboModule {
 
 let eventEmitter: Spec | null = null;
 
-eventEmitter = TurboModuleRegistry.get<Spec>('RNNTurboEventEmitter');
+try {
+  // Running in bridge mode
+  eventEmitter = NativeModules.RNNBridgeEventEmitter;
+} catch (e) {
+  // Running in bridgeless, access to NativeModules is prohibited
+  eventEmitter = TurboModuleRegistry.get<Spec>('RNNTurboEventEmitter');
+}
 
 export default eventEmitter as NativeModule;
