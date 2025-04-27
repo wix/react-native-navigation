@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "RNNCustomViewController.h"
+#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 #import <React/RCTBundleURLProvider.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
@@ -11,6 +12,7 @@
 - (BOOL)application:(UIApplication *)application
 	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
+	self.dependencyProvider = [RCTAppDependencyProvider new];
 	
 	if (self.bridgelessEnabled) {
 #ifdef RCT_NEW_ARCH_ENABLED
