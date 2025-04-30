@@ -2,8 +2,9 @@ import _ from 'lodash';
 import BottomTabsNode from '../Layouts/BottomTabsNode';
 import ParentNode from '../Layouts/ParentNode';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
-import { Options } from '../../src/interfaces/Options';
+import { SideMenuNode } from '../Layouts/SideMenu';
 import StackNode from '../Layouts/StackNode';
+import { Options } from '../../src/interfaces/Options';
 
 const remx = require('remx');
 
@@ -11,6 +12,7 @@ const state = remx.state({
   root: {},
   modals: [],
   overlays: [],
+  sideMenu: undefined,
 });
 
 const setters = remx.setters({
@@ -75,6 +77,12 @@ const setters = remx.setters({
   selectTabIndex(layout: BottomTabsNode, index: number) {
     getters.getLayoutById(layout.nodeId).selectedIndex = index;
   },
+  openSideMenu(layout: SideMenuNode) {
+    state.sideMenu = layout;
+  },
+  closeSideMenu(_layout: SideMenuNode) {
+    state.sideMenu = undefined;
+  },
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
     if (layout) layout.mergeOptions(options);
@@ -87,12 +95,27 @@ const getters = remx.getters({
     return state.root;
   },
   getVisibleLayout() {
+    let layout: ParentNode | undefined;
     if (state.modals.length > 0) {
-      return _.last<ParentNode>(state.modals)!.getVisibleLayout();
-    } else if (!_.isEqual(state.root, {})) return state.root.getVisibleLayout();
+      layout = _.last<ParentNode>(state.modals)!;
+    } else if (!_.isEqual(state.root, {})) {
+      layout = state.root;
+    }
+
+    // TODO revisit this logic; working or not - state.sideMenu has
+    //   to be touched here in order to force reevaluation of the visible layout
+    //   while side menu open/close handling (i.e. to move away-from / back-to the
+    //   side-menu center child).
+    if (layout && state.sideMenu && findNode(state.sideMenu.nodeId, layout!)) {
+      layout = state.sideMenu.parentNode;
+    }
+
+    return layout?.getVisibleLayout();
   },
   isVisibleLayout(layout: ParentNode) {
-    return getters.getVisibleLayout() && getters.getVisibleLayout().nodeId === layout.nodeId;
+    const nodeId = layout.nodeId;
+    const visibleLayout = getters.getVisibleLayout();
+    return visibleLayout?.nodeId === nodeId;
   },
   getModals() {
     return state.modals;
@@ -101,13 +124,12 @@ const getters = remx.getters({
     return state.overlays;
   },
   getLayoutById(layoutId: string) {
-    if (getters.getModalById(layoutId))
-      return findParentNode(layoutId, getters.getModalById(layoutId));
+    if (getters.getModalById(layoutId)) return findNode(layoutId, getters.getModalById(layoutId));
 
-    return findParentNode(layoutId, state.root);
+    return findNode(layoutId, state.root);
   },
   getModalById(layoutId: string) {
-    return _.find(state.modals, (layout) => findParentNode(layoutId, layout));
+    return _.find(state.modals, (layout) => findNode(layoutId, layout));
   },
   getLayoutChildren(layoutId: string) {
     return getters.getLayoutById(layoutId).children;
@@ -120,13 +142,13 @@ const getters = remx.getters({
   },
 });
 
-function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode {
+function findNode(layoutId: string, layout: ParentNode): any | ParentNode {
   if (layoutId === layout.nodeId) {
     return layout;
   } else if (layout.children) {
     for (let i = 0; i < layout.children.length; i += 1) {
       const child = layout.children[i];
-      const result = findParentNode(layoutId, child);
+      const result = findNode(layoutId, child);
 
       if (result !== false) {
         return result;

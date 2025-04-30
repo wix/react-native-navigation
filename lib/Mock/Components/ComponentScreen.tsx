@@ -25,7 +25,8 @@ export const ComponentScreen = connect(
     }
 
     isVisible(): boolean {
-      return LayoutStore.isVisibleLayout(this.props.layoutNode);
+      const isVisible = LayoutStore.isVisibleLayout(this.props.layoutNode);
+      return isVisible;
     }
 
     renderTabBar() {

@@ -4,6 +4,7 @@ import { BottomTabs } from './BottomTabs';
 import { ComponentProps } from '../ComponentProps';
 import { ComponentScreen } from './ComponentScreen';
 import { Stack } from './Stack';
+import { SideMenuRoot, SideMenuCenter, SideMenuLeft, SideMenuRight } from './SideMenu';
 
 export const LayoutComponent = class extends Component<ComponentProps> {
   render() {
@@ -14,6 +15,14 @@ export const LayoutComponent = class extends Component<ComponentProps> {
         return <Stack layoutNode={this.props.layoutNode} />;
       case 'Component':
         return <ComponentScreen layoutNode={this.props.layoutNode} />;
+      case 'SideMenuRoot':
+        return <SideMenuRoot layoutNode={this.props.layoutNode} />;
+      case 'SideMenuLeft':
+        return <SideMenuLeft layoutNode={this.props.layoutNode} />;
+      case 'SideMenuCenter':
+        return <SideMenuCenter layoutNode={this.props.layoutNode} />;
+      case 'SideMenuRight':
+        return <SideMenuRight layoutNode={this.props.layoutNode} />;
     }
 
     return <View />;
