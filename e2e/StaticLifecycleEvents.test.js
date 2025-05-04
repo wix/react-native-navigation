@@ -72,7 +72,7 @@ describe('static lifecycle events', () => {
     ).toBeVisible();
   });
 
-  xit('top bar title willAppear didAppear didDisappear', async () => {
+  it('top bar title willAppear didAppear didDisappear', async () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
