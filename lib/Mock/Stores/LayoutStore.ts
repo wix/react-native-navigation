@@ -78,6 +78,12 @@ const setters = remx.setters({
     getters.getLayoutById(layout.nodeId).selectedIndex = index;
   },
   openSideMenu(layout: SideMenuNode) {
+    if (state.sideMenu) {
+      throw new Error(
+        'A side-menu is already open; Mocked-testing of multiple side-menu scenarios is not supported yet.' +
+          ' You can submit a request in https://github.com/wix/react-native-navigation/issues/new/choose.'
+      );
+    }
     state.sideMenu = layout;
   },
   closeSideMenu(_layout: SideMenuNode) {
@@ -107,10 +113,9 @@ const getters = remx.getters({
       layout = state.root;
     }
 
-    // TODO revisit this logic; working or not - state.sideMenu has
-    //   to be touched here in order to force reevaluation of the visible layout
-    //   while side menu open/close handling (i.e. to move away-from / back-to the
-    //   side-menu center child).
+    // Note: While this logic should be fair for all use cases (i.e. even multiple side-menus across tabs),
+    // there is no current test case that justifies it. Nevertheless, it's required to pass the tests,
+    // because otherwise getVisibleLayout() would not be revisited whenever side-menus are opened/closed.
     if (layout && state.sideMenu && findNode(state.sideMenu.nodeId, layout!)) {
       layout = state.sideMenu.parentNode;
     }
