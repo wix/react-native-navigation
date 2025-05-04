@@ -20,6 +20,12 @@ export default class SideMenuRootNode extends ParentNode {
     }
   }
 
+  applyOptions(_options: Options) {
+    super.applyOptions(_options);
+
+    this._updateVisibility(_options);
+  }
+
   mergeOptions(options: Options) {
     super.mergeOptions(options);
 
@@ -34,15 +40,17 @@ export default class SideMenuRootNode extends ParentNode {
   }
 
   _updateVisibility(options: Options) {
-    if (options.sideMenu?.left?.visible) {
-      this.visibleChild = this._getLeftChild();
-      layoutActions.openSideMenu(this.visibleChild);
-    } else if (options.sideMenu?.right?.visible) {
-      this.visibleChild = this._getRightChild();
-      layoutActions.openSideMenu(this.visibleChild);
-    } else {
-      this.visibleChild = this._getCenterChild();
-      layoutActions.closeSideMenu(this.visibleChild);
+    if (options.sideMenu) {
+      if (options.sideMenu.left?.visible) {
+        this.visibleChild = this._getLeftChild();
+        layoutActions.openSideMenu(this.visibleChild);
+      } else if (options.sideMenu.right?.visible) {
+        this.visibleChild = this._getRightChild();
+        layoutActions.openSideMenu(this.visibleChild);
+      } else {
+        this.visibleChild = this._getCenterChild();
+        layoutActions.closeSideMenu(this.visibleChild);
+      }
     }
   }
 

@@ -83,6 +83,11 @@ const setters = remx.setters({
   closeSideMenu(_layout: SideMenuNode) {
     state.sideMenu = undefined;
   },
+  applyOptions(componentId: string, options: Options) {
+    const layout = getters.getLayoutById(componentId);
+    if (layout) layout.applyOptions(options);
+    else console.warn(`[RNN error] Merge options failure: cannot find layout for: ${componentId}`);
+  },
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
     if (layout) layout.mergeOptions(options);
