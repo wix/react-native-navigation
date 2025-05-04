@@ -1,4 +1,4 @@
-#import "Number.h"
+#import "ReactNativeNavigation/Number.h"
 #import <Foundation/Foundation.h>
 
 @interface NumberParser : NSObject

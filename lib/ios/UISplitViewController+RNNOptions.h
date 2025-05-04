@@ -1,4 +1,4 @@
-#import "Number.h"
+#import "ReactNativeNavigation/Number.h"
 #import <UIKit/UIKit.h>
 
 @interface UISplitViewController (RNNOptions)

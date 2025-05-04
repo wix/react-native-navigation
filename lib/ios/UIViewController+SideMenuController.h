@@ -1,8 +1,8 @@
-#import "RNNSideMenuController.h"
+#import "RNNSideMenuViewController.h"
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (SideMenuController)
 
-- (RNNSideMenuController *)sideMenuController;
+- (RNNSideMenuViewController *)sideMenuController;
 
 @end

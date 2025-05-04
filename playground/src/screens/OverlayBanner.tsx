@@ -31,8 +31,9 @@ export default class OverlayBanner extends NavigationComponent<Props> {
         }}
         pointerEvents="box-none"
       >
-        <View testID={BANNER_OVERLAY} style={styles.banner}>
+        <View style={styles.banner}>
           <Button
+            testID={BANNER_OVERLAY}
             // @ts-ignore
             size={'small'}
             style={styles.text}

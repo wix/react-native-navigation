@@ -9,5 +9,6 @@
 + (BOOL)getBoolOrKey:(NSDictionary *)dict withKey:(NSString *)key withDefault:(BOOL)defaultResult;
 + (id)getObjectOrKey:(NSDictionary *)dict withKey:(NSString *)key withDefault:(id)defaultResult;
 + (NSNumber *)getCurrentTimestamp;
++ (BOOL)getDefaultWaitForRender;
 
 @end

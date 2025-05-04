@@ -11,7 +11,7 @@
 
 - (void)bottomTabsDidLayoutSubviews:(UITabBarController *)bottomTabs;
 
-- (void)mergeOptions:(NSDictionary *)options
+- (void)mergeOptions:(RNNNavigationOptions *)options
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions
                child:(UIViewController *)child;
 

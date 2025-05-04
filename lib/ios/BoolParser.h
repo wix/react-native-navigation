@@ -1,4 +1,4 @@
-#import "Bool.h"
+#import "ReactNativeNavigation/Bool.h"
 #import <Foundation/Foundation.h>
 
 @interface BoolParser : NSObject

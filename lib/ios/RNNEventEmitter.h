@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface RNNEventEmitter : RCTEventEmitter <RCTBridgeModule>
+@interface RNNEventEmitter : RCTEventEmitter
 
 - (void)sendOnAppLaunched;
 

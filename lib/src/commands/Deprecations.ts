@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import get from 'lodash/get';
-import each from 'lodash/each';
+import { each } from 'lodash';
 import { Platform } from 'react-native';
 
 export class Deprecations {

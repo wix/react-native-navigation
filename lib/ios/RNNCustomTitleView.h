@@ -1,11 +1,21 @@
-#import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
 #import <UIKit/UIKit.h>
+#import "RNNReactView.h"
 
-@interface RNNCustomTitleView : UIView <RCTRootViewDelegate>
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurfaceDelegate.h>
+#endif
+
+@interface RNNCustomTitleView : UIView <
+#ifdef RCT_NEW_ARCH_ENABLED
+RCTSurfaceDelegate
+#else
+RCTRootViewDelegate
+#endif
+>
 
 - (instancetype)initWithFrame:(CGRect)frame
-                      subView:(RCTRootView *)subView
-                    alignment:(NSString *)alignment;
+					  subView:(RNNReactView *)subView
+					alignment:(NSString *)alignment;
 
 @end

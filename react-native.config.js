@@ -5,7 +5,7 @@ module.exports = {
       android: {
         sourceDir: './lib/android/app/',
         packageImportPath: 'import com.reactnativenavigation.react.NavigationPackage;',
-        packageInstance: 'new NavigationPackage(reactNativeHost)',
+        packageInstance: 'new NavigationPackage()',
       },
     },
   },

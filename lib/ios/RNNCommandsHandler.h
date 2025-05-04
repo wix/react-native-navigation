@@ -1,4 +1,4 @@
-#import "RNNControllerFactory.h"
+#import "RNNViewControllerFactory.h"
 #import "RNNLayoutManager.h"
 #import "RNNModalManager.h"
 #import "RNNOverlayManager.h"
@@ -6,9 +6,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurfacePresenter.h>
+#import <React/RCTMountingManager.h>
+#import <React/RCTComponentViewRegistry.h>
+#endif
+
 @interface RNNCommandsHandler : NSObject
 
-- (instancetype)initWithControllerFactory:(RNNControllerFactory *)controllerFactory
+- (instancetype)initWithViewControllerFactory:(RNNViewControllerFactory *)controllerFactory
                             layoutManager:(RNNLayoutManager *)layoutManager
                              eventEmitter:(RNNEventEmitter *)eventEmitter
                              modalManager:(RNNModalManager *)modalManager
