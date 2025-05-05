@@ -67,7 +67,6 @@ public class MainActivity extends NavigationActivity {
 "
 `;
 
-
 exports[`activityLinker should work for RN 0.71 1`] = `
 "package com.app;
 
@@ -77,6 +76,40 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 public class MainActivity extends NavigationActivity {
+
+  
+
+  
+}
+"
+`;
+
+exports[`activityLinker should work for RN 0.72 1`] = `
+"package com.app;
+
+import com.reactnativenavigation.NavigationActivity;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactActivityDelegate;
+
+public class MainActivity extends NavigationActivity {
+
+  
+
+  
+}
+"
+`;
+
+exports[`activityLinker should work for RN 0.73 1`] = `
+"package com.app
+
+import com.reactnativenavigation.NavigationActivity
+import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import com.facebook.react.defaults.DefaultReactActivityDelegate
+
+class MainActivity : NavigationActivity() {
 
   
 
