@@ -15,6 +15,7 @@
 
 + (RNNBottomTabsController *)createWithChildren:(NSArray *)children
                                         options:(RNNNavigationOptions *)options {
+#ifdef RCT_NEW_ARCH_ENABLED
     RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
     return [[RNNBottomTabsController alloc]
            initWithLayoutInfo:nil
@@ -25,9 +26,23 @@
            bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions]
         dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc]
                                   initWithDefaultOptions:defaultOptions]
-                 eventEmitter:[OCMockObject partialMockForObject:[RNNEventEmitter new]]
+                 eventEmitter:[OCMockObject partialMockForObject:[RNNTurboEventEmitter new]]
          childViewControllers:children
            bottomTabsAttacher:nil];
+#else
+	return [[RNNBottomTabsController alloc]
+		   initWithLayoutInfo:nil
+					  creator:nil
+					  options:options
+			   defaultOptions:defaultOptions
+					presenter:[BottomTabsPresenterCreator createWithDefaultOptions:defaultOptions]
+		   bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions]
+		dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc]
+								  initWithDefaultOptions:defaultOptions]
+				 eventEmitter:[OCMockObject partialMockForObject:[RNNEventEmitter new]]
+		 childViewControllers:children
+		   bottomTabsAttacher:nil];
+#endif
 }
 
 @end

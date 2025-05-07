@@ -227,9 +227,15 @@
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (RNNTurboEventEmitter *)eventEmitter {
+    return objc_getAssociatedObject(self, @selector(eventEmitter));
+}
+#else
 - (RNNEventEmitter *)eventEmitter {
     return objc_getAssociatedObject(self, @selector(eventEmitter));
 }
+#endif
 
 - (void)setEventEmitter:(RNNEventEmitter *)eventEmitter {
     objc_setAssociatedObject(self, @selector(eventEmitter), eventEmitter,

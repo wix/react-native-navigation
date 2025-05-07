@@ -6,6 +6,7 @@
 #import "RNNNavigationOptions.h"
 #import "RNNUIBarButtonItem.h"
 #import "UIViewController+LayoutProtocol.h"
+#import "RNNTurboEventEmitter.h"
 
 typedef void (^PreviewCallback)(UIViewController *vc);
 
@@ -13,8 +14,12 @@ typedef void (^PreviewCallback)(UIViewController *vc);
     : UIViewController <RNNLayoutProtocol, UIViewControllerPreviewingDelegate,
                         UISearchResultsUpdating, UISearchBarDelegate,
                         UINavigationControllerDelegate, UISplitViewControllerDelegate>
-
+#ifdef RCT_NEW_ARCH_ENABLED
+@property(nonatomic, strong) RNNTurboEventEmitter *eventEmitter;
+#else
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+#endif
+
 @property(nonatomic, retain) RNNLayoutInfo *layoutInfo;
 @property(nonatomic, strong) RNNComponentPresenter *presenter;
 @property(nonatomic, strong) RNNNavigationOptions *options;

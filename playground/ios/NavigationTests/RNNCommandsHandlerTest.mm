@@ -57,7 +57,12 @@
     self.creator = [OCMockObject partialMockForObject:[RNNTestRootViewCreator new]];
     self.mainWindow = [OCMockObject partialMockForObject:[UIWindow new]];
     self.layoutManager = [OCMockObject partialMockForObject:[[RNNLayoutManager alloc] init]];
-    self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
+	#ifdef RCT_NEW_ARCH_ENABLED
+	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNTurboEventEmitter new]];
+	#else
+	self.eventEmmiter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
+	#endif
+    
     self.overlayManager = [OCMockObject partialMockForObject:[RNNOverlayManager new]];
     self.modalManager = [OCMockObject partialMockForObject:[RNNModalManager new]];
     self.setRootAnimator = [OCMockObject partialMockForObject:[RNNSetRootAnimator new]];
@@ -847,7 +852,7 @@
 
     [[self.modalManager expect]
         dismissModal:[OCMArg checkWithBlock:^BOOL(UIViewController *modalToDismiss) {
-          return modalToDismiss.options.animations.dismissModal.exit.enable.get == NO;
+		  return ((BOOL)modalToDismiss.options.animations.dismissModal.exit.enable.get) == NO;
         }]
             animated:NO
           completion:OCMArg.any];

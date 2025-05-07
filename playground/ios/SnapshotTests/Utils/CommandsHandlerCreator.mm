@@ -6,13 +6,20 @@
 #import <ReactNativeNavigation/RNNModalManager.h>
 #import <ReactNativeNavigation/RNNOverlayManager.h>
 #import <ReactNativeNavigation/RNNSetRootAnimator.h>
+#import <ReactNativeNavigation/RNNTurboEventEmitter.h>
 
 @implementation CommandsHandlerCreator
 
 + (RNNCommandsHandler *)createWithWindow:(UIWindow *)window {
     RNNTestRootViewCreator *creator = [RNNTestRootViewCreator new];
     RNNLayoutManager *layoutManager = [[RNNLayoutManager alloc] init];
-    RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	RNNTurboEventEmitter *eventEmmiter = [RNNTurboEventEmitter new];
+#else
+	RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
+#endif
+	
     RNNOverlayManager *overlayManager = [RNNOverlayManager new];
     RNNModalManager *modalManager = [RNNModalManager new];
 	RNNViewControllerFactory *controllerFactory =

@@ -62,7 +62,13 @@
     self.creator = [[RNNTestRootViewCreator alloc] init];
     self.pageName = @"somename";
     self.componentId = @"cntId";
-    self.eventEmitter = [OCMockObject mockForClass:RNNEventEmitter.class];
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	self.eventEmitter = [OCMockObject mockForClass:RNNTurboEventEmitter.class];
+#else
+	self.eventEmitter = [OCMockObject mockForClass:RNNEventEmitter.class];
+#endif
+	
     self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 
     RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];

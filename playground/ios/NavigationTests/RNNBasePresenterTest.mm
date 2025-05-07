@@ -6,6 +6,7 @@
 
 @interface RNNBasePresenterTest : XCTestCase
 
+
 @property(nonatomic, strong) RNNBasePresenter *uut;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) RNNComponentViewController *boundViewController;

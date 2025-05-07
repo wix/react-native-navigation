@@ -2,14 +2,26 @@
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation RNNModalManagerEventHandler {
+#ifdef RCT_NEW_ARCH_ENABLED
+    RNNTurboEventEmitter *_eventEmitter;
+#else
     RNNEventEmitter *_eventEmitter;
+#endif
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithEventEmitter:(RNNTurboEventEmitter *)eventEmitter {
+    self = [super init];
+    _eventEmitter = eventEmitter;
+    return self;
+}
+#else
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
     self = [super init];
     _eventEmitter = eventEmitter;
     return self;
 }
+#endif
 
 - (void)dismissedModal:(UIViewController *)viewController {
     [_eventEmitter
