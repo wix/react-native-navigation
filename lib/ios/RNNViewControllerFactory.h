@@ -7,6 +7,7 @@
 #import "RNNReactComponentRegistry.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "RNNTurboEventEmitter.h"
 
 @interface RNNViewControllerFactory : NSObject
 
@@ -30,7 +31,11 @@
 
 - (NSArray *)createChildrenLayout:(NSArray *)children;
 
+#ifdef RCT_NEW_ARCH_ENABLED
+@property(nonatomic, strong) RNNTurboEventEmitter *eventEmitter;
+#else
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+#endif
 
 @property(nonatomic, strong) RNNNavigationOptions *defaultOptions;
 

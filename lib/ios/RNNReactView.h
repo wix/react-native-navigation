@@ -9,6 +9,7 @@
 #import "UIView+Utils.h"
 #import <React/RCTRootViewDelegate.h>
 #import <React/RCTUIManager.h>
+#import "RNNTurboEventEmitter.h"
 
 #define ComponentTypeScreen @"Component"
 #define ComponentTypeTitle @"TopBarTitle"
@@ -106,7 +107,11 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 #endif
 
-@property(nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+@property(nonatomic, copy) RNNReactViewReadyCompletionBlock _Nullable reactViewReadyBlock;
+#ifdef RCT_NEW_ARCH_ENABLED
+@property(nonatomic, strong) RNNTurboEventEmitter * _Nullable eventEmitter;
+#else
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+#endif
 
 @end

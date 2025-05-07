@@ -33,7 +33,15 @@
     self.mockTabBarPresenter =
         [OCMockObject partialMockForObject:[[RNNBottomTabsPresenter alloc] init]];
     self.mockChildViewController = [OCMockObject partialMockForObject:childViewController];
-    self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
+	
+    
+	
+#ifdef RCT_NEW_ARCH_ENABLED
+	self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNTurboEventEmitter new]];
+#else
+	self.mockEventEmitter = [OCMockObject partialMockForObject:[RNNEventEmitter new]];
+#endif
+	
     self.originalUut = [[RNNBottomTabsController alloc]
            initWithLayoutInfo:nil
                       creator:nil
@@ -67,8 +75,14 @@
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:@{}];
     RNNBottomTabsPresenter *presenter = [[RNNBottomTabsPresenter alloc] init];
     NSArray *childViewControllers = @[ [UIViewController new] ];
-    RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	RNNTurboEventEmitter *eventEmmiter = [RNNTurboEventEmitter new];
+#else
+	RNNEventEmitter *eventEmmiter = [RNNEventEmitter new];
+#endif
 
+	
     RNNBottomTabsController *uut =
         [[RNNBottomTabsController alloc] initWithLayoutInfo:layoutInfo
                                                     creator:nil

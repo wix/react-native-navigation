@@ -3,6 +3,8 @@
 #import <ReactNativeNavigation/RNNExternalViewController.h>
 #import <XCTest/XCTest.h>
 
+#import <ReactNativeNavigation/RNNTurboEventEmitter.h>
+
 @interface RNNExternalViewControllerTest : XCTestCase
 
 @property(nonatomic, strong) RNNExternalViewController *uut;
@@ -17,7 +19,13 @@
 - (void)setUp {
     [super setUp];
     self.customViewController = [[RNNCustomViewController alloc] init];
-    self.mockEventEmitter = [OCMockObject niceMockForClass:RNNEventEmitter.class];
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	self.mockEventEmitter = [OCMockObject niceMockForClass:RNNTurboEventEmitter.class];
+#else
+	self.mockEventEmitter = [OCMockObject niceMockForClass:RNNEventEmitter.class];
+#endif
+	
     _layoutInfo = [[RNNLayoutInfo alloc] init];
     _layoutInfo.componentId = @"externalComponentId";
     _layoutInfo.name = @"externalComponentName";

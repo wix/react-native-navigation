@@ -1,11 +1,16 @@
 #import "RNNButtonsPresenter.h"
 #import "NSArray+utils.h"
 #import "RNNButtonBuilder.h"
+#import "RNNTurboEventEmitter.h"
 
 @interface RNNButtonsPresenter ()
 @property(weak, nonatomic) UIViewController<RNNLayoutProtocol> *viewController;
 @property(strong, nonatomic) RNNReactComponentRegistry *componentRegistry;
-@property(strong, nonatomic) RNNEventEmitter *eventEmitter;
+#ifdef RCT_NEW_ARCH_ENABLED
+@property(nonatomic, strong) RNNTurboEventEmitter *eventEmitter;
+#else
+@property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+#endif
 @property(strong, nonatomic) RNNButtonBuilder *buttonBuilder;
 @end
 

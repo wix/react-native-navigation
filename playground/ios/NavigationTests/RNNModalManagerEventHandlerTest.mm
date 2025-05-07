@@ -4,6 +4,8 @@
 #import <ReactNativeNavigation/RNNStackController.h>
 #import <XCTest/XCTest.h>
 
+#import <ReactNativeNavigation/RNNTurboEventEmitter.h>
+
 @interface RNNModalManagerEventHandlerTest : XCTestCase
 
 @end
@@ -14,7 +16,11 @@
 }
 
 - (void)setUp {
-    _eventEmitter = [OCMockObject mockForClass:RNNEventEmitter.class];
+#ifdef RCT_NEW_ARCH_ENABLED
+	_eventEmitter = [OCMockObject mockForClass:RNNTurboEventEmitter.class];
+#else
+	_eventEmitter = [OCMockObject mockForClass:RNNEventEmitter.class];
+#endif
     _uut = [[RNNModalManagerEventHandler alloc] initWithEventEmitter:_eventEmitter];
 }
 

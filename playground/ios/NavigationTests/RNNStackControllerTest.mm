@@ -5,6 +5,8 @@
 #import <ReactNativeNavigation/RNNStackController.h>
 #import <XCTest/XCTest.h>
 
+#import <ReactNativeNavigation/RNNTurboEventEmitter.h>
+
 @interface RNNStackControllerTest : XCTestCase
 
 @property(nonatomic, strong) RNNStackController *uut;
@@ -18,14 +20,25 @@
     UIViewController *_vc3;
     RNNNavigationOptions *_options;
     RNNTestRootViewCreator *_creator;
-    RNNEventEmitter *_eventEmitter;
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	RNNTurboEventEmitter *_eventEmitter;
+#else
+	RNNEventEmitter *_eventEmitter;
+#endif
+	
     id _presenter;
 }
 
 - (void)setUp {
     [super setUp];
     _presenter = [OCMockObject partialMockForObject:[[RNNStackPresenter alloc] init]];
-    _eventEmitter = [OCMockObject niceMockForClass:[RNNEventEmitter class]];
+    
+#ifdef RCT_NEW_ARCH_ENABLED
+	_eventEmitter = [OCMockObject niceMockForClass:[RNNTurboEventEmitter class]]; 
+#else
+	_eventEmitter = [OCMockObject niceMockForClass:[RNNEventEmitter class]];
+#endif
     _creator = [[RNNTestRootViewCreator alloc] init];
     _vc1 = [[RNNComponentViewController alloc]
         initWithLayoutInfo:[RNNLayoutInfo new]

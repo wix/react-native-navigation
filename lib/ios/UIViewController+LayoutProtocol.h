@@ -1,6 +1,7 @@
 #import "RNNEventEmitter.h"
 #import "RNNLayoutProtocol.h"
 #import <UIKit/UIKit.h>
+#import "RNNTurboEventEmitter.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
@@ -50,7 +51,11 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property(nonatomic, retain) RNNLayoutInfo *layoutInfo;
 @property(nonatomic, strong) RNNNavigationOptions *options;
 @property(nonatomic, strong) RNNNavigationOptions *defaultOptions;
+#ifdef RCT_NEW_ARCH_ENABLED
+@property(nonatomic, strong) RNNTurboEventEmitter *eventEmitter;
+#else
 @property(nonatomic, strong) RNNEventEmitter *eventEmitter;
+#endif
 @property(nonatomic) id<RNNComponentViewCreator> creator;
 @property(nonatomic) RNNReactViewReadyCompletionBlock reactViewReadyCallback;
 @property(nonatomic) BOOL waitForRender;
