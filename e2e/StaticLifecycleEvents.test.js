@@ -10,6 +10,7 @@ describe('static lifecycle events', () => {
     await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
+    await expect(elementByLabel('componentWillAppear | EventsOverlay | Component')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | EventsOverlay | Component')).toBeVisible();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
   });
