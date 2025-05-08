@@ -15,6 +15,8 @@
 #define ComponentTypeButton @"TopBarButton"
 #define ComponentTypeBackground @"TopBarBackground"
 
+#import "RNNTurboEventEmitter.h"
+
 #ifdef RCT_NEW_ARCH_ENABLED
 static RCTSurfaceSizeMeasureMode convertToSurfaceSizeMeasureMode(RCTRootViewSizeFlexibility sizeFlexibility)
 {
@@ -92,7 +94,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (instancetype)initWithHost:(RCTHost *)host
 				  moduleName:(NSString *)moduleName
 		   initialProperties:(NSDictionary *)initialProperties
-				eventEmitter:(RNNEventEmitter *)eventEmitter
+				eventEmitter:(RNNTurboEventEmitter *)eventEmitter
 			 sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
 		 reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock;
 

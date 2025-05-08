@@ -12,6 +12,11 @@ describe.e2e('application lifecycle test', () => {
     await device.launchApp({ newInstance: true });
   });
 
+  it('should have lifecycle mount events', async () => {
+    await expect(elementByLabel('componentWillAppear')).toBeVisible();
+    await expect(elementByLabel('componentDidAppear')).toBeVisible();
+  });
+
   it('push a screen to ensure its not there after reload', async () => {
     await elementById(TestIDs.STACK_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();

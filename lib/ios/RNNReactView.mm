@@ -11,6 +11,7 @@
 
 @implementation RNNReactView {
     BOOL _isMounted;
+    BOOL _pendingWillAppear;
     BOOL _pendingDidAppear;
     BOOL _didAppear;
     BOOL _willAppear;
@@ -56,17 +57,18 @@
 - (instancetype)initWithHost:(RCTHost *)host
                   moduleName:(NSString *)moduleName
            initialProperties:(NSDictionary *)initialProperties
-                eventEmitter:(RNNEventEmitter *)eventEmitter
+                eventEmitter:(RNNTurboEventEmitter *)eventEmitter
              sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
+    
     RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName
                                                 initialProperties:initialProperties];
-             [host.surfacePresenter addObserver:self];
+    [host.surfacePresenter addObserver:self];
     self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
-
+    
     _reactViewReadyBlock = reactViewReadyBlock;
     _eventEmitter = eventEmitter;
-
+    
     return self;
 }
 #endif
@@ -88,7 +90,7 @@
     }
 }
 #endif
-
+    
 - (void)reactViewReady {
     if (_reactViewReadyBlock) {
         _reactViewReadyBlock();
@@ -99,12 +101,19 @@
 #endif
 }
 
+#pragma mark - RNNComponentProtocol
 - (void)componentWillAppear {
+    if (!_isMounted) {
+        _pendingWillAppear = YES;
+        return;
+    }
+    
+    _pendingWillAppear = NO;
+    
     if (!_willAppear) {
         [_eventEmitter sendComponentWillAppear:self.componentId
                                  componentName:self.moduleName
                                  componentType:self.componentType];
-        
         _willAppear = YES;
     }
 }
@@ -116,6 +125,7 @@
     }
     
     _pendingDidAppear = NO;
+    
     if (!_didAppear) {
         [_eventEmitter sendComponentDidAppear:self.componentId
                                 componentName:self.moduleName
@@ -131,18 +141,43 @@
     _willAppear = NO;
     _didAppear = NO;
 }
+    
+- (NSString *)componentId {
+    return self.appProperties[@"componentId"];
+}
 
+- (NSString *)componentType {
+    @throw [NSException exceptionWithName:@"componentType not implemented"
+                                   reason:@"Should always subclass RNNReactView"
+                                 userInfo:nil];
+}
+#pragma mark -
+    
+    
 #ifdef RCT_NEW_ARCH_ENABLED
+    
+#pragma mark - RCTSurfacePresenterObserver
+- (void)willMountComponentsWithRootTag:(NSInteger)rootTag {
+    if (self.surface.rootTag == rootTag) {
+        _isMounted = YES;
+        
+        if (_pendingWillAppear) {
+            [self componentWillAppear];
+        }
+    }
+}
 
 - (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
         _isMounted = YES;
+        
         if (_pendingDidAppear) {
             [self componentDidAppear];
         }
     }
 }
-    
+#pragma mark -
+            
 - (NSDictionary *)appProperties {
     @synchronized(self) {
         return self.surface.properties;
@@ -175,7 +210,7 @@
 }
 
 - (UIView *)contentView {
-   return self;
+    return self;
 }
 
 - (RCTRootViewSizeFlexibility)sizeFlexibility {
@@ -185,17 +220,7 @@
 - (void)setSizeFlexibility:(RCTRootViewSizeFlexibility)sizeFlexibility {
     super.sizeMeasureMode = convertToSurfaceSizeMeasureMode(sizeFlexibility);
 }
-
+            
 #endif
-
-- (NSString *)componentId {
-    return self.appProperties[@"componentId"];
-}
-
-- (NSString *)componentType {
-    @throw [NSException exceptionWithName:@"componentType not implemented"
-                                   reason:@"Should always subclass RNNReactView"
-                                 userInfo:nil];
-}
-
+            
 @end

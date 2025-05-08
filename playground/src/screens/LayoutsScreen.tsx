@@ -25,19 +25,23 @@ const {
 } = testIDs;
 
 interface State {
+  componentWillAppear: boolean;
   componentDidAppear: boolean;
 }
 
 export default class LayoutsScreen extends NavigationComponent<NavigationProps, State> {
   constructor(props: NavigationProps) {
     super(props);
+    console.log("constructor - LayoutsScreen", props);
     Navigation.events().bindComponent(this);
     this.state = {
+      componentWillAppear: false,
       componentDidAppear: false,
     };
   }
   componentWillAppear() {
     console.log('componentWillAppear:', this.props.componentId);
+    this.setState(previousState => ({ ...previousState, componentWillAppear: true }));
   }
 
   componentDidDisappear() {
@@ -46,7 +50,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
 
   componentDidAppear() {
     console.log('componentDidAppear:', this.props.componentId);
-    this.setState({ componentDidAppear: true });
+    this.setState(previousState => ({ ...previousState, componentDidAppear: true }));
   }
 
   static options(): Options {
@@ -79,6 +83,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           platform="ios"
           onPress={this.splitView}
         />
+        <Text>{this.state.componentWillAppear && 'componentWillAppear'}</Text>
         <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
       </Root>
     );
