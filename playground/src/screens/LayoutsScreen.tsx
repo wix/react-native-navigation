@@ -32,7 +32,6 @@ interface State {
 export default class LayoutsScreen extends NavigationComponent<NavigationProps, State> {
   constructor(props: NavigationProps) {
     super(props);
-    console.log("constructor - LayoutsScreen", props);
     Navigation.events().bindComponent(this);
     this.state = {
       componentWillAppear: false,

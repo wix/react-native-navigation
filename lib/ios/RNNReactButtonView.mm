@@ -15,12 +15,6 @@
     return self;
 }
 
-- (void)willMountComponentsWithRootTag:(NSInteger)rootTag {
-    if (self.surface.rootTag == rootTag) {
-        [super willMountComponentsWithRootTag:rootTag];
-    }
-}
-
 - (void)didMountComponentsWithRootTag:(NSInteger)rootTag {
     if (self.surface.rootTag == rootTag) {
         [super didMountComponentsWithRootTag:rootTag];

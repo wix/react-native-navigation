@@ -77,7 +77,6 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
   }
 
   constructor(props: OverlayProps) {
-    console.log("constructor - StaticLifecycleOverlay");
     super(props);
     this.events = [];
     this.state = {
