@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import androidx.annotation.RestrictTo;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactContext;
@@ -14,11 +12,13 @@ import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.component.Renderable;
+
+import androidx.annotation.RestrictTo;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView, Renderable {

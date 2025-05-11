@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.e2e('SideMenu', () => {
+describe('SideMenu', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
@@ -38,13 +38,13 @@ describe.e2e('SideMenu', () => {
     await expect(elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN)).toBeNotVisible();
   });
 
-  it('should rotate', async () => {
+  it.e2e('should rotate', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await device.setOrientation('landscape');
     await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN)).toBeVisible();
   });
 
-  it(':ios: rotation should update drawer height', async () => {
+  it.e2e(':ios: rotation should update drawer height', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await expect(elementByLabel('left drawer height: 869')).toBeVisible();
     await device.setOrientation('landscape');
@@ -53,23 +53,24 @@ describe.e2e('SideMenu', () => {
     await expect(elementByLabel('left drawer height: 869')).toBeVisible();
   });
 
-  it('should set left drawer width', async () => {
+  it.e2e('should set left drawer width', async () => {
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+    await expect(elementById(TestIDs.SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT)).toBeVisible();
     await expect(elementByLabel('left drawer width: 250')).toBeVisible();
   });
 
-  it('should change left drawer width', async () => {
+  it.e2e('should change left drawer width', async () => {
     await elementById(TestIDs.CHANGE_LEFT_SIDE_MENU_WIDTH_BTN).tap();
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
     await expect(elementByLabel('left drawer width: 50')).toBeVisible();
   });
 
-  it('should set right drawer width', async () => {
+  it.e2e('should set right drawer width', async () => {
     await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
     await expect(elementByLabel('right drawer width: 250')).toBeVisible();
   });
 
-  it('should change right drawer width', async () => {
+  it.e2e('should change right drawer width', async () => {
     await elementById(TestIDs.CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN).tap();
     await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
     await expect(elementByLabel('right drawer width: 50')).toBeVisible();

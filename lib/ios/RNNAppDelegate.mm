@@ -2,13 +2,14 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
 #if RCT_NEW_ARCH_ENABLED
-
+#import "RCTAppSetupUtils.h"
+#import "RCTLegacyInteropComponents.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
 #import <React/RCTSurfacePresenter.h>
-#import <React/RCTSurfacePresenterStub.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
+#import <React/RCTSurfacePresenterStub.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
 #import <react/config/ReactNativeConfig.h>
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>

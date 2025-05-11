@@ -39,6 +39,7 @@ export class NativeCommandsSender {
       const layoutNode = LayoutNodeFactory.create(layout, stack);
       stack.getVisibleLayout().componentDidDisappear();
       LayoutStore.push(layoutNode, stack);
+      LayoutStore.applyOptions(layoutNode.nodeId, layoutNode.data.options);
       stack.getVisibleLayout().componentDidAppear();
       resolve(stack.getVisibleLayout().nodeId);
       this.reportCommandCompletion(CommandName.Push, commandId);

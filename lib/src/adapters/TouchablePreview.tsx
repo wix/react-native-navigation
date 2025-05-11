@@ -22,8 +22,8 @@ interface GestureResponderEventWithForce extends NativeSyntheticEvent<NativeTouc
 export interface Props {
   children?: React.ReactNode;
   touchableComponent?:
-    | typeof TouchableHighlight
-    | typeof TouchableOpacity
+    | TouchableHighlight
+    | TouchableOpacity
     | TouchableNativeFeedback
     | TouchableWithoutFeedback
     | React.ReactNode;
@@ -121,7 +121,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
     const Touchable =
       Platform.OS === 'ios' && touchableComponent instanceof TouchableNativeFeedback
         ? TouchableWithoutFeedback
-        : (touchableComponent as React.Component);
+        : (touchableComponent as typeof React.Component);
 
     // Wrap component with Touchable for handling platform touches
     // and a single react View for detecting force and timing.

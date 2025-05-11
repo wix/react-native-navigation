@@ -5,15 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.facebook.react.views.view.ReactViewBackgroundDrawable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
-
-import com.facebook.react.common.annotations.UnstableReactNativeAPI;
-import com.facebook.react.uimanager.drawable.CSSBackgroundDrawable;
 
 public class ViewUtils {
     @Nullable
@@ -108,10 +107,9 @@ public class ViewUtils {
         return ((ViewGroup) parent).indexOfChild(view);
     }
 
-    @UnstableReactNativeAPI
     public static int getBackgroundColor(View view) {
-        if (view.getBackground() instanceof CSSBackgroundDrawable) {
-            return ((CSSBackgroundDrawable) view.getBackground()).getColor();
+        if (view.getBackground() instanceof ReactViewBackgroundDrawable) {
+            return ((ReactViewBackgroundDrawable) view.getBackground()).getColor();
         }
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
     }
