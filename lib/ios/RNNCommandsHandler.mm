@@ -467,7 +467,6 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNAssertMainQueue();
 
     UIViewController *overlayVC = [_controllerFactory createLayout:layout];
-    overlayVC.waitForRender = [RNNUtils getDefaultWaitForRender];
     [_layoutManager addPendingViewController:overlayVC];
 
     __weak UIViewController *weakOverlayVC = overlayVC;
