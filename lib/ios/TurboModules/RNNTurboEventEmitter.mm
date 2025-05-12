@@ -18,5 +18,12 @@ RCT_EXPORT_MODULE()
 	_host = host;
 }
 
+- (void)send:(NSString *)eventName body:(id)body {
+    if (_host == nil) {
+        return;
+    }
+    [self sendEventWithName:eventName body:body];
+}
+
 @end
 #endif
