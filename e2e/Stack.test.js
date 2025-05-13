@@ -134,7 +134,7 @@ describe('Stack', () => {
   it.e2e('unmount is called on pop', async () => {
     await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
     await elementById(TestIDs.POP_BTN).tap();
-    await waitFor(elementByLabel('componentWillUnmount')).toBeVisible().withTimeout(1000);
+    await expect(elementByLabel('componentWillUnmount')).toBeVisible();
     await elementByLabel('OK').atIndex(0).tap();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
@@ -179,7 +179,7 @@ describe('Stack', () => {
   it.e2e('push promise is resolved with pushed ViewController id', async () => {
     await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
-    await waitFor(elementByLabel('push promise resolved with: ChildId')).toBeVisible().withTimeout(1000);
+    await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();
     await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
   });
 

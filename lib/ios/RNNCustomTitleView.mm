@@ -55,8 +55,15 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)surface:(RCTSurface *)surface didChangeIntrinsicSize:(CGSize)intrinsicSize {
-	// TODO: FILL WITH DATA
+    if ([self.alignment isEqualToString:@"center"]) {
+        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                                  self.subView.intrinsicContentSize.width,
+                                  self.subView.intrinsicContentSize.height)];
+        [self.subView setFrame:CGRectMake(0, 0, surface.intrinsicSize.width,
+                                          surface.intrinsicSize.height)];
+    }
 }
+
 #else
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     if ([self.alignment isEqualToString:@"center"]) {

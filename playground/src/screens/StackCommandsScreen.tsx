@@ -47,10 +47,8 @@ export default class StackCommandsScreen extends NavigationComponent<NavigationP
         this.setState({
           pushPromiseResult: `push promise resolved with: ${pushId}`,
         });
-        return 'ChildId';
+        return Navigation.pop('ChildId');
       })
-      .then((popId) => new Promise<string>((resolve) => setTimeout(() => resolve(popId), 500)))
-      .then((popId) => Navigation.pop(popId))
       .then((popId) => {
         this.setState({
           popPromiseResult: `pop promise resolved with: ${popId}`,

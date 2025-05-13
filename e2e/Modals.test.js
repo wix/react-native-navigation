@@ -26,9 +26,9 @@ describe('modal', () => {
     await elementById(TestIDs.MODAL_LIFECYCLE_BTN).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await waitFor(elementByLabel('componentWillUnmount')).toBeVisible().withTimeout(1000);
+    await expect(elementByLabel('componentWillUnmount')).toBeVisible();
     await elementByLabel('OK').atIndex(0).tap();
-    await waitFor(elementByLabel('didDisappear')).toBeVisible().withTimeout(1000);
+    await expect(elementByLabel('didDisappear')).toBeVisible();
     await elementByLabel('OK').atIndex(0).tap();
   });
 
@@ -148,9 +148,9 @@ describe('modal', () => {
     await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
 
-    await waitFor(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible().withTimeout(1000);
-    await waitFor(elementByLabel('modalDismissed listener called with with: UniqueStackId')).toBeVisible().withTimeout(1000);
-    await waitFor(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible().withTimeout(1000);
+    await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
+    await expect(elementByLabel('modalDismissed listener called with with: UniqueStackId')).toBeVisible();
+    await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
   });
 
   it.e2e('should show declared modal', async () => {

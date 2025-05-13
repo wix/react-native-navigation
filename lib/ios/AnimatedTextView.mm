@@ -45,6 +45,7 @@
 
 - (void)reset {
     [super reset];
+    _fromTextContainer.size = _fromSize;
 }
 
 - (NSTextContainer *)container:(NSTextStorage *)fromTextStorage {

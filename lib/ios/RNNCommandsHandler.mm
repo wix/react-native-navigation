@@ -300,6 +300,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                    completion:^{
                      [self->_eventEmitter sendOnNavigationCommandCompletion:pop
                                                                   commandId:commandId];
+                NSLog(@"Pop commandshandler completed");
                      completion();
                    }
                     rejection:rejection];

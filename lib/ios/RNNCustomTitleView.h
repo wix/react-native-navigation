@@ -4,6 +4,7 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTSurfaceDelegate.h>
+#import <React/RCTSurface.h>
 #endif
 
 @interface RNNCustomTitleView : UIView <

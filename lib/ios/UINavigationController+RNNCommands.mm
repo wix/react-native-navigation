@@ -21,6 +21,7 @@ typedef void (^RNNAnimationBlock)(void);
 
     [self
         performBlock:^{
+        NSLog(@"About to push a controller %@", newTop);
           [self pushViewController:newTop animated:animated];
         }
             animated:animated
@@ -38,9 +39,12 @@ typedef void (^RNNAnimationBlock)(void);
         }
         animated:animated
         completion:^{
+        NSLog(@"Pop popAnimated completed");
           if (poppedVC) {
+              NSLog(@"Pop popAnimated completion invokation");
               completion();
           } else {
+              NSLog(@"Pop rejection");
               [RNNErrorHandler reject:rejection
                         withErrorCode:1012
                      errorDescription:@"popping component failed"];
