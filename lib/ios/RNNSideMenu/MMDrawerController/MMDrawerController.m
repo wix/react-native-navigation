@@ -371,7 +371,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                       completion:(void (^)(BOOL finished))completion {
     CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:visibleSide];
 
-    // Prepare drawer frames
     CGRect currentFrame = sideDrawerViewController.view.frame;
     CGRect finalFrame = currentFrame;
 
@@ -397,14 +396,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         options:options
         animations:^{
           [self setNeedsStatusBarAppearanceUpdateIfSupported];
-
-          // Move drawer off-screen
           [sideDrawerViewController.view setFrame:finalFrame];
-
-          // Fade out overlay
           self.centerContentOverlay.alpha = 0.0;
-
-          // Update visual state
           [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:0.0];
         }
         completion:^(BOOL finished) {
@@ -412,8 +405,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                     sideDrawerViewController:sideDrawerViewController
                                     finished:finished
                                   completion:completion];
-
-          // Remove overlay
           [self.centerContentOverlay removeFromSuperview];
         }];
 }
@@ -450,11 +441,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             sideDrawerViewController:(UIViewController *)sideDrawerViewController
                             finished:(BOOL)finished
                           completion:(void (^)(BOOL finished))completion {
-
-    // Complete appearance transition
     [sideDrawerViewController endAppearanceTransition];
 
-    // Update state
     [self setOpenSide:MMDrawerSideNone];
     [self resetDrawerVisualStateForDrawerSide:visibleSide];
     [self setAnimatingDrawer:NO];
@@ -496,7 +484,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
 
         if (sideDrawerViewController) {
-            // Check if this drawer should use overlay mode
             MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
             if (openMode == MMDrawerOpenModeAboveContent) {
@@ -1378,12 +1365,10 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 - (void)panGestureCallback:(UIPanGestureRecognizer *)panGesture {
     switch (panGesture.state) {
     case UIGestureRecognizerStateBegan: {
-        // Call gesture start callback
         if (self.gestureStart) {
             self.gestureStart(self, panGesture);
         }
 
-        // Don't proceed if drawer is currently animating
         if (self.animatingDrawer) {
             [panGesture setEnabled:NO];
             break;
@@ -1394,10 +1379,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         MMDrawerSide drawerSide = self.openSide;
 
         if (drawerSide == MMDrawerSideNone) {
-            // Determine based on gesture direction
             drawerSide = (velocity.x > 0) ? MMDrawerSideLeft : MMDrawerSideRight;
 
-            // Check if the side is enabled
             if ((drawerSide == MMDrawerSideLeft && !_leftSideEnabled) ||
                 (drawerSide == MMDrawerSideRight && !_rightSideEnabled)) {
                 drawerSide = (drawerSide == MMDrawerSideLeft) ? MMDrawerSideRight : MMDrawerSideLeft;
@@ -1409,45 +1392,34 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             }
         }
 
-        // Store which drawer we're working with for this gesture
+        // Remember which drawer we're working with for this gesture
         self.startingDrawerSide = drawerSide;
 
         MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
 
         if (openMode == MMDrawerOpenModeAboveContent) {
-            // OVERLAY MODE
-            UIViewController *drawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
-            CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
+            UIViewController *drawerViewController =
+                [self sideDrawerViewControllerForSide:drawerSide];
 
             // Store current drawer frame
             self.startingPanRect = drawerViewController.view.frame;
 
             // If drawer is closed, set up initial position
             if (self.openSide == MMDrawerSideNone) {
-                CGRect drawerFrame = drawerViewController.view.frame;
-
-                // Set proper width
-                drawerFrame.size.width = maximumDrawerWidth;
-
-                // Position off-screen based on side
-                if (drawerSide == MMDrawerSideLeft) {
-                    drawerFrame.origin.x = -maximumDrawerWidth;
-                } else { // MMDrawerSideRight
-                    drawerFrame.origin.x = self.view.bounds.size.width;
-                }
+                self.startingPanRect =
+                    [self calculateClosedDrawerPanStartFrameInOverlay:drawerSide
+                                                 drawerViewController:(UIViewController *)
+                                                                          drawerViewController];
 
                 // Apply initial frame
-                [drawerViewController.view setFrame:drawerFrame];
+                [drawerViewController.view setFrame:self.startingPanRect];
 
                 // Ensure drawer is visible and in front
                 drawerViewController.view.hidden = NO;
                 [self.childControllerContainerView bringSubviewToFront:drawerViewController.view];
-
-                // Update starting rect
-                self.startingPanRect = drawerFrame;
             }
         } else {
-            // Original push mode - get center container position as starting point
+            // Get center container position as starting point
             self.startingPanRect = self.centerContainerView.frame;
         }
 
@@ -1711,6 +1683,23 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     default:
         break;
     }
+}
+
+- (CGRect)calculateClosedDrawerPanStartFrameInOverlay:(MMDrawerSide)drawerSide
+                                 drawerViewController:(UIViewController *)drawerViewController {
+    CGRect drawerFrame = drawerViewController.view.frame;
+    CGFloat maximumDrawerWidth = [self maximumDrawerWidthForSide:drawerSide];
+
+    // Set proper width
+    drawerFrame.size.width = maximumDrawerWidth;
+
+    // Position off-screen based on side
+    if (drawerSide == MMDrawerSideLeft) {
+        drawerFrame.origin.x = -maximumDrawerWidth;
+    } else { // MMDrawerSideRight
+        drawerFrame.origin.x = self.view.bounds.size.width;
+    }
+    return drawerFrame;
 }
 
 - (void)updatePanHandlersState {
