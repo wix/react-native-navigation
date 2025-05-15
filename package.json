@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "8.1.0-alpha",
+  "version": "8.1.0-rc01",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
