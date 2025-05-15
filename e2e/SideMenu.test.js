@@ -15,7 +15,7 @@ describe.each([true, false])('SideMenu', (shouldTestAboveContent) => {
   });
 
   describe(`${shouldTestAboveContent ? 'Above Content' : 'Push Screen'}`, () => {
-    it('close SideMenu and push to stack with static id', async () => {
+    it.e2e(':ios: close SideMenu and push to stack with static id', async () => {
       await elementById(openLeftMenuTestId).tap();
       await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
       if(shouldTestAboveContent) {
@@ -26,6 +26,14 @@ describe.each([true, false])('SideMenu', (shouldTestAboveContent) => {
         await elementById(TestIDs.POP_BTN).tap();
         await expect(elementById(TestIDs.CENTER_SCREEN_HEADER)).toBeVisible();
       }
+    });
+
+    it(':android: close SideMenu and push to stack with static id', async () => {
+      await elementById(openLeftMenuTestId).tap();
+      await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
+      await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.CENTER_SCREEN_HEADER)).toBeVisible();
     });
 
     it('Push to stack with static id and close SideMenu with screen options', async () => {
