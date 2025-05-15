@@ -3,7 +3,7 @@ import TestIDs from '../playground/src/testIDs';
 
 const { elementByLabel, elementById } = Utils;
 
-describe.each([true, false])('SideMenu', (shouldTestAboveContent) => {
+describe.each([true, false])(`SideMenu - ${shouldTestAboveContent ? 'Above Content' : 'Push Screen'}`, (shouldTestAboveContent) => {
   let openLeftMenuTestId;
   let openRightMenuTestId;
 
@@ -17,10 +17,14 @@ describe.each([true, false])('SideMenu', (shouldTestAboveContent) => {
   it('close SideMenu and push to stack with static id', async () => {
     await elementById(openLeftMenuTestId).tap();
     await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
-    await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
-    await elementById(TestIDs.POP_BTN).tap();
-    await expect(elementById(TestIDs.CENTER_SCREEN_HEADER)).toBeVisible();
+    if(shouldTestAboveContent) {
+      await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+      await expect(elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN)).toBeNotVisible();
+    } else {
+      await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.CENTER_SCREEN_HEADER)).toBeVisible();
+    }
   });
 
   it('Push to stack with static id and close SideMenu with screen options', async () => {
