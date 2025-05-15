@@ -10,75 +10,75 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		5006E16627974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.m */; };
-		5007B4312472CA390002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
-		5007B4342472CBD40002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
-		5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
-		5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
-		5007B4382472D9A20002AA4E /* RNNCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.m */; };
-		5007B4392472D9A70002AA4E /* RNNNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.m */; };
-		500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */; };
-		501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.m */; };
-		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */; };
-		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */; };
-		502734AF24F3E9BA0022163C /* ColorParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.m */; };
-		503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */; };
-		50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */; };
-		50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */; };
+		5006E16627974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm */; };
+		5007B4312472CA390002AA4E /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
+		5007B4342472CBD40002AA4E /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
+		5007B4352472D3C90002AA4E /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
+		5007B4362472D3CC0002AA4E /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
+		5007B4382472D9A20002AA4E /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
+		5007B4392472D9A70002AA4E /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
+		500E9FE72406A52100C61231 /* BottomTabPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500E9FE62406A4E200C61231 /* BottomTabPresenterTest.mm */; };
+		501C86B9239FE9C400E0B631 /* UIImage+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.mm */; };
+		5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.mm */; };
+		5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.mm */; };
+		502734AF24F3E9BA0022163C /* ColorParserTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.mm */; };
+		503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */; };
+		50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */; };
+		50418978250788AE004A6BC7 /* FBSnapshotTestController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */; };
 		5041897A250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */; };
-		5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */; };
-		5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418971250788AE004A6BC7 /* UIImage+Snapshot.m */; };
-		5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.m */; };
-		5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.m */; };
-		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */; };
-		5064A388256A85EB00D7AC84 /* NSArray+utilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */; };
-		50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.m */; };
-		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */; };
-		507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
-		507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E4888A2427DA4800B11A8E /* StackOptionsTest.m */; };
+		5041897B250788AE004A6BC7 /* FBSnapshotTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */; };
+		5041897C250788AE004A6BC7 /* UIImage+Snapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */; };
+		5041897D250788AE004A6BC7 /* UIImage+Compare.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418972250788AE004A6BC7 /* UIImage+Compare.mm */; };
+		5041897E250788AE004A6BC7 /* UIImage+Diff.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50418973250788AE004A6BC7 /* UIImage+Diff.mm */; };
+		50647FE323E3196800B92025 /* RNNExternalViewControllerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */; };
+		5064A388256A85EB00D7AC84 /* NSArray+utilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */; };
+		50650A23242FB0F800688104 /* CommandsHandlerCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */; };
+		5078DF39242BE8AA007B0B4F /* TestingAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */; };
+		507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
+		507C80E7242914C800F765F7 /* StackOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */; };
 		507C80E8242A1E6F00F765F7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 507C80EB242BC6FB00F765F7 /* LayoutCreator.m */; };
-		50996C6823AA477400008F89 /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */; };
-		50996C6923AA487800008F89 /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
-		50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.m */; };
-		50C085E62591341600B0502C /* RNNUIBarButtonItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E52591341600B0502C /* RNNUIBarButtonItemTest.m */; };
-		50C085E8259141E200B0502C /* RNNButtonsPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E7259141E200B0502C /* RNNButtonsPresenterTest.m */; };
-		50C085F52594973000B0502C /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
-		50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
-		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */; };
-		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */; };
-		50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */; };
+		507C80EC242BC6FB00F765F7 /* LayoutCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */; };
+		50996C6823AA477400008F89 /* RNNRootViewControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50996C6723AA477400008F89 /* RNNRootViewControllerTest.mm */; };
+		50996C6923AA487800008F89 /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
+		50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.mm */; };
+		50C085E62591341600B0502C /* RNNUIBarButtonItemTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E52591341600B0502C /* RNNUIBarButtonItemTest.mm */; };
+		50C085E8259141E200B0502C /* RNNButtonsPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E7259141E200B0502C /* RNNButtonsPresenterTest.mm */; };
+		50C085F52594973000B0502C /* RNNComponentViewController+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */; };
+		50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */; };
+		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */; };
+		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */; };
+		50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */; };
 		6B102251DCC578519C2DC6A4 /* libPods-NavigationIOS12Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */; };
 		8EB60A6CB93C527CC6A870A2 /* libPods-SnapshotTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */; };
 		9F9A3A9625260DA900AAAF37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */; };
 		A55BD66DD6404C20A23DA948 /* libPods-NavigationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */; };
 		CC58376A9F3639711BDD0562 /* libPods-playground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE713009EFB937EA4BF877 /* libPods-playground.a */; };
-		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */; };
-		E58D26472385888C003F36BA /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */; };
-		E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.m */; };
-		E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.m */; };
-		E58D264A2385888C003F36BA /* BottomTabsControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26292385888B003F36BA /* BottomTabsControllerTest.m */; };
-		E58D264B2385888C003F36BA /* RNNLayoutManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D262A2385888B003F36BA /* RNNLayoutManagerTest.m */; };
-		E58D264C2385888C003F36BA /* RNNSideMenuParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D262B2385888B003F36BA /* RNNSideMenuParserTest.m */; };
-		E58D264D2385888C003F36BA /* RNNOverlayManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */; };
-		E58D264E2385888C003F36BA /* RNNTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D262F2385888B003F36BA /* RNNTestBase.m */; };
-		E58D264F2385888C003F36BA /* RNNStackPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26312385888B003F36BA /* RNNStackPresenterTest.m */; };
-		E58D26502385888C003F36BA /* RNNNavigationOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */; };
-		E58D26512385888C003F36BA /* RNNExternalComponentStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.m */; };
-		E58D26522385888C003F36BA /* RNNComponentPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26352385888B003F36BA /* RNNComponentPresenterTest.m */; };
-		E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */; };
-		E58D26542385888C003F36BA /* RNNSideMenuControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */; };
-		E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */; };
-		E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */; };
-		E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */; };
-		E58D265A2385888C003F36BA /* RNNTestRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */; };
-		E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */; };
-		E58D265C2385888C003F36BA /* RNNStackControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D263F2385888C003F36BA /* RNNStackControllerTest.m */; };
-		E58D265D2385888C003F36BA /* RNNControllerFactoryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26402385888C003F36BA /* RNNControllerFactoryTest.m */; };
-		E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26412385888C003F36BA /* RNNCommandsHandlerTest.m */; };
-		E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26422385888C003F36BA /* RNNBasePresenterTest.m */; };
-		E58D26602385888C003F36BA /* RNNModalManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26432385888C003F36BA /* RNNModalManagerTest.m */; };
-		E58D26612385888C003F36BA /* RNNTestNoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D26452385888C003F36BA /* RNNTestNoColor.m */; };
+		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */; };
+		E58D26472385888C003F36BA /* RNNRootViewControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.mm */; };
+		E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.mm */; };
+		E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.mm */; };
+		E58D264A2385888C003F36BA /* BottomTabsControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26292385888B003F36BA /* BottomTabsControllerTest.mm */; };
+		E58D264B2385888C003F36BA /* RNNLayoutManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262A2385888B003F36BA /* RNNLayoutManagerTest.mm */; };
+		E58D264C2385888C003F36BA /* RNNSideMenuParserTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262B2385888B003F36BA /* RNNSideMenuParserTest.mm */; };
+		E58D264D2385888C003F36BA /* RNNOverlayManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262D2385888B003F36BA /* RNNOverlayManagerTest.mm */; };
+		E58D264E2385888C003F36BA /* RNNTestBase.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262F2385888B003F36BA /* RNNTestBase.mm */; };
+		E58D264F2385888C003F36BA /* RNNStackPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26312385888B003F36BA /* RNNStackPresenterTest.mm */; };
+		E58D26502385888C003F36BA /* RNNNavigationOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26322385888B003F36BA /* RNNNavigationOptionsTest.mm */; };
+		E58D26512385888C003F36BA /* RNNExternalComponentStoreTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.mm */; };
+		E58D26522385888C003F36BA /* RNNComponentPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26352385888B003F36BA /* RNNComponentPresenterTest.mm */; };
+		E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */; };
+		E58D26542385888C003F36BA /* RNNSideMenuControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */; };
+		E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */; };
+		E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */; };
+		E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */; };
+		E58D265A2385888C003F36BA /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
+		E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.mm */; };
+		E58D265C2385888C003F36BA /* RNNStackControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263F2385888C003F36BA /* RNNStackControllerTest.mm */; };
+		E58D265D2385888C003F36BA /* RNNViewControllerFactoryTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26402385888C003F36BA /* RNNViewControllerFactoryTest.mm */; };
+		E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26412385888C003F36BA /* RNNCommandsHandlerTest.mm */; };
+		E58D265F2385888C003F36BA /* RNNBasePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */; };
+		E58D26602385888C003F36BA /* RNNModalManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26432385888C003F36BA /* RNNModalManagerTest.mm */; };
+		E58D26612385888C003F36BA /* RNNTestNoColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26452385888C003F36BA /* RNNTestNoColor.mm */; };
 		F37104B81B0A0360736BF06D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 323095228F740613FD9372D1 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -119,53 +119,53 @@
 		4259AF43A23D928FE78B4A3A /* Pods-NavigationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.release.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalHostViewManagerHandlerTest.m; sourceTree = "<group>"; };
+		5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNModalHostViewManagerHandlerTest.mm; sourceTree = "<group>"; };
 		5007B42F2472CA390002AA4E /* RNNNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNativeViewController.h; sourceTree = "<group>"; };
-		5007B4302472CA390002AA4E /* RNNNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNativeViewController.m; sourceTree = "<group>"; };
-		5007B4322472CBD30002AA4E /* RNNCustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomViewController.m; sourceTree = "<group>"; };
+		5007B4302472CA390002AA4E /* RNNNativeViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNNativeViewController.mm; sourceTree = "<group>"; };
+		5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNCustomViewController.mm; sourceTree = "<group>"; };
 		5007B4332472CBD40002AA4E /* RNNCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCustomViewController.h; sourceTree = "<group>"; };
-		500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomTabPresenterTest.m; sourceTree = "<group>"; };
+		500E9FE62406A4E200C61231 /* BottomTabPresenterTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BottomTabPresenterTest.mm; sourceTree = "<group>"; };
 		501C86B7239FE9C400E0B631 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
-		501C86B8239FE9C400E0B631 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
-		5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsAppearancePresenterTest.m; sourceTree = "<group>"; };
-		502734AE24F3E9110022163C /* ColorParserTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorParserTest.m; sourceTree = "<group>"; };
+		501C86B8239FE9C400E0B631 /* UIImage+Utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Utils.mm"; sourceTree = "<group>"; };
+		5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBottomTabsAppearancePresenterTest.mm; sourceTree = "<group>"; };
+		502734AE24F3E9110022163C /* ColorParserTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorParserTest.mm; sourceTree = "<group>"; };
 		50364D6B238E7F0A000E62A2 /* ReactNativeNavigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactNativeNavigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerEventHandlerTest.m; sourceTree = "<group>"; };
-		50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
+		503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNModalManagerEventHandlerTest.mm; sourceTree = "<group>"; };
+		50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestCasePlatform.mm; sourceTree = "<group>"; };
 		50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCase.h; sourceTree = "<group>"; };
-		5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestController.m; sourceTree = "<group>"; };
+		5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestController.mm; sourceTree = "<group>"; };
 		5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FBSnapshotTestCase-Info.plist"; sourceTree = "<group>"; };
-		5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSnapshotTestCase.m; sourceTree = "<group>"; };
+		5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBSnapshotTestCase.mm; sourceTree = "<group>"; };
 		5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestCasePlatform.h; sourceTree = "<group>"; };
 		50418970250788AE004A6BC7 /* UIImage+Diff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Diff.h"; sourceTree = "<group>"; };
-		50418971250788AE004A6BC7 /* UIImage+Snapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Snapshot.m"; sourceTree = "<group>"; };
-		50418972250788AE004A6BC7 /* UIImage+Compare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Compare.m"; sourceTree = "<group>"; };
-		50418973250788AE004A6BC7 /* UIImage+Diff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Diff.m"; sourceTree = "<group>"; };
+		50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Snapshot.mm"; sourceTree = "<group>"; };
+		50418972250788AE004A6BC7 /* UIImage+Compare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Compare.mm"; sourceTree = "<group>"; };
+		50418973250788AE004A6BC7 /* UIImage+Diff.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Diff.mm"; sourceTree = "<group>"; };
 		50418974250788AE004A6BC7 /* UIImage+Compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compare.h"; sourceTree = "<group>"; };
 		50418975250788AE004A6BC7 /* UIImage+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Snapshot.h"; sourceTree = "<group>"; };
 		50418976250788AE004A6BC7 /* FBSnapshotTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSnapshotTestController.h; sourceTree = "<group>"; };
-		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNExternalViewControllerTests.m; sourceTree = "<group>"; };
-		5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+utilsTest.m"; sourceTree = "<group>"; usesTabs = 0; };
+		50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNExternalViewControllerTests.mm; sourceTree = "<group>"; };
+		5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+utilsTest.mm"; sourceTree = "<group>"; usesTabs = 0; };
 		50650A21242FB0F800688104 /* CommandsHandlerCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandsHandlerCreator.h; sourceTree = "<group>"; };
-		50650A22242FB0F800688104 /* CommandsHandlerCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandsHandlerCreator.m; sourceTree = "<group>"; };
+		50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CommandsHandlerCreator.mm; sourceTree = "<group>"; };
 		5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
-		5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestingAppDelegate.m; sourceTree = "<group>"; };
+		5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestingAppDelegate.mm; sourceTree = "<group>"; };
 		507C80DA2429111F00F765F7 /* SnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		507C80DE2429111F00F765F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507C80EA242BC6FB00F765F7 /* LayoutCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutCreator.h; sourceTree = "<group>"; };
-		507C80EB242BC6FB00F765F7 /* LayoutCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutCreator.m; sourceTree = "<group>"; };
+		507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LayoutCreator.mm; sourceTree = "<group>"; };
 		50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationIOS12Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50996C6123AA46DD00008F89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNRootViewControllerTest.m; sourceTree = "<group>"; };
-		50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopBarAppearancePresenterTest.m; sourceTree = "<group>"; };
-		50C085E52591341600B0502C /* RNNUIBarButtonItemTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNUIBarButtonItemTest.m; sourceTree = "<group>"; };
-		50C085E7259141E200B0502C /* RNNButtonsPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonsPresenterTest.m; sourceTree = "<group>"; };
+		50996C6723AA477400008F89 /* RNNRootViewControllerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNRootViewControllerTest.mm; sourceTree = "<group>"; };
+		50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TopBarAppearancePresenterTest.mm; sourceTree = "<group>"; };
+		50C085E52591341600B0502C /* RNNUIBarButtonItemTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNUIBarButtonItemTest.mm; sourceTree = "<group>"; };
+		50C085E7259141E200B0502C /* RNNButtonsPresenterTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNButtonsPresenterTest.mm; sourceTree = "<group>"; };
 		50C9A8D2240FB9D000BD699F /* RNNComponentViewController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNComponentViewController+Utils.h"; sourceTree = "<group>"; };
-		50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNComponentViewController+Utils.m"; sourceTree = "<group>"; };
+		50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RNNComponentViewController+Utils.mm"; sourceTree = "<group>"; };
 		50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNNBottomTabsController+Helpers.h"; sourceTree = "<group>"; };
-		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNNBottomTabsController+Helpers.m"; sourceTree = "<group>"; };
-		50E4888A2427DA4800B11A8E /* StackOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackOptionsTest.m; sourceTree = "<group>"; };
-		50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSearchBarOptionsTest.m; sourceTree = "<group>"; };
+		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RNNBottomTabsController+Helpers.mm"; sourceTree = "<group>"; };
+		50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StackOptionsTest.mm; sourceTree = "<group>"; };
+		50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSearchBarOptionsTest.mm; sourceTree = "<group>"; };
 		60BCFCC02B7F812F00FCDB38 /* libLLVM.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLLVM.dylib; path = usr/lib/libLLVM.dylib; sourceTree = SDKROOT; };
 		60BCFCCA2B7F817400FCDB38 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,36 +178,36 @@
 		E504607F227748EA00212BD8 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		E58D261B238587F4003F36BA /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E58D261F238587F4003F36BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LayoutProtocolTest.m"; sourceTree = "<group>"; };
-		E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNRootViewControllerTest.m; sourceTree = "<group>"; };
-		E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNDotIndicatorPresenterTest.m; sourceTree = "<group>"; };
-		E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNFontAttributesCreatorTest.m; sourceTree = "<group>"; };
-		E58D26292385888B003F36BA /* BottomTabsControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BottomTabsControllerTest.m; sourceTree = "<group>"; };
-		E58D262A2385888B003F36BA /* RNNLayoutManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutManagerTest.m; sourceTree = "<group>"; };
-		E58D262B2385888B003F36BA /* RNNSideMenuParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuParserTest.m; sourceTree = "<group>"; };
+		E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+LayoutProtocolTest.mm"; sourceTree = "<group>"; };
+		E58D26262385888B003F36BA /* RNNRootViewControllerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNRootViewControllerTest.mm; sourceTree = "<group>"; };
+		E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNDotIndicatorPresenterTest.mm; sourceTree = "<group>"; };
+		E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNFontAttributesCreatorTest.mm; sourceTree = "<group>"; };
+		E58D26292385888B003F36BA /* BottomTabsControllerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BottomTabsControllerTest.mm; sourceTree = "<group>"; };
+		E58D262A2385888B003F36BA /* RNNLayoutManagerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNLayoutManagerTest.mm; sourceTree = "<group>"; };
+		E58D262B2385888B003F36BA /* RNNSideMenuParserTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSideMenuParserTest.mm; sourceTree = "<group>"; };
 		E58D262C2385888B003F36BA /* RNNOptionsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNOptionsTest.h; sourceTree = "<group>"; };
-		E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayManagerTest.m; sourceTree = "<group>"; };
-		E58D262F2385888B003F36BA /* RNNTestBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestBase.m; sourceTree = "<group>"; };
+		E58D262D2385888B003F36BA /* RNNOverlayManagerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNOverlayManagerTest.mm; sourceTree = "<group>"; };
+		E58D262F2385888B003F36BA /* RNNTestBase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNTestBase.mm; sourceTree = "<group>"; };
 		E58D26302385888B003F36BA /* RNNTestBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNTestBase.h; sourceTree = "<group>"; };
-		E58D26312385888B003F36BA /* RNNStackPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStackPresenterTest.m; sourceTree = "<group>"; };
-		E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationOptionsTest.m; sourceTree = "<group>"; };
-		E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNExternalComponentStoreTest.m; sourceTree = "<group>"; };
+		E58D26312385888B003F36BA /* RNNStackPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNStackPresenterTest.mm; sourceTree = "<group>"; };
+		E58D26322385888B003F36BA /* RNNNavigationOptionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNNavigationOptionsTest.mm; sourceTree = "<group>"; };
+		E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNExternalComponentStoreTest.mm; sourceTree = "<group>"; };
 		E58D26342385888B003F36BA /* RNNTestRootViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNTestRootViewCreator.h; sourceTree = "<group>"; };
-		E58D26352385888B003F36BA /* RNNComponentPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNComponentPresenterTest.m; sourceTree = "<group>"; };
-		E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuPresenterTest.m; sourceTree = "<group>"; };
-		E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuControllerTest.m; sourceTree = "<group>"; };
-		E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTransitionStateHolderTest.m; sourceTree = "<group>"; };
-		E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsPresenterTest.m; sourceTree = "<group>"; };
-		E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RNNOptionsTest.m"; sourceTree = "<group>"; };
-		E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationStackManagerTest.m; sourceTree = "<group>"; };
-		E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestRootViewCreator.m; sourceTree = "<group>"; };
-		E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
-		E58D263F2385888C003F36BA /* RNNStackControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStackControllerTest.m; sourceTree = "<group>"; };
-		E58D26402385888C003F36BA /* RNNControllerFactoryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNControllerFactoryTest.m; sourceTree = "<group>"; };
-		E58D26412385888C003F36BA /* RNNCommandsHandlerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCommandsHandlerTest.m; sourceTree = "<group>"; };
-		E58D26422385888C003F36BA /* RNNBasePresenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBasePresenterTest.m; sourceTree = "<group>"; };
-		E58D26432385888C003F36BA /* RNNModalManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNModalManagerTest.m; sourceTree = "<group>"; };
-		E58D26452385888C003F36BA /* RNNTestNoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTestNoColor.m; sourceTree = "<group>"; };
+		E58D26352385888B003F36BA /* RNNComponentPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNComponentPresenterTest.mm; sourceTree = "<group>"; };
+		E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSideMenuPresenterTest.mm; sourceTree = "<group>"; };
+		E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSideMenuControllerTest.mm; sourceTree = "<group>"; };
+		E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNTransitionStateHolderTest.mm; sourceTree = "<group>"; };
+		E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBottomTabsPresenterTest.mm; sourceTree = "<group>"; };
+		E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UITabBarController+RNNOptionsTest.mm"; sourceTree = "<group>"; };
+		E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNNavigationStackManagerTest.mm; sourceTree = "<group>"; };
+		E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNTestRootViewCreator.mm; sourceTree = "<group>"; };
+		E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+RNNOptionsTest.mm"; sourceTree = "<group>"; };
+		E58D263F2385888C003F36BA /* RNNStackControllerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNStackControllerTest.mm; sourceTree = "<group>"; };
+		E58D26402385888C003F36BA /* RNNViewControllerFactoryTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNViewControllerFactoryTest.mm; sourceTree = "<group>"; };
+		E58D26412385888C003F36BA /* RNNCommandsHandlerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNCommandsHandlerTest.mm; sourceTree = "<group>"; };
+		E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBasePresenterTest.mm; sourceTree = "<group>"; };
+		E58D26432385888C003F36BA /* RNNModalManagerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNModalManagerTest.mm; sourceTree = "<group>"; };
+		E58D26452385888C003F36BA /* RNNTestNoColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNTestNoColor.mm; sourceTree = "<group>"; };
 		E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapshotTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -253,11 +253,11 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				5007B42F2472CA390002AA4E /* RNNNativeViewController.h */,
-				5007B4302472CA390002AA4E /* RNNNativeViewController.m */,
+				5007B4302472CA390002AA4E /* RNNNativeViewController.mm */,
 				5007B4332472CBD40002AA4E /* RNNCustomViewController.h */,
-				5007B4322472CBD30002AA4E /* RNNCustomViewController.m */,
+				5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */,
 				5078DF37242BE8AA007B0B4F /* TestingAppDelegate.h */,
-				5078DF38242BE8AA007B0B4F /* TestingAppDelegate.m */,
+				5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */,
@@ -285,11 +285,11 @@
 		50418967250788AE004A6BC7 /* FBSnapshotTestCase */ = {
 			isa = PBXGroup;
 			children = (
-				50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m */,
+				50418968250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm */,
 				50418969250788AE004A6BC7 /* FBSnapshotTestCase.h */,
-				5041896A250788AE004A6BC7 /* FBSnapshotTestController.m */,
+				5041896A250788AE004A6BC7 /* FBSnapshotTestController.mm */,
 				5041896C250788AE004A6BC7 /* FBSnapshotTestCase-Info.plist */,
-				5041896D250788AE004A6BC7 /* FBSnapshotTestCase.m */,
+				5041896D250788AE004A6BC7 /* FBSnapshotTestCase.mm */,
 				5041896E250788AE004A6BC7 /* FBSnapshotTestCasePlatform.h */,
 				5041896F250788AE004A6BC7 /* Categories */,
 				50418976250788AE004A6BC7 /* FBSnapshotTestController.h */,
@@ -301,9 +301,9 @@
 			isa = PBXGroup;
 			children = (
 				50418970250788AE004A6BC7 /* UIImage+Diff.h */,
-				50418971250788AE004A6BC7 /* UIImage+Snapshot.m */,
-				50418972250788AE004A6BC7 /* UIImage+Compare.m */,
-				50418973250788AE004A6BC7 /* UIImage+Diff.m */,
+				50418971250788AE004A6BC7 /* UIImage+Snapshot.mm */,
+				50418972250788AE004A6BC7 /* UIImage+Compare.mm */,
+				50418973250788AE004A6BC7 /* UIImage+Diff.mm */,
 				50418974250788AE004A6BC7 /* UIImage+Compare.h */,
 				50418975250788AE004A6BC7 /* UIImage+Snapshot.h */,
 			);
@@ -315,7 +315,7 @@
 			children = (
 				50418967250788AE004A6BC7 /* FBSnapshotTestCase */,
 				507C80E9242BC6E200F765F7 /* Utils */,
-				50E4888A2427DA4800B11A8E /* StackOptionsTest.m */,
+				50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */,
 				507C80DE2429111F00F765F7 /* Info.plist */,
 			);
 			path = SnapshotTests;
@@ -325,9 +325,9 @@
 			isa = PBXGroup;
 			children = (
 				507C80EA242BC6FB00F765F7 /* LayoutCreator.h */,
-				507C80EB242BC6FB00F765F7 /* LayoutCreator.m */,
+				507C80EB242BC6FB00F765F7 /* LayoutCreator.mm */,
 				50650A21242FB0F800688104 /* CommandsHandlerCreator.h */,
-				50650A22242FB0F800688104 /* CommandsHandlerCreator.m */,
+				50650A22242FB0F800688104 /* CommandsHandlerCreator.mm */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -335,8 +335,8 @@
 		50996C5E23AA46DD00008F89 /* NavigationIOS12Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.m */,
-				50996C6723AA477400008F89 /* RNNRootViewControllerTest.m */,
+				E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.mm */,
+				50996C6723AA477400008F89 /* RNNRootViewControllerTest.mm */,
 				50996C6123AA46DD00008F89 /* Info.plist */,
 			);
 			path = NavigationIOS12Tests;
@@ -397,45 +397,45 @@
 			children = (
 				E58D26442385888C003F36BA /* Options */,
 				E58D262E2385888B003F36BA /* utils */,
-				E58D26422385888C003F36BA /* RNNBasePresenterTest.m */,
-				500E9FE62406A4E200C61231 /* BottomTabPresenterTest.m */,
-				50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.m */,
-				E58D26412385888C003F36BA /* RNNCommandsHandlerTest.m */,
-				E58D26352385888B003F36BA /* RNNComponentPresenterTest.m */,
-				50C085E52591341600B0502C /* RNNUIBarButtonItemTest.m */,
-				50C085E7259141E200B0502C /* RNNButtonsPresenterTest.m */,
-				E58D26402385888C003F36BA /* RNNControllerFactoryTest.m */,
-				E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.m */,
-				E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.m */,
-				E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.m */,
-				E58D262A2385888B003F36BA /* RNNLayoutManagerTest.m */,
-				E58D26432385888C003F36BA /* RNNModalManagerTest.m */,
-				5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.m */,
-				503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.m */,
-				E58D263F2385888C003F36BA /* RNNStackControllerTest.m */,
-				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.m */,
-				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.m */,
-				50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m */,
-				502734AE24F3E9110022163C /* ColorParserTest.m */,
+				E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */,
+				500E9FE62406A4E200C61231 /* BottomTabPresenterTest.mm */,
+				50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.mm */,
+				E58D26412385888C003F36BA /* RNNCommandsHandlerTest.mm */,
+				E58D26352385888B003F36BA /* RNNComponentPresenterTest.mm */,
+				50C085E52591341600B0502C /* RNNUIBarButtonItemTest.mm */,
+				50C085E7259141E200B0502C /* RNNButtonsPresenterTest.mm */,
+				E58D26402385888C003F36BA /* RNNViewControllerFactoryTest.mm */,
+				E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.mm */,
+				E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.mm */,
+				E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.mm */,
+				E58D262A2385888B003F36BA /* RNNLayoutManagerTest.mm */,
+				E58D26432385888C003F36BA /* RNNModalManagerTest.mm */,
+				5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm */,
+				503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */,
+				E58D263F2385888C003F36BA /* RNNStackControllerTest.mm */,
+				E58D26322385888B003F36BA /* RNNNavigationOptionsTest.mm */,
+				E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */,
+				50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */,
+				502734AE24F3E9110022163C /* ColorParserTest.mm */,
 				E58D262C2385888B003F36BA /* RNNOptionsTest.h */,
-				E58D262D2385888B003F36BA /* RNNOverlayManagerTest.m */,
-				E58D26262385888B003F36BA /* RNNRootViewControllerTest.m */,
-				5064A387256A85EB00D7AC84 /* NSArray+utilsTest.m */,
-				E58D26372385888B003F36BA /* RNNSideMenuControllerTest.m */,
-				E58D262B2385888B003F36BA /* RNNSideMenuParserTest.m */,
-				E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.m */,
-				E58D26312385888B003F36BA /* RNNStackPresenterTest.m */,
-				E58D26292385888B003F36BA /* BottomTabsControllerTest.m */,
-				5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.m */,
+				E58D262D2385888B003F36BA /* RNNOverlayManagerTest.mm */,
+				E58D26262385888B003F36BA /* RNNRootViewControllerTest.mm */,
+				5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */,
+				E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */,
+				E58D262B2385888B003F36BA /* RNNSideMenuParserTest.mm */,
+				E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */,
+				E58D26312385888B003F36BA /* RNNStackPresenterTest.mm */,
+				E58D26292385888B003F36BA /* BottomTabsControllerTest.mm */,
+				5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.mm */,
 				E58D26342385888B003F36BA /* RNNTestRootViewCreator.h */,
-				E58D263D2385888C003F36BA /* RNNTestRootViewCreator.m */,
-				E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.m */,
-				E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.m */,
-				E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.m */,
-				E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.m */,
+				E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */,
+				E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */,
+				E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */,
+				E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */,
+				E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.mm */,
 				50CF233B240695B10098042D /* RNNBottomTabsController+Helpers.h */,
-				50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.m */,
-				50647FE223E3196800B92025 /* RNNExternalViewControllerTests.m */,
+				50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */,
+				50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */,
 				E58D261F238587F4003F36BA /* Info.plist */,
 			);
 			path = NavigationTests;
@@ -444,12 +444,12 @@
 		E58D262E2385888B003F36BA /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				E58D262F2385888B003F36BA /* RNNTestBase.m */,
+				E58D262F2385888B003F36BA /* RNNTestBase.mm */,
 				E58D26302385888B003F36BA /* RNNTestBase.h */,
 				501C86B7239FE9C400E0B631 /* UIImage+Utils.h */,
-				501C86B8239FE9C400E0B631 /* UIImage+Utils.m */,
+				501C86B8239FE9C400E0B631 /* UIImage+Utils.mm */,
 				50C9A8D2240FB9D000BD699F /* RNNComponentViewController+Utils.h */,
-				50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.m */,
+				50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -457,7 +457,7 @@
 		E58D26442385888C003F36BA /* Options */ = {
 			isa = PBXGroup;
 			children = (
-				E58D26452385888C003F36BA /* RNNTestNoColor.m */,
+				E58D26452385888C003F36BA /* RNNTestNoColor.mm */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -923,9 +923,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5007B4312472CA390002AA4E /* RNNNativeViewController.m in Sources */,
-				5078DF39242BE8AA007B0B4F /* TestingAppDelegate.m in Sources */,
-				5007B4342472CBD40002AA4E /* RNNCustomViewController.m in Sources */,
+				5007B4312472CA390002AA4E /* RNNNativeViewController.mm in Sources */,
+				5078DF39242BE8AA007B0B4F /* TestingAppDelegate.mm in Sources */,
+				5007B4342472CBD40002AA4E /* RNNCustomViewController.mm in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -935,19 +935,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.m in Sources */,
-				5007B4362472D3CC0002AA4E /* RNNCustomViewController.m in Sources */,
-				5007B4352472D3C90002AA4E /* RNNNativeViewController.m in Sources */,
-				5041897E250788AE004A6BC7 /* UIImage+Diff.m in Sources */,
+				50418977250788AE004A6BC7 /* FBSnapshotTestCasePlatform.mm in Sources */,
+				5007B4362472D3CC0002AA4E /* RNNCustomViewController.mm in Sources */,
+				5007B4352472D3C90002AA4E /* RNNNativeViewController.mm in Sources */,
+				5041897E250788AE004A6BC7 /* UIImage+Diff.mm in Sources */,
 				507C80E8242A1E6F00F765F7 /* AppDelegate.mm in Sources */,
-				5041897C250788AE004A6BC7 /* UIImage+Snapshot.m in Sources */,
-				507C80EC242BC6FB00F765F7 /* LayoutCreator.m in Sources */,
-				507C80E7242914C800F765F7 /* StackOptionsTest.m in Sources */,
-				507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.m in Sources */,
-				50650A23242FB0F800688104 /* CommandsHandlerCreator.m in Sources */,
-				5041897D250788AE004A6BC7 /* UIImage+Compare.m in Sources */,
-				5041897B250788AE004A6BC7 /* FBSnapshotTestCase.m in Sources */,
-				50418978250788AE004A6BC7 /* FBSnapshotTestController.m in Sources */,
+				5041897C250788AE004A6BC7 /* UIImage+Snapshot.mm in Sources */,
+				507C80EC242BC6FB00F765F7 /* LayoutCreator.mm in Sources */,
+				507C80E7242914C800F765F7 /* StackOptionsTest.mm in Sources */,
+				507C80E5242912AD00F765F7 /* RNNTestRootViewCreator.mm in Sources */,
+				50650A23242FB0F800688104 /* CommandsHandlerCreator.mm in Sources */,
+				5041897D250788AE004A6BC7 /* UIImage+Compare.mm in Sources */,
+				5041897B250788AE004A6BC7 /* FBSnapshotTestCase.mm in Sources */,
+				50418978250788AE004A6BC7 /* FBSnapshotTestController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,11 +955,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.m in Sources */,
-				50C085F52594973000B0502C /* RNNComponentViewController+Utils.m in Sources */,
-				50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.m in Sources */,
-				50996C6923AA487800008F89 /* RNNTestRootViewCreator.m in Sources */,
-				50996C6823AA477400008F89 /* RNNRootViewControllerTest.m in Sources */,
+				5022EDCD2405522000852BA6 /* RNNBottomTabsPresenterTest.mm in Sources */,
+				50C085F52594973000B0502C /* RNNComponentViewController+Utils.mm in Sources */,
+				50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.mm in Sources */,
+				50996C6923AA487800008F89 /* RNNTestRootViewCreator.mm in Sources */,
+				50996C6823AA477400008F89 /* RNNRootViewControllerTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,48 +967,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5007B4392472D9A70002AA4E /* RNNNativeViewController.m in Sources */,
-				5007B4382472D9A20002AA4E /* RNNCustomViewController.m in Sources */,
-				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.m in Sources */,
-				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.m in Sources */,
-				502734AF24F3E9BA0022163C /* ColorParserTest.m in Sources */,
-				50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.m in Sources */,
-				50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.m in Sources */,
-				50647FE323E3196800B92025 /* RNNExternalViewControllerTests.m in Sources */,
-				50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.m in Sources */,
-				E58D264D2385888C003F36BA /* RNNOverlayManagerTest.m in Sources */,
-				501C86B9239FE9C400E0B631 /* UIImage+Utils.m in Sources */,
-				E58D265F2385888C003F36BA /* RNNBasePresenterTest.m in Sources */,
-				E58D26542385888C003F36BA /* RNNSideMenuControllerTest.m in Sources */,
-				E58D264A2385888C003F36BA /* BottomTabsControllerTest.m in Sources */,
-				5006E16627974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.m in Sources */,
-				E58D26472385888C003F36BA /* RNNRootViewControllerTest.m in Sources */,
-				50C085E8259141E200B0502C /* RNNButtonsPresenterTest.m in Sources */,
-				E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.m in Sources */,
-				E58D265A2385888C003F36BA /* RNNTestRootViewCreator.m in Sources */,
-				E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.m in Sources */,
-				E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.m in Sources */,
-				E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.m in Sources */,
-				E58D26512385888C003F36BA /* RNNExternalComponentStoreTest.m in Sources */,
-				E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.m in Sources */,
-				E58D264B2385888C003F36BA /* RNNLayoutManagerTest.m in Sources */,
-				50C085E62591341600B0502C /* RNNUIBarButtonItemTest.m in Sources */,
-				E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.m in Sources */,
-				E58D26602385888C003F36BA /* RNNModalManagerTest.m in Sources */,
-				E58D26502385888C003F36BA /* RNNNavigationOptionsTest.m in Sources */,
-				E58D264E2385888C003F36BA /* RNNTestBase.m in Sources */,
-				5064A388256A85EB00D7AC84 /* NSArray+utilsTest.m in Sources */,
-				5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.m in Sources */,
-				503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.m in Sources */,
-				500E9FE72406A52100C61231 /* BottomTabPresenterTest.m in Sources */,
-				E58D26612385888C003F36BA /* RNNTestNoColor.m in Sources */,
-				50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.m in Sources */,
-				E58D265D2385888C003F36BA /* RNNControllerFactoryTest.m in Sources */,
-				E58D265C2385888C003F36BA /* RNNStackControllerTest.m in Sources */,
-				E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.m in Sources */,
-				E58D26522385888C003F36BA /* RNNComponentPresenterTest.m in Sources */,
-				E58D264C2385888C003F36BA /* RNNSideMenuParserTest.m in Sources */,
-				E58D264F2385888C003F36BA /* RNNStackPresenterTest.m in Sources */,
+				5007B4392472D9A70002AA4E /* RNNNativeViewController.mm in Sources */,
+				5007B4382472D9A20002AA4E /* RNNCustomViewController.mm in Sources */,
+				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.mm in Sources */,
+				E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.mm in Sources */,
+				502734AF24F3E9BA0022163C /* ColorParserTest.mm in Sources */,
+				50BCB27623F1A2B100D6C8E5 /* TopBarAppearancePresenterTest.mm in Sources */,
+				50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.mm in Sources */,
+				50647FE323E3196800B92025 /* RNNExternalViewControllerTests.mm in Sources */,
+				50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm in Sources */,
+				E58D264D2385888C003F36BA /* RNNOverlayManagerTest.mm in Sources */,
+				501C86B9239FE9C400E0B631 /* UIImage+Utils.mm in Sources */,
+				E58D265F2385888C003F36BA /* RNNBasePresenterTest.mm in Sources */,
+				E58D26542385888C003F36BA /* RNNSideMenuControllerTest.mm in Sources */,
+				E58D264A2385888C003F36BA /* BottomTabsControllerTest.mm in Sources */,
+				5006E16627974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm in Sources */,
+				E58D26472385888C003F36BA /* RNNRootViewControllerTest.mm in Sources */,
+				50C085E8259141E200B0502C /* RNNButtonsPresenterTest.mm in Sources */,
+				E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.mm in Sources */,
+				E58D265A2385888C003F36BA /* RNNTestRootViewCreator.mm in Sources */,
+				E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.mm in Sources */,
+				E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.mm in Sources */,
+				E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.mm in Sources */,
+				E58D26512385888C003F36BA /* RNNExternalComponentStoreTest.mm in Sources */,
+				E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.mm in Sources */,
+				E58D264B2385888C003F36BA /* RNNLayoutManagerTest.mm in Sources */,
+				50C085E62591341600B0502C /* RNNUIBarButtonItemTest.mm in Sources */,
+				E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.mm in Sources */,
+				E58D26602385888C003F36BA /* RNNModalManagerTest.mm in Sources */,
+				E58D26502385888C003F36BA /* RNNNavigationOptionsTest.mm in Sources */,
+				E58D264E2385888C003F36BA /* RNNTestBase.mm in Sources */,
+				5064A388256A85EB00D7AC84 /* NSArray+utilsTest.mm in Sources */,
+				5022EDCE2405524700852BA6 /* RNNBottomTabsAppearancePresenterTest.mm in Sources */,
+				503F775C24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm in Sources */,
+				500E9FE72406A52100C61231 /* BottomTabPresenterTest.mm in Sources */,
+				E58D26612385888C003F36BA /* RNNTestNoColor.mm in Sources */,
+				50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.mm in Sources */,
+				E58D265D2385888C003F36BA /* RNNViewControllerFactoryTest.mm in Sources */,
+				E58D265C2385888C003F36BA /* RNNStackControllerTest.mm in Sources */,
+				E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.mm in Sources */,
+				E58D26522385888C003F36BA /* RNNComponentPresenterTest.mm in Sources */,
+				E58D264C2385888C003F36BA /* RNNSideMenuParserTest.mm in Sources */,
+				E58D264F2385888C003F36BA /* RNNStackPresenterTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1070,6 +1070,7 @@
 					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
 					"\"${PODS_ROOT}/Headers/Public/glog\"",
 					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(PODS_ROOT)/Headers/Private",
 				);
 				INFOPLIST_FILE = playground/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -1186,6 +1187,7 @@
 					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
 					"\"${PODS_ROOT}/Headers/Public/glog\"",
 					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(PODS_ROOT)/Headers/Private",
 				);
 				INFOPLIST_FILE = playground/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -1293,13 +1295,13 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c17;
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1319,14 +1321,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c17;
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1516,6 +1518,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"USE_HERMES=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1578,6 +1581,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "USE_HERMES=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1609,7 +1613,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1636,7 +1640,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;

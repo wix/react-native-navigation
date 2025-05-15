@@ -1,4 +1,4 @@
-#import "Color.h"
+#import "ReactNativeNavigation/Color.h"
 #import <Foundation/Foundation.h>
 
 @interface ColorParser : NSObject

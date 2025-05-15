@@ -634,10 +634,10 @@ describe('Commands', () => {
 
   describe('dismissOverlay', () => {
     it('check promise returns true', async () => {
-      when(mockedNativeCommandsSender.dismissOverlay(anyString(), anyString())).thenResolve(true);
+      when(mockedNativeCommandsSender.dismissOverlay(anyString(), anyString())).thenResolve('true');
       const result = await uut.dismissOverlay('Component1');
       verify(mockedNativeCommandsSender.dismissOverlay(anyString(), anyString())).called();
-      expect(result).toEqual(true);
+      expect(result).toEqual('true');
     });
 
     it('send command to native with componentId', () => {

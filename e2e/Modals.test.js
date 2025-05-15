@@ -149,9 +149,7 @@ describe('modal', () => {
     await elementById(TestIDs.MODAL_BTN).tap();
 
     await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
-    await expect(
-      elementByLabel('modalDismissed listener called with with: UniqueStackId')
-    ).toBeVisible();
+    await expect(elementByLabel('modalDismissed listener called with with: UniqueStackId')).toBeVisible();
     await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
   });
 

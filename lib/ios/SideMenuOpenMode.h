@@ -1,4 +1,4 @@
-#import "Number.h"
+#import "ReactNativeNavigation/Number.h"
 
 @interface SideMenuOpenMode : Number
 
