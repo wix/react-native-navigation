@@ -173,7 +173,7 @@ class GradleLinker {
    * @param {string} contents
    */
   _isKotlinPluginDeclared(contents) {
-    return /org.jetbrains.kotlin:kotlin-gradle-plugin:/.test(contents);
+    return /org\.jetbrains\.kotlin:kotlin-gradle-plugin:?/.test(contents);
   }
 }
 
