@@ -171,7 +171,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 @property(nonatomic, strong) UIGestureRecognizer *pan;
 @property (nonatomic, strong) UIView *centerContentOverlay;
 @property (nonatomic, assign) MMDrawerSide startingDrawerSide;
-@property (nonatomic, assign) BOOL isInPanGesture;
 
 
 @end
@@ -184,7 +183,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         [self commonSetup];
-        _isInPanGesture = NO;
     }
     return self;
 }
@@ -1204,7 +1202,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     if (_openSide != openSide) {
         _openSide = openSide;
         [self.centerContainerView setOpenSide:openSide];
-        if (openSide == MMDrawerSideNone && !self.isInPanGesture) {
+        if (openSide == MMDrawerSideNone) {
             [self.leftDrawerViewController.view setHidden:YES];
             [self.rightDrawerViewController.view setHidden:YES];
         }
@@ -1398,7 +1396,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 }
 
 - (void)handlePanGestureBegan:(UIPanGestureRecognizer *)panGesture {
-    self.isInPanGesture = YES;
     if (self.gestureStart) {
         self.gestureStart(self, panGesture);
     }
@@ -1668,7 +1665,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
     self.startingPanRect = CGRectNull;
     self.view.userInteractionEnabled = YES;
-    self.isInPanGesture = NO;
 }
 
 - (MMDrawerSide)determineDrawerSideForGestureEnd:(UIPanGestureRecognizer *)panGesture {
