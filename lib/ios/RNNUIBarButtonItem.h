@@ -7,7 +7,13 @@
 
 typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 
-@interface RNNUIBarButtonItem : UIBarButtonItem <RCTRootViewDelegate>
+@interface RNNUIBarButtonItem : UIBarButtonItem <
+#ifdef RCT_NEW_ARCH_ENABLED
+RCTSurfaceDelegate
+#else
+RCTRootViewDelegate
+#endif
+>
 
 @property(nonatomic, strong) NSString *buttonId;
 

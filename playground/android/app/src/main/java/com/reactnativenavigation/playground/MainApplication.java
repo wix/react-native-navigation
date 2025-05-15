@@ -32,7 +32,7 @@ public class MainApplication extends NavigationApplication {
                 @Override
                 public List<ReactPackage> getPackages() {
                     ArrayList<ReactPackage> packages = new PackageList(this).getPackages();
-                    packages.add(new NavigationPackage(mReactNativeHost));
+                    packages.add(new NavigationPackage());
                     return packages;
                 }
 

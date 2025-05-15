@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { requireNativeComponent, View, ViewProps, StyleSheet, Dimensions } from 'react-native';
 import { AnimationOptions, ViewAnimationOptions } from 'react-native-navigation/interfaces/Options';
+
 export interface RNNModalProps extends ViewProps {
   visible: boolean;
   transparent: boolean;
@@ -9,10 +10,28 @@ export interface RNNModalProps extends ViewProps {
   onShow?: () => any;
   onRequestClose: () => any;
 }
+
 interface AnimatedModalProps extends RNNModalProps {
   animation?: AnimationOptions;
 }
+
 const RNNModalViewManager = requireNativeComponent('RNNModalViewManager');
+
+const Container = (rnnProps: RNNModalProps) => {
+  const viewRef = useRef<View>(null);
+
+  useLayoutEffect(() => {
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+    viewRef?.current?.setNativeProps({ width: windowWidth, height: windowHeight });
+  }, []);
+
+  return (
+    <View ref={viewRef} style={styles.container} collapsable={false}>
+      {rnnProps.children}
+    </View>
+  );
+};
 
 export class Modal extends React.Component<RNNModalProps> {
   static defaultProps = {
@@ -20,17 +39,17 @@ export class Modal extends React.Component<RNNModalProps> {
     blurOnUnmount: false,
     animationType: 'slide',
   };
+
   constructor(props: RNNModalProps) {
     super(props);
   }
+
   render() {
     const processed = this.proccessProps();
     if (this.props.visible) {
       return (
         <RNNModalViewManager {...processed}>
-          <View style={styles.container} collapsable={false}>
-            {this.props.children}
-          </View>
+          <Container {...this.props} />
         </RNNModalViewManager>
       );
     } else {

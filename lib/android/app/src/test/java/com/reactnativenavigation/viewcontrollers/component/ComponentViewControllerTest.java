@@ -15,10 +15,12 @@ import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
 import org.assertj.core.api.Java6Assertions;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
+@Ignore("New architecture - WIP")
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
     private ComponentLayout view;

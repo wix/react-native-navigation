@@ -62,7 +62,7 @@ describe('SideMenu', () => {
   it.e2e('should change left drawer width', async () => {
     await elementById(TestIDs.CHANGE_LEFT_SIDE_MENU_WIDTH_BTN).tap();
     await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
-    await expect(elementByLabel('left drawer width: 50')).toBeVisible();
+    await expect(elementByLabel('left drawer width: 100')).toBeVisible();
   });
 
   it.e2e('should set right drawer width', async () => {

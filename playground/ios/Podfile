@@ -1,4 +1,3 @@
-ENV['RCT_NEW_ARCH_ENABLED'] = '0'
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -34,6 +33,17 @@ end
 
 post_install do |installer|
   react_native_post_install(installer, "../../node_modules/react-native", :mac_catalyst_enabled => false)
+
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
+      config.build_settings['HEADER_SEARCH_PATHS'] << '$(PODS_ROOT)/Headers/Public/React-hermes'
+    end
+  end
+
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings['USE_HERMES'] = '1'  # Ensure Hermes is enabled
+  end
 end
 
 target 'playground' do
