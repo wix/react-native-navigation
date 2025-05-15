@@ -1,5 +1,9 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
@@ -9,6 +13,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -33,10 +39,6 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.reactnativenavigation.utils.CollectionUtils.forEach;
-import static com.reactnativenavigation.utils.CollectionUtils.map;
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
 
@@ -84,6 +86,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public BottomTabsLayout createView() {
         BottomTabsLayout root = new BottomTabsLayout(getActivity());
+
         this.bottomTabsContainer = createBottomTabsContainer();
         this.bottomTabs = bottomTabsContainer.getBottomTabs();
         Options resolveCurrentOptions = resolveCurrentOptions();
@@ -95,6 +98,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         bottomTabs.addItems(createTabs());
         setInitialTab(resolveCurrentOptions);
         tabsAttacher.attach();
+
         return root;
     }
 
@@ -298,6 +302,14 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {
         return presenter.getPopAnimation(appearingOptions, disappearingOptions);
     }
+
+    @Override
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
+        return WindowInsetsCompat.CONSUMED;
+    }
+
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {

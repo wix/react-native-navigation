@@ -35,6 +35,10 @@ export default class ParentNode extends Node {
     return this;
   }
 
+  applyOptions(_options: Options) {
+    this.parentNode?.applyOptions(_options);
+  }
+
   mergeOptions(options: Options) {
     this.data.options = _.mergeWith(this.data.options, options, (objValue, srcValue, key) => {
       if (_.isArray(objValue)) {
