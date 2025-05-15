@@ -13,6 +13,8 @@ import testIDs from '../testIDs';
 const {
   OPEN_LEFT_SIDE_MENU_BTN,
   OPEN_RIGHT_SIDE_MENU_BTN,
+  OPEN_LEFT_SIDE_MENU_ABOVE_CONTENT_BTN,
+  OPEN_RIGHT_SIDE_MENU_ABOVE_CONTENT_BTN,
   CENTER_SCREEN_HEADER,
   CHANGE_LEFT_SIDE_MENU_WIDTH_BTN,
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
@@ -71,6 +73,16 @@ export default class SideMenuCenterScreen extends NavigationComponent {
           onPress={() => this.open('right')}
         />
         <Button
+          label="Open Left Above Content"
+          testID={OPEN_LEFT_SIDE_MENU_ABOVE_CONTENT_BTN}
+          onPress={() => this.open('left', true)}
+        />
+        <Button
+          label="Open Right Above Content"
+          testID={OPEN_RIGHT_SIDE_MENU_ABOVE_CONTENT_BTN}
+          onPress={() => this.open('right', true)}
+        />
+        <Button
           label="Change Left Drawer Width"
           testID={CHANGE_LEFT_SIDE_MENU_WIDTH_BTN}
           onPress={() => this.changeDrawerWidth('left', 50)}
@@ -106,11 +118,12 @@ export default class SideMenuCenterScreen extends NavigationComponent {
       },
     });
   };
-  open = (side: 'left' | 'right') =>
+  open = (side: 'left' | 'right', aboveContent: boolean = false) =>
     Navigation.mergeOptions(this, {
       sideMenu: {
         [side]: {
           visible: true,
+          openMode: aboveContent ? 'aboveContent' : 'pushContent',
         },
       },
     });
