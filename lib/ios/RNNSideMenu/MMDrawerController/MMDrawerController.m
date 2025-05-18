@@ -1514,7 +1514,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     // Handle overlay
     [self updateOverlayWithPercentVisible:percentVisible];
 
-    MMDrawerSide visibleSide = (percentVisible > 0.15) ? drawerSide : MMDrawerSideNone;
+    MMDrawerSide visibleSide = (percentVisible > 0.01) ? drawerSide : MMDrawerSideNone;
 
     [self updateAppearanceTransitionsFromSide:self.openSide toSide:visibleSide];
 
