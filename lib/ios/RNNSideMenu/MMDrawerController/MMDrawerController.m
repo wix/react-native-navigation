@@ -420,6 +420,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
     CGFloat distance = ABS(CGRectGetMinX(self.centerContainerView.frame));
     NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
+    sideDrawerViewController.view.hidden = NO;
 
     [UIView animateWithDuration:(animated ? duration : 0.0)
         delay:0.0
@@ -584,7 +585,9 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
     CGFloat distance = ABS(CGRectGetMinX(oldFrame) - newFrame.origin.x);
     NSTimeInterval duration = MAX(distance / ABS(velocity), MMDrawerMinimumAnimationDuration);
-
+    BOOL isGestureOpen = !CGRectIsNull(self.startingPanRect) && [self shouldStretchForSide:drawerSide];
+    sideDrawerViewController.view.hidden = NO;
+    
     [UIView animateWithDuration:(animated ? duration : 0.0)
         delay:0.0
         options:options
@@ -597,8 +600,66 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
           [self completeDrawerOpeningForSide:drawerSide
                     sideDrawerViewController:sideDrawerViewController
                                     finished:finished
-                                  completion:completion];
-        }];
+                                completion:^(BOOL innerFinished) {
+                             
+                             if (isGestureOpen) {
+                                 [self applyBounceForDrawerSide:drawerSide];
+                             }
+                             
+                             if (completion) {
+                                 completion(innerFinished);
+                             }
+                         }];
+                     }];
+}
+
+- (void)applyBounceForDrawerSide:(MMDrawerSide)drawerSide {
+    UIViewController *sideDrawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
+    if (!sideDrawerViewController) return;
+    
+    CGRect centerFrame = self.centerContainerView.frame;
+    CGRect bounceFrame = centerFrame;
+    CGFloat bounceAmount = 15.0;
+    
+    if (drawerSide == MMDrawerSideLeft) {
+        bounceFrame.origin.x += bounceAmount;
+    } else {
+        bounceFrame.origin.x -= bounceAmount;
+    }
+    
+    CATransform3D originalTransform = sideDrawerViewController.view.layer.transform;
+    CGFloat scale = 1.0 + (bounceAmount / (drawerSide == MMDrawerSideLeft ? 
+                                         self.maximumLeftDrawerWidth : 
+                                         self.maximumRightDrawerWidth));
+    
+    CATransform3D bounceTransform = CATransform3DMakeScale(scale, 1.0, 1.0);
+                                            
+    if (drawerSide == MMDrawerSideLeft) {
+        bounceTransform = CATransform3DTranslate(bounceTransform, 
+                                               self.maximumLeftDrawerWidth * (scale - 1.0) / 2.0, 
+                                               0, 0);
+    } else {
+        bounceTransform = CATransform3DTranslate(bounceTransform, 
+                                               -self.maximumRightDrawerWidth * (scale - 1.0) / 2.0, 
+                                               0, 0);
+    }
+    [UIView animateWithDuration:0.15
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.centerContainerView.frame = bounceFrame;
+                         sideDrawerViewController.view.layer.transform = bounceTransform;
+                     }
+                     completion:^(BOOL bounceFinished) {
+                         [UIView animateWithDuration:0.15
+                                               delay:0.0
+                                             options:UIViewAnimationOptionCurveEaseIn
+                                          animations:^{
+                                              self.centerContainerView.frame = centerFrame;
+                                              sideDrawerViewController.view.layer.transform = originalTransform;
+                                          }
+                                          completion:nil];
+                     }];
 }
 
 - (void)completeDrawerOpeningForSide:(MMDrawerSide)drawerSide
@@ -1909,21 +1970,36 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 - (void)applyOvershootScaleTransformForDrawerSide:(MMDrawerSide)drawerSide
                                    percentVisible:(CGFloat)percentVisible {
-
     if (percentVisible >= 1.f) {
         CATransform3D transform = CATransform3DIdentity;
-        UIViewController *sideDrawerViewController =
-            [self sideDrawerViewControllerForSide:drawerSide];
-        if (drawerSide == MMDrawerSideLeft) {
-            transform = CATransform3DMakeScale(percentVisible, 1.f, 1.f);
-            transform = CATransform3DTranslate(
-                transform, self.maximumLeftDrawerWidth * (percentVisible - 1.f) / 2, 0.f, 0.f);
-        } else if (drawerSide == MMDrawerSideRight) {
-            transform = CATransform3DMakeScale(percentVisible, 1.f, 1.f);
-            transform = CATransform3DTranslate(
-                transform, -self.maximumRightDrawerWidth * (percentVisible - 1.f) / 2, 0.f, 0.f);
+        
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:drawerSide];
+        UIViewController *sideDrawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
+        
+        if (openMode == MMDrawerOpenModePushContent) {
+            CGFloat stretchFactor = MIN(percentVisible, 1.1);
+            
+            if (drawerSide == MMDrawerSideLeft) {
+                transform = CATransform3DMakeScale(stretchFactor, 1.f, 1.f);
+                transform = CATransform3DTranslate(transform, self.maximumLeftDrawerWidth * (stretchFactor - 1.f) / 2, 0.f, 0.f);
+            } else if (drawerSide == MMDrawerSideRight) {
+                transform = CATransform3DMakeScale(stretchFactor, 1.f, 1.f);
+                transform = CATransform3DTranslate(transform, -self.maximumRightDrawerWidth * (stretchFactor - 1.f) / 2, 0.f, 0.f);
+            }
+            
+            sideDrawerViewController.view.layer.transform = transform;
         }
-        sideDrawerViewController.view.layer.transform = transform;
+        else if (openMode == MMDrawerOpenModeAboveContent) {
+            if (drawerSide == MMDrawerSideLeft) {
+                transform = CATransform3DMakeScale(percentVisible, 1.f, 1.f);
+                transform = CATransform3DTranslate(transform, self.maximumLeftDrawerWidth * (percentVisible - 1.f) / 2, 0.f, 0.f);
+            } else if (drawerSide == MMDrawerSideRight) {
+                transform = CATransform3DMakeScale(percentVisible, 1.f, 1.f);
+                transform = CATransform3DTranslate(transform, -self.maximumRightDrawerWidth * (percentVisible - 1.f) / 2, 0.f, 0.f);
+            }
+            
+            sideDrawerViewController.view.layer.transform = transform;
+        }
     }
 }
 
