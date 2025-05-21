@@ -21,19 +21,21 @@ def safeExtGetFallbackLowerBound(prop, fallback) {
     Math.max(safeExtGet(prop, fallback), fallback)
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 33
-def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 33
+def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_MIN_SDK_VERSION = 24
+def DEFAULT_TARGET_SDK_VERSION = 35
 def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
+def DEFAULT_BUILD_TOOLS_VERSION = "35.0.0"
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib', DEFAULT_KOTLIN_STDLIB)
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
+def _buildToolsVersion = safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
 
 android {
     namespace 'com.reactnativenavigation'
     compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-    buildToolsVersion = "34.0.0"
+    buildToolsVersion = _buildToolsVersion
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
