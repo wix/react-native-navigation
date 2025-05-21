@@ -53,7 +53,7 @@ public abstract class NavigationApplication extends Application implements React
      * @return a singleton {@link ReactGateway}
      */
 	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(getReactHost(), getReactNativeHost());
+	    return new ReactGateway(getReactHost());
     }
     
 	public ReactGateway getReactGateway() {

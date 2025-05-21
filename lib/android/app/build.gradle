@@ -18,7 +18,7 @@ def safeExtGet(prop, fallback) {
 }
 
 def safeExtGetFallbackLowerBound(prop, fallback) {
-    Math.max(safeExtGet(prop,fallback),fallback)
+    Math.max(safeExtGet(prop, fallback), fallback)
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 33
@@ -27,7 +27,7 @@ def DEFAULT_TARGET_SDK_VERSION = 33
 def DEFAULT_KOTLIN_VERSION = "1.5.31"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
-def kotlinStdlib = safeExtGet('RNNKotlinStdlib',DEFAULT_KOTLIN_STDLIB )
+def kotlinStdlib = safeExtGet('RNNKotlinStdlib', DEFAULT_KOTLIN_STDLIB)
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
 
 android {
@@ -73,71 +73,12 @@ android {
         }
     }
     compileOptions {
-        if (reactNativeMinorVersion() >= 73) {
-            sourceCompatibility JavaVersion.VERSION_17
-            targetCompatibility JavaVersion.VERSION_17
-        } else {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
-        }
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        if (reactNativeMinorVersion() >= 73) {
-            jvmTarget = JavaVersion.VERSION_17
-        } else {
-            jvmTarget = JavaVersion.VERSION_11
-        }
+        jvmTarget = JavaVersion.VERSION_17
     }
-
-    flavorDimensions "RNN.reactNativeVersion"
-    productFlavors {
-        reactNative71 {
-            dimension "RNN.reactNativeVersion"
-            buildConfigField("int", "REACT_NATVE_VERSION_MINOR", "71")
-        }
-    }
-
-    def flavor = resolveFlavor()
-    variantFilter { variant ->
-        def names = variant.flavors*.name
-        if (!names.contains(flavor)) {
-            setIgnore(true)
-        }
-    }
-}
-
-int reactNativeMinorVersion() {
-    List reactNativeVersionComponents = reactNativeVersionComponents(findReactNativePackageJson())
-    reactNativeVersionComponents[1].toInteger()
-}
-
-String resolveFlavor() {
-    List reactNativeVersionComponents = reactNativeVersionComponents(findReactNativePackageJson())
-    Integer reactNativeMinorComponent = reactNativeVersionComponents[1].toInteger()
-
-    if (reactNativeMinorComponent >= 71) {
-        return "reactNative71"
-    }
-}
-
-
-Object findReactNativePackageJson() {
-    def searchPath = 'node_modules/react-native/package.json'
-    def projectDir = project.projectDir.toString() + '/'
-    def rnPackageJsonFile = new File(projectDir + searchPath)
-    while (!rnPackageJsonFile.exists()) {
-        searchPath = '../' + searchPath
-        rnPackageJsonFile = new File(projectDir + searchPath)
-    }
-    return rnPackageJsonFile
-}
-
-List reactNativeVersionComponents(rnPackageJsonFile) {
-    def packageSlurper = new JsonSlurper()
-    def reactNativePackageJson = packageSlurper.parseText(rnPackageJsonFile.text)
-    def reactNativeVersion = reactNativePackageJson.version
-
-    return reactNativeVersion.tokenize('-')[0].tokenize('.')
 }
 
 dependencies {
@@ -159,7 +100,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
-    if("Playground".toLowerCase() == rootProject.name.toLowerCase()){
+    if ("Playground".toLowerCase() == rootProject.name.toLowerCase()) {
         // tests only for our playground
         testImplementation 'junit:junit:4.13.2'
         testImplementation "org.robolectric:robolectric:4.7.2"

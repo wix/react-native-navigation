@@ -11,13 +11,11 @@ import androidx.annotation.NonNull;
 public class NavigationReactInitializer implements ReactInstanceManager.ReactInstanceEventListener {
 
     private final ReactHost reactHost;
-    private final DevPermissionRequest devPermissionRequest;
     private boolean waitingForAppLaunchEvent = true;
     private boolean isActivityReadyForUi = false;
 
-    NavigationReactInitializer(ReactHost reactHost, boolean isDebug) {
+    NavigationReactInitializer(ReactHost reactHost) {
         this.reactHost = reactHost;
-        this.devPermissionRequest = new DevPermissionRequest(isDebug);
     }
 
     void onActivityCreated() {
@@ -26,13 +24,10 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
     }
 
     void onActivityResumed(NavigationActivity activity) {
-        if (devPermissionRequest.shouldAskPermission(activity)) {
-            devPermissionRequest.askPermission(activity);
-        } else {
+
             reactHost.onHostResume(activity, activity);
             isActivityReadyForUi = true;
             prepareReactApp();
-        }
     }
 
     void onActivityPaused(NavigationActivity activity) {

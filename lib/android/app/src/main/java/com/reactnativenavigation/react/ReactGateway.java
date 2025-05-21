@@ -16,9 +16,9 @@ public class ReactGateway {
     private final NavigationReactInitializer initializer;
     private final JsDevReloadHandler jsDevReloadHandler;
 
-    public ReactGateway(ReactHost host, ReactNativeHost reactNativeHost) {
+    public ReactGateway(ReactHost host) {
         this.host = host;
-        initializer = new NavigationReactInitializer(host, reactNativeHost.getUseDeveloperSupport());
+        initializer = new NavigationReactInitializer(host);
         jsDevReloadHandler = new JsDevReloadHandler(host.getDevSupportManager());
         if (host instanceof BundleDownloadListenerProvider) {
             ((BundleDownloadListenerProvider) host).setBundleLoaderListener(jsDevReloadHandler);
