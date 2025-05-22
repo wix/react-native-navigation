@@ -1078,8 +1078,10 @@ export interface SideMenuSide {
   height?: number;
   /**
    * Stretch sideMenu contents when opened past the width
+   *
+   * **Not applicable when `openMode` is `aboveContent`**
+   *
    * #### (iOS specific)
-   * #### (does not applicable when openMode is set to aboveContent mode)
    * @default true
    */
   shouldStretchDrawer?: boolean;
