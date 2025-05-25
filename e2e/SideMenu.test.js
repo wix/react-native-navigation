@@ -80,5 +80,12 @@ describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
       await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
       await expect(elementByLabel('right drawer width: 50')).toBeVisible();
     });
+
+    it.e2e(':ios: should render side menu correctly', async () => {
+      await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+      const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
+      const actual = await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).takeScreenshot('side_menu');
+      expectImagesToBeEqual(actual, snapshottedImagePath);
+    });
   });
 });
