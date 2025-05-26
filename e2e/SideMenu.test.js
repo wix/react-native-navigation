@@ -81,21 +81,10 @@ describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
       await expect(elementByLabel('right drawer width: 50')).toBeVisible();
     });
 
-    it.e2e(':ios: should render side menu correctly - center container', async () => {
+    it.e2e(':ios: should render side menu correctly', async () => {
       await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
       const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
-      const actual = await elementById(TestIDs.CENTER_SCREEN_CONTAINER).takeScreenshot('side_menu');
-      console.log('LOG !!snapshottedImagePath', !!snapshottedImagePath);
-      console.log('LOG !!actual', !!actual);
-      expectImagesToBeEqual(actual, snapshottedImagePath);
-    });
-
-    it.e2e(':ios: should render side menu correctly - drawer container', async () => {
-      await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
-      const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
-      const actual = await elementById(TestIDs.SIDE_MENU_LEFT_DRAWER_CONTAINER).takeScreenshot('side_menu');
-      console.log('LOG !!snapshottedImagePath', !!snapshottedImagePath);
-      console.log('LOG !!actual', !!actual);
+      const actual = await device.takeScreenshot(`side_menu_${openMode}`);
       expectImagesToBeEqual(actual, snapshottedImagePath);
     });
   });
