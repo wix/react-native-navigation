@@ -1,11 +1,11 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById, expectImagesToBeEqual } = Utils;
+const {elementByLabel, elementById, expectImagesToBeEqual} = Utils;
 
 describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true });
+    await device.launchApp({newInstance: true});
     await elementById(TestIDs.SIDE_MENU_BTN).tap();
 
     if (openMode === 'aboveContent') {
@@ -84,7 +84,7 @@ describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
     it.e2e(':ios: should render side menu correctly', async () => {
       await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
       const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
-      const actual = await device.takeScreenshot(`side_menu_${openMode}`);
+      const actual = await elementById('SideMenuContainer').takeScreenshot(`side_menu_${openMode}`);
       expectImagesToBeEqual(actual, snapshottedImagePath);
     });
   });
