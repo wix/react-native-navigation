@@ -1039,7 +1039,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [super viewDidLoad];
 
     [self.view setBackgroundColor:[UIColor blackColor]];
-
+    [self.view setAccessibilityIdentifier:@"SideMenuContainer"];
     [self setupGestureRecognizers];
 }
 
