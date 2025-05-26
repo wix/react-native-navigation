@@ -1309,10 +1309,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 }
 
 - (void)setLeftDrawerOpenMode:(MMDrawerOpenMode)openMode {
+    if (self.openSide == MMDrawerSideLeft) return;
     _leftDrawerOpenMode = openMode;
 }
 
 - (void)setRightDrawerOpenMode:(MMDrawerOpenMode)openMode {
+    if (self.openSide == MMDrawerSideRight) return;
     _rightDrawerOpenMode = openMode;
 }
 
@@ -1414,12 +1416,34 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 - (void)tapGestureCallback:(UITapGestureRecognizer *)tapGesture {
     if (self.openSide != MMDrawerSideNone && self.isAnimatingDrawer == NO) {
-        [self closeDrawerAnimated:YES
-                       completion:^(BOOL finished) {
-                         if (self.gestureCompletion) {
-                             self.gestureCompletion(self, tapGesture);
-                         }
-                       }];
+        // Get the tap location
+        CGPoint tapLocation = [tapGesture locationInView:self.childControllerContainerView];
+        
+        // Get the open drawer view controller
+        UIViewController *sideDrawerViewController = [self sideDrawerViewControllerForSide:self.openSide];
+        
+        // Check if we are in above content mode
+        MMDrawerOpenMode openMode = [self drawerOpenModeForSide:self.openSide];
+        
+        // Only close if not tapping on the drawer itself in above content mode
+        BOOL shouldClose = YES;
+        
+        if (openMode == MMDrawerOpenModeAboveContent && sideDrawerViewController) {
+            // Check if tap is inside the drawer view
+            CGPoint tapInDrawerView = [tapGesture locationInView:sideDrawerViewController.view];
+            if (CGRectContainsPoint(sideDrawerViewController.view.bounds, tapInDrawerView)) {
+                shouldClose = NO;
+            }
+        }
+        
+        if (shouldClose) {
+            [self closeDrawerAnimated:YES
+                          completion:^(BOOL finished) {
+                             if (self.gestureCompletion) {
+                                 self.gestureCompletion(self, tapGesture);
+                             }
+                          }];
+        }
     }
 }
 
