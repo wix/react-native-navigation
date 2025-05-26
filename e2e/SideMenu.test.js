@@ -85,6 +85,8 @@ describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
       await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
       const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
       const actual = await elementById(TestIDs.CENTER_SCREEN_CONTAINER).takeScreenshot('side_menu');
+      console.log('LOG !!snapshottedImagePath', !!snapshottedImagePath);
+      console.log('LOG !!actual', !!actual);
       expectImagesToBeEqual(actual, snapshottedImagePath);
     });
 
@@ -92,6 +94,8 @@ describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
       await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
       const snapshottedImagePath = `./e2e/assets/side_menu.${openMode}.png`;
       const actual = await elementById(TestIDs.SIDE_MENU_LEFT_DRAWER_CONTAINER).takeScreenshot('side_menu');
+      console.log('LOG !!snapshottedImagePath', !!snapshottedImagePath);
+      console.log('LOG !!actual', !!actual);
       expectImagesToBeEqual(actual, snapshottedImagePath);
     });
   });
