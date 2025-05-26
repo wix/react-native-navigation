@@ -1,7 +1,7 @@
 import Utils from './Utils';
 import TestIDs from '../playground/src/testIDs';
 
-const { elementByLabel, elementById } = Utils;
+const { elementByLabel, elementById, expectImagesToBeEqual } = Utils;
 
 describe.each(['aboveContent', 'pushContent'])('SideMenu', (openMode) => {
   beforeEach(async () => {
