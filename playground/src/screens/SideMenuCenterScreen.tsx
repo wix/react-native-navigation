@@ -20,6 +20,7 @@ const {
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
   DISABLE_DRAWERS,
   ENABLE_DRAWERS,
+  CENTER_SCREEN_CONTAINER
 } = testIDs;
 
 interface ScreenState {
@@ -78,7 +79,7 @@ export default class SideMenuCenterScreen extends NavigationComponent {
     const { openMode } = this.state;
 
     return (
-      <Root componentId={this.props.componentId}>
+      <Root componentId={this.props.componentId} testID={CENTER_SCREEN_CONTAINER}>
         <Button
           label="Open Left"
           testID={OPEN_LEFT_SIDE_MENU_BTN}
