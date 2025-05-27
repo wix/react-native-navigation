@@ -39,6 +39,7 @@ android {
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -113,4 +114,10 @@ dependencies {
         testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
         testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
     }
+
+    // Android Instrumentation Tests
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
