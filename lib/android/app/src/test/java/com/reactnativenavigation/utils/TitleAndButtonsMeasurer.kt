@@ -1,16 +1,15 @@
 package com.reactnativenavigation.utils
 
-import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.BaseRobolectricTest
 import com.reactnativenavigation.views.stack.topbar.titlebar.DEFAULT_LEFT_MARGIN_PX
+import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveLeftButtonsBounds
 import com.reactnativenavigation.views.stack.topbar.titlebar.resolveRightButtonsBounds
-import com.reactnativenavigation.views.stack.topbar.titlebar.resolveHorizontalTitleBoundsLimit
-import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
-@Ignore("New architecture - WIP")
-class TitleAndButtonsMeasurer : BaseTest() {
+
+class TitleAndButtonsMeasurer : BaseRobolectricTest() {
     private val parentWidth = 1080
 
     @Test

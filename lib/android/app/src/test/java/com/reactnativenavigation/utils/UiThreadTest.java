@@ -7,11 +7,10 @@ import org.robolectric.shadows.*;
 
 import static org.mockito.Mockito.*;
 
-@Ignore("New architecture - WIP")
 
-public class UiThreadTest extends BaseTest {
+public class UiThreadTest extends BaseRobolectricTest {
     @Test
-    public void postOnUiThread() throws Exception {
+    public void postOnUiThread() {
         Runnable task = mock(Runnable.class);
         ShadowLooper.pauseMainLooper();
         UiThread.post(task);
@@ -21,7 +20,7 @@ public class UiThreadTest extends BaseTest {
     }
 
     @Test
-    public void postDelayedOnUiThread() throws Exception {
+    public void postDelayedOnUiThread() {
         Runnable task = mock(Runnable.class);
         UiThread.postDelayed(task, 1000);
         verifyNoInteractions(task);
