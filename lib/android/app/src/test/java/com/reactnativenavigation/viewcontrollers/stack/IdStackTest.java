@@ -6,8 +6,7 @@ import org.junit.*;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
-@Ignore("New architecture - WIP")
-public class IdStackTest extends BaseTest {
+public class IdStackTest extends BaseRobolectricTest {
 
     private IdStack<Integer> uut;
 
