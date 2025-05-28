@@ -1,8 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.viewcontroller;
 
-import android.app.Activity;
+import android.content.Context;
 
 public interface ReactViewCreator {
 
-    IReactView create(Activity activity, String componentId, String componentName);
+    IReactView create(Context context, String componentId, String componentName);
 }

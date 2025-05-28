@@ -1,10 +1,11 @@
 package com.reactnativenavigation.utils;
 
-import android.app.Activity;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.BaseRobolectricTest;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
@@ -13,24 +14,19 @@ import com.reactnativenavigation.options.params.ThemeColour;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonSpan;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.annotation.Config;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-
-@Ignore("New architecture - WIP")
 @Config(qualifiers = "xhdpi")
-public class ButtonSpanTest extends BaseTest {
+public class ButtonSpanTest extends BaseRobolectricTest {
     private ButtonSpan uut;
     private ButtonOptions button;
-    private Activity activity;
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         button = createButton();
-        activity = newActivity();
-        uut = new ButtonSpan(activity, button, new TypefaceLoaderMock());
+        uut = new ButtonSpan(getContext(), button, new TypefaceLoaderMock());
     }
 
     @Test
@@ -47,7 +43,7 @@ public class ButtonSpanTest extends BaseTest {
         Paint paint = new Paint();
         uut.apply(paint);
 
-        assertThat(paint.getTextSize()).isEqualTo(UiUtils.dpToPx(activity, 14));
+        assertThat(paint.getTextSize()).isEqualTo(UiUtils.dpToPx(getContext(), 14));
     }
 
     @NotNull

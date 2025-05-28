@@ -1,33 +1,23 @@
 package com.reactnativenavigation.options.parsers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.BaseRobolectricTest;
 import com.reactnativenavigation.options.params.DontApplyColour;
 import com.reactnativenavigation.options.params.ReactPlatformColor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
-import android.app.Activity;
-
-@Ignore("New architecture - WIP")
-public class ColorParseTest extends BaseTest {
-
-    Activity activity;
-    @Override
-    public void beforeEach() {
-        super.beforeEach();
-        activity = newActivity();
-    }
+public class ColorParseTest extends BaseRobolectricTest {
 
     @Test
     public void nullIsParsedAsNoColor() throws JSONException {
@@ -46,7 +36,7 @@ public class ColorParseTest extends BaseTest {
         try (MockedStatic<Arguments> theMock = Mockito.mockStatic(Arguments.class)) {
             theMock.when(Arguments::createMap).thenReturn(new JavaOnlyMap());
             theMock.when(Arguments::createArray).thenReturn(new JavaOnlyArray());
-            assertThat(ColorParser.parse(activity, color, "color")).isInstanceOf(ReactPlatformColor.class);
+            assertThat(ColorParser.parse(getContext(), color, "color")).isInstanceOf(ReactPlatformColor.class);
         }
     }
 }

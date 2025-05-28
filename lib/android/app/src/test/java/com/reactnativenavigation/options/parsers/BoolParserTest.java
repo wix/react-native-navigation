@@ -1,16 +1,14 @@
 package com.reactnativenavigation.options.parsers;
 
-import com.reactnativenavigation.BaseTest;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
+import com.reactnativenavigation.BaseRobolectricTest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-
-@Ignore("New architecture - WIP")
-public class BoolParserTest extends BaseTest {
+public class BoolParserTest extends BaseRobolectricTest {
 
     @Test
     public void parse() throws JSONException {
