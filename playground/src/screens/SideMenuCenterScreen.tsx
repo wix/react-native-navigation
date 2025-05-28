@@ -5,6 +5,7 @@ import {
   NavigationProps,
   Options,
 } from 'react-native-navigation';
+import { Text, TouchableOpacity } from 'react-native';
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
@@ -13,14 +14,19 @@ import testIDs from '../testIDs';
 const {
   OPEN_LEFT_SIDE_MENU_BTN,
   OPEN_RIGHT_SIDE_MENU_BTN,
+  TOGGLE_SIDE_MENU_OPEN_MODE_BTN,
   CENTER_SCREEN_HEADER,
   CHANGE_LEFT_SIDE_MENU_WIDTH_BTN,
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
   DISABLE_DRAWERS,
   ENABLE_DRAWERS,
+  CENTER_SCREEN_CONTAINER
 } = testIDs;
 
-// @ts-ignore TSC is unhappy as leftButtons is defined as an object instead of an array. Declaring buttons as a single object is not reflected in Options, but still supported.
+interface ScreenState {
+  openMode: 'aboveContent' | 'pushContent';
+}
+
 export default class SideMenuCenterScreen extends NavigationComponent {
   static options(): Options {
     return {
@@ -37,7 +43,6 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         title: {
           text: 'Center',
         },
-
         leftButtons: [
           {
             id: 'sideMenu',
@@ -48,18 +53,33 @@ export default class SideMenuCenterScreen extends NavigationComponent {
     };
   }
 
+  readonly state: ScreenState;
+
   constructor(props: NavigationProps) {
     super(props);
+    this.state = {
+      openMode: 'pushContent',
+    };
     Navigation.events().bindComponent(this);
   }
 
   navigationButtonPressed({ buttonId }: NavigationButtonPressedEvent) {
-    if (buttonId === 'sideMenu') this.open('left');
+    if (buttonId === 'sideMenu') {
+      this.open('left');
+    }
   }
 
+  toggleAboveContent = () => {
+    this.setState((state: ScreenState) => ({
+      openMode: state.openMode === 'pushContent' ? 'aboveContent' : 'pushContent',
+    }));
+  };
+
   render() {
+    const { openMode } = this.state;
+
     return (
-      <Root componentId={this.props.componentId}>
+      <Root componentId={this.props.componentId} testID={CENTER_SCREEN_CONTAINER}>
         <Button
           label="Open Left"
           testID={OPEN_LEFT_SIDE_MENU_BTN}
@@ -90,6 +110,14 @@ export default class SideMenuCenterScreen extends NavigationComponent {
           testID={ENABLE_DRAWERS}
           onPress={() => this.toggleDrawers(true)}
         />
+
+        <TouchableOpacity
+          onPress={this.toggleAboveContent}
+          testID={TOGGLE_SIDE_MENU_OPEN_MODE_BTN}
+          style={{ margin: 10, padding: 10, backgroundColor: '#ddd', borderRadius: 5 }}
+        >
+          <Text>Open mode: {openMode}</Text>
+        </TouchableOpacity>
       </Root>
     );
   }
@@ -106,11 +134,13 @@ export default class SideMenuCenterScreen extends NavigationComponent {
       },
     });
   };
+
   open = (side: 'left' | 'right') =>
     Navigation.mergeOptions(this, {
       sideMenu: {
         [side]: {
           visible: true,
+          openMode: this.state.openMode,
         },
       },
     });
