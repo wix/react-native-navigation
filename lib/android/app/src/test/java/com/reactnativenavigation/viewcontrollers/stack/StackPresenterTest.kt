@@ -67,8 +67,8 @@ class StackPresenterTest : BaseTest() {
         super.beforeEach()
         activity = spy(newActivity())
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
-            override fun create(activity: Activity, componentId: String, componentName: String): TitleBarReactView {
-                reactTitleView = spy(super.create(activity, componentId, componentName))
+            override fun create(context: Context, componentId: String, componentName: String): TitleBarReactView {
+                reactTitleView = spy(super.create(context, componentId, componentName))
                 return reactTitleView
             }
         }

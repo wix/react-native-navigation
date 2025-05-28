@@ -1,17 +1,16 @@
 package com.reactnativenavigation.views.component;
 
-import android.app.Activity;
+import android.content.Context;
 
-import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 import com.reactnativenavigation.react.ReactComponentViewCreator;
 import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
 
 public class ComponentViewCreator implements ReactViewCreator {
 	@Override
-	public IReactView create(Activity activity, String componentId, String componentName) {
-        ReactView reactView = new ReactComponentViewCreator().create(activity, componentId, componentName);
-        return new ComponentLayout(activity, reactView);
+	public IReactView create(Context context, String componentId, String componentName) {
+        ReactView reactView = new ReactComponentViewCreator().create(context, componentId, componentName);
+        return new ComponentLayout(context, reactView);
 	}
 }
