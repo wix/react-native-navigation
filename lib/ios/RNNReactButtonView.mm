@@ -5,7 +5,7 @@
 - (instancetype)initWithHost:(RCTHost *)host
                   moduleName:(NSString *)moduleName
            initialProperties:(NSDictionary *)initialProperties
-                eventEmitter:(RNNTurboEventEmitter *)eventEmitter
+                eventEmitter:(RNNEventEmitter *)eventEmitter
              sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     self = [super initWithHost:host moduleName:moduleName initialProperties:initialProperties eventEmitter:eventEmitter sizeMeasureMode:convertToSurfaceSizeMeasureMode(RCTRootViewSizeFlexibilityWidthAndHeight) reactViewReadyBlock:reactViewReadyBlock];

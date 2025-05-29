@@ -3,7 +3,7 @@
 #import "RNNTurboManager.h"
 #import "RNNCommandsHandler.h"
 #import "RNNComponentViewCreator.h"
-#import "RNNTurboEventEmitter.h"
+#import "RNNEventEmitter.h"
 #import "RNNLayoutManager.h"
 #import "RNNModalHostViewManagerHandler.h"
 #import "RNNReactComponentRegistry.h"
@@ -20,7 +20,7 @@
 @property(nonatomic, strong, readonly) RNNModalManager *modalManager;
 @property(nonatomic, strong, readonly) RNNModalHostViewManagerHandler *modalHostViewHandler;
 @property(nonatomic, strong, readonly) RNNCommandsHandler *commandsHandler;
-@property(nonatomic, strong, readonly) RNNTurboEventEmitter *eventEmitter;
+@property(nonatomic, strong, readonly) RNNEventEmitter *eventEmitter;
 
 @end
 
@@ -46,7 +46,7 @@
 													 name:RCTJavaScriptWillStartLoadingNotification
 												   object:nil];
 
-		_eventEmitter = [[_host moduleRegistry] moduleForName:"RNNTurboEventEmitter"];
+    _eventEmitter = [[RNNEventEmitter alloc] init];
 		_eventEmitter.host = _host;
 
 		RNNModalManagerEventHandler *modalManagerEventHandler =
@@ -99,15 +99,16 @@
 }
 
 - (void)onJavaScriptLoaded {
-	[_commandsHandler setReadyToReceiveCommands:true];
-	// TODO: Refactor
-//    [_modalHostViewHandler
-//        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
-	// TODO: Possibly will cause crashes in events with previous copy of emitter, need to test
-	_eventEmitter = [[_host moduleRegistry] moduleForName:"RNNTurboEventEmitter"];
-	_eventEmitter.host = _host;
-
-	[_eventEmitter sendOnAppLaunched];
+  RCTExecuteOnMainQueue(^{
+    UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+    
+    [self->_commandsHandler setReadyToReceiveCommands:true];
+    // TODO: Refactor
+    //    [_modalHostViewHandler
+    //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
+    
+    [self->_eventEmitter sendOnAppLaunched];
+  });
 }
 
 @end

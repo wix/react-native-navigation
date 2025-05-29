@@ -5,7 +5,7 @@
 
 @implementation StackControllerDelegate {
 #ifdef RCT_NEW_ARCH_ENABLED
-	RNNTurboEventEmitter *_eventEmitter;
+  RNNEventEmitter *_eventEmitter;
 #else
     RNNEventEmitter *_eventEmitter;
 #endif
@@ -14,7 +14,7 @@
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
-- (instancetype)initWithEventEmitter:(RNNTurboEventEmitter *)eventEmitter {
+- (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
 #else
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter {
 #endif

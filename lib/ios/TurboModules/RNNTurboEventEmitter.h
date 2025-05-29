@@ -2,13 +2,24 @@
 #import "RNNEventEmitter.h"
 #import <rnnavigation/rnnavigation.h>
 
-@class RCTHost;
+typedef NSString * EmitterEvents NS_STRING_ENUM;
 
-@interface RNNTurboEventEmitter : RNNEventEmitter <NativeRNNTurboEventEmitterSpec>
+extern EmitterEvents const AppLaunched;
+extern EmitterEvents const CommandCompleted;
+extern EmitterEvents const BottomTabSelected;
+extern EmitterEvents const BottomTabLongPressed;
+extern EmitterEvents const ComponentWillAppear;
+extern EmitterEvents const ComponentDidAppear;
+extern EmitterEvents const ComponentDidDisappear;
+extern EmitterEvents const NavigationButtonPressed;
+extern EmitterEvents const ModalDismissed;
+extern EmitterEvents const ModalAttemptedToDismiss;
+extern EmitterEvents const SearchBarUpdated;
+extern EmitterEvents const SearchBarCancelPressed;
+extern EmitterEvents const PreviewCompleted;
+extern EmitterEvents const ScreenPopped;
+extern EmitterEvents const BottomTabPressed;
 
-- (void)setHost:(RCTHost *)host;
-
-@property(nonatomic, strong, readonly) RCTHost *host;
-
+@interface RNNTurboEventEmitter : RCTEventEmitter <NativeRNNTurboEventEmitterSpec>
 @end
 #endif
