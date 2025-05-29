@@ -2,7 +2,7 @@
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
+
 #import "RCTAppSetupUtils.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -23,10 +23,8 @@
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate, RCTCxxBridgeDelegate> {}
+@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate> {}
 @end
-
-#endif
 
 @implementation RNNAppDelegate
 
@@ -36,26 +34,16 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 	// Copied from RCTAppDelegate, it private inside it
 	self.rootViewFactory = [self createRCTRootViewFactory];
 
-#ifdef RCT_NEW_ARCH_ENABLED
-	RCTAppSetupPrepareApp(application, self.turboModuleEnabled);
+	RCTAppSetupPrepareApp(application, self.newArchEnabled);
 	RCTSetNewArchEnabled(TRUE);
+    RCTEnableTurboModuleInterop(YES);
+    RCTEnableTurboModuleInteropBridgeProxy(YES);
 
+    self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
 
-	if (self.bridgelessEnabled) {
-		// Creating host instead of bridge
-		self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
+    [ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
 
-		[ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
-
-		return YES;
-	}
-#endif
-	// Force RN to init all necessary modules instead of copy-pasting code (ex. bridge)
-	[self.rootViewFactory viewWithModuleName:@""];
-
-	[ReactNativeNavigation bootstrapWithBridge:self.bridge];
-
-	return YES;
+    return YES;
 }
 
 - (RCTRootViewFactory *)createRCTRootViewFactory
@@ -68,31 +56,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   RCTRootViewFactoryConfiguration *configuration =
 	  [[RCTRootViewFactoryConfiguration alloc] initWithBundleURLBlock:bundleUrlBlock
-													   newArchEnabled:self.fabricEnabled
-												   turboModuleEnabled:self.turboModuleEnabled
-													bridgelessEnabled:self.bridgelessEnabled];
+													   newArchEnabled:self.newArchEnabled];
 
-  if (!self.bridgelessEnabled) {
-	  configuration.extraModulesForBridge = ^NSArray<id<RCTBridgeModule>> * _Nonnull(RCTBridge * _Nonnull bridge) {
-		  return [ReactNativeNavigation extraModulesForBridge:bridge];
-	  };
-  }
 
-  configuration.createRootViewWithBridge = ^UIView *(RCTBridge *bridge, NSString *moduleName, NSDictionary *initProps)
-  {
-	// Ignoring creation of default view, will initialize our custom UIViewController later
-	return nil;
-  };
-
-  configuration.createBridgeWithDelegate = ^RCTBridge *(id<RCTBridgeDelegate> delegate, NSDictionary *launchOptions)
-  {
-	return [weakSelf createBridgeWithDelegate:delegate launchOptions:launchOptions];
-  };
-
-#ifndef RCT_NEW_ARCH_ENABLED
-	return [[RCTRootViewFactory alloc] initWithConfiguration:configuration];
-  }
-#else
   return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
 }
 
@@ -117,7 +83,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass {
 	return RCTAppSetupDefaultModuleFromClass(moduleClass, self.dependencyProvider);
 }
-#endif
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
 	[NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
