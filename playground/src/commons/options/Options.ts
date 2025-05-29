@@ -11,6 +11,9 @@ const setDefaultOptions = () =>
     window: {
       backgroundColor: Colors.primary,
     },
+    navigationBar: {
+      backgroundColor: Colors.statusBarColor,
+    },
     layout: {
       componentBackgroundColor: Colors.background,
       orientation: ['portrait'],

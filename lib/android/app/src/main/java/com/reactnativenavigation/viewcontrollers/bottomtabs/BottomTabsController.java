@@ -303,13 +303,13 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return presenter.getPopAnimation(appearingOptions, disappearingOptions);
     }
 
-    @Override
-    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
-        return WindowInsetsCompat.CONSUMED;
-    }
-
+// Temp roll-back fix for android15 edge-to-edge
+//    @Override
+//    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+//        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
+//        return WindowInsetsCompat.CONSUMED;
+//    }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {
