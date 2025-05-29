@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import "RNNTurboEventEmitter.h"
+#import "RNNEventEmitter.h"
 #else
 #import "RNNEventEmitter.h"
 #endif
@@ -11,7 +11,7 @@
 @interface StackControllerDelegate : NSObject <UINavigationControllerDelegate>
 
 #ifdef RCT_NEW_ARCH_ENABLED
-- (instancetype)initWithEventEmitter:(RNNTurboEventEmitter *)eventEmitter;
+- (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter;
 #else
 - (instancetype)initWithEventEmitter:(RNNEventEmitter *)eventEmitter;
 #endif

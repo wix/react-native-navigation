@@ -1,45 +1,21 @@
 #import "RNNEventEmitter.h"
 #import "RNNUtils.h"
+#import "RNNTurboEventEmitter.h"
+#import <React-RuntimeApple/ReactCommon/RCTHost.h>
 
-@implementation RNNEventEmitter {
-	RCTEventEmitter *_emitter;
-    NSInteger _appLaunchedListenerCount;
-    BOOL _appLaunchedEventDeferred;
-}
+@implementation RNNEventEmitter { }
 
-static NSString *const AppLaunched = @"RNN.AppLaunched";
-static NSString *const CommandCompleted = @"RNN.CommandCompleted";
-static NSString *const BottomTabSelected = @"RNN.BottomTabSelected";
-static NSString *const BottomTabLongPressed = @"RNN.BottomTabLongPressed";
-static NSString *const ComponentWillAppear = @"RNN.ComponentWillAppear";
-static NSString *const ComponentDidAppear = @"RNN.ComponentDidAppear";
-static NSString *const ComponentDidDisappear = @"RNN.ComponentDidDisappear";
-static NSString *const NavigationButtonPressed = @"RNN.NavigationButtonPressed";
-static NSString *const ModalDismissed = @"RNN.ModalDismissed";
-static NSString *const ModalAttemptedToDismiss = @"RNN.ModalAttemptedToDismiss";
-static NSString *const SearchBarUpdated = @"RNN.SearchBarUpdated";
-static NSString *const SearchBarCancelPressed = @"RNN.SearchBarCancelPressed";
-static NSString *const PreviewCompleted = @"RNN.PreviewCompleted";
-static NSString *const ScreenPopped = @"RNN.ScreenPopped";
-static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
-
-- (NSArray<NSString *> *)supportedEvents {
-    return @[
-        AppLaunched, CommandCompleted, BottomTabSelected, BottomTabLongPressed, BottomTabPressed,
-        ComponentWillAppear, ComponentDidAppear, ComponentDidDisappear, NavigationButtonPressed,
-        ModalDismissed, SearchBarUpdated, SearchBarCancelPressed, PreviewCompleted, ScreenPopped,
-        ModalAttemptedToDismiss
-    ];
+- (void)setHost:(RCTHost *)host {
+  if (_host != nil) {
+    return;
+  }
+  _host = host;
 }
 
 #pragma mark public
 
 - (void)sendOnAppLaunched {
-    if (_appLaunchedListenerCount > 0) {
-        [self send:AppLaunched body:nil];
-    } else {
-        _appLaunchedEventDeferred = TRUE;
-    }
+    [self send:AppLaunched body:nil];
 }
 
 - (void)sendComponentWillAppear:(NSString *)componentId
@@ -140,24 +116,19 @@ static NSString *const BottomTabPressed = @"RNN.BottomTabPressed";
     [self send:ScreenPopped body:@{@"componentId" : componentId}];
 }
 
-- (void)addListener:(NSString *)eventName {
-    [super addListener:eventName];
-    if ([eventName isEqualToString:AppLaunched]) {
-        _appLaunchedListenerCount++;
-        if (_appLaunchedEventDeferred) {
-            _appLaunchedEventDeferred = FALSE;
-            [self sendOnAppLaunched];
-        }
-    }
-}
-
 #pragma mark private
 
 - (void)send:(NSString *)eventName body:(id)body {
-    if (self.bridge == nil) {
-        return;
-    }
-    [self sendEventWithName:eventName body:body];
+  if (_host == nil) {
+    return;
+  }
+  
+  RNNTurboEventEmitter *_eventEmitter = [[_host moduleRegistry] moduleForName:"RNNTurboEventEmitter"];
+  if (_eventEmitter == nil) {
+    return;
+  }
+  
+  [_eventEmitter sendEventWithName:eventName body:body];
 }
 
 @end
