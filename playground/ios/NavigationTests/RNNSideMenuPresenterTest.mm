@@ -47,8 +47,9 @@
     [[self.boundViewController expect] side:MMDrawerSideRight enabled:YES];
     [[self.boundViewController expect] setShouldStretchLeftDrawer:YES];
     [[self.boundViewController expect] setShouldStretchRightDrawer:YES];
-    [[self.boundViewController expect] side:MMDrawerSideLeft openMode:MMDrawerOpenModePushContent];
-    [[self.boundViewController expect] side:MMDrawerSideRight openMode:MMDrawerOpenModePushContent];
+    [[self.boundViewController expect] side:MMDrawerSideLeft openMode:MMDrawerOpenModeAboveContent];
+    [[self.boundViewController expect] side:MMDrawerSideRight
+                                   openMode:MMDrawerOpenModeAboveContent];
     [[self.boundViewController expect] setAnimationVelocityLeft:840.0f];
     [[self.boundViewController expect] setAnimationVelocityRight:840.0f];
     [[self.boundViewController reject] side:MMDrawerSideLeft width:0];
