@@ -57,7 +57,7 @@ RCT_EXPORT_MODULE()
   if ([eventName isEqualToString:AppLaunched]) {
     if (_appLaunchedListenerCount == 0) {
       _appLaunchedEventDeferred = TRUE;
-      return;;
+      return;
     }
   }
   

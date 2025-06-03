@@ -72,21 +72,12 @@
         toVCOptionsWithDefault.animations.push.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = toVCOptionsWithDefault.animations.push;
 #ifdef RCT_NEW_ARCH_ENABLED
-		if (_eventEmitter.host != nil) {
-			return [[ScreenAnimationController alloc]
-				initWithContentTransition:screenTransition.content
-					   elementTransitions:screenTransition.elementTransitions
-				 sharedElementTransitions:screenTransition.sharedElementTransitions
-								 duration:screenTransition.maxDuration
-								   host:_eventEmitter.host];
-		} else {
-			return [[ScreenAnimationController alloc]
-				initWithContentTransition:screenTransition.content
-					   elementTransitions:screenTransition.elementTransitions
-				 sharedElementTransitions:screenTransition.sharedElementTransitions
-								 duration:screenTransition.maxDuration
-								   bridge:_eventEmitter.bridge];
-		}
+    return [[ScreenAnimationController alloc]
+            initWithContentTransition:screenTransition.content
+            elementTransitions:screenTransition.elementTransitions
+            sharedElementTransitions:screenTransition.sharedElementTransitions
+            duration:screenTransition.maxDuration
+            host:_eventEmitter.host];
 #else
 		return [[ScreenAnimationController alloc]
             initWithContentTransition:screenTransition.content
@@ -99,21 +90,12 @@
                fromVCOptionsWithDefault.animations.pop.hasCustomAnimation) {
         RNNScreenTransition *screenTransition = fromVCOptionsWithDefault.animations.pop;
 #ifdef RCT_NEW_ARCH_ENABLED
-		if (_eventEmitter.host != nil) {
-			return [[ScreenReversedAnimationController alloc]
-				initWithContentTransition:screenTransition.content
-					   elementTransitions:screenTransition.elementTransitions
-				 sharedElementTransitions:screenTransition.sharedElementTransitions
-								 duration:screenTransition.maxDuration
-								   host:_eventEmitter.host];
-		} else {
-			return [[ScreenReversedAnimationController alloc]
-				initWithContentTransition:screenTransition.content
-					   elementTransitions:screenTransition.elementTransitions
-				 sharedElementTransitions:screenTransition.sharedElementTransitions
-								 duration:screenTransition.maxDuration
-								   bridge:_eventEmitter.bridge];
-		}
+    return [[ScreenReversedAnimationController alloc]
+      initWithContentTransition:screenTransition.content
+           elementTransitions:screenTransition.elementTransitions
+       sharedElementTransitions:screenTransition.sharedElementTransitions
+               duration:screenTransition.maxDuration
+                 host:_eventEmitter.host];
 #else
         return [[ScreenReversedAnimationController alloc]
             initWithContentTransition:screenTransition.content

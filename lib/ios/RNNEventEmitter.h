@@ -9,9 +9,6 @@
 - (void)setHost:(RCTHost *)host;
 @property(nonatomic, strong, readonly) RCTHost *host;
 
-///Dummy declaration
-@property (nonatomic, weak) RCTBridge *bridge;
-
 - (void)sendOnAppLaunched;
 
 - (void)sendComponentWillAppear:(NSString *)componentId
