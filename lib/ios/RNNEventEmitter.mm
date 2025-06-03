@@ -128,7 +128,7 @@
     return;
   }
   
-  [_eventEmitter sendEventWithName:eventName body:body];
+  [_eventEmitter send:eventName body:body];
 }
 
 @end

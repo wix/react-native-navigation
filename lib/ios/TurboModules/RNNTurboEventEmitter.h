@@ -21,5 +21,6 @@ extern EmitterEvents const ScreenPopped;
 extern EmitterEvents const BottomTabPressed;
 
 @interface RNNTurboEventEmitter : RCTEventEmitter <NativeRNNTurboEventEmitterSpec>
+- (void)send:(NSString *)eventName body:(id)body;
 @end
 #endif
