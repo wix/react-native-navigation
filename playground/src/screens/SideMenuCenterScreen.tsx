@@ -20,11 +20,11 @@ const {
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
   DISABLE_DRAWERS,
   ENABLE_DRAWERS,
-  CENTER_SCREEN_CONTAINER
+  SIDE_MENU_CENTER_SCREEN_CONTAINER,
 } = testIDs;
 
 interface ScreenState {
-  openMode: 'aboveContent' | 'pushContent';
+  openMode: 'aboveContent' | 'pushContent' | undefined;
 }
 
 export default class SideMenuCenterScreen extends NavigationComponent {
@@ -58,7 +58,7 @@ export default class SideMenuCenterScreen extends NavigationComponent {
   constructor(props: NavigationProps) {
     super(props);
     this.state = {
-      openMode: 'pushContent',
+      openMode: 'aboveContent',
     };
     Navigation.events().bindComponent(this);
   }
@@ -69,17 +69,11 @@ export default class SideMenuCenterScreen extends NavigationComponent {
     }
   }
 
-  toggleAboveContent = () => {
-    this.setState((state: ScreenState) => ({
-      openMode: state.openMode === 'pushContent' ? 'aboveContent' : 'pushContent',
-    }));
-  };
-
   render() {
     const { openMode } = this.state;
 
     return (
-      <Root componentId={this.props.componentId} testID={CENTER_SCREEN_CONTAINER}>
+      <Root componentId={this.props.componentId} testID={SIDE_MENU_CENTER_SCREEN_CONTAINER}>
         <Button
           label="Open Left"
           testID={OPEN_LEFT_SIDE_MENU_BTN}
@@ -112,11 +106,11 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         />
 
         <TouchableOpacity
-          onPress={this.toggleAboveContent}
+          onPress={this.toggleOpenMode}
           testID={TOGGLE_SIDE_MENU_OPEN_MODE_BTN}
           style={{ margin: 10, padding: 10, backgroundColor: '#ddd', borderRadius: 5 }}
         >
-          <Text>Open mode: {openMode}</Text>
+          <Text>Open mode: {openMode || 'undefined'}</Text>
         </TouchableOpacity>
       </Root>
     );
@@ -133,6 +127,17 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         },
       },
     });
+  };
+
+  toggleOpenMode = () => {
+    this.setState((state: ScreenState) => ({
+      openMode:
+        state.openMode === 'aboveContent'
+          ? 'pushContent'
+          : state.openMode === 'pushContent'
+          ? undefined
+          : 'aboveContent',
+    }));
   };
 
   open = (side: 'left' | 'right') =>
