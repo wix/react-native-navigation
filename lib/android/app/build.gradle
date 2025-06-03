@@ -39,6 +39,8 @@ android {
     defaultConfig {
         minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -102,6 +104,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
+
     if ("Playground".toLowerCase() == rootProject.name.toLowerCase()) {
         // tests only for our playground
         testImplementation 'junit:junit:4.13.2'
@@ -112,5 +115,18 @@ dependencies {
         testImplementation 'org.mockito:mockito-inline:3.4.0'
         testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
         testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+
+        // Core testing libraries
+        androidTestImplementation "androidx.test.ext:junit:1.2.1"
+        androidTestImplementation 'org.assertj:assertj-core:3.11.1'
+
+        androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+
+        androidTestImplementation 'org.mockito:mockito-android:5.18.0'
+
+        androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
+
+        androidTestImplementation("com.facebook.react:hermes-android")
+
     }
 }
