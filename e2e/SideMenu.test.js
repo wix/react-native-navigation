@@ -3,17 +3,19 @@ import TestIDs from '../playground/src/testIDs';
 
 const {elementByLabel, elementById, expectImagesToBeEqual} = Utils;
 
-describe.each([ 'aboveContent', 'pushContent' ])('SideMenu', (openMode) => {
+describe('SideMenu', () => {
     beforeEach(async () => {
         await device.launchApp({newInstance : true});
         await elementById(TestIDs.SIDE_MENU_BTN).tap();
-
-        if (openMode === 'aboveContent') {
-            await elementById(TestIDs.TOGGLE_SIDE_MENU_OPEN_MODE_BTN).tap();
-        }
     });
 
-    describe(`Open mode '${openMode}'`, () => {
+    describe.each(['aboveContent', 'pushContent'])('Open mode %s', (openMode) => {
+        beforeEach(async () => {
+            if (openMode === 'pushContent') {
+                await elementById(TestIDs.TOGGLE_SIDE_MENU_OPEN_MODE_BTN).tap();
+            }
+        });
+
         it('close SideMenu and push to stack with static id', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
             await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
@@ -88,5 +90,18 @@ describe.each([ 'aboveContent', 'pushContent' ])('SideMenu', (openMode) => {
                 await elementById('SideMenuContainer').takeScreenshot(`side_menu_${openMode}`);
             expectImagesToBeEqual(actual, snapshottedImagePath);
         });
+    });
+
+    it.e2e(':ios: should open above-content by default', async () => {
+        await elementById(TestIDs.TOGGLE_SIDE_MENU_OPEN_MODE_BTN).tap(); // aboveContent --> pushContent
+        await elementById(TestIDs.TOGGLE_SIDE_MENU_OPEN_MODE_BTN).tap(); // pushContent --> undefined
+        await expect(elementByLabel('Open mode: undefined')).toBeVisible();
+
+        await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+
+        const snapshottedImagePath = `./e2e/assets/side_menu.undefined.png`;
+        const actual =
+          await elementById('SideMenuContainer').takeScreenshot(`side_menu_undefined`);
+        expectImagesToBeEqual(actual, snapshottedImagePath);
     });
 });

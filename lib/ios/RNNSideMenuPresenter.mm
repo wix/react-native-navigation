@@ -54,14 +54,14 @@
     [self.sideMenuController.view
         setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
 
-    MMDrawerOpenMode openModeLeft = MMDrawerOpenModePushContent; // Default value
+    MMDrawerOpenMode openModeLeft = MMDrawerOpenModeAboveContent; // Default value
     if (withDefault.sideMenu.left.openMode.hasValue) {
         NSString *openModeString = withDefault.sideMenu.left.openMode.get;
         openModeLeft = MMDrawerOpenModeFromString(openModeString);
     }
     [self.sideMenuController side:MMDrawerSideLeft openMode:openModeLeft];
 
-    MMDrawerOpenMode openModeRight = MMDrawerOpenModePushContent; // Default value
+    MMDrawerOpenMode openModeRight = MMDrawerOpenModeAboveContent; // Default value
     if (withDefault.sideMenu.right.openMode.hasValue) {
         NSString *openModeString = withDefault.sideMenu.right.openMode.get;
         openModeRight = MMDrawerOpenModeFromString(openModeString);

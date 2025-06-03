@@ -29,9 +29,6 @@
         self.openMode = options.openMode;
 }
 
-/**
- Converts a string open mode to the equivalent MMDrawerOpenMode enum value
- */
 MMDrawerOpenMode MMDrawerOpenModeFromString(NSString *openModeString) {
     if ([openModeString isEqualToString:@"aboveContent"]) {
         return MMDrawerOpenModeAboveContent;
