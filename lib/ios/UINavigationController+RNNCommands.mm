@@ -41,7 +41,7 @@ typedef void (^RNNAnimationBlock)(void);
         completion:^{
         NSLog(@"Pop popAnimated completed");
           if (poppedVC) {
-              NSLog(@"Pop popAnimated completion invokation");
+              NSLog(@"Pop popAnimated completion invocation");
               completion();
           } else {
               NSLog(@"Pop rejection");
