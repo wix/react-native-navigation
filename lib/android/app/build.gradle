@@ -123,6 +123,10 @@ dependencies {
         androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
 
         androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.4"
+        androidTestImplementation 'org.opentest4j:opentest4j:1.2.0'
+        androidTestImplementation ("org.mockito.kotlin:mockito-kotlin:5.4.0") {
+            exclude group: 'org.mockito', module: 'mockito-core'
+        }
 
         androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
 
