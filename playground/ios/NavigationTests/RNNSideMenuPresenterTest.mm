@@ -47,6 +47,9 @@
     [[self.boundViewController expect] side:MMDrawerSideRight enabled:YES];
     [[self.boundViewController expect] setShouldStretchLeftDrawer:YES];
     [[self.boundViewController expect] setShouldStretchRightDrawer:YES];
+    [[self.boundViewController expect] side:MMDrawerSideLeft openMode:MMDrawerOpenModeAboveContent];
+    [[self.boundViewController expect] side:MMDrawerSideRight
+                                   openMode:MMDrawerOpenModeAboveContent];
     [[self.boundViewController expect] setAnimationVelocityLeft:840.0f];
     [[self.boundViewController expect] setAnimationVelocityRight:840.0f];
     [[self.boundViewController reject] side:MMDrawerSideLeft width:0];
@@ -63,6 +66,8 @@
     self.options.sideMenu.right.enabled = [[Bool alloc] initWithBOOL:NO];
     self.options.sideMenu.left.shouldStretchDrawer = [[Bool alloc] initWithBOOL:NO];
     self.options.sideMenu.right.shouldStretchDrawer = [[Bool alloc] initWithBOOL:NO];
+    self.options.sideMenu.left.openMode = [[Text alloc] initWithValue:@"aboveContent"];
+    self.options.sideMenu.right.openMode = [[Text alloc] initWithValue:@"aboveContent"];
     self.options.sideMenu.right.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
     self.options.sideMenu.left.animationVelocity = [[Double alloc] initWithValue:@(100.0f)];
 
@@ -70,6 +75,9 @@
     [[self.boundViewController expect] side:MMDrawerSideRight enabled:NO];
     [[self.boundViewController expect] setShouldStretchLeftDrawer:NO];
     [[self.boundViewController expect] setShouldStretchRightDrawer:NO];
+    [[self.boundViewController expect] side:MMDrawerSideLeft openMode:MMDrawerOpenModeAboveContent];
+    [[self.boundViewController expect] side:MMDrawerSideRight
+                                   openMode:MMDrawerOpenModeAboveContent];
     [[self.boundViewController expect] setAnimationVelocityLeft:100.0f];
     [[self.boundViewController expect] setAnimationVelocityRight:100.0f];
 
