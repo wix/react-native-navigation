@@ -55,6 +55,15 @@ android {
     }
 
     testOptions {
+        managedDevices {
+            localDevices {
+                pixel3aapi34 {
+                    device = "Pixel 3a"
+                    apiLevel = 34
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
         unitTests.includeAndroidResources = true
         unitTests.all { t ->
             maxHeapSize = "4g"
