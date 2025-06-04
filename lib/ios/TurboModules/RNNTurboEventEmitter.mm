@@ -2,7 +2,6 @@
 #import "RNNTurboEventEmitter.h"
 
 #import "RNNUtils.h"
-#import "RCTBridge.h"
 
 EmitterEvents const AppLaunched = @"RNN.AppLaunched";
 EmitterEvents const CommandCompleted = @"RNN.CommandCompleted";
