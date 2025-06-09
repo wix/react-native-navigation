@@ -21,33 +21,45 @@ class AppDelegateLinker {
 
     logn('Linking AppDelegate...');
 
-    var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+    // New flow for Swift
+    if (nodePath.extname(this.appDelegatePath) === '.swift') {
+      debugn('Entering Swift flow ...');
+      var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+      appDelegateContents = this._extendRNNAppDelegateSwift(appDelegateContents);
+      fs.writeFileSync(this.appDelegatePath, appDelegateContents);
+      this.removeUnneededImportsSuccess = true
+      this.removeApplicationLaunchContentSuccess = true
 
-    if (this.appDelegateHeaderPath) {
-      var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
-      appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
-      fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+    } else { // Old flow for Objective-C
+      debugn('Entering Objective-C flow ...');
+      var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+
+      if (this.appDelegateHeaderPath) {
+        var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
+        appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
+        fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+      }
+
+      try {
+        appDelegateContents = this._removeUnneededImports(appDelegateContents);
+        this.removeUnneededImportsSuccess = true;
+      } catch (e) {
+        errorn('   ' + e.message);
+      }
+
+      appDelegateContents = this._importNavigation(appDelegateContents);
+
+      appDelegateContents = this._bootstrapNavigation(appDelegateContents);
+
+      try {
+        appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
+        this.removeApplicationLaunchContentSuccess = true;
+      } catch (e) {
+        errorn('   ' + e.message);
+      }
+
+      fs.writeFileSync(this.appDelegatePath, appDelegateContents);
     }
-
-    try {
-      appDelegateContents = this._removeUnneededImports(appDelegateContents);
-      this.removeUnneededImportsSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
-    appDelegateContents = this._importNavigation(appDelegateContents);
-
-    appDelegateContents = this._bootstrapNavigation(appDelegateContents);
-
-    try {
-      appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
-      this.removeApplicationLaunchContentSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
-    fs.writeFileSync(this.appDelegatePath, appDelegateContents);
 
     if (this.removeUnneededImportsSuccess && this.removeApplicationLaunchContentSuccess) {
       infon('AppDelegate linked successfully!\n');
@@ -177,6 +189,19 @@ class AppDelegateLinker {
 
   _doesImportNavigation(content) {
     return /#import\s+\<ReactNativeNavigation\/ReactNativeNavigation.h>/.test(content);
+  }
+
+  // SWIFT implementation
+  _extendRNNAppDelegateSwift(content) {
+    return content
+      .replace(
+        /import React_RCTAppDelegate/,
+        'import ReactNativeNavigation'
+      )
+      .replace(
+        /class AppDelegate: RCTAppDelegate/,
+        'class AppDelegate: RNNAppDelegate'
+      )
   }
 }
 

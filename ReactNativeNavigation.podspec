@@ -21,6 +21,9 @@ Pod::Spec.new do |s|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
     s.source_files        = 'lib/ios/**/*.{h,m,mm,cpp}'
     s.exclude_files       = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
+    s.public_header_files = [
+          'lib/ios/RNNAppDelegate.h'
+        ]
   end
 
   folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -DFOLLY_CFG_NO_COROUTINES=1'
@@ -28,6 +31,7 @@ Pod::Spec.new do |s|
       'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/boost" "$(PODS_ROOT)/boost-for-react-native"  "$(PODS_ROOT)/RCT-Folly" "$(PODS_ROOT)/Headers/Private/React-Core" "$(PODS_ROOT)/Headers/Private/Yoga"',
       "CLANG_CXX_LANGUAGE_STANDARD" => "c++20",
       "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+      "DEFINES_MODULE" => "YES"
   }
 
   if fabric_enabled
