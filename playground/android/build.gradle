@@ -33,6 +33,7 @@ allprojects {
         flatDir {
             dirs "$rootProject.projectDir/libs"
         }
+        mavenCentral()
     }
 }
 

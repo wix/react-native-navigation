@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'org.jetbrains.kotlin.android'
 
 react {
     root = file("../../../")
@@ -48,6 +49,9 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {
@@ -59,6 +63,7 @@ dependencies {
     implementation project(':react-native-fast-image')
 
     implementation project(':react-native-navigation')
+    implementation 'androidx.core:core-ktx:1.16.0'
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
