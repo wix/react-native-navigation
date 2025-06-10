@@ -21,75 +21,23 @@ jest.mock('../postlink/log', () => ({
  */
 
 describe('activityLinker', () => {
-  beforeEach(() => {});
+  beforeEach(() => { });
 
-  it('should work for RN 0.68', () => {
+  it('should work for RN 0.77', () => {
     jest.mock('../postlink/path', () => {
       const { copyFileSync } = require('fs');
       const { tmpdir } = require('os');
       const path = require('path');
 
-      const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
+      const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.kt');
 
       copyFileSync(
-        path.resolve('autolink/fixtures/rn68/MainActivity.java.template'),
+        path.resolve('autolink/fixtures/rn77/MainActivity.kt.template'),
         tmpMainActivityPath
       );
 
       return {
-        mainActivityJava: tmpMainActivityPath,
-      };
-    });
-
-    const ActivityLinker = require('./activityLinker');
-    const linker = new ActivityLinker();
-
-    linker.link();
-    const mainActivityContent = fs.readFileSync(linker.activityPath, 'utf8');
-    expect(mainActivityContent).toMatchSnapshot();
-  });
-
-  it('should work for RN 0.69', () => {
-    jest.mock('../postlink/path', () => {
-      const { copyFileSync } = require('fs');
-      const { tmpdir } = require('os');
-      const path = require('path');
-
-      const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
-
-      copyFileSync(
-        path.resolve('autolink/fixtures/rn69/MainActivity.java.template'),
-        tmpMainActivityPath
-      );
-
-      return {
-        mainActivityJava: tmpMainActivityPath,
-      };
-    });
-
-    const ActivityLinker = require('./activityLinker');
-    const linker = new ActivityLinker();
-
-    linker.link();
-    const mainActivityContent = fs.readFileSync(linker.activityPath, 'utf8');
-    expect(mainActivityContent).toMatchSnapshot();
-  });
-
-  it('should work for RN 0.71', () => {
-    jest.mock('../postlink/path', () => {
-      const { copyFileSync } = require('fs');
-      const { tmpdir } = require('os');
-      const path = require('path');
-
-      const tmpMainActivityPath = path.resolve(tmpdir(), 'rnn-tests_MainActivity.java');
-
-      copyFileSync(
-        path.resolve('autolink/fixtures/rn71/MainActivity.java.template'),
-        tmpMainActivityPath
-      );
-
-      return {
-        mainActivityJava: tmpMainActivityPath,
+        mainActivityKotlin: tmpMainActivityPath,
       };
     });
 
