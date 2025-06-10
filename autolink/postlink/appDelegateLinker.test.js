@@ -21,9 +21,9 @@ jest.mock('../postlink/log', () => ({
  */
 
 describe('appDelegateLinker', () => {
-  beforeEach(() => {});
+  beforeEach(() => { });
 
-  it('should work for RN 0.68', () => {
+  it('should work for RN 0.77 with Objective-C', () => {
     jest.mock('../postlink/path', () => {
       const { copyFileSync } = require('fs');
       const { tmpdir } = require('os');
@@ -32,7 +32,7 @@ describe('appDelegateLinker', () => {
       const tmpAppDelegatePath = path.resolve(tmpdir(), 'rnn-tests_AppDelegate.mm');
 
       copyFileSync(
-        path.resolve('autolink/fixtures/rn68/AppDelegate.mm.template'),
+        path.resolve('autolink/fixtures/rn77/AppDelegate.mm.template'),
         tmpAppDelegatePath
       );
 
@@ -49,42 +49,16 @@ describe('appDelegateLinker', () => {
     expect(appDelegateContent).toMatchSnapshot();
   });
 
-  it('should work for RN 0.69', () => {
+  it('should work for RN 0.77 with Swift', () => {
     jest.mock('../postlink/path', () => {
       const { copyFileSync } = require('fs');
       const { tmpdir } = require('os');
       const path = require('path');
 
-      const tmpAppDelegatePath = path.resolve(tmpdir(), 'rnn-tests_AppDelegate.mm');
+      const tmpAppDelegatePath = path.resolve(tmpdir(), 'rnn-tests_AppDelegate.swift');
 
       copyFileSync(
-        path.resolve('autolink/fixtures/rn69/AppDelegate.mm.template'),
-        tmpAppDelegatePath
-      );
-
-      return {
-        appDelegate: tmpAppDelegatePath,
-      };
-    });
-
-    const AppDelegateLinker = require('./appDelegateLinker');
-    const linker = new AppDelegateLinker();
-
-    linker.link();
-    const appDelegateContent = fs.readFileSync(linker.appDelegatePath, 'utf8');
-    expect(appDelegateContent).toMatchSnapshot();
-  });
-
-  it('should work for RN 0.71', () => {
-    jest.mock('../postlink/path', () => {
-      const { copyFileSync } = require('fs');
-      const { tmpdir } = require('os');
-      const path = require('path');
-
-      const tmpAppDelegatePath = path.resolve(tmpdir(), 'rnn-tests_AppDelegate.mm');
-
-      copyFileSync(
-        path.resolve('autolink/fixtures/rn71/AppDelegate.mm.template'),
+        path.resolve('autolink/fixtures/rn77/AppDelegate.swift.template'),
         tmpAppDelegatePath
       );
 
