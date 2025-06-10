@@ -106,6 +106,27 @@ If installation with `npx rnn-link` did not work, follow the manual installation
 
 #### Native Installation
 
+> **Choose your implementation language**: Depending on whether your project uses Swift or Objective-C, follow the appropriate section below. Most new React Native projects use Swift by default.
+
+##### For Swift projects
+
+In Xcode, you will need to update this file: `AppDelegate.swift`
+
+```swift
+import UIKit
+import React
+- import React_RCTAppDelegate
++ import ReactNativeNavigation
+import ReactAppDependencyProvider
+
+@main
+- class AppDelegate: RCTAppDelegate {
++ class AppDelegate: RNNAppDelegate {
+...
+```
+
+##### For Objective-C projects
+
 In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
 
 ```objectivec
