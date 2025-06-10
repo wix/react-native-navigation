@@ -1,6 +1,7 @@
 // @ts-check
 var fs = require('fs');
 var path = require('./path');
+var nodePath = require('path');
 var { warnn, logn, infon, debugn, errorn } = require('./log');
 
 class AppDelegateLinker {
