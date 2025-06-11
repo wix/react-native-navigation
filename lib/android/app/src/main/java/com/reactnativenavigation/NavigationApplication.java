@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
@@ -40,6 +41,9 @@ public abstract class NavigationApplication extends Application implements React
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        DefaultNewArchitectureEntryPoint.load();
+
         reactGateway = createReactGateway();
 	}
 
