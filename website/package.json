@@ -27,7 +27,8 @@
     }
   },
   "resolutions": {
-    "**/ua-parser-js": "0.7.28"
+    "**/ua-parser-js": "0.7.28",
+    "sharp": "^0.32.0"
   },
   "browserslist": {
     "production": [
