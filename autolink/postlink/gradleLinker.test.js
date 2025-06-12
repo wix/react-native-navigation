@@ -1,40 +1,15 @@
 import fs from 'fs';
+import * as mockHelpers from './__helpers__/fixtures';
 
-/**
- * Mocks
- */
-
-jest.mock('../postlink/log', () => ({
-    log: console.log,
-    logn: console.log,
-    warn: console.log,
-    warnn: console.log,
-    info: console.log,
-    infon: console.log,
-    debug: console.log,
-    debugn: console.log,
-    errorn: console.log,
-}));
-
-/**
- * Tests
- */
+jest.mock('./log');
 
 describe('gradleLinker', () => {
-    beforeEach(() => { });
-
     it('should work for RN 0.77', () => {
-        jest.mock('../postlink/path', () => {
-            const { copyFileSync } = require('fs');
-            const { tmpdir } = require('os');
-            const path = require('path');
-
-            const tmpBuildGradlePath = path.resolve(tmpdir(), 'rnn-tests_build.gradle');
-
-            copyFileSync(
-                path.resolve('autolink/fixtures/rn77/build.gradle.template'),
-                tmpBuildGradlePath
-            );
+        jest.mock('./path', () => {
+            const tmpBuildGradlePath = mockHelpers.prepareFixtureDuplicate77({
+               userFixtureFileName: 'build.gradle.template',
+               patchedFixtureFileName: 'rnn-tests_build.gradle',
+            });
 
             return {
                 rootGradle: tmpBuildGradlePath,
@@ -43,9 +18,9 @@ describe('gradleLinker', () => {
 
         const GradleLinker = require('./gradleLinker');
         const linker = new GradleLinker();
-
         linker.link();
+
         const buildGradleContent = fs.readFileSync(linker.gradlePath, 'utf8');
         expect(buildGradleContent).toMatchSnapshot();
     });
-}); 
+});
