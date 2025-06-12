@@ -4,14 +4,13 @@ var ignoreFolders = {
 };
 var { warnn, infon, debugn } = require('./log');
 
-exports.mainActivityJava = glob.sync('**/MainActivity.java', ignoreFolders)[0];
 exports.mainActivityKotlin = glob.sync('**/MainActivity.kt', ignoreFolders)[0];
-var mainApplicationJava = glob.sync('**/MainApplication.java', ignoreFolders)[0];
-exports.mainApplicationJava = mainApplicationJava;
-exports.rootGradle = mainApplicationJava.replace(/android\/app\/.*\.java/, 'android/build.gradle');
+var mainApplicationKotlin = glob.sync('**/MainApplication.kt', ignoreFolders)[0];
+exports.mainApplicationKotlin = mainApplicationKotlin;
+exports.rootGradle = mainApplicationKotlin.replace(/android\/app\/.*\.kt/, 'android/build.gradle');
 
 var reactNativeVersion = require('../../../react-native/package.json').version;
-
+infon('Found React Native version: ' + reactNativeVersion);
 infon('Locating the AppDelegate.mm file ...');
 exports.appDelegate = glob.sync(
   '**/AppDelegate.mm',
