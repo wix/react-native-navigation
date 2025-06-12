@@ -24,13 +24,15 @@ yarn:
 yarn add react-native-navigation
 ```
 
-## Installing with `npx rnn-link`
+## Installing with `npx rnn-link` (automatic installation)
 
 You can benefit from autolinking for some of the necessary installation steps. But unlike most other libraries, react-native-navigation requires you to make a few changes to native files.
 
 We've simplified the process through a set of scripts. So to make all the necessary changes automatically, in your project's root folder run:
 
-`npx rnn-link`
+```sh
+npx rnn-link
+````
 
 Make sure to commit the changes introduced by the `rnn-link` script.
 
@@ -103,7 +105,9 @@ If installation with `npx rnn-link` did not work, follow the manual installation
 
 #### Installation with CocoaPods
 
-`cd ios && pod install`
+```sh
+cd ios && pod install
+```
 
 #### Native Installation
 
@@ -113,7 +117,7 @@ If installation with `npx rnn-link` did not work, follow the manual installation
 
 In Xcode, you will need to update this file: `AppDelegate.swift`
 
-```swift
+```diff
 import UIKit
 import React
 - import React_RCTAppDelegate
@@ -130,7 +134,7 @@ import ReactAppDependencyProvider
 
 In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
 
-```objectivec
+```diff
 #import <UIKit/UIKit.h>
 - #import <RCTAppDelegate.h>
 + #import "RNNAppDelegate.h"
@@ -146,7 +150,7 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 
 > Make sure your Android Studio installation is up to date. We recommend editing `gradle` and `kotlin` files in Android Studio as the IDE will suggest fixes and point out errors, this way you avoid most common pitfalls.
 
-#### 1 Update `android/build.gradle`:
+#### 1. Update `android/build.gradle`:
 
 ```diff
 buildscript {
@@ -181,7 +185,7 @@ allprojects {
 }
 ```
 
-#### 2 Update `MainActivity.kt`
+#### 2. Update `MainActivity.kt`
 
 
 ```diff
@@ -198,12 +202,12 @@ allprojects {
 
 If you have any **react-native** related methods, you can safely delete them.
 
-#### 3 Update `MainApplication.kt`
+#### 3. Update `MainApplication.kt`
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
 
 ```diff
-...
+// ...
 
 import com.facebook.react.PackageList
 import com.facebook.react.ReactHost
@@ -261,7 +265,7 @@ Now that you're done, don't forget to update the `index.js` file, as [shown abov
 
 ```
 "scripts": {
-  ...
+  // ...
   "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
 }
 ```
@@ -302,7 +306,4 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 }
 
-```
-
-```
 ```
