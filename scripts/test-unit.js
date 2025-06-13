@@ -20,6 +20,7 @@ function runAndroidUnitTests() {
     // exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
   }
   exec.execSync(`cd playground/android && ./gradlew ${conf}`);
+  exec.execSync(`cd playground/android && ./gradlew :react-native-navigation:pixel3aapi34DebugAndroidTest`);
 }
 
 function runIosUnitTests() {
