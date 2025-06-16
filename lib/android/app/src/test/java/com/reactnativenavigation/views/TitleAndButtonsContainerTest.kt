@@ -30,7 +30,7 @@ import kotlin.test.assertFalse
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
-@Ignore("New architecture - WIP")
+@Ignore("New architecture - failed to fix")
 class TitleAndButtonsContainerTest : BaseTest() {
     lateinit var uut: TitleAndButtonsContainer
     private lateinit var activity: Activity
