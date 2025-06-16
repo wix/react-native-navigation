@@ -1,0 +1,266 @@
+---
+id: stack
+title: Stack
+sidebar_label: Stack
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A stack is a container layout promoting a hierarchical navigation. It is used for navigating between screens at consecutive levels of hierarchy, steps in a flow or across an app.
+
+The first child in the stack (represented by the `children` array) is the root and is displayed at the bottom of the stack. The last child in the children array is the child currently being displayed.
+
+In this layout, only a single child screen is visible at any given time and consecutive screen can be added to the top of the stack using the `Navigation.push` command. Tapping the back button will pop the stack and remove the top most screen.
+
+The stack manages the TopBar at the top of the stack. The TopBar displays the current screens' title and buttons. It can be hidden with the `topBar: { visible: false }` option. By default, screens are rendered below the TopBar. This behavior can be changed by setting `topBar: { drawBehind: true }` in the current screens' options.
+
+# Layout Examples
+
+<Tabs
+  defaultValue="single"
+  values={[
+    { label: 'Single child', value: 'single', },
+    { label: 'Multiple Children', value: 'multiple', }
+  ]
+}>
+<TabItem value="single">
+
+
+A stack declared with a single child.
+
+```js
+const stack = {
+  children: [
+    {
+      component: {
+        name: 'MyComponent',
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+<TabItem value="multiple">
+
+
+A stack can be initialized with more than one child, in which case the last child will be the currently displayed child and the first child will be hidden. In this case the back button will be visible automatically, clicking it will go back in the stack revealing the first (previous) child.
+Once the root child becomes visible, the back button is hidden.
+
+```js
+const stack = {
+  children: [
+    {
+      component: {
+        name: 'RootComponent',
+      },
+    },
+    {
+      component: {
+        name: 'SecondComponent',
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+</Tabs>
+
+
+## TopBar Buttons
+
+Buttons can be added to the [right](#rightButtons) and [left](#leftButtons) areas of the TopBar. Buttons can have either an icon or a text. They are declared in the the options object and, as with any other option, can be updated dynamically with the `Navigation.mergeOptions` command.
+
+:::tip Always assign titles to buttons!
+When using an icon button on **Android**, you should always pass a title as well. The title is used when the button is collapsed to the overflow menu and as a tooltip when the button is long pressed.
+:::
+
+### Overflow menu
+
+It's common practice to group less important actions in a menu or an action sheet.
+
+To do so on iOS, include a button with a menu icon and open an [ActionSheet](https://facebook.github.io/react-native/docs/actionsheetios) with the relevant actions when the button is clicked.
+
+On Android, use the [showAsAction](../api/options-button#showasaction) options to control when the button should appear in the menu.
+
+### Using a react component in a button
+
+Sometimes we require more from our buttons. In order to support every product need, React Components can be used as custom views of buttons.
+To do so, you'll first need to register the view with Navigation, just like you register your components used as screens:
+
+```js
+Navigation.registerComponent('ButtonComponent', () => require('./ButtonComponent'));
+```
+
+Now you can create buttons which use the component registered with `'ButtonComponent'` as their custom view:
+
+```js
+topBar: {
+  rightButtons: [
+    {
+      id: 'custom',
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          // Pass initial props to the button here
+        },
+      },
+    },
+  ];
+}
+```
+
+### Updating props of custom buttons
+
+To update props of a mounted component used as a button, you'll first need to assign it a unique id, then call the `Navigation.updateProps()` command with the id.
+
+Calling the updateProps command will trigger Reacts component lifecycle methods related to [props update](https://reactjs.org/docs/react-component.html#updating)
+
+```js
+// Declare the button and assign it a unique id
+topBar: {
+  rightButtons: [
+    {
+      id: 'SomeUniqueId',
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          count: 0,
+        },
+      },
+    },
+  ];
+}
+
+// Update props
+Navigation.updateProps('SomeUniqueId', {
+  count: 1,
+});
+```
+
+### Changing buttons dynamically
+
+As buttons are part of a screen's options, they can be modified like any other styling option using the [mergeOptions](#) command.
+
+#### Setting buttons
+
+The following command will set the screen's right buttons. If the screen already has Right Buttons declared - they will be overridden.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  topBar: {
+    rightButtons: [
+      {
+        id: 'myDynamicButton',
+        text: 'My Button',
+      },
+    ],
+  },
+});
+```
+
+#### Removing buttons
+
+Buttons can be removed by setting zero buttons, as shown in the snippet below.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  topBar: {
+    rightButtons: [],
+  },
+});
+```
+
+## Back Button
+
+The back button is added automatically when two or more screens are pushed into the stack.
+
+### Styling the back button
+
+The back button's style can be customized by declaring a backButton options object. This configuration can be part of a screen's static options, or default options.
+
+```js
+backButton: {
+  color: 'red',
+  icon: require('../../img/customChevron.png')
+}
+```
+
+### Controlling visibility
+
+The back buttons visibility can be controlled with the visible property.
+
+```js
+backButton: {
+  visible: false;
+}
+```
+
+### Changing visibility programmatically
+
+Back button visibility can be changed dynamically using the mergeOptions command. When using a screen's componentId, the change will affect only that specific screen. But when using the stack's id, the change will affect all screens pushed into the stack.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  backButton: {
+    visible: false,
+  },
+});
+```
+
+## Interacting programmatically
+
+The Navigation object provides ways to programmatically manipulate the stack.
+
+### Interact with the Stack by componentId
+
+Each layout pushed into the stack has an id. When in the context of a component, The component's `componentId` can be used to interact with a parent stack.
+When using a component's componentId, the native implementation knows to perform the command on the parent Stack of this component.
+
+In this example, we push a screen onto the component's parent stack.
+
+```jsx
+const React = require('react');
+const Navigation = require('react-native-navigation');
+
+class MyComponent extends React.Component {
+  onButtonClick = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'PUSHED_SCREEN',
+      },
+    });
+  };
+}
+```
+
+### Interact with the Stack by a predefined id
+
+Sometimes we're required to interact with a specific stack not from the context of a component pushed into it. To do so, assign the stack a predefined `id` and use it when invoking any stack command.
+
+```js
+Navigation.setRoot({
+  root: {
+    stack: {
+      id: 'MyStack', // This is the id we're going to use when interacting with the stack
+      children: [
+        {
+          component: {
+            name: 'SomeComponent',
+          },
+        },
+      ],
+    },
+  },
+});
+
+function push() {
+  Navigation.push('MyStack', {
+    component: {
+      name: 'PushedScreen',
+    },
+  });
+}
+```

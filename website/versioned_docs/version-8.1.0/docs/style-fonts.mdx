@@ -1,0 +1,85 @@
+---
+id: style-fonts
+title: Changing fonts
+sidebar_label: Changing fonts
+---
+
+Before you begin using your own fonts, you'll first need to add them to the app project.
+
+* **Android** - add the `.ttf` or `.otf` files to `src/main/assets/fonts/`
+* **iOS** - follow this [guide](https://medium.com/react-native-training/react-native-custom-fonts-ccc9aacf9e5e)
+
+Once we've added the font files to our project, we can star using them in options.
+
+:::note
+When declaring fonts in options, use only the file name without the file type suffix.
+:::
+
+## BottomTab font
+
+```js
+options: {
+  bottomTab: {
+    fontFamily: 'helvetica'
+  }
+}
+```
+
+## Button font
+
+```js
+options: {
+  rightButtons: [
+    {
+      id: 'SAVE_BUTTON',
+      text: 'Save',
+      fontFamily: 'helvetica'
+    }
+  ],
+  leftButtons: [
+    {
+      id: 'CANCEL_BUTTON',
+      text: 'Cancel',
+      fontFamily: 'helvetica'
+    }
+  ]
+}
+```
+
+## Title font
+
+```js
+options: {
+  topBar: {
+    title: {
+      fontFamily: 'helvetica'
+    }
+  }
+}
+```
+
+## Subtitle font
+
+```js
+options: {
+  topBar: {
+    subtitle: {
+      fontFamily: 'helvetica'
+    }
+  }
+}
+```
+
+## Back button
+
+In iOS the back button will display the title of the previous screen. Use the `backButton` option to modify its font family.
+
+```js
+options: {
+  topBar: {
+    backButton: {
+      fontFamily: 'helvetica'
+    }
+  }
+}
+```

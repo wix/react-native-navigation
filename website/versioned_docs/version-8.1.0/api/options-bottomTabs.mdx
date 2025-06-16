@@ -1,0 +1,122 @@
+---
+id: options-bottomTabs
+title: Bottom Tabs Options
+sidebar_label: Bottom Tabs
+---
+
+```js
+const options = {
+  bottomTabs: {},
+};
+```
+
+## `animate`
+
+Controls whether toggling visibility states will be animated.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `animateTabSelection`
+
+Controls wether tab selection is animated or not
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `backgroundColor`
+
+Change the background color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `barStyle`
+
+Controls whether the BottomTabs use dark (black) or light (default) visual style. Requires `translucent: true`.
+
+| Type                    | Required | Platform |
+| ----------------------- | -------- | -------- |
+| enum('default','black') | No       | Both     |
+
+## `currentTabId`
+
+Select a tab by the id (componentId) of a child contained in it. See [Selecting tabs programmatically](#selectingtabsprogrammatically) for a detailed explanation.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `currentTabIndex`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `drawBehind`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `elevation`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+## `hideShadow`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+## `hideOnScroll`
+
+Hides the BottomTabs on scroll to increase the amount of content visible to the user.
+The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `preferLargeIcons`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `tabsAttachMode`
+
+| Type                                               | Required | Platform |
+| -------------------------------------------------- | -------- | -------- |
+| enum('together','afterInitialTab','onSwitchToTab') | No       | Both     |
+
+## `testID`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+## `titleDisplayMode`
+
+| Type                                             | Required | Platform |
+| ------------------------------------------------ | -------- | -------- |
+| enum('alwaysShow','showWhenActive','alwaysHide') | No       | Both     |
+
+## `translucent`
+
+A Boolean value that indicates whether the BottomTabs are translucent. For this option to function as expected the screen needs to be drawn behind the BottomTabs; Make sure the list component you're using (FlatList for example) is the root component in the screen and not SafeAreaView. When SafeAreView is the root component it shifts the content above the BottomTabs and the translucent effect isn't visible.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+## `visible`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
