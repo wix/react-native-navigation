@@ -284,6 +284,9 @@ public class Navigator extends ParentController<ViewGroup> {
 
     public void onHostResume() {
         overlayManager.onHostResume();
+        if (root != null && root.getView() != null) {
+            root.getView().requestLayout();
+        }
         if (!modalStack.isEmpty()) {
             modalStack.onHostResume();
             if(modalStack.peekDisplayedOverCurrentContext()){
