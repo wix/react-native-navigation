@@ -120,7 +120,11 @@ class StatusBarPresenter private constructor(
 
     private fun setStatusBarVisible(viewController: ViewController<*>, visible: Bool) {
         val window = window.get() ?: return
-        val view = if (viewController.view != null) viewController.view else window.decorView
+        val view = if (viewController.isViewCreated) {
+            viewController.view ?: window.decorView
+        } else {
+            window.decorView
+        }
         if (visible.isFalse) {
             hideStatusBar(window, view)
         } else {
