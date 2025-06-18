@@ -2,14 +2,14 @@ package com.reactnativenavigation.utils
 
 import android.graphics.Color
 import android.view.Window
-import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.BaseRobolectricTest
 import com.reactnativenavigation.utils.SystemUiUtils.STATUS_BAR_HEIGHT_TRANSLUCENCY
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.verify
 import kotlin.math.ceil
 
-class SystemUiUtilsTest : BaseTest() {
+class SystemUiUtilsTest : BaseRobolectricTest() {
 
     @Test
     fun `setStatusBarColor - should change color considering alpha`() {

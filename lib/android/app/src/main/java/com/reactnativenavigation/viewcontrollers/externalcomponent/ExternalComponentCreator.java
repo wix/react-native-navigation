@@ -7,5 +7,5 @@ import com.facebook.react.ReactInstanceManager;
 import org.json.JSONObject;
 
 public interface ExternalComponentCreator {
-    ExternalComponent create(FragmentActivity activity, ReactInstanceManager reactInstanceManager, JSONObject props);
+    ExternalComponent create(FragmentActivity activity, JSONObject props);
 }

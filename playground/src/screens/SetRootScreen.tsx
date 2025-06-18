@@ -17,6 +17,7 @@ const {
   SET_ROOT_WITH_TWO_CHILDREN_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN,
   SET_ROOT_WITH_BUTTONS,
+  SET_ROOT_WITH_MENUS,
   ROUND_BUTTON,
 } = testIDs;
 
@@ -49,8 +50,6 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
       },
     };
   }
-
-  unmounted = false;
 
   render() {
     return (
@@ -86,18 +85,25 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
           testID={SET_ROOT_WITH_BUTTONS}
           onPress={this.setRootWithButtons}
         />
+        <Button
+          label="Set Root with left and right menus"
+          testID={SET_ROOT_WITH_MENUS}
+          onPress={this.setRootWithLeftAndRightMenus}
+        />
       </Root>
     );
   }
 
   componentWillUnmount() {
-    this.unmounted = true;
+    logLifecycleEvent({
+      text: `component unmounted`,
+    });
   }
 
   setSingleRoot = async () => {
     await this.setRoot();
     logLifecycleEvent({
-      text: `setRoot complete - previous root is${this.unmounted ? '' : ' not'} unmounted`,
+      text: `setRoot complete`,
     });
   };
 
@@ -311,6 +317,55 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
               },
             },
           ],
+        },
+      },
+    });
+
+  setRootWithLeftAndRightMenus = () =>
+    Navigation.setRoot({
+      root: {
+        sideMenu: {
+          left: {
+            component: {
+              id: 'sideMenu',
+              name: Screens.SideMenuLeft,
+            },
+          },
+          right: {
+            component: {
+              id: 'sideMenu',
+              name: Screens.SideMenuRight,
+            },
+          },
+          center: {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: Screens.SideMenuCenter,
+                    id: 'SideMenuCenter',
+                    options: {
+                      animations: {
+                        setRoot: {
+                          waitForRender: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          options: {
+            sideMenu: {
+              left: {
+                openMode: 'aboveContent',
+              },
+              right: {
+                openMode: 'aboveContent',
+              },
+            },
+          },
         },
       },
     });

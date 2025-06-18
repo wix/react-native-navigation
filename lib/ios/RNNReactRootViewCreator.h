@@ -7,4 +7,8 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge eventEmitter:(RNNEventEmitter *)eventEmitter;
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (instancetype)initWithHost:(RCTHost *)host eventEmitter:(RNNEventEmitter *)eventEmitter;
+#endif
+
 @end

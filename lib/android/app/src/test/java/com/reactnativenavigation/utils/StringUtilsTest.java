@@ -6,9 +6,9 @@ import org.junit.*;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
-public class StringUtilsTest extends BaseTest {
+public class StringUtilsTest extends BaseRobolectricTest {
     @Test
-    public void isEqual() throws Exception {
+    public void isEqual() {
         assertThat(StringUtils.isEqual(null, "a")).isFalse();
         assertThat(StringUtils.isEqual("a", null)).isFalse();
         assertThat(StringUtils.isEqual("a", "b")).isFalse();

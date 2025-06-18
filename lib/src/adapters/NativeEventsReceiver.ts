@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter, EmitterSubscription } from 'react-native';
+import { NativeEventEmitter, EmitterSubscription } from 'react-native';
 import {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
@@ -17,12 +17,13 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
 } from '../interfaces/Events';
+import RNNEventEmitter from './NativeRNNTurboEventEmitter';
 
 export class NativeEventsReceiver {
   private emitter: NativeEventEmitter;
   constructor() {
     try {
-      this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
+      this.emitter = new NativeEventEmitter(RNNEventEmitter);
     } catch (e) {
       this.emitter = ({
         addListener: () => {

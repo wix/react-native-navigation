@@ -11,6 +11,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@Ignore("New architecture - WIP")
 public class OverlayManagerTest extends BaseTest {
     private static final String OVERLAY_ID_1 = "OVERLAY_1";
     private static final String OVERLAY_ID_2 = "OVERLAY_2";

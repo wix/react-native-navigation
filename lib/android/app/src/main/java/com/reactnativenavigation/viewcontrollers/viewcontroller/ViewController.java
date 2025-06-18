@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.viewcontroller;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
@@ -12,11 +13,11 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
@@ -113,8 +114,32 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public abstract T createView();
 
+    public void onSelected(ViewController<?> previousVC) {
+        setVisible();
+    }
+
+    public void onDeselected() {
+        setInvisible();
+    }
+
+    public void setVisible() {
+        getView().setVisibility(View.VISIBLE);
+
+        onViewWillAppear();
+        onViewDidAppear();
+    }
+
+    public void setInvisible() {
+        getView().setVisibility(View.INVISIBLE);
+    }
+
     public void setViewVisibilityListener(ViewVisibilityListener viewVisibilityListener) {
         this.viewVisibilityListener = viewVisibilityListener;
+    }
+
+    @NonNull
+    public ViewControllerVisibilityInfo getVisibilityInfo() {
+        return new ViewControllerVisibilityInfo(null);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
@@ -172,7 +197,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void setDefaultOptions(Options defaultOptions) {
-
     }
 
     public Activity getActivity() {
@@ -350,6 +374,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @Override
     public void onChildViewRemoved(View view, View view1) {
 
+    }
+
+    public Animator getPushAnimations(Options appearingOptions) {
+        return null;
+    }
+
+    public Animator getPopAnimations(Options appearingOptions, Options disappearingOptions) {
+        return null;
     }
 
     protected void runOnPreDraw(Func1<T> task) {

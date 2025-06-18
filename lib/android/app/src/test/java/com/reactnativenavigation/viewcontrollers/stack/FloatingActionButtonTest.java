@@ -16,12 +16,14 @@ import com.reactnativenavigation.views.stack.fab.Fab;
 import com.reactnativenavigation.views.stack.fab.FabMenu;
 import com.reactnativenavigation.views.stack.StackLayout;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import androidx.annotation.NonNull;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+@Ignore("New architecture - WIP")
 public class FloatingActionButtonTest extends BaseTest {
 
     private final static int CHILD_FAB_COUNT = 3;

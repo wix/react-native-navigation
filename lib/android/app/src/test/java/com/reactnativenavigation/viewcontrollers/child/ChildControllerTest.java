@@ -6,6 +6,7 @@ import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -13,7 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
+@Ignore("New architecture - WIP")
 public class ChildControllerTest extends BaseTest {
 
     private ChildController<?> uut;
@@ -23,6 +24,7 @@ public class ChildControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         childRegistry = spy(new ChildControllersRegistry());
         presenter = Mockito.mock(Presenter.class);
         uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options()) {

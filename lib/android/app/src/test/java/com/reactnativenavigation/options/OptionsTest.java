@@ -1,10 +1,9 @@
 package com.reactnativenavigation.options;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.BaseRobolectricTest;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullText;
@@ -24,7 +23,7 @@ import androidx.annotation.NonNull;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class OptionsTest extends BaseTest {
+public class OptionsTest extends BaseRobolectricTest {
 
     private static final String TITLE = "the title";
     private static final Number TITLE_HEIGHT = new Number(100);
@@ -57,12 +56,10 @@ public class OptionsTest extends BaseTest {
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
     private static final Number BOTTOM_TABS_CURRENT_TAB_INDEX = new Number(1);
     private TypefaceLoader mockLoader;
-    private Activity activity;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        activity = newActivity();
         mockLoader = Mockito.mock(TypefaceLoader.class);
         when(mockLoader.getTypeFace("HelveticaNeue-Condensed", null, null, null)).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
         when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold", null, null, null)).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
@@ -84,7 +81,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options result = Options.parse(activity, mockLoader, json);
+        Options result = Options.parse(getContext(), mockLoader, json);
         assertResult(result);
     }
 
@@ -218,12 +215,12 @@ public class OptionsTest extends BaseTest {
     public void mergeDoesNotMutate() throws Exception {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
-        Options options1 = Options.parse(activity, mockLoader, json1);
+        Options options1 = Options.parse(getContext(), mockLoader, json1);
         options1.topBar.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
-        Options options2 = Options.parse(activity, mockLoader, json2);
+        Options options2 = Options.parse(getContext(), mockLoader, json2);
         options2.topBar.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
@@ -241,7 +238,7 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(activity, mockLoader, json);
+        Options defaultOptions = Options.parse(getContext(), mockLoader, json);
         Options options = new Options();
 
         assertResult(options.mergeWith(defaultOptions));
@@ -256,12 +253,12 @@ public class OptionsTest extends BaseTest {
                 .put("fab", createOtherFab())
                 .put("bottomTabs", createOtherBottomTabs())
                 .put("layout", layout);
-        Options defaultOptions = Options.parse(activity, mockLoader, defaultJson);
+        Options defaultOptions = Options.parse(getContext(), mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("bottomTabs", createBottomTabs());
-        Options options = Options.parse(activity, mockLoader, json);
+        Options options = Options.parse(getContext(), mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }

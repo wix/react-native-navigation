@@ -5,7 +5,7 @@ var { errorn, warnn, logn, infon, debugn } = require('./log');
 
 class ActivityLinker {
   constructor() {
-    this.activityPath = path.mainActivityJava;
+    this.activityPath = path.mainActivityKotlin
     this.extendNavigationActivitySuccess = false;
     this.removeGetMainComponentNameSuccess = false;
     this.removeCreateReactActivityDelegate = false;
@@ -14,7 +14,7 @@ class ActivityLinker {
   link() {
     if (!this.activityPath) {
       errorn(
-        '   MainActivity not found! Does the file exist in the correct folder?\n   Please check the manual installation docs:\n   https://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
+        '   MainActivity.kt not found! Does the file exist in the correct folder?\n   Please check the manual installation docs:\n   https://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
       );
       return;
     }
@@ -41,26 +41,26 @@ class ActivityLinker {
 
     fs.writeFileSync(this.activityPath, activityContent);
     if (this.extendNavigationActivitySuccess && this.removeGetMainComponentNameSuccess) {
-      infon('MainActivity linked successfully!\n');
+      infon('MainActivity.kt linked successfully!\n');
     } else if (!this.extendNavigationActivitySuccess && !this.removeGetMainComponentNameSuccess) {
       errorn(
-        'MainActivity was not linked. Please check the logs above for more information and proceed with manual linking of the MainActivity file in Android:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
+        'MainActivity.kt was not linked. Please check the logs above for more information and proceed with manual linking of the MainActivity file in Android:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
       );
     } else {
       warnn(
-        'MainActivity was only partially linked. Please check the logs above for more information and proceed with manual linking for the failed steps:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
+        'MainActivity.kt was only partially linked. Please check the logs above for more information and proceed with manual linking for the failed steps:\nhttps://wix.github.io/react-native-navigation/docs/installing#2-update-mainactivityjava'
       );
     }
   }
 
   _removeGetMainComponentName(contents) {
-    var match = /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/.exec(
+    var match = /(\/\*\*[\s\S]*?\*\/\s*)?override\s+fun\s+getMainComponentName\s*\(\s*\)\s*:\s*String\s*(\{\s*return[\s\S]*?\}|=[\s\S]*?)/.exec(
       contents
     );
     if (match) {
       debugn('   Removing getMainComponentName function');
       return contents.replace(
-        /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*String\s*getMainComponentName\s*\(\)\s*{\s*return.+\s*\}/,
+        /(\/\*\*[\s\S]*?\*\/\s*)?override\s+fun\s+getMainComponentName\s*\(\s*\)\s*:\s*String\s*(\{\s*return[\s\S]*?\}|=[\s\S]*?(?=\n\s*(?:\/\*\*|override|fun|\}|$)))/,
         ''
       );
     }
@@ -77,14 +77,10 @@ class ActivityLinker {
     if (this._doesActivityExtendReactActivity(activityContent)) {
       debugn('   Extending NavigationActivity');
       return activityContent
-        .replace(/extends\s+ReactActivity\s*/, 'extends NavigationActivity ')
+        .replace(/:\s*ReactActivity\(\)\s*/, ': NavigationActivity() ')
         .replace(
-          /public\s+MainActivityDelegate\s*\(\s*ReactActivity\s+activity,\s*String\s+mainComponentName\s*\)/,
-          'public MainActivityDelegate(NavigationActivity activity, String mainComponentName)'
-        )
-        .replace(
-          'import com.facebook.react.ReactActivity;',
-          'import com.reactnativenavigation.NavigationActivity;'
+          'import com.facebook.react.ReactActivity',
+          'import com.reactnativenavigation.NavigationActivity'
         );
     }
 
@@ -94,18 +90,18 @@ class ActivityLinker {
   }
 
   _doesActivityExtendReactActivity(activityContent) {
-    return /public\s+class\s+MainActivity\s+extends\s+ReactActivity\s*/.test(activityContent);
+    return /class\s+MainActivity\s*:\s*ReactActivity\(\)\s*/.test(activityContent);
   }
 
   _hasAlreadyExtendNavigationActivity(activityContent) {
-    return /public\s+class\s+MainActivity\s+extends\s+NavigationActivity\s*/.test(activityContent);
+    return /class\s+MainActivity\s*:\s*NavigationActivity\(\)\s*/.test(activityContent);
   }
 
   _removeCreateReactActivityDelegate(activityContent) {
     if (this._hasCreateReactActivityDelegate(activityContent)) {
       debugn('   Removing createReactActivityDelegate function');
       return activityContent.replace(
-        /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/,
+        /(\/\*\*[\s\S]*?\*\/\s*)?override\s+fun\s+createReactActivityDelegate\s*\(\s*\)\s*:\s*ReactActivityDelegate\s*(\{\s*return[\s\S]*?\}|=[\s\S]*?(?=\n\s*(?:\/\*\*|override|fun|\}|$)))/,
         ''
       );
     } else {
@@ -115,7 +111,7 @@ class ActivityLinker {
   }
 
   _hasCreateReactActivityDelegate(activityContent) {
-    return /\/\*\*\s*\n([^\*]|(\*(?!\/)))*\*\/\s*@Override\s*protected\s*ReactActivityDelegate\s*createReactActivityDelegate\s*\(\)\s*{\s*return((.|\r|\s)*?)}/.test(
+    return /(\/\*\*[\s\S]*?\*\/\s*)?override\s+fun\s+createReactActivityDelegate\s*\(\s*\)\s*:\s*ReactActivityDelegate\s*(\{\s*return[\s\S]*?\}|=[\s\S]*?)/.test(
       activityContent
     );
   }

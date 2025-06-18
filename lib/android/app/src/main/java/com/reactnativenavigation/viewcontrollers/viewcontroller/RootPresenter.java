@@ -34,8 +34,8 @@ public class RootPresenter {
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
 
-    public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener, ReactInstanceManager reactInstanceManager) {
-        layoutDirectionApplier.apply(appearingRoot, defaultOptions, reactInstanceManager);
+    public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener) {
+        layoutDirectionApplier.apply(appearingRoot, defaultOptions);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
         AnimationOptions enter = options.animations.setRoot.getEnter();

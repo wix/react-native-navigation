@@ -72,7 +72,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     public static class SimpleView extends ReactView implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
-            super(context, Mockito.mock(ReactInstanceManager.class), "compId", "compName");
+            super(context, "compId", "compName");
         }
 
         @Override

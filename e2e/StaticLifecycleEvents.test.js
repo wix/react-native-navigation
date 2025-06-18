@@ -89,11 +89,12 @@ describe('static lifecycle events', () => {
     ).toBeVisible();
   });
 
-  it('unmounts previous root before resolving setRoot promise', async () => {
+  it.e2e('unmounts previous root before resolving setRoot promise', async () => {
     await elementById(TestIDs.SET_ROOT_BTN).tap();
     await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
     await elementById(TestIDs.SET_ROOT_BTN).tap();
-    await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
+    await expect(elementByLabel('setRoot complete')).toBeVisible();
+    await expect(elementByLabel('component unmounted')).toBeVisible();
   });
 
   it('top bar custom button willAppear didAppear after pop, on a root screen', async () => {

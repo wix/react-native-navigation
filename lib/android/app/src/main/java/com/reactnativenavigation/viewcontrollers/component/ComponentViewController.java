@@ -1,26 +1,26 @@
 package com.reactnativenavigation.viewcontrollers.component;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
 
-import com.reactnativenavigation.utils.LogKt;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
-import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.SystemUiUtils;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.child.ChildController;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.views.component.ComponentLayout;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.utils.SystemUiUtils;
+import com.reactnativenavigation.viewcontrollers.child.ChildController;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import com.reactnativenavigation.views.component.ComponentLayout;
 
 public class ComponentViewController extends ChildController<ComponentLayout> {
     private final String componentName;
@@ -62,6 +62,18 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     public void setDefaultOptions(Options defaultOptions) {
         super.setDefaultOptions(defaultOptions);
         presenter.setDefaultOptions(defaultOptions);
+    }
+
+    @Nullable
+    @Override
+    public Animator getPushAnimations(Options appearingOptions) {
+        return this.presenter.getStatusBarPushAnimation(appearingOptions);
+    }
+
+    @Nullable
+    @Override
+    public Animator getPopAnimations(Options appearingOptions, Options disappearingOptions) {
+        return this.presenter.getStatusBarPopAnimation(appearingOptions, disappearingOptions);
     }
 
     @Override

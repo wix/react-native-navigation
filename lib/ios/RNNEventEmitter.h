@@ -1,8 +1,13 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface RNNEventEmitter : RCTEventEmitter <RCTBridgeModule>
+@class RCTHost;
+@class RCTBridge;
+
+@interface RNNEventEmitter : NSObject
+
+- (void)setHost:(RCTHost *)host;
+@property(nonatomic, strong, readonly) RCTHost *host;
 
 - (void)sendOnAppLaunched;
 

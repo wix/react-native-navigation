@@ -128,11 +128,12 @@ function registerScreens() {
   const ContextScreen = require('./ContextScreen').default;
   Navigation.registerComponent(
     Screens.ContextScreen,
-    () => (props) => (
-      <ContextProvider>
-        <ContextScreen {...props} />
-      </ContextProvider>
-    ),
+    () => (props) =>
+      (
+        <ContextProvider>
+          <ContextScreen {...props} />
+        </ContextProvider>
+      ),
     () => ContextScreen
   );
 

@@ -39,6 +39,7 @@ export class NativeCommandsSender {
       const layoutNode = LayoutNodeFactory.create(layout, stack);
       stack.getVisibleLayout().componentDidDisappear();
       LayoutStore.push(layoutNode, stack);
+      LayoutStore.applyOptions(layoutNode.nodeId, layoutNode.data.options);
       stack.getVisibleLayout().componentDidAppear();
       resolve(stack.getVisibleLayout().nodeId);
       this.reportCommandCompletion(CommandName.Push, commandId);
@@ -55,6 +56,9 @@ export class NativeCommandsSender {
         LayoutStore.getLayoutById(componentId).getStack().children
       ) as ComponentNode;
       LayoutStore.pop(componentId);
+      events.invokeScreenPopped({
+        componentId,
+      });
       resolve(poppedChild.nodeId);
       this.reportCommandCompletion(CommandName.Pop, commandId);
     });

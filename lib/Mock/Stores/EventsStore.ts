@@ -2,6 +2,7 @@ import {
   ComponentDidDisappearEvent,
   ComponentWillAppearEvent,
   ModalDismissedEvent,
+  ScreenPoppedEvent,
 } from '../../src/interfaces/ComponentEvents';
 import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../src/index';
 import { BottomTabPressedEvent, CommandCompletedEvent } from '../../src/interfaces/Events';
@@ -14,6 +15,8 @@ export const events = {
   modalDismissed: [(_event: ModalDismissedEvent) => {}],
   bottomTabPressed: [(_event: BottomTabPressedEvent) => {}],
   commandCompleted: [(_event: CommandCompletedEvent) => {}],
+  screenPopped: [(_event: ScreenPoppedEvent) => {}],
+
   invokeComponentWillAppear: (event: ComponentWillAppearEvent) => {
     events.componentWillAppear &&
       events.componentWillAppear.forEach((listener) => {
@@ -53,6 +56,12 @@ export const events = {
   invokeCommandCompleted: (event: CommandCompletedEvent) => {
     events.commandCompleted &&
       events.commandCompleted.forEach((listener) => {
+        listener(event);
+      });
+  },
+  invokeScreenPopped: (event: ScreenPoppedEvent) => {
+    events.screenPopped &&
+      events.screenPopped.forEach((listener) => {
         listener(event);
       });
   },

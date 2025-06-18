@@ -8,7 +8,7 @@ import org.junit.*;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
-public class LayoutNodeParserTest extends BaseTest {
+public class LayoutNodeParserTest extends BaseRobolectricTest {
     @Test
     public void dto() throws Exception {
         LayoutNode node = new LayoutNode("the id", LayoutNode.Type.Component);

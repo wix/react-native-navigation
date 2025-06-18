@@ -1,16 +1,16 @@
 package com.reactnativenavigation.options.parsers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.BaseRobolectricTest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-
-public class JSONParserTest extends BaseTest {
+public class JSONParserTest extends BaseRobolectricTest {
     @Test
     public void parsesMap() throws Exception {
         JavaOnlyMap input = new JavaOnlyMap();

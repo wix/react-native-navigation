@@ -1,10 +1,20 @@
 import React from 'react';
-import { Platform, PlatformOSType } from 'react-native';
-import { Button, ButtonProps } from 'react-native-ui-lib';
+import {
+  Platform,
+  PlatformOSType,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedbackProps,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+} from 'react-native';
 
 type RnnButtonProps = {
   platform?: PlatformOSType;
-} & ButtonProps;
+  label: string;
+} & TouchableNativeFeedbackProps &
+  TouchableOpacityProps;
 
 export default class RnnButton extends React.Component<RnnButtonProps> {
   render() {
@@ -14,6 +24,27 @@ export default class RnnButton extends React.Component<RnnButtonProps> {
       return null;
     }
 
-    return <Button {...props} backgroundColor={props.testID ? undefined : '#65C888'} marginB-8 />;
+    const color = props.testID ? '#5B49F5' : '#65C888';
+
+    return (
+      <TouchableOpacity>
+        <View style={[styles.buttonContainer, { backgroundColor: color }]}>
+          <Text style={styles.buttonText} {...props}>
+            {props.label}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginBottom: 8,
+    borderRadius: 999,
+    padding: 12,
+  },
+  buttonText: {
+    color: 'white',
+  },
+});

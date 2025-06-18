@@ -1,27 +1,19 @@
 package com.reactnativenavigation.mocks;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
+import androidx.annotation.NonNull;
+
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.IReactView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 
 public class TestReactView extends ReactView implements IReactView {
 
     public TestReactView(@NonNull Context context) {
-        super(context, null, "", "");
-    }
-
-    @Override
-    public void startReactApplication(ReactInstanceManager reactInstanceManager, String moduleName, @Nullable Bundle initialProperties, @Nullable String initialUITemplate) {
-
+        super(context, "", "");
     }
 
     @Override

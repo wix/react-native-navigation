@@ -7,4 +7,6 @@
 
 + (UIModalTransitionStyle)UIModalTransitionStyle:(id)json;
 
++ (UIBarStyle)UIBarStyle:(id)json;
+
 @end

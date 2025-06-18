@@ -13,6 +13,7 @@ const {
   LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN,
   SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT,
   SIDE_MENU_LEFT_DRAWER_WIDTH_TEXT,
+  SIDE_MENU_LEFT_DRAWER_CONTAINER,
 } = testIDs;
 
 interface Props {
@@ -70,6 +71,7 @@ const SideMenuLeftScreen: NavigationFunctionComponent<Props> = ({ componentId, m
         setHeight(event.nativeEvent.layout.height);
         setWidth(event.nativeEvent.layout.width);
       }}
+      testID={SIDE_MENU_LEFT_DRAWER_CONTAINER}
     >
       <Button label="Push" testID={LEFT_SIDE_MENU_PUSH_BTN} onPress={push} />
       <Button

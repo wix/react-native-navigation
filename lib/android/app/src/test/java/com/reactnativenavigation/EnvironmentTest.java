@@ -10,9 +10,7 @@ import org.robolectric.*;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
-import com.reactnativenavigation.R;
-
-public class EnvironmentTest extends BaseTest {
+public class EnvironmentTest extends BaseRobolectricTest {
     @Test
     public void assertJ() {
         assertThat(1 + 2).isEqualTo(3).isGreaterThan(2).isLessThan(4).isNotNegative().isPositive().isNotZero();
@@ -40,6 +38,6 @@ public class EnvironmentTest extends BaseTest {
 
     @Test
     public void ableToLoadApplication() throws Exception {
-        assertThat(RuntimeEnvironment.application).isNotNull();
+        assertThat(getContext()).isNotNull();
     }
 }

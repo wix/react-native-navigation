@@ -1,14 +1,13 @@
 package com.reactnativenavigation.options
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
-import com.reactnativenavigation.BaseTest
+import com.reactnativenavigation.BaseRobolectricTest
 import org.assertj.core.api.Assertions.assertThat
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
-
-class TransitionAnimationOptionsTest : BaseTest() {
+class TransitionAnimationOptionsTest : BaseRobolectricTest() {
     lateinit var uut: TransitionAnimationOptions
 
     @Test

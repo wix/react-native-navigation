@@ -5,11 +5,8 @@ import Button from '../components/Button';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const {
-  LANDSCAPE_PORTRAIT_ORIENTATION_BTN,
-  LANDSCAPE_ORIENTATION_BTN,
-  PORTRAIT_ORIENTATION_BTN,
-} = testIDs;
+const { LANDSCAPE_PORTRAIT_ORIENTATION_BTN, LANDSCAPE_ORIENTATION_BTN, PORTRAIT_ORIENTATION_BTN } =
+  testIDs;
 
 export default class OrientationScreen extends React.Component<NavigationProps> {
   render() {

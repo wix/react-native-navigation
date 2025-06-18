@@ -42,19 +42,21 @@ export default class StackCommandsScreen extends NavigationComponent<NavigationP
         name: Screens.Pushed,
       },
     })
-      .then(
-        (pushId) => new Promise<string>((resolve) => setTimeout(() => resolve(pushId), 100))
-      )
+      .then((pushId) => new Promise<string>((resolve) => setTimeout(() => resolve(pushId), 100)))
       .then((pushId) => {
         this.setState({
           pushPromiseResult: `push promise resolved with: ${pushId}`,
         });
-        return Navigation.pop('ChildId');
+        return pushId;
       })
+      // FIXME: remove this timeout
+      .then((popId) => new Promise<string>((resolve) => setTimeout(() => resolve(popId), 500)))
+      .then((popId) => Navigation.pop(popId))
       .then((popId) => {
         this.setState({
           popPromiseResult: `pop promise resolved with: ${popId}`,
         });
-      });
+      })
+      .catch((err) => console.log(err));
   };
 }
