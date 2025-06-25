@@ -1,13 +1,19 @@
 #import <Foundation/Foundation.h>
+#ifndef RCT_NEW_ARCH_ENABLED
 #import <React/RCTEventEmitter.h>
+#endif
 
+#ifdef RCT_NEW_ARCH_ENABLED
 @class RCTHost;
-@class RCTBridge;
-
 @interface RNNEventEmitter : NSObject
+#else
+@interface RNNEventEmitter : RCTEventEmitter
+#endif
 
+#ifdef RCT_NEW_ARCH_ENABLED
 - (void)setHost:(RCTHost *)host;
 @property(nonatomic, strong, readonly) RCTHost *host;
+#endif
 
 - (void)sendOnAppLaunched;
 

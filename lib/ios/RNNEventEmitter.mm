@@ -1,22 +1,65 @@
 #import "RNNEventEmitter.h"
 #import "RNNUtils.h"
+#import "RNNEmitterConstants.h"
+
+#ifdef RCT_NEW_ARCH_ENABLED
 #import "RNNTurboEventEmitter.h"
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#else
 
-@implementation RNNEventEmitter { }
+#endif
 
+@implementation RNNEventEmitter {
+#ifndef RCT_NEW_ARCH_ENABLED
+  RCTEventEmitter *_emitter;
+  NSInteger _appLaunchedListenerCount;
+  BOOL _appLaunchedEventDeferred;
+#endif
+}
+
+#ifdef RCT_NEW_ARCH_ENABLED
 - (void)setHost:(RCTHost *)host {
   if (_host != nil) {
     return;
   }
   _host = host;
 }
+#else
+- (NSArray<NSString *> *)supportedEvents {
+  return @[
+    AppLaunched, CommandCompleted, BottomTabSelected, BottomTabLongPressed, BottomTabPressed,
+    ComponentWillAppear, ComponentDidAppear, ComponentDidDisappear, NavigationButtonPressed,
+    ModalDismissed, SearchBarUpdated, SearchBarCancelPressed, PreviewCompleted, ScreenPopped,
+    ModalAttemptedToDismiss
+  ];
+}
 
+- (void)addListener:(NSString *)eventName {
+  [super addListener:eventName];
+  if ([eventName isEqualToString:AppLaunched]) {
+    _appLaunchedListenerCount++;
+    if (_appLaunchedEventDeferred) {
+      _appLaunchedEventDeferred = FALSE;
+      [self sendOnAppLaunched];
+    }
+  }
+}
+#endif
 #pragma mark public
 
+#ifdef RCT_NEW_ARCH_ENABLED
 - (void)sendOnAppLaunched {
     [self send:AppLaunched body:nil];
 }
+#else
+- (void)sendOnAppLaunched {
+  if (_appLaunchedListenerCount > 0) {
+    [self send:AppLaunched body:nil];
+  } else {
+    _appLaunchedEventDeferred = TRUE;
+  }
+}
+#endif
 
 - (void)sendComponentWillAppear:(NSString *)componentId
                   componentName:(NSString *)componentName
@@ -119,6 +162,7 @@
 #pragma mark private
 
 - (void)send:(NSString *)eventName body:(id)body {
+#ifdef RCT_NEW_ARCH_ENABLED
   if (_host == nil) {
     return;
   }
@@ -129,6 +173,12 @@
   }
   
   [_eventEmitter send:eventName body:body];
+#else
+  if (self.bridge == nil) {
+    return;
+  }
+  [self sendEventWithName:eventName body:body];
+#endif
 }
 
 @end
