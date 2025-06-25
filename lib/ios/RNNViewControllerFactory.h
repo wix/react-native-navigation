@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "BottomTabsAttachModeFactory.h"
 #import "RNNComponentViewCreator.h"
@@ -5,8 +7,6 @@
 #import "RNNExternalComponentStore.h"
 #import "RNNNavigationOptions.h"
 #import "RNNReactComponentRegistry.h"
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 @interface RNNViewControllerFactory : NSObject
 

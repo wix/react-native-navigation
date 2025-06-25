@@ -1,10 +1,11 @@
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNNEventEmitter.h"
 #else
 #import "RNNEventEmitter.h"
 #endif
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 @class RCTHost;
 

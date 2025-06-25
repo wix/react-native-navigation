@@ -1,10 +1,10 @@
+#import <UIKit/UIKit.h>
 #import "BottomTabPresenter.h"
 #import "BottomTabsBaseAttacher.h"
 #import "RNNBottomTabsPresenter.h"
 #import "RNNDotIndicatorPresenter.h"
 #import "RNNEventEmitter.h"
 #import "UIViewController+LayoutProtocol.h"
-#import <UIKit/UIKit.h>
 
 @interface RNNBottomTabsController
     : UITabBarController <RNNLayoutProtocol, UITabBarControllerDelegate>

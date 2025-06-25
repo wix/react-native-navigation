@@ -1,6 +1,6 @@
+#import <Foundation/Foundation.h>
 #import "RNNComponentViewCreator.h"
 #import "RNNEventEmitter.h"
-#import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 
 @interface RNNReactRootViewCreator : NSObject <RNNComponentViewCreator>

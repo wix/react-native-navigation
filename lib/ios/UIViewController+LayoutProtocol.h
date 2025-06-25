@@ -1,6 +1,6 @@
+#import <UIKit/UIKit.h>
 #import "RNNEventEmitter.h"
 #import "RNNLayoutProtocol.h"
-#import <UIKit/UIKit.h>
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
