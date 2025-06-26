@@ -6,7 +6,7 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 
 # Detect if this is a Swift project by looking for user AppDelegate.swift files
-start_dir = File.expand_path('../..', __FILE__)
+start_dir = File.expand_path('../../', __dir__)
 swift_delegate_path = nil
 Find.find(start_dir) do |path|
   if path =~ /AppDelegate\.swift$/
