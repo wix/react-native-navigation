@@ -15,6 +15,8 @@ Find.find(start_dir) do |path|
   end
 end
 
+swift_project = File.exist?(swift_delegate_path)
+
 # Debug output
 if swift_project
   puts "ReactNativeNavigation: Swift AppDelegate detected - enabling Swift-compatible configuration"
