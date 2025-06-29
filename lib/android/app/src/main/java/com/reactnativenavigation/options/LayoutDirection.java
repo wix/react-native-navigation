@@ -35,7 +35,12 @@ public enum LayoutDirection {
     }
 
     public int get() {
-        return direction;
+        return switch (direction) {
+            case View.LAYOUT_DIRECTION_RTL -> RTL.direction;
+            case View.LAYOUT_DIRECTION_LTR -> LTR.direction;
+            case View.LAYOUT_DIRECTION_LOCALE -> LOCALE.direction;
+            default -> DEFAULT.direction;
+        };
     }
 
     public int inverse() {

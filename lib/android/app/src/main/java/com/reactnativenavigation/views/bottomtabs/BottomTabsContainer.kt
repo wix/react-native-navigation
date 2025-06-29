@@ -41,15 +41,15 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         shadowColor = DEFAULT_SHADOW_COLOR
         val linearLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            this.addView(topOutLineView, LayoutParams(LayoutParams.MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))
-            this.addView(bottomTabs, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+//            this.addView(topOutLineView, LayoutParams(LayoutParams.MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))
+            this.addView(bottomTabs, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
         this.clipChildren = false
         this.clipToPadding = false
         setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
         this.topOutLineView.visibility = View.GONE
 
-        this.addView(linearLayout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        this.addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
     }
 
     override var shadowRadius: Float

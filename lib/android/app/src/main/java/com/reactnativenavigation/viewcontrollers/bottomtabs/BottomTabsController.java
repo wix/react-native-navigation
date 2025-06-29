@@ -16,7 +16,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
