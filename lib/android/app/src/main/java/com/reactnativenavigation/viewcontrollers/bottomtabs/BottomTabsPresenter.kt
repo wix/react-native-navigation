@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.ViewGroup
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
+import com.reactnativenavigation.views.bottomtabs.RnnAHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -25,7 +25,7 @@ class BottomTabsPresenter(
     private val defaultTitleState: TitleState
         get() {
             for (i in 0 until bottomTabs.itemsCount) {
-                if (bottomTabs.getItem(i).hasIcon()) return TitleState.SHOW_WHEN_ACTIVE
+                if (bottomTabs.getItem(i)?.hasIcon() == true) return TitleState.SHOW_WHEN_ACTIVE
             }
             return TitleState.ALWAYS_SHOW
         }
@@ -68,7 +68,7 @@ class BottomTabsPresenter(
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
-            bottomTabs.titleState = bottomTabsOptions.titleDisplayMode.toState()
+            bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState())
         }
         if (bottomTabsOptions.backgroundColor.hasValue()) {
             bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
@@ -88,7 +88,7 @@ class BottomTabsPresenter(
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex)
         }
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
-            bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
+            bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll.get())
         }
 
         if (bottomTabsOptions.borderColor.hasValue()) {
@@ -142,7 +142,7 @@ class BottomTabsPresenter(
         val bottomTabsOptions = options.bottomTabsOptions
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
-        bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
+        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
         bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
@@ -203,7 +203,7 @@ class BottomTabsPresenter(
         } else {
             bottomTabsContainer.clearShadow()
         }
-        bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
+        bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll[false])
     }
 
     fun applyBottomInset(bottomInset: Int) {

@@ -10,6 +10,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import static com.reactnativenavigation.utils.UiUtils.dpToPx;
+
 public class BottomTabsLayout extends CoordinatorLayout {
 
     private BottomTabsContainer bottomTabsContainer;
@@ -28,9 +30,10 @@ public class BottomTabsLayout extends CoordinatorLayout {
     }
 
     public void addBottomTabsContainer(BottomTabsContainer bottomTabsContainer) {
-        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        lp.gravity = Gravity.BOTTOM;
-        addView(bottomTabsContainer, lp);
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        lp.bottomMargin = dpToPx(getContext(), 16); // TODO prop or use ShadowLayout's props (shadow distance?)
+        addView(bottomTabsContainer, -1, lp);
         this.bottomTabsContainer = bottomTabsContainer;
-    }
+  }
 }
