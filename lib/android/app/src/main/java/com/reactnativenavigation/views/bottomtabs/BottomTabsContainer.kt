@@ -3,7 +3,9 @@ package com.reactnativenavigation.views.bottomtabs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Outline
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.LinearLayout
 import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
@@ -42,14 +44,24 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         val linearLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             this.addView(topOutLineView, LayoutParams(LayoutParams.MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))
-            this.addView(bottomTabs, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+            addView(bottomTabs, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
-        this.clipChildren = false
+
+        this.clipChildren = true // AMITD Might be a core change too
         this.clipToPadding = false
         setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
         this.topOutLineView.visibility = View.GONE
 
-        this.addView(linearLayout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        // AMITD rounded corners FTW
+        this.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, 25f)
+            }
+        }
+        this.clipToOutline = true
+
+        addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
     }
 
     override var shadowRadius: Float

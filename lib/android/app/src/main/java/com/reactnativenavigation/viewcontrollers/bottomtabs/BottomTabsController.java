@@ -16,7 +16,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.reactnativenavigation.views.bottomtabs.RnnAHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.HwBackBottomTabsBehaviour;
@@ -40,7 +40,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
+public class BottomTabsController extends ParentController<BottomTabsLayout> implements RnnAHBottomNavigation.OnTabSelectedListener, TabSelector {
 
     private BottomTabsContainer bottomTabsContainer;
     private BottomTabs bottomTabs;

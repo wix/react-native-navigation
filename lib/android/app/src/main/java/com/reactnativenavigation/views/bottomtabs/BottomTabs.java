@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.LayoutDirection;
@@ -21,7 +20,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
-public class BottomTabs extends AHBottomNavigation {
+public class BottomTabs extends RnnAHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
@@ -54,14 +53,10 @@ public class BottomTabs extends AHBottomNavigation {
     @Override
     protected void createItems() {
         if (itemsCreationEnabled) {
-            superCreateItems();
+            super.createItems();
         } else {
             shouldCreateItems = true;
         }
-    }
-
-    public void superCreateItems() {
-        super.createItems();
     }
 
     @Override
@@ -77,7 +72,6 @@ public class BottomTabs extends AHBottomNavigation {
             onItemCreationEnabled.add(() -> super.setCurrentItem(position, useCallback));
         }
     }
-    
 
     @Override
     public void setTitleState(TitleState titleState) {
