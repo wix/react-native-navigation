@@ -20,7 +20,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
-public class BottomTabs extends RnnAHBottomNavigation {
+public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();

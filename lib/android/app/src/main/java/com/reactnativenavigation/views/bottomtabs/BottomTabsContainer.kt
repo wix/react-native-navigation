@@ -43,23 +43,14 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         shadowColor = DEFAULT_SHADOW_COLOR
         val linearLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            this.addView(topOutLineView, LayoutParams(LayoutParams.MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))
-
-            addView(bottomTabs, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            addView(topOutLineView, LayoutParams(LayoutParams.MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))
+            addView(bottomTabs, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        this.clipChildren = true // AMITD Might be a core change too
+        this.clipChildren = false
         this.clipToPadding = false
         setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
         this.topOutLineView.visibility = View.GONE
-
-        // AMITD rounded corners FTW
-        this.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, 25f)
-            }
-        }
-        this.clipToOutline = true
 
         addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
     }
@@ -80,6 +71,20 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
 
     fun setShadowOpacity(opacity: Float) {
         shadowColor = ColorUtils.setAlphaComponent(shadowColor, (opacity * 0xFF).roundToInt())
+    }
+
+    fun setRoundedCorners(radius: Float) {
+        this.outlineProvider = object: ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, radius)
+            }
+        }
+        this.clipToOutline = true
+    }
+
+    fun clearRoundedCorners() {
+        this.outlineProvider = null
+        this.clipToOutline = true
     }
 
     fun showShadow() {

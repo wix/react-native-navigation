@@ -3,9 +3,11 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 import android.animation.Animator
 import android.graphics.Color
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
-import com.reactnativenavigation.views.bottomtabs.RnnAHBottomNavigation.TitleState
+import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -140,6 +142,15 @@ class BottomTabsPresenter(
 
     private fun applyBottomTabsOptions(options: Options) {
         val bottomTabsOptions = options.bottomTabsOptions
+        if (true /* TODO options.spread == false */) {
+            bottomTabs.layoutParams.width = WRAP_CONTENT
+        }
+        if (true /* TODO */) {
+            bottomTabsContainer.setRoundedCorners(25f)
+        } else {
+            bottomTabsContainer.clearRoundedCorners()
+        }
+
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
