@@ -5,6 +5,7 @@ import {
   NavigationComponent,
   NavigationProps,
 } from 'react-native-navigation';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -84,6 +85,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
         />
         <Text>{this.state.componentWillAppear && 'componentWillAppear'}</Text>
         <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
+        <DateTimePicker value={new Date()} mode="date" display="default"/>
       </Root>
     );
   }

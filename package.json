@@ -31,6 +31,8 @@
     "clean": "node ./scripts/clean",
     "prestart": "npm run build",
     "start": "node ./scripts/start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
     "pod-install-new-arch": "cd playground/ios && BUNDLE_GEMFILE=../../Gemfile BUNDLE_PATH=~/gems/ bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
