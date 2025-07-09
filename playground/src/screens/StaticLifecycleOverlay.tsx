@@ -147,7 +147,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
       <View key={`${event.componentId}${idx}`}>{this.renderEvent(event)}</View>
     ));
     return (
-      <View style={[styles.root, this.props.showOnTop && { top: 50, bottom: undefined }]}>
+      <View style={[styles.root, this.props.showOnTop && { top: 50, bottom: undefined }, {zIndex: 100}]}>
         <Text style={styles.h1}>{`Static Lifecycle Events Overlay`}</Text>
         <View style={styles.events}>{events}</View>
         {this.renderDismissButton()}
