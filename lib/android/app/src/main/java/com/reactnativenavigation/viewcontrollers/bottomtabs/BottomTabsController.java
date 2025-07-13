@@ -63,7 +63,15 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         tabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
-    public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
+    public BottomTabsController(Activity activity,
+                                List<ViewController<?>> tabs,
+                                ChildControllersRegistry childRegistry,
+                                EventEmitter eventEmitter,
+                                ImageLoader imageLoader,
+                                String id, Options initialOptions,
+                                Presenter presenter,
+                                BottomTabsAttacher tabsAttacher,
+                                BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
@@ -95,6 +103,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         root.addBottomTabsContainer(bottomTabsContainer);
+
         bottomTabs.addItems(createTabs());
         setInitialTab(resolveCurrentOptions);
         tabsAttacher.attach();

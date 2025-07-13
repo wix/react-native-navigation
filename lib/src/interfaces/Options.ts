@@ -872,7 +872,7 @@ export interface OptionsBottomTabs {
   barStyle?: 'default' | 'black';
   /**
    * Allows the Bottom Tabs to be translucent (blurred)
-   * #### (iOS specific)
+   * #### Android: experimental, turn on using native toggle `TAB_BAR_TRANSLUCENCE`.
    */
   translucent?: boolean;
   /**

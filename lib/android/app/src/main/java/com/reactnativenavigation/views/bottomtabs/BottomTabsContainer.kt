@@ -11,6 +11,8 @@ import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.utils.UiUtils.dpToPx
+import eightbitlab.com.blurview.BlurTarget
+import eightbitlab.com.blurview.BlurView
 import kotlin.math.roundToInt
 
 
@@ -26,6 +28,9 @@ class TopOutlineView(context: Context) : View(context)
 
 @SuppressLint("ViewConstructor")
 class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : ShadowLayout(context) {
+
+    private val blurringView: BlurView
+    private var blurEnabled: Boolean? = null
 
     var topOutLineView = TopOutlineView(context)
         @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.SUBCLASSES) get
@@ -52,7 +57,12 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
         this.topOutLineView.visibility = View.GONE
 
-        addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        blurringView = BlurView(context).apply {
+            setBlurRadius(25f)
+            setBlurEnabled(false)
+            addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        }
+        addView(blurringView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
     }
 
     override var shadowRadius: Float
@@ -80,6 +90,24 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
             }
         }
         this.clipToOutline = true
+    }
+
+    fun setBlurSurface(blurSurface: BlurTarget) {
+        blurringView.setupWith(blurSurface)
+
+        if (blurEnabled != true) {
+            blurringView.setBlurEnabled(false)
+        }
+    }
+
+    fun enableBackgroundBlur() {
+        blurringView.setBlurEnabled(true)
+        blurEnabled = true
+    }
+
+    fun disableBackgroundBlur() {
+        blurringView.setBlurEnabled(false)
+        blurEnabled = false
     }
 
     fun clearRoundedCorners() {
@@ -115,4 +143,3 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         setElevation(dpToPx(context, elevation.get().toFloat()))
     }
 }
-

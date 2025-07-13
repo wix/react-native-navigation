@@ -109,7 +109,7 @@ open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
             if (invalidateShadow) {
                 if (bounds.width() != 0 && bounds.height() != 0) {
                     bitmap = Bitmap.createBitmap(bounds.width(), bounds.height(), Bitmap.Config.ARGB_8888).also {
-                        mainCanvas.setBitmap(bitmap)
+                        mainCanvas.setBitmap(it)
                         invalidateShadow = false
 
                         super.dispatchDraw(mainCanvas)
@@ -121,6 +121,7 @@ open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
 
                         extractedAlpha.recycle()
                     }
+
                 } else {
                     bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
                 }

@@ -27,6 +27,7 @@ public class BottomTabsOptions {
         if (json == null) return options;
 
         options.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
+        options.translucent = BoolParser.parse(json, "translucent");
         options.currentTabId = TextParser.parse(json, "currentTabId");
         options.currentTabIndex = NumberParser.parse(json, "currentTabIndex");
         options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
@@ -46,6 +47,7 @@ public class BottomTabsOptions {
     }
 
     public ThemeColour backgroundColor = new NullThemeColour();
+    public Bool translucent = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
@@ -79,12 +81,14 @@ public class BottomTabsOptions {
         if (other.shadowOptions.hasValue()) shadowOptions = shadowOptions.copy().mergeWith(other.shadowOptions);
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
+        if (other.translucent.hasValue()) translucent = other.translucent;
 
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
         if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
+        if (!translucent.hasValue()) translucent = defaultOptions.translucent;
         if (!currentTabId.hasValue()) currentTabId = defaultOptions.currentTabId;
         if (!currentTabIndex.hasValue()) currentTabIndex = defaultOptions.currentTabIndex;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;

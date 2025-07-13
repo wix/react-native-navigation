@@ -3,10 +3,11 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 import android.animation.Animator
 import android.graphics.Color
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
+import com.reactnativenavigation.RNNFeatureToggles
+import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
 import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -72,9 +73,13 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
             bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState())
         }
-        if (bottomTabsOptions.backgroundColor.hasValue()) {
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            bottomTabsContainer.enableBackgroundBlur()
+        } else if (bottomTabsOptions.backgroundColor.hasValue()) {
+            bottomTabsContainer.disableBackgroundBlur()
             bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
         }
+
         if (bottomTabsOptions.animateTabSelection.hasValue()) {
             bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get())
         }
@@ -154,7 +159,14 @@ class BottomTabsPresenter(
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
         bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
-        bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            bottomTabsContainer.enableBackgroundBlur()
+        } else {
+            bottomTabsContainer.disableBackgroundBlur()
+            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        }
+
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()
@@ -257,7 +269,14 @@ class BottomTabsPresenter(
 
     fun onConfigurationChanged(options: Options) {
         val bottomTabsOptions = options.withDefaultOptions(defaultOptions).bottomTabsOptions
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            bottomTabsContainer.enableBackgroundBlur()
+        } else {
+            bottomTabsContainer.disableBackgroundBlur()
+
+            // TODO Change to bottomTabsContainer.setBackgroundColor()?
+            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        }
 
         if (bottomTabsOptions.shadowOptions.hasValue()) {
             if (bottomTabsOptions.shadowOptions.color.hasValue())

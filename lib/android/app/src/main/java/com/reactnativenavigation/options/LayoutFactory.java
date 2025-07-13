@@ -227,7 +227,8 @@ public class LayoutFactory {
 				new Presenter(activity, defaultOptions),
 				new BottomTabsAttacher(tabs, bottomTabsPresenter, defaultOptions),
 				bottomTabsPresenter,
-				new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions));
+				new BottomTabPresenter(activity, tabs, new ImageLoader(), new TypefaceLoader(activity), defaultOptions)
+		);
 	}
 
 	private ViewController<?> createTopTabs(LayoutNode node) {
