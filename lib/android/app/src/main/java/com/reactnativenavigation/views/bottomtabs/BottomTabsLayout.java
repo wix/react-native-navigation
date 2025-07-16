@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.bottomtabs;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -50,7 +49,6 @@ public class BottomTabsLayout extends CoordinatorLayout {
         // making to the bottom-tabs view hierarchy itself (i.e. based on user properties).
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        lp.bottomMargin = dpToPx(getContext(), 16); // TODO prop (elevation?)
         addView(bottomTabsContainer, -1, lp);
         this.bottomTabsContainer = bottomTabsContainer;
   }

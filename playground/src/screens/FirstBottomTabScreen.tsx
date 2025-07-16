@@ -100,6 +100,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         />
         <Button label="Push" onPress={this.push} />
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
+        <Button label="Stylize" onPress={this.stylizeBottomTabs} />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
@@ -122,6 +123,21 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
           radius: 20,
           opacity: 0.8,
         },
+      },
+    });
+  };
+
+  stylizeBottomTabs = () => {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTabs: {
+        drawBehind: true,
+        translucent: true,
+        blurRadius: 10,
+        layoutStyle: 'compact',
+        bottomMargin: 15,
+        cornerRadius: 15,
+        elevation: 1,
+        backgroundColor: 'rgba(255, 182, 193, 0.25)',
       },
     });
   };

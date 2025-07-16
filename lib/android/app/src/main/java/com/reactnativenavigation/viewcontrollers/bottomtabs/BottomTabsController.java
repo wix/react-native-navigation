@@ -1,8 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.map;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
+import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 import android.animation.Animator;
 import android.app.Activity;

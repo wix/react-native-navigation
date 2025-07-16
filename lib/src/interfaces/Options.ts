@@ -871,10 +871,39 @@ export interface OptionsBottomTabs {
    */
   barStyle?: 'default' | 'black';
   /**
-   * Allows the Bottom Tabs to be translucent (blurred)
+   * Control the way the bottom tabs are laid out.
+   * - `stretch`: Fill the entire width of the screen.
+   * - `compact`: Occupy the minimum width needed to hold tab buttons. Recommended for
+   * usage in conjunction with `drawBehind: true`.
+   *
+   * #### (Android specific)
+   * @default 'stretch'
+   */
+  layoutStyle?: 'stretch' | 'compact';
+  /**
+   * Mainly suitable when used in conjunction with `layoutStyle: 'compact'`
+   * #### (Android specific)
+   */
+  cornerRadius?: AndroidDensityNumber;
+  /**
+   * Bottom-margin to set in order to apply a "hover" effect.
+   * Works best when used in conjunction with `layoutStyle: 'compact'`.
+   * #### (Android specific)
+   */
+  bottomMargin?: AndroidDensityNumber;
+  /**
+   * Allows the bottom tabs to be translucent (blurred). Doesn't necessarily play
+   * nice with shadow effects.
    * #### Android: experimental, turn on using native toggle `TAB_BAR_TRANSLUCENCE`.
    */
   translucent?: boolean;
+  /**
+   * Set a custom radius to be used in the blur effect. Higher is blurrier, but
+   * is more CPU intensive.
+   * #### (Android specific)
+   * @defaultValue 1
+   */
+  blurRadius?: AndroidDensityNumber;
   /**
    * Hide the top line of the Tab Bar
    * #### (iOS specific)

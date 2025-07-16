@@ -3,6 +3,7 @@ package com.reactnativenavigation.options;
 import android.content.Context;
 
 import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BottomTabsLayoutStyle;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullFraction;
@@ -27,7 +28,11 @@ public class BottomTabsOptions {
         if (json == null) return options;
 
         options.backgroundColor = ThemeColour.parse(context, json.optJSONObject("backgroundColor"));
+        options.layoutStyle = BottomTabsLayoutStyle.fromString(json.optString("layoutStyle"));
+        options.bottomMargin = FractionParser.parse(json, "bottomMargin");
+        options.cornerRadius = FractionParser.parse(json, "cornerRadius");
         options.translucent = BoolParser.parse(json, "translucent");
+        options.blurRadius = FractionParser.parse(json, "blurRadius");
         options.currentTabId = TextParser.parse(json, "currentTabId");
         options.currentTabIndex = NumberParser.parse(json, "currentTabIndex");
         options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
@@ -47,7 +52,11 @@ public class BottomTabsOptions {
     }
 
     public ThemeColour backgroundColor = new NullThemeColour();
+    public BottomTabsLayoutStyle layoutStyle = BottomTabsLayoutStyle.LAYOUT_STYLE_UNDEFINED;
+    public Fraction bottomMargin = new NullFraction();
+    public Fraction cornerRadius = new NullFraction();
     public Bool translucent = new NullBool();
+    public Fraction blurRadius = new NullFraction();
     public Bool hideOnScroll = new NullBool();
     public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
@@ -82,13 +91,20 @@ public class BottomTabsOptions {
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.translucent.hasValue()) translucent = other.translucent;
-
+        if (other.blurRadius.hasValue()) blurRadius = other.blurRadius;
+        if (other.layoutStyle.hasValue()) layoutStyle = other.layoutStyle;
+        if (other.bottomMargin.hasValue()) bottomMargin = other.bottomMargin;
+        if (other.cornerRadius.hasValue()) cornerRadius = other.cornerRadius;
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
         if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!translucent.hasValue()) translucent = defaultOptions.translucent;
+        if (!blurRadius.hasValue()) blurRadius = defaultOptions.blurRadius;
+        if (!layoutStyle.hasValue()) layoutStyle = defaultOptions.layoutStyle;
+        if (!bottomMargin.hasValue()) bottomMargin = defaultOptions.bottomMargin;
+        if (!cornerRadius.hasValue()) cornerRadius = defaultOptions.cornerRadius;
         if (!currentTabId.hasValue()) currentTabId = defaultOptions.currentTabId;
         if (!currentTabIndex.hasValue()) currentTabIndex = defaultOptions.currentTabIndex;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;

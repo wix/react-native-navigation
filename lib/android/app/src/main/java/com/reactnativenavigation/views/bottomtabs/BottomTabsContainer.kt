@@ -31,6 +31,8 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
 
     private val blurringView: BlurView
     private var blurEnabled: Boolean? = null
+    private var blurRadius: Float? = null
+    private var blurColor: Int? = null
 
     var topOutLineView = TopOutlineView(context)
         @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.SUBCLASSES) get
@@ -58,7 +60,6 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         this.topOutLineView.visibility = View.GONE
 
         blurringView = BlurView(context).apply {
-            setBlurRadius(25f)
             setBlurEnabled(false)
             addView(linearLayout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
@@ -83,20 +84,19 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         shadowColor = ColorUtils.setAlphaComponent(shadowColor, (opacity * 0xFF).roundToInt())
     }
 
-    fun setRoundedCorners(radius: Float) {
-        this.outlineProvider = object: ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, radius)
-            }
-        }
-        this.clipToOutline = true
-    }
-
     fun setBlurSurface(blurSurface: BlurTarget) {
         blurringView.setupWith(blurSurface)
 
         if (blurEnabled != true) {
             blurringView.setBlurEnabled(false)
+        }
+
+        if (blurRadius != null) {
+            blurringView.setBlurRadius(blurRadius!!)
+        }
+
+        if (blurColor != null) {
+            blurringView.setOverlayColor(blurColor!!)
         }
     }
 
@@ -108,6 +108,25 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
     fun disableBackgroundBlur() {
         blurringView.setBlurEnabled(false)
         blurEnabled = false
+    }
+
+    fun setBlurRadius(radius: Float) {
+        blurringView.setBlurRadius(radius)
+        blurRadius = radius
+    }
+
+    fun setBlurColor(color: Int) {
+        blurringView.setOverlayColor(color)
+        blurColor = color
+    }
+
+    fun setRoundedCorners(radius: Float) {
+        this.outlineProvider = object: ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, radius)
+            }
+        }
+        this.clipToOutline = true
     }
 
     fun clearRoundedCorners() {

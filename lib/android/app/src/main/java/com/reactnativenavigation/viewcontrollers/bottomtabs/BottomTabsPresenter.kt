@@ -4,13 +4,18 @@ import android.animation.Animator
 import android.graphics.Color
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
 import com.reactnativenavigation.RNNFeatureToggles
 import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
-import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
+import com.reactnativenavigation.options.BottomTabsOptions
 import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.params.BottomTabsLayoutStyle
+import com.reactnativenavigation.options.params.Fraction
+import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import kotlin.math.max
@@ -68,6 +73,44 @@ class BottomTabsPresenter(
 
     private fun mergeBottomTabsOptions(options: Options, view: ViewController<*>) {
         val bottomTabsOptions = options.bottomTabsOptions
+
+        if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
+            bottomTabs.layoutParams.width = WRAP_CONTENT
+            bottomTabs.invalidate()
+            bottomTabs.requestLayout()
+            bottomTabsContainer.invalidate()
+            bottomTabsContainer.requestLayout()
+        }
+
+        if (bottomTabsOptions.bottomMargin.hasValue()) {
+            val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
+            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+        }
+
+        if (bottomTabsOptions.cornerRadius.hasValue()) {
+            val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
+            bottomTabsContainer.setRoundedCorners(radius)
+        } else {
+            bottomTabsContainer.clearRoundedCorners()
+        }
+
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            if (bottomTabsOptions.blurRadius.hasValue()) {
+                bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+            }
+            if (bottomTabsOptions.backgroundColor.hasValue()) {
+                bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+            }
+            bottomTabsContainer.enableBackgroundBlur()
+        } else {
+            bottomTabsContainer.disableBackgroundBlur()
+            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        }
+
+        if (bottomTabsOptions.elevation.hasValue()) {
+            bottomTabsContainer.setElevation(bottomTabsOptions.elevation)
+        }
+
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
@@ -147,25 +190,38 @@ class BottomTabsPresenter(
 
     private fun applyBottomTabsOptions(options: Options) {
         val bottomTabsOptions = options.bottomTabsOptions
-        if (true /* TODO options.spread == false */) {
+        if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
             bottomTabs.layoutParams.width = WRAP_CONTENT
         }
-        if (true /* TODO */) {
-            bottomTabsContainer.setRoundedCorners(25f)
+
+        if (bottomTabsOptions.bottomMargin.hasValue()) {
+            val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
+            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+        }
+
+        if (bottomTabsOptions.cornerRadius.hasValue()) {
+            val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
+            bottomTabsContainer.setRoundedCorners(radius)
         } else {
             bottomTabsContainer.clearRoundedCorners()
         }
 
-        bottomTabs.setLayoutDirection(options.layout.direction)
-        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
-        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
-
         if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            if (bottomTabsOptions.blurRadius.hasValue()) {
+                bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+            }
+            if (bottomTabsOptions.backgroundColor.hasValue()) {
+                bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+            }
             bottomTabsContainer.enableBackgroundBlur()
         } else {
             bottomTabsContainer.disableBackgroundBlur()
             bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         }
+
+        bottomTabs.setLayoutDirection(options.layout.direction)
+        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
+        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
 
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
@@ -197,6 +253,7 @@ class BottomTabsPresenter(
                 bottomTabs.hideBottomNavigation(false)
             }
         }
+
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabsContainer.setElevation(bottomTabsOptions.elevation)
         }
@@ -287,5 +344,17 @@ class BottomTabsPresenter(
             bottomTabsContainer.setTopOutLineColor(bottomTabsOptions.borderColor.get())
             bottomTabsContainer.showTopLine()
         }
+    }
+
+    private fun extractCornerRadius(cornerRadius: Fraction): Float {
+        val radiusDp = cornerRadius.get()
+        val radius = UiUtils.dpToPx(bottomTabsContainer.context, radiusDp.toFloat())
+        return radius
+    }
+
+    private fun extractBottomMarginPx(bottomMargin: Fraction): Int {
+        val marginDp = bottomMargin.get()
+        val margin = UiUtils.dpToPx(bottomTabsContainer.context, marginDp.toFloat()).roundToInt()
+        return margin
     }
 }
