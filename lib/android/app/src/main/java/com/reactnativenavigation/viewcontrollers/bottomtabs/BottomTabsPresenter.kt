@@ -90,21 +90,25 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.cornerRadius.hasValue()) {
             val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
             bottomTabsContainer.setRoundedCorners(radius)
-        } else {
-            bottomTabsContainer.clearRoundedCorners()
         }
 
-        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
-            if (bottomTabsOptions.blurRadius.hasValue()) {
-                bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+        // Keep this before the translucent check below
+        if (bottomTabsOptions.backgroundColor.hasValue()) {
+            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
+        }
+
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE)) {
+            if (bottomTabsOptions.translucent.isTrue) {
+                if (bottomTabsOptions.blurRadius.hasValue()) {
+                    bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+                }
+                if (bottomTabsOptions.backgroundColor.hasValue()) {
+                    bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+                }
+                bottomTabsContainer.enableBackgroundBlur()
+            } else if (bottomTabsOptions.translucent.isFalse) {
+                bottomTabsContainer.disableBackgroundBlur()
             }
-            if (bottomTabsOptions.backgroundColor.hasValue()) {
-                bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
-            }
-            bottomTabsContainer.enableBackgroundBlur()
-        } else {
-            bottomTabsContainer.disableBackgroundBlur()
-            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
         }
 
         if (bottomTabsOptions.elevation.hasValue()) {
@@ -115,12 +119,6 @@ class BottomTabsPresenter(
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
             bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState())
-        }
-        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
-            bottomTabsContainer.enableBackgroundBlur()
-        } else if (bottomTabsOptions.backgroundColor.hasValue()) {
-            bottomTabsContainer.disableBackgroundBlur()
-            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
         }
 
         if (bottomTabsOptions.animateTabSelection.hasValue()) {
