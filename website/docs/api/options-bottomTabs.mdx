@@ -109,11 +109,14 @@ The options requires that the scrollable view will be the root view of the scree
 
 ## `translucent`
 
-A Boolean value that indicates whether the BottomTabs are translucent. For this option to function as expected the screen needs to be drawn behind the BottomTabs; Make sure the list component you're using (FlatList for example) is the root component in the screen and not SafeAreaView. When SafeAreView is the root component it shifts the content above the BottomTabs and the translucent effect isn't visible.
+A Boolean value that indicates whether the BottomTabs should be translucent.
+For this option to function properly the screen needs to be drawn behind the BottomTabs; Make sure the list component you're using (FlatList for example) is the root component in the screen and not SafeAreaView. When SafeAreView is the root component it shifts the content above the BottomTabs and the translucent effect isn't visible.
+
+On Android, the option is experimental and should be enabled using a native feature-toggle called `TAB_BAR_TRANSLUCENCE` (pass it to the `NavigationApplication` c'tor).
 
 | Type    | Required | Platform |
-| ------- | -------- | -------- |
-| boolean | No       | iOS      |
+| ------- | -------- | ------- |
+| boolean | No       | iOS - Full support<br/>Android - Experimental |
 
 ## `visible`
 

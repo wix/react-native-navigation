@@ -1,23 +1,22 @@
 package com.reactnativenavigation.views.component;
 
+import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.options.ButtonOptions;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
-
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentLP;
 
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends CoordinatorLayout implements ReactComponent, ButtonController.OnClickListener {
@@ -99,7 +98,6 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
     public void onPress(ButtonOptions button) {
         reactView.sendOnNavigationButtonPressed(button.id);
     }
-
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {

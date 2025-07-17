@@ -28,7 +28,10 @@ type RootProps = {
 
 const Root = ({ children, componentId, footer, style, testID, onLayout }: RootProps) => (
   <SafeAreaView style={styles.root} testID={testID} onLayout={onLayout}>
-    <ScrollView contentContainerStyle={[styles.scrollView, style]}>
+    <ScrollView
+      contentContainerStyle={[styles.scrollView, style]}
+      testID={testID ? `${testID}_LIST` : undefined}
+    >
       {children}
       <Footer componentId={componentId} footer={footer} />
     </ScrollView>

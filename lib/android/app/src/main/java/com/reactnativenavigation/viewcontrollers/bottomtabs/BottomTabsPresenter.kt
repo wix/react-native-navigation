@@ -3,11 +3,19 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 import android.animation.Animator
 import android.graphics.Color
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
+import com.reactnativenavigation.RNNFeatureToggles
+import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
+import com.reactnativenavigation.options.BottomTabsOptions
 import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.params.BottomTabsLayoutStyle
+import com.reactnativenavigation.options.params.Fraction
+import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import kotlin.math.max
@@ -25,7 +33,7 @@ class BottomTabsPresenter(
     private val defaultTitleState: TitleState
         get() {
             for (i in 0 until bottomTabs.itemsCount) {
-                if (bottomTabs.getItem(i).hasIcon()) return TitleState.SHOW_WHEN_ACTIVE
+                if (bottomTabs.getItem(i)?.hasIcon() == true) return TitleState.SHOW_WHEN_ACTIVE
             }
             return TitleState.ALWAYS_SHOW
         }
@@ -65,14 +73,54 @@ class BottomTabsPresenter(
 
     private fun mergeBottomTabsOptions(options: Options, view: ViewController<*>) {
         val bottomTabsOptions = options.bottomTabsOptions
-        if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
-        if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
-        if (bottomTabsOptions.titleDisplayMode.hasValue()) {
-            bottomTabs.titleState = bottomTabsOptions.titleDisplayMode.toState()
+
+        if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
+            bottomTabs.layoutParams.width = WRAP_CONTENT
+            bottomTabs.invalidate()
+            bottomTabs.requestLayout()
+            bottomTabsContainer.invalidate()
+            bottomTabsContainer.requestLayout()
         }
+
+        if (bottomTabsOptions.bottomMargin.hasValue()) {
+            val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
+            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+        }
+
+        if (bottomTabsOptions.cornerRadius.hasValue()) {
+            val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
+            bottomTabsContainer.setRoundedCorners(radius)
+        }
+
+        // Keep this before the translucent check below
         if (bottomTabsOptions.backgroundColor.hasValue()) {
             bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
         }
+
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE)) {
+            if (bottomTabsOptions.translucent.isTrue) {
+                if (bottomTabsOptions.blurRadius.hasValue()) {
+                    bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+                }
+                if (bottomTabsOptions.backgroundColor.hasValue()) {
+                    bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+                }
+                bottomTabsContainer.enableBackgroundBlur()
+            } else if (bottomTabsOptions.translucent.isFalse) {
+                bottomTabsContainer.disableBackgroundBlur()
+            }
+        }
+
+        if (bottomTabsOptions.elevation.hasValue()) {
+            bottomTabsContainer.setElevation(bottomTabsOptions.elevation)
+        }
+
+        if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
+        if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
+        if (bottomTabsOptions.titleDisplayMode.hasValue()) {
+            bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode.toState())
+        }
+
         if (bottomTabsOptions.animateTabSelection.hasValue()) {
             bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get())
         }
@@ -88,7 +136,7 @@ class BottomTabsPresenter(
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex)
         }
         if (bottomTabsOptions.hideOnScroll.hasValue()) {
-            bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll.get()
+            bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll.get())
         }
 
         if (bottomTabsOptions.borderColor.hasValue()) {
@@ -140,10 +188,39 @@ class BottomTabsPresenter(
 
     private fun applyBottomTabsOptions(options: Options) {
         val bottomTabsOptions = options.bottomTabsOptions
+        if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
+            bottomTabs.layoutParams.width = WRAP_CONTENT
+        }
+
+        if (bottomTabsOptions.bottomMargin.hasValue()) {
+            val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
+            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+        }
+
+        if (bottomTabsOptions.cornerRadius.hasValue()) {
+            val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
+            bottomTabsContainer.setRoundedCorners(radius)
+        } else {
+            bottomTabsContainer.clearRoundedCorners()
+        }
+
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            if (bottomTabsOptions.blurRadius.hasValue()) {
+                bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+            }
+            if (bottomTabsOptions.backgroundColor.hasValue()) {
+                bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+            }
+            bottomTabsContainer.enableBackgroundBlur()
+        } else {
+            bottomTabsContainer.disableBackgroundBlur()
+            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        }
+
         bottomTabs.setLayoutDirection(options.layout.direction)
         bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
-        bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
-        bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        bottomTabs.setTitleState(bottomTabsOptions.titleDisplayMode[defaultTitleState])
+
         bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()
@@ -174,6 +251,7 @@ class BottomTabsPresenter(
                 bottomTabs.hideBottomNavigation(false)
             }
         }
+
         if (bottomTabsOptions.elevation.hasValue()) {
             bottomTabsContainer.setElevation(bottomTabsOptions.elevation)
         }
@@ -203,7 +281,7 @@ class BottomTabsPresenter(
         } else {
             bottomTabsContainer.clearShadow()
         }
-        bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
+        bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll[false])
     }
 
     fun applyBottomInset(bottomInset: Int) {
@@ -246,7 +324,14 @@ class BottomTabsPresenter(
 
     fun onConfigurationChanged(options: Options) {
         val bottomTabsOptions = options.withDefaultOptions(defaultOptions).bottomTabsOptions
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            bottomTabsContainer.enableBackgroundBlur()
+        } else {
+            bottomTabsContainer.disableBackgroundBlur()
+
+            // TODO Change to bottomTabsContainer.setBackgroundColor()?
+            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+        }
 
         if (bottomTabsOptions.shadowOptions.hasValue()) {
             if (bottomTabsOptions.shadowOptions.color.hasValue())
@@ -257,5 +342,17 @@ class BottomTabsPresenter(
             bottomTabsContainer.setTopOutLineColor(bottomTabsOptions.borderColor.get())
             bottomTabsContainer.showTopLine()
         }
+    }
+
+    private fun extractCornerRadius(cornerRadius: Fraction): Float {
+        val radiusDp = cornerRadius.get()
+        val radius = UiUtils.dpToPx(bottomTabsContainer.context, radiusDp.toFloat())
+        return radius
+    }
+
+    private fun extractBottomMarginPx(bottomMargin: Fraction): Int {
+        val marginDp = bottomMargin.get()
+        val margin = UiUtils.dpToPx(bottomTabsContainer.context, marginDp.toFloat()).roundToInt()
+        return margin
     }
 }
