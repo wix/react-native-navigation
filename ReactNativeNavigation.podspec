@@ -15,7 +15,7 @@ Find.find(start_dir) do |path|
   end
 end
 
-swift_project = File.exist?(swift_delegate_path)
+swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
 
 # Debug output
 if swift_project
