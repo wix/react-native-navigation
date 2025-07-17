@@ -1,10 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.map;
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
-import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 import android.animation.Animator;
 import android.app.Activity;
@@ -96,6 +94,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public BottomTabsLayout createView() {
         BottomTabsLayout root = new BottomTabsLayout(getActivity());
+        root.setTag("RNN.BottomTabsLayoutRoot");
 
         this.bottomTabsContainer = createBottomTabsContainer();
         this.bottomTabs = bottomTabsContainer.getBottomTabs();
