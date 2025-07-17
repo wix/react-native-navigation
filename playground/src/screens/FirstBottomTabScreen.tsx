@@ -134,7 +134,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
       bottomTabs: {
         drawBehind: true,
         translucent: true,
-        blurRadius: 10,
+        blurRadius: 2.0,
         layoutStyle: 'compact',
         bottomMargin: 15,
         cornerRadius: 15,

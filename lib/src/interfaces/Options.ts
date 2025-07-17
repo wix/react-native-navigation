@@ -855,7 +855,9 @@ export interface OptionsBottomTabs {
    */
   drawBehind?: boolean;
   /**
-   * Set a background color for the bottom tabs
+   * Set a background color for the bottom tabs.<br/>
+   * On Android - also applicable when translucence is applied, but a semi-transparent
+   * color should be used (e.g. `rgba(255, 0, 0, 0.25)`).
    */
   backgroundColor?: Color;
   /**
@@ -881,27 +883,30 @@ export interface OptionsBottomTabs {
    */
   layoutStyle?: 'stretch' | 'compact';
   /**
+   * Specify a corner-radius (in dip) in order to apply round corners to the tabs container.<br/>
    * Mainly suitable when used in conjunction with `layoutStyle: 'compact'`
    * #### (Android specific)
    */
   cornerRadius?: AndroidDensityNumber;
   /**
    * Bottom-margin to set in order to apply a "hover" effect.
-   * Works best when used in conjunction with `layoutStyle: 'compact'`.
+   * Works best when used in conjunction with `layoutStyle: 'compact'` and `drawBehind: true`.
    * #### (Android specific)
    */
   bottomMargin?: AndroidDensityNumber;
   /**
    * Allows the bottom tabs to be translucent (blurred). Doesn't necessarily play
-   * nice with shadow effects.
+   * nice with shadow effects on Android.
    * #### Android: experimental, turn on using native toggle `TAB_BAR_TRANSLUCENCE`.
    */
   translucent?: boolean;
   /**
    * Set a custom radius to be used in the blur effect. Higher is blurrier, but
-   * is more CPU intensive.
+   * also more CPU-intensive.<br/>
+   * Note: The blurring is performed following a bitmap downscale of x4.0, so
+   * ultimately the actual radius is (4*blurRadius).
    * #### (Android specific)
-   * @defaultValue 1
+   * @defaultValue 1.0
    */
   blurRadius?: AndroidDensityNumber;
   /**
