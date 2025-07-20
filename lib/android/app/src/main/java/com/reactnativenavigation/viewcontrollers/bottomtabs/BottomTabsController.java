@@ -100,7 +100,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         this.bottomTabs = bottomTabsContainer.getBottomTabs();
         Options resolveCurrentOptions = resolveCurrentOptions();
         tabsAttacher.init(root, resolveCurrentOptions);
-        presenter.bindView(bottomTabsContainer, this);
+        presenter.bindView(bottomTabsContainer, root, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         root.addBottomTabsContainer(bottomTabsContainer);

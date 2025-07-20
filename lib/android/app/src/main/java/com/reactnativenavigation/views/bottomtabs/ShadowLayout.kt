@@ -13,7 +13,7 @@ private const val MAX_ANGLE = 360.0f
 private const val MIN_RADIUS = 0.1f
 private const val MIN_ANGLE = 0.0f
 
-open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
+open class ShadowLayout(context: Context) : FrameLayout(context) {
     private val paint: Paint = Paint(ANTI_ALIAS_FLAG).apply {
         isDither = true
         isFilterBitmap = true
@@ -43,7 +43,7 @@ open class ShadowLayout constructor(context: Context) : FrameLayout(context) {
     var isShadowed: Boolean = false
         set(isShadowed) {
             field = isShadowed
-            this.updatePadding()
+            updatePadding()
             postInvalidate()
         }
 

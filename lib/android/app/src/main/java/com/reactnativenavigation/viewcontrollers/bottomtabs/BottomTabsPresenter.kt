@@ -9,7 +9,6 @@ import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
 import com.reactnativenavigation.RNNFeatureToggles
 import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
-import com.reactnativenavigation.options.BottomTabsOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.BottomTabsLayoutStyle
 import com.reactnativenavigation.options.params.Fraction
@@ -18,6 +17,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
+import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -28,6 +28,7 @@ class BottomTabsPresenter(
 ) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
     private lateinit var bottomTabsContainer: BottomTabsContainer
+    private lateinit var bottomTabsLayout: BottomTabsLayout
     private lateinit var bottomTabs: BottomTabs
     private lateinit var tabSelector: TabSelector
     private val defaultTitleState: TitleState
@@ -42,8 +43,9 @@ class BottomTabsPresenter(
         this.defaultOptions = defaultOptions
     }
 
-    fun bindView(bottomTabsContainer: BottomTabsContainer, tabSelector: TabSelector) {
+    fun bindView(bottomTabsContainer: BottomTabsContainer, bottomTabsLayout: BottomTabsLayout, tabSelector: TabSelector) {
         this.bottomTabsContainer = bottomTabsContainer
+        this.bottomTabsLayout = bottomTabsLayout
         this.bottomTabs = bottomTabsContainer.bottomTabs
         this.tabSelector = tabSelector
         animator.bindView(this.bottomTabs)
@@ -76,6 +78,7 @@ class BottomTabsPresenter(
 
         if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
             bottomTabs.layoutParams.width = WRAP_CONTENT
+            // TODO revisit
             bottomTabs.invalidate()
             bottomTabs.requestLayout()
             bottomTabsContainer.invalidate()
@@ -84,7 +87,7 @@ class BottomTabsPresenter(
 
         if (bottomTabsOptions.bottomMargin.hasValue()) {
             val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
-            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+            bottomTabsLayout.setBottomMargin(margin)
         }
 
         if (bottomTabsOptions.cornerRadius.hasValue()) {
@@ -194,7 +197,7 @@ class BottomTabsPresenter(
 
         if (bottomTabsOptions.bottomMargin.hasValue()) {
             val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
-            (bottomTabsContainer.layoutParams as MarginLayoutParams).bottomMargin = margin
+            bottomTabsLayout.setBottomMargin(margin)
         }
 
         if (bottomTabsOptions.cornerRadius.hasValue()) {
