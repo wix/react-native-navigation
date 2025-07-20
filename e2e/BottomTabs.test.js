@@ -79,7 +79,7 @@ describe('BottomTabs', () => {
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
   });
 
-  it(':android: should merge special stylizing options', async () => {
+  it.e2e(':android: should merge special stylizing options', async () => {
     await elementById(TestIDs.SCREEN_ROOT_LIST).scrollTo('bottom');
     await elementById(TestIDs.STYLIZE_TABS_BTN).tap();
     const snapshotImagePath = `./e2e/assets/bottom_tabs.stylized.png`;
