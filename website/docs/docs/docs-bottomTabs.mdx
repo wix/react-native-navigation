@@ -139,7 +139,7 @@ This layout creates the illusion of the tabs hovering above the screen content, 
 To achieve this effect (and fully customize it), you can use the following bottom-tabs styling options:
 
 ```javascript
-Navigation.setRoot({ // An example; showModal() and push() also support this
+Navigation.setRoot({ // An example; push() also support this
   root: {
     bottomTabs: {
       options: {
@@ -147,12 +147,12 @@ Navigation.setRoot({ // An example; showModal() and push() also support this
         translucent: true,
         drawBehind: true,
         bottomMargin: 15,
-        cornerRadius: 15,
 
-        // optional:
-        blurRadius: 2.0, // Custom radius
-        backgroundColor: 'rgba(50, 50, 50, 0.4)', // Semi-transparent color
-        elevation: 1, // Soft a surrounding shadow effect (i.e. the elevation)
+        // Cosmetics:
+        cornerRadius: 15,
+        blurRadius: 2.0, // Actual radius would be 2.0 * 4 = 8.0
+        backgroundColor: 'rgba(50, 50, 50, 0.4)', // A subtle semi-transparent (40%) hue
+        elevation: 1, // Soft surrounding shadow effect (i.e. the elevation)
       },
       children: [
         // ...
@@ -165,6 +165,8 @@ Navigation.setRoot({ // An example; showModal() and push() also support this
 * Setting `layoutStyle: compact` keeps the tabs container from taking up the entire screen width, thus leaving room for the screen content to appear on both its sides.
 * The `translucent` property adds a semi-transparent background, while `drawBehind` and `bottomMargin` allow the screen content to flow beneath the hovering tabs.
 * The `cornerRadius` rounds the edges of the tabs, giving them a soft, card-like appearance.
+
+> Note: Settings some of the options via `mergeOptions` is discouraged, as they'd only apply for the currently visible tab.
 
 ## Controlling tab loading
 
