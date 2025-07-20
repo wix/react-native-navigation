@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.graphics.Color
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
 import com.reactnativenavigation.RNNFeatureToggles
@@ -78,11 +77,7 @@ class BottomTabsPresenter(
 
         if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
             bottomTabs.layoutParams.width = WRAP_CONTENT
-            // TODO revisit
-            bottomTabs.invalidate()
-            bottomTabs.requestLayout()
-            bottomTabsContainer.invalidate()
-            bottomTabsContainer.requestLayout()
+            bottomTabs.refresh()
         }
 
         if (bottomTabsOptions.bottomMargin.hasValue()) {

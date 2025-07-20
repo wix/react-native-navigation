@@ -1,12 +1,16 @@
 package com.reactnativenavigation.views.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.IntRange;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
@@ -14,11 +18,6 @@ import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.IntRange;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {

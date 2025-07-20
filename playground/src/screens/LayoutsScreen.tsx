@@ -118,7 +118,6 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           },
           bottomTabs: {
             testID: BOTTOM_TABS,
-            layoutStyle: 'compact',
           },
         },
       },
