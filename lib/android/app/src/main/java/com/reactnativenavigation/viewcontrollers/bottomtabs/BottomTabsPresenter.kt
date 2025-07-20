@@ -327,7 +327,30 @@ class BottomTabsPresenter(
 
     fun onConfigurationChanged(options: Options) {
         val bottomTabsOptions = options.withDefaultOptions(defaultOptions).bottomTabsOptions
+
+        if (bottomTabsOptions.layoutStyle == BottomTabsLayoutStyle.COMPACT) {
+            bottomTabs.layoutParams.width = WRAP_CONTENT
+        }
+
+        if (bottomTabsOptions.bottomMargin.hasValue()) {
+            val margin = extractBottomMarginPx(bottomTabsOptions.bottomMargin)
+            bottomTabsLayout.setBottomMargin(margin)
+        }
+
+        if (bottomTabsOptions.cornerRadius.hasValue()) {
+            val radius = extractCornerRadius(bottomTabsOptions.cornerRadius)
+            bottomTabsContainer.setRoundedCorners(radius)
+        } else {
+            bottomTabsContainer.clearRoundedCorners()
+        }
+
         if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE) && bottomTabsOptions.translucent.isTrue) {
+            if (bottomTabsOptions.blurRadius.hasValue()) {
+                bottomTabsContainer.setBlurRadius(bottomTabsOptions.blurRadius.get().toFloat())
+            }
+            if (bottomTabsOptions.backgroundColor.hasValue()) {
+                bottomTabsContainer.setBlurColor(bottomTabsOptions.backgroundColor.get())
+            }
             bottomTabsContainer.enableBackgroundBlur()
         } else {
             bottomTabsContainer.disableBackgroundBlur()
