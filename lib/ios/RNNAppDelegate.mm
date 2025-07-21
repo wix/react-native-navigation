@@ -1,6 +1,8 @@
 
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
+#import <react/featureflags/ReactNativeFeatureFlags.h>
+#import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 
 
 #import "RCTAppSetupUtils.h"
@@ -31,6 +33,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)application
 	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    [self _setUpFeatureFlags];
+    
 	// Copied from RCTAppDelegate, it private inside it
 	self.rootViewFactory = [self createRCTRootViewFactory];
 
@@ -94,4 +98,38 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 	return true;
 }
 
+#pragma mark - Feature Flags
+
+class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNativeFeatureFlagsDefaults {
+ public:
+  bool enableBridgelessArchitecture() override
+  {
+    return true;
+  }
+  bool enableFabricRenderer() override
+  {
+    return true;
+  }
+  bool useTurboModules() override
+  {
+    return true;
+  }
+  bool useNativeViewConfigsInBridgelessMode() override
+  {
+    return true;
+  }
+  bool enableFixForViewCommandRace() override
+  {
+    return true;
+  }
+};
+
+- (void)_setUpFeatureFlags
+{
+  if ([self bridgelessEnabled]) {
+      facebook::react::ReactNativeFeatureFlags::override(std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
+  }
+}
+
 @end
+
