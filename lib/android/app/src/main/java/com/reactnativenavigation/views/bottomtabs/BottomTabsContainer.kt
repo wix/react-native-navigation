@@ -55,6 +55,7 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
         shadowAngle = DEFAULT_SHADOW_ANGLE
         shadowDistance = DEFAULT_SHADOW_DISTANCE
         shadowColor = DEFAULT_SHADOW_COLOR
+
         val linearLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             addView(topOutLineView, LayoutParams(MATCH_PARENT, DEFAULT_TOP_OUTLINE_SIZE_PX))

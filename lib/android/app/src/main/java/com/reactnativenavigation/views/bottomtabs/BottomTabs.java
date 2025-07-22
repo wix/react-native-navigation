@@ -53,10 +53,15 @@ public class BottomTabs extends AHBottomNavigation {
     @Override
     protected void createItems() {
         if (itemsCreationEnabled) {
-            super.createItems();
+            superCreateItems();
         } else {
             shouldCreateItems = true;
         }
+    }
+
+    // TODO Find a better way to do this
+    public void superCreateItems() {
+        super.createItems();
     }
 
     @Override
