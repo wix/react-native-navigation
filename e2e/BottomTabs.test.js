@@ -79,6 +79,15 @@ describe('BottomTabs', () => {
     await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
   });
 
+  it.e2e(':android: should set special stylizing options in root bottom-tabs', async () => {
+    await elementById(TestIDs.SCREEN_ROOT_LIST).scrollTo('bottom');
+    await elementById(TestIDs.SET_ROOT_BTN).tap();
+    const snapshotImagePath = `./e2e/assets/bottom_tabs.stylized-root.png`;
+    const actual =
+      await elementById('RNN.BottomTabsLayoutRoot').takeScreenshot(`bottom_tabs_stylized-root`);
+    expectImagesToBeEqual(actual, snapshotImagePath);
+  });
+
   it.e2e(':android: should merge special stylizing options', async () => {
     await elementById(TestIDs.SCREEN_ROOT_LIST).scrollTo('bottom');
     await elementById(TestIDs.STYLIZE_TABS_BTN).tap();

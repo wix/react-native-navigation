@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { Text } from 'react-native';
 import { NavigationProps, Options } from 'react-native-navigation';
+
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
 import Screens from './Screens';
 import { component } from '../commons/Layouts';
 import testIDs from '../testIDs';
-import { Text } from 'react-native';
+import bottomTabsStruct from './BottomTabsLayoutStructure';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
@@ -30,6 +32,8 @@ const {
   FIRST_TAB_BAR_BUTTON,
   MOUNTED_SCREENS_TEXT,
   SCREEN_ROOT,
+  SET_ROOT_BTN,
+  BOTTOM_TABS,
 } = testIDs;
 
 interface NavigationState {
@@ -103,6 +107,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Push" onPress={this.push} />
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
+        <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
@@ -140,6 +145,27 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         cornerRadius: 15,
         elevation: 1,
         backgroundColor: 'rgba(255, 182, 193, 0.25)',
+      },
+    });
+  };
+
+  setStylizedRoot = () => {
+    Navigation.setRoot({
+      bottomTabs: {
+        children: [...bottomTabsStruct.children],
+        options: {
+          bottomTabs: {
+            testID: BOTTOM_TABS,
+            drawBehind: true,
+            translucent: true,
+            blurRadius: 2.0,
+            layoutStyle: 'compact',
+            bottomMargin: 15,
+            cornerRadius: 15,
+            elevation: 1,
+            backgroundColor: 'rgba(119,202,212,0.56)',
+          },
+        },
       },
     });
   };
