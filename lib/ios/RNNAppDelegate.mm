@@ -23,23 +23,29 @@
 #import <React/RCTSurfacePresenter.h>
 #import <react/utils/ManagedObjectWrapper.h>
 
+#import <React/RCTComponentViewFactory.h>
+
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate> {}
+@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,
+                              RCTComponentViewFactoryComponentProvider> {
+}
 @end
 
 @implementation RNNAppDelegate
 
 - (BOOL)application:(UIApplication *)application
-	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     [self _setUpFeatureFlags];
-    
-	// Copied from RCTAppDelegate, it private inside it
-	self.rootViewFactory = [self createRCTRootViewFactory];
 
-	RCTAppSetupPrepareApp(application, self.newArchEnabled);
-	RCTSetNewArchEnabled(TRUE);
+    // Copied from RCTAppDelegate, it private inside it
+    self.rootViewFactory = [self createRCTRootViewFactory];
+
+    [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
+
+    RCTAppSetupPrepareApp(application, self.newArchEnabled);
+    RCTSetNewArchEnabled(TRUE);
     RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
 
@@ -126,9 +132,8 @@ class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNative
 
 - (void)_setUpFeatureFlags
 {
-  if ([self bridgelessEnabled]) {
-      facebook::react::ReactNativeFeatureFlags::override(std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
-  }
+    facebook::react::ReactNativeFeatureFlags::override(
+        std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
 }
 
 @end
