@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.graphics.ColorUtils
 import org.mockito.kotlin.*
@@ -26,12 +27,18 @@ class BottomTabsContainerTest : BaseTest() {
 
     @Test
     fun `init - should have only one child as vertical LinearLayout with border and bottom tabs`() {
-        assertThat(uut.childCount).isEqualTo(1)
-        val childAt = uut.getChildAt(0)
+        val blurWrapper = uut.getChildAt(0) as ViewGroup
+        assertThat(blurWrapper).isInstanceOf(ViewGroup::class.java)
+
+        val childAt = blurWrapper.getChildAt(0)
         assertThat(childAt).isInstanceOf(LinearLayout::class.java)
+
         val linearLayout = childAt as LinearLayout
         assertThat(linearLayout.getChildAt(0)).isInstanceOf(TopOutlineView::class.java)
         assertThat(linearLayout.getChildAt(1)).isInstanceOf(BottomTabs::class.java)
+
+        assertThat(uut.childCount).isEqualTo(1)
+        assertThat(blurWrapper.childCount).isEqualTo(1)
     }
 
     @Test

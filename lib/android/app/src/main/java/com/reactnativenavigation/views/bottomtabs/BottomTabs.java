@@ -1,11 +1,16 @@
 package com.reactnativenavigation.views.bottomtabs;
 
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.IntRange;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -14,11 +19,6 @@ import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.IntRange;
-
-import static com.reactnativenavigation.utils.CollectionUtils.*;
-import static com.reactnativenavigation.utils.ViewUtils.findChildByClass;
 
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
@@ -60,6 +60,7 @@ public class BottomTabs extends AHBottomNavigation {
         }
     }
 
+    // TODO Find a better way to do this
     public void superCreateItems() {
         super.createItems();
     }
@@ -77,7 +78,6 @@ public class BottomTabs extends AHBottomNavigation {
             onItemCreationEnabled.add(() -> super.setCurrentItem(position, useCallback));
         }
     }
-    
 
     @Override
     public void setTitleState(TitleState titleState) {
