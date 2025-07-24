@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
 import androidx.core.view.updateMargins
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.RNNFeatureToggles
 import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
 import com.reactnativenavigation.options.Options
@@ -13,7 +14,6 @@ import com.reactnativenavigation.options.params.BottomTabsLayoutStyle
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout

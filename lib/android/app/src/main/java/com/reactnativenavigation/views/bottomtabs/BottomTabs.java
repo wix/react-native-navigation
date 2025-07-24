@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.IntRange;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.options.LayoutDirection;

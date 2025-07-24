@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.ImageLoaderMock.mock
@@ -30,7 +31,6 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController
 import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
@@ -102,7 +102,8 @@ class BottomTabsControllerTest : BaseTest() {
         Java6Assertions.assertThat(tabOptions.bottomTabsOptions.titleDisplayMode.hasValue()).isFalse
         prepareViewsForTests()
         presenter.applyOptions(Options.EMPTY)
-        Java6Assertions.assertThat(bottomTabsContainer.bottomTabs.titleState).isEqualTo(AHBottomNavigation.TitleState.ALWAYS_SHOW)
+        Java6Assertions.assertThat(bottomTabsContainer.bottomTabs.titleState).isEqualTo(
+            AHBottomNavigation.TitleState.ALWAYS_SHOW)
     }
 
     @Test(expected = RuntimeException::class)

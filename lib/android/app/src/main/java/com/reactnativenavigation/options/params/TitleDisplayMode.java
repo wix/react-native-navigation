@@ -2,7 +2,7 @@ package com.reactnativenavigation.options.params;
 
 import androidx.annotation.NonNull;
 
-import com.reactnativenavigation.views.bottomtabs.AHBottomNavigation.TitleState;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 
 import javax.annotation.Nullable;
 
