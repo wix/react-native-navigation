@@ -1,0 +1,33 @@
+---
+id: sideMenu-api
+title: Side Menu
+sidebar_label: Side Menu
+---
+
+This layout allows to implement sidemenus, which can be opened by swiping from one side towards the other side.
+
+```js
+{
+  left: {
+    component: {}
+  },
+  center: {
+    stack: {
+      options: {},
+      children: [{
+        component: {}
+      }]
+    }
+  },
+  right: {
+    component: {}
+  }
+}
+```
+
+## `center: Layout`
+Center component, contains the main application.
+## `left?: Layout`
+Contain the left component layout.
+## `right?: Layout`
+Contain the right component layout.

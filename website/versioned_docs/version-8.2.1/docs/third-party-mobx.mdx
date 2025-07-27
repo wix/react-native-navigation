@@ -1,0 +1,75 @@
+---
+id: third-party-mobx
+title: MobX
+sidebar_label: MobX
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+MobX is one of the most popular state management libraries used by applications sized from small to large.
+With the introduction of the new React Context API, MobX can now be very easily integrated in React Native Navigation
+projects.
+
+:::info Note
+With the introduction of the new Context API, there is no need to use `Provider` pattern with MobX and you
+can now just use the React Context API.
+
+Also the example uses `mobx-react-lite` but you can use the normal `mobx-react`.
+:::
+
+## Sharing a store between multiple screens
+
+In the example below we will be creating a small Counter app. We will learn how to integrate Mobx with React-Native-Navigation and demonstrate how updating the store from one component, triggers renders in other components connected to the same store.
+
+Once you finish implementing the example, your screen should look similar to this:
+
+<img width="30%" src={useBaseUrl('/img/mobx_counter.png')} />
+
+### Step 1 - Create a Counter store
+
+Let's first create a counter store using MobX. Our store has a single `count` object and two methods to increment and decrement it.
+
+<Tabs
+  defaultValue="makeObservable"
+  values={[
+    { label: 'MakeObservable', value: 'makeObservable' },
+    { label: 'Decorator', value: 'decorator' },
+  ]}
+>
+
+<TabItem value="makeObservable">
+
+```tsx file=./third-party-mobx/counter-store.tsx 
+```
+
+</TabItem>
+
+<TabItem value="decorator">
+
+  From `mobx@6.0.0` decorators have become an opt-in feature. To enable decorators for `mobx`, follow the [official guide](https://mobx.js.org/enabling-decorators.html).
+
+  ```tsx file=./third-party-mobx/counter-store-decorator.tsx 
+  ```
+
+</TabItem>
+
+</Tabs>
+
+### Step 2 - Consuming the store
+
+You can consume the Counter store in any React components using `useCounterStore` hook or `React.useContext`
+
+```tsx file=./third-party-mobx/counter-screen.tsx
+```
+
+## How to use MobX persistent data
+
+Often the app will require a persistent data solution and with MobX you can use [`mobx-react-persist`](https://github.com/pinqy520/mobx-persist).
+It only takes few extra steps to integrate the library. 
+
+Also the integration assumes that you are using the decorator pattern for `mobx`.
+
+```tsx file=./third-party-mobx/persistent-data.tsx
+```

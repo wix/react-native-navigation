@@ -1,0 +1,178 @@
+---
+id: modal
+title: Modal
+sidebar_label: Modal
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+In human-centered design, when we speak about a modal (or modality), we often refer to a set of techniques, aimed at bringing user attention to a specific event / screen / action / etc. Those often require user input. A pop-up on a website, a file deletion confirmation dialogue on your computer, or an alert asking you to enable location service on your phone - these can all be considered modals.
+
+A modal is a term used in native iOS world ([full description here](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/modality/)), while on Android, [dialogs](https://developer.android.com/guide/topics/ui/dialogs) are often used to create similar or identical behavior, alongside other techniques.
+
+## Presenting modals
+
+Modal can be displayed by invoking the `Navigation.showModal()` command, as shown in the example below:
+
+```js
+Navigation.showModal({
+  stack: {
+    children: [
+      {
+        component: {
+          name: 'MODAL_SCREEN',
+          options: {
+            topBar: {
+              title: {
+                text: 'Modal',
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+```
+Or by declaring modal as a Component inside render function:
+
+:::note
+Available for Android only, for iOS please use Modal from `react-native`.
+:::
+
+([Full code can be found in the Playground](https://github.com/wix/react-native-navigation/blob/master/playground/src/screens/ModalScreen.tsx)).
+
+```jsx
+import { NavigationComponent, Modal as RNNModal } from 'react-native-navigation';
+.....
+toggleModal = () => this.setState({ modalVisible: !this.state.modalVisible });
+.....
+render() {
+  return (
+    .....
+  <RNNModal
+      onShow={/* optional callback */}
+      animationType={/* optional, 'none' | 'fade' | 'slide', default 'slide'*/}
+      blurOnUnmount={/* optional, default false */}
+      transparent={/* optional, default false, true behaves as overCurrentContext */}
+      visible={this.state.modalVisible}
+      onRequestClose={() => this.setState({ modalVisible: false })}
+      >
+          <Button
+            label="Dismiss declared Modal"
+            testID={DISMISS_MODAL_BTN}
+            onPress={this.toggleModal}
+          />
+          ....
+    </RNNModal>
+    ....
+    );
+}
+```
+
+Here's how the Modal looks on both platforms.
+
+<Tabs
+  defaultValue="ios"
+  values={[
+    { label: 'iOS', value: 'ios' },
+    { label: 'Android', value: 'android' },
+  ]}
+>
+  <TabItem value="ios">
+    <img width="40%" src={useBaseUrl('img/modal_ios.gif')} />
+  </TabItem>
+  <TabItem value="android">
+    <img width="40%" src={useBaseUrl('img/modal_android.gif')} />
+  </TabItem>
+</Tabs>
+
+## Adding a dismiss button
+
+Modals should always have a dismiss button, on left-to-right devices it's typically placed as a left button in the TopBar.
+
+After we've added our dismiss button, we need to dismiss the modal when the button is pressed.
+
+:::note
+For the LeftButton to be visible, the screen must be displayed in a Stack.
+:::
+
+```js
+class ModalScreen extends React.Component {
+  // Set a dismiss button in static options
+  static options() {
+    return {
+      topBar: {
+        leftButtons: {
+          id: 'dismiss',
+          icon: require('./dismiss.png'),
+        },
+      },
+    };
+  }
+
+  constructor(props) {
+    super(props);
+    // Register to events
+    Navigation.events().bindComponent(this);
+  }
+
+  // Handle the button press event and dismiss the modal if needed
+  navigationButtonPressed({ buttonId }) {
+    if (buttonId === 'dismiss') {
+      Navigation.dismissModal(this.props.componentId);
+    }
+  }
+}
+```
+
+## Transparent modals
+
+Showing transparent modals is a nice technique to increase immersiveness while keeping the user in the same context.
+When a modal is displayed the content behind it (either root or modal) is removed from hierarchy. While this behavior improves performance, it's undesired when
+showing transparent modals as we need to see the content behind it.
+
+To configure this behaviour, we'll need to change the `modalPresentationStyle` option to `overCurrentContext` and change the layout background color to `'transparent'`.
+
+```js
+{
+  modalPresentationStyle: 'overCurrentContext',
+  layout: {
+    backgroundColor: 'transparent'
+  }
+}
+```
+
+## Preventing a Modal from being dismissed
+
+Preventing a modal from being dismissed is done differently for each platform. While preventing the user from dismissing the modal is possible,
+the modal could still be dismissed programmatically by calling `Navigation.dismissModal()`
+
+If the modal has a dismiss button, of course you'll need to handle it your self and avoid calling `Navigation.dismissModal()`
+when the button is pressed.
+
+### Android
+
+On Android, modals can be dismissed with the hardware back button. You can handle the back press yourself by
+disabling the hardware back button `dismissModalOnPress` option:
+
+```js
+{
+  hardwareBackButton: {
+    dismissModalOnPress: false;
+  }
+}
+```
+
+As a result, pressing the hardware back button will not dismiss the modal and will dispatch [`navigationButtonPress`](https://wix.github.io/react-native-navigation/api/events#navigationbuttonpressed-event) event with the default hardware back button id `RNN.hardwareBackButton`.
+
+### iOS
+
+While iOS devices don't have a hardware back button, PageSheet modals can be dismissed by swipe gesture
+from the top of the screen. To disable it, set [swipeToDismiss](#) option to false.
+
+## Presentation Style
+
+The [presentation style](/react-native-navigation/api/options-root#modalpresentationstyle) determines the look and feel of a screen displayed as modal.

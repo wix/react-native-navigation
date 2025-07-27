@@ -1,0 +1,85 @@
+---
+id: style-theme
+title: Themes
+sidebar_label: Themes
+---
+
+A theme is a type of style which is applied to the entire app. It allows you to declare
+a consistent style to all Navigation components such as the TopBar and BottomTabs and also
+to system elements like the StatusBar and NavigationBar.
+## Dark mode
+
+Dark mode support for navigation UI components can be done via colors, perferably via setting a "Theme" in the default options, as in the example below.
+
+The trigger for the change is the system wide Dark Mode toggle.
+
+```js
+Navigation.setDefaultOptions({
+  topBar: {
+    background: {
+      color: {
+        light:'white',
+        dark:'black'
+      }
+    },
+    title:{
+      color: {
+        light:'black',
+        dark:'red'
+      }
+    }
+  }
+});
+
+## Applying a theme
+
+Themes are applied using `Navigation.setDefaultOptions()` which must be called **before** `Navigation.setRoot()` is called.
+
+```js
+// Set the default topBar background color to red
+Navigation.setDefaultOptions({
+  topBar: {
+    background: {
+      color: 'red'
+    }
+  }
+});
+
+// That stack's topBar background color will be red, as is set in default options
+Navigation.setRoot({
+  root: {
+    stack: {
+      children: [
+        ...
+      ]
+    }
+  }
+});
+```
+
+## Conditional themes with Options Processor
+
+Some style requirements can't be facilitated with the `defaultOptions` api. For example, an app may have a unique theme for screens displayed in a modal or require that modals have a default dismiss button in the TopBar. An Options Processor allow us to mutate the options object of each screen and layout right before they are displayed.
+
+Lets see how we can leverage this API to add a dismiss button to the TopBar when showing a modal.
+
+```tsx file=./style-theme/option-processor.tsx
+```
+
+The Options Processors can also be used to set default options for buttons, here's how:
+
+```tsx file=./style-theme/option-processor-defaults.tsx
+```
+
+## Conditional themes with Layout Processor
+
+Layout Processor is similar in concept to the Options Processor discussed above. While Options Processor is invoked for each options object, Layout Processor is invoked once on the entire (layout)['../api/layout-layout/'] tree passed to the Navigation command.
+
+Through the Layout Processor we can access the layout and it's children, and mutate both options and passProps before the layout is displayed. In this example we iterate on the stack's children and set a dark TopBar color according to a `theme` property in the child's props.
+
+```tsx file=./style-theme/layout-processor.tsx
+```
+
+## Changing theme dynamically
+
+Apps can have multiple themes and sometimes you might need to change theme dynamically. To change current theme, simply call `Navigation.setDefaultOptions()` with updated theme options, following that with a call to `Navigation.setRoot()`. The reason we need to setRoot once more is because `Navigation.setDefaultOptions()` does not apply options to screens which had already been created.

@@ -1,0 +1,29 @@
+---
+id: options-overlay
+title: Overlay
+sidebar_label: Overlay
+---
+
+Controls overlay options
+
+```js
+const options = {
+  overlay: {
+
+  }
+}
+```
+
+### `interceptTouchOutside`
+Controls whether touch events outside the bounds of the overlay are to be handled by content behind the overlay. When set to true, touch events will **not** pass through to the underlying content.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `handleKeyboardEvents`
+Overlays on iOS don't handle keyboard events by default. If your Overlay contains a TextInput component, you'll want to enable this option so that TextInput responds to keyboard events.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| boolean | No       | iOS     |
