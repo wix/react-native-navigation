@@ -1,5 +1,7 @@
 package com.reactnativenavigation.mocks;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.MotionEvent;
@@ -17,8 +19,6 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListe
 import com.reactnativenavigation.views.component.ReactComponent;
 
 import org.mockito.Mockito;
-
-import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
     private final ComponentPresenterBase presenter = new ComponentPresenterBase();
@@ -91,14 +91,10 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
-        public void destroy() {
-
-        }
+        public void destroy() {}
 
         @Override
-        public void sendOnNavigationButtonPressed(String buttonId) {
-
-        }
+        public void sendOnNavigationButtonPressed(String buttonId) {}
 
         @Override
         public ScrollEventListener getScrollEventListener() {
@@ -106,8 +102,6 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
-        public void dispatchTouchEventToJs(MotionEvent event) {
-
-        }
+        public void dispatchTouchEventToJs(MotionEvent event) {}
     }
 }
