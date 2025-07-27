@@ -21,4 +21,8 @@ public class ColorUtils {
     public static int setAlpha(int color, int alpha) {
         return (color & 0x00FFFFFF) | (alpha << 24);
     }
+
+    public static boolean isOpaque(int color) {
+        return (color & 0xFF000000) == 0xFF000000;
+    }
 }
