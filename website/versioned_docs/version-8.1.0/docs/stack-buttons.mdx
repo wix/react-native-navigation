@@ -1,0 +1,113 @@
+---
+id: stack-buttons
+title: TopBar Buttons
+sidebar_label: TopBar Buttons
+---
+
+Buttons can be added to the [right](#rightButtons) and [left](#leftButtons) areas of the TopBar. Buttons can have either an icon or a text. They are declared in the the options object and, as with any other option, can be updated dynamically with the `Navigation.mergeOptions` command.
+
+> When using an icon button on **Android**, you should always pass a title as well. The title is used when the button is collapsed to the overflow menu and as a tooltip when the button is long pressed.
+
+# Overflow menu
+
+It's common practice to group less important actions in a menu or an action sheet.
+
+To do so on iOS, include a button with a menu icon and open an [ActionSheet](https://facebook.github.io/react-native/docs/actionsheetios) with the relevant actions when the button is clicked.
+
+On Android, use the [showAsAction](#showasaction) options to control when the button should appear in the menu.
+
+# Left button
+
+Left buttons behave like right buttons with two caveats on Android:
+
+- Only a single left button is alowed
+- Textual left button isn't supported
+
+# Using a react component in a button
+
+> ⚠️At the moment, Android only supports using custom buttons in `rightButtons`.
+
+Sometimes we require more from our buttons. In order to support every product need React Components can be used as custom views of buttons.
+To do so, you'll first need to register the view with Navigation, just like you register your components used as screens:
+
+```js
+Navigation.registerComponent('ButtonComponent', () => require('./ButtonComponent'));
+```
+
+Now you can create buttons which use the component registered with `'ButtonComponent'` as thier custom view:
+
+```js
+topBar: {
+  rightButtons: [
+    {
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          // Pass initial props to the button here
+        },
+      },
+    },
+  ];
+}
+```
+
+## Updating props of custom buttons
+
+To update props of a mounted compoennt used as a button, you'll first need to assign it a unique id, then call the `Navigation.updateProps()` command with the id.
+
+Calling the updateProps command will trigger React's component lifecycle methods related to [props update](https://reactjs.org/docs/react-component.html#updating)
+
+```js
+// Declare the button and assign it a unique id
+topBar: {
+  rightButtons: [
+    {
+      id: 'SomeUniqueId',
+      component: {
+        name: 'ButtonComponent',
+        passProps: {
+          count: 0
+        },
+      },,
+    },
+  ];
+}
+
+// Update props
+Navigation.updateProps('SomeUniqueId', {
+  count: 1,
+});
+```
+
+# Changing buttons dynamically
+
+As buttons are part of a screen's options, they can be modified like any other styling option using the [mergeOptions](#) command.
+
+## Setting buttons
+
+The following command will set the screen's right buttons. If the screen already has Right Buttons declared - they will be overridden.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  topBar: {
+    rightButtons: [
+      {
+        id: 'myDynamicButton',
+        text: 'My Button',
+      },
+    ],
+  },
+});
+```
+
+## Removing buttons
+
+Buttons can be removed by setting zero buttons, as shown in the snippet below.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  topBar: {
+    rightButtons: [],
+  },
+});
+```

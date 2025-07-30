@@ -1,0 +1,345 @@
+---
+id: events
+title: Events
+sidebar_label: Events
+---
+
+## onAppLaunched
+
+Called once the app is launched. Used to set the initial layout of the Application - after that the app is ready for user interaction.
+
+```js
+const appLaunchedListener = Navigation.events().registerAppLaunchedListener(() => {});
+```
+
+RNN automatically unsubscribes components when they unmount, therefore unsubscribing isn't actually mandatory if you subscribed in `componentDidMount`.
+
+But you can use the following method to unsubscribe manually:
+
+```js
+appLaunchedListener.remove();
+```
+
+## componentWillAppear
+
+Called each time before this component appears on the screen (notifies that the component view is about to be added to the view hierarchy).
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  componentWillAppear() {}
+}
+```
+
+## componentDidAppear
+
+Called each time this component appears on the screen (attached to the view hierarchy).
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  componentDidAppear() {}
+}
+```
+
+This event can be observed globally as well:
+
+```js
+// Subscribe
+const screenEventListener = Navigation.events().registerComponentDidAppearListener(({ componentId, componentName, passProps }) => {
+
+});
+...
+// Unsubscribe
+screenEventListener.remove();
+```
+
+|     Parameter     | Description                                                                               |
+| :---------------: | :---------------------------------------------------------------------------------------- |
+|  **componentId**  | Id of the appearing component                                                             |
+| **componentName** | Registered name used when registering the component with `Navigation.registerComponent()` |
+|   **passProps**   | props passed to the component                                                             |
+
+## componentDidDisappear
+
+Called each time this component disappears from the screen (detached from the view hierarchy).
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  componentDidDisappear() {}
+}
+```
+
+This event can be observed globally as well:
+
+```js
+// Subscribe
+const screenEventListener = Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
+
+});
+...
+// Unsubscribe
+screenEventListener.remove();
+```
+
+|     Parameter     | Description                                                                               |
+| :---------------: | :---------------------------------------------------------------------------------------- |
+|  **componentId**  | Id of the disappearing component                                                          |
+| **componentName** | Registered name used when registering the component with `Navigation.registerComponent()` |
+
+## registerCommandListener
+
+The `commandListener` is called whenever a _Navigation command_ (i.e push, pop, showModal etc) is invoked.
+
+```js
+// Subscribe
+const commandListener = Navigation.events().registerCommandListener((name, params) => {
+
+});
+...
+// Unsubscribe
+commandListener.remove();
+```
+
+| Parameter  | Description                                                                                                                                                                                                                                  |
+| :--------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  **name**  | The name of the command that was invoked. For example `push`                                                                                                                                                                                 |
+| **params** | `commandId`: Each command is assigned a unique Id<br />`componentId`: Optional, the componentId passed to the command<br />`layout`: Optional, if the command invoked created a screen. Slim representation of the component and its options |
+
+## registerCommandCompletedListener
+
+Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation, the listener is invoked after the animation ends.
+
+```js
+// Subscribe
+const commandCompletedListener = Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
+
+});
+...
+// Unsubscribe
+commandCompletedListener.remove();
+```
+
+|     Parameter      | Description                                                        |
+| :----------------: | :----------------------------------------------------------------- |
+|   **commandId**    | Id of the completed command                                        |
+| **completionTime** | Timestamp when the command, and consecutive animations, completed. |
+
+## registerModalDismissedListener
+
+Invoked when a modal is dismissed.
+
+```js
+// Subscribe
+const modalDismissedListener = Navigation.events().registerModalDismissedListener(({ componentId, modalsDismissed }) => {
+
+});
+...
+// Unsubscribe
+modalDismissedListener.remove();
+```
+
+|      Parameter      | Description                          |
+| :-----------------: | :----------------------------------- |
+|   **componentId**   | Id of the modal                      |
+| **modalsDismissed** | Number of modals that were dismissed |
+
+## registerModalAttemptedToDismissListener(iOS 13+ only)
+
+Invoked only on iOS pageSheet modal when `swipeToDismiss` flag is set to true and modal was swiped down to dismiss.
+
+```js
+// Subscribe
+const modalAttemptedToDismissListener = Navigation.events().registerModalAttemptedToDismissListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+modalAttemptedToDismissListener.remove();
+```
+
+|    Parameter    | Description                                     |
+| :-------------: | :---------------------------------------------- |
+| **componentId** | Id of the modal a user is attempting to dismiss |
+
+## registerScreenPoppedListener
+
+Invoked when the screen is popped.
+
+```js
+// Subscribe
+const screenPoppedListener = Navigation.events().registerScreenPoppedListener(({ componentId }) => {
+
+});
+...
+// Unsubscribe
+screenPoppedListener.remove();
+```
+
+|    Parameter    | Description                       |
+| :-------------: | :-------------------------------- |
+| **componentId** | Id of the screen which was popped |
+
+## registerBottomTabSelectedListener
+
+Invoked when BottomTab is selected by a user.
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
+## registerBottomTabLongPressedListener
+
+Invoked when BottomTab is long pressed by a user.
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabLongPressedListener(({ selectedTabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
+|       Parameter        | Description                          |
+| :--------------------: | :----------------------------------- |
+|  **selectedTabIndex**  | Index of the newly selected tab      |
+| **unselectedTabIndex** | Index of the previously selected tab |
+
+## navigationButtonPressed event
+
+This event is emitted whenever a TopBar button is pressed by a user.
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Unregistering listeners bound to components isn't mandatory since RNN handles the unregistration for you
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  navigationButtonPressed({ buttonId }) {}
+}
+```
+
+This event can be observed globally as well:
+
+```js
+// Subscribe
+const navigationButtonEventListener = Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
+
+});
+...
+// Unsubscribe
+navigationButtonEventListener.remove();
+```
+
+|  Parameter   | Description                            |
+| :----------: | :------------------------------------- |
+| **buttonId** | `buttonId`: `id` of the pressed button |
+
+## searchBarUpdated (iOS 11+ only)
+
+Called whenever the SearchBar of NavigationBar is updated.
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  searchBarUpdated({ text, isFocused }) {}
+}
+```
+
+## searchBarCancelPressed (iOS 11+ only)
+
+Called when the cancel button of the SearchBar from NavigationBar is pressed.
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  searchBarCancelPressed() {}
+}
+```
+
+## previewCompleted (iOS 11.4+ only)
+
+Called when preview peek is completed.
+
+```js
+class MyComponent extends Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  previewCompleted({ previewComponentId }) {}
+}
+```

@@ -1,0 +1,38 @@
+---
+id: options-navigationBar
+title: Navigation Bar Options
+sidebar_label: Navigation Bar
+---
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+The Navigation Bar is the area at the bottom of the screen containing Android's three navigation buttons: Back, Home and Recents.
+
+An example of a dark navigation bar:
+<img width="30%" src={useBaseUrl('/img/navBar_black.png')} />
+
+<br></br>
+<br></br>
+
+```js
+const options = {
+  navigationBar: {}
+};
+```
+
+### `visible`
+
+Set the navigation bar visibility.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android     |
+
+### `backgroundColor`
+
+Set the navigation bar color. When a light background color is used, the color of the navigation bar icons will adapt to a dark color.
+
+<img width="30%" src={useBaseUrl('/img/navBar_white.png')} />
+
+| Type                  | Required | Platform | Default |
+| --------------------- | -------- | -------- | ------- |
+| Color | No       | Android     | 'black' |

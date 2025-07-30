@@ -1,6 +1,8 @@
 
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
+#import <react/featureflags/ReactNativeFeatureFlags.h>
+#import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 
 
 #import "RCTAppSetupUtils.h"
@@ -21,21 +23,29 @@
 #import <React/RCTSurfacePresenter.h>
 #import <react/utils/ManagedObjectWrapper.h>
 
+#import <React/RCTComponentViewFactory.h>
+
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate> {}
+@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,
+                              RCTComponentViewFactoryComponentProvider> {
+}
 @end
 
 @implementation RNNAppDelegate
 
 - (BOOL)application:(UIApplication *)application
-	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-	// Copied from RCTAppDelegate, it private inside it
-	self.rootViewFactory = [self createRCTRootViewFactory];
+    [self _setUpFeatureFlags];
 
-	RCTAppSetupPrepareApp(application, self.newArchEnabled);
-	RCTSetNewArchEnabled(TRUE);
+    // Copied from RCTAppDelegate, it private inside it
+    self.rootViewFactory = [self createRCTRootViewFactory];
+
+    [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
+
+    RCTAppSetupPrepareApp(application, self.newArchEnabled);
+    RCTSetNewArchEnabled(TRUE);
     RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
 
@@ -94,4 +104,37 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 	return true;
 }
 
+#pragma mark - Feature Flags
+
+class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNativeFeatureFlagsDefaults {
+ public:
+  bool enableBridgelessArchitecture() override
+  {
+    return true;
+  }
+  bool enableFabricRenderer() override
+  {
+    return true;
+  }
+  bool useTurboModules() override
+  {
+    return true;
+  }
+  bool useNativeViewConfigsInBridgelessMode() override
+  {
+    return true;
+  }
+  bool enableFixForViewCommandRace() override
+  {
+    return true;
+  }
+};
+
+- (void)_setUpFeatureFlags
+{
+    facebook::react::ReactNativeFeatureFlags::override(
+        std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
+}
+
 @end
+

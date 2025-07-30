@@ -1,0 +1,74 @@
+---
+id: options-imageResource
+title: Image Resource
+sidebar_label: Image Resource
+---
+
+## `ImageResource`
+
+```js
+const options = {
+  topBar: {
+    leftButtons: [
+        icon: require('./backButton.png')
+    ]
+  },
+};
+```
+
+The following icon types are available:
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| ImageRequireSource | No       | Both     |
+| string | No       | Both     |
+| [ImageSystemSource](#imagesystemresource) | No | iOS |
+
+
+## `ImageSystemSource`
+
+### `system`
+
+You can use platform specific system icons for [iOS only](https://developer.apple.com/sf-symbols/).
+
+Example:
+
+```js
+const options = {
+  topBar: {
+    leftButtons: [
+        icon: {
+            system: 'calendar',
+            fallback: require('./calendar.png')
+        }
+    ]
+  },
+};
+```
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | Yes       | iOS 13+     |
+
+### `fallback`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| [FallbackSource](#fallbacksource) | No       |  iOS 13+     |
+
+
+## `FallbackSource`
+
+For iOS, SF Symbols is available only for iOS 13 and later. For iOS 12 and earlier you should use a fallback icon.
+
+### `ImageRequireSource`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+### `string`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
