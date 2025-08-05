@@ -34,11 +34,6 @@ class TestApplication : NavigationApplication() {
                 get() = true
         }
 
-    override fun onCreate() {
-        super.onCreate()
-        load()
-    }
-
     override val reactHost: ReactHost
         get() = getDefaultReactHost(this, reactNativeHost)
 
