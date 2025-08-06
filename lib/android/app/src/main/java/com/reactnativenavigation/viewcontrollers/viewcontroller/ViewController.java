@@ -147,7 +147,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         getView();
     }
 
-    protected boolean isViewCreated() {
+    public boolean isViewCreated() {
         return view != null;
     }
 
