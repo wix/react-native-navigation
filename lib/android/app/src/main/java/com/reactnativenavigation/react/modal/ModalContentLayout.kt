@@ -12,27 +12,30 @@ import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.views.view.ReactViewGroup
 
 
-class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
+class ModalContentLayout(context: Context) : ReactViewGroup(context), RootView {
 
     private val mJSTouchDispatcher = JSTouchDispatcher(this)
 
-    override fun onChildStartedNativeGesture(child: View, androidEvent: MotionEvent) {
-        mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
-    }
-    override fun onChildStartedNativeGesture(androidEvent: MotionEvent) {
-        mJSTouchDispatcher.onChildStartedNativeGesture(androidEvent, this.getEventDispatcher())
-    }
-    override fun onChildEndedNativeGesture(child: View, androidEvent: MotionEvent) {
-        mJSTouchDispatcher.onChildEndedNativeGesture(androidEvent, this.getEventDispatcher())
-    }
-    override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-    private fun getEventDispatcher(): EventDispatcher {
-        val reactContext: ReactContext = this.getReactContext()
-        return UIManagerHelper.getEventDispatcher(reactContext, UIManagerType.FABRIC) ?: throw IllegalStateException("EventDispatcher for Fabric UI Manager is not found")
+    override fun onChildStartedNativeGesture(childView: View?, ev: MotionEvent) {
+        mJSTouchDispatcher.onChildStartedNativeGesture(ev, getEventDispatcher())
     }
 
-    override fun handleException(t: Throwable?) {
-        getReactContext().handleException(RuntimeException(t))
+    override fun onChildEndedNativeGesture(childView: View, ev: MotionEvent) {
+        mJSTouchDispatcher.onChildEndedNativeGesture(ev, getEventDispatcher())
+    }
+
+    override fun handleException(t: Throwable) {
+    getReactContext().handleException(
+        if (t is Exception) t else RuntimeException(t)
+    )
+}
+
+    override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
+    private fun getEventDispatcher(): EventDispatcher {
+        val reactContext: ReactContext = getReactContext()
+        return UIManagerHelper.getEventDispatcher(reactContext, UIManagerType.FABRIC)
+            ?: throw IllegalStateException("EventDispatcher for Fabric UI Manager is not found")
     }
 
     private fun getReactContext(): ReactContext {
@@ -49,5 +52,4 @@ class ModalContentLayout(context: Context?) : ReactViewGroup(context), RootView{
         super.onTouchEvent(event)
         return true
     }
-
 }
