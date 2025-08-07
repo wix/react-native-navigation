@@ -425,17 +425,13 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
-    public void applyTopInset() {
-
-    }
+    public void applyTopInset() {}
 
     public int getTopInset() {
         return 0;
     }
 
-    public void applyBottomInset() {
-
-    }
+    public void applyBottomInset() {}
 
     public int getBottomInset() {
         return perform(parentController, 0, p -> p.getBottomInset(this));

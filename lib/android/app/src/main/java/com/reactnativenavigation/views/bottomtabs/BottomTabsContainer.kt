@@ -12,6 +12,7 @@ import android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.updatePadding
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.utils.UiUtils.dpToPx
 import eightbitlab.com.blurview.BlurTarget
@@ -52,9 +53,15 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
     init {
         this.isShadowed = false
         this.id = View.generateViewId()
+
         shadowAngle = DEFAULT_SHADOW_ANGLE
         shadowDistance = DEFAULT_SHADOW_DISTANCE
         shadowColor = DEFAULT_SHADOW_COLOR
+
+        topOutLineView.apply {
+            visibility = View.GONE
+            setBackgroundColor(DEFAULT_TOP_OUTLINE_COLOR)
+        }
 
         val linearLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
@@ -62,10 +69,8 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
             addView(bottomTabs, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        this.clipChildren = false
-        this.clipToPadding = false
-        setTopOutLineColor(DEFAULT_TOP_OUTLINE_COLOR)
-        this.topOutLineView.visibility = View.GONE
+        clipChildren = false
+        clipToPadding = false
 
         blurringView = BlurView(context).apply {
             setBlurEnabled(false)
@@ -175,5 +180,9 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
 
     fun setElevation(elevation: Fraction) {
         setElevation(dpToPx(context, elevation.get().toFloat()))
+    }
+
+    fun setBottomInset(bottomInset: Int) {
+        blurringView.updatePadding(bottom = bottomInset)
     }
 }

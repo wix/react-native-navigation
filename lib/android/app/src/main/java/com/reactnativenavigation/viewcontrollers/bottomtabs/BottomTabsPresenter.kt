@@ -282,13 +282,17 @@ class BottomTabsPresenter(
         bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll[false])
     }
 
-    fun applyBottomInset(bottomInset: Int) {
+    fun applyChildrenInset(bottomInset: Int) {
         (bottomTabsContainer.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(bottom = bottomInset)
         bottomTabsContainer.requestLayout()
     }
 
-    fun getBottomInset(resolvedOptions: Options): Int {
-        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else bottomTabs.height
+    fun getChildrenBottomInset(resolvedOptions: Options): Int {
+        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else (bottomTabsContainer.height)
+    }
+
+    fun applySelfInset(bottomInset: Int) {
+        bottomTabsContainer.setBottomInset(bottomInset)
     }
 
     fun getPushAnimation(appearingOptions: Options): Animator? {
