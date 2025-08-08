@@ -317,7 +317,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
         view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
-        return WindowInsetsCompat.CONSUMED;
+        return insets;
     }
 
 
