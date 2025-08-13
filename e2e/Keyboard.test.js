@@ -1,8 +1,9 @@
 import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
-import Android from './AndroidUtils';
 import Utils from './Utils';
 
 const { elementByLabel, elementById } = Utils;
+
+const KBD_OBSCURED_TEXT = 'Keyboard Demo';
 
 describe.e2e('Keyboard', () => {
   beforeEach(async () => {
@@ -11,8 +12,9 @@ describe.e2e('Keyboard', () => {
   });
 
   it('Push - should close keyboard when Back clicked', async () => {
+    await expect(elementByLabel(KBD_OBSCURED_TEXT)).toBeVisible();
     await elementById(TestIDs.TEXT_INPUT1).tap();
-    await expect(elementByLabel('Keyboard Demo')).not.toBeVisible();
+    await expect(elementByLabel(KBD_OBSCURED_TEXT)).not.toBeVisible();
     await elementById(TestIDs.BACK_BUTTON).tap();
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
@@ -20,7 +22,7 @@ describe.e2e('Keyboard', () => {
   it('Modal - should close keyboard when close clicked', async () => {
     await elementById(TestIDs.MODAL_BTN).tap();
     await elementById(TestIDs.TEXT_INPUT1).tap();
-    await expect(elementByLabel('Keyboard Demo')).not.toBeVisible();
+    await expect(elementByLabel(KBD_OBSCURED_TEXT)).not.toBeVisible();
     await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
@@ -45,5 +47,11 @@ describe.e2e('Keyboard', () => {
   it('doesnt focus keyboard on show modal', async () => {
     await elementById(TestIDs.MODAL_BTN).tap();
     await expect(elementById(TestIDs.TEXT_INPUT1)).not.toBeFocused();
+  });
+
+  it(':android should respect UI with keyboard awareness', async () => {
+    await elementById(TestIDs.PUSH_KEYBOARD_SCREEN_STICKY_FOOTER).tap();
+    await elementById(TestIDs.TEXT_INPUT2).tap();
+    await expect(elementByLabel(KBD_OBSCURED_TEXT)).toBeVisible();
   });
 });

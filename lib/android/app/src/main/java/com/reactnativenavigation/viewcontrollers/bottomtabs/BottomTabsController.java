@@ -316,10 +316,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
-        return WindowInsetsCompat.CONSUMED;
-    }
+        Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
 
+        int bottomInset = (imeInsets.bottom > 0) ? 0 : sysInsets.bottom;
+        view.setPaddingRelative(0, 0, 0, bottomInset);
+        return insets;
+    }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {
