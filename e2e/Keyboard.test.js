@@ -12,8 +12,12 @@ const enableOnScreenKeyboard = async (adb, adbName) =>
 const disableOnScreenKeyboard = async (adb, adbName) =>
   adb.shell(adbName, 'settings put Secure show_ime_with_hard_keyboard 0');
 
-const driver = {
+const androidDriver = {
   async init() {
+    if (device.getPlatform() !== 'android') {
+      return;
+    }
+
     const { id: adbName } = device;
     const { adb } = device.deviceDriver;
 
@@ -32,8 +36,13 @@ const driver = {
   },
 
   async enableOnScreenKeyboard() {
+    if (!this.adb) {
+      // Not initialized
+      return;
+    }
     await this.adb.shell(this.adbName, 'settings put Secure show_ime_with_hard_keyboard 1');
   },
+
   async restoreOnScreenKeyboard() {
     if (!this.adb) {
       // Not initialized
@@ -46,12 +55,12 @@ const driver = {
 
 describe.e2e('Keyboard', () => {
   beforeAll(async () => {
-    await driver.init();
-    await driver.enableOnScreenKeyboard();
+    await androidDriver.init();
+    await androidDriver.enableOnScreenKeyboard();
   });
 
   afterAll(async () => {
-    await driver.restoreOnScreenKeyboard();
+    await androidDriver.restoreOnScreenKeyboard();
   });
 
   beforeEach(async () => {
