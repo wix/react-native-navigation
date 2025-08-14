@@ -1,5 +1,15 @@
 import React from 'react';
-import { View, ScrollView, Dimensions, StyleSheet, Image, TextInput, Text } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  Image,
+  TextInput,
+  Text,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {
   NavigationProps,
   NavigationComponent,
@@ -15,6 +25,7 @@ const KEYBOARD_LABEL = 'Keyboard Demo';
 interface Props extends NavigationProps {
   title?: string;
   autoFocus?: boolean;
+  stickyFooter?: boolean;
 }
 
 export default class KeyboardScreen extends NavigationComponent<Props> {
@@ -34,6 +45,7 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
       },
     };
   }
+
   constructor(props: Props) {
     super(props);
     Navigation.events().bindComponent(this);
@@ -50,30 +62,41 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
   }
 
   render() {
+    const FooterRoot = this.props.stickyFooter === true ? KeyboardAvoidingView : View;
     return (
-      <View style={styles.root}>
+      <SafeAreaView style={styles.root}>
         <ScrollView>
           <Image style={styles.image} source={require('../../img/2048.jpeg')} />
           <View style={{ alignItems: 'center' }}>
             <Button
               style={styles.button}
-              label={'Modal Keyboard Screen'}
+              label={'Modal screen'}
               testID={testIDs.MODAL_BTN}
               onPress={async () => {
                 await this.openModalKeyboard(undefined);
               }}
             />
+            <View style={styles.row}>
+              <Button
+                style={styles.button}
+                label={'Push screen w/ focus'}
+                testID={testIDs.PUSH_FOCUSED_KEYBOARD_SCREEN}
+                onPress={async () => {
+                  await this.openPushedKeyboard(undefined, true);
+                }}
+              />
+              <Button
+                style={styles.button}
+                label={'w/ sticky-footer'}
+                testID={testIDs.PUSH_KEYBOARD_SCREEN_STICKY_FOOTER}
+                onPress={async () => {
+                  await this.openPushedKeyboard(undefined, undefined, true);
+                }}
+              />
+            </View>
             <Button
               style={styles.button}
-              label={'Push Focused Keyboard Screen'}
-              testID={testIDs.PUSH_FOCUSED_KEYBOARD_SCREEN}
-              onPress={async () => {
-                await this.openPushedKeyboard(undefined, true);
-              }}
-            />
-            <Button
-              style={styles.button}
-              label={'Show Focused Keyboard Screen Modal'}
+              label={'Modal screen w/ focus'}
               testID={testIDs.MODAL_FOCUSED_KEYBOARD_SCREEN}
               onPress={async () => {
                 await this.openModalKeyboard(undefined, true);
@@ -104,20 +127,21 @@ export default class KeyboardScreen extends NavigationComponent<Props> {
             />
           </View>
         </ScrollView>
-        <View style={styles.footer}>
-          <Text style={styles.input}> {KEYBOARD_LABEL}</Text>
-        </View>
-      </View>
+        <FooterRoot behavior="height" style={styles.footer}>
+          <Text style={styles.input}>{KEYBOARD_LABEL}</Text>
+        </FooterRoot>
+      </SafeAreaView>
     );
   }
 
-  openPushedKeyboard = async (text?: string, autoFocus?: boolean) => {
+  openPushedKeyboard = async (text?: string, autoFocus?: boolean, stickyFooter?: boolean) => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: Screens.KeyboardScreen,
         passProps: {
           title: text,
           autoFocus,
+          stickyFooter,
         },
       },
     });
@@ -168,5 +192,9 @@ const styles = StyleSheet.create({
     height: 220,
     width: screenWidth,
     resizeMode: 'cover',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
