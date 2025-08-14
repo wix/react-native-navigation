@@ -6,12 +6,6 @@ const { elementByLabel, elementById } = Utils;
 
 const KBD_OBSCURED_TEXT = 'Keyboard Demo';
 
-const enableOnScreenKeyboard = async (adb, adbName) =>
-  adb.shell(adbName, 'settings put Secure show_ime_with_hard_keyboard 1');
-
-const disableOnScreenKeyboard = async (adb, adbName) =>
-  adb.shell(adbName, 'settings put Secure show_ime_with_hard_keyboard 0');
-
 const androidDriver = {
   async init() {
     if (device.getPlatform() !== 'android') {
@@ -29,9 +23,9 @@ const androidDriver = {
     this.adbName = adbName;
     this.kbdEnabled = await adb.shell(adbName, 'settings get Secure show_ime_with_hard_keyboard');
 
-    if (!(this.kbdEnabled === '0') || !(this.kbdEnabled === '1')) {
-      console.warn('[KeyboardDriver] Unable to get on-screen KBD setting, defaulting to false');
-      this.kbdEnabled = '0'
+    if (!(this.kbdEnabled === '0' || this.kbdEnabled === '1')) {
+      console.warn('[KbdDriver] Unable to get on-screen KBD setting, defaulting to false');
+      this.kbdEnabled = '0';
     }
   },
 
@@ -48,7 +42,6 @@ const androidDriver = {
       // Not initialized
       return;
     }
-
     await this.adb.shell(this.adbName, `settings put Secure show_ime_with_hard_keyboard ${this.kbdEnabled}`);
   },
 }
