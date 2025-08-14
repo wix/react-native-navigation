@@ -72,28 +72,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
 }
 
-#pragma mark RCTTurboModuleManagerDelegate
-
-- (Class)getModuleClassFromName:(const char *)name {
-	return RCTCoreModulesClassProvider(name);
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)
-	getTurboModule:(const std::string &)name
-		 jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker {
-	return nullptr;
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)
-	getTurboModule:(const std::string &)name
-		initParams:(const facebook::react::ObjCTurboModule::InitParams &)params {
-	return nullptr;
-}
-
-- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass {
-	return RCTAppSetupDefaultModuleFromClass(moduleClass, self.dependencyProvider);
-}
-
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
 	[NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
 				format:@"Subclasses must implement a valid sourceURLForBridge method"];
