@@ -9,8 +9,7 @@ function convertToSSIMFormat(image) {
     data: new Uint8ClampedArray(image.data),
     width: image.width,
     height: image.height
-}
-  ;
+  };
 }
 
 function loadImage(path) {
@@ -34,16 +33,27 @@ function bitmapDiff(imagePath, expectedImagePath, ssimThreshold = SSIM_SCORE_THR
   }
 }
 
-async function retry({ retries = 3, delay = 1000 }, func) {
-  let tries = 0;
-  let result;
-  do {
-    result = await func();
-  } while (!result && ++tries < retries);
+const sleep = (ms) =>
+  new Promise((res) => setTimeout(res, ms));
 
-  if (!result) {
-    throw new Error(`Failed even after ${retries} retries`);
+/**
+ * @param tries Total tries to attempt (retries + 1)
+ * @param delay Delay between retries, in milliseconds
+ * @param {Function<Promise<Boolean>>} func
+ * @returns {Promise<void>}
+ * @throws {Error} if the function fails after all retries
+ */
+async function retry({ tries = 3, delay = 1000 }, func) {
+  for (let i = 0; i < tries; i++) {
+    const result = await func();
+    if (result) {
+      return;
+    }
+
+    await sleep(delay);
   }
+
+  throw new Error(`Failed even after ${tries} attempts`);
 }
 
 const utils = {
@@ -70,7 +80,7 @@ const utils = {
       return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
     }
   },
-  sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
+  sleep,
   retry,
   expectImagesToBeEqual: (imagePath, expectedImagePath) => {
     bitmapDiff(imagePath, expectedImagePath);

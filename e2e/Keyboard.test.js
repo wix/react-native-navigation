@@ -1,72 +1,28 @@
 import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
 import { device } from 'detox';
 import Utils from './Utils';
+import kbdDriver from './drivers/androidKeyboard';
 
-const { elementByLabel, elementById, retry, sleep } = Utils;
+const { elementByLabel, elementById, sleep } = Utils;
 
 const KBD_OBSCURED_TEXT = 'Keyboard Demo';
 
-const androidDriver = {
-  async init() {
-    if (device.getPlatform() !== 'android') {
-      return;
-    }
-
-    const { id: adbName } = device;
-    const { adb } = device.deviceDriver;
-
-    if (!adb || !adbName) {
-      throw new Error(`Keyboard driver init failed (id=${adbName}, hasADB=${!!adb})`);
-    }
-
-    this.adb = adb;
-    this.adbName = adbName;
-    this.kbdEnabled = await adb.shell(adbName, 'settings get Secure show_ime_with_hard_keyboard');
-
-    if (!(this.kbdEnabled === '0' || this.kbdEnabled === '1')) {
-      console.warn('[KbdDriver] Unable to get on-screen KBD setting, defaulting to false');
-      this.kbdEnabled = '0';
-    }
-  },
-
-  async enableOnScreenKeyboard() {
-    if (!this.adb) {
-      // Not initialized
-      return;
-    }
-
-    await this._setOnscreenKeyboard(true);
-  },
-
-  async restoreOnScreenKeyboard() {
-    if (!this.adb) {
-      // Not initialized
-      return;
-    }
-    await this._setOnscreenKeyboard(this.kbdEnabled);
-  },
-
-  async _setOnscreenKeyboard(_value) {
-    const value = (!!Number(_value) ? '1' : '0');
-
-    await retry( { retries: 9 }, async () => {
-      await this.adb.shell(this.adbName, `settings put Secure show_ime_with_hard_keyboard ${value}`);
-      await sleep(1000);
-
-      const result = await this.adb.shell(this.adbName, 'settings get Secure show_ime_with_hard_keyboard');
-      return result === value;
-    });
-  }
-}
-
 describe.e2e('Keyboard', () => {
   beforeAll(async () => {
-    await androidDriver.init();
-    await androidDriver.enableOnScreenKeyboard();
+    await kbdDriver.init();
+    await kbdDriver.enableOnScreenKeyboard();
+
+    if (device.getPlatform() === 'android') {
+      // 1st-time Android keyboard appearance is laggy (Android's lazy init?)
+      await device.launchApp({ newInstance: true });
+      await elementById(TestIDs.KEYBOARD_SCREEN_BTN).tap();
+      await elementById(TestIDs.TEXT_INPUT1).tap();
+      await sleep(2000);
+    }
   });
 
   afterAll(async () => {
-    await androidDriver.restoreOnScreenKeyboard();
+    await kbdDriver.restoreOnScreenKeyboard();
   });
 
   beforeEach(async () => {
