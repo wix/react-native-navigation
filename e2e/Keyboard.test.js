@@ -2,7 +2,7 @@ import { default as TestIDs, default as testIDs } from '../playground/src/testID
 import { device } from 'detox';
 import Utils from './Utils';
 
-const { elementByLabel, elementById } = Utils;
+const { elementByLabel, elementById, retry, sleep } = Utils;
 
 const KBD_OBSCURED_TEXT = 'Keyboard Demo';
 
@@ -34,7 +34,8 @@ const androidDriver = {
       // Not initialized
       return;
     }
-    await this.adb.shell(this.adbName, 'settings put Secure show_ime_with_hard_keyboard 1');
+
+    await this._setOnscreenKeyboard(true);
   },
 
   async restoreOnScreenKeyboard() {
@@ -42,8 +43,20 @@ const androidDriver = {
       // Not initialized
       return;
     }
-    await this.adb.shell(this.adbName, `settings put Secure show_ime_with_hard_keyboard ${this.kbdEnabled}`);
+    await this._setOnscreenKeyboard(this.kbdEnabled);
   },
+
+  async _setOnscreenKeyboard(_value) {
+    const value = (!!Number(_value) ? '1' : '0');
+
+    await retry( { retries: 9 }, async () => {
+      await this.adb.shell(this.adbName, `settings put Secure show_ime_with_hard_keyboard ${value}`);
+      await sleep(1000);
+
+      const result = await this.adb.shell(this.adbName, 'settings get Secure show_ime_with_hard_keyboard');
+      return result === value;
+    });
+  }
 }
 
 describe.e2e('Keyboard', () => {

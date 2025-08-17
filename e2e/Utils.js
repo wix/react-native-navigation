@@ -34,6 +34,18 @@ function bitmapDiff(imagePath, expectedImagePath, ssimThreshold = SSIM_SCORE_THR
   }
 }
 
+async function retry({ retries = 3, delay = 1000 }, func) {
+  let tries = 0;
+  let result;
+  do {
+    result = await func();
+  } while (!result && ++tries < retries);
+
+  if (!result) {
+    throw new Error(`Failed even after ${retries} retries`);
+  }
+}
+
 const utils = {
   elementByLabel: (label) => {
     // uncomment for running tests with rn's new arch
@@ -59,6 +71,7 @@ const utils = {
     }
   },
   sleep: (ms) => new Promise((res) => setTimeout(res, ms)),
+  retry,
   expectImagesToBeEqual: (imagePath, expectedImagePath) => {
     bitmapDiff(imagePath, expectedImagePath);
 
