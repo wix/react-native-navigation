@@ -13,6 +13,7 @@ const utils = {
       'pm revoke com.reactnativenavigation.playground android.permission.READ_PHONE_STATE'
     ),
   executeShellCommand: (command) => {
+    // TODO Change to use Detox's ADB (see keyboard driver)
     exec.execSync(`adb -s ${device.id} shell ${command}`);
   },
   setDemoMode: () => {
