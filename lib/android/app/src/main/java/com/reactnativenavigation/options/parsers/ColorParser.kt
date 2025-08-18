@@ -1,5 +1,4 @@
 package com.reactnativenavigation.options.parsers
-
 import android.content.Context
 import com.facebook.react.bridge.ColorPropConverter
 import com.reactnativenavigation.options.params.Colour
@@ -18,21 +17,14 @@ object ColorParser {
             return ReactPlatformColor(JSONParser.convert(json))
         }
         return when (val color = json.opt(colorName)) {
-            null, VAL_NO_COLOR -> {
-                DontApplyColour()
-            }
-            is Int -> {
-                Colour(json.optInt(colorName))
-            }
+            null, VAL_NO_COLOR -> DontApplyColour()
+            is Int -> Colour(json.optInt(colorName))
             is JSONObject -> {
-                ColorPropConverter.getColor(color, context)?.let {
+                ColorPropConverter.getColor(color, context ?: throw IllegalArgumentException("Context must not be null"))?.let {
                     Colour(it)
                 } ?: NullColor()
             }
-            else -> {
-                NullColor()
-            }
+            else -> NullColor()
         }
-
     }
 }
