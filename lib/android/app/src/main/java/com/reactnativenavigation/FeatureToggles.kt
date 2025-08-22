@@ -5,11 +5,13 @@ import androidx.annotation.VisibleForTesting
 enum class RNNToggles {
     TOP_BAR_COLOR_ANIMATION__PUSH,
     TOP_BAR_COLOR_ANIMATION__TABS,
+    TAB_BAR_TRANSLUCENCE,
 }
 
 private val ToggleDefaults = mapOf(
     RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to false,
     RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS to false,
+    RNNToggles.TAB_BAR_TRANSLUCENCE to false,
 )
 
 object RNNFeatureToggles {

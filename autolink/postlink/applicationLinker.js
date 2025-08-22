@@ -16,8 +16,8 @@ class ApplicationLinker {
     if (!this.applicationPath) {
       errorn(
         'MainApplication.kt not found! Does the file exist in the correct folder?\n' +
-        '   Please check the manual installation docs:\n' +
-        '   https://wix.github.io/react-native-navigation/docs/installing#3-update-mainapplicationjava'
+          '   Please check the manual installation docs:\n' +
+          '   https://wix.github.io/react-native-navigation/docs/installing#3-update-mainapplicationjava'
       );
     }
 
@@ -78,10 +78,7 @@ class ApplicationLinker {
     if (this._doesExtendApplication(applicationContent)) {
       debugn('   Extending NavigationApplication');
       return applicationContent
-        .replace(
-          /:\s*Application\(\)\s*,\s*ReactApplication/gi,
-          ': NavigationApplication()'
-        )
+        .replace(/:\s*Application\(\)\s*,\s*ReactApplication/gi, ': NavigationApplication()')
         .replace(
           'import com.facebook.react.ReactApplication',
           'import com.reactnativenavigation.NavigationApplication'
@@ -114,21 +111,21 @@ class ApplicationLinker {
       return applicationContent;
     }
 
-    if (this._doesExtendReactNativeHost(applicationContent)) {
-      debugn('   Changing host implementation to NavigationReactNativeHost');
-      return applicationContent
-        .replace('ReactNativeHost(this)', 'NavigationReactNativeHost(this)')
-        .replace(
-          'import com.facebook.react.ReactNativeHost',
-          'import com.facebook.react.ReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost'
-        );
-    } else if (this._doesExtendDefaultReactNativeHost(applicationContent)) {
+    if (this._doesExtendDefaultReactNativeHost(applicationContent)) {
       debugn('   Changing host implementation to NavigationReactNativeHost');
       return applicationContent
         .replace('DefaultReactNativeHost(this)', 'NavigationReactNativeHost(this)')
         .replace(
           'import com.facebook.react.defaults.DefaultReactNativeHost',
           'import com.facebook.react.defaults.DefaultReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost'
+        );
+    } else if (this._doesExtendReactNativeHost(applicationContent)) {
+      debugn('   Changing host implementation to NavigationReactNativeHost');
+      return applicationContent
+        .replace('ReactNativeHost(this)', 'NavigationReactNativeHost(this)')
+        .replace(
+          'import com.facebook.react.ReactNativeHost',
+          'import com.facebook.react.ReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost'
         );
     }
 
@@ -160,7 +157,9 @@ class ApplicationLinker {
   }
 
   _isSOLoaderInitCalled(applicationContent) {
-    return /SoLoader\.init\(\s*this\s*,\s*OpenSourceMergedSoMapping\s*\);?/.test(applicationContent);
+    return /SoLoader\.init\(\s*this\s*,\s*OpenSourceMergedSoMapping\s*\);?/.test(
+      applicationContent
+    );
   }
 
   _removeNewArchEntryPointLoad(applicationContent) {
@@ -176,7 +175,9 @@ class ApplicationLinker {
   }
 
   _isNewArchEntryPointLoadCalled(applicationContent) {
-    return /if\s*\(\s*BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED\s*\)\s*\{[\s\S]*?load\(\)\s*[\s}]*?\}/.test(applicationContent);
+    return /if\s*\(\s*BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED\s*\)\s*\{[\s\S]*?load\(\)\s*[\s}]*?\}/.test(
+      applicationContent
+    );
   }
 }
 

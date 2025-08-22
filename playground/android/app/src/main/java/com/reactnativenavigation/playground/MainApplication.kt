@@ -11,8 +11,9 @@ import com.reactnativenavigation.react.NavigationPackage
 import com.reactnativenavigation.react.NavigationReactNativeHost
 
 class MainApplication : NavigationApplication(mapOf(
-        RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to true,
-        RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS to true
+    RNNToggles.TOP_BAR_COLOR_ANIMATION__PUSH to true,
+    RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS to true,
+    RNNToggles.TAB_BAR_TRANSLUCENCE to true,
 )) {
     override val reactNativeHost: ReactNativeHost = object : NavigationReactNativeHost(this) {
         override fun getJSMainModuleName(): String {

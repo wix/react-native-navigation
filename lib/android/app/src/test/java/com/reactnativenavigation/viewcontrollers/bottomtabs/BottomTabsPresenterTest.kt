@@ -16,6 +16,7 @@ import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer
+import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Ignore
 import org.junit.Test
@@ -35,6 +36,7 @@ class BottomTabsPresenterTest : BaseTest() {
     private lateinit var uut: BottomTabsPresenter
     private lateinit var bottomTabs: BottomTabs
     private lateinit var bottomTabsContainer: BottomTabsContainer
+    private lateinit var bottomTabsLayout: BottomTabsLayout
     private lateinit var animator: BottomTabsAnimator
     private lateinit var tabSelector: TabSelector
 
@@ -46,12 +48,13 @@ class BottomTabsPresenterTest : BaseTest() {
         val child2 = spy(SimpleViewController(activity, childRegistry, "child2", Options()))
         tabs = listOf(child1, child2)
         bottomTabsContainer = mock()
+        bottomTabsLayout = mock()
         bottomTabs = mock()
         whenever(bottomTabsContainer.bottomTabs).thenReturn(bottomTabs)
         animator = spy(BottomTabsAnimator(bottomTabs))
         uut = BottomTabsPresenter(tabs, Options(), animator)
         tabSelector = mock()
-        uut.bindView(bottomTabsContainer, tabSelector)
+        uut.bindView(bottomTabsContainer, bottomTabsLayout, tabSelector)
     }
 
     @Test
