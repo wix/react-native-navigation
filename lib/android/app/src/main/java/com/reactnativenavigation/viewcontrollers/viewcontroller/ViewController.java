@@ -254,6 +254,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (view.getParent() == null) parent.addView(view, index);
     }
 
+    @Nullable
+    public T peekView() {
+        return view;
+    }
+
     public String getId() {
         return id;
     }

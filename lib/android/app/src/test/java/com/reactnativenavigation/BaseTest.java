@@ -61,7 +61,6 @@ public abstract class BaseTest {
         RNNFeatureToggles.init();
     }
 
-
     public void mockSystemUiUtils(int statusBarHeight, int statusBarHeightDp, Functions.Func1<MockedStatic<SystemUiUtils>> mockedBlock) {
         try (MockedStatic<SystemUiUtils> theMock = Mockito.mockStatic(SystemUiUtils.class)) {
             theMock.when(() -> {
