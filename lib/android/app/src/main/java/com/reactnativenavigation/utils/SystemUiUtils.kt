@@ -12,14 +12,12 @@ import androidx.core.view.WindowInsetsControllerCompat
 import kotlin.math.abs
 import kotlin.math.ceil
 
-
 object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
     var navigationBarDefaultColor = -1
         private set
-
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {

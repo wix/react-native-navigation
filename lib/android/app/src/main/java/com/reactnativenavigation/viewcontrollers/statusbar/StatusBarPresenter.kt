@@ -13,6 +13,7 @@ import com.reactnativenavigation.options.StatusBarOptions.TextColorScheme
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.utils.ColorUtils.isColorLight
 import com.reactnativenavigation.utils.StubAnimationListener.Companion.onAnimatorEnd
+import com.reactnativenavigation.utils.SystemUiUtils
 import com.reactnativenavigation.utils.SystemUiUtils.clearStatusBarTranslucency
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarColor
 import com.reactnativenavigation.utils.SystemUiUtils.hideStatusBar
@@ -26,8 +27,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.lang.ref.WeakReference
 
 class StatusBarPresenter private constructor(
-        activity: Activity,
-        private val sbColorAnimator: StatusBarColorAnimator = StatusBarColorAnimator(activity)) {
+    activity: Activity,
+    private val sbColorAnimator: StatusBarColorAnimator = StatusBarColorAnimator(activity),
+) {
 
     private val window = WeakReference(activity.window)
     private var hasPendingColorAnim = false
@@ -120,7 +122,8 @@ class StatusBarPresenter private constructor(
 
     private fun setStatusBarVisible(viewController: ViewController<*>, visible: Bool) {
         val window = window.get() ?: return
-        val view = if (viewController.view != null) viewController.view else window.decorView
+        val view = viewController.peekView() ?: window.decorView
+
         if (visible.isFalse) {
             hideStatusBar(window, view)
         } else {
@@ -206,7 +209,7 @@ class StatusBarPresenter private constructor(
         lateinit var instance: StatusBarPresenter
 
         fun init(activity: Activity) {
-            instance = StatusBarPresenter(activity)
+            init(activity, SystemUiUtils)
         }
     }
 }
