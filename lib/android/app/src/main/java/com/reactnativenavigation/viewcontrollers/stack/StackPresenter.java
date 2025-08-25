@@ -89,15 +89,17 @@ public class StackPresenter {
     private final TypefaceLoader typefaceLoader;
 
     public StackPresenter(Activity activity,
-            TitleBarReactViewCreator titleViewCreator,
-            TopBarBackgroundViewCreator topBarBackgroundViewCreator,
-            TitleBarButtonCreator buttonCreator,
-            IconResolver iconResolver,
-            TypefaceLoader typefaceLoader,
-            RenderChecker renderChecker,
-            Options defaultOptions) {
+                          TitleBarReactViewCreator titleViewCreator,
+                          TitleBarButtonCreator buttonCreator,
+                          TopBarController topBarController,
+                          IconResolver iconResolver,
+                          TypefaceLoader typefaceLoader,
+                          RenderChecker renderChecker,
+                          Options defaultOptions,
+                          TopBarBackgroundViewCreator topBarBackgroundViewCreator) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
+        this.topBarController = topBarController;
         this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
         this.buttonCreator = buttonCreator;
         this.iconResolver = iconResolver;
@@ -118,8 +120,7 @@ public class StackPresenter {
         return defaultOptions;
     }
 
-    public void bindView(TopBarController topBarController, @Nullable BottomTabsController bottomTabsController) {
-        this.topBarController = topBarController;
+    public void bindView(@Nullable BottomTabsController bottomTabsController) {
         this.bottomTabsController = bottomTabsController;
         topBar = topBarController.getView();
     }

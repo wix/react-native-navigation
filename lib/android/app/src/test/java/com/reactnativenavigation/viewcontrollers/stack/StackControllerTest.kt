@@ -24,6 +24,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAppearanceAn
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.stack.StackBehaviour
 import com.reactnativenavigation.views.stack.StackLayout
@@ -42,7 +43,6 @@ import kotlin.test.fail
 class StackControllerTest : BaseTest() {
     private lateinit var activity: Activity
     private lateinit var childRegistry: ChildControllersRegistry
-    private lateinit var uut: StackController
     private lateinit var child1: ViewController<*>
     private lateinit var child1a: ViewController<*>
     private lateinit var child2: ViewController<*>
@@ -55,28 +55,23 @@ class StackControllerTest : BaseTest() {
     private lateinit var presenter: StackPresenter
     private lateinit var backButtonHelper: BackButtonHelper
     private lateinit var eventEmitter: EventEmitter
+    private lateinit var uut: StackController
 
     override fun beforeEach() {
         super.beforeEach()
         eventEmitter = mock()
         backButtonHelper = spy(BackButtonHelper())
         activity = newActivity()
+        StatusBarPresenter.init(activity)
         SystemUiUtils.saveStatusBarHeight(63)
         animator = spy(StackAnimator(activity))
         childRegistry = ChildControllersRegistry()
-        presenter = spy(StackPresenter(
-                activity,
-                TitleBarReactViewCreatorMock(),
-                TopBarBackgroundViewCreatorMock(),
-                TitleBarButtonCreatorMock(),
-                IconResolver(activity, ImageLoaderMock.mock()),
-                TypefaceLoaderMock(),
-                RenderChecker(),
-                Options()
-        )
-        )
+        topBarAnimator = TopBarAppearanceAnimator()
+        topBarController = createTopBarController(topBarAnimator)
+        presenter = createStackPresenter()
         createChildren()
-        uut = createStack()
+
+        uut = createStackBuilder("stack", ArrayList()).build()
         activity.setContentView(uut.view)
     }
 
@@ -100,7 +95,7 @@ class StackControllerTest : BaseTest() {
     @Test
     fun childrenMustBeUniqueById() {
         try {
-            val uut: StackController = createStack(listOf(child1, child2, child1))
+            val uut: StackController = recreateStack(listOf(child1, child2, child1))
             fail("Stack should not have duplicate ids!")
         } catch (e: IllegalArgumentException) {
             assertThat(e.message).contains(child1.id)
@@ -109,7 +104,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun childrenAreAssignedParent() {
-        val uut: StackController = createStack(listOf(child1, child2))
+        val uut: StackController = recreateStack(listOf(child1, child2))
         for (child in uut.childControllers) {
             assertThat(child.parentController == uut).isTrue()
         }
@@ -117,14 +112,14 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun constructor_backButtonIsAddedToChild() {
-        createStack(listOf(child1, child2, child3))
+        recreateStack(listOf(child1, child2, child3))
         assertThat(child2.options.topBar.buttons.back.visible[false]).isTrue()
         assertThat(child3.options.topBar.buttons.back.visible[false]).isTrue()
     }
 
     @Test
     fun createView_currentChildIsAdded() {
-        val uut: StackController = createStack(listOf(child1, child2, child3, child4))
+        val uut: StackController = recreateStack(listOf(child1, child2, child3, child4))
         assertThat(uut.childControllers.size).isEqualTo(4)
         assertThat(uut.view.childCount).isEqualTo(2)
         assertThat(uut.view.getChildAt(0)).isEqualTo(child4.view)
@@ -621,7 +616,7 @@ class StackControllerTest : BaseTest() {
         assertThat(child1.parentController).isNull()
         uut.push(child1, CommandListenerAdapter())
         assertThat(child1.parentController).isEqualTo(uut)
-        val anotherNavController = createStack("another")
+        val anotherNavController = recreateStack("another")
         anotherNavController.ensureViewIsCreated()
         anotherNavController.push(child2, CommandListenerAdapter())
         assertThat(child2.parentController).isEqualTo(anotherNavController)
@@ -831,7 +826,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun findControllerById_Deeply() {
-        val stack = createStack("another")
+        val stack = recreateStack("another")
         stack.ensureViewIsCreated()
         stack.push(child2, CommandListenerAdapter())
         uut.push(stack, CommandListenerAdapter())
@@ -922,8 +917,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun stackCanBePushed() {
-        uut.view.removeFromParent()
-        val parent = createStack("someStack")
+        val parent = recreateStack("someStack")
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
         uut.onViewWillAppear()
@@ -932,8 +926,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun applyOptions_applyOnlyOnFirstStack() {
-        uut.view.removeFromParent()
-        val parent = spy(createStack("someStack"))
+        val parent = spy(recreateStack("someStack"))
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
         val childOptions = Options()
@@ -1055,7 +1048,7 @@ class StackControllerTest : BaseTest() {
         activity.setContentView(parent)
 
         val child = SimpleViewController(activity, childRegistry, "child1", Options())
-        val stack = createStack(Collections.singletonList(child))
+        val stack = recreateStack(Collections.singletonList(child))
         stack.view.visibility = View.INVISIBLE
 
         parent.addView(stack.view)
@@ -1067,7 +1060,7 @@ class StackControllerTest : BaseTest() {
     @Test
     fun onAttachToParent_doesNotCrashWhenCalledAfterDestroy() {
         Robolectric.getForegroundThreadScheduler().pause()
-        val spy = spy(createStack())
+        val spy = spy(recreateStack())
         val view = spy.view
         spy.push(child1, CommandListenerAdapter())
         activity.setContentView(view)
@@ -1127,39 +1120,57 @@ class StackControllerTest : BaseTest() {
                 .containsOnly(*ids)
     }
 
-    private fun createStack(): StackController {
+    private fun recreateStack(): StackController {
+        uut.view.removeFromParent()
+        topBarController.view.removeFromParent()
+
         return createStackBuilder("stack", ArrayList()).build()
     }
 
-    private fun createStack(id: String): StackController {
+    private fun recreateStack(id: String): StackController {
+        uut.view.removeFromParent()
+        topBarController.view.removeFromParent()
+
         return createStackBuilder(id, ArrayList()).build()
     }
 
-    private fun createStack(children: List<ViewController<*>>): StackController {
+    private fun recreateStack(children: List<ViewController<*>>): StackController {
+        uut.view.removeFromParent()
+        topBarController.view.removeFromParent()
+
         return createStackBuilder("stack", children).build()
     }
 
     private fun createStackBuilder(id: String, children: List<ViewController<*>>): StackControllerBuilder {
-        createTopBarController()
-        return TestUtils.newStackController(activity)
+        return TestUtils.newStackController(activity, topBarController)
                 .setEventEmitter(eventEmitter)
                 .setChildren(children)
                 .setId(id)
-                .setTopBarController(topBarController)
                 .setChildRegistry(childRegistry)
                 .setAnimator(animator)
                 .setStackPresenter(presenter)
                 .setBackButtonHelper(backButtonHelper)
     }
 
-    private fun createTopBarController() {
-        topBarAnimator = TopBarAppearanceAnimator()
-        topBarController = spy(object : TopBarController(topBarAnimator) {
+    private fun createTopBarController(topBarAnimator: TopBarAppearanceAnimator): TopBarController =
+        spy(object : TopBarController(topBarAnimator) {
             override fun createTopBar(context: Context, stackLayout: StackLayout): TopBar {
                 val spy = spy(super.createTopBar(context, stackLayout))
                 spy.layout(0, 0, 1000, UiUtils.getTopBarHeight(activity))
                 return spy
             }
         })
-    }
+
+    private fun createStackPresenter() =
+        spy(StackPresenter(
+            activity,
+            TitleBarReactViewCreatorMock(),
+            TitleBarButtonCreatorMock(),
+            topBarController,
+            IconResolver(activity, ImageLoaderMock.mock()),
+            TypefaceLoaderMock(),
+            RenderChecker(),
+            Options(),
+            TopBarBackgroundViewCreatorMock()
+        ))
 }

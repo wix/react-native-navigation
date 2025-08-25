@@ -187,21 +187,22 @@ public class LayoutFactory {
 	}
 
 	private ViewController<?> createStack(LayoutNode node) {
+		final TopBarController topBarController = new TopBarController();
 		return new StackControllerBuilder(activity, eventEmitter)
 				.setChildren(createChildren(node.children))
 				.setChildRegistry(childRegistry)
-				.setTopBarController(new TopBarController())
+				.setTopBarController(topBarController)
 				.setId(node.id)
 				.setInitialOptions(parseOptions(node.getOptions()))
 				.setStackPresenter(new StackPresenter(activity,
 						new TitleBarReactViewCreator(reactInstanceManager),
-						new TopBarBackgroundViewCreator(reactInstanceManager),
 						new TitleBarButtonCreator(reactInstanceManager),
+						topBarController,
 						new IconResolver(activity, new ImageLoader()),
 						new TypefaceLoader(activity),
 						new RenderChecker(),
-						defaultOptions
-				))
+						defaultOptions,
+						new TopBarBackgroundViewCreator(reactInstanceManager)))
 				.setPresenter(new Presenter(activity, defaultOptions))
 				.build();
 	}
