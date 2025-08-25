@@ -24,6 +24,7 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
@@ -65,6 +66,7 @@ class StackPresenterTest : BaseTest() {
     override fun beforeEach() {
         super.beforeEach()
         activity = spy(newActivity())
+        StatusBarPresenter.init(activity)
         val titleViewCreator: TitleBarReactViewCreatorMock = object : TitleBarReactViewCreatorMock() {
             override fun create(activity: Activity, componentId: String, componentName: String): TitleBarReactView {
                 reactTitleView = spy(super.create(activity, componentId, componentName))
@@ -75,18 +77,19 @@ class StackPresenterTest : BaseTest() {
         typefaceLoader = createTypeFaceLoader()
         iconResolver = IconResolverFake(activity)
         buttonCreator = TitleBarButtonCreatorMock()
+        topBarController = createTopBarController()
         ogUut = StackPresenter(
-                activity,
-                titleViewCreator,
-                TopBarBackgroundViewCreatorMock(),
-                buttonCreator,
-                iconResolver,
-                typefaceLoader,
-                renderChecker,
-                Options()
+            activity,
+            titleViewCreator,
+            buttonCreator,
+            topBarController,
+            iconResolver,
+            typefaceLoader,
+            renderChecker,
+            Options(),
+            TopBarBackgroundViewCreatorMock()
         )
         uut = spy(ogUut)
-        createTopBarController()
         parent = TestUtils.newStackController(activity)
                 .setTopBarController(topBarController)
                 .setStackPresenter(uut)
@@ -1042,8 +1045,8 @@ class StackPresenterTest : BaseTest() {
         verify(topBarController, times(t)).hide()
     }
 
-    private fun createTopBarController() {
-        topBarController = spy(object : TopBarController() {
+    private fun createTopBarController(): TopBarController {
+        return spy(object : TopBarController() {
             override fun createTopBar(context: Context, stackLayout: StackLayout): TopBar {
                 topBar = spy(super.createTopBar(context, stackLayout))
                 topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(activity))
