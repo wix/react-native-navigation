@@ -31,19 +31,37 @@ import org.mockito.Mockito;
 
 public class TestUtils {
     public static StackControllerBuilder newStackController(Activity activity) {
-        TopBarController topBarController = new TopBarController() {
-            @Override
-            protected TopBar createTopBar(@NonNull Context context, @NonNull StackLayout stackLayout) {
-                TopBar topBar = super.createTopBar(context, stackLayout);
-                topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
-                return topBar;
-            }
-        };
+        return newStackController(activity, null);
+    }
+
+    public static StackControllerBuilder newStackController(Activity activity, TopBarController topBarController) {
+        if (topBarController == null) {
+            topBarController = new TopBarController() {
+                @Override
+                protected TopBar createTopBar(@NonNull Context context, @NonNull StackLayout stackLayout) {
+                    TopBar topBar = super.createTopBar(context, stackLayout);
+                    topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
+                    return topBar;
+                }
+            };
+        }
+
+        StackPresenter stackPresenter = new StackPresenter(activity,
+                new TitleBarReactViewCreatorMock(),
+                new TitleBarButtonCreatorMock(),
+                topBarController,
+                new IconResolver(activity,
+                new ImageLoader()),
+                new TypefaceLoaderMock(),
+                new RenderChecker(),
+                new Options(),
+                new TopBarBackgroundViewCreatorMock());
+
         return new StackControllerBuilder(activity, Mockito.mock(EventEmitter.class))
                 .setId("stack" + CompatUtils.generateViewId())
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarController(topBarController)
-                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TitleBarButtonCreatorMock(), new IconResolver(activity, new ImageLoader()), new TypefaceLoaderMock(), new RenderChecker(), new Options()))
+                .setStackPresenter(stackPresenter)
                 .setInitialOptions(new Options());
     }
 

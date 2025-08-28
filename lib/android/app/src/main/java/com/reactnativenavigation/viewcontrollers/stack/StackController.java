@@ -439,7 +439,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(), topBarController, getId());
-        presenter.bindView(topBarController, getBottomTabsController());
+        presenter.bindView(getBottomTabsController());
         addInitialChild(stackLayout);
         return stackLayout;
     }
