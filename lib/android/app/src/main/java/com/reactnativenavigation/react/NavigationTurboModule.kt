@@ -36,20 +36,22 @@ class NavigationTurboModule(
             override fun onHostPause() {
                 super.onHostPause()
                 UiUtils.runOnMainThread {
-                    navigator().onHostPause()
+                    navigator()?.onHostPause()
                 }
             }
 
             override fun onHostResume() {
                 eventEmitter = EventEmitter(reactContext)
-                navigator().setEventEmitter(eventEmitter)
-                layoutFactory.init(
-                    activity(),
-                    eventEmitter,
-                    navigator().getChildRegistry(),
-                    (activity().application as NavigationApplication).externalComponents
-                )
-                UiUtils.runOnMainThread { navigator().onHostResume() }
+                navigator()?.let { navigator: Navigator ->
+                    navigator.setEventEmitter(eventEmitter)
+                    layoutFactory.init(
+                        activity(),
+                        eventEmitter,
+                        navigator.childRegistry,
+                        (reactApplicationContext.applicationContext as NavigationApplication).externalComponents
+                    )
+                    UiUtils.runOnMainThread { navigator.onHostResume() }
+                }
             }
         })
     }
@@ -82,7 +84,7 @@ class NavigationTurboModule(
         handle {
             Log.d("NavigationTurboModule", "setRoot handle ${Thread.currentThread()}")
             val viewController = layoutFactory.create(layoutTree)
-            navigator().setRoot(
+            navigator()?.setRoot(
                 viewController,
                 NativeCommandListener("setRoot", commandId, promise, eventEmitter, now)
             )
@@ -93,12 +95,12 @@ class NavigationTurboModule(
         handle {
             val defaultOptions = parse(options)
             layoutFactory.defaultOptions = defaultOptions
-            navigator().defaultOptions = defaultOptions
+            navigator()?.defaultOptions = defaultOptions
         }
     }
 
     override fun mergeOptions(componentId: String?, options: ReadableMap?) {
-        handle { navigator().mergeOptions(componentId, parse(options)) }
+        handle { navigator()?.mergeOptions(componentId, parse(options)) }
     }
 
     override fun push(
@@ -110,7 +112,7 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator().push(
+            navigator()?.push(
                 componentId,
                 viewController,
                 NativeCommandListener("push", commandId, promise, eventEmitter, now)
@@ -125,7 +127,7 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator().pop(
+            navigator()?.pop(
                 componentId,
                 parse(options),
                 NativeCommandListener("pop", commandId, promise, eventEmitter, now)
@@ -140,7 +142,7 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator().popTo(
+            navigator()?.popTo(
                 componentId,
                 parse(options),
                 NativeCommandListener("popTo", commandId, promise, eventEmitter, now)
@@ -155,7 +157,7 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator().popToRoot(
+            navigator()?.popToRoot(
                 componentId,
                 parse(options),
                 NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)
@@ -175,7 +177,7 @@ class NavigationTurboModule(
                 val layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)))
                 _children.add(layoutFactory.create(layoutTree))
             }
-            navigator().setStackRoot(
+            navigator()?.setStackRoot(
                 componentId,
                 _children,
                 NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now)
@@ -187,7 +189,7 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator().showModal(
+            navigator()?.showModal(
                 viewController,
                 NativeCommandListener("showModal", commandId, promise, eventEmitter, now)
             )
@@ -201,8 +203,8 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator().mergeOptions(componentId, parse(options))
-            navigator().dismissModal(
+            navigator()?.mergeOptions(componentId, parse(options))
+            navigator()?.dismissModal(
                 componentId,
                 NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now)
             )
@@ -211,7 +213,7 @@ class NavigationTurboModule(
 
     override fun dismissAllModals(commandId: String, options: ReadableMap?, promise: Promise) {
         handle {
-            navigator().dismissAllModals(
+            navigator()?.dismissAllModals(
                 parse(options),
                 NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now)
             )
@@ -222,7 +224,7 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator().showOverlay(
+            navigator()?.showOverlay(
                 viewController,
                 NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now)
             )
@@ -231,7 +233,7 @@ class NavigationTurboModule(
 
     override fun dismissOverlay(commandId: String, componentId: String, promise: Promise) {
         handle {
-            navigator().dismissOverlay(
+            navigator()?.dismissOverlay(
                 componentId,
                 NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)
             )
@@ -240,7 +242,7 @@ class NavigationTurboModule(
 
     override fun dismissAllOverlays(commandId: String, promise: Promise) {
         handle {
-            navigator().dismissAllOverlays(
+            navigator()?.dismissAllOverlays(
                 NativeCommandListener(
                     "dismissAllOverlays",
                     commandId,
@@ -263,25 +265,36 @@ class NavigationTurboModule(
             null
         ) Options.EMPTY else Options.parse(
             ctx,
-            TypefaceLoader(activity()),
+            TypefaceLoader(reactApplicationContext),
             jsonParser.parse(mergeOptions)
         )
     }
 
-    private fun navigator(): Navigator {
-        return activity().navigator
+    private fun navigator(): Navigator? {
+        val navigator = activity()?.navigator
+        if (navigator == null) {
+            Log.e("NavigationTurboModule", "navigator is null!")
+        }
+        return activity()?.navigator
     }
 
     private fun handle(task: Runnable) {
         UiThread.post {
-            if (currentActivity != null && !activity().isFinishing) {
+            activity()?.let {
+                if (it.isFinishing) {
+                    return@let
+                }
                 task.run()
             }
         }
     }
 
-    private fun activity(): NavigationActivity {
-        return currentActivity as NavigationActivity
+    private fun activity(): NavigationActivity? {
+        val activity = reactApplicationContext.currentActivity as NavigationActivity?
+        if (activity == null) {
+            Log.e("NavigationTurboModule", "current activity is null!")
+        }
+        return currentActivity as NavigationActivity?
     }
 
     companion object {
