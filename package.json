@@ -68,7 +68,8 @@
     "react-native-redash": "^12.6.1",
     "reanimated-color-picker": "^3.0.6",
     "ssim.js": "^3.5.0",
-    "tslib": "1.9.3"
+    "tslib": "1.9.3",
+    "xcode": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
