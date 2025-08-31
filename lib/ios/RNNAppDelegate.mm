@@ -13,9 +13,18 @@
 #import <React/RCTSurfacePresenterStub.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
+
+
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_nativeconfig/react/config/ReactNativeConfig.h>
+#import <React_runtimescheduler/react/renderer/runtimescheduler/RuntimeScheduler.h>
+#import <React_runtimescheduler/react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
+#else
 #import <react/config/ReactNativeConfig.h>
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
+#endif
+
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTBridge+Private.h>
 #import <React/RCTImageLoader.h>

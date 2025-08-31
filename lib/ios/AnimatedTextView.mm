@@ -2,9 +2,17 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTParagraphComponentView.h>
+
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_FabricComponents/react/renderer/components/text/ParagraphComponentDescriptor.h>
+#import <React_FabricComponents/react/renderer/components/text/ParagraphProps.h>
+#import <React_FabricComponents/react/renderer/components/text/ParagraphState.h>
+#else
 #import <react/renderer/components/text/ParagraphComponentDescriptor.h>
 #import <react/renderer/components/text/ParagraphProps.h>
 #import <react/renderer/components/text/ParagraphState.h>
+#endif
+
 #endif
 
 @implementation AnimatedTextView {

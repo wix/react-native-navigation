@@ -9,7 +9,12 @@
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNTurboCommandsHandler.h"
+
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_RuntimeApple/ReactCommon/RCTHost.h>
+#else
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#endif
 
 @interface RNNTurboManager ()
 

@@ -1,7 +1,12 @@
 #import "RNNEventEmitter.h"
 #import "RNNUtils.h"
 #import "RNNTurboEventEmitter.h"
+
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_RuntimeApple/ReactCommon/RCTHost.h>
+#else
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#endif
 
 @implementation RNNEventEmitter { }
 

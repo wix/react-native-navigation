@@ -4,7 +4,11 @@
 #import <UIKit/UIKit.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_RuntimeApple/ReactCommon/RCTHost.h>
+#else
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#endif
 #import "RNNTurboManager.h"
 #endif
 

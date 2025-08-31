@@ -5,7 +5,13 @@
 #import <React/RCTUIManagerUtils.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
+
+#ifdef USE_FRAMEWORKS_STATIC
+#import <React_RuntimeApple/ReactCommon/RCTHost.h>
+#else
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#endif
+
 #import <React/RCTSurfacePresenterStub.h>
 #endif
 
