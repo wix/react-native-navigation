@@ -33,6 +33,30 @@ if [ ! -f "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h" ]; then
     cp "$(pwd)/../node_modules/react-native/ReactCommon/react/runtime/JSRuntimeFactory.h" "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h"
 fi
 
+# Fix 1b: Also fix JSRuntimeFactory.h includes in React-RuntimeCore framework
+# Check all DerivedData directories for RuntimeCore framework
+for DD_DIR in $(find ~/Library/Developer/Xcode/DerivedData -name "rnntest12*" -type d 2>/dev/null); do
+    RUNTIME_CORE_DIR="$DD_DIR/Build/Products/Debug-iphonesimulator/React-RuntimeCore/React_RuntimeCore.framework/Headers"
+    if [ -f "$RUNTIME_CORE_DIR/react/runtime/JSRuntimeFactory.h" ]; then
+        echo "Fixing JSRuntimeFactory.h in RuntimeCore framework ($DD_DIR)..."
+        # Copy jsinspector-modern headers to RuntimeCore if missing
+        if [ ! -d "$RUNTIME_CORE_DIR/jsinspector-modern" ]; then
+            echo "  Copying jsinspector-modern headers to RuntimeCore..."
+            cp -R "$(pwd)/../node_modules/react-native/ReactCommon/jsinspector-modern" "$RUNTIME_CORE_DIR/"
+        fi
+        # Fix the include to use relative path  
+        sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$RUNTIME_CORE_DIR/react/runtime/JSRuntimeFactory.h"
+        
+        # Fix ALL jsinspector-modern includes AND imports across the entire DerivedData directory
+        echo "  Fixing ALL jsinspector-modern includes/imports in DerivedData..."
+        find "$DD_DIR/Build/Products/Debug-iphonesimulator" -name "*.h" -exec grep -l -E "#(include|import) <jsinspector-modern/" {} \; 2>/dev/null | while read file; do
+            echo "    Fixing: $file"
+            sed -i '' 's|#include <jsinspector-modern/\([^>]*\)>|#include "\1"|g' "$file"
+            sed -i '' 's|#import <jsinspector-modern/\([^>]*\)>|#import "\1"|g' "$file"
+        done
+    fi
+done
+
 # Fix 2: Copy jsinspector-modern headers if missing
 if [ ! -d "$FRAMEWORK_DIR/jsinspector-modern" ]; then
     echo "Copying jsinspector-modern headers..."
@@ -46,10 +70,42 @@ if [ -f "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h" ]; then
     sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h"
 fi
 
+# Fix 3b: Also fix JSRuntimeFactory.h in the source file
+PODS_JSRUNTIME="$(pwd)/../node_modules/react-native/ReactCommon/react/runtime/JSRuntimeFactory.h"
+if [ -f "$PODS_JSRUNTIME" ]; then
+    echo "Fixing source JSRuntimeFactory.h in node_modules..."
+    sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$PODS_JSRUNTIME"
+fi
+
+# Fix 3c: Fix ALL jsinspector-modern includes AND imports in source files
+echo "Fixing ALL jsinspector-modern includes/imports in source files..."
+find "$(pwd)/../node_modules/react-native/ReactCommon" -name "*.h" -exec grep -l -E "#(include|import) <jsinspector-modern/" {} \; 2>/dev/null | while read file; do
+    echo "  Fixing source: $file"
+    sed -i '' 's|#include <jsinspector-modern/\([^>]*\)>|#include "\1"|g' "$file"
+    sed -i '' 's|#import <jsinspector-modern/\([^>]*\)>|#import "\1"|g' "$file"
+done
+
 # Fix 4: Fix RCTInstance.h include path
 echo "Fixing RCTInstance.h include path..."
 if [ -f "$FRAMEWORK_DIR/ReactCommon/RCTInstance.h" ]; then
     sed -i '' 's|#import <jsinspector-modern/ReactCdp.h>|#import "../jsinspector-modern/ReactCdp.h"|g' "$FRAMEWORK_DIR/ReactCommon/RCTInstance.h"
+fi
+
+# Fix 4b: Fix RCTHost.h import path (fix source file in Pods)
+echo "Fixing RCTHost.h import path in source..."
+# Fix the source file in Pods directory
+PODS_RCTHOST="$(pwd)/../node_modules/react-native/ReactCommon/react/runtime/platform/ios/ReactCommon/RCTHost.h"
+if [ -f "$PODS_RCTHOST" ]; then
+    echo "  Fixing source RCTHost.h in node_modules..."
+    sed -i '' 's|#import "../react/runtime/JSRuntimeFactory.h"|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$PODS_RCTHOST"
+    sed -i '' 's|#import <react/runtime/JSRuntimeFactory.h>|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$PODS_RCTHOST"
+fi
+
+# Also fix any already-copied files (fallback)
+if [ -f "$FRAMEWORK_DIR/ReactCommon/RCTHost.h" ]; then
+    echo "  Fixing copied RCTHost.h in DerivedData..."
+    sed -i '' 's|#import "../react/runtime/JSRuntimeFactory.h"|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$FRAMEWORK_DIR/ReactCommon/RCTHost.h"
+    sed -i '' 's|#import <react/runtime/JSRuntimeFactory.h>|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$FRAMEWORK_DIR/ReactCommon/RCTHost.h"
 fi
 
 # Fix 5: Fix jsinspector-modern internal includes
@@ -76,12 +132,36 @@ if [ -d "$INDEX_FRAMEWORK_DIR" ]; then
     
     # Fix 3: Fix JSRuntimeFactory.h include path in Index framework
     if [ -f "$INDEX_FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h" ]; then
+        echo "  Fixing JSRuntimeFactory.h in Index framework..."
         sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$INDEX_FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h"
+    fi
+    
+    # Fix 3b: Also fix JSRuntimeFactory.h in Index RuntimeCore framework
+    INDEX_RUNTIME_CORE_DIR=$(dirname "$INDEX_FRAMEWORK_DIR" | sed 's/React-RuntimeApple/React-RuntimeCore/')/React_RuntimeCore.framework/Headers
+    if [ -f "$INDEX_RUNTIME_CORE_DIR/react/runtime/JSRuntimeFactory.h" ]; then
+        echo "  Fixing JSRuntimeFactory.h in Index RuntimeCore framework..."
+        sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$INDEX_RUNTIME_CORE_DIR/react/runtime/JSRuntimeFactory.h"
+        
+        # Fix ALL jsinspector-modern includes AND imports in Index framework
+        INDEX_BASE_DIR=$(dirname "$INDEX_FRAMEWORK_DIR" | sed 's|React-RuntimeApple.*||')
+        echo "    Fixing ALL jsinspector-modern includes/imports in Index framework..."
+        find "$INDEX_BASE_DIR" -name "*.h" -exec grep -l -E "#(include|import) <jsinspector-modern/" {} \; 2>/dev/null | while read file; do
+            echo "      Fixing Index: $file"
+            sed -i '' 's|#include <jsinspector-modern/\([^>]*\)>|#include "\1"|g' "$file"
+            sed -i '' 's|#import <jsinspector-modern/\([^>]*\)>|#import "\1"|g' "$file"
+        done
     fi
     
     # Fix 4: Fix RCTInstance.h include path in Index framework
     if [ -f "$INDEX_FRAMEWORK_DIR/ReactCommon/RCTInstance.h" ]; then
         sed -i '' 's|#import <jsinspector-modern/ReactCdp.h>|#import "../jsinspector-modern/ReactCdp.h"|g' "$INDEX_FRAMEWORK_DIR/ReactCommon/RCTInstance.h"
+    fi
+    
+    # Fix 4b: Fix RCTHost.h import path in Index framework
+    if [ -f "$INDEX_FRAMEWORK_DIR/ReactCommon/RCTHost.h" ]; then
+        echo "  Fixing RCTHost.h in Index framework..."
+        sed -i '' 's|#import "../react/runtime/JSRuntimeFactory.h"|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$INDEX_FRAMEWORK_DIR/ReactCommon/RCTHost.h"
+        sed -i '' 's|#import <react/runtime/JSRuntimeFactory.h>|#import <React_RuntimeCore/react/runtime/JSRuntimeFactory.h>|g' "$INDEX_FRAMEWORK_DIR/ReactCommon/RCTHost.h"
     fi
     
     # Fix 5: Fix jsinspector-modern internal includes in Index framework
