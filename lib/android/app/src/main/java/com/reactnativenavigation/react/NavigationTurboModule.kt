@@ -275,7 +275,7 @@ class NavigationTurboModule(
         if (navigator == null) {
             Log.e("NavigationTurboModule", "navigator is null!")
         }
-        return activity()?.navigator
+        return navigator
     }
 
     private fun handle(task: Runnable) {
