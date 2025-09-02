@@ -66,8 +66,8 @@ class PodfileLinker {
       return contents;
     }
 
-    // Find existing post_install hook
-    const postInstallMatch = contents.match(/post_install do \|installer\|[\s\S]*?^end$/m);
+    // Find existing post_install hook with proper nesting support
+    const postInstallMatch = this._findPostInstallBlock(contents);
 
     if (postInstallMatch) {
       debugn('   Adding static frameworks automation to existing post_install hook');
@@ -76,6 +76,50 @@ class PodfileLinker {
       debugn('   Adding new post_install hook with static frameworks automation');
       return this._addNewPostInstall(contents);
     }
+  }
+
+  _findPostInstallBlock(contents) {
+    const lines = contents.split('\n');
+    let postInstallStart = -1;
+    let postInstallEnd = -1;
+    let doEndCount = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      // Find post_install start
+      if (line.includes('post_install do |installer|')) {
+        postInstallStart = i;
+        doEndCount = 1; // We found one 'do'
+        continue;
+      }
+
+      // If we're inside a post_install block
+      if (postInstallStart !== -1) {
+        // Count 'do' keywords (start of blocks)
+        if (line.includes(' do ') || line.includes(' do|') || line.endsWith(' do')) {
+          doEndCount++;
+        }
+
+        // Count 'end' keywords (end of blocks)
+        if (line === 'end' || line.startsWith('end ')) {
+          doEndCount--;
+
+          // If we've balanced all do/end pairs, we found the post_install end
+          if (doEndCount === 0) {
+            postInstallEnd = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (postInstallStart !== -1 && postInstallEnd !== -1) {
+      const postInstallLines = lines.slice(postInstallStart, postInstallEnd + 1);
+      return [postInstallLines.join('\n')];
+    }
+
+    return null;
   }
 
   _addToExistingPostInstall(contents, existingPostInstall) {
@@ -116,18 +160,21 @@ class PodfileLinker {
       end
     end`;
 
-    // Insert before the final 'end'
-    const modifiedPostInstall = existingPostInstall.replace(/^end$/m, staticFrameworksCode + '\nend');
+    // Insert before the final 'end' (handle indentation)
+    const modifiedPostInstall = existingPostInstall.replace(/^(\s*)end(\s*)$/m, staticFrameworksCode + '\n$1end$2');
     return contents.replace(existingPostInstall, modifiedPostInstall);
   }
 
   _addNewPostInstall(contents) {
     const newPostInstallHook = `
 post_install do |installer|
-  # React Native post install (if present)
-  if defined?(react_native_post_install)
-    react_native_post_install(installer)
-  end
+  # React Native post install
+  react_native_post_install(
+    installer,
+    config[:reactNativePath],
+    :mac_catalyst_enabled => false,
+    # :ccache_enabled => true
+  )
   
   # Static Framework Compatibility - Complete Automation (Added by React Native Navigation)
   if ENV['USE_FRAMEWORKS'] == 'static'
