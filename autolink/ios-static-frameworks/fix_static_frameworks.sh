@@ -24,6 +24,8 @@ else
     INDEX_FRAMEWORK_DIR="$DERIVED_DATA_DIR/Index.noindex/Build/Products/Debug-iphonesimulator/React-RuntimeApple/React_RuntimeApple.framework/Headers"
 fi
 
+echo "Project name: $PROJECT_NAME"
+
 echo "Framework directory: $FRAMEWORK_DIR"
 
 # Fix 1: Copy JSRuntimeFactory.h to framework if missing
@@ -34,8 +36,8 @@ if [ ! -f "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h" ]; then
 fi
 
 # Fix 1b: Also fix JSRuntimeFactory.h includes in React-RuntimeCore framework
-# Check all DerivedData directories for RuntimeCore framework
-for DD_DIR in $(find ~/Library/Developer/Xcode/DerivedData -name "rnntest12*" -type d 2>/dev/null); do
+# Check all DerivedData directories for RuntimeCore framework (reuse PROJECT_NAME from above)
+for DD_DIR in $(find ~/Library/Developer/Xcode/DerivedData -name "${PROJECT_NAME}*" -type d 2>/dev/null); do
     RUNTIME_CORE_DIR="$DD_DIR/Build/Products/Debug-iphonesimulator/React-RuntimeCore/React_RuntimeCore.framework/Headers"
     if [ -f "$RUNTIME_CORE_DIR/react/runtime/JSRuntimeFactory.h" ]; then
         echo "Fixing JSRuntimeFactory.h in RuntimeCore framework ($DD_DIR)..."
@@ -59,25 +61,29 @@ done
 
 # Fix 2: Copy jsinspector-modern headers if missing
 if [ ! -d "$FRAMEWORK_DIR/jsinspector-modern" ]; then
-    echo "Copying jsinspector-modern headers..."
+    echo "Copying jsinspector-modern headers to RuntimeApple framework..."
     mkdir -p "$FRAMEWORK_DIR/jsinspector-modern"
     cp -R "$(pwd)/../node_modules/react-native/ReactCommon/jsinspector-modern/"* "$FRAMEWORK_DIR/jsinspector-modern/"
 fi
 
-# Fix 3: Fix JSRuntimeFactory.h include path
-echo "Fixing JSRuntimeFactory.h include path..."
+
+
+# Fix 3: Fix JSRuntimeFactory.h include path in RuntimeApple framework
+echo "Fixing JSRuntimeFactory.h include path in RuntimeApple framework..."
 if [ -f "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h" ]; then
     sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$FRAMEWORK_DIR/react/runtime/JSRuntimeFactory.h"
 fi
 
-# Fix 3b: Also fix JSRuntimeFactory.h in the source file
+
+
+# Fix 3c: Also fix JSRuntimeFactory.h in the source file
 PODS_JSRUNTIME="$(pwd)/../node_modules/react-native/ReactCommon/react/runtime/JSRuntimeFactory.h"
 if [ -f "$PODS_JSRUNTIME" ]; then
     echo "Fixing source JSRuntimeFactory.h in node_modules..."
     sed -i '' 's|#include <jsinspector-modern/ReactCdp.h>|#include "../../jsinspector-modern/ReactCdp.h"|g' "$PODS_JSRUNTIME"
 fi
 
-# Fix 3c: Fix ALL jsinspector-modern includes AND imports in source files
+# Fix 3d: Fix ALL jsinspector-modern includes AND imports in source files
 echo "Fixing ALL jsinspector-modern includes/imports in source files..."
 find "$(pwd)/../node_modules/react-native/ReactCommon" -name "*.h" -exec grep -l -E "#(include|import) <jsinspector-modern/" {} \; 2>/dev/null | while read file; do
     echo "  Fixing source: $file"
