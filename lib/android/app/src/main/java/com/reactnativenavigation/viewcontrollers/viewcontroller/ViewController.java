@@ -5,11 +5,13 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -322,6 +324,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             ((Destroyable) view).destroy();
         }
         if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             view.setOnHierarchyChangeListener(null);
             if (view.getParent() instanceof ViewGroup) {
