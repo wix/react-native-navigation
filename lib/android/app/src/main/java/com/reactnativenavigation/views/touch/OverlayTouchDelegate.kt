@@ -19,7 +19,7 @@ open class OverlayTouchDelegate(private val component: ComponentLayout, private 
     }
 
     @VisibleForTesting
-    open fun handleDown(event: MotionEvent) = when (event.coordinatesInsideView(reactView.getChildAt(0))) {
+    open fun handleDown(event: MotionEvent) = when (event.coordinatesInsideView(reactView.getChildAt(1))) {
         true -> component.superOnInterceptTouchEvent(event)
         false -> interceptTouchOutside.isFalse
     }
