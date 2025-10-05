@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import { render } from '@testing-library/react-native';
+import { render, act } from '@testing-library/react-native';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
 import { mock, verify, instance } from 'ts-mockito';
@@ -115,10 +115,12 @@ describe('ComponentWrapper', () => {
 
     expect(myComponentProps.foo).toEqual(undefined);
 
-    // Use the ref to call setState
-    if (parentRef) {
-      parentRef.setStateFromTest({ foo: 'yo' });
-    }
+    // Use the ref to call setState wrapped in act
+    act(() => {
+      if (parentRef) {
+        parentRef.setStateFromTest({ foo: 'yo' });
+      }
+    });
 
     expect(myComponentProps.foo).toEqual('yo');
   });
@@ -171,7 +173,11 @@ describe('ComponentWrapper', () => {
     );
     render(<TestParent ChildClass={NavigationComponent} />);
     expect(myComponentProps.myProp).toEqual(undefined);
-    store.updateProps('component1', { myProp: 'hello' });
+
+    act(() => {
+      store.updateProps('component1', { myProp: 'hello' });
+    });
+
     expect(myComponentProps.myProp).toEqual('hello');
   });
 
@@ -193,9 +199,11 @@ describe('ComponentWrapper', () => {
 
     expect(myComponentProps.foo).toEqual(undefined);
 
-    if (parentRef) {
-      parentRef.setStateFromTest({ foo: 'yo' });
-    }
+    act(() => {
+      if (parentRef) {
+        parentRef.setStateFromTest({ foo: 'yo' });
+      }
+    });
 
     expect(myComponentProps.foo).toEqual('yo');
   });
@@ -335,7 +343,12 @@ describe('ComponentWrapper', () => {
     const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
     const ReduxProvider = require('react-redux').Provider;
     const initialState: RootState = { txt: 'it just works' };
-    const reduxStore = require('redux').createStore((state: RootState = initialState) => state);
+    const reduxStore = {
+      getState: () => initialState,
+      dispatch: jest.fn(),
+      subscribe: jest.fn(),
+      replaceReducer: jest.fn(),
+    };
 
     it(`wraps the component with a react-redux provider with passed store`, () => {
       const NavigationComponent = uut.wrap(
@@ -347,7 +360,11 @@ describe('ComponentWrapper', () => {
         ReduxProvider,
         reduxStore
       );
-      const { getByText } = render(<NavigationComponent componentId={'theCompId'} />);
+      const { getByText } = render(
+        <ReduxProvider store={reduxStore}>
+          <NavigationComponent componentId={'theCompId'} />
+        </ReduxProvider>
+      );
       expect(getByText('it just works')).toBeTruthy();
       expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
