@@ -13,7 +13,18 @@
 #import <React/RCTSurfacePresenterStub.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
-#import <react/config/ReactNativeConfig.h>
+
+#import <React-RCTAppDelegate/RCTAppDelegate.h>
+#import <React-RCTAppDelegate/RCTReactNativeFactory.h>
+
+#if __has_include(<React-RCTAppDelegate/RCTReactNativeFactory.h>)
+#elif __has_include(<React_RCTAppDelegate/RCTReactNativeFactory.h>)
+#else
+    // RN 0.77 support
+    #define RN077
+    #import <react/config/ReactNativeConfig.h>
+#endif
+
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
 #import <React/RCTSurfacePresenter.h>
@@ -37,15 +48,17 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+#ifdef RN077
     [self _setUpFeatureFlags];
-
-    // Copied from RCTAppDelegate, it private inside it
     self.rootViewFactory = [self createRCTRootViewFactory];
-
     [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
-
     RCTAppSetupPrepareApp(application, self.newArchEnabled);
     RCTSetNewArchEnabled(TRUE);
+#else
+    self.reactNativeFactory = [RCTReactNativeFactory new];
+    self.reactNativeFactory = [self.reactNativeFactory initWithDelegate:self];
+#endif
+    
     RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
 
@@ -54,22 +67,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
     [ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
 
     return YES;
-}
-
-- (RCTRootViewFactory *)createRCTRootViewFactory
-{
-  __weak __typeof(self) weakSelf = self;
-  RCTBundleURLBlock bundleUrlBlock = ^{
-	RCTAppDelegate *strongSelf = weakSelf;
-	return strongSelf.bundleURL;
-  };
-
-  RCTRootViewFactoryConfiguration *configuration =
-	  [[RCTRootViewFactoryConfiguration alloc] initWithBundleURLBlock:bundleUrlBlock
-													   newArchEnabled:self.newArchEnabled];
-
-
-  return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
@@ -82,8 +79,27 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 	return true;
 }
 
-#pragma mark - Feature Flags
 
+
+#ifdef RN077
+- (RCTRootViewFactory *)createRCTRootViewFactory
+{
+  __weak __typeof(self) weakSelf = self;
+  RCTBundleURLBlock bundleUrlBlock = ^{
+    RCTAppDelegate *strongSelf = weakSelf;
+    return strongSelf.bundleURL;
+  };
+
+  RCTRootViewFactoryConfiguration *configuration =
+      [[RCTRootViewFactoryConfiguration alloc] initWithBundleURLBlock:bundleUrlBlock
+                                                       newArchEnabled:self.newArchEnabled];
+
+
+  return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
+}
+
+
+#pragma mark - Feature Flags
 class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNativeFeatureFlagsDefaults {
  public:
   bool enableBridgelessArchitecture() override
@@ -113,6 +129,7 @@ class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNative
     facebook::react::ReactNativeFeatureFlags::override(
         std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
 }
+#endif
 
 @end
 
