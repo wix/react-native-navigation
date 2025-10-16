@@ -20,9 +20,12 @@
 #import <React-RCTAppDelegate/RCTReactNativeFactory.h>
 #elif __has_include(<React_RCTAppDelegate/RCTReactNativeFactory.h>)
 #import <React_RCTAppDelegate/RCTReactNativeFactory.h>
+#else
 // RN 0.77 support
 #define RN077
 #import <react/config/ReactNativeConfig.h>
+#import <React/RCTRootViewFactory.h>
+#import <React/RCTRootViewFactoryConfiguration.h>
 #endif
 
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>

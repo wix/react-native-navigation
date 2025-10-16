@@ -47,9 +47,28 @@ async function main() {
         }
     }
 
+
+    const rnMinorMatch = String(reactNativeVersion).match(/^\d+\.(\d+)/);
+    const rnMinor = rnMinorMatch ? Number(rnMinorMatch[1]) : NaN;
+
+    packageJson.devDependencies = packageJson.devDependencies || {};
+    if (rnMinor <= 77) {
+        packageJson.devDependencies['react-test-renderer'] = '18.2.0';
+        packageJson.devDependencies['@testing-library/react-native'] = '12.4.5';
+    }
+
     await fs.writeFile(pkgPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
 
-    console.log(`Changed dependencies:\n  react-native: ${reactNativeVersion}\n  react: ${reactVersion}`);
+    console.log(
+        `Changed dependencies:\n  react-native: ${reactNativeVersion}\n  react: ${reactVersion}`
+    );
+    if (!Number.isNaN(rnMinor)) {
+        const rtr = packageJson.devDependencies['react-test-renderer'];
+        const rtl = packageJson.devDependencies['@testing-library/react-native'];
+        console.log(
+            `Aligned testing libs for RN minor ${rnMinor}:\n  react-test-renderer: ${rtr}\n  @testing-library/react-native: ${rtl}`
+        );
+    }
 }
 
 main().catch((err) => {
