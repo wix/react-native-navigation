@@ -1,0 +1,24 @@
+  - label: ":android: Android - Unit"
+    env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
+    command:
+    - "nvm install"
+    - "npm install --legacy-peer-deps"
+    - "npm run test-js"
+    - "npm run test-unit-android -- --release"
+    key: "android_unit"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+
+  - label: ":android: Android - E2E"
+    env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
+    command:
+    - "nvm install"
+    - "npm install --legacy-peer-deps"
+    - "npm run test-e2e-android-multi -- --release --headless --ci"
+    key: "android_e2e"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+
+

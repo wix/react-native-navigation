@@ -1,0 +1,27 @@
+  - label: ":ios: iOS - Unit"
+    command:
+    - "nvm install"
+    - "npm install --legacy-peer-deps"
+    - "npm run test-unit-ios -- --release"
+    key: "ios_unit"
+    timeout_in_minutes: 90
+
+  - label: ":ios: iOS - E2E"
+    command:
+    - "nvm install"
+    - "npm install --legacy-peer-deps"
+    - "npm run test-e2e-ios -- --release --multi --ci"
+    key: "ios_e2e"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+
+  - label: ":ios: iOS - Snapshot"
+    command:
+    - "nvm install"
+    - "npm install --legacy-peer-deps"
+    - "npm run test-snapshot-ios -- --release"
+    key: "ios_snapshot"
+    timeout_in_minutes: 90
+    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+
+
