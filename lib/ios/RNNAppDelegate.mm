@@ -14,11 +14,13 @@
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
 
-#import <React-RCTAppDelegate/RCTAppDelegate.h>
+
 
 #if __has_include(<React-RCTAppDelegate/RCTReactNativeFactory.h>)
+#import <React-RCTAppDelegate/RCTAppDelegate.h>
 #import <React-RCTAppDelegate/RCTReactNativeFactory.h>
 #elif __has_include(<React_RCTAppDelegate/RCTReactNativeFactory.h>)
+#import <React_RCTAppDelegate/RCTAppDelegate.h>
 #import <React_RCTAppDelegate/RCTReactNativeFactory.h>
 #else
 // RN 0.77 support
