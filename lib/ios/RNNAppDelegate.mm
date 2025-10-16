@@ -26,8 +26,6 @@
 // RN 0.77 support
 #define RN077
 #import <react/config/ReactNativeConfig.h>
-#import <React/RCTRootViewFactory.h>
-#import <React/RCTRootViewFactoryConfiguration.h>
 #endif
 
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
