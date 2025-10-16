@@ -1,17 +1,15 @@
+  - wait
   - label: ":package: Publish"
     env:
       JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
     if: "build.pull_request.id == null"
     command:
     - "nvm install"
-    - "npm install --legacy-peer-deps"
-    - "npm run release"
+    - "npm install"
+    - "npm run release"    
     depends_on:
-    - "ios_unit"
-    - "ios_e2e"
-    - "ios_snapshot"
-    - "android_unit"
-    - "android_e2e"
+    - ios
+    - android
     timeout_in_minutes: 90
 
 
