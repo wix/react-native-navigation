@@ -1,0 +1,20 @@
+  - block: ":rocket: Release!"
+    prompt: "Fill out the details for release"
+    if: 'build.message =~ /^release\$/i'
+    fields:
+      - text: "VERSION"
+        key: "version"
+      - text: "NPM_TAG"
+        key: "npm-tag"
+        default: 'null'
+        required: false
+      - text: "BUILD_DOCUMENTATION_VERSION"
+        key: "build-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+      - text: "REMOVE_DOCUMENTATION_VERSION"
+        key: "remove-documentation-version"
+        default: 'null'
+        hint: 'Leave NULL if no version is specified'
+
+

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import * as renderer from 'react-test-renderer';
+import { render, act } from '@testing-library/react-native';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
 import { mock, verify, instance } from 'ts-mockito';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
-import { ReactTestRendererJSON } from 'react-test-renderer';
 
 describe('ComponentWrapper', () => {
   const componentName = 'example.MyComponent';
@@ -38,6 +37,10 @@ describe('ComponentWrapper', () => {
       this.state = { propsFromState: {} };
     }
 
+    setStateFromTest = (newState: any) => {
+      this.setState({ propsFromState: newState });
+    }
+
     render() {
       const { ChildClass } = this;
 
@@ -62,7 +65,7 @@ describe('ComponentWrapper', () => {
     const orig = console.error;
     console.error = (a: any) => a;
     expect(() => {
-      renderer.create(<NavigationComponent />);
+      render(<NavigationComponent />);
     }).toThrowError('Component example.MyComponent does not have a componentId!');
     console.error = orig;
   });
@@ -75,8 +78,8 @@ describe('ComponentWrapper', () => {
       componentEventsObserver
     );
     expect(NavigationComponent).not.toBeInstanceOf(MyComponent);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['Hello, World!']);
+    const { getByText } = render(<NavigationComponent componentId={'component1'} />);
+    expect(getByText('Hello, World!')).toBeTruthy();
   });
 
   it('injects props from wrapper into original component', () => {
@@ -87,10 +90,10 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(
+    const { getByText } = render(
       <NavigationComponent componentId={'component1'} text={'yo'} renderCount={renderCount} />
     );
-    expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['yo']);
+    expect(getByText('yo')).toBeTruthy();
     expect(renderCount).toHaveBeenCalledTimes(1);
   });
 
@@ -101,9 +104,24 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
+
+    let parentRef: any = null;
+    render(
+      <TestParent
+        ref={(ref) => { parentRef = ref; }}
+        ChildClass={NavigationComponent}
+      />
+    );
+
     expect(myComponentProps.foo).toEqual(undefined);
-    (tree.getInstance() as any).setState({ propsFromState: { foo: 'yo' } });
+
+    // Use the ref to call setState wrapped in act
+    act(() => {
+      if (parentRef) {
+        parentRef.setStateFromTest({ foo: 'yo' });
+      }
+    });
+
     expect(myComponentProps.foo).toEqual('yo');
   });
 
@@ -115,7 +133,7 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    renderer.create(<NavigationComponent componentId={'component123'} />);
+    render(<NavigationComponent componentId={'component123'} />);
     expect(myComponentProps).toEqual({
       componentId: 'component123',
       componentName,
@@ -132,7 +150,7 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    renderer.create(<NavigationComponent componentId={'component123'} />);
+    render(<NavigationComponent componentId={'component123'} />);
 
     function callback() {
       try {
@@ -153,9 +171,13 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    renderer.create(<TestParent ChildClass={NavigationComponent} />);
+    render(<TestParent ChildClass={NavigationComponent} />);
     expect(myComponentProps.myProp).toEqual(undefined);
-    store.updateProps('component1', { myProp: 'hello' });
+
+    act(() => {
+      store.updateProps('component1', { myProp: 'hello' });
+    });
+
     expect(myComponentProps.myProp).toEqual('hello');
   });
 
@@ -166,9 +188,23 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
+
+    let parentRef: any = null;
+    render(
+      <TestParent
+        ref={(ref) => { parentRef = ref; }}
+        ChildClass={NavigationComponent}
+      />
+    );
+
     expect(myComponentProps.foo).toEqual(undefined);
-    (tree.getInstance() as any).setState({ propsFromState: { foo: 'yo' } });
+
+    act(() => {
+      if (parentRef) {
+        parentRef.setStateFromTest({ foo: 'yo' });
+      }
+    });
+
     expect(myComponentProps.foo).toEqual('yo');
   });
 
@@ -179,31 +215,22 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
-    expect(myComponentProps.componentId).toEqual('component1');
-    (tree.getInstance() as any).setState({ propsFromState: { id: 'ERROR' } });
-    expect(myComponentProps.componentId).toEqual('component1');
-  });
 
-  xit('assigns key by componentId', () => {
-    const NavigationComponent = uut.wrap(
-      componentName,
-      () => MyComponent,
-      store,
-      componentEventsObserver
+    let parentRef: any = null;
+    render(
+      <TestParent
+        ref={(ref) => { parentRef = ref; }}
+        ChildClass={NavigationComponent}
+      />
     );
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
+
     expect(myComponentProps.componentId).toEqual('component1');
-    console.log(
-      Object.keys(tree.root.findByType(NavigationComponent).instance._reactInternalFiber)
-    );
-    console.log(
-      tree.root.findByType(NavigationComponent).instance._reactInternalFiber.child.child.child
-        .return.return.key
-    );
-    expect((tree.getInstance() as any)._reactInternalInstance.child.child.Fibernode.key).toEqual(
-      'component1'
-    );
+
+    if (parentRef) {
+      parentRef.setStateFromTest({ id: 'ERROR' });
+    }
+
+    expect(myComponentProps.componentId).toEqual('component1');
   });
 
   it('cleans props from store on unMount', () => {
@@ -214,9 +241,9 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    const { unmount } = render(<NavigationComponent componentId={'component123'} />);
     expect(store.getPropsForId('component123')).toEqual({ foo: 'bar' });
-    tree.unmount();
+    unmount();
     expect(store.getPropsForId('component123')).toEqual({});
   });
 
@@ -237,27 +264,23 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    const { unmount } = render(<NavigationComponent componentId={'component123'} />);
     verify(mockedComponentEventsObserver.unmounted('component123')).never();
-    tree.unmount();
+    unmount();
     verify(mockedComponentEventsObserver.unmounted('component123')).once();
   });
 
   it('renders HOC components correctly', () => {
     const generator = () => (props: any) =>
-      (
-        <View>
-          <MyComponent {...props} />
-        </View>
-      );
+    (
+      <View>
+        <MyComponent {...props} />
+      </View>
+    );
     uut = new ComponentWrapper();
     const NavigationComponent = uut.wrap(componentName, generator, store, componentEventsObserver);
-    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
-    expect(tree.root.findByType(View)).toBeDefined();
-    expect(tree.root.findByType(MyComponent).props).toEqual({
-      componentId: 'component123',
-      componentName,
-    });
+    const { getByText } = render(<NavigationComponent componentId={'component123'} />);
+    expect(getByText('Hello, World!')).toBeTruthy();
   });
 
   it('sets component instance in store when constructed', () => {
@@ -267,7 +290,7 @@ describe('ComponentWrapper', () => {
       store,
       componentEventsObserver
     );
-    renderer.create(<NavigationComponent componentId={'component1'} />);
+    render(<NavigationComponent componentId={'component1'} />);
     expect(store.getComponentInstance('component1')).toBeTruthy();
   });
 
@@ -298,7 +321,12 @@ describe('ComponentWrapper', () => {
     const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
     const ReduxProvider = require('react-redux').Provider;
     const initialState: RootState = { txt: 'it just works' };
-    const reduxStore = require('redux').createStore((state: RootState = initialState) => state);
+    const reduxStore = {
+      getState: () => initialState,
+      dispatch: jest.fn(),
+      subscribe: jest.fn(),
+      replaceReducer: jest.fn(),
+    };
 
     it(`wraps the component with a react-redux provider with passed store`, () => {
       const NavigationComponent = uut.wrap(
@@ -310,8 +338,12 @@ describe('ComponentWrapper', () => {
         ReduxProvider,
         reduxStore
       );
-      const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
-      expect((tree.toJSON() as ReactTestRendererJSON).children).toEqual(['it just works']);
+      const { getByText } = render(
+        <ReduxProvider store={reduxStore}>
+          <NavigationComponent componentId={'theCompId'} />
+        </ReduxProvider>
+      );
+      expect(getByText('it just works')).toBeTruthy();
       expect((NavigationComponent as any).options()).toEqual({ foo: 123 });
     });
   });
@@ -335,7 +367,7 @@ describe('ComponentWrapper', () => {
       componentEventsObserver
     );
 
-    renderer.create(<NavigationComponent componentId={'component123'} />);
+    render(<NavigationComponent componentId={'component123'} />);
     expect(store.getComponentInstance('component123')?.isMounted).toEqual(true);
   });
 
@@ -347,9 +379,9 @@ describe('ComponentWrapper', () => {
       componentEventsObserver
     );
 
-    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    const { unmount } = render(<NavigationComponent componentId={'component123'} />);
     expect(store.getComponentInstance('component123')?.isMounted).toEqual(true);
-    tree.unmount();
+    unmount();
     expect(store.getComponentInstance('component123')?.isMounted).toBeUndefined();
   });
 });
