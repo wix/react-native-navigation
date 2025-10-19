@@ -22,8 +22,6 @@ describe('ComponentEventsObserver', () => {
   let subscription: EventSubscription;
   let uut: ComponentEventsObserver;
 
-  // SimpleScreen is no longer used in tests - replaced with mock components
-
   class UnboundScreen extends React.Component<any, any> {
     constructor(props: any) {
       super(props);

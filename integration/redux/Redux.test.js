@@ -1,6 +1,6 @@
 const React = require('react');
 require('react-native');
-const { render } = require('@testing-library/react-native');
+const { render, act } = require('@testing-library/react-native');
 const { Provider } = require('react-redux');
 const { Navigation } = require('../../lib/src/index');
 
@@ -68,17 +68,11 @@ describe('redux support', () => {
     expect(getByText('no name')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.reduxStore.dispatch({ type: 'redux.MyStore.setName', name: 'Bob' });
+    act(() => {
+      store.reduxStore.dispatch({ type: 'redux.MyStore.setName', name: 'Bob' });
+    });
     expect(store.selectors.getName(store.reduxStore.getState())).toEqual('Bob');
-
-    // Re-render to see the updated state
-    rerender(
-      <Provider store={store.reduxStore}>
-        <MyConnectedComponent renderCountIncrement={renderCountIncrement} />
-      </Provider>
-    );
     expect(getByText('Bob')).toBeTruthy();
-
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 
@@ -94,17 +88,11 @@ describe('redux support', () => {
     expect(queryByText('30')).toBeNull();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.reduxStore.dispatch({ type: 'redux.MyStore.setAge', age: 30 });
+    act(() => {
+      store.reduxStore.dispatch({ type: 'redux.MyStore.setAge', age: 30 });
+    });
     expect(store.selectors.getAge(store.reduxStore.getState())).toEqual(30);
-
-    // Re-render to see the updated state
-    rerender(
-      <Provider store={store.reduxStore}>
-        <MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />
-      </Provider>
-    );
     expect(queryByText('30')).toBeTruthy();
-
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 });

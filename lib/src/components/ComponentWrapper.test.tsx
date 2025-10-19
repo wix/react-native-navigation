@@ -233,28 +233,6 @@ describe('ComponentWrapper', () => {
     expect(myComponentProps.componentId).toEqual('component1');
   });
 
-  xit('assigns key by componentId', () => {
-    const NavigationComponent = uut.wrap(
-      componentName,
-      () => MyComponent,
-      store,
-      componentEventsObserver
-    );
-    render(<NavigationComponent componentId={'component1'} />);
-    expect(myComponentProps.componentId).toEqual('component1');
-    // Note: This test is disabled (xit) and uses deprecated React internals
-    // console.log(
-    //   Object.keys(tree.root.findByType(NavigationComponent).instance._reactInternalFiber)
-    // );
-    // console.log(
-    //   tree.root.findByType(NavigationComponent).instance._reactInternalFiber.child.child.child
-    //     .return.return.key
-    // );
-    // expect((tree.getInstance() as any)._reactInternalInstance.child.child.Fibernode.key).toEqual(
-    //   'component1'
-    // );
-  });
-
   it('cleans props from store on unMount', () => {
     store.updateProps('component123', { foo: 'bar' });
     const NavigationComponent = uut.wrap(
