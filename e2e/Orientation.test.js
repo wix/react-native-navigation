@@ -40,6 +40,9 @@ describe.e2e(':ios: orientation', () => {
     await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await device.setOrientation('portrait');
     await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
+    await device.setOrientation('landscape');
+    await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await elementById(TestIDs.DISMISS_BTN).tap();
+    await device.setOrientation('portrait');
   });
 });
