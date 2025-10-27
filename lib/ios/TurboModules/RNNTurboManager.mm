@@ -99,7 +99,7 @@
 
 - (void)onJavaScriptLoaded {
     RCTExecuteOnMainQueue(^{
-        UIApplication.sharedApplication.delegate.window.rootViewController = [RNNSplashScreenViewController getSplashScreen];
+        UIApplication.sharedApplication.delegate.window.rootViewController = [RNNSplashScreenViewController getSplashScreenVC];
         
         [self->_commandsHandler setReadyToReceiveCommands:true];
         // TODO: Refactor

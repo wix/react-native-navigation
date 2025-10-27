@@ -5,7 +5,7 @@
 @implementation RNNSplashScreenViewController
 
 + (void)showOnWindow:(UIWindow *)window {
-    UIViewController *viewController = [self getSplashScreen];
+    UIViewController *viewController = [self getSplashScreenVC];
     if (viewController != nil) {
         id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
         appDelegate.window.rootViewController = viewController;
@@ -13,7 +13,7 @@
     }
 }
 
-+ (UIViewController*)getSplashScreen {
++ (UIViewController*)getSplashScreenVC {
     CGRect screenBounds = [UIScreen mainScreen].bounds;
     CGFloat screenScale = [UIScreen mainScreen].scale;
     UIViewController *viewController = nil;
