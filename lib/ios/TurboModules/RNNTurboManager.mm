@@ -11,8 +11,8 @@
 #import "RNNTurboCommandsHandler.h"
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
 
-@interface RNNTurboManager ()
 
+@interface RNNTurboManager ()
 @property(nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property(nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
 @property(nonatomic, strong, readonly) RNNLayoutManager *layoutManager;
@@ -21,15 +21,16 @@
 @property(nonatomic, strong, readonly) RNNModalHostViewManagerHandler *modalHostViewHandler;
 @property(nonatomic, strong, readonly) RNNCommandsHandler *commandsHandler;
 @property(nonatomic, strong, readonly) RNNEventEmitter *eventEmitter;
-
 @end
 
 @implementation RNNTurboManager {
 	UIWindow *_mainWindow;
+    BOOL _isInitialRun;
 }
 
 - (instancetype)initWithHost:(RCTHost *)host mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
+        _isInitialRun = YES;
 		_host = host;
 		_mainWindow = mainWindow;
 		_overlayManager = [RNNOverlayManager new];
@@ -40,7 +41,12 @@
 													 name:@"RCTInstanceDidLoadBundle"
 												   object:nil];
 
-		// TODO: investigate which new event is fired
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(onReload)
+                                                     name:@"RCTTriggerReloadCommandNotification"
+                                                   object:nil];
+        
+        // TODO: investigate which new event is fired
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptWillLoad)
 													 name:RCTJavaScriptWillStartLoadingNotification
@@ -99,16 +105,24 @@
 }
 
 - (void)onJavaScriptLoaded {
-  RCTExecuteOnMainQueue(^{
-    UIApplication.sharedApplication.delegate.window.rootViewController = nil;
-    
-    [self->_commandsHandler setReadyToReceiveCommands:true];
-    // TODO: Refactor
-    //    [_modalHostViewHandler
-    //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
-    
-    [self->_eventEmitter sendOnAppLaunched];
-  });
+    RCTExecuteOnMainQueue(^{
+        // TODO: the isInitialRun is the right and final answer for this, this will stop a blackscreen appearing after the splashscreen on startup. OnReload this will still happen because of the rootViewController = nil; which is needed to clean up what is already appearing.
+        if (!self->_isInitialRun) {
+            UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+        }
+        
+        self-> _isInitialRun = NO;
+        
+        [self->_commandsHandler setReadyToReceiveCommands:true];
+        // TODO: Refactor
+        //    [_modalHostViewHandler
+        //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
+        
+        [self->_eventEmitter sendOnAppLaunched];
+    });
+}
+
+- (void)onReload {
 }
 
 @end
