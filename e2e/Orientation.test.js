@@ -12,6 +12,10 @@ describe.e2e(':ios: orientation', () => {
     await elementById(TestIDs.SHOW_ORIENTATION_SCREEN).tap();
   });
 
+  afterEach(() => {
+    device.setOrientation('portrait');
+  });
+
   it('landscape and portrait array', async () => {
     await elementById(TestIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BTN).tap();
     await expect(element(by.id(TestIDs.PORTRAIT_ELEMENT))).toBeVisible();
@@ -39,6 +43,8 @@ describe.e2e(':ios: orientation', () => {
     await device.setOrientation('landscape');
     await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await device.setOrientation('portrait');
+    await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
+    await device.setOrientation('landscape');
     await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await elementById(TestIDs.DISMISS_BTN).tap();
   });
