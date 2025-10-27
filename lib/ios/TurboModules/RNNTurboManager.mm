@@ -106,6 +106,7 @@
 
 - (void)onJavaScriptLoaded {
     RCTExecuteOnMainQueue(^{
+        // TODO: the isInitialRun is the right and final answer for this, this will stop a blackscreen appearing after the splashscreen on startup. OnReload this will still happen because of the rootViewController = nil; which is needed to clean up what is already appearing.
         if (!self->_isInitialRun) {
             UIApplication.sharedApplication.delegate.window.rootViewController = nil;
         }
