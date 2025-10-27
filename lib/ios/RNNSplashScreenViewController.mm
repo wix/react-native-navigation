@@ -5,6 +5,15 @@
 @implementation RNNSplashScreenViewController
 
 + (void)showOnWindow:(UIWindow *)window {
+    UIViewController *viewController = [self getSplashScreen];
+    if (viewController != nil) {
+        id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+        appDelegate.window.rootViewController = viewController;
+        [appDelegate.window makeKeyAndVisible];
+    }
+}
+
++ (UIViewController*)getSplashScreen {
     CGRect screenBounds = [UIScreen mainScreen].bounds;
     CGFloat screenScale = [UIScreen mainScreen].scale;
     UIViewController *viewController = nil;
@@ -82,11 +91,7 @@
         }
     }
 
-    if (viewController != nil) {
-        id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-        appDelegate.window.rootViewController = viewController;
-        [appDelegate.window makeKeyAndVisible];
-    }
+    return viewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

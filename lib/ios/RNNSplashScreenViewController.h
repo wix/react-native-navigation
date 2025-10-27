@@ -4,5 +4,5 @@
 @interface RNNSplashScreenViewController : UIViewController
 
 + (void)showOnWindow:(UIWindow *)window;
-
++ (UIViewController*)getSplashScreen;
 @end
