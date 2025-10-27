@@ -10,7 +10,7 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNTurboCommandsHandler.h"
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
-
+#import "RNNSplashScreenViewController.h"
 
 @interface RNNTurboManager ()
 @property(nonatomic, strong, readwrite) RNNExternalComponentStore *store;
@@ -25,13 +25,11 @@
 
 @implementation RNNTurboManager {
 	UIWindow *_mainWindow;
-    BOOL _isInitialRun;
 }
 
 - (instancetype)initWithHost:(RCTHost *)host mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
-        _isInitialRun = YES;
-		_host = host;
+        _host = host;
 		_mainWindow = mainWindow;
 		_overlayManager = [RNNOverlayManager new];
 		_store = [RNNExternalComponentStore new];
@@ -41,11 +39,6 @@
 													 name:@"RCTInstanceDidLoadBundle"
 												   object:nil];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(onReload)
-                                                     name:@"RCTTriggerReloadCommandNotification"
-                                                   object:nil];
-        
         // TODO: investigate which new event is fired
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptWillLoad)
@@ -106,12 +99,7 @@
 
 - (void)onJavaScriptLoaded {
     RCTExecuteOnMainQueue(^{
-        // TODO: the isInitialRun is the right and final answer for this, this will stop a blackscreen appearing after the splashscreen on startup. OnReload this will still happen because of the rootViewController = nil; which is needed to clean up what is already appearing.
-        if (!self->_isInitialRun) {
-            UIApplication.sharedApplication.delegate.window.rootViewController = nil;
-        }
-        
-        self-> _isInitialRun = NO;
+        UIApplication.sharedApplication.delegate.window.rootViewController = [RNNSplashScreenViewController getSplashScreenVC];
         
         [self->_commandsHandler setReadyToReceiveCommands:true];
         // TODO: Refactor
@@ -120,9 +108,6 @@
         
         [self->_eventEmitter sendOnAppLaunched];
     });
-}
-
-- (void)onReload {
 }
 
 @end
