@@ -10,9 +10,9 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNTurboCommandsHandler.h"
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#import "RNNSplashScreenViewController.h"
 
 @interface RNNTurboManager ()
-
 @property(nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property(nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
 @property(nonatomic, strong, readonly) RNNLayoutManager *layoutManager;
@@ -21,7 +21,6 @@
 @property(nonatomic, strong, readonly) RNNModalHostViewManagerHandler *modalHostViewHandler;
 @property(nonatomic, strong, readonly) RNNCommandsHandler *commandsHandler;
 @property(nonatomic, strong, readonly) RNNEventEmitter *eventEmitter;
-
 @end
 
 @implementation RNNTurboManager {
@@ -30,7 +29,7 @@
 
 - (instancetype)initWithHost:(RCTHost *)host mainWindow:(UIWindow *)mainWindow {
 	if (self = [super init]) {
-		_host = host;
+        _host = host;
 		_mainWindow = mainWindow;
 		_overlayManager = [RNNOverlayManager new];
 		_store = [RNNExternalComponentStore new];
@@ -40,7 +39,7 @@
 													 name:@"RCTInstanceDidLoadBundle"
 												   object:nil];
 
-		// TODO: investigate which new event is fired
+        // TODO: investigate which new event is fired
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onJavaScriptWillLoad)
 													 name:RCTJavaScriptWillStartLoadingNotification
@@ -99,16 +98,16 @@
 }
 
 - (void)onJavaScriptLoaded {
-  RCTExecuteOnMainQueue(^{
-    UIApplication.sharedApplication.delegate.window.rootViewController = nil;
-    
-    [self->_commandsHandler setReadyToReceiveCommands:true];
-    // TODO: Refactor
-    //    [_modalHostViewHandler
-    //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
-    
-    [self->_eventEmitter sendOnAppLaunched];
-  });
+    RCTExecuteOnMainQueue(^{
+        UIApplication.sharedApplication.delegate.window.rootViewController = [RNNSplashScreenViewController getSplashScreenVC];
+        
+        [self->_commandsHandler setReadyToReceiveCommands:true];
+        // TODO: Refactor
+        //    [_modalHostViewHandler
+        //        connectModalHostViewManager:[[_host moduleRegistry] moduleForName:"RCTModalHostViewManager"]];
+        
+        [self->_eventEmitter sendOnAppLaunched];
+    });
 }
 
 @end

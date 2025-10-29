@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as renderer from 'react-test-renderer';
+import { render } from '@testing-library/react-native';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { EventSubscription } from '../interfaces/EventSubscription';
@@ -135,17 +135,20 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`bindComponent expects a component with componentId`, () => {
-    const tree = renderer.create(<SimpleScreen />);
-    expect(() => uut.bindComponent(tree.getInstance() as any)).toThrow('');
-    const tree2 = renderer.create(<SimpleScreen componentId={123} />);
-    expect(() => uut.bindComponent(tree2.getInstance() as any)).toThrow('');
+    const screen1 = render(<SimpleScreen />);
+    const instance1 = screen1.UNSAFE_getByType(SimpleScreen).instance as any;
+    expect(() => uut.bindComponent(instance1)).toThrow('');
+    const screen2 = render(<SimpleScreen componentId={123} />);
+    const instance2 = screen2.UNSAFE_getByType(SimpleScreen).instance as any;
+    expect(() => uut.bindComponent(instance2)).toThrow('');
   });
 
   it(`bindComponent accepts an optional componentId`, () => {
-    const tree = renderer.create(<UnboundScreen />);
-    uut.bindComponent(tree.getInstance() as any, 'myCompId');
+    const screen = render(<UnboundScreen />);
+    const instance = screen.UNSAFE_getByType(UnboundScreen).instance as any;
+    uut.bindComponent(instance as any, 'myCompId');
 
-    expect(tree.toJSON()).toBeDefined();
+    expect(screen.toJSON()).toBeDefined();
     expect(didAppearFn).not.toHaveBeenCalled();
 
     uut.notifyComponentDidAppear({
@@ -157,10 +160,11 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`bindComponent should use optional componentId if component has a componentId in props`, () => {
-    const tree = renderer.create(<UnboundScreen componentId={'doNotUseThisId'} />);
-    uut.bindComponent(tree.getInstance() as any, 'myCompId');
+    const screen = render(<UnboundScreen componentId={'doNotUseThisId'} />);
+    const instance = screen.UNSAFE_getByType(UnboundScreen).instance as any;
+    uut.bindComponent(instance as any, 'myCompId');
 
-    expect(tree.toJSON()).toBeDefined();
+    expect(screen.toJSON()).toBeDefined();
 
     uut.notifyComponentDidAppear({
       componentId: 'dontUseThisId',
@@ -178,8 +182,8 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`bindComponent notifies listeners by componentId on events`, () => {
-    const tree = renderer.create(<BoundScreen componentId={'myCompId'} />);
-    expect(tree.toJSON()).toBeDefined();
+    const screen = render(<BoundScreen componentId={'myCompId'} />);
+    expect(screen.toJSON()).toBeDefined();
     expect(didMountFn).toHaveBeenCalledTimes(1);
     expect(didAppearFn).not.toHaveBeenCalled();
     expect(didDisappearFn).not.toHaveBeenCalled();
@@ -226,12 +230,12 @@ describe('ComponentEventsObserver', () => {
     expect(screenPoppedFn).toHaveBeenCalledTimes(1);
     expect(screenPoppedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' });
 
-    tree.unmount();
+    screen.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);
   });
 
   it(`registerComponentListener accepts listener object`, () => {
-    const tree = renderer.create(<UnboundScreen />);
+    const screen = render(<UnboundScreen />);
     const didAppearListenerFn = jest.fn();
     uut.registerComponentListener(
       {
@@ -240,7 +244,7 @@ describe('ComponentEventsObserver', () => {
       'myCompId'
     );
 
-    expect(tree.toJSON()).toBeDefined();
+    expect(screen.toJSON()).toBeDefined();
     expect(didAppearListenerFn).not.toHaveBeenCalled();
 
     uut.notifyComponentDidAppear({
@@ -260,7 +264,7 @@ describe('ComponentEventsObserver', () => {
       },
       componentName: 'doesnt matter',
     };
-    renderer.create(<BoundScreen componentId={event.componentId} />);
+    render(<BoundScreen componentId={event.componentId} />);
     mockStore.updateProps(event.componentId, event.passProps);
     expect(didAppearFn).not.toHaveBeenCalled();
 
@@ -282,7 +286,7 @@ describe('ComponentEventsObserver', () => {
       },
       componentName: 'doesnt matter',
     };
-    renderer.create(<BoundScreen componentId={event.componentId} />);
+    render(<BoundScreen componentId={event.componentId} />);
     mockStore.updateProps(event.componentId, event.passProps);
     expect(willAppearFn).not.toHaveBeenCalled();
 
@@ -296,7 +300,7 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`doesnt call other componentIds`, () => {
-    renderer.create(<BoundScreen componentId={'myCompId'} />);
+    render(<BoundScreen componentId={'myCompId'} />);
     uut.notifyComponentDidAppear({
       componentId: 'other',
       componentName: 'doesnt matter',
@@ -306,9 +310,10 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`doesnt call unimplemented methods`, () => {
-    const tree = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
-    uut.bindComponent(tree.getInstance() as any);
+    const screen = render(<SimpleScreen componentId={'myCompId'} />);
+    const instance = screen.UNSAFE_getByType(SimpleScreen).instance as any;
+    expect(instance.componentDidAppear).toBeUndefined();
+    uut.bindComponent(instance as any);
     uut.notifyComponentDidAppear({
       componentId: 'myCompId',
       componentName: 'doesnt matter',
@@ -317,7 +322,7 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`returns unregister fn`, () => {
-    renderer.create(<BoundScreen componentId={'123'} />);
+    render(<BoundScreen componentId={'123'} />);
 
     uut.notifyComponentDidAppear({
       componentId: '123',
@@ -337,8 +342,8 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`removeAllListenersForComponentId`, () => {
-    renderer.create(<BoundScreen componentId={'123'} />);
-    renderer.create(<BoundScreen componentId={'123'} />);
+    render(<BoundScreen componentId={'123'} />);
+    render(<BoundScreen componentId={'123'} />);
 
     uut.unmounted('123');
 
@@ -351,10 +356,10 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`supports multiple listeners with same componentId`, () => {
-    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    const tree2 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
-    const instance1 = tree1.getInstance() as any;
-    const instance2 = tree2.getInstance() as any;
+    const screen1 = render(<SimpleScreen componentId={'myCompId'} />);
+    const screen2 = render(<SimpleScreen componentId={'myCompId'} />);
+    const instance1 = screen1.UNSAFE_getByType(SimpleScreen).instance as any;
+    const instance2 = screen2.UNSAFE_getByType(SimpleScreen).instance as any;
     instance1.componentDidAppear = jest.fn();
     instance2.componentDidAppear = jest.fn();
 
