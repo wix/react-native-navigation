@@ -18,7 +18,7 @@ type RnnButtonProps = {
 
 export default class RnnButton extends React.Component<RnnButtonProps> {
   render() {
-    const { platform, ...props } = this.props;
+    const { platform, onPress, ...props } = this.props;
     // If the platform prop is provided, only render if provided platform matches the current platform.
     if (platform && platform !== Platform.OS) {
       return null;
@@ -27,7 +27,7 @@ export default class RnnButton extends React.Component<RnnButtonProps> {
     const color = props.testID ? '#5B49F5' : '#65C888';
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
         <View style={[styles.buttonContainer, { backgroundColor: color }]}>
           <Text style={styles.buttonText} {...props}>
             {props.label}
