@@ -47,13 +47,15 @@ open class OverlayTouchDelegate(
     private fun isInsideView(event: MotionEvent): Boolean {
         val reactViewSurface = this.reactView.getChildAt(0) as ViewGroup
         for (i in 0 until reactViewSurface.childCount) {
-            val childViewGroup = reactViewSurface.getChildAt(i) as ViewGroup
+            val childItem = reactViewSurface.getChildAt(i)
 
-            if (childViewGroup.getChildAt(0) is DebuggingOverlay) {
-                continue
+            if (childItem is ViewGroup) {
+                if (childItem.getChildAt(0) is DebuggingOverlay) {
+                    continue
+                }
             }
 
-            if (childViewGroup.isVisible && event.coordinatesInsideView(childViewGroup)) {
+            if (childItem.isVisible && event.coordinatesInsideView(childItem)) {
                 return true
             }
         }
