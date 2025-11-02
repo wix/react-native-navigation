@@ -1,14 +1,20 @@
 package com.reactnativenavigation.views.touch
 
 import android.view.MotionEvent
+import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
+import com.facebook.react.views.debuggingoverlay.DebuggingOverlay
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.coordinatesInsideView
 import com.reactnativenavigation.views.component.ComponentLayout
+import androidx.core.view.isVisible
 
-open class OverlayTouchDelegate(private val component: ComponentLayout, private val reactView: ReactView) {
+open class OverlayTouchDelegate(
+    private val component: ComponentLayout,
+    private val reactView: ReactView
+) {
     var interceptTouchOutside: Bool = NullBool()
 
     fun onInterceptTouchEvent(event: MotionEvent): Boolean {
@@ -19,8 +25,39 @@ open class OverlayTouchDelegate(private val component: ComponentLayout, private 
     }
 
     @VisibleForTesting
-    open fun handleDown(event: MotionEvent) = when (event.coordinatesInsideView(reactView.getChildAt(0))) {
+    open fun handleDown(event: MotionEvent) = when (isInsideView(event)) {
         true -> component.superOnInterceptTouchEvent(event)
         false -> interceptTouchOutside.isFalse
     }
+
+    /**
+     * In new architecture, ReactView could have a DebugOverlay as a child that covers the entire screen.
+     * We need to check if the touch event is inside the actual React content. So we go over all children
+     * of the ReactView and check if the event is inside any of them except the DebugOverlay.
+     *
+     * Example of ReactView hierarchy:
+     * ```
+     * ReactView
+     * └── ReactSurfaceView
+     *     ├── ReactViewGroup
+     *     │   └── DebuggingOverlay (covers entire screen)
+     *     └── ReactViewGroup (the content we care about)
+     * ```
+     */
+    private fun isInsideView(event: MotionEvent): Boolean {
+        val reactViewSurface = this.reactView.getChildAt(0) as ViewGroup
+        for (i in 0 until reactViewSurface.childCount) {
+            val childViewGroup = reactViewSurface.getChildAt(i) as ViewGroup
+
+            if (childViewGroup.getChildAt(0) is DebuggingOverlay) {
+                continue
+            }
+
+            if (childViewGroup.isVisible && event.coordinatesInsideView(childViewGroup)) {
+                return true
+            }
+        }
+        return false
+    }
+
 }
