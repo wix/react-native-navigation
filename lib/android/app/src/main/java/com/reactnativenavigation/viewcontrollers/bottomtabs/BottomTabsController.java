@@ -63,7 +63,15 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         tabPresenter.onConfigurationChanged(resolveCurrentOptions());
     }
 
-    public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
+    public BottomTabsController(Activity activity,
+                                List<ViewController<?>> tabs,
+                                ChildControllersRegistry childRegistry,
+                                EventEmitter eventEmitter,
+                                ImageLoader imageLoader,
+                                String id, Options initialOptions,
+                                Presenter presenter,
+                                BottomTabsAttacher tabsAttacher,
+                                BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
@@ -86,15 +94,17 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     public BottomTabsLayout createView() {
         BottomTabsLayout root = new BottomTabsLayout(getActivity());
+        root.setTag("RNN.BottomTabsLayoutRoot");
 
         this.bottomTabsContainer = createBottomTabsContainer();
         this.bottomTabs = bottomTabsContainer.getBottomTabs();
         Options resolveCurrentOptions = resolveCurrentOptions();
         tabsAttacher.init(root, resolveCurrentOptions);
-        presenter.bindView(bottomTabsContainer, this);
+        presenter.bindView(bottomTabsContainer, root, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         root.addBottomTabsContainer(bottomTabsContainer);
+
         bottomTabs.addItems(createTabs());
         setInitialTab(resolveCurrentOptions);
         tabsAttacher.attach();
@@ -306,10 +316,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
-        return WindowInsetsCompat.CONSUMED;
-    }
+        Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
 
+        int bottomInset = (imeInsets.bottom > 0) ? 0 : sysInsets.bottom;
+        view.setPaddingRelative(0, 0, 0, bottomInset);
+        return insets;
+    }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {

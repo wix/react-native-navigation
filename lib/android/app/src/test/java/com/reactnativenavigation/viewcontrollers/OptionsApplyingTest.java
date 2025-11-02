@@ -72,8 +72,7 @@ public class OptionsApplyingTest extends BaseTest {
                 return topBar;
             }
         };
-        stack = TestUtils.newStackController(activity)
-                .setTopBarController(topBarController)
+        stack = TestUtils.newStackController(activity, topBarController)
                 .build();
         stack.ensureViewIsCreated();
         stack.getView().layout(0, 0, 1000, 1000);

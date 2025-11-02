@@ -1,0 +1,50 @@
+---
+id: third-party-typescript
+title: TypeScript
+sidebar_label: TypeScript
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Strongly typed components
+
+Both functional and class components can be typed to get the benefits of strongly typed options and props.
+
+<Tabs
+  defaultValue="clazz"
+  values={[
+    { label: 'Class Component', value: 'clazz' },
+    { label: 'Functional Component', value: 'functional' },
+  ]}
+>
+
+<TabItem value="clazz">
+
+```tsx file=./third-party-typescript/strongly-typed-components-class.tsx
+```
+
+</TabItem>
+
+<TabItem value="functional">
+
+```tsx file=./third-party-typescript/strongly-typed-components-fn.tsx
+```
+
+</TabItem>
+
+</Tabs>
+
+## Typed props in commands
+
+Arguments are passed to components view the `passProp`. This is a common source for errors as these props tend to change overtime. Luckily we can type the passProps property to avoid these regressions. The example below shows how to declare types for passProps when pushing a screen.
+
+```tsx file=./third-party-typescript/typed-props-in-commands.tsx
+```
+
+The following commands accept typed passProps:
+
+- push
+- setStackRoot
+- showModal
+- showOverlay

@@ -14,6 +14,8 @@
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	self.dependencyProvider = [RCTAppDependencyProvider new];
 	
+	
+	
 	if (self.bridgelessEnabled) {
 #ifdef RCT_NEW_ARCH_ENABLED
 		[ReactNativeNavigation

@@ -25,7 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-@Ignore("New architecture - WIP")
+@Ignore("New architecture - failed to fix")
 public class PresenterTest extends BaseTest {
     private Presenter uut;
     private Activity activity;

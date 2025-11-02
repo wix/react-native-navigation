@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import {
   Options,
   OptionsModalPresentationStyle,
@@ -12,7 +13,7 @@ import testIDs from '../testIDs';
 import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
-import { Text } from 'react-native';
+import bottomTabsStruct from './BottomTabsLayoutStructure';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -93,29 +94,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
   bottomTabs = () => {
     Navigation.showModal({
       bottomTabs: {
-        children: [
-          stack(Screens.FirstBottomTabsScreen),
-          stack(
-            {
-              component: {
-                name: Screens.SecondBottomTabsScreen,
-              },
-            },
-            'SecondTab'
-          ),
-          {
-            component: {
-              name: Screens.Pushed,
-              options: {
-                bottomTab: {
-                  selectTabOnPress: false,
-                  text: 'Tab 3',
-                  testID: testIDs.THIRD_TAB_BAR_BTN,
-                },
-              },
-            },
-          },
-        ],
+        children: [...bottomTabsStruct.children],
         options: {
           hardwareBackButton: {
             bottomTabsOnPress: 'previous',
