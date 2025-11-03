@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.touch
 
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import com.facebook.react.views.debuggingoverlay.DebuggingOverlay
@@ -49,17 +50,14 @@ open class OverlayTouchDelegate(
         for (i in 0 until reactViewSurface.childCount) {
             val childItem = reactViewSurface.getChildAt(i)
 
-            if (childItem is ViewGroup) {
-                if (childItem.getChildAt(0) is DebuggingOverlay) {
-                    continue
-                }
-            }
-
-            if (childItem.isVisible && event.coordinatesInsideView(childItem)) {
+            if (!debuggingOverlay(childItem) && childItem.isVisible && event.coordinatesInsideView(childItem)) {
                 return true
             }
         }
         return false
     }
+
+    private fun debuggingOverlay(childItem: View?): Boolean =
+        childItem is ViewGroup && childItem.getChildAt(0) is DebuggingOverlay
 
 }

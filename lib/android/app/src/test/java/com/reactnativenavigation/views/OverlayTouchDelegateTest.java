@@ -13,7 +13,6 @@ import com.reactnativenavigation.views.component.ComponentLayout;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -36,12 +35,12 @@ public class OverlayTouchDelegateTest extends BaseTest {
 
     @Override
     public void beforeEach() {
-        mockHierarchy();
+        reactView = mock(ReactView.class);
+        component = mock(ComponentLayout.class);
         uut = spy(new OverlayTouchDelegate(component, reactView));
     }
 
-    private void mockHierarchy() {
-        reactView = mock(ReactView.class);
+    private void mockHierarchyWithDebuggingOverlay() {
         // Mock the hierarchy: ReactView -> ReactSurfaceView -> ReactViewGroup(s)
         ViewGroup reactSurfaceView = mock(ViewGroup.class);
         ViewGroup debuggingOverlayContainer = mock(ViewGroup.class);
@@ -81,12 +80,11 @@ public class OverlayTouchDelegateTest extends BaseTest {
             rect.set(new Rect(0, 0, 100, 100));
             return null;
         }).when(debuggingOverlayContainer).getHitRect(any(Rect.class));
-
-        component = mock(ComponentLayout.class);
     }
 
     @Test
     public void downEventIsHandled() {
+        mockHierarchyWithDebuggingOverlay();
         uut.setInterceptTouchOutside(new Bool(true));
         uut.onInterceptTouchEvent(downEvent);
         verify(uut, times(1)).handleDown(downEvent);
