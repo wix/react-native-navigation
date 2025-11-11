@@ -1,4 +1,4 @@
-import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
+import { default as TestIDs, default as testIDs } from '../src/testIDs';
 import Android from './AndroidUtils';
 import Utils from './Utils';
 

@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('../jest.config.js'),
+  ...require('../../jest.config.js'),
 
   // bail: true,
   globalSetup: 'detox/runners/jest/globalSetup',
@@ -7,7 +7,7 @@ module.exports = {
   reporters: ['detox/runners/jest/reporter'],
   maxWorkers: 1,
   moduleNameMapper: {
-    ...require('../jest.config.js').moduleNameMapper,
+    ...require('../../jest.config.js').moduleNameMapper,
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'identity-obj-proxy',
   },
   rootDir: '..',

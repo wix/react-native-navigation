@@ -1,5 +1,5 @@
 import Utils from './Utils';
-import TestIDs from '../playground/src/testIDs';
+import TestIDs from '../src/testIDs';
 import Android from './AndroidUtils';
 
 const { elementByLabel, elementById, expectImagesToBeEqual } = Utils;
