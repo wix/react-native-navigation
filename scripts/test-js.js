@@ -23,10 +23,13 @@ function run() {
 }
 
 function assertAllTsFilesInSrc() {
-  const allFiles = exec.execSyncRead('find ./lib/src -type f');
+  const allFiles = exec.execSyncRead('find ./src -type f');
   const lines = split(allFiles, '\n');
-  const offenders = filter(lines, (f) => !f.endsWith('.ts') && !f.endsWith('.tsx'));
+  const offenders = filter(lines, (f) => {
+    const trimmed = f.trim();
+    return trimmed && !trimmed.endsWith('.ts') && !trimmed.endsWith('.tsx');
+  });
   if (offenders.length) {
-    throw new Error(`\n\nOnly ts/tsx files are allowed:\n${offenders.join('\n')}\n\n\n`);
+    throw new Error(`\n\nOnly ts/tsx files are allowed in src (compiled .js files should be in lib/module):\n${offenders.join('\n')}\n\n\n`);
   }
 }
