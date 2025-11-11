@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Options } from '../../src/index';
+import { Options } from '../../src';
 import { switchTabByIndex } from '../actions/layoutActions';
 import ParentNode from './ParentNode';
 

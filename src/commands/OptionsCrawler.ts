@@ -12,7 +12,7 @@ import {
   LayoutStack,
   LayoutTopTabs,
 } from '../interfaces/Layout';
-import { UniqueIdProvider } from 'react-native-navigation/adapters/UniqueIdProvider';
+import { UniqueIdProvider } from 'src/adapters/UniqueIdProvider';
 import { LayoutType } from './LayoutType';
 
 type ComponentWithOptions = ComponentType<any> & { options(passProps: any): Options };

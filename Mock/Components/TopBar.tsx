@@ -5,7 +5,7 @@ import {
   OptionsTopBar,
   OptionsTopBarBackButton,
   OptionsTopBarButton,
-} from 'react-native-navigation';
+} from 'src';
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { NavigationButton } from './NavigationButton';
