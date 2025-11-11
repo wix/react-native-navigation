@@ -5,6 +5,6 @@ set -euo pipefail
 node ./scripts/changeReactNativeVersion.js || true
 
 # Install dependencies (base step for all CI jobs)
-npm install
+yarn install
 
 

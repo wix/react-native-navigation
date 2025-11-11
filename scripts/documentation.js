@@ -11,8 +11,8 @@ function release(version, removeVersion) {
   if (_versionExists(removeVersion)) _removeDocsVersion(removeVersion);
   const originalDir = process.cwd();
   process.chdir(docsPath);
-  exec.execSync(`npm install`);
-  exec.execSync(`npm run docusaurus docs:version ${version}`);
+  exec.execSync(`yarn install`);
+  exec.execSync(`yarn run docusaurus docs:version ${version}`);
   exec.execSync(`git add ../website`);
   process.chdir(originalDir);
 }
