@@ -5,9 +5,11 @@
     if: "build.pull_request.id == null"
     command:
     - "nvm install"
+    - "corepack enable"
+    - "corepack prepare yarn@3.6.1 --activate"
     - "yarn install"
     - "yarn build"
-    - "yarn run release"    
+    - "yarn run release"
     depends_on:
     - ios
     - android
