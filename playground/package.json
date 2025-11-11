@@ -1,0 +1,229 @@
+{
+  "name": "react-native-navigation-playground",
+  "version": "8.4.2",
+  "description": "React Native Navigation - truly native navigation for iOS and Android",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node ./scripts/build",
+    "watch": "node ./scripts/watch",
+    "xcode": "open playground/ios/playground.xcworkspace",
+    "studio": "studio playground/android",
+    "install-android": "node ./scripts/install-android",
+    "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
+    "clean": "node ./scripts/clean",
+    "prestart": "npm run build",
+    "start": "react-native start",
+    "pretest-js": "npm run build",
+    "test-js": "node ./scripts/test-js",
+    "pod-install-new-arch": "cd playground/ios && BUNDLE_GEMFILE=../../Gemfile BUNDLE_PATH=~/gems/ bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
+    "pod-install": "cd playground/ios && pod install",
+    "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
+    "test-unit-android": "node ./scripts/test-unit --android",
+    "pretest-e2e-android": "npm run build",
+    "test-e2e-android": "node ./scripts/test-e2e --android",
+    "test-e2e-android-multi": "npm run test-e2e-android -- --multi",
+    "pretest-e2e-ios": "npm run build",
+    "test-e2e-ios": "node ./scripts/test-e2e --ios",
+    "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
+    "test-autolink": "node ./scripts/test-autolink",
+    "test-all": "node ./scripts/test-all",
+    "prerelease": "npm run build",
+    "release": "node ./scripts/release",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "3.x.x",
+    "lodash": "4.17.x",
+    "prop-types": "15.x.x",
+    "react-lifecycles-compat": "^3.0.4",
+    "react-native-redash": "^12.6.1",
+    "reanimated-color-picker": "^3.0.6",
+    "ssim.js": "^3.5.0",
+    "tslib": "1.9.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-export-default-from": "7.10.1",
+    "@babel/plugin-proposal-export-namespace-from": "7.10.1",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/runtime": "^7.25.0",
+    "@babel/types": "7.25.0",
+    "@react-native-community/cli": "15.1.0",
+    "@react-native-community/cli-platform-android": "15.1.0",
+    "@react-native-community/cli-platform-ios": "15.1.0",
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-community/netinfo": "^11.4.1",
+    "@react-native/babel-preset": "0.78.3",
+    "@react-native/eslint-config": "0.78.3",
+    "@react-native/metro-config": "0.78.3",
+    "@react-native/typescript-config": "0.78.3",
+    "@testing-library/jest-native": "^5.4.2",
+    "@testing-library/react-native": "^13.0.1",
+    "@types/hoist-non-react-statics": "^3.3.6",
+    "@types/jasmine": "3.5.10",
+    "@types/jest": "^29.5.13",
+    "@types/lodash": "^4.14.149",
+    "@types/react": "^18.2.6",
+    "@types/react-test-renderer": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "8.21.0",
+    "@typescript-eslint/parser": "8.21.0",
+    "clang-format": "^1.4.0",
+    "detox": "20.34.4",
+    "detox-testing-library-rnn-adapter": "^2.0.3",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-formatter-codeframe": "^7.32.1",
+    "eslint-plugin-jest": "^28.11.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "github-release-notes": "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58",
+    "husky": "4.2.5",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "^29.6.3",
+    "lint-staged": "10.2.11",
+    "pixelmatch": "^5.2.1",
+    "pngjs": "^6.0.0",
+    "prettier": "2.8.8",
+    "react": "19.0.0",
+    "react-native": "0.78.3",
+    "react-native-fast-image": "^8.6.3",
+    "react-native-gesture-handler": "^2.22.1",
+    "react-native-reanimated": "3.18.0",
+    "react-redux": "9.1.2",
+    "react-test-renderer": "19.0.0",
+    "redux": "^5.0.1",
+    "remx": "3.x.x",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x",
+    "ts-mockito": "^2.3.1",
+    "typedoc": "0.x.x",
+    "typescript": "5.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --fix",
+    "*.{h,m,mm}": "node ./scripts/check-clang-format"
+  },
+  "detox": {
+    "testRunner": {
+      "args": {
+        "config": "e2e/jest.config.js"
+      }
+    },
+    "artifacts": {
+      "plugins": {
+        "log": "all",
+        "screenshot": {
+          "shouldTakeAutomaticSnapshots": true,
+          "takeWhen": {}
+        },
+        "timeline": "all",
+        "uiHierarchy": "enabled",
+        "video": "failing"
+      }
+    },
+    "devices": {
+      "simulator": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 13 Pro Max",
+          "os": "15.5"
+        }
+      },
+      "genymotion.emulator.name": {
+        "type": "android.genycloud",
+        "device": {
+          "recipeUUID": "9baf12f9-a645-4ffa-a688-0e92584d6194"
+        }
+      },
+      "emulator": {
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_3a_API_34"
+        }
+      }
+    },
+    "apps": {
+      "ios.debug": {
+        "type": "ios.app",
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "start": "npm start -- --e2e",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
+      },
+      "ios.release": {
+        "type": "ios.app",
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
+      },
+      "android.debug": {
+        "type": "android.apk",
+        "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
+        "start": "npm start -- --e2e",
+        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
+        "reversePorts": [
+          8081
+        ]
+      },
+      "android.release": {
+        "type": "android.apk",
+        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release"
+      }
+    },
+    "configurations": {
+      "ios.none": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "type": "ios.none",
+        "name": "iPhone 13",
+        "session": {
+          "server": "ws://localhost:8099",
+          "sessionId": "playground"
+        }
+      },
+      "ios.sim.debug": {
+        "app": "ios.debug",
+        "device": "simulator"
+      },
+      "ios.sim.release": {
+        "app": "ios.release",
+        "device": "simulator"
+      },
+      "android.emu.debug": {
+        "app": "android.debug",
+        "device": "emulator"
+      },
+      "android.manual": {
+        "device": "emulator",
+        "app": "android.debug",
+        "behavior": {
+          "launchApp": "manual"
+        },
+        "session": {
+          "autoStart": true,
+          "debugSynchronization": 0,
+          "server": "ws://localhost:8099",
+          "sessionId": "test"
+        },
+        "testRunner": {
+          "args": {
+            "testTimeout": 999999
+          }
+        },
+        "artifacts": false
+      },
+      "android.emu.release": {
+        "app": "android.release",
+        "device": "emulator"
+      },
+      "android.genycloud.release": {
+        "app": "android.release",
+        "device": "genymotion.emulator.name"
+      }
+    }
+  }
+}

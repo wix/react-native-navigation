@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig-strict.json",
   "compilerOptions": {
-    "outDir": "./lib/dist",
     "allowJs": false,
     "target": "esnext",
     "module": "commonjs",
@@ -11,10 +10,10 @@
     "skipLibCheck": true,
     "types": ["jest", "lodash", "react", "react-native", "react-test-renderer"],
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
-      "react-native-navigation": ["lib/src/"],
-      "react-native-navigation/*": ["lib/src/*"]
+      "react-native-navigation": ["./src/"],
+      "react-native-navigation/*": ["./src/*"]
     }
   },
-  "include": ["./lib/src/**/*", "./playground/**/*", "lib/Mock"]
 }

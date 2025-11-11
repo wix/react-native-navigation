@@ -1,7 +1,7 @@
 const React = require('react');
 require('react-native');
 const { render, act } = require('@testing-library/react-native');
-const { Navigation } = require('../../lib/src/index');
+const { Navigation } = require('../../src/index');
 
 describe('remx support', () => {
   let MyConnectedComponent;

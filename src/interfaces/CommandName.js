@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandName = void 0;
+var CommandName;
+(function (CommandName) {
+    CommandName["SetRoot"] = "setRoot";
+    CommandName["SetDefaultOptions"] = "setDefaultOptions";
+    CommandName["MergeOptions"] = "mergeOptions";
+    CommandName["UpdateProps"] = "updateProps";
+    CommandName["ShowModal"] = "showModal";
+    CommandName["DismissModal"] = "dismissModal";
+    CommandName["DismissAllModals"] = "dismissAllModals";
+    CommandName["Push"] = "push";
+    CommandName["Pop"] = "pop";
+    CommandName["PopTo"] = "popTo";
+    CommandName["PopToRoot"] = "popToRoot";
+    CommandName["SetStackRoot"] = "setStackRoot";
+    CommandName["ShowOverlay"] = "showOverlay";
+    CommandName["DismissOverlay"] = "dismissOverlay";
+    CommandName["DismissAllOverlays"] = "dismissAllOverlays";
+    CommandName["GetLaunchArgs"] = "getLaunchArgs";
+})(CommandName = exports.CommandName || (exports.CommandName = {}));

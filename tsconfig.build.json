@@ -1,4 +1,17 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["./playground/**/*"]
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "./playground/**/*",
+    "./website/**/*",
+    "./Mock/**/*",
+    "./Mock.ts"
+  ],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./lib/module",
+    "declarationDir": "./lib/typescript/src"
+  }
 }

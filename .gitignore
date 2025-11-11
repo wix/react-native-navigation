@@ -238,7 +238,7 @@ website/package-lock.json
 artifacts/
 
 # Navigation mocks
-lib/*
+
 Mock.js
 Mock.d.ts
 

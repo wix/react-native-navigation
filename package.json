@@ -19,8 +19,16 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/src/index.js",
-  "typings": "lib/dist/src/index.d.ts",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -127,6 +135,10 @@
     "typedoc": "0.x.x",
     "typescript": "5.0.4"
   },
+  "workspaces": [
+    "playground"
+  ],
+  "packageManager": "yarn@3.6.1",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -256,6 +268,6 @@
   "codegenConfig": {
     "name": "rnnavigation",
     "type": "all",
-    "jsSrcsDir": "./lib/src"
+    "jsSrcsDir": "./src"
   }
 }
