@@ -1,4 +1,5 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+import groovy.json.JsonSlurper
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 buildscript {
     ext {
@@ -21,13 +22,13 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath 'com.android.tools.build:gradle'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
+        google()
+        mavenCentral()
         maven { url "$rootDir/../../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         flatDir {
@@ -36,12 +37,106 @@ allprojects {
     }
 }
 
-subprojects {
-    afterEvaluate { p ->
-        if (p.hasProperty('android')) {
-            android {
-                buildToolsVersion rootProject.ext.buildToolsVersion
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: "com.facebook.react"
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+def safeExtGetFallbackLowerBound(prop, fallback) {
+    Math.max(safeExtGet(prop, fallback), fallback)
+}
+
+def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_MIN_SDK_VERSION = 24
+def DEFAULT_TARGET_SDK_VERSION = 35
+def DEFAULT_KOTLIN_VERSION = "1.5.31"
+def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
+def DEFAULT_BUILD_TOOLS_VERSION = "35.0.0"
+def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
+def kotlinStdlib = safeExtGet('RNNKotlinStdlib', DEFAULT_KOTLIN_STDLIB)
+def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
+def _buildToolsVersion = safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
+
+android {
+    namespace 'com.reactnativenavigation'
+    compileSdkVersion safeExtGetFallbackLowerBound('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+    buildToolsVersion = _buildToolsVersion
+    defaultConfig {
+        minSdkVersion safeExtGetFallbackLowerBound('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGetFallbackLowerBound('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        managedDevices {
+            localDevices {
+                pixel3aapi34 {
+                    device = "Pixel 3a"
+                    apiLevel = 34
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+        unitTests.includeAndroidResources = true
+        unitTests.all { t ->
+            maxHeapSize = "4g"
+            testLogging {
+                events "PASSED", "SKIPPED", "FAILED"
+                exceptionFormat TestExceptionFormat.FULL
+                showExceptions true
+                showCauses true
+                showStackTraces true
+            }
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    def output = "      ${result.resultType} (${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)     "
+                    def repeatLength = output.length()
+                    println '\n\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
+
+                    println "see report at file://${t.reports.html.outputLocation}/index.html"
+                }
             }
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
+
+    implementation 'com.github.wix-playground:ahbottomnavigation:4.0.0'
+    implementation 'com.github.Dimezis:BlurView:version-3.0.0'
+    implementation 'com.github.wix-playground:reflow-animator:1.0.6'
+    implementation 'com.github.clans:fab:1.6.4'
+
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
 }

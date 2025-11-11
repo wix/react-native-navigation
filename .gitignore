@@ -245,3 +245,12 @@ Mock.d.ts
 
 Gemfile.lock
 /playground/ios/.xcode.env.local
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
