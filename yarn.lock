@@ -12344,7 +12344,6 @@ __metadata:
     eslint-plugin-jest: ^28.11.0
     eslint-plugin-prettier: 3.1.4
     github-release-notes: "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58"
-    hoist-non-react-statics: 3.x.x
     husky: 4.2.5
     identity-obj-proxy: 3.0.0
     jest: ^29.6.3
@@ -12360,15 +12359,12 @@ __metadata:
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.22.1
     react-native-reanimated: 3.18.0
-    react-native-redash: ^12.6.1
     react-redux: 9.1.2
     react-test-renderer: 19.0.0
-    reanimated-color-picker: ^3.0.6
     redux: ^5.0.1
     remx: 3.x.x
     semver: 5.x.x
     shell-utils: 1.x.x
-    ssim.js: ^3.5.0
     ts-mockito: ^2.3.1
     tslib: 1.9.3
     typedoc: 0.x.x

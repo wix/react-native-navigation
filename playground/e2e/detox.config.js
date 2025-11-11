@@ -43,7 +43,7 @@ const config = {
       type: 'ios.app',
       binaryPath:
         'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
-      start: 'yarn start',
+      start: 'react-native start',
       build:
         'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
@@ -57,7 +57,7 @@ const config = {
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
-      start: 'yarn start',
+      start: 'react-native start',
       build:
         'cd android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
       reversePorts: [8081],
