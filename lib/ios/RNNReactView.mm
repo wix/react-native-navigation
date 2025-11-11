@@ -78,9 +78,17 @@
 - (void)surface:(__unused RCTSurface *)surface didChangeStage:(RCTSurfaceStage)stage {
     RCTExecuteOnMainQueue(^{
       [super surface:surface didChangeStage:stage];
-      [self reactViewReady];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(contentDidAppear:)
+                                                   name:RCTContentDidAppearNotification
+                                                 object:nil];
     });
 }
+    
+- (void)contentDidAppear:(NSNotification *)notification {
+    [self reactViewReady];
+}
+    
 #else
 
 - (void)contentDidAppear:(NSNotification *)notification {
@@ -96,9 +104,9 @@
         _reactViewReadyBlock();
         _reactViewReadyBlock = nil;
     }
-#ifndef RCT_NEW_ARCH_ENABLED
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-#endif
+
 }
 
 #pragma mark - RNNComponentProtocol
