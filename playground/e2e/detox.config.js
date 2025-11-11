@@ -45,14 +45,14 @@ const config = {
         'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
       start: 'yarn start',
       build:
-        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'ios.release': {
       type: 'ios.app',
       binaryPath:
         'ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app',
       build:
-        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'android.debug': {
       type: 'android.apk',
