@@ -12622,6 +12622,7 @@ __metadata:
     remx: 3.x.x
     semver: 5.x.x
     shell-utils: 1.x.x
+    ssim.js: ^3.5.0
     ts-mockito: ^2.3.1
     tslib: 1.9.3
     typedoc: 0.x.x
