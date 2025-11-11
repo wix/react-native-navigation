@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.RestrictTo;
@@ -71,7 +72,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     }
 
     public void sendComponentWillStart(ComponentType type) {
-        this.post(()->{
+        this.post(() -> {
             ReactContext currentReactContext = getReactContext();
             if (currentReactContext != null)
                 new EventEmitter(currentReactContext).emitComponentWillAppear(componentId, componentName, type);
@@ -79,7 +80,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     }
 
     public void sendComponentStart(ComponentType type) {
-        this.post(()->{
+        this.post(() -> {
             ReactContext currentReactContext = getReactContext();
             if (currentReactContext != null) {
                 new EventEmitter(currentReactContext).emitComponentDidAppear(componentId, componentName, type);
@@ -117,7 +118,12 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
 
     @Override
     public boolean isRendered() {
-        return getChildCount() >= 1;
+        ViewGroup view = reactSurface.getView();
+        if (view != null) {
+            return view.getChildCount() >= 1;
+        }
+
+        return false;
     }
 
     public EventDispatcher getEventDispatcher() {
@@ -131,7 +137,7 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     }
 
     private ReactHost getReactHost() {
-        return  ((ReactApplication)getContext().getApplicationContext()).getReactHost();
+        return ((ReactApplication) getContext().getApplicationContext()).getReactHost();
     }
 
     private ReactContext getReactContext() {
