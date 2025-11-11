@@ -6116,6 +6116,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escape-string-regexp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "escape-string-regexp@npm:5.0.0"
+  checksum: 20daabe197f3cb198ec28546deebcf24b3dbb1a5a269184381b3116d12f0532e06007f4bc8da25669d6a7f8efb68db0758df4cd981f57bc5b57f521a3e12c59e
+  languageName: node
+  linkType: hard
+
 "eslint-config-prettier@npm:6.11.0":
   version: 6.11.0
   resolution: "eslint-config-prettier@npm:6.11.0"
@@ -6577,7 +6584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2, fast-glob@npm:^3.3.3":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
@@ -12218,6 +12225,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-monorepo-config@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "react-native-monorepo-config@npm:0.3.0"
+  dependencies:
+    escape-string-regexp: ^5.0.0
+    fast-glob: ^3.3.3
+  checksum: eea8b0c0d49faeaba4712773a3d17b3e4307d6988ccfd46879e2cc1ca7f09593fa877a4e97caff457fdc1142ccdca68493a0fe7331d5a1e0de6ce38f81f1ac2b
+  languageName: node
+  linkType: hard
+
 "react-native-navigation-playground@workspace:playground":
   version: 0.0.0-use.local
   resolution: "react-native-navigation-playground@workspace:playground"
@@ -12271,6 +12288,7 @@ __metadata:
     react-native: 0.78.3
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.22.1
+    react-native-monorepo-config: ^0.3.0
     react-native-reanimated: 3.18.0
     react-native-redash: ^12.6.1
     react-redux: 9.1.2

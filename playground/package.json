@@ -89,6 +89,7 @@
     "react-native": "0.78.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
+    "react-native-monorepo-config": "^0.3.0",
     "react-native-reanimated": "3.18.0",
     "react-redux": "9.1.2",
     "react-test-renderer": "19.0.0",
