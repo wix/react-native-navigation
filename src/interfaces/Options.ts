@@ -1,5 +1,5 @@
 // tslint:disable jsdoc-format
-import { ImageRequireSource, ImageSourcePropType, Insets, OpaqueColorValue } from 'react-native';
+import type { ImageRequireSource, ImageSourcePropType, Insets, OpaqueColorValue } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!

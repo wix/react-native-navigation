@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Store } from './Store';
-import { IWrappedComponent } from './ComponentWrapper';
+import type { IWrappedComponent } from './ComponentWrapper';
 
 describe('Store', () => {
   let uut: Store;

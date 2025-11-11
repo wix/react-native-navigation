@@ -1,11 +1,11 @@
 import { LayoutStore } from '../Stores/LayoutStore';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
-import { LayoutNode } from 'react-native-navigation/commands/LayoutTreeCrawler';
+import type { LayoutNode } from '../../src/commands/LayoutTreeCrawler';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
 import ComponentNode from '../Layouts/ComponentNode';
-import { Constants } from 'react-native-navigation/adapters/Constants';
-import { CommandName } from 'react-native-navigation/interfaces/CommandName';
+import { Constants } from '../../src/adapters/Constants';
+import { CommandName } from '../../src/interfaces/CommandName';
 
 export class NativeCommandsSender {
   constructor() {}

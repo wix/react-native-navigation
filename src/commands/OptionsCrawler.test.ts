@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { Store } from '../components/Store';
 import { mock, instance, when, anything } from 'ts-mockito';
-import { Options } from '../interfaces/Options';
+import type { Options } from '../interfaces/Options';
 import { OptionsCrawler } from './OptionsCrawler';
-import { Layout } from '../interfaces/Layout';
+import type { Layout } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('OptionsCrawler', () => {

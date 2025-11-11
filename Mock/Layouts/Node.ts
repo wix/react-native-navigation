@@ -1,4 +1,4 @@
-import { Options } from 'react-native-navigation/index';
+import type { Options } from 'react-native-navigation';
 import ParentNode from './ParentNode';
 
 interface Data {

@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, ImageURISource } from 'react-native';
-import { Navigation, ImageResource } from 'react-native-navigation/index';
-import { ComponentProps } from '../ComponentProps';
+import { Component } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import type { ImageURISource } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import type { ImageResource } from 'react-native-navigation';
+import type { ComponentProps } from '../ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from '../constants';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { connect } from '../connect';

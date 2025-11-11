@@ -11,13 +11,13 @@ import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Options } from '../interfaces/Options';
+import type { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
 import React from 'react';
-import { IWrappedComponent } from 'src/components/ComponentWrapper';
+import type { IWrappedComponent } from '../components/ComponentWrapper';
 
 describe('Commands', () => {
   let uut: Commands;

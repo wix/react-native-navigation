@@ -1,4 +1,5 @@
-import { TurboModule, TurboModuleRegistry, NativeModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
+import type { TurboModule, NativeModule } from 'react-native';
 
 export interface Spec extends TurboModule {
   addListener: (eventType: string) => void;

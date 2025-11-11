@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import {
-  Navigation,
+import { Navigation } from 'react-native-navigation';
+import type {
   OptionsTopBar,
   OptionsTopBarBackButton,
   OptionsTopBarButton,
-} from 'react-native-navigation/index';
+} from 'react-native-navigation';
 import ParentNode from '../Layouts/ParentNode';
 import { LayoutStore } from '../Stores/LayoutStore';
 import { NavigationButton } from './NavigationButton';

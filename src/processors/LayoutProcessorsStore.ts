@@ -1,5 +1,5 @@
-import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
-import { LayoutProcessor } from '../interfaces/Processors';
+import type { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
+import type { LayoutProcessor } from '../interfaces/Processors';
 
 export class LayoutProcessorsStore {
   private layoutProcessors: LayoutProcessor[] = [];

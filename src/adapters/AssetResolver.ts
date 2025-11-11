@@ -1,4 +1,5 @@
-import { Image, ImageSourcePropType } from 'react-native';
+import { Image } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 
 export class AssetService {
   resolveFromRequire(value: ImageSourcePropType) {

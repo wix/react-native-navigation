@@ -1,4 +1,4 @@
-import { Layout } from './Layout';
+import type { Layout } from './Layout';
 import { CommandName } from './CommandName';
 
 export interface LayoutProcessor {

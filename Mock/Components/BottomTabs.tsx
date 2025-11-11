@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { LayoutComponent } from './LayoutComponent';
-import { ComponentProps } from '../ComponentProps';
+import type { ComponentProps } from '../ComponentProps';
 import { connect } from '../connect';
 
 export const BottomTabs = connect(

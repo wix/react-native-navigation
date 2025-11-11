@@ -4,9 +4,9 @@ import isNil from 'lodash/isNil';
 import uniqueId from 'lodash/uniqueId';
 import unset from 'lodash/unset';
 import forEach from 'lodash/forEach';
-import { EventSubscription } from '../interfaces/EventSubscription';
-import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
-import {
+import type { EventSubscription } from '../interfaces/EventSubscription';
+import type { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
+import type {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -90,9 +90,13 @@ export class ComponentEventsObserver {
       this.listeners[componentId] = {};
     }
     const key = uniqueId();
-    this.listeners[componentId][key] = listener;
+    const componentListeners = this.listeners[componentId];
+    if (!componentListeners) {
+      throw new Error(`Component listeners not initialized for ${componentId}`);
+    }
+    componentListeners[key] = listener;
 
-    return { remove: () => unset(this.listeners[componentId], key) };
+    return { remove: () => unset(componentListeners, key) };
   }
 
   public unmounted(componentId: string) {

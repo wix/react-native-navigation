@@ -4,7 +4,7 @@ import ParentNode from '../Layouts/ParentNode';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
 import { SideMenuNode } from '../Layouts/SideMenu';
 import StackNode from '../Layouts/StackNode';
-import { Options } from 'react-native-navigation/interfaces/Options';
+import type { Options } from 'react-native-navigation';
 
 const remx = require('remx');
 
@@ -158,6 +158,7 @@ function findNode(layoutId: string, layout: ParentNode): any | ParentNode {
   } else if (layout.children) {
     for (let i = 0; i < layout.children.length; i += 1) {
       const child = layout.children[i];
+      if (!child) continue;
       const result = findNode(layoutId, child);
 
       if (result !== false) {
@@ -175,6 +176,7 @@ function findStack(layoutId: string, layout: ParentNode): any | ParentNode {
   } else if (layout.children) {
     for (let i = 0; i < layout.children.length; i += 1) {
       const child = layout.children[i];
+      if (!child) continue;
       const result = findStack(layoutId, child);
 
       if (result !== false) {

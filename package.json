@@ -21,8 +21,10 @@
   },
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
+  "react-native": "./src/index.ts",
   "exports": {
     ".": {
+      "react-native": "./src/index.ts",
       "source": "./src/index.ts",
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
@@ -42,13 +44,14 @@
     "!**/.*"
   ],
   "scripts": {
-    "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "studio": "studio playground/android",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
+    "build": "bob build",
+    "prepare": "bob build",
     "prestart": "yarn run build",
     "start": "node ./scripts/start",
     "pretest-js": "yarn run build",
@@ -125,6 +128,7 @@
     "prettier": "2.8.8",
     "react": "19.0.0",
     "react-native": "0.78.3",
+    "react-native-builder-bob": "^0.40.13",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
     "react-native-reanimated": "3.18.0",
@@ -155,5 +159,23 @@
     "name": "rnnavigation",
     "type": "all",
     "jsSrcsDir": "./src"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
   }
 }

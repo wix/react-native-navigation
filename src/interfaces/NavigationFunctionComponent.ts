@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavigationProps } from './NavigationComponentProps';
-import { Options } from './Options';
+import type { NavigationProps } from './NavigationComponentProps';
+import type { Options } from './Options';
 
 export interface NavigationFunctionComponent<Props = {}>
   extends React.FunctionComponent<Props & NavigationProps> {

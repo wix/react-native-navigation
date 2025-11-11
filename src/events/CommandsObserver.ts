@@ -1,4 +1,4 @@
-import { EventSubscription } from '../interfaces/EventSubscription';
+import type { EventSubscription } from '../interfaces/EventSubscription';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export type CommandsListener = (name: string, params: Record<string, any>) => void;

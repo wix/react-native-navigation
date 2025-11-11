@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentProvider } from 'react-native';
+import type { ComponentProvider } from 'react-native';
 import { polyfill } from 'react-lifecycles-compat';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 

@@ -1,4 +1,5 @@
-import { CommandsObserver, CommandsListener } from './CommandsObserver';
+import { CommandsObserver } from './CommandsObserver';
+import type { CommandsListener } from './CommandsObserver';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 describe('CommandsObserver', () => {

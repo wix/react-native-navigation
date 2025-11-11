@@ -6,6 +6,10 @@ export default class StackNode extends ParentNode {
   }
 
   getVisibleLayout() {
-    return this.children[this.children.length - 1].getVisibleLayout();
+    const lastChild = this.children[this.children.length - 1];
+    if (!lastChild) {
+      throw new Error('No visible layout found');
+    }
+    return lastChild.getVisibleLayout();
   }
 }

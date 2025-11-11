@@ -11,7 +11,7 @@ import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
-import {
+import type {
   AnimationOptions,
   EnterExitAnimationOptions,
   ModalAnimationOptions,
@@ -27,7 +27,8 @@ import {
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
-import { Platform, DynamicColorIOS, ColorValue } from 'react-native';
+import { Platform, DynamicColorIOS } from 'react-native';
+import type { ColorValue } from 'react-native';
 
 export class OptionsProcessor {
   constructor(

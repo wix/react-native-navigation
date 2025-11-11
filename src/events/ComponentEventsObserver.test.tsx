@@ -2,9 +2,9 @@ import * as React from 'react';
 import { render } from '@testing-library/react-native';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
-import { EventSubscription } from '../interfaces/EventSubscription';
+import type { EventSubscription } from '../interfaces/EventSubscription';
 import { Store } from '../components/Store';
-import { ComponentDidAppearEvent, ComponentWillAppearEvent } from '../interfaces/ComponentEvents';
+import type { ComponentDidAppearEvent, ComponentWillAppearEvent } from '../interfaces/ComponentEvents';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();

@@ -1,8 +1,8 @@
 import ParentNode from './ParentNode';
 import ComponentNode from './ComponentNode';
-import { Options } from 'react-native-navigation/index';
+import type { Options } from 'react-native-navigation';
 import * as layoutActions from '../actions/layoutActions';
-import { NodeType } from './Node';
+import type { NodeType } from './Node';
 
 const isCenterChild = (child: ParentNode) => child.type === 'SideMenuCenter';
 const isLeftChild = (child: ParentNode) => child.type === 'SideMenuLeft';
@@ -65,7 +65,11 @@ export class SideMenuNode extends ParentNode {
   }
 
   getVisibleLayout() {
-    return this.children[0].getVisibleLayout();
+    const child = this.children[0];
+    if (!child) {
+      throw new Error('No visible layout found');
+    }
+    return child.getVisibleLayout();
   }
 }
 

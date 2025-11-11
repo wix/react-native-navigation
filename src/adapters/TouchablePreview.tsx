@@ -8,6 +8,8 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
+} from 'react-native';
+import type {
   GestureResponderEvent,
   NativeTouchEvent,
   NativeSyntheticEvent,

@@ -1,4 +1,4 @@
-import { ComponentProvider } from 'react-native';
+import type { ComponentProvider } from 'react-native';
 import { Store } from './Store';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 import { ComponentWrapper } from './ComponentWrapper';

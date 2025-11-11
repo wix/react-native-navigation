@@ -2,8 +2,8 @@ import type { ComponentType } from 'react';
 import merge from 'lodash/merge';
 import isFunction from 'lodash/isFunction';
 import { Store } from '../components/Store';
-import { Options } from '../interfaces/Options';
-import {
+import type { Options } from '../interfaces/Options';
+import type {
   Layout,
   LayoutBottomTabs,
   LayoutComponent,
@@ -12,7 +12,7 @@ import {
   LayoutStack,
   LayoutTopTabs,
 } from '../interfaces/Layout';
-import { UniqueIdProvider } from 'src/adapters/UniqueIdProvider';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { LayoutType } from './LayoutType';
 
 type ComponentWithOptions = ComponentType<any> & { options(passProps: any): Options };

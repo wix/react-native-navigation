@@ -1,11 +1,12 @@
-import {
+import type {
   ComponentDidDisappearEvent,
   ComponentWillAppearEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
-} from 'react-native-navigation/interfaces/ComponentEvents';
-import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from 'react-native-navigation/index';
-import { BottomTabPressedEvent, CommandCompletedEvent } from 'react-native-navigation/interfaces/Events';
+  ComponentDidAppearEvent,
+  NavigationButtonPressedEvent,
+} from 'react-native-navigation';
+import type { BottomTabPressedEvent, CommandCompletedEvent } from 'react-native-navigation';
 
 export const events = {
   navigationButtonPressed: [(_event: NavigationButtonPressedEvent) => {}],

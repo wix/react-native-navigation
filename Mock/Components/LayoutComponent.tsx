@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { BottomTabs } from './BottomTabs';
-import { ComponentProps } from '../ComponentProps';
+import type { ComponentProps } from '../ComponentProps';
 import { ComponentScreen } from './ComponentScreen';
 import { Stack } from './Stack';
 import { SideMenuRoot, SideMenuCenter, SideMenuLeft, SideMenuRight } from './SideMenu';

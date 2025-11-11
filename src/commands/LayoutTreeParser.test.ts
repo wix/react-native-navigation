@@ -1,8 +1,8 @@
 import keys from 'lodash/keys';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutType } from './LayoutType';
-import { Options } from '../interfaces/Options';
-import { Layout } from '../interfaces/Layout';
+import type { Options } from '../interfaces/Options';
+import type { Layout } from '../interfaces/Layout';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { mock, instance, when, anything } from 'ts-mockito';
 

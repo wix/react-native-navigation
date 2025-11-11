@@ -1,5 +1,5 @@
-import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
-import { OptionsProcessor } from '../interfaces/Processors';
+import type { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
+import type { OptionsProcessor } from '../interfaces/Processors';
 
 export class OptionProcessorsStore {
   private optionsProcessorsByObjectPath: Record<string, OptionsProcessor<any>[]> = {};
@@ -11,7 +11,11 @@ export class OptionProcessorsStore {
     if (!this.optionsProcessorsByObjectPath[optionPath])
       this.optionsProcessorsByObjectPath[optionPath] = [];
 
-    this.optionsProcessorsByObjectPath[optionPath].push(processor);
+    const processors = this.optionsProcessorsByObjectPath[optionPath];
+    if (!processors) {
+      throw new Error(`Processors array not initialized for ${optionPath}`);
+    }
+    processors.push(processor);
 
     return { remove: () => this.removeProcessor(optionPath, processor) };
   }
@@ -21,8 +25,8 @@ export class OptionProcessorsStore {
   }
 
   private removeProcessor(optionPath: string, processor: OptionsProcessor<any>) {
-    this.optionsProcessorsByObjectPath[optionPath].splice(
-      this.optionsProcessorsByObjectPath[optionPath].indexOf(processor)
-    );
+    const processors = this.optionsProcessorsByObjectPath[optionPath];
+    if (!processors) return;
+    processors.splice(processors.indexOf(processor), 1);
   }
 }

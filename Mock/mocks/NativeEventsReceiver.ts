@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { EmitterSubscription } from 'react-native';
-import {
+import type { EmitterSubscription } from 'react-native';
+import type {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -11,13 +11,13 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
-} from 'react-native-navigation/interfaces/ComponentEvents';
-import {
+} from 'react-native-navigation';
+import type {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
-} from 'react-native-navigation/interfaces/Events';
+} from 'react-native-navigation';
 import { events } from '../Stores/EventsStore';
 
 export class NativeEventsReceiver {

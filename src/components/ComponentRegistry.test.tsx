@@ -4,7 +4,7 @@ import { mock, instance, verify, anyFunction } from 'ts-mockito';
 import { ComponentWrapper } from './ComponentWrapper';
 import { ComponentEventsObserver } from '../events/ComponentEventsObserver';
 import { AppRegistryService } from '../adapters/AppRegistryService';
-import { ComponentProvider } from 'react-native';
+import type { ComponentProvider } from 'react-native';
 
 const DummyComponent = () => null;
 

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Options } from 'react-native-navigation/index';
+import type { Options } from 'react-native-navigation';
 import { switchTabByIndex } from '../actions/layoutActions';
 import ParentNode from './ParentNode';
 
@@ -29,6 +29,10 @@ export default class BottomTabsNode extends ParentNode {
   }
 
   getVisibleLayout() {
-    return this.children[this.selectedIndex].getVisibleLayout();
+    const child = this.children[this.selectedIndex];
+    if (!child) {
+      throw new Error('No visible layout found');
+    }
+    return child.getVisibleLayout();
   }
 }

@@ -3,7 +3,7 @@ import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { NavigationComponent } from '../interfaces/NavigationComponent';
-import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
+import type { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;

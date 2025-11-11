@@ -1,5 +1,6 @@
-import { NavigationConstants } from './Constants';
-import RNNCommandsModule, { Spec } from './NativeRNNTurboModule';
+import type { NavigationConstants } from './Constants';
+import RNNCommandsModule from './NativeRNNTurboModule';
+import type { Spec } from './NativeRNNTurboModule';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;

@@ -4,8 +4,8 @@ import map from 'lodash/map';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Options } from '../interfaces/Options';
-import { Layout, LayoutRoot } from '../interfaces/Layout';
+import type { Options } from '../interfaces/Options';
+import type { Layout, LayoutRoot } from '../interfaces/Layout';
 import { LayoutTreeParser } from './LayoutTreeParser';
 import { LayoutTreeCrawler } from './LayoutTreeCrawler';
 import { OptionsProcessor } from './OptionsProcessor';
@@ -25,7 +25,7 @@ export class Commands {
     private readonly optionsProcessor: OptionsProcessor,
     private readonly layoutProcessor: LayoutProcessor,
     private readonly optionsCrawler: OptionsCrawler
-  ) {}
+  ) { }
 
   public setRoot(simpleApi: LayoutRoot) {
     const input = cloneLayout(simpleApi);

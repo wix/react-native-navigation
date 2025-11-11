@@ -1,6 +1,6 @@
 import { LayoutProcessorsStore } from './LayoutProcessorsStore';
-import { LayoutProcessor as ILayoutProcessor } from '../interfaces/Processors';
-import { Layout } from '../interfaces/Layout';
+import type { LayoutProcessor as ILayoutProcessor } from '../interfaces/Processors';
+import type { Layout } from '../interfaces/Layout';
 import { CommandName } from '../interfaces/CommandName';
 
 export class LayoutProcessor {

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { View } from 'react-native';
-import { ComponentProps } from '../ComponentProps';
+import type { ComponentProps } from '../ComponentProps';
 import { VISIBLE_OVERLAY_TEST_ID } from '../constants';
 import { LayoutComponent } from './LayoutComponent';
 import ParentNode from '../Layouts/ParentNode';

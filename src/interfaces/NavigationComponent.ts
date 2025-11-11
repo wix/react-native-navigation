@@ -1,5 +1,5 @@
 import React from 'react';
-import {
+import type {
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
@@ -9,8 +9,8 @@ import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
 } from './ComponentEvents';
-import { NavigationProps } from './NavigationComponentProps';
-import { Options } from './Options';
+import type { NavigationProps } from './NavigationComponentProps';
+import type { Options } from './Options';
 
 export class NavigationComponent<Props = {}, State = {}, Snapshot = any> extends React.Component<
   Props & NavigationProps,

@@ -1,4 +1,4 @@
-import { Options } from './Options';
+import type { Options } from './Options';
 
 export interface LayoutComponent<P = {}> {
   /**

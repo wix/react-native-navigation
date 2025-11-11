@@ -1,6 +1,6 @@
 import { LayoutType } from './LayoutType';
-import { LayoutNode } from './LayoutTreeCrawler';
-import {
+import type { LayoutNode } from './LayoutTreeCrawler';
+import type {
   Layout,
   LayoutTopTabs,
   LayoutComponent,

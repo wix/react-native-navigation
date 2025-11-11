@@ -1,11 +1,11 @@
 import { EventsRegistry } from './events/EventsRegistry';
-import { ComponentProvider } from 'react-native';
-import { NavigationConstants } from './adapters/Constants';
-import { LayoutRoot, Layout } from './interfaces/Layout';
-import { Options } from './interfaces/Options';
-import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
+import type { ComponentProvider } from 'react-native';
+import type { NavigationConstants } from './adapters/Constants';
+import type { LayoutRoot, Layout } from './interfaces/Layout';
+import type { Options } from './interfaces/Options';
+import type { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { CommandName } from './interfaces/CommandName';
-import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import type { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';

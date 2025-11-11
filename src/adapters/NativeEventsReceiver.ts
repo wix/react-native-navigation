@@ -1,5 +1,6 @@
-import { NativeEventEmitter, EmitterSubscription } from 'react-native';
-import {
+import { NativeEventEmitter } from 'react-native';
+import type { EmitterSubscription } from 'react-native';
+import type {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -11,7 +12,7 @@ import {
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
 } from '../interfaces/ComponentEvents';
-import {
+import type {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,

@@ -1,12 +1,12 @@
 import type { Component } from 'react';
-import { EmitterSubscription } from 'react-native';
+import type { EmitterSubscription } from 'react-native';
 
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
-import { EventSubscription } from '../interfaces/EventSubscription';
-import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
+import type { EventSubscription } from '../interfaces/EventSubscription';
+import type { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
-import {
+import type {
   ComponentWillAppearEvent,
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
@@ -18,7 +18,7 @@ import {
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
 } from '../interfaces/ComponentEvents';
-import {
+import type {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,

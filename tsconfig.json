@@ -1,19 +1,30 @@
 {
-  "extends": "./tsconfig-strict.json",
   "compilerOptions": {
-    "allowJs": false,
-    "target": "esnext",
-    "module": "commonjs",
-    "jsx": "react",
-    "declaration": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["jest", "lodash", "react", "react-native", "react-test-renderer"],
-    "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "react-native-navigation": ["./src/"],
-      "react-native-navigation/*": ["./src/*"]
-    }
-  },
+      "react-native-navigation": ["./src/index"]
+    },
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "customConditions": ["react-native-strict-api"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "verbatimModuleSyntax": true
+  }
 }

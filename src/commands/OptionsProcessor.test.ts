@@ -2,17 +2,17 @@ import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
-import {
+import type {
   Options,
-  OptionsModalPresentationStyle,
   StackAnimationOptions,
 } from '../interfaces/Options';
+import { OptionsModalPresentationStyle } from '../interfaces/Options';
 import { mock, when, instance, anyNumber, verify, anything } from 'ts-mockito';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
 import { Deprecations } from './Deprecations';
 import { CommandName } from '../interfaces/CommandName';
-import { OptionsProcessor as Processor } from '../interfaces/Processors';
+import type { OptionsProcessor as Processor } from '../interfaces/Processors';
 import { DynamicColorIOS, Platform } from 'react-native';
 
 describe('navigation options', () => {

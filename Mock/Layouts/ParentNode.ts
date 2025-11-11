@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import { OptionsTopBarButton } from 'react-native-navigation/interfaces/Options';
-import { Options } from 'react-native-navigation/index';
+import type { OptionsTopBarButton } from 'react-native-navigation';
+import type { Options } from 'react-native-navigation';
 import { LayoutStore } from '../Stores/LayoutStore';
 import ComponentNode from './ComponentNode';
 import LayoutNodeFactory from './LayoutNodeFactory';
-import Node, { NodeType } from './Node';
+import Node from './Node';
+import type { NodeType } from './Node';
 
 export default class ParentNode extends Node {
   children: ParentNode[];
@@ -27,7 +28,11 @@ export default class ParentNode extends Node {
   }
 
   getVisibleLayout(): ComponentNode {
-    return this.children[this.children.length - 1].getVisibleLayout();
+    const lastChild = this.children[this.children.length - 1];
+    if (!lastChild) {
+      throw new Error('No visible layout found');
+    }
+    return lastChild.getVisibleLayout();
   }
 
   getTopParent(): Node {

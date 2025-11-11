@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { requireNativeComponent, View, ViewProps, StyleSheet, Dimensions } from 'react-native';
-import { AnimationOptions, ViewAnimationOptions } from 'src/interfaces/Options';
+import { requireNativeComponent, View, StyleSheet, Dimensions } from 'react-native';
+import type { ViewProps } from 'react-native';
+import type { AnimationOptions, ViewAnimationOptions } from '../interfaces/Options';
 
 export interface RNNModalProps extends ViewProps {
   visible: boolean;

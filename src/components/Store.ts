@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ComponentProvider } from 'react-native';
-import { IWrappedComponent } from './ComponentWrapper';
+import type { ComponentProvider } from 'react-native';
+import type { IWrappedComponent } from './ComponentWrapper';
 
 export class Store {
   private componentsByName: Record<string, ComponentProvider> = {};
@@ -83,7 +83,11 @@ export class Store {
   }
 
   getWrappedComponent(componentName: string | number): React.ComponentClass<any> {
-    return this.wrappedComponents[componentName];
+    const component = this.wrappedComponents[componentName];
+    if (!component) {
+      throw new Error(`Component ${componentName} not found`);
+    }
+    return component;
   }
 
   setLazyComponentRegistrator(lazyRegistratorFn: (lazyComponentRequest: string | number) => void) {
