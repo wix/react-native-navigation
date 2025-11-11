@@ -7,5 +7,5 @@ set -euo pipefail
 yarn run test-unit-ios -- --release
 
 # iOS E2E tests
-yarn run test-e2e-ios -- --release --multi --ci
+yarn run test-e2e-ios-ci
 

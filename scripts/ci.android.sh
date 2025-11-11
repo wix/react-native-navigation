@@ -9,7 +9,7 @@ set -euo pipefail
 yarn run test-unit-android -- --release
 
 # Android E2E tests
-yarn run test-e2e-android-multi -- --release --headless --ci
+yarn run test-e2e-android-ci
 
 echo "[Android CI] Completed"
 
