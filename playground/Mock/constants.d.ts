@@ -1,2 +1,0 @@
-export declare const VISIBLE_SCREEN_TEST_ID = "VISIBLE_SCREEN_TEST_ID";
-export declare const VISIBLE_OVERLAY_TEST_ID = "VISIBLE_OVERLAY_TEST_ID";

@@ -6,7 +6,6 @@
   "exclude": [
     "./playground/**/*",
     "./website/**/*",
-    "./playground/Mock/**/*",
     "./Mock.ts"
   ],
   "compilerOptions": {
