@@ -18,7 +18,7 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
 } from '../../src/interfaces/Events';
-import { events } from './../Stores/EventsStore';
+import { events } from '../Stores/EventsStore';
 
 export class NativeEventsReceiver {
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {

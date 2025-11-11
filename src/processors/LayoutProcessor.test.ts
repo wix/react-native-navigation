@@ -1,5 +1,5 @@
 import { LayoutProcessor } from './LayoutProcessor';
-import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
+import { LayoutProcessorsStore } from './LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
 
 describe('Layout processor', () => {

@@ -17,7 +17,7 @@ import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
 import React from 'react';
-import { IWrappedComponent } from 'react-native-navigation/components/ComponentWrapper';
+import { IWrappedComponent } from 'src/components/ComponentWrapper';
 
 describe('Commands', () => {
   let uut: Commands;

@@ -4,7 +4,7 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
 } from '../../src/interfaces/ComponentEvents';
-import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../src/index';
+import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../src';
 import { BottomTabPressedEvent, CommandCompletedEvent } from '../../src/interfaces/Events';
 
 export const events = {
