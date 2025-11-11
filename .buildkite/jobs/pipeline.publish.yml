@@ -5,8 +5,9 @@
     if: "build.pull_request.id == null"
     command:
     - "nvm install"
-    - "npm install"
-    - "npm run release"    
+    - "yarn install"
+    - "yarn build"
+    - "yarn run release"    
     depends_on:
     - ios
     - android

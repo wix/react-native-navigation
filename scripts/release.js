@@ -59,7 +59,7 @@ function setupGit() {
 }
 
 function createNpmRc() {
-  exec.execSync(`rm -f package-lock.json`);
+  exec.execSync(`rm -f yarn.lock`);
   const content = `
 email=\${NPM_EMAIL}
 //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
@@ -77,8 +77,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? VERSION
     : semver.gt(packageVersion, currentPublished)
-    ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
-    : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+      ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
+      : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -86,7 +86,7 @@ function versionTagAndPublish() {
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
+  return exec.execSyncRead(`yarn npm info ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
@@ -114,8 +114,11 @@ function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== 'null')
     documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
-  exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
-  exec.execSync(`npm publish --tag ${VERSION_TAG}`);
+  // Update version in package.json manually (yarn version works differently in workspaces)
+  const packageJson = readPackageJson();
+  packageJson.version = newVersion;
+  writePackageJson(packageJson);
+  exec.execSync(`yarn npm publish --tag ${VERSION_TAG}`);
   if (isRelease) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
