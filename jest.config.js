@@ -12,7 +12,7 @@ module.exports = {
     '<rootDir>/playground/src/',
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
-    '<rootDir>/e2e/',
+    '<rootDir>/playground/e2e/',
     '<rootDir>/autolink/',
   ],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', './jest-setup.js'],
@@ -20,6 +20,7 @@ module.exports = {
   moduleNameMapper: {
     'react-native-navigation/Mock': '<rootDir>/Mock/index',
     'react-native-navigation': '<rootDir>/src',
+    '^src$': '<rootDir>/src',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/playground/img/layouts@2x.png',
   },
