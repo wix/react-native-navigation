@@ -155,7 +155,10 @@
   "codegenConfig": {
     "name": "rnnavigation",
     "type": "all",
-    "jsSrcsDir": "./src"
+    "jsSrcsDir": "./src",
+    "android": {
+      "javaPackageName": "com.reactnativenavigation.react"
+    }
   },
   "react-native-builder-bob": {
     "source": "src",
