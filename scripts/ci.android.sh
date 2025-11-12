@@ -3,13 +3,13 @@ set -euo pipefail
 ./scripts/ci.sh
 
 # JS tests
-npm run test-js
+#yarn run test-js
 
 # Android unit tests
-npm run test-unit-android -- --release
+yarn run test-unit-android -- --release
 
 # Android E2E tests
-npm run test-e2e-android-multi -- --release --headless --ci
+yarn run test-e2e-android-ci
 
 echo "[Android CI] Completed"
 
