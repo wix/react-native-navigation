@@ -162,16 +162,10 @@
           "os": "15.5"
         }
       },
-      "genymotion.emulator.name": {
-        "type": "android.genycloud",
-        "device": {
-          "recipeUUID": "9baf12f9-a645-4ffa-a688-0e92584d6194"
-        }
-      },
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_3a_API_34"
+          "avdName": "Pixel_3a_API_35"
         }
       }
     },
@@ -246,10 +240,6 @@
       "android.emu.release": {
         "app": "android.release",
         "device": "emulator"
-      },
-      "android.genycloud.release": {
-        "app": "android.release",
-        "device": "genymotion.emulator.name"
       }
     }
   },
