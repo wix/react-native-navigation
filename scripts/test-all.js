@@ -2,17 +2,17 @@
 const exec = require('shell-utils').exec;
 
 async function run() {
-  exec.execSync(`npm run clean`);
-  exec.execSync(`npm run test-js`);
-  exec.execSync(`npm run test-autolink`);
-  exec.execAsyncSilent(`npm run start`);
+  exec.execSync(`yarn run clean`);
+  exec.execSync(`yarn run test-js`);
+  exec.execSync(`yarn run test-autolink`);
+  exec.execAsyncSilent(`yarn start`);
   await exec.execAsyncAll(
-    `npm run test-unit-android`,
-    `npm run test-unit-ios`,
-    `npm run test-snapshot-ios`
+    `yarn run test-unit-android`,
+    `yarn run test-unit-ios`,
+    `yarn run test-snapshot-ios`
   );
-  await exec.execAsyncAll(`npm run test-e2e-android`, `npm run test-e2e-ios`);
-  exec.execSync(`npm run clean`);
+  await exec.execAsyncAll(`yarn run test-e2e-android`, `yarn run test-e2e-ios`);
+  exec.execSync(`yarn run clean`);
   console.log('ALL PASSED!!!');
 }
 

@@ -1,6 +1,6 @@
 import Utils from './Utils';
 import Android from './AndroidUtils';
-import TestIDs from '../playground/src/testIDs';
+import TestIDs from '../src/testIDs';
 import includes from 'lodash/includes';
 
 const { elementByLabel, elementById, sleep } = Utils;

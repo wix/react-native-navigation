@@ -1,10 +1,6 @@
-pluginManagement { includeBuild("../../node_modules/@react-native/gradle-plugin") }
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
 plugins { id("com.facebook.react.settings") }
 extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
 rootProject.name = 'Playground'
 include ':app'
-include ':react-native-navigation'
-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../../lib/android/app/')
-includeBuild('../../node_modules/@react-native/gradle-plugin')
-//include ':AHBottomNavigation'
-//project(':AHBottomNavigation').projectDir = new File(rootProject.projectDir, '../../../ahbottomnavigation/ahbottomnavigation/')
+includeBuild('../node_modules/@react-native/gradle-plugin')

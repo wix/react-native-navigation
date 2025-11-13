@@ -1,4 +1,4 @@
-import TestIDs from '../playground/src/testIDs';
+import TestIDs from '../src/testIDs';
 import Utils from './Utils';
 
 const { elementById, elementByTraits } = Utils;

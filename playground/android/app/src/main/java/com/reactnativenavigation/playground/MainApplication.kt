@@ -7,7 +7,7 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.reactnativenavigation.NavigationApplication
 import com.reactnativenavigation.RNNToggles
-import com.reactnativenavigation.react.NavigationPackage
+import com.reactnativenavigation.NavigationPackage
 import com.reactnativenavigation.react.NavigationReactNativeHost
 
 class MainApplication : NavigationApplication(mapOf(

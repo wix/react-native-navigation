@@ -1,4 +1,4 @@
-package com.reactnativenavigation.react
+package com.reactnativenavigation
 
 import com.facebook.react.BaseReactPackage
 import com.facebook.react.ReactApplication
@@ -8,6 +8,7 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.uimanager.ViewManager
 import com.reactnativenavigation.options.LayoutFactory
+import com.reactnativenavigation.react.NavigationTurboModule
 import com.reactnativenavigation.react.modal.ModalViewManager
 
 class NavigationPackage() : BaseReactPackage() {
@@ -39,3 +40,4 @@ class NavigationPackage() : BaseReactPackage() {
         return mutableListOf(ModalViewManager(reactContext))
     }
 }
+

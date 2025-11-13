@@ -1,4 +1,4 @@
-import TestIDs from '../playground/src/testIDs';
+import TestIDs from '../src/testIDs';
 import Android from './AndroidUtils';
 import Utils from './Utils';
 

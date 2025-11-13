@@ -1,7 +1,7 @@
 import Utils from './Utils';
-import TestIDs from '../playground/src/testIDs';
+import TestIDs from '../src/testIDs';
 
-const cocktailsList = require('../playground/src/assets/cocktails').default;
+const cocktailsList = require('../src/assets/cocktails').default;
 const { elementByLabel, elementById } = Utils;
 
 describe.e2e(':ios: SplitView', () => {

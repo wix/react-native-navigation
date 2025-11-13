@@ -1,4 +1,4 @@
-import { default as TestIDs, default as testIDs } from '../playground/src/testIDs';
+import { default as TestIDs, default as testIDs } from '../src/testIDs';
 import { device } from 'detox';
 import Utils from './Utils';
 import kbdDriver from './drivers/androidKeyboard';
