@@ -4,7 +4,7 @@ set -euo pipefail
 ./scripts/ci.sh
 
 # iOS unit tests
-yarn run test-unit-ios -- --release
+yarn run test-unit-ios-ci
 
 # iOS E2E tests
 yarn run test-e2e-ios-ci
