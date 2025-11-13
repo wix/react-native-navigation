@@ -104,7 +104,11 @@
                 eventEmitter:nil
         childViewControllers:nil];
 
-    XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationPageSheet);
+	if (@available(iOS 18.0, *)) {
+		XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationFormSheet);
+	} else {
+		XCTAssertEqual(uut.modalPresentationStyle, UIModalPresentationPageSheet);
+	}
     XCTAssertEqual(uut.modalTransitionStyle, UIModalTransitionStyleCoverVertical);
 }
 
