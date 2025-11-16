@@ -97,7 +97,7 @@
     "@typescript-eslint/eslint-plugin": "8.21.0",
     "@typescript-eslint/parser": "8.21.0",
     "clang-format": "^1.4.0",
-    "detox": "20.34.4",
+    "detox": "20.46.0",
     "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "6.11.0",
@@ -166,6 +166,19 @@
         "type": "android.emulator",
         "device": {
           "avdName": "Pixel_3a_API_35"
+        },
+        "systemUI": {
+          "pointerLocationBar": "hide",
+          "touches": "show",
+          "navigationMode": "3-button",
+          "statusBar": {
+            "notifications": "hide",
+            "clock": "1200",
+            "wifiSignal": "none",
+            "mobileSignal": "strong",
+            "battery": "full",
+            "charging": false
+          }
         }
       }
     },

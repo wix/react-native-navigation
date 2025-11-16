@@ -59,8 +59,6 @@ describe('Overlay', () => {
   it.e2e(':android: should show banner overlay and not block the screen', async () => {
     const snapshottedImagePath = './e2e/assets/overlay_banner_padding.png';
 
-    Android.setDemoMode();
-
     let expected = await device.takeScreenshot('without_banner');
     await elementById(TestIDs.SHOW_BANNER_OVERLAY).tap();
     await expect(elementById(TestIDs.BANNER_OVERLAY)).toBeVisible();
