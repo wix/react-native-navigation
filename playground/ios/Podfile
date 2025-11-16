@@ -4,6 +4,100 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+# Function definitions - must be before use
+def extract_react_native_version_constants
+  require 'json'
+  
+  Pod::UI.notice "Extracting React Native version from package.json..."
+  
+  package_json_path = File.expand_path("../../package.json", __dir__)
+  
+  begin
+    unless File.exist?(package_json_path)
+      Pod::UI.warn "Warning: package.json not found at #{package_json_path}"
+      return
+    end
+    
+    package_content = File.read(package_json_path)
+    package_data = JSON.parse(package_content)
+    
+    rn_version = nil
+    if package_data['dependencies'] && package_data['dependencies']['react-native']
+      rn_version = package_data['dependencies']['react-native']
+    elsif package_data['devDependencies'] && package_data['devDependencies']['react-native']
+      rn_version = package_data['devDependencies']['react-native']
+    end
+    
+    unless rn_version
+      Pod::UI.warn "Warning: react-native not found in package.json dependencies"
+      return
+    end
+    
+    Pod::UI.notice "React Native version from package.json: #{rn_version}"
+    
+    generate_rn_version_header(rn_version, package_json_path)
+    
+  rescue => e
+    Pod::UI.error "Error extracting React Native version: #{e.message}"
+  end
+end
+
+def generate_rn_version_header(rn_version, source_path = nil)
+  Pod::UI.puts " Generating React Native version header..."
+  
+  clean_version = rn_version.gsub(/^[\^~>=<]+/, '')
+  version_parts = clean_version.split('.')
+  
+  major = version_parts[0]&.to_i || 0
+  minor = version_parts[1]&.to_i || 0  
+  patch = version_parts[2]&.to_i || 0
+  
+  # Write to the lib/ios directory so it's included in the pod
+  output_dir = File.expand_path("../../lib/ios", __dir__)
+  output_header = File.join(output_dir, "ReactNativeVersionExtracted.h")
+  
+  header_content = <<~HEADER
+    //
+    // ReactNativeVersionExtracted.h
+    // React Native version constants extracted from package.json
+    // Generated on: #{Time.now}
+    // Source: #{File.expand_path(source_path)}
+    // Original version string: #{rn_version}
+    //
+    
+    #ifndef ReactNativeVersionExtracted_h
+    #define ReactNativeVersionExtracted_h
+    
+    // Swift-accessible constants
+    static const int REACT_NATIVE_VERSION_MAJOR = #{major};
+    static const int REACT_NATIVE_VERSION_MINOR = #{minor};
+    static const int REACT_NATIVE_VERSION_PATCH = #{patch};
+    
+    // Preprocessor macros for C/C++/Objective-C compatibility
+    #define RN_VERSION_MAJOR #{major}
+    #define RN_VERSION_MINOR #{minor}
+    #define RN_VERSION_PATCH #{patch}
+    
+    #endif /* ReactNativeVersionExtracted_h */
+  HEADER
+  
+  begin
+    File.write(output_header, header_content)
+    
+    Pod::UI.notice "✅ Successfully generated #{output_header}"
+    Pod::UI.puts " Version constants:"
+    Pod::UI.puts "   REACT_NATIVE_VERSION_MAJOR = #{major}"
+    Pod::UI.puts "   REACT_NATIVE_VERSION_MINOR = #{minor}"
+    Pod::UI.puts "   REACT_NATIVE_VERSION_PATCH = #{patch}"
+    
+    return { major: major, minor: minor, patch: patch }
+    
+  rescue => e
+    Pod::UI.error "❌ Error writing version header: #{e.message}"
+    return nil
+  end
+end
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -13,6 +107,8 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+# Generate version header BEFORE pod install runs
+extract_react_native_version_constants
 
 def all_pods
   config = use_native_modules!

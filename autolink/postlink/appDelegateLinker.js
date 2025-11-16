@@ -10,6 +10,35 @@ class AppDelegateLinker {
     this.appDelegateHeaderPath = path.appDelegateHeader;
     this.removeUnneededImportsSuccess = false;
     this.removeApplicationLaunchContentSuccess = false;
+
+    this.rnVersion = this._parseReactNativeVersion();
+  }
+
+  /**
+   * Parse React Native version from package.json
+   * @returns {{ major: number, minor: number, patch: number, raw: string }}
+   */
+  _parseReactNativeVersion() {
+    try {
+      const rnPackageJsonPath = nodePath.join(__dirname, '../../../react-native/package.json');
+      const rnPackage = JSON.parse(fs.readFileSync(rnPackageJsonPath, 'utf8'));
+      const version = rnPackage.version;
+
+      // Remove any prefix characters like ^, ~, >=, etc.
+      const cleanVersion = version.replace(/^[\^~>=<]+/, '');
+      const versionParts = cleanVersion.split('.');
+
+      const major = parseInt(versionParts[0]) || 0;
+      const minor = parseInt(versionParts[1]) || 0;
+      const patch = parseInt(versionParts[2]) || 0;
+
+      debugn(`   Detected React Native version: ${major}.${minor}.${patch}`);
+
+      return { major, minor, patch, raw: version };
+    } catch (e) {
+      warnn(`   Could not parse React Native version: ${e.message}`);
+      return { major: 0, minor: 0, patch: 0, raw: 'unknown' };
+    }
   }
 
   link() {
@@ -194,16 +223,20 @@ class AppDelegateLinker {
 
   // SWIFT implementation
   _extendRNNAppDelegateSwift(content) {
-    return content
-      .replace(
-        /import React_RCTAppDelegate/,
-        'import ReactNativeNavigation'
-      )
-      .replace(
-        /class AppDelegate: RCTAppDelegate/,
-        'class AppDelegate: RNNAppDelegate'
-      )
+    if (this.rnVersion.major >= 0 && this.rnVersion.minor >= 79) {
+
+    } else
+      return content
+        .replace(
+          /import React_RCTAppDelegate/,
+          'import ReactNativeNavigation'
+        )
+        .replace(
+          /class AppDelegate: RCTAppDelegate/,
+          'class AppDelegate: RNNAppDelegate'
+        )
   }
+}
 }
 
 module.exports = AppDelegateLinker;

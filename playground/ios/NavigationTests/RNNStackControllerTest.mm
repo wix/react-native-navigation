@@ -233,16 +233,19 @@
 }
 
 - (void)testOnChildWillAppear_shouldSetBackButtonTestID {
-    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
-    options.topBar.backButton.testID = [Text withValue:@"TestID"];
-    RNNComponentViewController *pushedController =
-        [RNNComponentViewController createWithComponentId:@"pushedController"];
-    pushedController.options.topBar.backButton.testID = [Text withValue:@"TestID"];
+	RNNComponentViewController *pushedController =
+	[RNNComponentViewController createWithComponentId:@"pushedController"];
+	pushedController.options.topBar.backButton.testID = [Text withValue:@"TestID"];
 	UIApplication.sharedApplication.keyWindow.rootViewController = _uut;
-    [_uut pushViewController:pushedController animated:NO];
-    [pushedController viewDidAppear:YES];
-    XCTAssertTrue([[[_uut.navigationBar.subviews[1] subviews][0]
-        valueForKey:@"accessibilityIdentifier"] isEqualToString:@"TestID"]);
+	[_uut pushViewController:pushedController animated:NO];
+	[pushedController viewDidAppear:YES];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		UIView *navigationBarContentView = [self->_uut.navigationBar findChildByClass:NSClassFromString(@"_UINavigationBarContentView")];
+		XCTAssertNotNil(navigationBarContentView);
+		UIView *barButton = [navigationBarContentView findChildByClass:NSClassFromString(@"_UIButtonBarButton")];
+		XCTAssertNotNil(barButton);
+		XCTAssertTrue([barButton.accessibilityIdentifier isEqualToString:@"TestID"]);
+	});
 }
 
 - (RNNStackController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
