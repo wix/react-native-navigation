@@ -1,11 +1,25 @@
+const path = require('path');
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
+const root = path.resolve(__dirname);
+
 const config = {
-  projectRoot: `${__dirname}`,
+  projectRoot: root,
+  watchFolders: [root],
   resolver: {
-    enableGlobalPackages: true,
+    nodeModulesPaths: [path.resolve(root, 'node_modules')],
+    extraNodeModules: new Proxy(
+      {},
+      {
+        get: (target, name) => {
+          if (name === 'react-native-navigation') {
+            return root;
+          }
+          return path.join(root, 'node_modules', name);
+        },
+      }
+    ),
   },
-  watchFolders: [__dirname],
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);

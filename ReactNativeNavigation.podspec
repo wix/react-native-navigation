@@ -39,12 +39,12 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |ss|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
-    s.source_files        = 'lib/ios/**/*.{h,m,mm,cpp}'
-    s.exclude_files       = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
+    s.source_files        = 'ios/**/*.{h,m,mm,cpp}'
+    s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
     # Only expose headers for Swift projects
     if swift_project
       s.public_header_files = [
-          'lib/ios/RNNAppDelegate.h'
+          'ios/RNNAppDelegate.h'
         ]
     end
   end
