@@ -175,7 +175,7 @@
             "notifications": "hide",
             "clock": "1200",
             "wifiSignal": "none",
-            "mobileSignal": "strong",
+            "mobileSignal": "none",
             "battery": "full",
             "charging": false
           }
