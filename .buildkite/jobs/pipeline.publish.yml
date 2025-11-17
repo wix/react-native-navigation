@@ -1,3 +1,4 @@
+  - wait
   - label: ":package: Publish"
     env:
       JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
