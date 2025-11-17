@@ -2,7 +2,7 @@
 #import <React/CoreModulesPlugins.h>
 #import <ReactNativeNavigation/ReactNativeVersionExtracted.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 78
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
     #if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
         #import <React-RCTAppDelegate/RCTAppDelegate.h>
     #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
@@ -24,18 +24,19 @@
 #import <React_RCTAppDelegate/RCTReactNativeFactory.h>
 #endif
 
+#import <React/RCTBundleURLProvider.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 78
-@interface RNNAppDelegate : RCTAppDelegate
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+    @interface RNNAppDelegate : RCTAppDelegate
 #else
-@interface ReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
-@end
+    @interface ReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
+    @end
 
-@interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
-@property(nonatomic, strong) UIWindow *window;
-@property(nonatomic, strong) ReactNativeDelegate *reactNativeDelegate;
-@property(nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
-@property(nonatomic) BOOL bridgelessEnabled;
+    @interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
+    @property(nonatomic, strong) UIWindow *window;
+    @property(nonatomic, strong) ReactNativeDelegate *reactNativeDelegate;
+    @property(nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
+    @property(nonatomic) BOOL bridgelessEnabled;
 #endif
 
 @end

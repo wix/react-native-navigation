@@ -12,12 +12,12 @@
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
 
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77)
-#import <react/config/ReactNativeConfig.h>
+#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
+    #import <react/config/ReactNativeConfig.h>
 #endif
 
 #if __has_include(<ReactAppDependencyProvider/RCTAppDependencyProvider.h>)
-#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
+    #import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 #endif
 
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
@@ -31,13 +31,10 @@
 
 #import <React/RCTComponentViewFactory.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 78
-    #import <React/RCTBundleURLProvider.h>
-#endif
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 78
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
     @interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,
     RCTComponentViewFactoryComponentProvider> {
     }
@@ -53,14 +50,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR >= 78 || RN_VERSION_MAJOR > 0
-    ReactNativeDelegate* delegate = [ReactNativeDelegate new];
-    
-    RCTReactNativeFactory* factory = [[RCTReactNativeFactory alloc] initWithDelegate:delegate];
-    delegate.dependencyProvider = [RCTAppDependencyProvider new];
-    
-    self.reactNativeDelegate = delegate;
-    self.reactNativeFactory = factory;
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR >= 79 || RN_VERSION_MAJOR > 0
+    self.reactNativeDelegate = [ReactNativeDelegate new];
+    self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self.reactNativeDelegate];
+    self.reactNativeDelegate.dependencyProvider = [RCTAppDependencyProvider new];
     
     RCTAppSetupPrepareApp(application, YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
@@ -70,16 +63,16 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [ReactNativeNavigation bootstrapWithHost:self.reactNativeFactory.rootViewFactory.reactHost];
     
 #else
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77)
-    [self _setUpFeatureFlags];
-    self.rootViewFactory = [self createRCTRootViewFactory];
-    [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
-    RCTAppSetupPrepareApp(application, self.newArchEnabled);
-    RCTSetNewArchEnabled(TRUE);
-#else
-    self.reactNativeFactory = [RCTReactNativeFactory new];
-    self.reactNativeFactory = [self.reactNativeFactory initWithDelegate:self];
-#endif
+    #if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
+        [self _setUpFeatureFlags];
+        self.rootViewFactory = [self createRCTRootViewFactory];
+        [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
+        RCTAppSetupPrepareApp(application, self.newArchEnabled);
+        RCTSetNewArchEnabled(TRUE);
+    #else
+        self.reactNativeFactory = [RCTReactNativeFactory new];
+        self.reactNativeFactory = [self.reactNativeFactory initWithDelegate:self];
+    #endif
     
     RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
@@ -93,7 +86,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 78
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
     [NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
                 format:@"Subclasses must implement a valid sourceURLForBridge method"];
@@ -108,7 +101,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 
 
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77)
+#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
 - (RCTRootViewFactory *)createRCTRootViewFactory
 {
     __weak __typeof(self) weakSelf = self;
