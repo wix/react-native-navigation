@@ -8,18 +8,15 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-async function main() {
-    const reactNativeVersion = process.env.REACT_NATIVE_VERSION;
-    if (!reactNativeVersion) {
-        console.log('REACT_NATIVE_VERSION not set; skipping version update');
-        return;
-    }
-
-    const pkgPath = path.join(process.cwd(), 'package.json');
-    const pkgRaw = await fs.readFile(pkgPath, 'utf8');
-    const packageJson = JSON.parse(pkgRaw);
-
-    const registryUrl = `https://registry.npmjs.org/react-native/${reactNativeVersion}`;
+/**
+ * Fetch and compute the versions we need in order to update package.json files.
+ * Returns an object with:
+ * - rnVersion: the exact React Native version
+ * - reactVersion: the matching React version (per RN's peerDependencies)
+ * - rnMinor: RN minor number (e.g., for 0.77.3 it's 77)
+ */
+async function extractVersions(rnVersion) {
+    const registryUrl = `https://registry.npmjs.org/react-native/${rnVersion}`;
     const res = await fetch(registryUrl);
     if (!res.ok) {
         throw new Error(`Failed to fetch ${registryUrl}: ${res.status} ${res.statusText}`);
@@ -28,46 +25,80 @@ async function main() {
 
     const reactPeer = data?.peerDependencies?.react;
     if (!reactPeer) {
-        throw new Error(`No peerDependencies.react found for react-native@${reactNativeVersion}`);
+        throw new Error(`No peerDependencies.react found for react-native@${rnVersion}`);
     }
+
     const reactVersion = String(reactPeer).replace(/^\^/, '');
-
-    // Update dependencies if present
-    packageJson.dependencies = packageJson.dependencies || {};
-    packageJson.dependencies['react-native'] = reactNativeVersion;
-    packageJson.dependencies['react'] = reactVersion;
-
-    // Also update devDependencies if they reference RN/React
-    if (packageJson.devDependencies) {
-        if (packageJson.devDependencies['react-native'] !== undefined) {
-            packageJson.devDependencies['react-native'] = reactNativeVersion;
-        }
-        if (packageJson.devDependencies['react'] !== undefined) {
-            packageJson.devDependencies['react'] = reactVersion;
-        }
-    }
-
-
-    const rnMinorMatch = String(reactNativeVersion).match(/^\d+\.(\d+)/);
+    const rnMinorMatch = String(rnVersion).match(/^\d+\.(\d+)/);
     const rnMinor = rnMinorMatch ? Number(rnMinorMatch[1]) : NaN;
 
+    return { rnVersion, reactVersion, rnMinor };
+}
+
+/**
+ * Update a specific package.json file in-place using the provided versions.
+ */
+async function updatePackageJsonAt(packageJsonPath, versions) {
+    const pkgRaw = await fs.readFile(packageJsonPath, 'utf8');
+    const packageJson = JSON.parse(pkgRaw);
+
+    const { rnVersion: targetRn, reactVersion, rnMinor } = versions;
+
+    packageJson.dependencies = packageJson.dependencies || {};
     packageJson.devDependencies = packageJson.devDependencies || {};
+
+    // Update RN and React in dependencies
+    packageJson.dependencies['react-native'] = targetRn;
+    packageJson.dependencies['react'] = reactVersion;
+
+    // Also update in devDependencies if present
+    if (packageJson.devDependencies['react-native'] !== undefined) {
+        packageJson.devDependencies['react-native'] = targetRn;
+    }
+    if (packageJson.devDependencies['react'] !== undefined) {
+        packageJson.devDependencies['react'] = reactVersion;
+    }
+
+    // Align testing libs for older RN minors (<= 77)
     if (rnMinor <= 77) {
         packageJson.devDependencies['react-test-renderer'] = '18.2.0';
         packageJson.devDependencies['@testing-library/react-native'] = '12.4.5';
     }
 
-    await fs.writeFile(pkgPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
+    await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
+}
 
+function logChanges(packageJsonPath, versions) {
+    const { rnVersion, reactVersion, rnMinor } = versions;
+    const label = path.relative(process.cwd(), path.dirname(packageJsonPath)) || 'root';
     console.log(
-        `Changed dependencies:\n  react-native: ${reactNativeVersion}\n  react: ${reactVersion}`
+        `Changed dependencies (${label}):\n  react-native: ${rnVersion}\n  react: ${reactVersion}`
     );
     if (!Number.isNaN(rnMinor)) {
-        const rtr = packageJson.devDependencies['react-test-renderer'];
-        const rtl = packageJson.devDependencies['@testing-library/react-native'];
         console.log(
-            `Aligned testing libs for RN minor ${rnMinor}:\n  react-test-renderer: ${rtr}\n  @testing-library/react-native: ${rtl}`
+            `Aligned testing libs for RN minor ${rnMinor} (${label})`
         );
+    }
+}
+
+async function main() {
+    const rnVersion = process.env.REACT_NATIVE_VERSION;
+    if (!rnVersion) {
+        console.log('REACT_NATIVE_VERSION not set; skipping version update');
+        return;
+    }
+
+    // Compute the versions once, then apply to desired package.json files
+    const versions = await extractVersions(rnVersion);
+
+    const targets = [
+        path.join(process.cwd(), 'package.json'),
+        path.join(process.cwd(), 'playground', 'package.json'),
+    ];
+
+    for (const packageJsonPath of targets) {
+        await updatePackageJsonAt(packageJsonPath, versions);
+        logChanges(packageJsonPath, versions);
     }
 }
 
