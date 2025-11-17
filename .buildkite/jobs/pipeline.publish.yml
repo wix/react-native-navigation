@@ -7,9 +7,6 @@
     - "nvm install"
     - "./scripts/ci.sh"
     - "yarn run release"
-    depends_on:
-    - ios
-    - android
     timeout_in_minutes: 90
 
 
