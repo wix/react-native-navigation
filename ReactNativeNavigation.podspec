@@ -26,6 +26,7 @@ end
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeNavigation"
+  s.prepare_command = 'node autolink/postlink/__helpers__/generate_version_header.js'
   s.version      = package['version']
   s.summary      = package['description']
 
@@ -44,7 +45,8 @@ Pod::Spec.new do |s|
     # Only expose headers for Swift projects
     if swift_project
       s.public_header_files = [
-          'ios/RNNAppDelegate.h'
+          'ios/RNNAppDelegate.h',
+          'ios/ReactNativeVersionExtracted.h'
         ]
     end
   end

@@ -5,7 +5,6 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 
-# Function definitions - must be before use
 def extract_react_native_version_constants
   require 'json'
   
