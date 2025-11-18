@@ -37,8 +37,8 @@ const config = {
         statusBar: {
           notifications: 'hide',
           clock: '1200',
-          wifiSignal: 'none',
-          mobileSignal: 'none',
+          wifiSignal: 'strong',
+          mobileSignal: 'strong',
           battery: 'full',
           charging: false,
         },
