@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "8.4.3",
+  "version": "8.4.2",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -19,34 +19,48 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/src/index.js",
-  "typings": "lib/dist/src/index.d.ts",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "react-native": "./src/index.ts",
+  "exports": {
+    ".": {
+      "react-native": "./src/index.ts",
+      "source": "./src/index.ts",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "autolink",
+    "*.podspec",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
   "scripts": {
-    "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "studio": "studio playground/android",
     "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
-    "prestart": "npm run build",
+    "prepare": "bob build",
     "start": "node ./scripts/start",
-    "pretest-js": "npm run build",
+    "pod-install": "yarn workspace react-native-navigation-playground pod-install",
     "test-js": "node ./scripts/test-js",
-    "pod-install-new-arch": "cd playground/ios && BUNDLE_GEMFILE=../../Gemfile BUNDLE_PATH=~/gems/ bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
-    "pod-install": "cd playground/ios && pod install",
     "test-unit-ios": "node ./scripts/test-unit --ios",
     "test-snapshot-ios": "node ./scripts/test-snapshot --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
-    "pretest-e2e-android": "npm run build",
-    "test-e2e-android": "node ./scripts/test-e2e --android",
-    "test-e2e-android-multi": "npm run test-e2e-android -- --multi",
-    "pretest-e2e-ios": "npm run build",
-    "test-e2e-ios": "node ./scripts/test-e2e --ios",
-    "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
     "test-autolink": "node ./scripts/test-autolink",
+    "test-e2e-android-ci": "yarn workspace react-native-navigation-playground test-e2e-android-ci",
+    "test-e2e-ios-ci": "yarn workspace react-native-navigation-playground test-e2e-ios-ci",
     "test-all": "node ./scripts/test-all",
-    "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
@@ -61,13 +75,10 @@
     }
   },
   "dependencies": {
-    "hoist-non-react-statics": "3.x.x",
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
-    "react-native-redash": "^12.6.1",
-    "reanimated-color-picker": "^3.0.6",
-    "ssim.js": "^3.5.0",
+    "hoist-non-react-statics": "3.x.x",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -114,6 +125,7 @@
     "prettier": "2.8.8",
     "react": "19.0.0",
     "react-native": "0.78.3",
+    "react-native-builder-bob": "^0.40.13",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.22.1",
     "react-native-reanimated": "3.18.0",
@@ -123,10 +135,15 @@
     "remx": "3.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
+    "ssim.js": "^3.5.0",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
     "typescript": "5.0.4"
   },
+  "workspaces": [
+    "playground"
+  ],
+  "packageManager": "yarn@3.6.1",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -136,126 +153,30 @@
     "*.{js,ts,tsx}": "eslint --fix",
     "*.{h,m,mm}": "node ./scripts/check-clang-format"
   },
-  "detox": {
-    "testRunner": {
-      "args": {
-        "config": "e2e/jest.config.js"
-      }
-    },
-    "artifacts": {
-      "plugins": {
-        "log": "all",
-        "screenshot": {
-          "shouldTakeAutomaticSnapshots": true,
-          "takeWhen": {}
-        },
-        "timeline": "all",
-        "uiHierarchy": "enabled",
-        "video": "failing"
-      }
-    },
-    "devices": {
-      "simulator": {
-        "type": "ios.simulator",
-        "device": {
-          "type": "iPhone 13 Pro Max",
-          "os": "15.5"
-        }
-      },
-      "genymotion.emulator.name": {
-        "type": "android.genycloud",
-        "device": {
-          "recipeUUID": "9baf12f9-a645-4ffa-a688-0e92584d6194"
-        }
-      },
-      "emulator": {
-        "type": "android.emulator",
-        "device": {
-          "avdName": "Pixel_3a_API_34"
-        }
-      }
-    },
-    "apps": {
-      "ios.debug": {
-        "type": "ios.app",
-        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
-        "start": "npm start -- --e2e",
-        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
-      },
-      "ios.release": {
-        "type": "ios.app",
-        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
-        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES"
-      },
-      "android.debug": {
-        "type": "android.apk",
-        "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
-        "start": "npm start -- --e2e",
-        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
-        "reversePorts": [
-          8081
-        ]
-      },
-      "android.release": {
-        "type": "android.apk",
-        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release"
-      }
-    },
-    "configurations": {
-      "ios.none": {
-        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
-        "type": "ios.none",
-        "name": "iPhone 13",
-        "session": {
-          "server": "ws://localhost:8099",
-          "sessionId": "playground"
-        }
-      },
-      "ios.sim.debug": {
-        "app": "ios.debug",
-        "device": "simulator"
-      },
-      "ios.sim.release": {
-        "app": "ios.release",
-        "device": "simulator"
-      },
-      "android.emu.debug": {
-        "app": "android.debug",
-        "device": "emulator"
-      },
-      "android.manual": {
-        "device": "emulator",
-        "app": "android.debug",
-        "behavior": {
-          "launchApp": "manual"
-        },
-        "session": {
-          "autoStart": true,
-          "debugSynchronization": 0,
-          "server": "ws://localhost:8099",
-          "sessionId": "test"
-        },
-        "testRunner": {
-          "args": {
-            "testTimeout": 999999
-          }
-        },
-        "artifacts": false
-      },
-      "android.emu.release": {
-        "app": "android.release",
-        "device": "emulator"
-      },
-      "android.genycloud.release": {
-        "app": "android.release",
-        "device": "genymotion.emulator.name"
-      }
-    }
-  },
   "codegenConfig": {
     "name": "rnnavigation",
     "type": "all",
-    "jsSrcsDir": "./lib/src"
+    "jsSrcsDir": "./src",
+    "android": {
+      "javaPackageName": "com.reactnativenavigation.react"
+    }
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
   }
 }

@@ -24,8 +24,7 @@ function runAndroidUnitTests() {
 }
 
 function runIosUnitTests() {
-  exec.execSync('npm run build');
-  exec.execSync('npm run pod-install');
+  exec.execSync('yarn run pod-install');
   testTarget('playground', 'iPhone 13', '15.5');
 }
 
