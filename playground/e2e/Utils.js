@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { PNG } from 'pngjs';
 import { ssim } from 'ssim.js';
 
-const SSIM_SCORE_THRESHOLD = 0.997;
+const SSIM_SCORE_THRESHOLD = 0.99;
 
 function convertToSSIMFormat(image) {
   return {

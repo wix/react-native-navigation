@@ -38,7 +38,7 @@ const config = {
           notifications: 'hide',
           clock: '1200',
           wifiSignal: 'strong',
-          mobileSignal: 'strong',
+          mobileSignal: 'none',
           battery: 'full',
           charging: false,
         },
