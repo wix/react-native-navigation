@@ -49,7 +49,7 @@ const config = {
     'ios.debug': {
       type: 'ios.app',
       binaryPath: 'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
-      start: 'npm start -- --e2e',
+      start: 'react-native start',
       build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'ios.release': {
@@ -60,8 +60,8 @@ const config = {
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
-      start: 'npm start -- --e2e',
-      build: 'cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
+      start: 'react-native start',
+      build: 'cd android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
       reversePorts: [
         8081,
       ],
