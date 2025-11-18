@@ -34,7 +34,7 @@ const config = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Pixel_3a_API_34',
+        avdName: 'Pixel_3a_API_35',
       },
     },
   },
