@@ -1,0 +1,167 @@
+---
+id: options-bottomTabs
+title: Bottom Tabs Options
+sidebar_label: Bottom Tabs
+---
+
+Recommended: Read about Bottom Tabs in the [Bottom Tabs Guide](../docs/docs-bottomTabs.mdx).
+
+```js
+const options = {
+  bottomTabs: {},
+};
+```
+
+## `animate`
+
+Controls whether toggling visibility states will be animated.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `animateTabSelection`
+
+Controls wether tab selection is animated or not
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `backgroundColor`
+
+Specify the background color.
+On Android - also applicable when translucence is applied, but a semi-transparent color should be used (e.g. `rgba(255, 0, 0, 0.25)`).
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| color | No       | Both     |
+
+## `barStyle`
+
+Controls whether the BottomTabs use dark (black) or light (default) visual style. Requires `translucent: true`.
+
+| Type                    | Required | Platform |
+| ----------------------- | -------- | -------- |
+| enum('default','black') | No       | Both     |
+
+## `layoutStyle`
+
+Control the way the bottom tabs are laid out.
+- `stretch`: Fill the entire width of the screen.
+- `compact`: Occupy the minimum width needed to hold tab buttons. Recommended for usage in conjunction with `drawBehind: true`.
+
+| Type                      | Required | Platform |
+| ------------------------- | -------- | -------- |
+| enum('stretch','compact') | No       | Android  |
+
+## `currentTabId`
+
+Select a tab by the id (componentId) of a child contained in it. See [Selecting tabs programmatically](#selectingtabsprogrammatically) for a detailed explanation.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `currentTabIndex`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+## `drawBehind`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+## `elevation`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+## `cornerRadius`
+
+Specify a corner-radius in order to apply round corners to the tabs container.
+Mainly suitable when used in conjunction with `layoutStyle: 'compact'`
+
+| Type        | Required | Platform |
+| ----------- | -------- | -------- |
+| number(dip) | No       | Android  |
+
+## `bottomMargin`
+
+Bottom-margin to set in order to enable a "hover" effect.
+Works best when used in conjunction with `layoutStyle: 'compact'` and `drawBehind: true`.
+
+| Type        | Required | Platform |
+| ----------- | -------- | -------- |
+| number(dip) | No       | Android  |
+
+## `hideShadow`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+## `hideOnScroll`
+
+Hides the BottomTabs on scroll to increase the amount of content visible to the user.
+The options requires that the scrollable view will be the root view of the screen and that it specifies `nestedScrollEnabled: true`.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `preferLargeIcons`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+## `tabsAttachMode`
+
+| Type                                               | Required | Platform |
+| -------------------------------------------------- | -------- | -------- |
+| enum('together','afterInitialTab','onSwitchToTab') | No       | Both     |
+
+## `testID`
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+## `titleDisplayMode`
+
+| Type                                             | Required | Platform |
+| ------------------------------------------------ | -------- | -------- |
+| enum('alwaysShow','showWhenActive','alwaysHide') | No       | Both     |
+
+## `translucent`
+
+A Boolean value that indicates whether the BottomTabs should be translucent (and background-blurred).
+For this option to function properly the screen needs to be drawn behind the BottomTabs; Make sure the list component you're using (FlatList for example) is the root component in the screen and not SafeAreaView. When SafeAreView is the root component it shifts the content above the BottomTabs and the translucent effect isn't visible.
+
+Note: On Android, the option is experimental and should be enabled using a native feature-toggle called `TAB_BAR_TRANSLUCENCE` (pass it to your `NavigationApplication` class' c'tor).
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS - Full support<br/>Android - Experimental |
+
+## `blurRadius`
+
+Set a custom radius to be used in the blur effect. Higher is blurrier, but also more CPU-intensive.
+Note: The blurring is performed following a bitmap downscale of x4.0, so ultimately the actual radius is (4*blurRadius).
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+
+## `visible`
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
