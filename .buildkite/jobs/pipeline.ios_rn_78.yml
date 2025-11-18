@@ -6,6 +6,6 @@
     - "./scripts/ci.ios.sh"
     key: "ios"
     timeout_in_minutes: 90
-    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+    artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
 
 
