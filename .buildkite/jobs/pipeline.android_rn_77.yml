@@ -7,6 +7,6 @@
     - "./scripts/ci.android.sh"
     key: "android_rn_77"
     timeout_in_minutes: 90
-    artifact_paths: "/Users/builder/uibuilder/work/artifacts/**/*"
+    artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
 
 
