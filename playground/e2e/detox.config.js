@@ -25,54 +25,56 @@ const config = {
         os: '15.5',
       },
     },
-    'genymotion.emulator.name': {
-      type: 'android.genycloud',
-      device: {
-        recipeUUID: '9baf12f9-a645-4ffa-a688-0e92584d6194',
-      },
-    },
     emulator: {
       type: 'android.emulator',
       device: {
         avdName: 'Pixel_3a_API_35',
+      },
+      systemUI: {
+        pointerLocationBar: 'hide',
+        touches: 'show',
+        navigationMode: '3-button',
+        statusBar: {
+          notifications: 'hide',
+          clock: '1200',
+          wifiSignal: 'none',
+          mobileSignal: 'none',
+          battery: 'full',
+          charging: false,
+        },
       },
     },
   },
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      binaryPath:
-        'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
-      start: 'react-native start',
-      build:
-        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+      binaryPath: 'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
+      start: 'npm start -- --e2e',
+      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'ios.release': {
       type: 'ios.app',
-      binaryPath:
-        'ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app',
-      build:
-        'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+      binaryPath: 'ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app',
+      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
-      start: 'react-native start',
-      build:
-        'cd android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
-      reversePorts: [8081],
+      start: 'npm start -- --e2e',
+      build: 'cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
+      reversePorts: [
+        8081,
+      ],
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build:
-        'cd android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release',
+      build: 'cd android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release',
     },
   },
   configurations: {
     'ios.none': {
-      binaryPath:
-        'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
+      binaryPath: 'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
       type: 'ios.none',
       name: 'iPhone 13',
       session: {
@@ -114,10 +116,6 @@ const config = {
     'android.emu.release': {
       app: 'android.release',
       device: 'emulator',
-    },
-    'android.genycloud.release': {
-      app: 'android.release',
-      device: 'genymotion.emulator.name',
     },
   },
 };

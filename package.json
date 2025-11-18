@@ -75,10 +75,10 @@
     }
   },
   "dependencies": {
+    "hoist-non-react-statics": "3.x.x",
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
-    "hoist-non-react-statics": "3.x.x",
     "tslib": "1.9.3"
   },
   "devDependencies": {
@@ -108,7 +108,7 @@
     "@typescript-eslint/eslint-plugin": "8.21.0",
     "@typescript-eslint/parser": "8.21.0",
     "clang-format": "^1.4.0",
-    "detox": "20.34.4",
+    "detox": "20.46.0",
     "detox-testing-library-rnn-adapter": "^2.0.3",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "6.11.0",
