@@ -29,16 +29,17 @@ The playground example is a place where we showcase and test all features of rea
 ```bash
 git clone https://github.com/wix/react-native-navigation
 cd react-native-navigation
-npm install
+yarn install
 
 # for iOS:
-npm run xcode # Opens XCode
-npm start # Starts the packager on linux like systems
+yarn pod-install # Install iOS pods
+yarn xcode # Opens XCode
+yarn start # Starts the packager
 
 # for Android:
-# 1. open Android Studio inside ".\playground"
-# 2. start a emulator
-npm run start-windows # Start the packager if you are on a windows system
+# 1. open Android Studio inside "./playground/android"
+# 2. start an emulator
+yarn start # Start the packager
 
 # Run the app in Simulator or on Device from within XCode/Android Studio
 ```
