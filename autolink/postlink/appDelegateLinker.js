@@ -194,15 +194,112 @@ class AppDelegateLinker {
 
   // SWIFT implementation
   _extendRNNAppDelegateSwift(content) {
-    return content
+    const rnVersion = this._getReactNativeVersion();
+    const isRN79OrHigher = rnVersion && (rnVersion.major > 0 || rnVersion.minor >= 79);
+    let newContent = content;
+
+    newContent
       .replace(
         /import React_RCTAppDelegate/,
         'import ReactNativeNavigation'
       )
+  // add this ONLY for < RN079
+    if (!isRN79OrHigher) {
+      newContent
       .replace(
         /class AppDelegate: RCTAppDelegate/,
         'class AppDelegate: RNNAppDelegate'
       )
+    } else {
+      newContent
+      .replace(
+        /class AppDelegate: UIResponder, UIApplicationDelegate/,
+        'class AppDelegate: RNNAppDelegate'
+      )
+
+      .replace(/^\s*var window: UIWindow\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeDelegate: ReactNativeDelegate\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeFactory: RCTReactNativeFactory\?\s*$/gm, '')
+
+      .replace(
+        /func application/,
+        'override func application'
+      )
+
+      .replace(
+        /let delegate = ReactNativeDelegate\(\)/,
+        'self.reactNativeDelegate = ReactNativeDelegate\(\)'
+      )
+
+      .replace(
+        /let factory = RCTReactNativeFactory\(delegate: delegate\)/,
+        'super.application\(application, didFinishLaunchingWithOptions: launchOptions\)'
+      )
+
+      .replace(/^\s*delegate.dependencyProvider = RCTAppDependencyProvider\(\)\s*$/gm, '')
+      .replace(/^\s*reactNativeDelegate = delegate\s*$/gm, '')
+      .replace(/^\s*reactNativeFactory = factory\s*$/gm, '')
+
+      .replace(/^\s*window = UIWindow\(frame: UIScreen.main.bounds\)\s*$/gm, '')
+      .replace(
+        /factory\.startReactNative\([\s\S]*?withModuleName:\s*".*?"[\s\S]*?\)/g,
+        ''
+      )
+
+      .replace(
+        /class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate/,
+        'class ReactNativeDelegate: RNNReactNativeDelegate'
+      )
+    }
+
+      return newContent;
+  }
+
+    /**
+   * Get React Native version from package.json
+   * @returns {Object} { major, minor, patch } or null
+   */
+  _getReactNativeVersion() {
+    try {
+      const fs = require('fs');
+      const nodePath = require('path');
+      
+      // Find package.json - go up from the project root
+      let packageJsonPath = nodePath.resolve(process.cwd(), 'package.json');
+      
+      if (!fs.existsSync(packageJsonPath)) {
+        // Try alternative path
+        packageJsonPath = nodePath.resolve(__dirname, '../../../package.json');
+      }
+      
+      if (!fs.existsSync(packageJsonPath)) {
+        warnn('Could not find package.json to detect React Native version');
+        return null;
+      }
+      
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      const rnVersion = packageJson.dependencies?.['react-native'] || 
+                        packageJson.devDependencies?.['react-native'];
+      
+      if (!rnVersion) {
+        warnn('React Native not found in package.json');
+        return null;
+      }
+      
+      // Parse version (remove ^, ~, >=, etc.)
+      const cleanVersion = rnVersion.replace(/^[\^~>=<]+/, '');
+      const parts = cleanVersion.split('.');
+      
+      return {
+        major: parseInt(parts[0]) || 0,
+        minor: parseInt(parts[1]) || 0,
+        patch: parseInt(parts[2]) || 0,
+        raw: rnVersion
+      };
+    } catch (e) {
+      warnn('Error detecting React Native version: ' + e.message);
+      return null;
+    }
   }
 }
 
