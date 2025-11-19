@@ -20,7 +20,7 @@ class AppDelegateLinker {
       return;
     }
 
-    logn('Linking AppDelegate...');
+    logn('Linking AppDelegate: ' + this.appDelegatePath);
 
     // New flow for Swift
     if (nodePath.extname(this.appDelegatePath) === '.swift') {
@@ -198,54 +198,64 @@ class AppDelegateLinker {
     const isRN79OrHigher = rnVersion && (rnVersion.major > 0 || rnVersion.minor >= 79);
     let newContent = content;
 
-    newContent
+    newContent = newContent
       .replace(
         /import React_RCTAppDelegate/,
         'import ReactNativeNavigation'
       )
-  // add this ONLY for < RN079
+  
+    // add this ONLY for < RN079
     if (!isRN79OrHigher) {
-      newContent
+      newContent = newContent
       .replace(
         /class AppDelegate: RCTAppDelegate/,
         'class AppDelegate: RNNAppDelegate'
       )
     } else {
-      newContent
+      newContent = newContent
       .replace(
-        /class AppDelegate: UIResponder, UIApplicationDelegate/,
+        'class AppDelegate: UIResponder, UIApplicationDelegate',
         'class AppDelegate: RNNAppDelegate'
       )
 
+      newContent = newContent
       .replace(/^\s*var window: UIWindow\?\s*$/gm, '')
       .replace(/^\s*var reactNativeDelegate: ReactNativeDelegate\?\s*$/gm, '')
       .replace(/^\s*var reactNativeFactory: RCTReactNativeFactory\?\s*$/gm, '')
 
+      newContent = newContent
       .replace(
         /func application/,
         'override func application'
       )
 
+      newContent = newContent
       .replace(
         /let delegate = ReactNativeDelegate\(\)/,
         'self.reactNativeDelegate = ReactNativeDelegate\(\)'
       )
 
+      newContent = newContent
       .replace(
         /let factory = RCTReactNativeFactory\(delegate: delegate\)/,
         'super.application\(application, didFinishLaunchingWithOptions: launchOptions\)'
       )
 
+      newContent = newContent
       .replace(/^\s*delegate.dependencyProvider = RCTAppDependencyProvider\(\)\s*$/gm, '')
+      newContent = newContent
       .replace(/^\s*reactNativeDelegate = delegate\s*$/gm, '')
+      newContent = newContent
       .replace(/^\s*reactNativeFactory = factory\s*$/gm, '')
-
+      newContent = newContent
       .replace(/^\s*window = UIWindow\(frame: UIScreen.main.bounds\)\s*$/gm, '')
+      newContent = newContent
       .replace(
         /factory\.startReactNative\([\s\S]*?withModuleName:\s*".*?"[\s\S]*?\)/g,
         ''
       )
 
+      newContent = newContent
       .replace(
         /class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate/,
         'class ReactNativeDelegate: RNNReactNativeDelegate'

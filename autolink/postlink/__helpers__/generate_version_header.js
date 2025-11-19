@@ -119,7 +119,7 @@ function generateVersionHeader() {
       return;
     }
     
-    const outputFile = path.join(rnnPackageJson, 'lib/ios/ReactNativeVersionExtracted.h');
+    const outputFile = path.join(rnnPackageJson, 'ios/ReactNativeVersionExtracted.h');
     
     fs.writeFileSync(outputFile, headerContent, 'utf8');
     console.log(`✅ Generated ${outputFile}`);
