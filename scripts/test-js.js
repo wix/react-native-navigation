@@ -23,7 +23,7 @@ function run() {
 }
 
 function assertAllTsFilesInSrc() {
-  const allFiles = exec.execSyncRead('find ./lib/src -type f');
+  const allFiles = exec.execSyncRead('find ./src -type f');
   const lines = split(allFiles, '\n');
   const offenders = filter(lines, (f) => !f.endsWith('.ts') && !f.endsWith('.tsx'));
   if (offenders.length) {

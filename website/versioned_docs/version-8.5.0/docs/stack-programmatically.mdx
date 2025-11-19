@@ -1,0 +1,56 @@
+---
+id: stack-programmatically
+title: Interact programmatically with the Stack
+sidebar_label: Interact programmatically
+---
+
+The Navigation object provides ways to programmatically manipulate the stack.
+
+## Interact with the Stack by componentId
+Each layout pushed into the stack has an id. When in the context of a component, The component's `componentId` can be used to interact with a parent stack.
+When using a component's componentId, the native implementation knows to perform the command on the parent Stack of this component.
+
+In this example, we push a screen onto the component's parent stack.
+
+```jsx
+const React = require('react');
+const Navigation = require('react-native-navigation');
+
+class MyComponent extends React.Component {
+  onButtonClick = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'PUSHED_SCREEN'
+      }
+    });
+  }
+}
+```
+
+## Interact with the Stack by a predefined id
+Sometimes we're required to interact with a specific stack not from the context of a component pushed into it. To do so, assign the stack a predefined `id` and use it when invoking any stack command.
+
+```js
+Navigation.setRoot({
+  root: {
+    stack: {
+      id: 'MyStack', // This is the id we're going to use when interacting with the stack
+      children: [
+        {
+          component: {
+            name: 'SomeComponent'
+          }
+        }
+      ]
+    }
+  }
+});
+
+function push() {
+  Navigation.push('MyStack', {
+    component: {
+      name: 'PushedScreen'
+    }
+  });
+}
+```

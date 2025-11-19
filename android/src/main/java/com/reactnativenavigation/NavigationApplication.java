@@ -52,7 +52,7 @@ public abstract class NavigationApplication extends Application implements React
      * of {@link ReactGateway}. For example, subclasses may wish to provide a custom {@link ReactNativeHost}
      * with the ReactGateway. This method will be called exactly once, in the application's {@link #onCreate()} method.
      *
-     * Custom {@link ReactNativeHost}s must be sure to include {@link com.reactnativenavigation.react.NavigationPackage}
+     * Custom {@link ReactNativeHost}s must be sure to include {@link com.reactnativenavigation.NavigationPackage}
      *
      * @return a singleton {@link ReactGateway}
      */

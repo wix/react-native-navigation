@@ -1,9 +1,46 @@
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
+buildscript {
+    ext {
+        kotlinVersion = "1.9.24"
+        RNNKotlinVersion = kotlinVersion
+        detoxKotlinVersion = kotlinVersion
+        compileSdkVersion = 35
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath 'com.android.tools.build:gradle'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "$rootDir/../../node_modules/detox/Detox-android" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        flatDir {
+            dirs "$rootProject.projectDir/libs"
+        }
+    }
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "com.facebook.react"
+
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -87,7 +124,6 @@ android {
 }
 
 dependencies {
-
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesCore"
@@ -99,13 +135,11 @@ dependencies {
 
     implementation 'com.github.wix-playground:ahbottomnavigation:4.0.0'
     implementation 'com.github.Dimezis:BlurView:version-3.0.0'
-//    implementation project(':AHBottomNavigation')
     implementation 'com.github.wix-playground:reflow-animator:1.0.6'
     implementation 'com.github.clans:fab:1.6.4'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-
 
     if ("Playground".toLowerCase() == rootProject.name.toLowerCase()) {
         // tests only for our playground
@@ -133,6 +167,5 @@ dependencies {
         androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
 
         androidTestImplementation("com.facebook.react:hermes-android")
-
     }
 }

@@ -1,0 +1,50 @@
+---
+id: layout-splitView
+title: SplitView
+sidebar_label: SplitView
+---
+
+A container view controller implementing a master-detail interface. See [UISplitViewController docs](https://developer.apple.com/documentation/uikit/uisplitviewcontroller).
+Currently implemented only in iOS.
+
+```js
+{
+  id: 'PROFILE_TAB',
+  master: {
+    component: {
+      id: 'MASTER_SCREEN',
+      name: 'MasterScreen'
+    }
+  },
+  detail: {
+    component: {
+      id: 'DETAIL_SCREEN',
+      name: 'DetailScreen'
+    }
+  }
+}
+```
+
+## `id`
+
+| Type   | Required | Description                                                                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string | No       | Unique id used to interact with the view via the Navigation api, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `master`
+
+| Type               | Required | Description                                     |
+| ------------------ | -------- | ----------------------------------------------- |
+| [Layout](layout-layout.mdx) | YES      | Set master layout (the smaller screen, sidebar) |
+
+## `detail`
+
+| Type               | Required | Description                                   |
+| ------------------ | -------- | --------------------------------------------- |
+| [Layout](layout-layout.mdx) | YES      | Set detail layout (the larger screen, flexes) |
+
+## `options`
+
+| Type                    | Required | Description                                     |
+| ----------------------- | -------- | ----------------------------------------------- |
+| [Options](options-root.mdx) | No       | dynamic options which will apply to all screens |
