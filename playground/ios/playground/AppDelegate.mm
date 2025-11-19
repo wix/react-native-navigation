@@ -9,6 +9,9 @@
 	@interface AppDelegate ()
 	@end
 
+	@interface ReactNativeDelegate : RNNReactNativeDelegate
+	@end
+	
 	@implementation ReactNativeDelegate
 	- (NSURL *)bundleURL
 	{
@@ -32,6 +35,7 @@
 
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	self.reactNativeDelegate = [ReactNativeDelegate new];
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
 	

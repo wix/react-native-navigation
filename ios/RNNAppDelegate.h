@@ -1,18 +1,19 @@
 #import <Foundation/Foundation.h>
 #import <React/CoreModulesPlugins.h>
 #import <ReactNativeNavigation/ReactNativeVersionExtracted.h>
+//#import "ReactNativeVersionExtracted.h"
 
 #if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
-    #if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
-        #import <React-RCTAppDelegate/RCTAppDelegate.h>
-    #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
-        #import <React_RCTAppDelegate/RCTAppDelegate.h>
-    #endif
+#if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
+#import <React-RCTAppDelegate/RCTAppDelegate.h>
+#elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
+#import <React_RCTAppDelegate/RCTAppDelegate.h>
+#endif
 #else
-    #if __has_include(<React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
-        #import <React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
-    #elif __has_include(<React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
-        #import <React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
+#if __has_include(<React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
+#import <React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
+#elif __has_include(<React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
+#import <React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
 #endif
 
 #import <React/RCTBridge.h>
@@ -27,17 +28,34 @@
 #import <React/RCTBundleURLProvider.h>
 
 #if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
-    @interface RNNAppDelegate : RCTAppDelegate
+@interface RNNAppDelegate : RCTAppDelegate
 #else
-    @interface ReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
-    @end
+@interface RNNReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
+@end
 
-    @interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
-    @property(nonatomic, strong) UIWindow *window;
-    @property(nonatomic, strong) ReactNativeDelegate *reactNativeDelegate;
-    @property(nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
-    @property(nonatomic) BOOL bridgelessEnabled;
+@interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
+@property(nonatomic, strong) UIWindow *window;
+
+@property(nonatomic, strong) RNNReactNativeDelegate *reactNativeDelegate;
+
+@property(nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
+@property(nonatomic) BOOL bridgelessEnabled;
 #endif
 
 @end
 
+
+
+/*#import <Foundation/Foundation.h>
+ #import <React/CoreModulesPlugins.h>
+ 
+ #if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
+ #import <React-RCTAppDelegate/RCTAppDelegate.h>
+ #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
+ // for importing the header from framework, the dash will be transformed to underscore
+ #import <React_RCTAppDelegate/RCTAppDelegate.h>
+ #endif
+ 
+ @interface RNNAppDelegate : RCTAppDelegate
+ 
+ @end*/
