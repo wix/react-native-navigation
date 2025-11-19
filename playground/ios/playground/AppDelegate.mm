@@ -53,20 +53,20 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 #if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
-#pragma mark - RCTBridgeDelegate
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{
-	return [self bundleURL];
-}
+	#pragma mark - RCTBridgeDelegate
+	- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+	{
+		return [self bundleURL];
+	}
 
-- (NSURL *)bundleURL
-{
-#if DEBUG
-	return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
-#else
-	return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-}
+	- (NSURL *)bundleURL
+	{
+	#if DEBUG
+		return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+	#else
+		return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+	#endif
+	}
 #endif
 
 @end
