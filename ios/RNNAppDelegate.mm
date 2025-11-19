@@ -13,11 +13,11 @@
 #import <ReactCommon/RCTTurboModuleManager.h>
 
 #if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
-#import <react/config/ReactNativeConfig.h>
+    #import <react/config/ReactNativeConfig.h>
 #endif
 
 #if __has_include(<ReactAppDependencyProvider/RCTAppDependencyProvider.h>)
-#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
+    #import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 #endif
 
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
