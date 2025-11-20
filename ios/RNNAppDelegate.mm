@@ -48,6 +48,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
 #if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
     [self _setUpFeatureFlags];
+    self.reactNativeFactory = [[RCTReactNativeFactory alloc] init];
     self.reactNativeFactory.rootViewFactory = [self createRCTRootViewFactory];
     [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
     RCTAppSetupPrepareApp(application, self.newArchEnabled);
