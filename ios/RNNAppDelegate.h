@@ -29,13 +29,10 @@
 #if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
     @interface RNNAppDelegate : RCTAppDelegate
 #else
-    @interface RNNReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
-    @end
-
     @interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
     @property(nonatomic, strong) UIWindow *window;
 
-    @property(nonatomic, strong) RNNReactNativeDelegate *reactNativeDelegate;
+    @property(nonatomic, strong) RCTDefaultReactNativeFactoryDelegate *reactNativeDelegate;
 
     @property(nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
     @property(nonatomic) BOOL bridgelessEnabled;

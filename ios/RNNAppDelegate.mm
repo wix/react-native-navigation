@@ -40,9 +40,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
     }
     @end
 #else
-    @implementation RNNReactNativeDelegate
-    @end
-
     @interface RNNAppDelegate () {
     }
     @end

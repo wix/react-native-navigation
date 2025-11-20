@@ -9,7 +9,7 @@
 	@interface AppDelegate ()
 	@end
 
-	@interface ReactNativeDelegate : RNNReactNativeDelegate
+	@interface ReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
 	@end
 	
 	@implementation ReactNativeDelegate
