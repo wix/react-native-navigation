@@ -6,7 +6,7 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 
 # Detect if this is a Swift project by looking for user AppDelegate.swift files
-start_dir = File.expand_path('../', __dir__)
+start_dir = File.expand_path('../../', __dir__)
 swift_delegate_path = nil
 Find.find(start_dir) do |path|
   if path =~ /AppDelegate\.swift$/
@@ -26,6 +26,7 @@ end
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeNavigation"
+  s.prepare_command = 'node autolink/postlink/__helpers__/generate_version_header.js'
   s.version      = package['version']
   s.summary      = package['description']
 
@@ -40,11 +41,12 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
     s.source_files        = 'ios/**/*.{h,m,mm,cpp}'
-    s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
+    s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
     # Only expose headers for Swift projects
     if swift_project
       s.public_header_files = [
-          'ios/RNNAppDelegate.h'
+          'ios/RNNAppDelegate.h',
+          'ios/ReactNativeVersionExtracted.h'
         ]
     end
   end
