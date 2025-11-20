@@ -12,7 +12,7 @@
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
 
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
     #import <react/config/ReactNativeConfig.h>
 #endif
 
@@ -49,8 +49,21 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+    [self _setUpFeatureFlags];
+    self.rootViewFactory = [self createRCTRootViewFactory];
+    [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
+    RCTAppSetupPrepareApp(application, self.newArchEnabled);
+    RCTSetNewArchEnabled(TRUE);
     
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR >= 79 || RN_VERSION_MAJOR > 0
+    RCTEnableTurboModuleInterop(YES);
+    RCTEnableTurboModuleInteropBridgeProxy(YES);
+    
+    self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
+    
+    [ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
+#else
     self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self.reactNativeDelegate];
     self.reactNativeDelegate.dependencyProvider = [RCTAppDependencyProvider new];
     
@@ -60,25 +73,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.reactNativeFactory.rootViewFactory.reactHost = [self.reactNativeFactory.rootViewFactory createReactHost:launchOptions];
     
     [ReactNativeNavigation bootstrapWithHost:self.reactNativeFactory.rootViewFactory.reactHost];
-    
-#else
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
-    [self _setUpFeatureFlags];
-    self.rootViewFactory = [self createRCTRootViewFactory];
-    [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
-    RCTAppSetupPrepareApp(application, self.newArchEnabled);
-    RCTSetNewArchEnabled(TRUE);
-#else
-    self.reactNativeFactory = [RCTReactNativeFactory new];
-    self.reactNativeFactory = [self.reactNativeFactory initWithDelegate:self];
-#endif
-    
-    RCTEnableTurboModuleInterop(YES);
-    RCTEnableTurboModuleInteropBridgeProxy(YES);
-    
-    self.rootViewFactory.reactHost = [self.rootViewFactory createReactHost:launchOptions];
-    
-    [ReactNativeNavigation bootstrapWithHost:self.rootViewFactory.reactHost];
 #endif
     
     return YES;
@@ -91,16 +85,11 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
                 format:@"Subclasses must implement a valid sourceURLForBridge method"];
     return nil;
 }
-#endif
-
 
 - (BOOL)concurrentRootEnabled {
     return true;
 }
 
-
-
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR == 77 || RN_VERSION_MINOR == 78)
 - (RCTRootViewFactory *)createRCTRootViewFactory
 {
     __weak __typeof(self) weakSelf = self;

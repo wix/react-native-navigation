@@ -8,14 +8,14 @@
     #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
         #import <React_RCTAppDelegate/RCTAppDelegate.h>
     #endif
+
+    #import <React/RCTBridge.h>
 #else
     #if __has_include(<React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
         #import <React-RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
     #elif __has_include(<React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>)
         #import <React_RCTAppDelegate/RCTDefaultReactNativeFactoryDelegate.h>
     #endif
-
-    #import <React/RCTBridge.h>
 #endif
 
 #if __has_include(<React-RCTAppDelegate/RCTReactNativeFactory.h>)
