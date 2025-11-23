@@ -17,6 +17,17 @@ function generateVersionHeader() {
 
   console.log(`Using package.json: ${packageJsonPath}`);
 
+  // Determine actual source of version
+  const projectRoot = path.dirname(packageJsonPath);
+  const rnPackageJsonPath = path.join(projectRoot, 'node_modules', 'react-native', 'package.json');
+  let versionSource = packageJsonPath;
+  let versionSourceType = 'package.json';
+
+  if (fs.existsSync(rnPackageJsonPath)) {
+    versionSource = rnPackageJsonPath;
+    versionSourceType = 'node_modules/react-native/package.json (installed version)';
+  }
+
   const versionInfo = getReactNativeVersion();
 
   if (!versionInfo) {
@@ -24,7 +35,7 @@ function generateVersionHeader() {
     return;
   }
 
-  console.log(`Found React Native version: ${versionInfo.raw}`);
+  console.log(`Found React Native version: ${versionInfo.raw} from ${versionSourceType}`);
 
   const { major, minor, patch } = versionInfo;
 
@@ -33,7 +44,7 @@ function generateVersionHeader() {
   // ReactNativeVersionExtracted.h
   // React Native version: ${versionInfo.raw}
   // Generated on: ${new Date().toISOString()}
-  // Source: ${packageJsonPath}
+  // Source: ${versionSource}
   //
   
   #ifndef ReactNativeVersionExtracted_h

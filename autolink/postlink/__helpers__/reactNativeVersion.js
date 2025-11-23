@@ -33,7 +33,7 @@ function findProjectPackageJson() {
 }
 
 /**
- * Get React Native version as parsed object
+ * Get React Native version as parsed object from node_modules
  * @returns {Object|null} { major, minor, patch, raw } or null
  */
 function getReactNativeVersion() {
@@ -43,13 +43,38 @@ function getReactNativeVersion() {
         return null;
     }
 
+    var projectRoot = nodePath.dirname(projectPackageJsonPath);
+
+    // First, try to read from node_modules/react-native/package.json (actual installed version)
+    var rnPackageJsonPath = nodePath.join(projectRoot, 'node_modules', 'react-native', 'package.json');
+
+    try {
+        if (fs.existsSync(rnPackageJsonPath)) {
+            var rnPackageJson = JSON.parse(fs.readFileSync(rnPackageJsonPath, 'utf8'));
+            var rnVersion = rnPackageJson.version;
+
+            if (rnVersion) {
+                var parts = rnVersion.split('.');
+                return {
+                    major: parseInt(parts[0]) || 0,
+                    minor: parseInt(parts[1]) || 0,
+                    patch: parseInt(parts[2]) || 0,
+                    raw: rnVersion
+                };
+            }
+        }
+    } catch (e) {
+        // Fall through to backup method
+    }
+
+    // Fallback: read from project's package.json dependencies
     try {
         var packageJson = JSON.parse(fs.readFileSync(projectPackageJsonPath, 'utf8'));
         var rnVersion = packageJson.dependencies && packageJson.dependencies['react-native'] ||
             packageJson.devDependencies && packageJson.devDependencies['react-native'];
 
         if (!rnVersion) {
-            warnn('React Native not found in package.json');
+            warnn('React Native not found in package.json or node_modules');
             return null;
         }
 
