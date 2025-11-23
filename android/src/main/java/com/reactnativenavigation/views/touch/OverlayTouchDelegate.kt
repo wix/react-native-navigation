@@ -4,7 +4,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
-import com.facebook.react.views.debuggingoverlay.DebuggingOverlay
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.react.ReactView
@@ -57,7 +56,19 @@ open class OverlayTouchDelegate(
         return false
     }
 
-    private fun debuggingOverlay(childItem: View?): Boolean =
-        childItem is ViewGroup && childItem.getChildAt(0) is DebuggingOverlay
+    private fun debuggingOverlay(childItem: View?): Boolean {
+        if (childItem !is ViewGroup) return false
+        val firstChild = childItem.getChildAt(0) ?: return false
+        return isDebuggingOverlay(firstChild)
+    }
+
+    private fun isDebuggingOverlay(view: View): Boolean {
+        return try {
+            val className = view.javaClass.name
+            className == "com.facebook.react.views.debuggingoverlay.DebuggingOverlay"
+        } catch (e: Exception) {
+            false
+        }
+    }
 
 }
