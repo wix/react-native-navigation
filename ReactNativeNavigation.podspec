@@ -8,11 +8,18 @@ fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 # Detect if this is a Swift project by looking for user AppDelegate.swift files
 start_dir = File.expand_path('../../', __dir__)
 swift_delegate_path = nil
-Find.find(start_dir) do |path|
-  if path =~ /AppDelegate\.swift$/
-    swift_delegate_path = path
-    break
+begin
+  Find.find(start_dir) do |path|
+    # Skip hidden directories and common directories that shouldn't be searched
+    Find.prune if path =~ /\/(\.git|\.Trash|node_modules|Pods|DerivedData|build)\b/
+    
+    if path =~ /AppDelegate\.swift$/
+      swift_delegate_path = path
+      break
+    end
   end
+rescue Errno::EACCES, Errno::EPERM
+  # Ignore permission errors
 end
 
 swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
