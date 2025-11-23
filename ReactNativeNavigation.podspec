@@ -6,24 +6,26 @@ fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 
 # Detect if this is a Swift project by checking common iOS project locations
 # This avoids the slow recursive Find.find() that can take minutes in CI
-def check_for_swift_app_delegate(base_dir)
-  # Common project directory names to check
-  ['ios', 'example/ios', 'playground/ios', 'app/ios', 'demo/ios'].each do |ios_dir|
-    ios_path = File.join(base_dir, ios_dir)
-    next unless Dir.exist?(ios_path)
-    
-    # Check common AppDelegate.swift locations within ios directory
-    Dir.glob(File.join(ios_path, '**/AppDelegate.swift'), File::FNM_DOTMATCH).each do |path|
-      # Exclude Pods, build, and DerivedData directories
-      next if path =~ /\/(Pods|build|DerivedData)\//
-      return path if File.exist?(path)
+start_dir = File.expand_path('../../', __dir__)
+swift_delegate_path = nil
+
+# Common project directory names to check
+['ios', 'example/ios', 'playground/ios', 'app/ios', 'demo/ios'].each do |ios_dir|
+  ios_path = File.join(start_dir, ios_dir)
+  next unless Dir.exist?(ios_path)
+  
+  # Check common AppDelegate.swift locations within ios directory
+  Dir.glob(File.join(ios_path, '**/AppDelegate.swift'), File::FNM_DOTMATCH).each do |path|
+    # Exclude Pods, build, and DerivedData directories
+    next if path =~ /\/(Pods|build|DerivedData)\//
+    if File.exist?(path)
+      swift_delegate_path = path
+      break
     end
   end
-  nil
+  break if swift_delegate_path
 end
 
-start_dir = File.expand_path('../../', __dir__)
-swift_delegate_path = check_for_swift_app_delegate(start_dir)
 swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
 
 # Debug output
