@@ -3,20 +3,36 @@ const fs = require('fs');
 const path = require('path');
 const { getReactNativeVersion, findProjectPackageJson } = require('./reactNativeVersion');
 
+// Logging helper that writes to both stderr and a log file
+function log(message) {
+  console.error(message);
+
+  // Also write to a log file for debugging if stderr is suppressed
+  try {
+    const logFile = path.join(__dirname, '../../../ios/rnn_version_detection.log');
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(logFile, `[${timestamp}] ${message}\n`, 'utf8');
+  } catch (e) {
+    // Ignore log file errors
+  }
+}
+
 function generateVersionHeader() {
   const startDir = __dirname;
 
-  console.error(`[RNN] Searching for project package.json from: ${startDir}`);
-  console.error(`[RNN] process.cwd(): ${process.cwd()}`);
+  log(`[RNN] === React Native Version Detection ===`);
+  log(`[RNN] Script location (__dirname): ${startDir}`);
+  log(`[RNN] Working directory (cwd): ${process.cwd()}`);
 
   const packageJsonPath = findProjectPackageJson();
 
   if (!packageJsonPath) {
-    console.error('[RNN] ERROR: Project package.json not found');
+    log('[RNN] ❌ ERROR: Project package.json not found');
+    log('[RNN] This usually means the script could not locate your React Native project.');
     return;
   }
 
-  console.error(`[RNN] Using package.json: ${packageJsonPath}`);
+  log(`[RNN] ✓ Found package.json: ${packageJsonPath}`);
 
   // Determine actual source of version
   const projectRoot = path.dirname(packageJsonPath);
@@ -32,11 +48,12 @@ function generateVersionHeader() {
   const versionInfo = getReactNativeVersion();
 
   if (!versionInfo) {
-    console.error('[RNN] ERROR: react-native not found in package.json');
+    log('[RNN] ❌ ERROR: react-native not found in package.json or node_modules');
+    log('[RNN] Make sure react-native is installed and listed as a dependency.');
     return;
   }
 
-  console.error(`[RNN] Found React Native version: ${versionInfo.raw} from ${versionSourceType}`);
+  log(`[RNN] ✓ React Native ${versionInfo.raw} (source: ${versionSourceType})`);
 
   const { major, minor, patch } = versionInfo;
 
@@ -80,15 +97,16 @@ function generateVersionHeader() {
   }
 
   if (!rnnPackageJson) {
-    console.error('[RNN] ERROR: Could not find react-native-navigation root');
+    log('[RNN] ❌ ERROR: Could not find react-native-navigation root directory');
     return;
   }
 
   const outputFile = path.join(rnnPackageJson, 'ios/ReactNativeVersionExtracted.h');
 
   fs.writeFileSync(outputFile, headerContent, 'utf8');
-  console.error(`[RNN] ✅ Generated ${outputFile}`);
-  console.error(`[RNN]    Version: ${major}.${minor}.${patch}`);
+  log(`[RNN] ✅ Generated header: ${outputFile}`);
+  log(`[RNN] ✅ Version constants: ${major}.${minor}.${patch}`);
+  log(`[RNN] === Completed Successfully ===`);
 }
 
 // Run if called directly

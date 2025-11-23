@@ -10,9 +10,37 @@ var { warnn } = require('../log');
 function findProjectPackageJson() {
     var searchDirs = [process.cwd(), __dirname];
 
+    // PRIORITY: Check if we're in RNN's own directory structure (workspace/CI scenario)
+    // In this case, __dirname would be like: /path/to/rnn/autolink/postlink/__helpers__
+    // And we want to find: /path/to/rnn/playground/package.json
+    var currentPath = __dirname;
+
+    // Walk up to find RNN root (containing this autolink folder)
+    for (var k = 0; k < 5; k++) {
+        // Check if this looks like RNN root by checking for playground subdirectory
+        var playgroundPath = nodePath.join(currentPath, 'playground');
+        var playgroundPackageJson = nodePath.join(playgroundPath, 'package.json');
+
+        if (fs.existsSync(playgroundPackageJson)) {
+            try {
+                var pkg = JSON.parse(fs.readFileSync(playgroundPackageJson, 'utf8'));
+                if ((pkg.dependencies && pkg.dependencies['react-native']) ||
+                    (pkg.devDependencies && pkg.devDependencies['react-native'])) {
+                    // Found it! Prioritize this path
+                    searchDirs.unshift(playgroundPath);
+                    break;
+                }
+            } catch (e) { }
+        }
+
+        var parent = nodePath.dirname(currentPath);
+        if (parent === currentPath) break;
+        currentPath = parent;
+    }
+
     // If we're inside a package (like in node_modules or a workspace), 
     // also try searching from common project locations
-    var currentPath = __dirname;
+    currentPath = __dirname;
     for (var k = 0; k < 10; k++) {
         var basename = nodePath.basename(currentPath);
 
