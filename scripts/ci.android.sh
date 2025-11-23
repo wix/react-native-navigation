@@ -3,7 +3,7 @@ set -euo pipefail
 ./scripts/ci.sh
 
 # JS tests
-#yarn run test-js
+yarn run test-js
 
 # Android unit tests
 yarn run test-unit-android -- --release
