@@ -21,8 +21,8 @@ const config = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 16 Pro Max',
-        os: '18.5',
+        type: 'iPhone 13 Pro Max',
+        os: '15.5',
       },
     },
     emulator: {
