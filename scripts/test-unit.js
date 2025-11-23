@@ -25,7 +25,7 @@ function runAndroidUnitTests() {
 
 function runIosUnitTests() {
   exec.execSync('yarn run pod-install');
-  testTarget('playground', 'iPhone 13', '15.5');
+  testTarget('playground', 'iPhone 16 Pro Max', '18.5');
 }
 
 function testTarget(scheme, device, OS = 'latest') {
