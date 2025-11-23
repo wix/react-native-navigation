@@ -41,7 +41,7 @@ class MainApplication : NavigationApplication(mapOf(
         super.onCreate()
         registerExternalComponent("RNNCustomComponent", FragmentCreator())
     }
-
     override val reactHost: ReactHost
         get() = getDefaultReactHost(this, reactNativeHost)
+
 }

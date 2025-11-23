@@ -3,10 +3,8 @@ package com.reactnativenavigation
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.shell.MainReactPackage
-import com.reactnativenavigation.NavigationPackage
 import com.reactnativenavigation.react.NavigationReactNativeHost
 
 class TestApplication : NavigationApplication() {
