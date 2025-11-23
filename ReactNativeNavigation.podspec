@@ -1,27 +1,29 @@
 require 'json'
-require 'find'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 
-# Detect if this is a Swift project by looking for user AppDelegate.swift files
-start_dir = File.expand_path('../../', __dir__)
-swift_delegate_path = nil
-begin
-  Find.find(start_dir) do |path|
-    # Skip hidden directories and common directories that shouldn't be searched
-    Find.prune if path =~ /\/(\.git|\.Trash|node_modules|Pods|DerivedData|build)\b/
+# Detect if this is a Swift project by checking common iOS project locations
+# This avoids the slow recursive Find.find() that can take minutes in CI
+def check_for_swift_app_delegate(base_dir)
+  # Common project directory names to check
+  ['ios', 'example/ios', 'playground/ios', 'app/ios', 'demo/ios'].each do |ios_dir|
+    ios_path = File.join(base_dir, ios_dir)
+    next unless Dir.exist?(ios_path)
     
-    if path =~ /AppDelegate\.swift$/
-      swift_delegate_path = path
-      break
+    # Check common AppDelegate.swift locations within ios directory
+    Dir.glob(File.join(ios_path, '**/AppDelegate.swift'), File::FNM_DOTMATCH).each do |path|
+      # Exclude Pods, build, and DerivedData directories
+      next if path =~ /\/(Pods|build|DerivedData)\//
+      return path if File.exist?(path)
     end
   end
-rescue Errno::EACCES, Errno::EPERM
-  # Ignore permission errors
+  nil
 end
 
+start_dir = File.expand_path('../../', __dir__)
+swift_delegate_path = check_for_swift_app_delegate(start_dir)
 swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
 
 # Debug output
