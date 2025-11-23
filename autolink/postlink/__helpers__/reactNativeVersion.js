@@ -10,6 +10,33 @@ var { warnn } = require('../log');
 function findProjectPackageJson() {
     var searchDirs = [process.cwd(), __dirname];
 
+    // If we're inside a package (like in node_modules or a workspace), 
+    // also try searching from common project locations
+    var currentPath = __dirname;
+    for (var k = 0; k < 10; k++) {
+        var basename = nodePath.basename(currentPath);
+        
+        // If we're in node_modules, the parent is likely the project root
+        if (basename === 'node_modules') {
+            searchDirs.push(nodePath.dirname(currentPath));
+            break;
+        }
+        
+        // If we find a workspace scenario (e.g., we're in the workspace root but project is in subdirectory)
+        // Check for common subdirectories like 'playground', 'example', 'app'
+        var commonProjectDirs = ['playground', 'example', 'app', 'demo'];
+        for (var m = 0; m < commonProjectDirs.length; m++) {
+            var potentialProjectDir = nodePath.join(currentPath, commonProjectDirs[m]);
+            if (fs.existsSync(potentialProjectDir)) {
+                searchDirs.push(potentialProjectDir);
+            }
+        }
+        
+        var parent = nodePath.dirname(currentPath);
+        if (parent === currentPath) break;
+        currentPath = parent;
+    }
+
     for (var j = 0; j < searchDirs.length; j++) {
         var searchDir = searchDirs[j];
         for (var i = 0; i < 10; i++) {
@@ -19,7 +46,11 @@ function findProjectPackageJson() {
                     var pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
                     if ((pkg.dependencies && pkg.dependencies['react-native']) ||
                         (pkg.devDependencies && pkg.devDependencies['react-native'])) {
-                        return packagePath;
+                        // Exclude react-native-navigation's own package.json to avoid false positives
+                        // in workspace/monorepo scenarios
+                        if (pkg.name !== 'react-native-navigation') {
+                            return packagePath;
+                        }
                     }
                 } catch (e) { }
             }
