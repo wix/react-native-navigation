@@ -15,13 +15,13 @@ function findProjectPackageJson() {
     var currentPath = __dirname;
     for (var k = 0; k < 10; k++) {
         var basename = nodePath.basename(currentPath);
-        
+
         // If we're in node_modules, the parent is likely the project root
         if (basename === 'node_modules') {
             searchDirs.push(nodePath.dirname(currentPath));
             break;
         }
-        
+
         // If we find a workspace scenario (e.g., we're in the workspace root but project is in subdirectory)
         // Check for common subdirectories like 'playground', 'example', 'app'
         var commonProjectDirs = ['playground', 'example', 'app', 'demo'];
@@ -31,7 +31,7 @@ function findProjectPackageJson() {
                 searchDirs.push(potentialProjectDir);
             }
         }
-        
+
         var parent = nodePath.dirname(currentPath);
         if (parent === currentPath) break;
         currentPath = parent;
