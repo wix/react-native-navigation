@@ -28,7 +28,6 @@ end
 
 swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
 
-# Debug output
 if swift_project
   puts "ReactNativeNavigation: Swift AppDelegate detected - enabling Swift-compatible configuration"
 else
@@ -53,6 +52,7 @@ Pod::Spec.new do |s|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
     s.source_files        = 'ios/**/*.{h,m,mm,cpp}'
     s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
+    
     # Only expose headers for Swift projects
     if swift_project
       s.public_header_files = [
