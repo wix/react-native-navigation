@@ -5,21 +5,26 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
 
 # Detect if this is a Swift project by checking common iOS project locations
-# This avoids the slow recursive Find.find() that can take minutes in CI
+# Avoid recursive directory scanning which can be slow in CI with large node_modules
 start_dir = File.expand_path('../../', __dir__)
 swift_delegate_path = nil
 
-# Common project directory names to check
+# Check specific, known locations where AppDelegate.swift typically exists
+# This avoids slow recursive directory traversal
 ['ios', 'example/ios', 'playground/ios', 'app/ios', 'demo/ios'].each do |ios_dir|
   ios_path = File.join(start_dir, ios_dir)
   next unless Dir.exist?(ios_path)
   
-  # Check common AppDelegate.swift locations within ios directory
-  Dir.glob(File.join(ios_path, '**/AppDelegate.swift'), File::FNM_DOTMATCH).each do |path|
-    # Exclude Pods, build, and DerivedData directories
-    next if path =~ /\/(Pods|build|DerivedData)\//
-    if File.exist?(path)
-      swift_delegate_path = path
+  # Check direct subdirectories (common project structures)
+  # Most projects have: ios/ProjectName/AppDelegate.swift
+  Dir.entries(ios_path).each do |entry|
+    next if entry.start_with?('.') || entry == 'Pods' || entry == 'build' || entry == 'DerivedData'
+    entry_path = File.join(ios_path, entry)
+    next unless Dir.exist?(entry_path)
+    
+    app_delegate_path = File.join(entry_path, 'AppDelegate.swift')
+    if File.exist?(app_delegate_path)
+      swift_delegate_path = app_delegate_path
       break
     end
   end
