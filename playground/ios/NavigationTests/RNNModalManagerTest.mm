@@ -172,7 +172,11 @@
 - (void)testApplyOptionsOnInit_shouldShowModalWithDefaultPresentationStyle {
 	_vc1.options = [RNNNavigationOptions emptyOptions];
 	[_modalManager showModal:_vc1 animated:NO completion:nil];
-	XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationPageSheet);
+	if (@available(iOS 18.0, *)) {
+		XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationFormSheet);
+	} else {
+		XCTAssertEqual(_vc1.modalPresentationStyle, UIModalPresentationPageSheet);
+	}
 }
 
 - (void)testApplyOptionsOnInit_shouldShowModalWithDefaultTransitionStyle {
