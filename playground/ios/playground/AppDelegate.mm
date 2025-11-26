@@ -35,9 +35,10 @@
 
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#if RN_VERSION_MAJOR == 0 && (RN_VERSION_MINOR >= 79 || RN_VERSION_MAJOR > 0)
+#if (RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR >= 79) || RN_VERSION_MAJOR > 0
 	self.reactNativeDelegate = [ReactNativeDelegate new];
 #endif
+	
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
 	

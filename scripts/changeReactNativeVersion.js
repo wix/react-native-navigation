@@ -68,9 +68,6 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
     if (rnMinor <= 78) {
         packageJson.devDependencies['react-native-reanimated'] = '3.18.0';
         delete packageJson.devDependencies['react-native-worklets'];
-    } else if (rnMinor == 79) {
-        packageJson.devDependencies['react-native-reanimated'] = '4.1.5';
-        packageJson.devDependencies['react-native-worklets'] = '0.5.0';
     }
 
     await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
