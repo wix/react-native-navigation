@@ -56,8 +56,6 @@ If one of the steps failed or you can't run (or are not comfortable with) the au
 
 `AppDelegate.m`
 ```diff
-- (BOOL)application:(UIApplication *)application
-didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 -  ReactNativeDelegate *delegate = [[ReactNativeDelegate alloc] init];
 -  RCTReactNativeFactory *factory = [[RCTReactNativeFactory alloc] initWithDelegate:delegate];
 -  delegate.dependencyProvider = [[RCTAppDependencyProvider alloc] init];
