@@ -39,7 +39,6 @@ class MainApplication : NavigationApplication(mapOf(
 
     override fun onCreate() {
         super.onCreate()
-        ReactNativeApplicationEntryPoint.loadReactNative
         registerExternalComponent("RNNCustomComponent", FragmentCreator())
     }
     override val reactHost: ReactHost
