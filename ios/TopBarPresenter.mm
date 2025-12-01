@@ -1,6 +1,7 @@
 #import "TopBarPresenter.h"
 #import "RNNFontAttributesCreator.h"
 #import "RNNUIBarBackButtonItem.h"
+#import "RNNIconDrawer.h"
 #import "UIColor+RNNUtils.h"
 #import "UIImage+utils.h"
 #import "UINavigationController+RNNOptions.h"
@@ -177,6 +178,21 @@
         icon = color ? [[icon withTintColor:color]
                            imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                      : icon;
+    }
+
+    // Apply iconBackground if present
+    if (backButtonOptions.iconBackground.hasValue && icon) {
+        UIColor *backgroundColor = [backButtonOptions.iconBackground.color withDefault:UIColor.clearColor];
+        CGFloat cornerRadius = [backButtonOptions.iconBackground.cornerRadius withDefault:@(0)].floatValue;
+        CGFloat width = [backButtonOptions.iconBackground.width withDefault:@(icon.size.width)].floatValue;
+        CGFloat height = [backButtonOptions.iconBackground.height withDefault:@(icon.size.height)].floatValue;
+        
+        RNNIconDrawer *iconDrawer = [[RNNIconDrawer alloc] init];
+        icon = [iconDrawer draw:icon
+                     imageColor:color
+                backgroundColor:backgroundColor
+                           size:CGSizeMake(width, height)
+                   cornerRadius:cornerRadius];
     }
 
     [self setBackIndicatorImage:icon withColor:color];
