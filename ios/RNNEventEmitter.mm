@@ -1,7 +1,7 @@
 #import "RNNEventEmitter.h"
 #import "RNNUtils.h"
 #import "RNNTurboEventEmitter.h"
-#import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#import <ReactCommon/RCTHost.h>
 
 @implementation RNNEventEmitter { }
 
