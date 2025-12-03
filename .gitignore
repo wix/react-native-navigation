@@ -83,6 +83,9 @@ fabric.properties
 ios/build/
 ios/DerivedData/
 
+## Symlink for header imports in tests
+ios/ReactNativeNavigation
+
 ## Various settings
 *.pbxuser
 !default.pbxuser

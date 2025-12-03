@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <ReactNativeNavigation/RNNCommandsHandler.h>
+#import "RNNCommandsHandler.h"
 
 @interface CommandsHandlerCreator : NSObject
 
