@@ -388,7 +388,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         self.centerContentOverlay.alpha = 0.5;
     }
     
-    //Reset the centerContainerView frame if it diviated
+    //Reset the centerContainerView frame if it deviated
     if (self.centerContainerView.frame.origin.x == visibleSide == MMDrawerSideLeft ? _maximumLeftDrawerWidth : _maximumRightDrawerWidth) {
         [self.centerContainerView setFrame:self.childControllerContainerView.bounds];
     }
