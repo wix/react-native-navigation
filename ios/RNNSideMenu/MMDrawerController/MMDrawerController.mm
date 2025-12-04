@@ -387,7 +387,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         [self.centerContainerView bringSubviewToFront:self.centerContentOverlay];
         self.centerContentOverlay.alpha = 0.5;
     }
-
+    
+    //Reset the centerContainerView frame if it diviated
+    if (self.centerContainerView.frame.origin.x == visibleSide == MMDrawerSideLeft ? _maximumLeftDrawerWidth : _maximumRightDrawerWidth) {
+        [self.centerContainerView setFrame:self.childControllerContainerView.bounds];
+    }
+    
     CGFloat distance = ABS(currentFrame.origin.x - finalFrame.origin.x);
     NSTimeInterval duration = [self animationDurationForDistance:distance velocity:velocity];
 
