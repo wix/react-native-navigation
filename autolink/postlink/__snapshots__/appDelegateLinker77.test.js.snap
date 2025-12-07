@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`appDelegateLinker should work for RN 0.77 with Objective-C 1`] = `
+exports[`appDelegateLinker should work for RN 0.77 & 0.78 with Objective-C 1`] = `
 "#import "AppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
@@ -36,7 +36,7 @@ exports[`appDelegateLinker should work for RN 0.77 with Objective-C 1`] = `
 @end "
 `;
 
-exports[`appDelegateLinker should work for RN 0.77 with Swift 1`] = `
+exports[`appDelegateLinker should work for RN 0.77 & 0.78 with Swift 1`] = `
 "import UIKit
 import React
 import ReactNativeNavigation
