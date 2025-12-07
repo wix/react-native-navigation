@@ -5,7 +5,7 @@ set -euo pipefail
 node ./scripts/changeReactNativeVersion.js || true
 
 corepack enable
-corepack prepare yarn@3.6.1 --activate
+corepack prepare yarn@4.12.0 --activate
 
 # Install dependencies (base step for all CI jobs)
 yarn install --no-immutable

@@ -7,7 +7,7 @@ sidebar_label: Installation
 ## Requirements
 
 - node >= 18.18
-- react-native >0.77 - 0.78 (0.79 - 0.82 support is in progress)
+- react-native >0.77 - 0.79 (0.80 - 0.82 support is in progress)
 - new architecture enabled (if you are not using the new architecture, you can still use react-native-navigation of version 7.x.x with react-native 0.73 and lower)
 
 ## npm or yarn
@@ -38,7 +38,10 @@ Make sure to commit the changes introduced by the `rnn-link` script.
 
 > The automatic linking is optimized for new applications created via the `npx @react-native-community/cli@latest init` command. If you are migrating from a version of react-native-navigation older than v7, it's recommended to check the steps manually after the script runs.
 
+> In iOS, from React-native 0.79 onwards the rnn-link will make the necessary changes only to the AppDelegate.swift file. The Objective-C version of the AppDelegate will need to be changed manually (see below).
+
 If one of the steps failed or you can't run (or are not comfortable with) the automatic scripts, you'll need to complete the relevant steps in the manual installation steps below, for both platforms.
+
 
 ### CocoaPods
 
@@ -113,6 +116,7 @@ cd ios && pod install
 
 > **Choose your implementation language**: Depending on whether your project uses Swift or Objective-C, follow the appropriate section below. Most new React Native projects use Swift by default.
 
+### React-Native 0.77 - 0.78:
 ##### For Swift projects
 
 In Xcode, you will need to update this file: `AppDelegate.swift`
@@ -144,6 +148,66 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 
 @end
 
+```
+
+### React-Native 0.79:
+
+##### For Swift projects
+-import React_RCTAppDelegate
++import ReactNativeNavigation
+
+-class AppDelegate: UIResponder, UIApplicationDelegate {
++class AppDelegate: RNNAppDelegate {
+
+-func application( _ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
++override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
++self.reactNativeDelegate = ReactNativeDelegate()
++super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    
+-let delegate = ReactNativeDelegate()
+-let factory = RCTReactNativeFactory(delegate: delegate)
+-delegate.dependencyProvider = RCTAppDependencyProvider()
+
+-reactNativeDelegate = delegate
+-reactNativeFactory = factory
+
+-window = UIWindow(frame: UIScreen.main.bounds)
+
+-factory.startReactNative(
+-  withModuleName: "RN79",
+-  in: window,
+-  launchOptions: launchOptions
+-)
+```
+
+##### For Objective-C projects
+
+In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
+
+```diff
+-@interface AppDelegate: UIResponder, UIApplicationDelegate 
++@interface AppDelegate : RNNAppDelegate
+
+-@property (nonatomic, strong) UIWindow *window;
+-@property (nonatomic, strong) ReactNativeDelegate *reactNativeDelegate;
+-@property (nonatomic, strong) RCTReactNativeFactory *reactNativeFactory;
+```
+
+`AppDelegate.m`
+```diff
+-  ReactNativeDelegate *delegate = [[ReactNativeDelegate alloc] init];
+-  RCTReactNativeFactory *factory = [[RCTReactNativeFactory alloc] initWithDelegate:delegate];
+-  delegate.dependencyProvider = [[RCTAppDependencyProvider alloc] init];
+
+-  self.reactNativeDelegate = delegate;
+-  self.reactNativeFactory = factory;
+-  self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+
+-  [factory startReactNativeWithModuleName:@"RN79"
+-                                      in:self.window
+-                            launchOptions:launchOptions];
++  self.reactNativeDelegate = [ReactNativeDelegate new];
++  [super application:application didFinishLaunchingWithOptions:launchOptions];
 ```
 
 ### Android
