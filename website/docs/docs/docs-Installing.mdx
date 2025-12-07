@@ -7,7 +7,7 @@ sidebar_label: Installation
 ## Requirements
 
 - node >= 18.18
-- react-native >0.77 - 0.79 (0.80 - 0.82 support is in progress)
+- react-native >0.77 - 0.80 (0.81 - 0.83 support is in progress)
 - new architecture enabled (if you are not using the new architecture, you can still use react-native-navigation of version 7.x.x with react-native 0.73 and lower)
 
 ## npm or yarn
@@ -163,7 +163,7 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 +override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 +self.reactNativeDelegate = ReactNativeDelegate()
 +super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    
+
 -let delegate = ReactNativeDelegate()
 -let factory = RCTReactNativeFactory(delegate: delegate)
 -delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -185,7 +185,7 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
 
 ```diff
--@interface AppDelegate: UIResponder, UIApplicationDelegate 
+-@interface AppDelegate: UIResponder, UIApplicationDelegate
 +@interface AppDelegate : RNNAppDelegate
 
 -@property (nonatomic, strong) UIWindow *window;
