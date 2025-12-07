@@ -152,7 +152,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --fix",
-    "*.{h,m,mm}": "node ./scripts/check-clang-format"
+    "*.{h,m,mm}": "node ./scripts/check-clang-format",
+    "yarn.lock": "./scripts/clean-yarn-lock.sh"
   },
   "codegenConfig": {
     "name": "rnnavigation",
