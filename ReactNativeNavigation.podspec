@@ -22,16 +22,16 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
   s.source_files = 'ios/**/*.{h,m,mm,cpp}'
   s.exclude_files = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
-  
+
   s.public_header_files = [
     'ios/RNNAppDelegate.h',
     'ios/ReactNativeVersionExtracted.h'
   ]
-  
+
   # Add Folly compiler flags to prevent coroutines header issues
   # Add Hermes flag when using Hermes engine
   s.compiler_flags = "#{folly_compiler_flags} #{use_hermes_flag}"
-  
+
   # Add header search paths for React-Core private headers (needed for RCTCxxBridgeDelegate.h, etc.)
   s.pod_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers/Private/React-Core"'
