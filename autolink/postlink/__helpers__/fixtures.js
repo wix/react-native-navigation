@@ -21,4 +21,6 @@ module.exports = {
   prepareFixtureDuplicate,
   prepareFixtureDuplicate77: ({ userFixtureFileName, patchedFixtureFileName }) =>
     prepareFixtureDuplicate({ rnVersion: '77', userFixtureFileName, patchedFixtureFileName }),
+  prepareFixtureDuplicate79: ({ userFixtureFileName, patchedFixtureFileName }) =>
+    prepareFixtureDuplicate({ rnVersion: '79', userFixtureFileName, patchedFixtureFileName }),
 };

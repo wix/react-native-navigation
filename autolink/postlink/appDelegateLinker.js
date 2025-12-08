@@ -10,6 +10,9 @@ class AppDelegateLinker {
     this.appDelegateHeaderPath = path.appDelegateHeader;
     this.removeUnneededImportsSuccess = false;
     this.removeApplicationLaunchContentSuccess = false;
+    const rnVersion = this._getReactNativeVersion();
+    infon('Found React Native version: ' + (rnVersion ? rnVersion.raw : 'unknown'));
+    this.isRN79orHigher = rnVersion && (rnVersion.major > 0 || rnVersion.minor >= 79);
   }
 
   link() {
@@ -20,7 +23,7 @@ class AppDelegateLinker {
       return;
     }
 
-    logn('Linking AppDelegate...');
+    logn('Linking AppDelegate: ' + this.appDelegatePath);
 
     // New flow for Swift
     if (nodePath.extname(this.appDelegatePath) === '.swift') {
@@ -194,15 +197,86 @@ class AppDelegateLinker {
 
   // SWIFT implementation
   _extendRNNAppDelegateSwift(content) {
-    return content
+    let newContent = content;
+
+    newContent = newContent
       .replace(
         /import React_RCTAppDelegate/,
         'import ReactNativeNavigation'
       )
+
+    // add this ONLY for < RN079
+    if (!this.isRN79orHigher) {
+      newContent = this._updateRNNAppDelegateSwift_77_78(newContent);
+    } else {
+      newContent = this._updateRNNAppDelegateSwift_79(newContent);
+    }
+
+    return newContent;
+  }
+
+  _updateRNNAppDelegateSwift_77_78(content) {
+    return content
       .replace(
         /class AppDelegate: RCTAppDelegate/,
         'class AppDelegate: RNNAppDelegate'
       )
+  }
+  _updateRNNAppDelegateSwift_79(content) {
+    let newContent = content;
+    newContent = newContent
+      .replace(
+        'class AppDelegate: UIResponder, UIApplicationDelegate',
+        'class AppDelegate: RNNAppDelegate'
+      )
+
+    newContent = newContent
+      .replace(/^\s*var window: UIWindow\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeDelegate: ReactNativeDelegate\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeFactory: RCTReactNativeFactory\?\s*$/gm, '')
+
+    newContent = newContent
+      .replace(
+        /func application/,
+        'override func application'
+      )
+
+    newContent = newContent
+      .replace(
+        /let delegate = ReactNativeDelegate\(\)/,
+        'self.reactNativeDelegate = ReactNativeDelegate\(\)'
+      )
+
+    newContent = newContent
+      .replace(
+        /let factory = RCTReactNativeFactory\(delegate: delegate\)/,
+        'super.application\(application, didFinishLaunchingWithOptions: launchOptions\)'
+      )
+
+    newContent = newContent
+      .replace(/^\s*delegate.dependencyProvider = RCTAppDependencyProvider\(\)\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*reactNativeDelegate = delegate\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*reactNativeFactory = factory\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*window = UIWindow\(frame: UIScreen.main.bounds\)\s*$/gm, '')
+    newContent = newContent
+      .replace(
+        /factory\.startReactNative\([\s\S]*?withModuleName:\s*".*?"[\s\S]*?\)/g,
+        ''
+      )
+
+    return newContent;
+  }
+
+  /**
+ * Get React Native version from package.json
+ * @returns {Object} { major, minor, patch } or null
+ */
+  _getReactNativeVersion() {
+    const { getReactNativeVersion } = require('./__helpers__/reactNativeVersion');
+    return getReactNativeVersion();
   }
 }
 

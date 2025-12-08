@@ -2,5 +2,4 @@
 #import "RNNAppDelegate.h"
 
 @interface AppDelegate : RNNAppDelegate
-
 @end

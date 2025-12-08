@@ -1,31 +1,11 @@
 require 'json'
-require 'find'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
-
 fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
-
-# Detect if this is a Swift project by looking for user AppDelegate.swift files
-start_dir = File.expand_path('../', __dir__)
-swift_delegate_path = nil
-Find.find(start_dir) do |path|
-  if path =~ /AppDelegate\.swift$/
-    swift_delegate_path = path
-    break
-  end
-end
-
-swift_project = swift_delegate_path && File.exist?(swift_delegate_path)
-
-# Debug output
-if swift_project
-  puts "ReactNativeNavigation: Swift AppDelegate detected - enabling Swift-compatible configuration"
-else
-  puts "ReactNativeNavigation: Objective-C AppDelegate detected - using standard configuration"
-end
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeNavigation"
+  s.prepare_command = 'node autolink/postlink/__helpers__/generate_version_header.js'
   s.version      = package['version']
   s.summary      = package['description']
 
@@ -40,13 +20,12 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
     s.source_files        = 'ios/**/*.{h,m,mm,cpp}'
-    s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
-    # Only expose headers for Swift projects
-    if swift_project
-      s.public_header_files = [
-          'ios/RNNAppDelegate.h'
-        ]
-    end
+    s.exclude_files       = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
+    
+    s.public_header_files = [
+      'ios/RNNAppDelegate.h',
+      'ios/ReactNativeVersionExtracted.h'
+    ]
   end
 
   folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -DFOLLY_CFG_NO_COROUTINES=1'
@@ -58,11 +37,8 @@ Pod::Spec.new do |s|
       "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
   }
 
-  # Only add DEFINES_MODULE for Swift projects
-  if swift_project
-    xcconfig_settings["DEFINES_MODULE"] = "YES"
-  end
-
+  xcconfig_settings["DEFINES_MODULE"] = "YES"
+  
   s.pod_target_xcconfig = xcconfig_settings
 
   if fabric_enabled
