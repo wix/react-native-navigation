@@ -35,6 +35,7 @@ Pod::Spec.new do |s|
   # Add header search paths for React-Core private headers (needed for RCTCxxBridgeDelegate.h, etc.)
   s.pod_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers/Private/React-Core"'
+    'DEFINES_MODULE' => 'YES'
   }
 
   # Let install_modules_dependencies handle all React Native dependencies
