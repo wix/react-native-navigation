@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
 
   # Add header search paths for React-Core private headers (needed for RCTCxxBridgeDelegate.h, etc.)
   s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers/Private/React-Core"'
+    'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers/Private/React-Core"',
     'DEFINES_MODULE' => 'YES'
   }
 
