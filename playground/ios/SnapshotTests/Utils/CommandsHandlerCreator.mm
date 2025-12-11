@@ -1,11 +1,11 @@
 #import "CommandsHandlerCreator.h"
 #import "RNNTestRootViewCreator.h"
-#import <ReactNativeNavigation/RNNViewControllerFactory.h>
-#import <ReactNativeNavigation/RNNEventEmitter.h>
-#import <ReactNativeNavigation/RNNLayoutManager.h>
-#import <ReactNativeNavigation/RNNModalManager.h>
-#import <ReactNativeNavigation/RNNOverlayManager.h>
-#import <ReactNativeNavigation/RNNSetRootAnimator.h>
+#import "RNNViewControllerFactory.h"
+#import "RNNEventEmitter.h"
+#import "RNNLayoutManager.h"
+#import "RNNModalManager.h"
+#import "RNNOverlayManager.h"
+#import "RNNSetRootAnimator.h"
 
 @implementation CommandsHandlerCreator
 
