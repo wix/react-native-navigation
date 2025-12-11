@@ -70,6 +70,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.reactNativeDelegate.dependencyProvider = [RCTAppDependencyProvider new];
     
     RCTAppSetupPrepareApp(application, YES);
+    RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
     
     self.reactNativeFactory.rootViewFactory.reactHost = [self.reactNativeFactory.rootViewFactory createReactHost:launchOptions];
