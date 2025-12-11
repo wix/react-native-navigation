@@ -1,4 +1,5 @@
 #import "RNNOptions.h"
+#import "RNNIconBackgroundOptions.h"
 
 @interface RNNBackButtonOptions : RNNOptions
 
@@ -16,6 +17,7 @@
 @property(nonatomic, strong) Text *displayMode;
 @property(nonatomic, strong) Text *identifier;
 @property(nonatomic, strong) Bool *popStackOnPress;
+@property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
 
 - (BOOL)hasValue;
 

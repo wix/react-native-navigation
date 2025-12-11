@@ -400,6 +400,10 @@ export interface OptionsTopBarBackButton {
    */
   fontWeight?: FontWeight;
   /**
+   * Set icon background style
+   */
+  iconBackground?: IconBackgroundOptions;
+  /**
    * Set testID for reference in E2E tests
    */
   testID?: string;
