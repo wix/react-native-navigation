@@ -13,7 +13,7 @@ object ColorParser {
     private const val VAL_NO_COLOR = "NoColor"
 
     @JvmStatic
-    fun parse(context: Context?, json: JSONObject, colorName: String?): Colour {
+    fun parse(context: Context, json: JSONObject, colorName: String?): Colour {
         if (json.has(KEY_RESOURCE_PATHS)) {
             return ReactPlatformColor(JSONParser.convert(json))
         }

@@ -2,6 +2,8 @@ package com.reactnativenavigation.options.parsers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+import android.content.Context;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
@@ -23,7 +25,7 @@ public class ColorParseTest extends BaseRobolectricTest {
     public void nullIsParsedAsNoColor() throws JSONException {
         JSONObject json = new JSONObject();
         json.put("color", "NoColor");
-        assertThat(ColorParser.parse(null, json, "color")).isInstanceOf(DontApplyColour.class);
+        assertThat(ColorParser.parse(Mockito.mock(Context.class), json, "color")).isInstanceOf(DontApplyColour.class);
     }
 
     @Test

@@ -1,0 +1,35 @@
+import groovy.json.JsonSlurper
+
+def getRNPackageJsonPath() {
+    def currentDir = rootDir
+    while (currentDir != null) {
+        def file = new File(currentDir, "node_modules/react-native/package.json")
+        if (file.exists()) {
+            return file.path
+        }
+        currentDir = currentDir.parentFile
+    }
+    throw new GradleException("Unable to find react-native package.json")
+}
+
+def getRNVersion = { rnPackageJsonPath ->
+    def jsonSlurper = new JsonSlurper()
+    Map<String, Object> packageJSON = jsonSlurper.parse(new File(rnPackageJsonPath))
+    return packageJSON.get('version')
+}
+
+def getMinorVersion = { semanticVersion ->
+    return semanticVersion.split('\\.')[1].toInteger()
+}
+
+def rnVersion = getRNVersion(getRNPackageJsonPath())
+def rnMinorVer = getMinorVersion(rnVersion)
+println "RNInfo: detected React Native version: $rnVersion (minor=$rnMinorVer)"
+
+ext.rnInfo = [
+    version       : rnVersion,
+    minorVersion  : rnMinorVer,
+    isRN79OrHigher: rnMinorVer >= 79,
+    isRN80OrHigher: rnMinorVer >= 80,
+]
+
