@@ -50,6 +50,7 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
     // Update RN and React in dependencies
     packageJson.dependencies['react-native'] = targetRn;
     packageJson.dependencies['react'] = reactVersion;
+    packageJson.devDependencies['react-test-renderer'] = reactVersion;
 
     // Also update in devDependencies if present
     if (packageJson.devDependencies['react-native'] !== undefined) {
@@ -61,7 +62,6 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
 
     // Align testing libs for older RN minors (<= 77)
     if (rnMinor <= 77) {
-        packageJson.devDependencies['react-test-renderer'] = '18.2.0';
         packageJson.devDependencies['@testing-library/react-native'] = '12.4.5';
     }
 

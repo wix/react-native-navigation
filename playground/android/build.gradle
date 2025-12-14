@@ -1,20 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-def kotlinVersion = "2.0.21"
-
-ext {
-    kotlinVersion = kotlinVersion
-    RNNKotlinVersion = kotlinVersion
-    detoxKotlinVersion = kotlinVersion
-    compileSdkVersion = 35
-    buildToolsVersion = "35.0.0"
-    minSdkVersion = 24
-    targetSdkVersion = 35
-    ndkVersion = "27.1.12297006"
-}
-
 buildscript {
-    def kotlinVersion = "2.0.21"
+    apply from: './rninfo.gradle'
+
+    ext {
+        // RN 0.79+ uses Kotlin 2.1.x, older versions use 2.0.21
+        kotlinVersion = ext.rnInfo.isRN79OrHigher ? '2.1.20' : '2.0.21'
+        RNNKotlinVersion = kotlinVersion
+        detoxKotlinVersion = kotlinVersion
+        compileSdkVersion = 35
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+    }
+
     repositories {
         google()
         mavenCentral()
