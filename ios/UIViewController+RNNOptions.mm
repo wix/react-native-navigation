@@ -30,7 +30,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
                                tintColor:(nullable UIColor *)tintColor
-                              cancelText:(NSString *)cancelText {
+                              cancelText:(NSString *)cancelText
+                               placement:(SearchBarPlacement)placement {
     if (!self.navigationItem.searchController) {
         UISearchController *search =
             [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -52,11 +53,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
             search.searchBar.searchTextField.backgroundColor = backgroundColor;
         }
 
-        if (focus) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              self.navigationItem.searchController.active = true;
-              [self.navigationItem.searchController.searchBar becomeFirstResponder];
-            });
+        if (@available(iOS 26.0, *)) {
+            if (placement == SearchBarPlacementIntegrated) {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+            } else {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
+            }
         }
 
         self.navigationItem.searchController = search;
@@ -65,6 +67,22 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         // Fixes #3450, otherwise, UIKit will infer the presentation context to
         // be the root most view controller
         self.definesPresentationContext = YES;
+
+        if (focus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              self.navigationItem.searchController.active = true;
+              [self.navigationItem.searchController.searchBar becomeFirstResponder];
+            });
+        }
+    } else {
+        // Update placement on existing searchController (iOS 26+)
+        if (@available(iOS 26.0, *)) {
+            if (placement == SearchBarPlacementIntegrated) {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+            } else {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
+            }
+        }
     }
 }
 
