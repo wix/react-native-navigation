@@ -55,7 +55,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
         if (@available(iOS 26.0, *)) {
             if (placement == SearchBarPlacementIntegrated) {
-                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                if (focus) {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                } else {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegratedButton;
+                }
             } else {
                 self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
             }
@@ -78,7 +82,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         // Update placement on existing searchController (iOS 26+)
         if (@available(iOS 26.0, *)) {
             if (placement == SearchBarPlacementIntegrated) {
-                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                if (focus) {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                } else {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegratedButton;
+                }
             } else {
                 self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
             }
