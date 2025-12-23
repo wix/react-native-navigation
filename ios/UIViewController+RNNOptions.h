@@ -1,3 +1,4 @@
+#import "RNNSearchBarPlacement.h"
 #import <UIKit/UIKit.h>
 
 @class RNNBottomTabOptions;
@@ -15,7 +16,8 @@
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
                                tintColor:(nullable UIColor *)tintColor
-                              cancelText:(NSString *_Nullable)cancelText;
+                              cancelText:(NSString *_Nullable)cancelText
+                               placement:(SearchBarPlacement)placement;
 
 - (void)setSearchBarHiddenWhenScrolling:(BOOL)searchBarHidden;
 

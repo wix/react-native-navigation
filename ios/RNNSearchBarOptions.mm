@@ -14,6 +14,9 @@
     self.tintColor = [ColorParser parse:dict key:@"tintColor"];
     self.placeholder = [TextParser parse:dict key:@"placeholder"];
     self.cancelText = [TextParser parse:dict key:@"cancelText"];
+    self.placement = (RNNSearchBarPlacement *)[EnumParser parse:dict
+                                                             key:@"placement"
+                                                         ofClass:RNNSearchBarPlacement.class];
     return self;
 }
 
@@ -36,6 +39,8 @@
         self.placeholder = options.placeholder;
     if (options.cancelText.hasValue)
         self.cancelText = options.cancelText;
+    if (options.placement.hasValue)
+        self.placement = options.placement;
 }
 
 @end
