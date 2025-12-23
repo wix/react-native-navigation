@@ -15,11 +15,16 @@ typealias TitleRight = Int
 typealias TitleTop = Int
 typealias TitleBottom = Int
 
-fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, leftBarWidth: Int, isCenter: Boolean): Int {
+fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, leftBarWidth: Int, isCenter: Boolean, isFill: Boolean = false): Int {
     return if (isCenter) {
         View.MeasureSpec.makeMeasureSpec(containerWidth, View.MeasureSpec.AT_MOST)
     } else {
-        View.MeasureSpec.makeMeasureSpec(containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX, View.MeasureSpec.AT_MOST)
+        val availableWidth = containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX
+        if (isFill) {
+            View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.EXACTLY)
+        } else {
+            View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
+        }
     }
 }
 
