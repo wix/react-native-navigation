@@ -56,12 +56,14 @@ describe('Options', () => {
   });
 
   it(':android: TopBar custom title with subtitle should be visible', async () => {
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
     await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
     await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
     await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
   });
 
   it(':android: TopBar custom title without subtitle should be visible', async () => {
+    await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
     await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
     await elementById(TestIDs.SET_TOPBAR_WITHOUT_SUBTITLE_BTN).tap();
     await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
