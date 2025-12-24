@@ -20,11 +20,10 @@ fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, lef
         View.MeasureSpec.makeMeasureSpec(containerWidth, View.MeasureSpec.AT_MOST)
     } else {
         val availableWidth = containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX
-        if (isFill) {
-            View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.EXACTLY)
-        } else {
-            View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
-        }
+        View.MeasureSpec.makeMeasureSpec(
+            availableWidth,
+            if (isFill) View.MeasureSpec.EXACTLY else View.MeasureSpec.AT_MOST
+        )
     }
 }
 
