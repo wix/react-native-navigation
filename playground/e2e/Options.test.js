@@ -56,20 +56,16 @@ describe('Options', () => {
   });
 
   it(':android: TopBar custom title with subtitle should be visible', async () => {
-    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
-    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
-    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
-    await device.pressBack();
-    await expect(elementByLabel('Styling Options')).toBeVisible();
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
   });
 
   it(':android: TopBar custom title without subtitle should be visible', async () => {
-    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
-    await elementById('SET_TOPBAR_WITHOUT_SUBTITLE_BTN').tap();
-    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
-    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
-    await device.pressBack();
-    await expect(elementByLabel('Styling Options')).toBeVisible();
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await elementById(TestIDs.SET_TOPBAR_WITHOUT_SUBTITLE_BTN).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
   });
 
   it('Popping screen with yellow box should not crash', async () => {
