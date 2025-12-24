@@ -79,7 +79,7 @@ export default class Options extends NavigationComponent<Props> {
         <Button
           label="TopBar Title Test"
           testID={GOTO_TOPBAR_TITLE_TEST}
-          platform="android"
+          platform={'android'}
           onPress={this.gotoTopBarTitleTest}
         />
         <Button
