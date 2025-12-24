@@ -20,9 +20,10 @@ const {
   GOTO_SEARCHBAR_MODAL,
   REPLACE_TAB_TEST_ID,
   REPLACED_TAB,
+  GOTO_TOPBAR_TITLE_TEST,
 } = testIDs;
 
-interface Props extends NavigationProps {}
+interface Props extends NavigationProps { }
 
 export default class Options extends NavigationComponent<Props> {
   static options() {
@@ -74,6 +75,12 @@ export default class Options extends NavigationComponent<Props> {
           label="Set React Title View"
           testID={SET_REACT_TITLE_VIEW}
           onPress={this.setReactTitleView}
+        />
+        <Button
+          label="TopBar Title Test"
+          testID={GOTO_TOPBAR_TITLE_TEST}
+          platform="android"
+          onPress={this.gotoTopBarTitleTest}
         />
         <Button
           label="Show Yellow Box"
@@ -133,6 +140,13 @@ export default class Options extends NavigationComponent<Props> {
     Navigation.mergeOptions(this, {
       topBar: {
         visible: true,
+      },
+    });
+
+  gotoTopBarTitleTest = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.TopBarTitleTest,
       },
     });
 

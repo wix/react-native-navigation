@@ -92,4 +92,21 @@ describe('Options', () => {
     await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
   });
+
+  it(':android: TopBar custom title with subtitle should be visible', async () => {
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
+    await device.pressBack();
+    await expect(elementByLabel('Styling Options')).toBeVisible();
+  });
+
+  it(':android: TopBar custom title without subtitle should be visible', async () => {
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await elementById(TestIDs.SET_TOPBAR_WITHOUT_SUBTITLE_BTN).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
+    await device.pressBack();
+    await expect(elementByLabel('Styling Options')).toBeVisible();
+  });
 });
