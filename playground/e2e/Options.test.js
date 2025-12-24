@@ -55,6 +55,23 @@ describe('Options', () => {
     await expect(elementByLabel('Title Changed')).toBeVisible();
   });
 
+  it(':android: TopBar custom title with subtitle should be visible', async () => {
+    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
+    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
+    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
+    await device.pressBack();
+    await expect(elementByLabel('Styling Options')).toBeVisible();
+  });
+
+  it(':android: TopBar custom title without subtitle should be visible', async () => {
+    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
+    await elementById('SET_TOPBAR_WITHOUT_SUBTITLE_BTN').tap();
+    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
+    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
+    await device.pressBack();
+    await expect(elementByLabel('Styling Options')).toBeVisible();
+  });
+
   it('Popping screen with yellow box should not crash', async () => {
     await elementById(TestIDs.SHOW_YELLOW_BOX_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
@@ -91,22 +108,5 @@ describe('Options', () => {
     await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
     await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
-  });
-
-  it(':android: TopBar custom title with subtitle should be visible', async () => {
-    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
-    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
-    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
-    await device.pressBack();
-    await expect(elementByLabel('Styling Options')).toBeVisible();
-  });
-
-  it(':android: TopBar custom title without subtitle should be visible', async () => {
-    await elementById('GOTO_TOPBAR_TITLE_TEST').tap();
-    await elementById('SET_TOPBAR_WITHOUT_SUBTITLE_BTN').tap();
-    await expect(elementById('TOPBAR_TITLE_TEXT')).toBeVisible();
-    await expect(elementById('TOPBAR_TITLE_AVATAR')).toBeVisible();
-    await device.pressBack();
-    await expect(elementByLabel('Styling Options')).toBeVisible();
   });
 });
