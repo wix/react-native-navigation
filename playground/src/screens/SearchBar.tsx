@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 
-const { HIDE_TOP_BAR_BTN, SHOW_TOP_BAR_BTN, SHOW_SEARCH_BAR_BTN, HIDE_SEARCH_BAR_BTN, TOP_BAR } =
+const { HIDE_TOP_BAR_BTN, SHOW_TOP_BAR_BTN, SHOW_SEARCH_BAR_BTN, HIDE_SEARCH_BAR_BTN, TOP_BAR, TOGGLE_PLACEMENT_BTN } =
   testIDs;
 
 interface Props extends NavigationProps { }
@@ -38,6 +38,7 @@ export default class SearchBar extends React.Component<Props> {
         <Button label="Show SearchBar" testID={SHOW_SEARCH_BAR_BTN} onPress={this.showSearchBar} />
         <Button
           label={`Toggle Placement (${this.state.placement})`}
+          testID={TOGGLE_PLACEMENT_BTN}
           onPress={this.togglePlacement}
         />
       </Root>
@@ -83,7 +84,13 @@ export default class SearchBar extends React.Component<Props> {
     Navigation.mergeOptions(this, {
       topBar: {
         searchBar: {
-          visible: true,
+          visible: false,
+        },
+      },
+    });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        searchBar: {
           placement: newPlacement,
         },
       },
