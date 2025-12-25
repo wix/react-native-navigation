@@ -88,7 +88,6 @@ export default class TopBarTitleTestScreen extends NavigationComponent<Props> {
                 <Button
                     label="Without Subtitle (Bug Test)"
                     testID={SET_TOPBAR_WITHOUT_SUBTITLE_BTN}
-                    platform="android"
                     onPress={this.setTopBarWithoutSubtitle}
                 />
             </Root>
