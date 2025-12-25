@@ -8,10 +8,10 @@ buildscript {
         kotlinVersion = ext.rnInfo.isRN79OrHigher ? '2.1.20' : '2.0.21'
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 35
-        buildToolsVersion = "35.0.0"
+        compileSdkVersion = 36
+        buildToolsVersion = "36.0.0"
         minSdkVersion = 24
-        targetSdkVersion = 35
+        targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
     }
 
