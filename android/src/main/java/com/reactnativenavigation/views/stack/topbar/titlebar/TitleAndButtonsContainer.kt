@@ -155,8 +155,9 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         val rightBarWidth = rightButtonBar.measuredWidth
         val leftBarWidth = leftButtonBar.measuredWidth
         val isCenter = titleComponentAlignment == Alignment.Center
+        val isFill = titleComponentAlignment == Alignment.Fill
         val titleHeightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST)
-        val titleWidthMeasureSpec = makeTitleAtMostWidthMeasureSpec(containerWidth, rightBarWidth, leftBarWidth, isCenter)
+        val titleWidthMeasureSpec = makeTitleAtMostWidthMeasureSpec(containerWidth, rightBarWidth, leftBarWidth, isCenter, isFill)
         if (titleComponent is TitleBarReactView) {
             titleComponent.centered = isCenter
         }
