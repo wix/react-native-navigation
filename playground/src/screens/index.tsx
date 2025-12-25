@@ -123,17 +123,21 @@ function registerScreens() {
     () => require('../components/TopBarBackground').default
   );
   Navigation.registerComponent(Screens.Toast, () => require('./Toast').default);
+  Navigation.registerComponent(
+    Screens.TopBarTitleTest,
+    () => require('./TopBarTitleTestScreen').default
+  );
 
   const { ContextProvider } = require('../context');
   const ContextScreen = require('./ContextScreen').default;
   Navigation.registerComponent(
     Screens.ContextScreen,
     () => (props) =>
-      (
-        <ContextProvider>
-          <ContextScreen {...props} />
-        </ContextProvider>
-      ),
+    (
+      <ContextProvider>
+        <ContextScreen {...props} />
+      </ContextProvider>
+    ),
     () => ContextScreen
   );
 

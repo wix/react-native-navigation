@@ -2,6 +2,7 @@
 
 @implementation RNNReactTitleView {
     BOOL _fillParent;
+    CGFloat _expectedHeight;
 }
 
 - (NSString *)componentType {
@@ -10,7 +11,7 @@
 
 - (CGSize)intrinsicContentSize {
     if (_fillParent) {
-        return UILayoutFittingExpandedSize;
+        return CGSizeMake(UILayoutFittingExpandedSize.width, _expectedHeight > 0 ? _expectedHeight : 44);
     } else {
         return [super intrinsicContentSize];
     }
@@ -19,6 +20,7 @@
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
     if ([alignment isEqualToString:@"fill"]) {
         _fillParent = YES;
+        _expectedHeight = frame.size.height;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
     } else {
