@@ -1370,21 +1370,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-typescript@npm:^7.27.1":
-  version: 7.28.5
-  resolution: "@babel/plugin-transform-typescript@npm:7.28.5"
-  dependencies:
-    "@babel/helper-annotate-as-pure": "npm:^7.27.3"
-    "@babel/helper-create-class-features-plugin": "npm:^7.28.5"
-    "@babel/helper-plugin-utils": "npm:^7.27.1"
-    "@babel/helper-skip-transparent-expression-wrappers": "npm:^7.27.1"
-    "@babel/plugin-syntax-typescript": "npm:^7.27.1"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10/e4706379df70c2de9d3d3f573ff74a160e05221620a22dd0a64899ab45fddad9e4530fbba33014c75906f13aa78d8044fed80dba85068e11d84ed1f033dea445
-  languageName: node
-  linkType: hard
-
 "@babel/plugin-transform-unicode-escapes@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-unicode-escapes@npm:7.27.1"
@@ -12360,7 +12345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.29.1":
+"react-native-gesture-handler@npm:^2.22.1":
   version: 2.29.1
   resolution: "react-native-gesture-handler@npm:2.29.1"
   dependencies:
@@ -12456,7 +12441,7 @@ __metadata:
     react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.82.1"
     react-native-fast-image: "npm:^8.6.3"
-    react-native-gesture-handler: "npm:^2.29.1"
+    react-native-gesture-handler: "npm:^2.22.1"
     react-native-monorepo-config: "npm:^0.3.0"
     react-native-reanimated: "npm:4.2.0"
     react-native-redash: "npm:^12.6.1"
@@ -12530,7 +12515,7 @@ __metadata:
     react-native: "npm:0.82.1"
     react-native-builder-bob: "npm:^0.40.13"
     react-native-fast-image: "npm:^8.6.3"
-    react-native-gesture-handler: "npm:^2.29.1"
+    react-native-gesture-handler: "npm:^2.22.1"
     react-native-reanimated: "npm:4.1.5"
     react-native-worklets: "npm:0.5.0"
     react-redux: "npm:9.1.2"
@@ -14507,16 +14492,6 @@ __metadata:
   linkType: hard
 
 "tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.15":
-  version: 0.2.15
-  resolution: "tinyglobby@npm:0.2.15"
-  dependencies:
-    fdir: "npm:^6.5.0"
-    picomatch: "npm:^4.0.3"
-  checksum: 10/d72bd826a8b0fa5fa3929e7fe5ba48fceb2ae495df3a231b6c5408cd7d8c00b58ab5a9c2a76ba56a62ee9b5e083626f1f33599734bed1ffc4b792406408f0ca2
-  languageName: node
-  linkType: hard
-
-"tinyglobby@npm:^0.2.15":
   version: 0.2.15
   resolution: "tinyglobby@npm:0.2.15"
   dependencies:
