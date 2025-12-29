@@ -12345,7 +12345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.22.1":
+"react-native-gesture-handler@npm:^2.29.1":
   version: 2.29.1
   resolution: "react-native-gesture-handler@npm:2.29.1"
   dependencies:
@@ -12441,7 +12441,7 @@ __metadata:
     react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.82.1"
     react-native-fast-image: "npm:^8.6.3"
-    react-native-gesture-handler: "npm:^2.22.1"
+    react-native-gesture-handler: "npm:^2.29.1"
     react-native-monorepo-config: "npm:^0.3.0"
     react-native-reanimated: "npm:4.2.0"
     react-native-redash: "npm:^12.6.1"
@@ -12515,7 +12515,7 @@ __metadata:
     react-native: "npm:0.82.1"
     react-native-builder-bob: "npm:^0.40.13"
     react-native-fast-image: "npm:^8.6.3"
-    react-native-gesture-handler: "npm:^2.22.1"
+    react-native-gesture-handler: "npm:^2.29.1"
     react-native-reanimated: "npm:4.1.5"
     react-native-worklets: "npm:0.5.0"
     react-redux: "npm:9.1.2"
