@@ -37,12 +37,12 @@ function parseRnMinor(rnVersion) {
  */
 async function updateGradleWrapper(gradleVersion) {
     const content = await fs.readFile(GRADLE_WRAPPER_PATH, 'utf8');
-    
+
     const updatedContent = content.replace(
         /distributionUrl=https\\:\/\/services\.gradle\.org\/distributions\/gradle-[\d.]+-bin\.zip/,
         `distributionUrl=https\\://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip`
     );
-    
+
     await fs.writeFile(GRADLE_WRAPPER_PATH, updatedContent, 'utf8');
     return gradleVersion;
 }
@@ -62,7 +62,7 @@ async function main() {
 
     const gradleVersion = getGradleVersion(rnMinor);
     await updateGradleWrapper(gradleVersion);
-    
+
     console.log(`Updated Gradle version to ${gradleVersion} (RN ${rnVersion}, minor=${rnMinor})`);
 }
 
