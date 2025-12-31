@@ -85,7 +85,7 @@ export class OptionsCrawler {
     const reactComponent = foundReactGenerator ? foundReactGenerator() : undefined;
     if (reactComponent && this.isComponentWithOptions(reactComponent)) {
       return isFunction(reactComponent.options)
-        ? reactComponent.options({ componentId: layout.id, ...layout.passProps } || {})
+        ? reactComponent.options({ componentId: layout.id, ...layout.passProps })
         : reactComponent.options;
     }
     return {};
