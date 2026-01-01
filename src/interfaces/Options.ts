@@ -76,13 +76,13 @@ export type Interpolation =
   | { type: 'linear' }
   | { type: 'overshoot'; tension?: number }
   | {
-      type: 'spring';
-      mass?: number;
-      damping?: number;
-      stiffness?: number;
-      allowsOverdamping?: boolean;
-      initialVelocity?: number;
-    };
+    type: 'spring';
+    mass?: number;
+    damping?: number;
+    stiffness?: number;
+    allowsOverdamping?: boolean;
+    initialVelocity?: number;
+  };
 interface ThemeColor {
   light?: string | symbol;
   dark?: string | symbol;
@@ -619,6 +619,12 @@ export interface OptionsSearchBar {
   tintColor?: Color;
   placeholder?: string;
   cancelText?: string;
+  /**
+   * iOS 26+ only. Controls where the search bar is placed.
+   * - 'stacked': Below the navigation bar title (default, legacy behavior)
+   * - 'integrated': Inside the navigation bar
+   */
+  placement?: 'stacked' | 'integrated';
 }
 
 export interface OptionsTopBar {
@@ -1124,7 +1130,7 @@ export interface SideMenuSide {
    * #### (iOS specific)
    * @default 'pushContent'
    */
-  openMode?: 'pushContent'|'aboveContent';
+  openMode?: 'pushContent' | 'aboveContent';
 }
 
 export interface OptionsSideMenu {
@@ -1400,39 +1406,39 @@ export interface StackAnimationOptions {
    * Configure animations for the top bar
    */
   topBar?:
-    | TopBarAnimationOptions
-    | {
-        enter?: TopBarAnimationOptions;
-        exit?: TopBarAnimationOptions;
-      };
+  | TopBarAnimationOptions
+  | {
+    enter?: TopBarAnimationOptions;
+    exit?: TopBarAnimationOptions;
+  };
   /**
    * Configure animations for the status bar (typically aligned
    * with the top-bar's)
    */
   statusBar?:
-    | StatusBarAnimationOptions
-    | {
-        enter?: StatusBarAnimationOptions;
-        exit?: StatusBarAnimationOptions;
-      };
+  | StatusBarAnimationOptions
+  | {
+    enter?: StatusBarAnimationOptions;
+    exit?: StatusBarAnimationOptions;
+  };
   /**
    * Configure animations for the bottom tabs
    */
   bottomTabs?:
-    | ViewAnimationOptions
-    | {
-        enter?: ViewAnimationOptions;
-        exit?: ViewAnimationOptions;
-      };
+  | ViewAnimationOptions
+  | {
+    enter?: ViewAnimationOptions;
+    exit?: ViewAnimationOptions;
+  };
   /**
    * Configure animations for the content (Screen)
    */
   content?:
-    | ViewAnimationOptions
-    | {
-        enter?: ViewAnimationOptions;
-        exit?: ViewAnimationOptions;
-      };
+  | ViewAnimationOptions
+  | {
+    enter?: ViewAnimationOptions;
+    exit?: ViewAnimationOptions;
+  };
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
    */
