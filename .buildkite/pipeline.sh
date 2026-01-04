@@ -11,4 +11,7 @@ cat .buildkite/jobs/pipeline.ios_rn_78.yml
 cat .buildkite/jobs/pipeline.ios_rn_82.yml
 cat .buildkite/jobs/pipeline.publish.yml
 
-
+retry:
+      automatic:
+        - exit_status: [1, -1]
+          limit: 2
