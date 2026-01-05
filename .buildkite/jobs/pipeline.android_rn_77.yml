@@ -8,5 +8,9 @@
     key: "android_rn_77"
     timeout_in_minutes: 90
     artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
+    retry:
+      automatic:
+      - exit_status: [1, -1]
+        limit: 2
 
 
