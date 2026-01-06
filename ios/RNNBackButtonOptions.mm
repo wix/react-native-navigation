@@ -19,11 +19,13 @@
     self.enableMenu = [BoolParser parse:dict key:@"enableMenu"];
     self.displayMode = [TextParser parse:dict key:@"displayMode"];
     self.popStackOnPress = [BoolParser parse:dict key:@"popStackOnPress"];
+    self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"] enabled:nil];
 
     return self;
 }
 
 - (void)mergeOptions:(RNNBackButtonOptions *)options {
+    [self.iconBackground mergeOptions:options.iconBackground];
     if (options.identifier.hasValue)
         self.identifier = options.identifier;
     if (options.icon.hasValue)
@@ -57,7 +59,8 @@
 - (BOOL)hasValue {
     return self.icon.hasValue || self.showTitle.hasValue || self.color.hasValue ||
            self.fontFamily.hasValue || self.fontSize.hasValue || self.title.hasValue ||
-           self.enableMenu.hasValue || self.displayMode.hasValue || self.sfSymbol.hasValue;
+           self.enableMenu.hasValue || self.displayMode.hasValue || self.sfSymbol.hasValue ||
+           self.iconBackground.hasValue;
 }
 
 @end

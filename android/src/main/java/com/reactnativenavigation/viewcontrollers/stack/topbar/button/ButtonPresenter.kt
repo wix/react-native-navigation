@@ -163,9 +163,10 @@ open class ButtonPresenter(private val context: Context, private val button: But
     fun applyNavigationIcon(toolbar: Toolbar, onPress: (ButtonOptions) -> Unit) {
         iconResolver.resolve(button) { icon: Drawable ->
             setIconColor(icon)
+            val iconWithBackground = applyIconBackgroundDrawable(icon)
             toolbar.setNavigationOnClickListener { onPress(button) }
             toolbar.navigationIcon = null
-            toolbar.navigationIcon = icon
+            toolbar.navigationIcon = iconWithBackground
             setLeftButtonTestId(toolbar)
             if (button.accessibilityLabel.hasValue()) toolbar.navigationContentDescription = button.accessibilityLabel.get()
         }
