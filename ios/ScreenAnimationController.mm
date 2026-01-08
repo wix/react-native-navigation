@@ -75,14 +75,29 @@
 }
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-	UINavigationController *toViewController =
-		[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-	toViewController.view.alpha = 0;
-	UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-
-	[transitionContext.containerView addSubview:fromView];
-	[transitionContext.containerView addSubview:toViewController.view];
-	[toViewController prepareForTransition];
+    UIViewController *fromViewController =
+    [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toViewController =
+    [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    
+    BOOL isDismiss = (toView == nil);
+    
+    if (isDismiss) {
+        if (fromView) {
+            [transitionContext.containerView addSubview:fromView];
+        }
+    } else {
+        toViewController.view.alpha = 0;
+        if (fromView) {
+            [transitionContext.containerView addSubview:fromView];
+        }
+        [transitionContext.containerView addSubview:toViewController.view];
+    }
+    
+    [toViewController prepareForTransition];
 }
 
 - (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC
@@ -121,13 +136,18 @@
 
 - (void)animateTransitions:(NSArray<id<DisplayLinkAnimatorDelegate>> *)animators
 	andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    BOOL isDismiss = (toView == nil);
+    
 	DisplayLinkAnimator *displayLinkAnimator = [[DisplayLinkAnimator alloc]
 		initWithDisplayLinkAnimators:animators
 							duration:[self transitionDuration:transitionContext]];
 
 	[displayLinkAnimator setOnStart:^{
-	  [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view.alpha =
-		  1.f;
+	  UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        if (!isDismiss) {
+            toVC.view.alpha = 1.f;
+        }
 	}];
 
 	[displayLinkAnimator setCompletion:^{
@@ -170,9 +190,13 @@
 	UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
 	UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
 	[_sharedElementAnimator animationEnded];
-	toView.layer.transform = CATransform3DIdentity;
-	fromView.layer.transform = CATransform3DIdentity;
-	toView.alpha = 1.f;
+    if (toView) {
+        toView.layer.transform = CATransform3DIdentity;
+        toView.alpha = 1.f;
+    }
+    if (fromView) {
+        fromView.layer.transform = CATransform3DIdentity;
+    }
 	_transitionContext = nil;
 	_sharedElementAnimator = nil;
 }

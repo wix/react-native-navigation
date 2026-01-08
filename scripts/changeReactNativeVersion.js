@@ -3,10 +3,20 @@
   Updates package.json React Native and React versions based on REACT_NATIVE_VERSION env var.
   - Fetches the React peer dependency from the npm registry for the specified RN version
   - Updates package.json dependencies/devDependencies accordingly
+  - Updates Gradle wrapper version based on RN version
 */
 
 const fs = require('fs/promises');
 const path = require('path');
+
+const GRADLE_WRAPPER_PATH = path.join(
+    process.cwd(),
+    'playground',
+    'android',
+    'gradle',
+    'wrapper',
+    'gradle-wrapper.properties'
+);
 
 /**
  * Fetch and compute the versions we need in order to update package.json files.
@@ -86,6 +96,31 @@ function logChanges(packageJsonPath, versions) {
     }
 }
 
+/**
+ * Determine the Gradle version based on RN minor version.
+ * RN < 0.82: Gradle 8.14.1
+ * RN >= 0.82: Gradle 9.0.0
+ */
+function getGradleVersion(rnMinor) {
+    return rnMinor < 82 ? '8.14.1' : '9.0.0';
+}
+
+/**
+ * Update gradle-wrapper.properties with the appropriate Gradle version.
+ */
+async function updateGradleWrapper(rnMinor) {
+    const gradleVersion = getGradleVersion(rnMinor);
+    const content = await fs.readFile(GRADLE_WRAPPER_PATH, 'utf8');
+
+    const updatedContent = content.replace(
+        /distributionUrl=https\\:\/\/services\.gradle\.org\/distributions\/gradle-[\d.]+-bin\.zip/,
+        `distributionUrl=https\\://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip`
+    );
+
+    await fs.writeFile(GRADLE_WRAPPER_PATH, updatedContent, 'utf8');
+    console.log(`Updated Gradle version to ${gradleVersion}`);
+}
+
 async function main() {
     const rnVersion = process.env.REACT_NATIVE_VERSION;
     if (!rnVersion) {
@@ -105,6 +140,9 @@ async function main() {
         await updatePackageJsonAt(packageJsonPath, versions);
         logChanges(packageJsonPath, versions);
     }
+
+    // Update Gradle wrapper version
+    await updateGradleWrapper(versions.rnMinor);
 }
 
 main().catch((err) => {

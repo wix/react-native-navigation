@@ -1,13 +1,12 @@
-  - label: ":ios: iOS (RN 0.80.0)"
+  - label: ":ios: iOS (RN 0.83.0)"
     env:
-      REACT_NATIVE_VERSION: 0.80.0
+      REACT_NATIVE_VERSION: 0.83.0
     command:
     - "nvm install"
     - "./scripts/ci.ios.sh"
-    key: "ios_rn_80"
+    key: "ios_rn_83"
     timeout_in_minutes: 90
     artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
-
 
 
 
