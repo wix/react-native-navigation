@@ -1,4 +1,5 @@
 #import "RNNOptions.h"
+#import "RNNSearchBarPlacement.h"
 
 @interface RNNSearchBarOptions : RNNOptions
 
@@ -11,5 +12,6 @@
 @property(nonatomic, strong) Color *tintColor;
 @property(nonatomic, strong) Text *placeholder;
 @property(nonatomic, strong) Text *cancelText;
+@property(nonatomic, strong) RNNSearchBarPlacement *placement;
 
 @end

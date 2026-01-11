@@ -81,7 +81,9 @@
                                        tintColor:[options.topBar.searchBar.tintColor
                                                      withDefault:nil]
                                       cancelText:[withDefault.topBar.searchBar.cancelText
-                                                     withDefault:nil]];
+                                                     withDefault:nil]
+                                       placement:[withDefault.topBar.searchBar.placement
+                                                     withDefault:SearchBarPlacementStacked]];
     }
 
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
@@ -145,7 +147,9 @@
                                        tintColor:[mergeOptions.topBar.searchBar.tintColor
                                                      withDefault:nil]
                                       cancelText:[withDefault.topBar.searchBar.cancelText
-                                                     withDefault:nil]];
+                                                     withDefault:nil]
+                                       placement:[withDefault.topBar.searchBar.placement
+                                                     withDefault:SearchBarPlacementStacked]];
     } else {
         [viewController setSearchBarVisible:NO];
     }
