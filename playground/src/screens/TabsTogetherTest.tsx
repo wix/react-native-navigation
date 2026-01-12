@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { WebView } from 'react-native-webview';
 import testIDs from '../testIDs';
+import Screens from './Screens';
 
 const loadOrder: number[] = [];
 const listeners: Set<() => void> = new Set();
@@ -16,9 +17,7 @@ interface Props {
     url: string;
 }
 
-const WebViewTab: NavigationFunctionComponent<Props> = ({ componentId, tabIndex, title, url }) => {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [progress, setProgress] = useState(0);
+const WebViewTab: NavigationFunctionComponent<Props> = ({ componentId, tabIndex, url }) => {
 
     useEffect(() => {
         const update = () => {
@@ -50,25 +49,15 @@ const WebViewTab: NavigationFunctionComponent<Props> = ({ componentId, tabIndex,
     const onLoadEnd = () => {
         loadOrder.push(tabIndex);
         notifyListeners();
-        setIsLoaded(true);
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Tab {tabIndex}: {title}</Text>
-                <View style={[styles.status, isLoaded ? styles.loaded : styles.loading]}>
-                    <Text style={styles.statusText}>{isLoaded ? '✓' : `${progress}%`}</Text>
-                </View>
-            </View>
-            <WebView
-                source={{ uri: url }}
-                style={styles.webview}
-                onLoadEnd={onLoadEnd}
-                onLoadProgress={(e) => setProgress(Math.round(e.nativeEvent.progress * 100))}
-                startInLoadingState
-            />
-        </View>
+        <WebView
+            source={{ uri: url }}
+            style={styles.webview}
+            onLoadEnd={onLoadEnd}
+            startInLoadingState
+        />
     );
 };
 
@@ -91,6 +80,18 @@ const goBackToPlayground = () => {
                     { stack: { children: [{ component: { name: 'Options' } }], options: { bottomTab: { text: 'Options', icon: require('../../img/options.png') } } } },
                     { stack: { id: 'NavigationTabStack', children: [{ component: { name: 'Navigation' } }] } },
                 ],
+            },
+        },
+    });
+    // Show the BottomTabs modal after restoring root
+    Navigation.showModal({
+        bottomTabs: {
+            children: [
+                { stack: { children: [{ component: { name: Screens.FirstBottomTabsScreen } }] } },
+                { stack: { id: 'SecondTab', children: [{ component: { name: Screens.SecondBottomTabsScreen } }] } },
+            ],
+            options: {
+                bottomTabs: { testID: testIDs.BOTTOM_TABS },
             },
         },
     });
@@ -125,13 +126,6 @@ export const launchTabsTogetherTest = () => launchTest('together');
 export const launchTabsOnSwitchTest = () => launchTest('onSwitchToTab');
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#f5f6fa' },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 12, backgroundColor: '#2c3e50' },
-    headerText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-    status: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, minWidth: 50, alignItems: 'center' },
-    loading: { backgroundColor: '#e67e22' },
-    loaded: { backgroundColor: '#27ae60' },
-    statusText: { color: '#fff', fontSize: 12, fontWeight: '600' },
     webview: { flex: 1 },
 });
 

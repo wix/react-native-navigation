@@ -9,10 +9,11 @@ import Screens from './Screens';
 import { component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
+import { launchTabsTogetherTest, launchTabsOnSwitchTest } from './TabsTogetherTest';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
-  static callback: (mountedBottomTabScreens: string[]) => void = () => {};
+  static callback: (mountedBottomTabScreens: string[]) => void = () => { };
 
   static addScreen(screen: string) {
     this.mountedBottomTabScreens.push(screen);
@@ -108,6 +109,8 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
         <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
+        <Button label="Tabs Together Test" onPress={launchTabsTogetherTest} />
+        <Button label="Tabs OnSwitch Test" onPress={launchTabsOnSwitchTest} />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
