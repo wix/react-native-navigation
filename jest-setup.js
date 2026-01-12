@@ -21,6 +21,13 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
+jest.mock('react-native-webview', () => {
+  const React = require('react');
+  return {
+    WebView: (props) => React.createElement('WebView', props),
+  };
+});
+
 mockDetox(() => require('./playground/index'));
 
 beforeEach(() => {
