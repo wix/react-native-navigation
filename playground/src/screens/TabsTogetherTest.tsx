@@ -97,33 +97,7 @@ const goBackToPlayground = () => {
     });
 };
 
-const TABS = [
-    { url: 'https://www.apple.com', title: 'Apple' },
-    { url: 'https://www.microsoft.com', title: 'Microsoft' },
-    { url: 'https://www.amazon.com', title: 'Amazon' },
-];
-
-const launchTest = (mode: 'together' | 'onSwitchToTab') => {
-    loadOrder.length = 0;
-    Navigation.setRoot({
-        root: {
-            bottomTabs: {
-                id: 'TabsTest',
-                options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
-                children: TABS.map((item, i) => ({
-                    stack: {
-                        id: `Tab${i}`,
-                        children: [{ component: { name: 'TabsTogetherTest.WebViewTab', passProps: { tabIndex: i, ...item } } }],
-                        options: { bottomTab: { text: item.title, icon: require('../../img/layouts.png') } },
-                    },
-                })),
-            },
-        },
-    });
-};
-
-export const launchTabsTogetherTest = () => launchTest('together');
-export const launchTabsOnSwitchTest = () => launchTest('onSwitchToTab');
+export const resetLoadOrder = () => { loadOrder.length = 0; };
 
 const styles = StyleSheet.create({
     webview: { flex: 1 },

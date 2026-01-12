@@ -9,7 +9,35 @@ import Screens from './Screens';
 import { component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
-import { launchTabsTogetherTest, launchTabsOnSwitchTest } from './TabsTogetherTest';
+import { resetLoadOrder } from './TabsTogetherTest';
+
+const TABS = [
+  { url: 'https://www.apple.com', title: 'Apple' },
+  { url: 'https://www.microsoft.com', title: 'Microsoft' },
+  { url: 'https://www.amazon.com', title: 'Amazon' },
+];
+
+const launchTest = (mode: 'together' | 'onSwitchToTab') => {
+  resetLoadOrder();
+  Navigation.setRoot({
+    root: {
+      bottomTabs: {
+        id: 'TabsTest',
+        options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
+        children: TABS.map((item, i) => ({
+          stack: {
+            id: `Tab${i}`,
+            children: [{ component: { name: 'TabsTogetherTest.WebViewTab', passProps: { tabIndex: i, ...item } } }],
+            options: { bottomTab: { text: item.title, icon: require('../../img/layouts.png') } },
+          },
+        })),
+      },
+    },
+  });
+};
+
+const launchTabsTogetherTest = () => launchTest('together');
+const launchTabsOnSwitchTest = () => launchTest('onSwitchToTab');
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
