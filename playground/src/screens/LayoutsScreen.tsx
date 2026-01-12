@@ -14,6 +14,7 @@ import Screens from './Screens';
 import Navigation from '../services/Navigation';
 import { stack } from '../commons/Layouts';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
+import { launchTabsTogetherTest, launchTabsOnSwitchTest } from './TabsTogetherTest';
 
 const {
   WELCOME_SCREEN_HEADER,
@@ -82,6 +83,16 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           testID={SPLIT_VIEW_BUTTON}
           platform="ios"
           onPress={this.splitView}
+        />
+        <Button
+          label="Tabs Together Test"
+          testID="TABS_TOGETHER_TEST_BTN"
+          onPress={launchTabsTogetherTest}
+        />
+        <Button
+          label="Tabs OnSwitch Test"
+          testID="TABS_ONSWITCH_TEST_BTN"
+          onPress={launchTabsOnSwitchTest}
         />
         <Text>{this.state.componentWillAppear && 'componentWillAppear'}</Text>
         <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
