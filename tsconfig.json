@@ -12,8 +12,8 @@
     "types": ["jest", "lodash", "react", "react-native", "react-test-renderer"],
     "baseUrl": ".",
     "paths": {
-      "react-native-navigation": ["lib/src/"],
-      "react-native-navigation/*": ["lib/src/*"]
+      "react-native-navigation": ["./src/index"],
+      "react-native-navigation/*": ["./src/*"]
     }
   },
   "include": [
