@@ -20,6 +20,7 @@ module.exports = {
   moduleNameMapper: {
     '^react-native$': '<rootDir>/node_modules/react-native',
     '^react-native-gesture-handler$': '<rootDir>/node_modules/react-native-gesture-handler',
+    '^react-native-webview$': '<rootDir>/__mocks__/react-native-webview.js',
     'react-native-navigation/Mock': '<rootDir>/Mock/index',
     'react-native-navigation': '<rootDir>/src',
     '^src$': '<rootDir>/src',
