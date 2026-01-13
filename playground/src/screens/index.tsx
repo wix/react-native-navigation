@@ -157,15 +157,15 @@ function registerScreens() {
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
   Navigation.registerComponent(
     Screens.AppleWebViewTab,
-    () => require('./TabsTogetherTest').AppleWebViewTab
+    () => require('./TabbedWebViewScreen').AppleWebViewTab
   );
   Navigation.registerComponent(
     Screens.MicrosoftWebViewTab,
-    () => require('./TabsTogetherTest').MicrosoftWebViewTab
+    () => require('./TabbedWebViewScreen').MicrosoftWebViewTab
   );
   Navigation.registerComponent(
     Screens.AmazonWebViewTab,
-    () => require('./TabsTogetherTest').AmazonWebViewTab
+    () => require('./TabbedWebViewScreen').AmazonWebViewTab
   );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {

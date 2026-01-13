@@ -9,7 +9,7 @@ import Screens from './Screens';
 import { stack, component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
-import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabsTogetherTest';
+import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabbedWebViewScreen';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
@@ -99,7 +99,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
           <Button
             label="Tabs Together Test"
             testID={TABS_TOGETHER_BTN}
-            onPress={this.launchTabsTogetherTest}
+            onPress={this.launchTabbedWebViewScreen}
           />
         )}
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
@@ -224,7 +224,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
 
   push = () => Navigation.push(this, Screens.Pushed);
 
-  launchTabsTogetherTest = () => {
+  launchTabbedWebViewScreen = () => {
     resetLoadOrder();
     setTabsTestActive(true);
     Navigation.showModal({
