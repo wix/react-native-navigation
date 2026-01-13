@@ -155,6 +155,18 @@ function registerScreens() {
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
+  Navigation.registerComponent(
+    Screens.AppleWebViewTab,
+    () => require('./TabsTogetherTest').AppleWebViewTab
+  );
+  Navigation.registerComponent(
+    Screens.MicrosoftWebViewTab,
+    () => require('./TabsTogetherTest').MicrosoftWebViewTab
+  );
+  Navigation.registerComponent(
+    Screens.AmazonWebViewTab,
+    () => require('./TabsTogetherTest').AmazonWebViewTab
+  );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

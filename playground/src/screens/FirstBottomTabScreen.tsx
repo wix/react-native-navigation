@@ -6,30 +6,21 @@ import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
 import Screens from './Screens';
-import { component } from '../commons/Layouts';
+import { stack, component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
-import { resetLoadOrder } from './TabsTogetherTest';
-
-const TABS = [
-  { url: 'https://www.apple.com', title: 'Apple' },
-  { url: 'https://www.microsoft.com', title: 'Microsoft' },
-  { url: 'https://www.amazon.com', title: 'Amazon' },
-];
+import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabsTogetherTest';
 
 const launchTest = (mode: 'together' | 'onSwitchToTab') => {
   resetLoadOrder();
+  setTabsTestActive(true);
   Navigation.showModal({
     bottomTabs: {
       id: 'TabsTest',
       options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
-      children: TABS.map((item, i) => ({
-        stack: {
-          id: `Tab${i}`,
-          children: [component('TabsTogetherTest.WebViewTab', undefined, { tabIndex: i, ...item })],
-          options: { bottomTab: { text: item.title, icon: require('../../img/layouts.png') } },
-        },
-      })),
+      children: TAB_SCREENS.map((tab) =>
+        stack(component(tab.name, undefined, { url: tab.url, tabIndex: tab.tabIndex }))
+      ),
     },
   });
 };
@@ -102,7 +93,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
 
   badgeVisible = true;
   bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
-    if (event.tabIndex == 2) {
+    if (event.tabIndex == 2 && !isTabsTestActive) {
       alert('BottomTabPressed');
     }
   });
