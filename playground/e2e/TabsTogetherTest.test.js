@@ -15,10 +15,6 @@ describe('Tabs with Together flag', () => {
     });
 
     it('should load all tabs when tabsAttachMode is together', async () => {
-        await waitFor(elementById(TestIDs.TABS_TOGETHER_BTN))
-            .toBeVisible()
-            .whileElement(by.id(TestIDs.SCREEN_ROOT_LIST))
-            .scroll(200, 'down');
         await elementById(TestIDs.TABS_TOGETHER_BTN).tap();
 
         let found = false;

@@ -95,6 +95,11 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
           testID={SWITCH_TAB_BY_COMPONENT_ID_BTN}
           onPress={this.switchTabByComponentId}
         />
+        <Button
+          label="Tabs Together Test"
+          testID={TABS_TOGETHER_BTN}
+          onPress={this.launchTabsTogetherTest}
+        />
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
         <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
@@ -110,11 +115,6 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
         <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
-        <Button
-          label="Tabs Together Test"
-          testID={TABS_TOGETHER_BTN}
-          onPress={this.launchTabsTogetherTest}
-        />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
