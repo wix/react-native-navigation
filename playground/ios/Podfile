@@ -1,3 +1,4 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -13,59 +14,69 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-
-def all_pods
+target 'playground' do
   config = use_native_modules!
 
-  flags = get_default_flags()
-
   use_react_native!(
-    :path => "../node_modules/react-native",
-    :hermes_enabled => flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
+    :path => config[:reactNativePath],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   pod 'HMSegmentedControl'
-end
 
-post_install do |installer|
-   config = use_native_modules!
-   react_native_post_install(
-        installer,
-        config[:reactNativePath],
-        :mac_catalyst_enabled => false,
-        # :ccache_enabled => true
-      )
-
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
-      config.build_settings['HEADER_SEARCH_PATHS'] << '$(PODS_ROOT)/Headers/Public/React-hermes'
+  post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+    
+    # Add Folly compiler flags to aggregate targets (app targets)
+    # This is needed because Folly headers check for FOLLY_CFG_NO_COROUTINES to disable coroutines
+    folly_compiler_flags = folly_flags()
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.xcconfigs.each do |config_name, config_file|
+        current_flags = config_file.attributes['OTHER_CPLUSPLUSFLAGS'] || '$(inherited)'
+        config_file.attributes['OTHER_CPLUSPLUSFLAGS'] = "#{current_flags} #{folly_compiler_flags}"
+        xcconfig_path = aggregate_target.xcconfig_path(config_name)
+        config_file.save_as(xcconfig_path)
+      end
     end
   end
-
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings['USE_HERMES'] = '1'  # Ensure Hermes is enabled
-  end
-end
-
-target 'playground' do
-  all_pods
 end
 
 target 'NavigationTests' do
-  all_pods
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
   pod 'OCMock'
 end
 
 target 'NavigationIOS12Tests' do
-  all_pods
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
   pod 'OCMock'
 end
 
 target 'SnapshotTests' do
-  all_pods
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
   pod 'OCMock'
 end

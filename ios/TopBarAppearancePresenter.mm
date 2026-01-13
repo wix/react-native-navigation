@@ -148,6 +148,12 @@
                                                  color:fontColor
                                               centered:YES];
 
+    // Let's not forget to set our UINavigationBarAppearance's lineBreakMode to TruncatingTail!
+    id attrib = titleTextAttributes[NSParagraphStyleAttributeName];
+    if ([attrib isKindOfClass:[NSMutableParagraphStyle class]]) {
+        ((NSMutableParagraphStyle*)titleTextAttributes[NSParagraphStyleAttributeName]).lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+    
     self.getAppearance.titleTextAttributes = titleTextAttributes;
     self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
 }

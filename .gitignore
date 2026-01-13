@@ -83,6 +83,7 @@ fabric.properties
 ios/build/
 ios/DerivedData/
 
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
@@ -253,3 +254,4 @@ Gemfile.lock
 !.yarn/sdks
 !.yarn/versions
 
+/ios/ReactNativeVersionExtracted.h

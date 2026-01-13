@@ -5,7 +5,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.reactnativenavigation.NavigationApplication
 
 private fun parsePlatformColor(paths: ReadableMap) =
-    ColorPropConverter.getColor(paths, NavigationApplication.instance)
+    ColorPropConverter.getColor(paths, NavigationApplication.instance) ?: 0 // The default implementation
 
 class ReactPlatformColor(private val paths: ReadableMap) :
     Colour(parsePlatformColor(paths)) {

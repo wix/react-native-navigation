@@ -132,6 +132,7 @@ const Screens = {
   SearchBar: 'SearchBar',
   SearchBarModal: 'SearchBarModal',
   TopBar: 'TopBar',
+  TopBarTitleTest: 'TopBarTitleTest',
 };
 
 export default Screens;

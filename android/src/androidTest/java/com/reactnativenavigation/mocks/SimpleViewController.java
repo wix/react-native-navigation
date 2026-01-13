@@ -5,11 +5,12 @@ import static com.reactnativenavigation.utils.ObjectUtils.perform;
 import android.app.Activity;
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
@@ -24,7 +25,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         this(activity, childRegistry, id, new Presenter(activity, new Options()), options);
     }
 
-    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Presenter presenter, Options options) {
+    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id,
+            Presenter presenter, Options options) {
         super(activity, childRegistry, id, presenter, options);
     }
 
@@ -40,7 +42,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void destroy() {
-        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(this));
+        if (!isDestroyed())
+            performOnParentController(parent -> parent.onChildDestroyed(this));
         super.destroy();
     }
 
@@ -58,7 +61,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+        if (view != null)
+            presenter.applyBottomInset(view, getBottomInset());
     }
 
     @Override
@@ -66,10 +70,15 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         return null;
     }
 
-    public static class SimpleView extends ReactView implements ReactComponent {
+    /**
+     * A simple mock view that implements ReactComponent without actually using
+     * React Native.
+     * This avoids triggering React surface rendering in instrumented tests.
+     */
+    public static class SimpleView extends FrameLayout implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
-            super(context, "compId", "compName");
+            super(context);
         }
 
         @Override
@@ -79,22 +88,22 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
         @Override
         public boolean isReady() {
-            return false;
+            return true;
         }
 
         @Override
-        public ReactView asView() {
+        public ViewGroup asView() {
             return this;
         }
 
         @Override
         public void destroy() {
-
+            // No-op for mock
         }
 
         @Override
         public void sendOnNavigationButtonPressed(String buttonId) {
-
+            // No-op for mock
         }
 
         @Override
@@ -104,7 +113,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
         @Override
         public void dispatchTouchEventToJs(MotionEvent event) {
-
+            // No-op for mock
         }
     }
 }

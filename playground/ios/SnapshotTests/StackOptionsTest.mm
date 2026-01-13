@@ -3,6 +3,8 @@
 #import "LayoutCreator.h"
 #import <XCTest/XCTest.h>
 
+static NSTimeInterval const kRenderTimeout = 1.0;
+
 @interface StackOptionsTest : FBSnapshotTestCase
 @property(nonatomic, strong) RNNCommandsHandler *commandsHandler;
 @property(nonatomic, strong) UIWindow *window;
@@ -58,34 +60,51 @@
 - (void)setRoot:(NSDictionary *)firstComponent testName:(NSString *)testName {
     NSDictionary *root = [LayoutCreator stack:@{} children:@[ firstComponent ]];
     NSString *rootTestName = [NSString stringWithFormat:@"%@_root", testName];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"setRoot completion"];
     [_commandsHandler setRoot:@{@"root" : root}
                     commandId:@"SetRoot"
                    completion:^(NSString *componentId){
+                       [expectation fulfill];
                    }];
+    [self waitForExpectationsWithTimeout:kRenderTimeout handler:nil];
+    
     FBSnapshotVerifyView(_window, rootTestName);
 }
 
 - (void)push:(NSDictionary *)secondComponent testName:(NSString *)testName {
     NSString *pushTestName = [NSString stringWithFormat:@"%@_push", testName];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"push completion"];
     [_commandsHandler push:@"FirstComponent"
                  commandId:@"push"
                     layout:secondComponent
                 completion:^(NSString *pushedComponentId) {
+                    [expectation fulfill];
                 }
                  rejection:^(NSString *code, NSString *message, NSError *error){
+                     [expectation fulfill];
                  }];
+    [self waitForExpectationsWithTimeout:kRenderTimeout handler:nil];
+    
     FBSnapshotVerifyView(_window, pushTestName);
 }
 
 - (void)pop:(NSString *)componentId testName:(NSString *)testName {
     NSString *popTestName = [NSString stringWithFormat:@"%@_pop", testName];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"pop completion"];
     [_commandsHandler pop:componentId
                 commandId:@"pop"
              mergeOptions:@{}
                completion:^{
+                   [expectation fulfill];
                }
                 rejection:^(NSString *code, NSString *message, NSError *error){
+                    [expectation fulfill];
                 }];
+    [self waitForExpectationsWithTimeout:kRenderTimeout handler:nil];
+    
     FBSnapshotVerifyView(_window, popTestName);
 }
 

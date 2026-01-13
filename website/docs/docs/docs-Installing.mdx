@@ -6,9 +6,9 @@ sidebar_label: Installation
 
 ## Requirements
 
-- node >= 18.18
-- react-native >0.77 - 0.79 (0.80 - 0.82 support is in progress)
-- new architecture enabled (if you are not using the new architecture, you can still use react-native-navigation of version 7.x.x with react-native 0.73 and lower)
+- node ≥ 18.18
+- react-native ≥ 0.77
+- new architecture enabled
 
 ## npm or yarn
 
@@ -153,6 +153,8 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 ### React-Native 0.79:
 
 ##### For Swift projects
+
+```diff
 -import React_RCTAppDelegate
 +import ReactNativeNavigation
 
@@ -163,7 +165,7 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 +override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 +self.reactNativeDelegate = ReactNativeDelegate()
 +super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    
+
 -let delegate = ReactNativeDelegate()
 -let factory = RCTReactNativeFactory(delegate: delegate)
 -delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -185,7 +187,7 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
 
 ```diff
--@interface AppDelegate: UIResponder, UIApplicationDelegate 
+-@interface AppDelegate: UIResponder, UIApplicationDelegate
 +@interface AppDelegate : RNNAppDelegate
 
 -@property (nonatomic, strong) UIWindow *window;
@@ -208,6 +210,52 @@ In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should l
 -                            launchOptions:launchOptions];
 +  self.reactNativeDelegate = [ReactNativeDelegate new];
 +  [super application:application didFinishLaunchingWithOptions:launchOptions];
+```
+
+### Firebase integration on React-Native 0.79:
+
+For Firebase integration with static frameworks the following change needs to be added to your `podfile`:
+
+`podfile`
+```diff
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
++ static_frameworks = [
++  'FirebaseCore',
++  'FirebaseCoreExtension',
++  'GoogleUtilities',
++  'FirebaseCoreInternal',
++  'FirebaseInstallations',
++  'GoogleDataTransport',
++  'FirebaseFirestoreInternal',
++  'FirebaseMessagingInternal',
++  'FirebaseAuth',
++ ]
+
++ pre_install do |installer|
++  installer.pod_targets.each do |pod|
++    if static_frameworks.include?(pod.name)
++      puts "Configuring #{pod.name} as static framework"
++      def pod.build_type
++        Pod::BuildType.new(:linkage => :static, :packaging => :framework)
++      end
++    end
++  end
++ end
+
+target <ProjectName> do
+  config = use_native_modules!
+
++ $RNFirebaseAsStaticFramework = true
+
++  pod 'FirebaseAuthInterop', :modular_headers => true
++  pod 'FirebaseAppCheckInterop', :modular_headers => true
++  pod 'RecaptchaInterop', :modular_headers => true
+...
 ```
 
 ### Android

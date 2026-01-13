@@ -55,6 +55,19 @@ describe('Options', () => {
     await expect(elementByLabel('Title Changed')).toBeVisible();
   });
 
+  it('TopBar custom title with subtitle should be visible', async () => {
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
+  });
+
+  it('TopBar custom title without subtitle should be visible', async () => {
+    await elementById(TestIDs.GOTO_TOPBAR_TITLE_TEST).tap();
+    await elementById(TestIDs.SET_TOPBAR_WITHOUT_SUBTITLE_BTN).tap();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_TEXT)).toBeVisible();
+    await expect(elementById(TestIDs.TOPBAR_TITLE_AVATAR)).toBeVisible();
+  });
+
   it('Popping screen with yellow box should not crash', async () => {
     await elementById(TestIDs.SHOW_YELLOW_BOX_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();

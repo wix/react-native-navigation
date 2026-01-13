@@ -3,14 +3,14 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 buildscript {
     ext {
-        kotlinVersion = "1.9.24"
+        kotlinVersion = "2.1.20"
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 35
-        buildToolsVersion = "35.0.0"
+        compileSdkVersion = 36
+        buildToolsVersion = "36.0.0"
         minSdkVersion = 24
-        targetSdkVersion = 34
-        ndkVersion = "26.1.10909125"
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
     }
 
     repositories {
@@ -50,12 +50,12 @@ def safeExtGetFallbackLowerBound(prop, fallback) {
     Math.max(safeExtGet(prop, fallback), fallback)
 }
 
-def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_COMPILE_SDK_VERSION = 36
 def DEFAULT_MIN_SDK_VERSION = 24
-def DEFAULT_TARGET_SDK_VERSION = 35
-def DEFAULT_KOTLIN_VERSION = "1.5.31"
+def DEFAULT_TARGET_SDK_VERSION = 36
+def DEFAULT_KOTLIN_VERSION = "2.1.20"
 def DEFAULT_KOTLIN_STDLIB = 'kotlin-stdlib-jdk8'
-def DEFAULT_BUILD_TOOLS_VERSION = "35.0.0"
+def DEFAULT_BUILD_TOOLS_VERSION = "36.0.0"
 def kotlinVersion = safeExtGet("RNNKotlinVersion", DEFAULT_KOTLIN_VERSION)
 def kotlinStdlib = safeExtGet('RNNKotlinStdlib', DEFAULT_KOTLIN_STDLIB)
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.5.2')
@@ -144,7 +144,7 @@ dependencies {
     if ("Playground".toLowerCase() == rootProject.name.toLowerCase()) {
         // tests only for our playground
         testImplementation 'junit:junit:4.13.2'
-        testImplementation "org.robolectric:robolectric:4.14.1"
+        testImplementation "org.robolectric:robolectric:4.16"
         testImplementation 'org.assertj:assertj-core:3.11.1'
         testImplementation 'org.mockito:mockito-core:4.0.0'
         testImplementation 'com.squareup.assertj:assertj-android:1.2.0'

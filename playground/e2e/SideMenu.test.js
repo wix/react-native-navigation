@@ -1,5 +1,6 @@
 import Utils from './Utils';
 import TestIDs from '../src/testIDs';
+import jestExpect from 'expect';
 
 const {elementByLabel, elementById, expectImagesToBeEqual} = Utils;
 
@@ -89,6 +90,17 @@ describe('SideMenu', () => {
             const actual =
                 await elementById('SideMenuContainer').takeScreenshot(`side_menu_${openMode}`);
             expectImagesToBeEqual(actual, snapshottedImagePath);
+        });
+
+        it.e2e(':ios: center container should reset to full width after push and close', async () => {
+            await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+            await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN).tap();
+            await elementById(TestIDs.POP_BTN).tap();
+            const containerAttrs = await elementById('SideMenuContainer').getAttributes();
+            const containerWidth = containerAttrs.frame.width;
+            const centerAttrs = await elementById(TestIDs.SIDE_MENU_CENTER_SCREEN_CONTAINER).getAttributes();
+            const centerWidth = centerAttrs.frame.width;
+            jestExpect(centerWidth).toBe(containerWidth);
         });
     });
 
