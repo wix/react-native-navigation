@@ -29,7 +29,7 @@ class BaseWebViewTab extends NavigationComponent<WebViewTabProps> {
     navigationButtonPressed({ buttonId }: { buttonId: string }) {
         if (buttonId === 'dismiss') {
             setTabsTestActive(false);
-            Navigation.dismissModal('TabsTest');
+            Navigation.dismissModal('TogetherFlagTabTest');
         }
     }
 

@@ -11,22 +11,19 @@ import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
 import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabsTogetherTest';
 
-const launchTest = (mode: 'together' | 'onSwitchToTab') => {
+const launchTabsTogetherTest = () => {
   resetLoadOrder();
   setTabsTestActive(true);
   Navigation.showModal({
     bottomTabs: {
-      id: 'TabsTest',
-      options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
+      id: 'TogetherFlagTabTest',
+      options: { bottomTabs: { tabsAttachMode: 'together', titleDisplayMode: 'alwaysShow' } },
       children: TAB_SCREENS.map((tab) =>
         stack(component(tab.name, undefined, { url: tab.url, tabIndex: tab.tabIndex }))
       ),
     },
   });
 };
-
-const launchTabsTogetherTest = () => launchTest('together');
-const launchTabsOnSwitchTest = () => launchTest('onSwitchToTab');
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
@@ -127,7 +124,6 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
         <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
         <Button label="Tabs Together Test" onPress={launchTabsTogetherTest} />
-        <Button label="Tabs OnSwitch Test" onPress={launchTabsOnSwitchTest} />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
