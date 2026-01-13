@@ -4,6 +4,9 @@ import { NavigationComponent, NavigationProps, Options } from 'react-native-navi
 import { WebView } from 'react-native-webview';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
+import testIDs from '../testIDs';
+
+const { TABS_TOGETHER_LOAD_ORDER, TABS_TOGETHER_DISMISS } = testIDs;
 
 const loadOrder: number[] = [];
 const listeners: Set<() => void> = new Set();
@@ -12,7 +15,9 @@ const notifyListeners = () => listeners.forEach((fn) => fn());
 const baseOptions = (title: string): Options => ({
     topBar: {
         title: { text: title },
-        leftButtons: [{ id: 'dismiss', icon: require('../../img/clear.png') }],
+        leftButtons: [
+            { id: 'dismiss', testID: TABS_TOGETHER_DISMISS, icon: require('../../img/clear.png') },
+        ],
     },
     bottomTab: {
         text: title,
@@ -46,8 +51,10 @@ class BaseWebViewTab extends NavigationComponent<Props> {
                     rightButtons: [
                         {
                             id: `loadOrder_${loadOrder.length}`,
+                            testID: TABS_TOGETHER_LOAD_ORDER,
                             text,
                             enabled: false,
+                            showAsAction: 'always',
                         },
                     ],
                 },
@@ -58,8 +65,10 @@ class BaseWebViewTab extends NavigationComponent<Props> {
     }
 
     onLoadEnd = () => {
-        loadOrder.push(this.props.tabIndex);
-        notifyListeners();
+        if (!loadOrder.includes(this.props.tabIndex)) {
+            loadOrder.push(this.props.tabIndex);
+            notifyListeners();
+        }
     };
 
     render() {

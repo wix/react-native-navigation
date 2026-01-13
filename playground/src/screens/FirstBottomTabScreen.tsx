@@ -35,6 +35,7 @@ const {
   SCREEN_ROOT,
   SET_ROOT_BTN,
   BOTTOM_TABS,
+  TABS_TOGETHER_BTN,
 } = testIDs;
 
 interface NavigationState {
@@ -109,7 +110,11 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
         <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
-        <Button label="Tabs Together Test" onPress={this.launchTabsTogetherTest} />
+        <Button
+          label="Tabs Together Test"
+          testID={TABS_TOGETHER_BTN}
+          onPress={this.launchTabsTogetherTest}
+        />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
