@@ -19,19 +19,17 @@ const TABS = [
 
 const launchTest = (mode: 'together' | 'onSwitchToTab') => {
   resetLoadOrder();
-  Navigation.setRoot({
-    root: {
-      bottomTabs: {
-        id: 'TabsTest',
-        options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
-        children: TABS.map((item, i) => ({
-          stack: {
-            id: `Tab${i}`,
-            children: [{ component: { name: 'TabsTogetherTest.WebViewTab', passProps: { tabIndex: i, ...item } } }],
-            options: { bottomTab: { text: item.title, icon: require('../../img/layouts.png') } },
-          },
-        })),
-      },
+  Navigation.showModal({
+    bottomTabs: {
+      id: 'TabsTest',
+      options: { bottomTabs: { tabsAttachMode: mode, titleDisplayMode: 'alwaysShow' } },
+      children: TABS.map((item, i) => ({
+        stack: {
+          id: `Tab${i}`,
+          children: [component('TabsTogetherTest.WebViewTab', undefined, { tabIndex: i, ...item })],
+          options: { bottomTab: { text: item.title, icon: require('../../img/layouts.png') } },
+        },
+      })),
     },
   });
 };
