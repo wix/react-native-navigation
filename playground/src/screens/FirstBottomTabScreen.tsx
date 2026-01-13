@@ -11,20 +11,6 @@ import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
 import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabsTogetherTest';
 
-const launchTabsTogetherTest = () => {
-  resetLoadOrder();
-  setTabsTestActive(true);
-  Navigation.showModal({
-    bottomTabs: {
-      id: 'TogetherFlagTabTest',
-      options: { bottomTabs: { tabsAttachMode: 'together', titleDisplayMode: 'alwaysShow' } },
-      children: TAB_SCREENS.map((tab) =>
-        stack(component(tab.name, undefined, { url: tab.url, tabIndex: tab.tabIndex }))
-      ),
-    },
-  });
-};
-
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
   static callback: (mountedBottomTabScreens: string[]) => void = () => { };
@@ -123,7 +109,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         <Button label="Add border and shadow" onPress={this.modifyBottomTabs} />
         <Button label="Stylize" testID={STYLIZE_TABS_BTN} onPress={this.stylizeBottomTabs} />
         <Button label="Set Styled Root" testID={SET_ROOT_BTN} onPress={this.setStylizedRoot} />
-        <Button label="Tabs Together Test" onPress={launchTabsTogetherTest} />
+        <Button label="Tabs Together Test" onPress={this.launchTabsTogetherTest} />
 
         <Text testID={MOUNTED_SCREENS_TEXT}>
           Mounted screens: {this.state.mountedBottomTabScreens.join(', ')}
@@ -230,4 +216,18 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
     );
 
   push = () => Navigation.push(this, Screens.Pushed);
+
+  launchTabsTogetherTest = () => {
+    resetLoadOrder();
+    setTabsTestActive(true);
+    Navigation.showModal({
+      bottomTabs: {
+        id: 'TogetherFlagTabTest',
+        options: { bottomTabs: { tabsAttachMode: 'together', titleDisplayMode: 'alwaysShow' } },
+        children: TAB_SCREENS.map((tab) =>
+          stack(component(tab.name, undefined, { url: tab.url, tabIndex: tab.tabIndex }))
+        ),
+      },
+    });
+  };
 }
