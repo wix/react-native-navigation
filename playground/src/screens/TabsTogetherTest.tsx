@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { NavigationComponent, NavigationComponentProps, Options } from 'react-native-navigation';
+import { NavigationComponent, NavigationProps, Options } from 'react-native-navigation';
 import { WebView } from 'react-native-webview';
 import Navigation from '../services/Navigation';
 import Screens from './Screens';
@@ -20,12 +20,17 @@ const baseOptions = (title: string): Options => ({
     },
 });
 
-interface WebViewTabProps extends NavigationComponentProps {
+interface Props extends NavigationProps {
     url: string;
     tabIndex: number;
 }
 
-class BaseWebViewTab extends NavigationComponent<WebViewTabProps> {
+class BaseWebViewTab extends NavigationComponent<Props> {
+    constructor(props: Props) {
+        super(props);
+        Navigation.events().bindComponent(this);
+    }
+
     navigationButtonPressed({ buttonId }: { buttonId: string }) {
         if (buttonId === 'dismiss') {
             setTabsTestActive(false);
@@ -34,7 +39,6 @@ class BaseWebViewTab extends NavigationComponent<WebViewTabProps> {
     }
 
     componentDidMount() {
-        Navigation.events().bindComponent(this);
         const update = () => {
             const text = loadOrder.length > 0 ? loadOrder.join('→') : '...';
             Navigation.mergeOptions(this.props.componentId, {
