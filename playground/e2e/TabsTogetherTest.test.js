@@ -7,7 +7,7 @@ const LOAD_ORDER_PERMUTATIONS = [
     '0→1→2', '0→2→1', '1→0→2', '1→2→0', '2→0→1', '2→1→0',
 ];
 
-describe.e2e('Tabs with Together flag', () => {
+describe.e2e(':ios: Tabs with Together flag', () => {
     beforeEach(async () => {
         await device.launchApp({ newInstance: true });
         await elementById(TestIDs.BOTTOM_TABS_BTN).tap();

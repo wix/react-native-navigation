@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { NavigationProps, Options } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -95,11 +95,13 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
           testID={SWITCH_TAB_BY_COMPONENT_ID_BTN}
           onPress={this.switchTabByComponentId}
         />
-        <Button
-          label="Tabs Together Test"
-          testID={TABS_TOGETHER_BTN}
-          onPress={this.launchTabsTogetherTest}
-        />
+        {Platform.OS === 'ios' && (
+          <Button
+            label="Tabs Together Test"
+            testID={TABS_TOGETHER_BTN}
+            onPress={this.launchTabsTogetherTest}
+          />
+        )}
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
         <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
