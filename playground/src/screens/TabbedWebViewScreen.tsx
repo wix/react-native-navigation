@@ -29,8 +29,12 @@ interface Props extends NavigationProps {
     tabIndex: number;
 }
 
-class BaseWebViewTab extends NavigationComponent<Props> {
+class WebViewTab extends NavigationComponent<Props> {
     private mountTimestamp = Date.now();
+
+    static options(passProps: Props): Options {
+        return baseOptions(`Tab ${passProps.tabIndex + 1}`);
+    }
 
     constructor(props: Props) {
         super(props);
@@ -82,34 +86,16 @@ class BaseWebViewTab extends NavigationComponent<Props> {
     }
 }
 
-class WebViewTab1 extends BaseWebViewTab {
-    static options(): Options {
-        return baseOptions('Tab 1');
-    }
-}
-
-class WebViewTab2 extends BaseWebViewTab {
-    static options(): Options {
-        return baseOptions('Tab 2');
-    }
-}
-
-class WebViewTab3 extends BaseWebViewTab {
-    static options(): Options {
-        return baseOptions('Tab 3');
-    }
-}
-
-export { WebViewTab1, WebViewTab2, WebViewTab3 };
+export { WebViewTab };
 
 export const resetLoadOrder = () => {
     loadOrder.length = 0;
 };
 
 export const TAB_SCREENS = [
-    { name: Screens.WebViewTab1, tabIndex: 0 },
-    { name: Screens.WebViewTab2, tabIndex: 1 },
-    { name: Screens.WebViewTab3, tabIndex: 2 },
+    { name: Screens.WebViewTab, tabIndex: 0 },
+    { name: Screens.WebViewTab, tabIndex: 1 },
+    { name: Screens.WebViewTab, tabIndex: 2 },
 ];
 
 const styles = StyleSheet.create({

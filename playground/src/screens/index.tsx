@@ -156,16 +156,8 @@ function registerScreens() {
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
   Navigation.registerComponent(
-    Screens.WebViewTab1,
-    () => require('./TabbedWebViewScreen').WebViewTab1
-  );
-  Navigation.registerComponent(
-    Screens.WebViewTab2,
-    () => require('./TabbedWebViewScreen').WebViewTab2
-  );
-  Navigation.registerComponent(
-    Screens.WebViewTab3,
-    () => require('./TabbedWebViewScreen').WebViewTab3
+    Screens.WebViewTab,
+    () => require('./TabbedWebViewScreen').WebViewTab
   );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
