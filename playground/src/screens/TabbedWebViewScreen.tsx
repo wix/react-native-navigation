@@ -39,7 +39,6 @@ class BaseWebViewTab extends NavigationComponent<Props> {
 
     navigationButtonPressed({ buttonId }: { buttonId: string }) {
         if (buttonId === 'dismiss') {
-            setTabsTestActive(false);
             Navigation.dismissModal('TogetherFlagTabTest');
         }
     }
@@ -105,11 +104,6 @@ export { WebViewTab1, WebViewTab2, WebViewTab3 };
 
 export const resetLoadOrder = () => {
     loadOrder.length = 0;
-};
-
-export let isTabsTestActive = false;
-export const setTabsTestActive = (active: boolean) => {
-    isTabsTestActive = active;
 };
 
 export const TAB_SCREENS = [

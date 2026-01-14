@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Text } from 'react-native';
+import { EmitterSubscription, Platform, Text } from 'react-native';
 import { NavigationProps, Options } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -9,7 +9,7 @@ import Screens from './Screens';
 import { stack, component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
-import { resetLoadOrder, TAB_SCREENS, isTabsTestActive, setTabsTestActive } from './TabbedWebViewScreen';
+import { resetLoadOrder, TAB_SCREENS } from './TabbedWebViewScreen';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
@@ -76,9 +76,19 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   }
 
   badgeVisible = true;
-  bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
-    if (event.tabIndex == 2 && !isTabsTestActive) {
-      alert('BottomTabPressed');
+
+  registerBottomTabListener = () => {
+    return Navigation.events().registerBottomTabPressedListener((event) => {
+      if (event.tabIndex == 2) {
+        alert('BottomTabPressed');
+      }
+    });
+  };
+
+  bottomTabPressedListener: EmitterSubscription | null = this.registerBottomTabListener();
+  modalDismissedListener = Navigation.events().registerModalDismissedListener((event) => {
+    if (event.componentId === 'TogetherFlagTabTest' && !this.bottomTabPressedListener) {
+      this.bottomTabPressedListener = this.registerBottomTabListener();
     }
   });
 
@@ -126,7 +136,8 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   }
 
   componentWillUnmount() {
-    this.bottomTabPressedListener.remove();
+    this.bottomTabPressedListener?.remove();
+    this.modalDismissedListener.remove();
   }
 
   modifyBottomTabs = () => {
@@ -226,7 +237,8 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
 
   launchTabbedWebViewScreen = () => {
     resetLoadOrder();
-    setTabsTestActive(true);
+    this.bottomTabPressedListener?.remove();
+    this.bottomTabPressedListener = null;
     Navigation.showModal({
       bottomTabs: {
         id: 'TogetherFlagTabTest',
