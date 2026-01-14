@@ -29,7 +29,7 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    if (color && color != UIColor.clearColor) {
+    if (color) {
         return [newImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
 
