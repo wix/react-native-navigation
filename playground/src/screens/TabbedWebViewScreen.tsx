@@ -64,7 +64,7 @@ class BaseWebViewTab extends NavigationComponent<Props> {
         update();
     }
 
-    onLoadEnd = () => {
+    onLoadStart = () => {
         if (!loadOrder.includes(this.props.tabIndex)) {
             loadOrder.push(this.props.tabIndex);
             notifyListeners();
@@ -76,8 +76,7 @@ class BaseWebViewTab extends NavigationComponent<Props> {
             <WebView
                 source={{ uri: this.props.url }}
                 style={styles.webview}
-                onLoadEnd={this.onLoadEnd}
-                startInLoadingState
+                onLoadStart={this.onLoadStart}
             />
         );
     }

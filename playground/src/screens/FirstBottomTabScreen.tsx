@@ -97,7 +97,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         />
         {Platform.OS === 'ios' && (
           <Button
-            label="Tabs Together Test"
+            label="Tabs loading with 'together' flag"
             testID={TABS_TOGETHER_BTN}
             onPress={this.launchTabbedWebViewScreen}
           />
