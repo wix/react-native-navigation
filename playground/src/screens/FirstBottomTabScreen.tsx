@@ -232,7 +232,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
         id: 'TogetherFlagTabTest',
         options: { bottomTabs: { tabsAttachMode: 'together', titleDisplayMode: 'alwaysShow' } },
         children: TAB_SCREENS.map((tab) =>
-          stack(component(tab.name, undefined, { url: tab.url, tabIndex: tab.tabIndex }))
+          stack(component(tab.name, undefined, { tabIndex: tab.tabIndex }))
         ),
       },
     });

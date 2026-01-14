@@ -133,9 +133,9 @@ const Screens = {
   SearchBarModal: 'SearchBarModal',
   TopBar: 'TopBar',
   TopBarTitleTest: 'TopBarTitleTest',
-  AppleWebViewTab: 'TabbedWebViewScreen.AppleTab',
-  MicrosoftWebViewTab: 'TabbedWebViewScreen.MicrosoftTab',
-  AmazonWebViewTab: 'TabbedWebViewScreen.AmazonTab',
+  WebViewTab1: 'TabbedWebViewScreen.Tab1',
+  WebViewTab2: 'TabbedWebViewScreen.Tab2',
+  WebViewTab3: 'TabbedWebViewScreen.Tab3',
 };
 
 export default Screens;

@@ -26,11 +26,12 @@ const baseOptions = (title: string): Options => ({
 });
 
 interface Props extends NavigationProps {
-    url: string;
     tabIndex: number;
 }
 
 class BaseWebViewTab extends NavigationComponent<Props> {
+    private mountTimestamp = Date.now();
+
     constructor(props: Props) {
         super(props);
         Navigation.events().bindComponent(this);
@@ -74,7 +75,7 @@ class BaseWebViewTab extends NavigationComponent<Props> {
     render() {
         return (
             <WebView
-                source={{ uri: this.props.url }}
+                source={{ html: `<html><body><h1>Tab ${this.props.tabIndex + 1}: started loading at ${new Date(this.mountTimestamp).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 })}</h1></body></html>` }}
                 style={styles.webview}
                 onLoadStart={this.onLoadStart}
             />
@@ -82,25 +83,25 @@ class BaseWebViewTab extends NavigationComponent<Props> {
     }
 }
 
-class AppleWebViewTab extends BaseWebViewTab {
+class WebViewTab1 extends BaseWebViewTab {
     static options(): Options {
-        return baseOptions('Apple');
+        return baseOptions('Tab 1');
     }
 }
 
-class MicrosoftWebViewTab extends BaseWebViewTab {
+class WebViewTab2 extends BaseWebViewTab {
     static options(): Options {
-        return baseOptions('Microsoft');
+        return baseOptions('Tab 2');
     }
 }
 
-class AmazonWebViewTab extends BaseWebViewTab {
+class WebViewTab3 extends BaseWebViewTab {
     static options(): Options {
-        return baseOptions('Amazon');
+        return baseOptions('Tab 3');
     }
 }
 
-export { AppleWebViewTab, MicrosoftWebViewTab, AmazonWebViewTab };
+export { WebViewTab1, WebViewTab2, WebViewTab3 };
 
 export const resetLoadOrder = () => {
     loadOrder.length = 0;
@@ -112,9 +113,9 @@ export const setTabsTestActive = (active: boolean) => {
 };
 
 export const TAB_SCREENS = [
-    { name: Screens.AppleWebViewTab, url: 'https://www.apple.com', tabIndex: 0 },
-    { name: Screens.MicrosoftWebViewTab, url: 'https://www.microsoft.com', tabIndex: 1 },
-    { name: Screens.AmazonWebViewTab, url: 'https://www.amazon.com', tabIndex: 2 },
+    { name: Screens.WebViewTab1, tabIndex: 0 },
+    { name: Screens.WebViewTab2, tabIndex: 1 },
+    { name: Screens.WebViewTab3, tabIndex: 2 },
 ];
 
 const styles = StyleSheet.create({
