@@ -2,10 +2,11 @@ import { default as TestIDs, default as testIDs } from '../src/testIDs';
 import Android from './AndroidUtils';
 import Utils from './Utils';
 
-const { elementByLabel, elementById } = Utils;
+const { elementByLabel, elementById, elementTopBar, expectImagesToBeEqual } = Utils;
 
 describe('Back Button', () => {
   beforeEach(async () => {
+    // eslint-disable-next-line no-undef
     await device.launchApp({ newInstance: true });
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.BACK_BUTTON_SCREEN_BTN).tap();
@@ -62,5 +63,13 @@ describe('Back Button', () => {
     await Android.pressBack();
     await expect(elementByLabel('Modal')).toBeVisible();
     await expect(elementByLabel('navigationButtonPressed | RNN.hardwareBackButton')).toBeVisible();
+  });
+
+  it.e2e('should render back button with iconBackground', async () => {
+    await elementById(TestIDs.PUSH_BACK_BUTTON_ICON_BACKGROUND).tap();
+    // eslint-disable-next-line no-undef
+    const snapshottedImagePath = `./e2e/assets/back_button_icon_background.${device.getPlatform()}.png`;
+    const actual = await elementTopBar().takeScreenshot('back_button_icon_background');
+    expectImagesToBeEqual(actual, snapshottedImagePath);
   });
 });

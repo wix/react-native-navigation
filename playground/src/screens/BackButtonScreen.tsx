@@ -15,6 +15,7 @@ const {
   MODAL_DISABLED_BACK_BTN,
   TOGGLE_BACK_BUTTON_VISIBILITY,
   BACK_BUTTON,
+  PUSH_BACK_BUTTON_ICON_BACKGROUND,
 } = testIDs;
 
 export default class BackButtonScreen extends React.Component<NavigationProps> {
@@ -57,6 +58,11 @@ export default class BackButtonScreen extends React.Component<NavigationProps> {
           testID={TOGGLE_BACK_BUTTON_VISIBILITY}
           onPress={this.toggleVisibility}
         />
+        <Button
+          label="Push with Icon Background"
+          testID={PUSH_BACK_BUTTON_ICON_BACKGROUND}
+          onPress={this.pushWithIconBackground}
+        />
         <Button label="Modal" testID={MODAL_DISABLED_BACK_BTN} onPress={this.showModal} />
       </Root>
     );
@@ -77,6 +83,39 @@ export default class BackButtonScreen extends React.Component<NavigationProps> {
     Navigation.push(this, Screens.Pushed, {
       hardwareBackButton: {
         popStackOnPress: false,
+      },
+    });
+
+  pushWithIconBackground = () =>
+    Navigation.push(this, Screens.Pushed, {
+      topBar: {
+        title: {
+          text: 'Back Button with Icon Bg',
+        },
+        rightButtons: [
+          {
+            id: 'RIGHT',
+            icon: require('../../img/navicon_add.png'),
+            color: 'white', // Icon color - white to be visible on red background
+            iconBackground: {
+              color: 'orange',
+              cornerRadius: 20,
+              width: 40,
+              height: 40,
+            },
+          },
+        ],
+        backButton: {
+          id: 'BACK',
+          icon: require('../../img/navicon_add.png'),
+          color: 'red', // Icon color - white to be visible on red background
+          iconBackground: {
+            color: 'red',
+            cornerRadius: 20,
+            width: 40,
+            height: 40,
+          },
+        },
       },
     });
 
