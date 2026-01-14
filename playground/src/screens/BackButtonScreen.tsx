@@ -108,7 +108,7 @@ export default class BackButtonScreen extends React.Component<NavigationProps> {
         backButton: {
           id: 'BACK',
           icon: require('../../img/navicon_add.png'),
-          color: 'red', // Icon color - white to be visible on red background
+          color: 'white', // Icon color - white to be visible on red background
           iconBackground: {
             color: 'red',
             cornerRadius: 20,

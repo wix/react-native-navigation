@@ -29,6 +29,10 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
+    if (color && color != UIColor.clearColor) {
+        return [newImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    }
+
     return newImage;
 }
 
