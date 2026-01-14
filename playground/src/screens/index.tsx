@@ -155,6 +155,10 @@ function registerScreens() {
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
+  Navigation.registerComponent(
+    Screens.WebViewTab,
+    () => require('./TabbedWebViewScreen').WebViewTab
+  );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

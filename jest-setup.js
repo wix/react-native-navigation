@@ -21,6 +21,7 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
+
 mockDetox(() => require('./playground/index'));
 
 beforeEach(() => {
