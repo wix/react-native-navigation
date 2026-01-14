@@ -6,9 +6,9 @@ import Navigation from '../services/Navigation';
 import Screens from './Screens';
 import testIDs from '../testIDs';
 
-const { TABS_TOGETHER_LOAD_ORDER, TABS_TOGETHER_DISMISS } = testIDs;
+const { TABS_TOGETHER_DISMISS } = testIDs;
 
-const loadOrder: number[] = [];
+const webViewLoadedOrder: number[] = [];
 const listeners: Set<() => void> = new Set();
 const notifyListeners = () => listeners.forEach((fn) => fn());
 
@@ -29,8 +29,12 @@ interface Props extends NavigationProps {
     tabIndex: number;
 }
 
-class WebViewTab extends NavigationComponent<Props> {
-    private mountTimestamp = Date.now();
+interface State {
+    loadStartTimestamp: number | null;
+}
+
+class WebViewTab extends NavigationComponent<Props, State> {
+    state: State = { loadStartTimestamp: null };
 
     static options(passProps: Props): Options {
         return baseOptions(`Tab ${passProps.tabIndex + 1}`);
@@ -49,18 +53,10 @@ class WebViewTab extends NavigationComponent<Props> {
 
     componentDidMount() {
         const update = () => {
-            const text = loadOrder.length > 0 ? loadOrder.join('→') : '...';
+            const text = webViewLoadedOrder.length > 0 ? webViewLoadedOrder.join('→') : '...';
             Navigation.mergeOptions(this.props.componentId, {
                 topBar: {
-                    rightButtons: [
-                        {
-                            id: `loadOrder_${loadOrder.length}`,
-                            testID: TABS_TOGETHER_LOAD_ORDER,
-                            text,
-                            enabled: false,
-                            showAsAction: 'always',
-                        },
-                    ],
+                    subtitle: { text },
                 },
             });
         };
@@ -69,16 +65,28 @@ class WebViewTab extends NavigationComponent<Props> {
     }
 
     onLoadStart = () => {
-        if (!loadOrder.includes(this.props.tabIndex)) {
-            loadOrder.push(this.props.tabIndex);
+        if (!webViewLoadedOrder.includes(this.props.tabIndex)) {
+            webViewLoadedOrder.push(this.props.tabIndex);
+            this.setState({ loadStartTimestamp: Date.now() });
             notifyListeners();
         }
     };
 
     render() {
+        const { loadStartTimestamp } = this.state;
+        const timeString = loadStartTimestamp
+            ? new Date(loadStartTimestamp).toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                fractionalSecondDigits: 3,
+            })
+            : 'loading...';
+
         return (
             <WebView
-                source={{ html: `<html><body><h1>Tab ${this.props.tabIndex + 1}: started loading at ${new Date(this.mountTimestamp).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 })}</h1></body></html>` }}
+                source={{ html: `<html><body><h1>Tab ${this.props.tabIndex + 1}: started loading at ${timeString}</h1></body></html>` }}
                 style={styles.webview}
                 onLoadStart={this.onLoadStart}
             />
@@ -88,8 +96,8 @@ class WebViewTab extends NavigationComponent<Props> {
 
 export { WebViewTab };
 
-export const resetLoadOrder = () => {
-    loadOrder.length = 0;
+export const resetWebViewLoadedOrder = () => {
+    webViewLoadedOrder.length = 0;
 };
 
 export const TAB_SCREENS = [

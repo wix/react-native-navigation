@@ -9,7 +9,7 @@ import Screens from './Screens';
 import { stack, component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
-import { resetLoadOrder, TAB_SCREENS } from './TabbedWebViewScreen';
+import { resetWebViewLoadedOrder, TAB_SCREENS } from './TabbedWebViewScreen';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
@@ -236,7 +236,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   push = () => Navigation.push(this, Screens.Pushed);
 
   launchTabbedWebViewScreen = () => {
-    resetLoadOrder();
+    resetWebViewLoadedOrder();
     this.bottomTabPressedListener?.remove();
     this.bottomTabPressedListener = null;
     Navigation.showModal({
