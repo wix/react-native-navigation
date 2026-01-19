@@ -28,7 +28,7 @@ const config = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Wix_API_35',
+        avdName: 'Pixel_3a_API_35',
       },
       systemUI: {
         pointerLocationBar: 'hide',
