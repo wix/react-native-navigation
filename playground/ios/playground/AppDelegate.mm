@@ -2,7 +2,7 @@
 #import "RNNCustomViewController.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
 @interface AppDelegate () <RCTBridgeDelegate>
 @end
 #else
@@ -35,14 +35,14 @@
 
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#if (RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR >= 79) || RN_VERSION_MAJOR > 0
+#if RNN_RN_VERSION_79_OR_NEWER
 	self.reactNativeDelegate = [ReactNativeDelegate new];
 #endif
 	
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
 	
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
 	self.dependencyProvider = [RCTAppDependencyProvider new];
 #endif
 	
@@ -55,7 +55,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	return YES;
 }
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
 #pragma mark - RCTBridgeDelegate
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
