@@ -9,7 +9,6 @@
     self.active = [BoolParser parse:dict key:@"active"];
     self.noBorder = [BoolParser parse:dict key:@"noBorder"];
     self.borderColor = [ColorParser parse:dict key:@"borderColor"];
-
     self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
 
     return self;
