@@ -10,11 +10,14 @@
     self.noBorder = [BoolParser parse:dict key:@"noBorder"];
     self.borderColor = [ColorParser parse:dict key:@"borderColor"];
 
+    self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
+
     return self;
 }
 
 - (void)mergeOptions:(RNNScrollEdgeAppearanceOptions *)options {
     [self.background mergeOptions:options.background];
+    [self.title mergeOptions:options.title];
 
     if (options.active.hasValue)
         self.active = options.active;
