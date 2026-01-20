@@ -254,4 +254,3 @@ Gemfile.lock
 !.yarn/sdks
 !.yarn/versions
 
-/ios/ReactNativeVersionExtracted.h

@@ -1,8 +1,22 @@
 #import <Foundation/Foundation.h>
 #import <React/CoreModulesPlugins.h>
-#import <ReactNativeNavigation/ReactNativeVersionExtracted.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+// Detect RN 0.79+ by checking for RCTJSRuntimeConfiguratorProtocol.h (added in 0.79)
+#if __has_include(<React-RCTAppDelegate/RCTJSRuntimeConfiguratorProtocol.h>) || \
+    __has_include(<React_RCTAppDelegate/RCTJSRuntimeConfiguratorProtocol.h>)
+#define RNN_RN_VERSION_79_OR_NEWER 1
+#else
+#define RNN_RN_VERSION_79_OR_NEWER 0
+// Detect RN 0.78 by checking for RCTReactNativeFactory.h (added in 0.78, doesn't exist in 0.77)
+#if __has_include(<React-RCTAppDelegate/RCTReactNativeFactory.h>) || \
+        __has_include(<React_RCTAppDelegate/RCTReactNativeFactory.h>)
+#define RNN_RN_VERSION_78 1
+#else
+#define RNN_RN_VERSION_78 0
+#endif
+#endif
+
+#if !RNN_RN_VERSION_79_OR_NEWER
 #if __has_include(<React-RCTAppDelegate/RCTAppDelegate.h>)
 #import <React-RCTAppDelegate/RCTAppDelegate.h>
 #elif __has_include(<React_RCTAppDelegate/RCTAppDelegate.h>)
@@ -30,7 +44,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
 @interface RNNAppDelegate : RCTAppDelegate
 #else
 @interface RNNAppDelegate : UIResponder <UIApplicationDelegate>
