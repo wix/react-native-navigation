@@ -12612,7 +12612,7 @@ __metadata:
 
 "react-native-webview@npm:^13.12.5":
   version: 13.16.0
-  resolution: "react-native-webview@npm:13.16.0::__archiveUrl=https%3A%2F%2Fnpm.dev.wixpress.com%2Fapi%2Fnpm%2Fnpm-repos%2Freact-native-webview%2F-%2Freact-native-webview-13.16.0.tgz"
+  resolution: "react-native-webview@npm:13.16.0"
   dependencies:
     escape-string-regexp: "npm:^4.0.0"
     invariant: "npm:2.2.4"
