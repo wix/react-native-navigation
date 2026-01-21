@@ -77,8 +77,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? VERSION
     : semver.gt(packageVersion, currentPublished)
-    ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
-    : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+      ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
+      : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -115,7 +115,7 @@ function tagAndPublish(newVersion) {
   if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== 'null')
     documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
-  exec.execSync(`npm publish --tag ${VERSION_TAG}`);
+  exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
   if (isRelease) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
