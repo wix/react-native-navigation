@@ -1,11 +1,11 @@
 import { LayoutStore } from '../Stores/LayoutStore';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
-import { LayoutNode } from '../../src/commands/LayoutTreeCrawler';
+import { LayoutNode } from '../../commands/LayoutTreeCrawler';
 import { events } from '../Stores/EventsStore';
 import _ from 'lodash';
 import ComponentNode from '../Layouts/ComponentNode';
-import { Constants } from '../../src/adapters/Constants';
-import { CommandName } from '../../src/interfaces/CommandName';
+import { Constants } from '../../adapters/Constants';
+import { CommandName } from '../../interfaces/CommandName';
 
 export class NativeCommandsSender {
   constructor() {}
