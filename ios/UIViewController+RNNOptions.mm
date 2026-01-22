@@ -52,7 +52,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         if (@available(iOS 13.0, *)) {
             search.searchBar.searchTextField.backgroundColor = backgroundColor;
         }
-
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
         if (@available(iOS 26.0, *)) {
             if (placement == SearchBarPlacementIntegrated) {
                 if (focus) {
@@ -64,6 +64,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                 self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
             }
         }
+#endif
 
         self.navigationItem.searchController = search;
         [self.navigationItem setHidesSearchBarWhenScrolling:hideOnScroll];
@@ -79,6 +80,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
             });
         }
     } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
         // Update placement on existing searchController (iOS 26+)
         if (@available(iOS 26.0, *)) {
             if (placement == SearchBarPlacementIntegrated) {
@@ -91,6 +93,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
                 self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
             }
         }
+#endif
     }
 }
 
