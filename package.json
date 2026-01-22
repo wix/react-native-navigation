@@ -29,11 +29,18 @@
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
     },
+    "./Mock": {
+      "react-native": "./Mock/index.ts",
+      "source": "./Mock/index.ts",
+      "types": "./lib/typescript/Mock/index.d.ts",
+      "default": "./Mock/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "src",
     "lib",
+    "Mock",
     "android",
     "ios",
     "autolink",
