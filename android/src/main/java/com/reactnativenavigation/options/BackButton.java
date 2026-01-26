@@ -27,6 +27,7 @@ public class BackButton extends ButtonOptions {
         result.disableIconTint = BoolParser.parse(json, "disableIconTint");
         result.color = ThemeColour.parse(context, json.optJSONObject( "color"));
         result.disabledColor = ThemeColour.parse(context, json.optJSONObject( "disabledColor"));
+        result.iconBackground = IconBackgroundOptions.parse(context, json.optJSONObject("iconBackground"));
         result.testId = TextParser.parse(json, "testID");
         result.popStackOnPress = BoolParser.parse(json, "popStackOnPress");
 
@@ -54,6 +55,7 @@ public class BackButton extends ButtonOptions {
         if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
         if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
         if (other.enabled.hasValue()) enabled = other.enabled;
+        if (other.iconBackground.hasValue()) iconBackground = other.iconBackground;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.popStackOnPress.hasValue()) popStackOnPress = other.popStackOnPress;
     }
@@ -67,6 +69,7 @@ public class BackButton extends ButtonOptions {
         if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
         if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
+        if (!iconBackground.hasValue()) iconBackground = defaultOptions.iconBackground;
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!popStackOnPress.hasValue()) popStackOnPress = defaultOptions.popStackOnPress;
     }

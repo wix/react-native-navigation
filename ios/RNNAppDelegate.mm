@@ -30,15 +30,15 @@
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
-@interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,
-RCTComponentViewFactoryComponentProvider> {
-}
-@end
+#if !RNN_RN_VERSION_79_OR_NEWER
+    @interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,
+    RCTComponentViewFactoryComponentProvider> {
+    }
+    @end
 #else
-@interface RNNAppDelegate () {
-}
-@end
+    @interface RNNAppDelegate () {
+    }
+    @end
 #endif
 
 @implementation RNNAppDelegate
@@ -46,9 +46,9 @@ RCTComponentViewFactoryComponentProvider> {
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
     [self _setUpFeatureFlags];
-    #if RN_VERSION_MINOR == 77
+    #if !RNN_RN_VERSION_78
         self.rootViewFactory = [self createRCTRootViewFactory];
     #else
         self.reactNativeFactory = [[RCTReactNativeFactory alloc] init];
@@ -82,7 +82,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 
-#if RN_VERSION_MAJOR == 0 && RN_VERSION_MINOR < 79
+#if !RNN_RN_VERSION_79_OR_NEWER
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
     [NSException raise:@"RCTBridgeDelegate::sourceURLForBridge not implemented"
                 format:@"Subclasses must implement a valid sourceURLForBridge method"];

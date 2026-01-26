@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationProps } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -6,10 +7,10 @@ import Button from '../components/Button';
 import Navigation from '../services/Navigation';
 import testIDs from '../testIDs';
 
-const { HIDE_TOP_BAR_BTN, SHOW_TOP_BAR_BTN, SHOW_SEARCH_BAR_BTN, HIDE_SEARCH_BAR_BTN, TOP_BAR } =
+const { HIDE_TOP_BAR_BTN, SHOW_TOP_BAR_BTN, SHOW_SEARCH_BAR_BTN, HIDE_SEARCH_BAR_BTN, TOP_BAR, TOGGLE_PLACEMENT_BTN } =
   testIDs;
 
-interface Props extends NavigationProps {}
+interface Props extends NavigationProps { }
 
 export default class SearchBar extends React.Component<Props> {
   static options() {
@@ -26,6 +27,7 @@ export default class SearchBar extends React.Component<Props> {
 
   state = {
     isAndroidNavigationBarVisible: true,
+    placement: 'stacked' as 'stacked' | 'integrated',
   };
 
   render() {
@@ -35,6 +37,13 @@ export default class SearchBar extends React.Component<Props> {
         <Button label="Show TopBar" testID={SHOW_TOP_BAR_BTN} onPress={this.showTopBar} />
         <Button label="Hide SearchBar" testID={HIDE_SEARCH_BAR_BTN} onPress={this.hideSearchBar} />
         <Button label="Show SearchBar" testID={SHOW_SEARCH_BAR_BTN} onPress={this.showSearchBar} />
+        {parseInt(String(Platform.Version), 10) >= 26 && (
+          <Button
+            label={`Toggle Placement (${this.state.placement})`}
+            testID={TOGGLE_PLACEMENT_BTN}
+            onPress={this.togglePlacement}
+          />
+        )}
       </Root>
     );
   }
@@ -67,7 +76,27 @@ export default class SearchBar extends React.Component<Props> {
       topBar: {
         searchBar: {
           visible: true,
+          placement: this.state.placement,
         },
       },
     });
+
+  togglePlacement = () => {
+    const newPlacement = this.state.placement === 'stacked' ? 'integrated' : 'stacked';
+    this.setState({ placement: newPlacement });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        searchBar: {
+          visible: false,
+        },
+      },
+    });
+    Navigation.mergeOptions(this, {
+      topBar: {
+        searchBar: {
+          placement: newPlacement,
+        },
+      },
+    });
+  };
 }

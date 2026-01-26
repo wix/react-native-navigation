@@ -30,7 +30,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
     obscuresBackgroundDuringPresentation:(BOOL)obscuresBackgroundDuringPresentation
                          backgroundColor:(nullable UIColor *)backgroundColor
                                tintColor:(nullable UIColor *)tintColor
-                              cancelText:(NSString *)cancelText {
+                              cancelText:(NSString *)cancelText
+                               placement:(SearchBarPlacement)placement {
     if (!self.navigationItem.searchController) {
         UISearchController *search =
             [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -51,13 +52,19 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         if (@available(iOS 13.0, *)) {
             search.searchBar.searchTextField.backgroundColor = backgroundColor;
         }
-
-        if (focus) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              self.navigationItem.searchController.active = true;
-              [self.navigationItem.searchController.searchBar becomeFirstResponder];
-            });
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
+        if (@available(iOS 26.0, *)) {
+            if (placement == SearchBarPlacementIntegrated) {
+                if (focus) {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                } else {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegratedButton;
+                }
+            } else {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
+            }
         }
+#endif
 
         self.navigationItem.searchController = search;
         [self.navigationItem setHidesSearchBarWhenScrolling:hideOnScroll];
@@ -65,6 +72,28 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         // Fixes #3450, otherwise, UIKit will infer the presentation context to
         // be the root most view controller
         self.definesPresentationContext = YES;
+
+        if (focus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              self.navigationItem.searchController.active = true;
+              [self.navigationItem.searchController.searchBar becomeFirstResponder];
+            });
+        }
+    } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
+        // Update placement on existing searchController (iOS 26+)
+        if (@available(iOS 26.0, *)) {
+            if (placement == SearchBarPlacementIntegrated) {
+                if (focus) {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegrated;
+                } else {
+                    self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementIntegratedButton;
+                }
+            } else {
+                self.navigationItem.preferredSearchBarPlacement = UINavigationItemSearchBarPlacementStacked;
+            }
+        }
+#endif
     }
 }
 
