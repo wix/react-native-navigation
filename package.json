@@ -30,6 +30,8 @@
       "default": "./lib/module/index.js"
     },
     "./Mock": {
+      "react-native": "./src/Mock/index.ts",
+      "source": "./src/Mock/index.ts",
       "default": "./lib/module/Mock/index.js",
       "types": "./lib/typescript/Mock/index.d.ts"
     },
