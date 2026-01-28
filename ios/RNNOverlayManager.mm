@@ -17,6 +17,8 @@
     overlayWindow.rootViewController.view.backgroundColor = [UIColor clearColor];
     [overlayWindow setWindowLevel:UIWindowLevelNormal];
     [overlayWindow setHidden:NO];
+    
+    overlayWindow.previousWindow.accessibilityElementsHidden = YES;
 }
 
 - (void)showOverlayWindowAsKeyWindow:(RNNOverlayWindow *)overlayWindow {
@@ -38,6 +40,8 @@
 #pragma mark - private
 
 - (void)detachOverlayWindow:(RNNOverlayWindow *)overlayWindow {
+    overlayWindow.previousWindow.accessibilityElementsHidden = NO;
+    
     [overlayWindow.previousWindow makeKeyWindow];
     [overlayWindow setHidden:YES];
     [overlayWindow setRootViewController:nil];
