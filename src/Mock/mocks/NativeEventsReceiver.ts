@@ -11,13 +11,13 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
-} from '../../src/interfaces/ComponentEvents';
+} from '../../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
-} from '../../src/interfaces/Events';
+} from '../../interfaces/Events';
 import { events } from '../Stores/EventsStore';
 
 export class NativeEventsReceiver {

@@ -17,7 +17,6 @@
     }
   },
   "include": [
-    "./src/**/*", "./playground/**/*",
-    "Mock"
+    "./src/**/*", "./playground/**/*"
   ]
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, ImageURISource } from 'react-native';
-import { Navigation, ImageResource } from 'src';
+import { Navigation, ImageResource } from 'react-native-navigation';
 import { ComponentProps } from '../ComponentProps';
 import { VISIBLE_SCREEN_TEST_ID } from '../constants';
 import { LayoutStore } from '../Stores/LayoutStore';

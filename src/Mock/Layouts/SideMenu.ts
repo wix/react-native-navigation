@@ -1,6 +1,6 @@
 import ParentNode from './ParentNode';
 import ComponentNode from './ComponentNode';
-import { Options } from '../../src';
+import { Options } from '../../index';
 import * as layoutActions from '../actions/layoutActions';
 import { NodeType } from './Node';
 

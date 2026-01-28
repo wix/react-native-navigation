@@ -3,9 +3,9 @@ import {
   ComponentWillAppearEvent,
   ModalDismissedEvent,
   ScreenPoppedEvent,
-} from '../../src/interfaces/ComponentEvents';
-import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../src';
-import { BottomTabPressedEvent, CommandCompletedEvent } from '../../src/interfaces/Events';
+} from '../../interfaces/ComponentEvents';
+import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from '../../index';
+import { BottomTabPressedEvent, CommandCompletedEvent } from '../../interfaces/Events';
 
 export const events = {
   navigationButtonPressed: [(_event: NavigationButtonPressedEvent) => {}],

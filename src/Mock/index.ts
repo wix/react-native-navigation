@@ -6,7 +6,7 @@ export function mockNativeComponents() {
   const { NativeCommandsSender } = require('./mocks/NativeCommandsSender');
   const { NativeEventsReceiver } = require('./mocks/NativeEventsReceiver');
   const { AppRegistryService } = require('./mocks/AppRegistryService');
-  const { Navigation } = require('src');
+  const { Navigation } = require('react-native-navigation');
 
   Navigation.mockNativeComponents(
     new NativeCommandsSender(),

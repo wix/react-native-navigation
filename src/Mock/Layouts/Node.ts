@@ -1,4 +1,4 @@
-import { Options } from '../../src';
+import { Options } from '../../index';
 import ParentNode from './ParentNode';
 
 interface Data {

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OptionsTopBarButton } from '../../src';
+import { OptionsTopBarButton } from '../../index';
 import { events } from '../Stores/EventsStore';
 import ParentNode from './ParentNode';
 
