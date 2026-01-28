@@ -19,8 +19,13 @@
     [self setBackgroundColor:[options.background.color withDefault:nil]];
     [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color
                                            withDefault:nil]];
+    
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
+    if (options.scrollEdgeAppearance.title && [options.scrollEdgeAppearance.title hasValue]) {
+        [self setScrollEdgeTitleAttributes:options.scrollEdgeAppearance.title];
+    }
+    
     [self setBorderColor:[options.borderColor withDefault:nil]];
     [self showBorder:![options.noBorder withDefault:NO]];
     [self setBackButtonOptions:options.backButton];
@@ -155,6 +160,29 @@
     }
     
     self.getAppearance.titleTextAttributes = titleTextAttributes;
+    self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
+}
+
+- (void)setScrollEdgeTitleAttributes:(RNNTitleOptions *)titleOptions {
+    NSString *fontFamily = [titleOptions.fontFamily withDefault:nil];
+    NSString *fontWeight = [titleOptions.fontWeight withDefault:nil];
+    NSNumber *fontSize = [titleOptions.fontSize withDefault:nil];
+    UIColor *fontColor = [titleOptions.color withDefault:nil];
+
+    NSDictionary *titleTextAttributes =
+        [RNNFontAttributesCreator createFromDictionary:self.getScrollEdgeAppearance.titleTextAttributes
+                                            fontFamily:fontFamily
+                                              fontSize:fontSize
+                                            fontWeight:fontWeight
+                                                 color:fontColor
+                                              centered:YES];
+
+    id attrib = titleTextAttributes[NSParagraphStyleAttributeName];
+    if ([attrib isKindOfClass:[NSMutableParagraphStyle class]]) {
+        ((NSMutableParagraphStyle *)titleTextAttributes[NSParagraphStyleAttributeName]).lineBreakMode =
+            NSLineBreakByTruncatingTail;
+    }
+
     self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
 }
 
