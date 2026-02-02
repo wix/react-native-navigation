@@ -26,26 +26,27 @@
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {
-    if (_presentedViewController &&
-        ![navigationController.viewControllers containsObject:_presentedViewController]) {
-        _isPopping = YES;
-    }
-                        
-    id<UIViewControllerTransitionCoordinator> coordinator = navigationController.transitionCoordinator;
-    if (coordinator && coordinator.isInteractive) {
-        UIViewController *poppingViewController = _presentedViewController;
-        [coordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-            if (!context.isCancelled) {
-                if ([poppingViewController conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
-                    UIViewController<RNNLayoutProtocol> *rnnVC = (UIViewController<RNNLayoutProtocol> *)poppingViewController;
-                    if ([rnnVC.options.navigationButtonEventOnSwipeBack withDefault:NO]) {
-                        NSString *buttonId = [rnnVC.options.topBar.backButton.identifier withDefault:@"RNN.back"];
-                        [self->_eventEmitter sendOnNavigationButtonPressed:rnnVC.layoutInfo.componentId
-                                                                  buttonId:buttonId];
+    if (_presentedViewController) {
+        if (![navigationController.viewControllers containsObject:_presentedViewController]) {
+            _isPopping = YES;
+        }
+        
+        id<UIViewControllerTransitionCoordinator> coordinator = navigationController.transitionCoordinator;
+        if (coordinator && coordinator.isInteractive) {
+            UIViewController *poppingViewController = _presentedViewController;
+            [coordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                if (!context.isCancelled) {
+                    if ([poppingViewController conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
+                        UIViewController<RNNLayoutProtocol> *rnnVC = (UIViewController<RNNLayoutProtocol> *)poppingViewController;
+                        if ([rnnVC.options.navigationButtonEventOnSwipeBack withDefault:NO]) {
+                            NSString *buttonId = [rnnVC.options.topBar.backButton.identifier withDefault:@"RNN.back"];
+                            [self->_eventEmitter sendOnNavigationButtonPressed:rnnVC.layoutInfo.componentId
+                                                                      buttonId:buttonId];
+                        }
                     }
                 }
-            }
-        }];
+            }];
+        }
     }
 }
 
