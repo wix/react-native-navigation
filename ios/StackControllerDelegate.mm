@@ -38,8 +38,7 @@
             if (!context.isCancelled) {
                 if ([poppingViewController conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
                     UIViewController<RNNLayoutProtocol> *rnnVC = (UIViewController<RNNLayoutProtocol> *)poppingViewController;
-                    BOOL sendEvent = [rnnVC.options.navigationButtonEventOnSwipeBack withDefault:NO];
-                    if (sendEvent) {
+                    if ([rnnVC.options.navigationButtonEventOnSwipeBack withDefault:NO]) {
                         NSString *buttonId = [rnnVC.options.topBar.backButton.identifier withDefault:@"RNN.back"];
                         [self->_eventEmitter sendOnNavigationButtonPressed:rnnVC.layoutInfo.componentId
                                                                   buttonId:buttonId];
