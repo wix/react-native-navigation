@@ -30,6 +30,24 @@
         ![navigationController.viewControllers containsObject:_presentedViewController]) {
         _isPopping = YES;
     }
+                        
+    id<UIViewControllerTransitionCoordinator> coordinator = navigationController.transitionCoordinator;
+    if (coordinator && coordinator.isInteractive) {
+        UIViewController *poppingViewController = _presentedViewController;
+        [coordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+            if (!context.isCancelled) {
+                if ([poppingViewController conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
+                    UIViewController<RNNLayoutProtocol> *rnnVC = (UIViewController<RNNLayoutProtocol> *)poppingViewController;
+                    BOOL sendEvent = [rnnVC.options.navigationButtonEventOnSwipeBack withDefault:NO];
+                    if (sendEvent) {
+                        NSString *buttonId = [rnnVC.options.topBar.backButton.identifier withDefault:@"RNN.back"];
+                        [self->_eventEmitter sendOnNavigationButtonPressed:rnnVC.layoutInfo.componentId
+                                                                  buttonId:buttonId];
+                    }
+                }
+            }
+        }];
+    }
 }
 
 - (void)navigationController:(UINavigationController *)navigationController
