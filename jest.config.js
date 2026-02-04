@@ -8,7 +8,6 @@ module.exports = {
   },
   roots: [
     '<rootDir>/src/',
-    '<rootDir>/Mock/',
     '<rootDir>/playground/src/',
     '<rootDir>/integration/',
     '<rootDir>/scripts/',
@@ -21,7 +20,7 @@ module.exports = {
     '^react-native$': '<rootDir>/node_modules/react-native',
     '^react-native-gesture-handler$': '<rootDir>/node_modules/react-native-gesture-handler',
     '^react-native-webview$': '<rootDir>/__mocks__/react-native-webview.js',
-    'react-native-navigation/Mock': '<rootDir>/Mock/index',
+    'react-native-navigation/Mock': '<rootDir>/src/Mock/index',
     'react-native-navigation': '<rootDir>/src',
     '^src$': '<rootDir>/src',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':

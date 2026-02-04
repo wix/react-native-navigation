@@ -4,7 +4,7 @@ import ParentNode from '../Layouts/ParentNode';
 import LayoutNodeFactory from '../Layouts/LayoutNodeFactory';
 import { SideMenuNode } from '../Layouts/SideMenu';
 import StackNode from '../Layouts/StackNode';
-import { Options } from '../../src/interfaces/Options';
+import { Options } from '../../interfaces/Options';
 
 const remx = require('remx');
 
