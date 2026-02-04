@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { OptionsTopBarButton } from '../../src/interfaces/Options';
-import { Options } from '../../src';
+import { OptionsTopBarButton } from '../../interfaces/Options';
+import { Options } from '../../index';
 import { LayoutStore } from '../Stores/LayoutStore';
 import ComponentNode from './ComponentNode';
 import LayoutNodeFactory from './LayoutNodeFactory';
