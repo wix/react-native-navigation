@@ -20,14 +20,20 @@
     "rnn-link": "./autolink/postlink/run.js"
   },
   "main": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
+  "types": "./lib/typescript/index.d.ts",
   "react-native": "./src/index.ts",
   "exports": {
     ".": {
-      "react-native": "./src/index.ts",
+      "types": "./lib/typescript/index.d.ts",
+      "default": "./lib/module/index.js",
       "source": "./src/index.ts",
-      "types": "./lib/typescript/src/index.d.ts",
-      "default": "./lib/module/index.js"
+      "react-native": "./src/index.ts"
+    },
+    "./Mock": {
+      "types": "./lib/typescript/Mock/index.d.ts",
+      "default": "./lib/module/Mock/index.js",
+      "source": "./src/Mock/index.ts",
+      "react-native": "./src/Mock/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -76,7 +82,7 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "3.3.2",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
     "tslib": "1.9.3"

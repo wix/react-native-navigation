@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
     "react-native-redash": "^12.6.1",
