@@ -2,6 +2,68 @@
 
 The iOS implementation provides native navigation using UIKit view controllers, coordinated through a bridge module that receives commands from JavaScript.
 
+## App Integration
+
+### RNNAppDelegate
+**Files**: `RNNAppDelegate.h/mm`
+
+Base class that user's AppDelegate must extend. Handles React Native and navigation initialization:
+
+```objc
+// AppDelegate.h - User extends RNNAppDelegate
+#import "RNNAppDelegate.h"
+@interface AppDelegate : RNNAppDelegate
+@end
+
+// AppDelegate.m - User implements sourceURLForBridge
+@implementation AppDelegate
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+}
+@end
+```
+
+**What RNNAppDelegate does:**
+- Sets up React Native feature flags (Fabric, TurboModules, Bridgeless)
+- Creates `RCTRootViewFactory` and `ReactHost`
+- Calls `[ReactNativeNavigation bootstrapWithHost:]` to initialize navigation
+- Handles RN version differences (0.77, 0.78, 0.79+) via compile-time macros
+
+### ReactNativeNavigation Bootstrap
+**File**: `ReactNativeNavigation.h/mm`
+
+Public API for native initialization:
+
+```objc
+// New architecture (0.77+)
+[ReactNativeNavigation bootstrapWithHost:reactHost];
+
+// Legacy bridge
+[ReactNativeNavigation bootstrapWithBridge:bridge];
+
+// Register native screens
+[ReactNativeNavigation registerExternalComponent:@"NativeScreen"
+                                        callback:^(NSDictionary *props, RCTBridge *bridge) {
+    return [[MyNativeVC alloc] init];
+}];
+```
+
+### Autolink Script (`npx rnn-link`)
+
+The `autolink/postlink/postLinkIOS.js` script automates setup:
+
+| Linker | What it does |
+|--------|--------------|
+| `AppDelegateLinker` | Changes AppDelegate to extend `RNNAppDelegate`, imports ReactNativeNavigation, removes RCTRootView setup |
+| `PodfileLinker` | Adds required pods configuration |
+| `PlistLinker` | Updates Info.plist if needed |
+
+**AppDelegateLinker transformations:**
+- Swift: `class AppDelegate: RCTAppDelegate` → `class AppDelegate: RNNAppDelegate`
+- Obj-C header: `@interface AppDelegate : RCTAppDelegate` → `@interface AppDelegate : RNNAppDelegate`
+- Imports `<ReactNativeNavigation/ReactNativeNavigation.h>`
+- Removes manual RCTRootView/window setup (navigation manages the window)
+
 ## Directory Structure
 
 ```

@@ -2,6 +2,71 @@
 
 The Android implementation provides native navigation using Views and ViewGroups (not Fragments), coordinated through a TurboModule that receives commands from JavaScript.
 
+## App Integration
+
+### NavigationApplication
+**File**: `NavigationApplication.java`
+
+Abstract Application class that user's MainApplication must extend:
+
+```kotlin
+// MainApplication.kt - User extends NavigationApplication
+class MainApplication : NavigationApplication() {
+    override val reactNativeHost: ReactNativeHost
+        get() = NavigationReactNativeHost(this) // Must use NavigationReactNativeHost
+}
+```
+
+**What NavigationApplication does:**
+- Initializes SoLoader
+- Provides `ReactGateway` singleton for React lifecycle
+- Offers `registerExternalComponent()` for native screens
+
+### NavigationActivity
+**File**: `NavigationActivity.java`
+
+Base Activity that user's MainActivity must extend:
+
+```kotlin
+// MainActivity.kt - User extends NavigationActivity
+class MainActivity : NavigationActivity() {
+    // No getMainComponentName() needed - navigation handles root
+}
+```
+
+**What NavigationActivity does:**
+- Creates `Navigator` with root, modal, and overlay layouts
+- Manages back press via `OnBackPressedCallback`
+- Coordinates React lifecycle with activity lifecycle
+
+### NavigationReactNativeHost
+**File**: `react/NavigationReactNativeHost.kt`
+
+Custom ReactNativeHost that integrates with navigation:
+- Used instead of `DefaultReactNativeHost`
+- Provides proper module registration for navigation
+
+### Autolink Script (`npx rnn-link`)
+
+The `autolink/postlink/postLinkAndroid.js` script automates setup:
+
+| Linker | What it does |
+|--------|--------------|
+| `ApplicationLinker` | Changes MainApplication to extend `NavigationApplication`, uses `NavigationReactNativeHost`, removes SoLoader.init() |
+| `ActivityLinker` | Changes MainActivity to extend `NavigationActivity`, removes `getMainComponentName()` |
+| `GradleLinker` | Updates build.gradle if needed |
+
+**ApplicationLinker transformations:**
+- `class MainApplication : Application(), ReactApplication` → `class MainApplication : NavigationApplication()`
+- `DefaultReactNativeHost(this)` → `NavigationReactNativeHost(this)`
+- Removes `SoLoader.init()` (NavigationApplication handles it)
+- Removes new architecture entry point load block
+
+**ActivityLinker transformations:**
+- `class MainActivity : ReactActivity()` → `class MainActivity : NavigationActivity()`
+- Removes `getMainComponentName()` override
+- Removes `createReactActivityDelegate()` override
+
 ## Directory Structure
 
 ```
