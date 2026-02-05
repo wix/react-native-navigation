@@ -41,6 +41,7 @@
     self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
 
     self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
+    self.navigationButtonEventOnSwipeBack = [[Bool alloc] initWithValue:dict[@"navigationButtonEventOnSwipeBack"]];
     self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
     self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
     self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
@@ -73,6 +74,8 @@
 
     if (options.popGesture.hasValue)
         result.popGesture = options.popGesture;
+    if (options.navigationButtonEventOnSwipeBack.hasValue)
+        result.navigationButtonEventOnSwipeBack = options.navigationButtonEventOnSwipeBack;
     if (options.backgroundImage.hasValue)
         result.backgroundImage = options.backgroundImage;
     if (options.rootBackgroundImage.hasValue)
@@ -104,6 +107,7 @@
     [newOptions.window mergeOptions:self.window];
 
     newOptions.popGesture = self.popGesture;
+    newOptions.navigationButtonEventOnSwipeBack = self.navigationButtonEventOnSwipeBack;
     newOptions.backgroundImage = self.backgroundImage;
     newOptions.rootBackgroundImage = self.rootBackgroundImage;
     newOptions.modalPresentationStyle = self.modalPresentationStyle;
