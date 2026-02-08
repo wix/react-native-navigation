@@ -14,9 +14,13 @@ import com.reactnativenavigation.views.component.ComponentLayout
  */
 class OverlayContainer(context: Context) : CoordinatorLayout(context) {
     
+    private var shouldPassThroughTouch = false
+    
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         // Only check on ACTION_DOWN to avoid interfering with gesture sequences
         if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
+            shouldPassThroughTouch = true
+            
             // Check if any child overlay wants to intercept this touch
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
@@ -25,6 +29,7 @@ class OverlayContainer(context: Context) : CoordinatorLayout(context) {
                     // which uses OverlayTouchDelegate to check interceptTouchOutside flag
                     if (child.onInterceptTouchEvent(ev)) {
                         // At least one overlay wants to handle this touch
+                        shouldPassThroughTouch = false
                         return true
                     }
                 }
@@ -37,8 +42,8 @@ class OverlayContainer(context: Context) : CoordinatorLayout(context) {
     }
     
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        // First check if we should intercept
-        if (ev.actionMasked == MotionEvent.ACTION_DOWN && !onInterceptTouchEvent(ev)) {
+        // For ACTION_DOWN, check if we should pass through
+        if (ev.actionMasked == MotionEvent.ACTION_DOWN && shouldPassThroughTouch) {
             // No overlay wants this touch - let it fall through to views below
             // Return false so the touch system doesn't consider it consumed
             return false
