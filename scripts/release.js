@@ -77,8 +77,8 @@ function versionTagAndPublish() {
   const version = isRelease
     ? VERSION
     : semver.gt(packageVersion, currentPublished)
-    ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
-    : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+      ? `${packageVersion}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`
+      : `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
 
   console.log(`Publishing version: ${version}`);
 
@@ -89,6 +89,11 @@ function findCurrentPublishedVersion() {
   return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
+function isAlreadyPublishedError(err) {
+  const errText = [err.toString(), err.stderr, err.stdout].filter(Boolean).join('\n');
+  return includes(errText, 'You cannot publish over the previously published version');
+}
+
 function tryPublishAndTag(version) {
   let theCandidate = version;
   for (let retry = 0; retry < 5; retry++) {
@@ -97,11 +102,7 @@ function tryPublishAndTag(version) {
       console.log(`Released ${theCandidate}`);
       return;
     } catch (err) {
-      const alreadyPublished = includes(
-        err.toString(),
-        'You cannot publish over the previously published version'
-      );
-      if (!alreadyPublished) {
+      if (!isAlreadyPublishedError(err)) {
         throw err;
       }
       console.log(`previously published. retrying with increased ${VERSION_INC}...`);
@@ -115,7 +116,17 @@ function tagAndPublish(newVersion) {
   if (BUILD_DOCUMENTATION_VERSION && BUILD_DOCUMENTATION_VERSION !== 'null')
     documentation.release(BUILD_DOCUMENTATION_VERSION, REMOVE_DOCUMENTATION_VERSION);
   exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
-  exec.execSync(`npm publish --tag ${VERSION_TAG}`);
+  try {
+    cp.execSync(`npm publish --tag ${VERSION_TAG}`, {
+      encoding: 'utf8',
+      stdio: 'pipe',
+      maxBuffer: 10 * 1024 * 1024,
+    });
+  } catch (err) {
+    if (err.stderr) console.error('npm stderr:', err.stderr);
+    if (err.stdout) console.error('npm stdout:', err.stdout);
+    throw err;
+  }
   if (isRelease) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
