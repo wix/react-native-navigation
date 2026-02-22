@@ -457,7 +457,37 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
   translucent?: boolean;
 }
 
+export interface OptionsTopBarScrollEdgeAppearanceTitle {
+  /**
+   * Font size
+   */
+  fontSize?: number;
+  /**
+   * Text color
+   */
+  color?: Color;
+  /**
+   * Set the font family for the title
+   */
+  fontFamily?: FontFamily;
+  /**
+   * Set the font style for the title
+   */
+  fontStyle?: FontStyle;
+  /**
+   * Specifies font weight. The values 'normal' and 'bold' are supported
+   * for most fonts. Not all fonts have a variant for each of the numeric
+   * values, in that case the closest one is chosen.
+   */
+  fontWeight?: FontWeight;
+}
+
 export interface OptionsTopBarScrollEdgeAppearance {
+  /**
+   * Title configuration applied when the scroll view reaches the edge
+   * ### (iOS specific)
+   */
+  title?: OptionsTopBarScrollEdgeAppearanceTitle;
   background?: OptionsTopBarScrollEdgeAppearanceBackground;
   active: boolean;
   /**
