@@ -187,12 +187,21 @@
         CGFloat width = [backButtonOptions.iconBackground.width withDefault:@(icon.size.width)].floatValue;
         CGFloat height = [backButtonOptions.iconBackground.height withDefault:@(icon.size.height)].floatValue;
         
+        CGSize originalSize = icon.size;
+        
         RNNIconDrawer *iconDrawer = [[RNNIconDrawer alloc] init];
         icon = [iconDrawer draw:icon
                      imageColor:color
                 backgroundColor:backgroundColor
                            size:CGSizeMake(width, height)
                    cornerRadius:cornerRadius];
+        
+        CGFloat extraWidth = width - originalSize.width;
+        CGFloat extraHeight = height - originalSize.height;
+        icon = [icon imageWithAlignmentRectInsets:UIEdgeInsetsMake(extraHeight / 2.0,
+                                                                   0,
+                                                                   extraHeight / 2.0,
+                                                                   extraWidth)];
     }
 
     [self setBackIndicatorImage:icon withColor:color];
