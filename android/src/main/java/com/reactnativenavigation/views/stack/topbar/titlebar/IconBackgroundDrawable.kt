@@ -60,14 +60,14 @@ class IconBackgroundDrawable(
     override fun getIntrinsicHeight(): Int = backgroundHeight
 
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
-        updatePath(RectF(l.toFloat(), t.toFloat(), (l + backgroundWidth).toFloat(), (t + backgroundHeight).toFloat()))
+        updatePath(RectF(0f, 0f, backgroundWidth.toFloat(), backgroundHeight.toFloat()))
         super.setBounds(l, t, l + backgroundWidth, t + backgroundHeight)
     }
 
     override fun setBounds(r: Rect) {
         r.right = r.left + backgroundWidth
         r.bottom = r.top + backgroundHeight
-        updatePath(RectF(r))
+        updatePath(RectF(0f, 0f, backgroundWidth.toFloat(), backgroundHeight.toFloat()))
         super.setBounds(r)
     }
 
