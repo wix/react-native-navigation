@@ -22,8 +22,10 @@
     
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
-    if (options.scrollEdgeAppearance.title && [options.scrollEdgeAppearance.title hasValue]) {
+    if (options.scrollEdgeAppearance.title.hasValue) {
         [self setScrollEdgeTitleAttributes:options.scrollEdgeAppearance.title];
+    } else {
+        [self setScrollEdgeTitleAttributes:options.title];
     }
     
     [self setBorderColor:[options.borderColor withDefault:nil]];
@@ -52,6 +54,12 @@
 
     if (options.scrollEdgeAppearance.noBorder.hasValue) {
         [self showScrollEdgeBorder:!options.scrollEdgeAppearance.noBorder.get];
+    }
+
+    if (options.scrollEdgeAppearance.title.hasValue) {
+        [self setScrollEdgeTitleAttributes:defaultOptions.scrollEdgeAppearance.title];
+    } else if (options.title.hasValue && !defaultOptions.scrollEdgeAppearance.title.hasValue) {
+        [self setScrollEdgeTitleAttributes:defaultOptions.title];
     }
 }
 
@@ -160,7 +168,6 @@
     }
     
     self.getAppearance.titleTextAttributes = titleTextAttributes;
-    self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
 }
 
 - (void)setScrollEdgeTitleAttributes:(RNNTitleOptions *)titleOptions {
