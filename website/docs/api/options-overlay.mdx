@@ -21,6 +21,8 @@ Controls whether touch events outside the bounds of the overlay are to be handle
 | ----- | -------- | -------- |
 | boolean | No       | Both     |
 
+**Note for Android**: This option now correctly makes the overlay container transparent to touches when set to `false`. The overlay container itself will not consume touch events, allowing them to reach underlying views. This fixes long-standing issues where overlays were blocking touches even with `interceptTouchOutside: false`.
+
 ### `handleKeyboardEvents`
 Overlays on iOS don't handle keyboard events by default. If your Overlay contains a TextInput component, you'll want to enable this option so that TextInput responds to keyboard events.
 

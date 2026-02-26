@@ -28,6 +28,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
+import com.reactnativenavigation.views.overlay.OverlayContainer;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -42,7 +43,7 @@ public class Navigator extends ParentController<ViewGroup> {
     private ViewController<?> previousRoot;
     private final CoordinatorLayout rootLayout;
     private final CoordinatorLayout modalsLayout;
-    private final CoordinatorLayout overlaysLayout;
+    private final OverlayContainer overlaysLayout;
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
 
@@ -81,7 +82,7 @@ public class Navigator extends ParentController<ViewGroup> {
         this.rootPresenter = rootPresenter;
         rootLayout = new CoordinatorLayout(getActivity());
         modalsLayout = new CoordinatorLayout(getActivity());
-        overlaysLayout = new CoordinatorLayout(getActivity());
+        overlaysLayout = new OverlayContainer(getActivity());
     }
 
 
@@ -266,7 +267,7 @@ public class Navigator extends ParentController<ViewGroup> {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    CoordinatorLayout getOverlaysLayout() {
+    OverlayContainer getOverlaysLayout() {
         return overlaysLayout;
     }
 
