@@ -20,7 +20,7 @@ A navigation command (e.g. `push`) flows:
 3. iOS: `RNNCommandsHandler` → `RNNViewControllerFactory` → UIKit controllers
 4. Android: `Navigator` → `LayoutFactory` → View-based controllers (no Fragments)
 
-Read [ARCHITECTURE.md](../../ARCHITECTURE.md) for the full overview.
+Read [ARCHITECTURE.md](../../../ARCHITECTURE.md) for the full overview.
 
 ## Key Cross-Layer Mappings
 
@@ -80,10 +80,10 @@ Each controller type has a Presenter that applies options to views:
 
 ### By directory
 
-- **`src/`** — JS public API, commands, processing pipeline. See [src/ARCHITECTURE.md](../../src/ARCHITECTURE.md)
-- **`ios/`** — All Obj-C/C++ native code. See [ios/ARCHITECTURE.md](../../ios/ARCHITECTURE.md)
+- **`src/`** — JS public API, commands, processing pipeline. See [src/ARCHITECTURE.md](../../../src/ARCHITECTURE.md)
+- **`ios/`** — All Obj-C/C++ native code. See [ios/ARCHITECTURE.md](../../../ios/ARCHITECTURE.md)
 - **`ios/TurboModules/`** — New architecture entry points (`RNNTurboModule`, `RNNTurboManager`, `RNNTurboCommandsHandler`)
-- **`android/src/main/java/com/reactnativenavigation/`** — All Java/Kotlin native code. See [android/ARCHITECTURE.md](../../android/ARCHITECTURE.md)
+- **`android/src/main/java/com/reactnativenavigation/`** — All Java/Kotlin native code. See [android/ARCHITECTURE.md](../../../android/ARCHITECTURE.md)
 - **`playground/`** — Demo app for development and E2E tests
 - **`playground/src/screens/`** — Test screens exercising every feature
 - **`playground/e2e/`** — Detox E2E tests
