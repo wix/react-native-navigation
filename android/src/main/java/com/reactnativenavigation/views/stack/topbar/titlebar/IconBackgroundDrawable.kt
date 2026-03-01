@@ -8,12 +8,12 @@ import com.reactnativenavigation.options.params.DensityPixel
 
 
 class IconBackgroundDrawable(
-        private val wrapped: Drawable,
-        private val cornerRadius: DensityPixel,
-        private val backgroundWidth: Int,
-        private val backgroundHeight: Int,
-        private val iconColor: Int?,
-        val backgroundColor: Int?
+    private val wrapped: Drawable,
+    private val cornerRadius: DensityPixel,
+    private val backgroundWidth: Int,
+    private val backgroundHeight: Int,
+    private val iconColor: Int?,
+    val backgroundColor: Int?
 ) : Drawable() {
     private val path: Path = Path()
     private val bitmapPaint = Paint().apply {
@@ -56,28 +56,31 @@ class IconBackgroundDrawable(
         canvas.drawBitmap(wrapped.toBitmap(), null, bitmapRect, bitmapPaint)
     }
 
+    override fun getIntrinsicWidth(): Int = backgroundWidth
+    override fun getIntrinsicHeight(): Int = backgroundHeight
+
     override fun setBounds(l: Int, t: Int, r: Int, b: Int) {
-        updatePath(RectF(l.toFloat(), t.toFloat(), backgroundWidth.toFloat(), backgroundHeight.toFloat()))
-        super.setBounds(l, t, backgroundWidth, backgroundHeight)
+        updatePath(RectF(0f, 0f, backgroundWidth.toFloat(), backgroundHeight.toFloat()))
+        super.setBounds(l, t, l + backgroundWidth, t + backgroundHeight)
     }
 
     override fun setBounds(r: Rect) {
-        r.right = backgroundWidth
-        r.bottom = backgroundHeight
-        updatePath(RectF(r))
+        r.right = r.left + backgroundWidth
+        r.bottom = r.top + backgroundHeight
+        updatePath(RectF(0f, 0f, backgroundWidth.toFloat(), backgroundHeight.toFloat()))
         super.setBounds(r)
     }
 
     override fun onBoundsChange(bounds: Rect) {
         if (bounds != null) {
             backgroundRect = Rect((bounds.width() - backgroundWidth) / 2,
-                    (bounds.height() - backgroundHeight) / 2,
-                    bounds.width() - (bounds.width() - backgroundWidth) / 2,
-                    bounds.height() - (bounds.height() - backgroundHeight) / 2)
+                (bounds.height() - backgroundHeight) / 2,
+                bounds.width() - (bounds.width() - backgroundWidth) / 2,
+                bounds.height() - (bounds.height() - backgroundHeight) / 2)
             bitmapRect = Rect((bounds.width() - bitmapWidth) / 2,
-                    (bounds.height() - bitmapHeight) / 2,
-                    bounds.width() - (bounds.width() - bitmapWidth) / 2,
-                    bounds.height() - (bounds.height() - bitmapHeight) / 2)
+                (bounds.height() - bitmapHeight) / 2,
+                bounds.width() - (bounds.width() - bitmapWidth) / 2,
+                bounds.height() - (bounds.height() - bitmapHeight) / 2)
         }
         super.onBoundsChange(bounds)
     }
