@@ -37,10 +37,12 @@
     self.delegate = self;
 }
 
+#ifndef RCT_NEW_ARCH_ENABLED
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     if (_rootViewDidChangeIntrinsicSize) {
         _rootViewDidChangeIntrinsicSize(rootView.intrinsicContentSize);
     }
 }
+#endif
 
 @end
