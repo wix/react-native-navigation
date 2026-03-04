@@ -3,27 +3,37 @@
   Updates package.json React Native and React versions based on REACT_NATIVE_VERSION env var.
   - Fetches the React peer dependency from the npm registry for the specified RN version
   - Updates package.json dependencies/devDependencies accordingly
+  - Updates @react-native/* and @react-native-community/cli* packages
   - Updates Gradle wrapper version based on RN version
 */
 
 const fs = require('fs/promises');
 const path = require('path');
+const {
+    parseRnMinor,
+    getReactNativeToolsVersion,
+    getCliVersion,
+    getGradleVersion,
+    getReanimatedOverride,
+    shouldRemoveWorklets,
+    getTestingLibraryOverride,
+} = require('./versionMapping');
 
-const GRADLE_WRAPPER_PATH = path.join(
-    process.cwd(),
-    'playground',
-    'android',
-    'gradle',
-    'wrapper',
-    'gradle-wrapper.properties'
-);
+const REACT_NATIVE_TOOLS_PACKAGES = [
+    '@react-native/babel-preset',
+    '@react-native/eslint-config',
+    '@react-native/metro-config',
+    '@react-native/typescript-config',
+];
+
+const CLI_PACKAGES = [
+    '@react-native-community/cli',
+    '@react-native-community/cli-platform-android',
+    '@react-native-community/cli-platform-ios',
+];
 
 /**
  * Fetch and compute the versions we need in order to update package.json files.
- * Returns an object with:
- * - rnVersion: the exact React Native version
- * - reactVersion: the matching React version (per RN's peerDependencies)
- * - rnMinor: RN minor number (e.g., for 0.77.3 it's 77)
  */
 async function extractVersions(rnVersion) {
     const registryUrl = `https://registry.npmjs.org/react-native/${rnVersion}`;
@@ -39,8 +49,7 @@ async function extractVersions(rnVersion) {
     }
 
     const reactVersion = String(reactPeer).replace(/^\^/, '');
-    const rnMinorMatch = String(rnVersion).match(/^\d+\.(\d+)/);
-    const rnMinor = rnMinorMatch ? Number(rnMinorMatch[1]) : NaN;
+    const rnMinor = parseRnMinor(rnVersion);
 
     return { rnVersion, reactVersion, rnMinor };
 }
@@ -70,22 +79,44 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
         packageJson.devDependencies['react'] = reactVersion;
     }
 
-    // Align testing libs for older RN minors (<= 77)
-    if (rnMinor <= 77) {
-        packageJson.devDependencies['@testing-library/react-native'] = '12.4.5';
+    // Update @react-native/* packages (only if they exist in the package.json)
+    const toolsVersion = getReactNativeToolsVersion(rnMinor);
+    for (const pkg of REACT_NATIVE_TOOLS_PACKAGES) {
+        if (packageJson.devDependencies[pkg] !== undefined) {
+            packageJson.devDependencies[pkg] = toolsVersion;
+        }
     }
 
-    if (rnMinor <= 78) {
-        packageJson.devDependencies['react-native-reanimated'] = '3.18.0';
+    // Update @react-native-community/cli* packages (only if they exist)
+    const cliVersion = getCliVersion(rnMinor);
+    for (const pkg of CLI_PACKAGES) {
+        if (packageJson.devDependencies[pkg] !== undefined) {
+            packageJson.devDependencies[pkg] = cliVersion;
+        }
+    }
+
+    // Align testing libs for older RN minors (<= 77)
+    const testingLibOverride = getTestingLibraryOverride(rnMinor);
+    if (testingLibOverride) {
+        packageJson.devDependencies['@testing-library/react-native'] = testingLibOverride;
+    }
+
+    // Align reanimated for older RN minors (<= 78)
+    const reanimatedOverride = getReanimatedOverride(rnMinor);
+    if (reanimatedOverride) {
+        packageJson.devDependencies['react-native-reanimated'] = reanimatedOverride;
+    }
+
+    if (shouldRemoveWorklets(rnMinor)) {
         delete packageJson.devDependencies['react-native-worklets'];
     }
 
     await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
 }
 
-function logChanges(packageJsonPath, versions) {
+function logChanges(packageJsonPath, versions, basePath) {
     const { rnVersion, reactVersion, rnMinor } = versions;
-    const label = path.relative(process.cwd(), path.dirname(packageJsonPath)) || 'root';
+    const label = path.relative(basePath, path.dirname(packageJsonPath)) || 'root';
     console.log(
         `Changed dependencies (${label}):\n  react-native: ${rnVersion}\n  react: ${reactVersion}`
     );
@@ -97,57 +128,53 @@ function logChanges(packageJsonPath, versions) {
 }
 
 /**
- * Determine the Gradle version based on RN minor version.
- * RN < 0.82: Gradle 8.14.1
- * RN >= 0.82: Gradle 9.0.0
- */
-function getGradleVersion(rnMinor) {
-    return rnMinor < 82 ? '8.14.1' : '9.0.0';
-}
-
-/**
  * Update gradle-wrapper.properties with the appropriate Gradle version.
  */
-async function updateGradleWrapper(rnMinor) {
+async function updateGradleWrapper(rnMinor, gradleWrapperPath) {
     const gradleVersion = getGradleVersion(rnMinor);
-    const content = await fs.readFile(GRADLE_WRAPPER_PATH, 'utf8');
+    const content = await fs.readFile(gradleWrapperPath, 'utf8');
 
     const updatedContent = content.replace(
         /distributionUrl=https\\:\/\/services\.gradle\.org\/distributions\/gradle-[\d.]+-bin\.zip/,
         `distributionUrl=https\\://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip`
     );
 
-    await fs.writeFile(GRADLE_WRAPPER_PATH, updatedContent, 'utf8');
+    await fs.writeFile(gradleWrapperPath, updatedContent, 'utf8');
     console.log(`Updated Gradle version to ${gradleVersion}`);
 }
 
-async function main() {
+async function main(basePath) {
+    basePath = basePath || process.cwd();
+
     const rnVersion = process.env.REACT_NATIVE_VERSION;
     if (!rnVersion) {
         console.log('REACT_NATIVE_VERSION not set; skipping version update');
         return;
     }
 
-    // Compute the versions once, then apply to desired package.json files
     const versions = await extractVersions(rnVersion);
 
     const targets = [
-        path.join(process.cwd(), 'package.json'),
-        path.join(process.cwd(), 'playground', 'package.json'),
+        path.join(basePath, 'package.json'),
+        path.join(basePath, 'playground', 'package.json'),
     ];
 
     for (const packageJsonPath of targets) {
         await updatePackageJsonAt(packageJsonPath, versions);
-        logChanges(packageJsonPath, versions);
+        logChanges(packageJsonPath, versions, basePath);
     }
 
-    // Update Gradle wrapper version
-    await updateGradleWrapper(versions.rnMinor);
+    const gradleWrapperPath = path.join(
+        basePath, 'playground', 'android', 'gradle', 'wrapper', 'gradle-wrapper.properties'
+    );
+    await updateGradleWrapper(versions.rnMinor, gradleWrapperPath);
 }
 
-main().catch((err) => {
-    console.error('[changeReactNativeVersion] Error:', err.message);
-    process.exit(1);
-});
+if (require.main === module) {
+    main().catch((err) => {
+        console.error('[changeReactNativeVersion] Error:', err.message);
+        process.exit(1);
+    });
+}
 
-
+module.exports = { extractVersions, updatePackageJsonAt, updateGradleWrapper, main };
