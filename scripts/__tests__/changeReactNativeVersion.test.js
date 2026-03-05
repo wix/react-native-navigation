@@ -223,12 +223,15 @@ describe('changeReactNativeVersion', () => {
     });
 
     describe('extractVersions', () => {
+        let originalFetch;
+
         beforeEach(() => {
+            originalFetch = global.fetch;
             global.fetch = jest.fn();
         });
 
         afterEach(() => {
-            delete global.fetch;
+            global.fetch = originalFetch;
         });
 
         it('extracts versions from npm registry response', async () => {

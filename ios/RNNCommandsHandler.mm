@@ -212,6 +212,9 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 				view = [[ReactNativeNavigation getBridge].uiManager
 					viewForReactTag:optionsWithDefault.preview.reactTag.get];
 #endif
+                                if (view == nil) {
+                                    return;
+                                }
                                 [rootVc registerForPreviewingWithDelegate:(id)rootVc
                                                                sourceView:view];
             });

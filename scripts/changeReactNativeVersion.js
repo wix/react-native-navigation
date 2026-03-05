@@ -51,6 +51,10 @@ async function extractVersions(rnVersion) {
     const reactVersion = String(reactPeer).replace(/^\^/, '');
     const rnMinor = parseRnMinor(rnVersion);
 
+    if (Number.isNaN(rnMinor)) {
+        throw new Error(`Could not parse minor version from "${rnVersion}"`);
+    }
+
     return { rnVersion, reactVersion, rnMinor };
 }
 

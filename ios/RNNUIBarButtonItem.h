@@ -2,7 +2,9 @@
 #import "RNNIconCreator.h"
 #import "RNNReactComponentRegistry.h"
 #import <Foundation/Foundation.h>
-#ifndef RCT_NEW_ARCH_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurfaceDelegate.h>
+#else
 #import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
 #endif
