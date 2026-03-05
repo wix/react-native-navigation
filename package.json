@@ -131,7 +131,7 @@
     "pngjs": "^6.0.0",
     "prettier": "2.8.8",
     "react": "19.2.3",
-    "react-native": "0.84.1",
+    "react-native": "0.84.0",
     "react-native-builder-bob": "^0.40.13",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.29.1",

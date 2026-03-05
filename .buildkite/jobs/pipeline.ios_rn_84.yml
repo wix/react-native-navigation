@@ -1,6 +1,7 @@
-  - label: ":ios: iOS (RN 0.84.1)"
+  # TODO(2026-03-13): bump to 0.84.1 once it clears the embargo (released 2026-02-27)
+  - label: ":ios: iOS (RN 0.84.0)"
     env:
-      REACT_NATIVE_VERSION: 0.84.1
+      REACT_NATIVE_VERSION: 0.84.0
     command:
     - "nvm install"
     - "./scripts/ci.ios.sh"
