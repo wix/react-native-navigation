@@ -49,10 +49,17 @@
 }
 
 - (void)testCreateLayout_ExternalComponentLayout {
+#ifdef RCT_NEW_ARCH_ENABLED
+    [_store registerExternalHostComponent:@"externalComponent"
+                                 callback:^UIViewController *(NSDictionary *props, RCTHost *host) {
+                                   return [UIViewController new];
+                                 }];
+#else
     [_store registerExternalComponent:@"externalComponent"
                              callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
                                return [UIViewController new];
                              }];
+#endif
 
     NSDictionary *layout = @{
         @"id" : @"cntId",

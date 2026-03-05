@@ -252,7 +252,33 @@ When you get a compile error:
 4. If new-arch only: this shouldn't happen -- investigate the API replacement
 5. If used in both: find the new-arch equivalent and branch with `#ifdef`
 
-### 4e. clang-format
+### 4e. Fix Test Files
+
+**Test files are easily overlooked.** They often reference arch-specific APIs (like `RCTBridge` vs `RCTHost`, or methods that only exist under `#ifdef RCT_NEW_ARCH_ENABLED`). Check all test files for arch-specific calls:
+
+```bash
+# Find test files referencing RCTBridge (old-arch only in new-arch builds)
+grep -rn "RCTBridge\|registerExternalComponent" playground/ios/NavigationTests/ --include="*.mm"
+
+# Check that test method calls match the current header signatures
+# e.g., RNNExternalComponentStore exposes different methods under #ifdef RCT_NEW_ARCH_ENABLED
+```
+
+Guard test code the same way as production code:
+
+```objc
+#ifdef RCT_NEW_ARCH_ENABLED
+    [_store registerExternalHostComponent:@"name"
+                                 callback:^UIViewController *(NSDictionary *props, RCTHost *host) { ... }];
+#else
+    [_store registerExternalComponent:@"name"
+                             callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) { ... }];
+#endif
+```
+
+**Key lesson from RN 0.84**: All 4 iOS CI jobs failed because a single test file (`RNNViewControllerFactoryTest.mm`) called an old-arch method on `RNNExternalComponentStore` without an `#ifdef` guard. The fix was trivial but blocked the entire build.
+
+### 4f. clang-format
 
 RNN uses clang-format on iOS files via a pre-commit hook. After editing `.h`/`.mm` files, verify formatting:
 
@@ -334,3 +360,5 @@ Update `website/docs/docs/docs-Installing.mdx`:
 9. **Android SDK level cascading effects** -- Bumping `compileSdkVersion`/`targetSdkVersion` can require bumping Robolectric, which may require a higher Java version than CI provides. Solution: pin the Robolectric SDK via `robolectric.properties` (e.g., `sdk=35` when SDK 36 needs Java 21).
 
 10. **Podspec can be a major effort** -- Don't underestimate podspec changes. RN 0.80 required replacing the entire dependency declaration strategy. Compare your podspec against the RN template's pattern for the target version.
+
+11. **Don't forget test files** -- Test files (`NavigationTests/*.mm`) often call arch-specific APIs directly. When guarding production code with `#ifdef RCT_NEW_ARCH_ENABLED`, search test files for the same APIs and guard them too. A single unguarded test call can fail the entire CI build across all RN versions.
