@@ -1,6 +1,6 @@
-  - label: ":ios: iOS (RN 0.83.0)"
+  - label: ":ios: iOS (RN 0.83.2)"
     env:
-      REACT_NATIVE_VERSION: 0.83.0
+      REACT_NATIVE_VERSION: 0.83.2
     command:
     - "nvm install"
     - "./scripts/ci.ios.sh"
