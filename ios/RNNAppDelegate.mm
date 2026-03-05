@@ -1,9 +1,10 @@
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
+#import "RCTAppSetupUtils.h"
+
 #if !RNN_RN_VERSION_79_OR_NEWER
 // Legacy path (RN < 0.79) — needs bridge, turbo module manager, feature flags
-#import "RCTAppSetupUtils.h"
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTBridge+Private.h>
 #import <React/RCTBridgeProxy.h>
@@ -24,8 +25,7 @@
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
 #import <react/utils/ManagedObjectWrapper.h>
 #else
-// Modern path (RN >= 0.79) — needs bridge utils for RCTAppSetupPrepareApp etc.
-#import "RCTAppSetupUtils.h"
+// Modern path (RN >= 0.79) — RCTAppSetupUtils.h imported above
 #endif
 
 #if !RNN_RN_VERSION_79_OR_NEWER
