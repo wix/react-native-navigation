@@ -56,8 +56,6 @@ dependencies {
 
     implementation("com.facebook.react:react-android")
 
-    implementation project(':react-native-fast-image')
-
     implementation 'androidx.core:core-ktx:1.16.0'
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }
