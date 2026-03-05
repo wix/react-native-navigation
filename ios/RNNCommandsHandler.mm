@@ -200,20 +200,20 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
             RCTExecuteOnMainQueue(^{
 				UIView *view = nil;
 #ifdef RCT_NEW_ARCH_ENABLED
-				RCTHost *host = [ReactNativeNavigation getHost];
-
-				if (host != nil) {
-					view = [host.surfacePresenter.mountingManager.componentViewRegistry
-						findComponentViewWithTag: [optionsWithDefault.preview.reactTag.get integerValue]];
-				} else {
-					view = [[ReactNativeNavigation getBridge].uiManager
-						viewForReactTag:optionsWithDefault.preview.reactTag.get];
-				}
+                                RCTHost *host = [ReactNativeNavigation getHost];
+                                if (host != nil) {
+                                    view =
+                                        [host.surfacePresenter.mountingManager.componentViewRegistry
+                                            findComponentViewWithTag:[optionsWithDefault.preview
+                                                                             .reactTag
+                                                                             .get integerValue]];
+                                }
 #else
 				view = [[ReactNativeNavigation getBridge].uiManager
 					viewForReactTag:optionsWithDefault.preview.reactTag.get];
 #endif
-				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
+                                [rootVc registerForPreviewingWithDelegate:(id)rootVc
+                                                               sourceView:view];
             });
         }
     } else {

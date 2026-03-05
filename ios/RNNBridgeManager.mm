@@ -1,3 +1,4 @@
+#ifndef RCT_NEW_ARCH_ENABLED
 #import "RNNBridgeManager.h"
 
 #import "RNNBridgeModule.h"
@@ -121,3 +122,4 @@
 }
 
 @end
+#endif

@@ -2,7 +2,9 @@
 
 #import <React/RCTUIManager.h>
 
+#ifndef RCT_NEW_ARCH_ENABLED
 #import "RNNBridgeManager.h"
+#endif
 #import "RNNLayoutManager.h"
 #import "RNNSplashScreenViewController.h"
 
@@ -10,9 +12,9 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 @property(nonatomic, strong) RNNTurboManager *turboManager;
-#endif
-
+#else
 @property(nonatomic, strong) RNNBridgeManager *bridgeManager;
+#endif
 
 @end
 
@@ -20,18 +22,16 @@
 
 #pragma mark - public API
 
+#ifndef RCT_NEW_ARCH_ENABLED
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
 	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name
 																		   callback:callback];
 }
+#endif
 
 + (UIViewController *)findViewController:(NSString *)componentId {
 #ifdef RCT_NEW_ARCH_ENABLED
-	if ([ReactNativeNavigation sharedInstance].turboManager == nil) {
-		return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
-	} else {
-		return [[ReactNativeNavigation sharedInstance].turboManager findComponentForId:componentId];
-	}
+    return [[ReactNativeNavigation sharedInstance].turboManager findComponentForId:componentId];
 #else
 	return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
 #endif
@@ -63,6 +63,7 @@
 }
 #endif
 
+#ifndef RCT_NEW_ARCH_ENABLED
 #pragma mark - bridge
 
 + (void)bootstrapWithBridge:(RCTBridge *)bridge {
@@ -90,6 +91,7 @@
 - (void)bootstrapWithBridge:(RCTBridge *)bridge {
 	[RNNSplashScreenViewController showOnWindow:[self mainWindow]];
 }
+#endif
 
 #pragma mark - instance
 

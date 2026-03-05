@@ -1,14 +1,14 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <UIKit/UIKit.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>
 #import "RNNTurboManager.h"
-#endif
-
+#else
+#import <React/RCTBridge.h>
 typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBridge *bridge);
+#endif
 
 @interface ReactNativeNavigation : NSObject
 
@@ -16,8 +16,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 + (void)bootstrapWithHost:(RCTHost *)host;
 + (void)registerExternalHostComponent:(NSString *)name callback:(RNNExternalHostViewCreator)callback;
 + (RCTHost *)getHost;
-#endif
-
+#else
 + (void)bootstrapWithBridge:(RCTBridge *)bridge;
 
 + (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
@@ -25,6 +24,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 + (RCTBridge *)getBridge;
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
+#endif
 
 + (UIViewController *)findViewController:(NSString *)componentId;
 

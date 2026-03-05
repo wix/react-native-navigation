@@ -1,6 +1,5 @@
 #import "RNNReactView.h"
 #import "RNNAppDelegate.h"
-#import <React/RCTRootContentView.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>

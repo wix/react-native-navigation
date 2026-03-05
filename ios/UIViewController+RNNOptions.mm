@@ -2,7 +2,6 @@
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
 #import "UIViewController+RNNOptions.h"
-#import <React/RCTRootView.h>
 
 #define kStatusBarAnimationDuration 0.35
 const NSInteger BLUR_STATUS_TAG = 78264801;
