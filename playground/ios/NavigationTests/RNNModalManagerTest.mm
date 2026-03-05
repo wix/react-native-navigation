@@ -2,7 +2,6 @@
 #import "RNNComponentViewController.h"
 #import "RNNStackController.h"
 #import <OCMock/OCMock.h>
-#import <React/RCTModalHostViewManager.h>
 #import <XCTest/XCTest.h>
 
 @interface MockViewController : UIViewController
