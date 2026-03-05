@@ -1,3 +1,4 @@
+#ifndef RCT_NEW_ARCH_ENABLED
 #import "RNNModalHostViewManagerHandler.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
@@ -42,3 +43,4 @@
 }
 
 @end
+#endif

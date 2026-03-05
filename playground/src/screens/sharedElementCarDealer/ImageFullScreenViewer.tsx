@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
-import FastImage, { Source } from 'react-native-fast-image';
+import FastImage, { Source } from '@d11/react-native-fast-image';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 
 interface Props {

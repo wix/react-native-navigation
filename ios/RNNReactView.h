@@ -7,7 +7,9 @@
 
 #import "RNNEventEmitter.h"
 #import "UIView+Utils.h"
+#ifndef RCT_NEW_ARCH_ENABLED
 #import <React/RCTRootViewDelegate.h>
+#endif
 #import <React/RCTUIManager.h>
 
 #define ComponentTypeScreen @"Component"

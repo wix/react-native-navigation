@@ -1,5 +1,4 @@
 #import "RNNOverlayOptions.h"
-#import <React/RCTRootView.h>
 
 @implementation RNNOverlayOptions
 

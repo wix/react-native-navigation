@@ -1,34 +1,32 @@
 #import "RNNAppDelegate.h"
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
-#import <react/featureflags/ReactNativeFeatureFlags.h>
-#import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 
 #import "RCTAppSetupUtils.h"
+
+#if !RNN_RN_VERSION_79_OR_NEWER
+// Legacy path (RN < 0.79) — needs bridge, turbo module manager, feature flags
 #import <React/CoreModulesPlugins.h>
+#import <React/RCTBridge+Private.h>
+#import <React/RCTBridgeProxy.h>
+#import <React/RCTComponentViewFactory.h>
 #import <React/RCTCxxBridgeDelegate.h>
+#import <React/RCTImageLoader.h>
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
 #import <React/RCTSurfacePresenter.h>
-#import <React/RCTSurfacePresenterStub.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
+#import <React/RCTSurfacePresenterStub.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
-
+#import <react/featureflags/ReactNativeFeatureFlags.h>
+#import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 #if __has_include(<react/config/ReactNativeConfig.h>)
 #import <react/config/ReactNativeConfig.h>
 #endif
-
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
-#import <React/RCTSurfacePresenter.h>
-#import <React/RCTBridge+Private.h>
-#import <React/RCTImageLoader.h>
-#import <React/RCTBridgeProxy.h>
-#import <React/RCTSurfacePresenter.h>
 #import <react/utils/ManagedObjectWrapper.h>
-
-#import <React/RCTComponentViewFactory.h>
-
-
-static NSString *const kRNConcurrentRoot = @"concurrentRoot";
+#else
+// Modern path (RN >= 0.79) — RCTAppSetupUtils.h imported above
+#endif
 
 #if !RNN_RN_VERSION_79_OR_NEWER
     @interface RNNAppDelegate () <RCTTurboModuleManagerDelegate,

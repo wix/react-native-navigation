@@ -2,8 +2,12 @@
 #import "RNNIconCreator.h"
 #import "RNNReactComponentRegistry.h"
 #import <Foundation/Foundation.h>
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <React/RCTSurfaceDelegate.h>
+#else
 #import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
+#endif
 
 typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 

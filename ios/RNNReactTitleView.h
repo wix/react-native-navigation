@@ -1,6 +1,9 @@
 #import "RNNComponentView.h"
 
-@interface RNNReactTitleView : RNNComponentView <RCTRootViewDelegate>
+@interface RNNReactTitleView : RNNComponentView
+#ifndef RCT_NEW_ARCH_ENABLED
+                               <RCTRootViewDelegate>
+#endif
 
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame;
 

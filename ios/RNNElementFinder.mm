@@ -2,8 +2,9 @@
 #import "RNNReactView.h"
 #import <React/RCTSurfaceView.h>
 #import <React/RCTUIManager.h>
+#ifndef RCT_NEW_ARCH_ENABLED
 #import <React/RCTRootView.h>
-#import <React/RCTUIManager.h>
+#endif
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>

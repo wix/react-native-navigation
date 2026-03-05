@@ -2,7 +2,8 @@ import { readFileSync } from 'fs';
 import { PNG } from 'pngjs';
 import { ssim } from 'ssim.js';
 
-const SSIM_SCORE_THRESHOLD = 0.99;
+// Slightly relaxed from 0.99 to tolerate sub-pixel rendering differences across RN versions
+const SSIM_SCORE_THRESHOLD = 0.985;
 
 function convertToSSIMFormat(image) {
   return {

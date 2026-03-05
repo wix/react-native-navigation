@@ -1,3 +1,4 @@
+#ifndef RCT_NEW_ARCH_ENABLED
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 
@@ -16,3 +17,4 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 - (UIViewController *)findComponentForId:(NSString *)componentId;
 
 @end
+#endif

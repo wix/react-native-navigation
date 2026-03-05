@@ -1,6 +1,8 @@
 #import "RCTHelpers.h"
 #import <React/RCTFont.h>
+#ifndef RCT_NEW_ARCH_ENABLED
 #import <React/RCTScrollView.h>
+#endif
 #import <React/RCTView.h>
 
 @implementation RCTHelpers
@@ -182,6 +184,7 @@
  not clickable if placed at the bottom part of the view
  */
 
+#ifndef RCT_NEW_ARCH_ENABLED
 + (BOOL)removeYellowBox:(RCTRootView *)reactRootView {
 #ifndef DEBUG
     return YES;
@@ -220,5 +223,6 @@
 
     return removed;
 }
+#endif
 
 @end
