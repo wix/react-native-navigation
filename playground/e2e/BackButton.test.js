@@ -65,7 +65,7 @@ describe('Back Button', () => {
     await expect(elementByLabel('navigationButtonPressed | RNN.hardwareBackButton')).toBeVisible();
   });
 
-  it.e2e('should render back button with iconBackground', async () => {
+  it.e2e(':ios: should render back button with iconBackground', async () => {
     await elementById(TestIDs.PUSH_BACK_BUTTON_ICON_BACKGROUND).tap();
     // eslint-disable-next-line no-undef
     const snapshottedImagePath = `./e2e/assets/back_button_icon_background.${device.getPlatform()}.png`;
