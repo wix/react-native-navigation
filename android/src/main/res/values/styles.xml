@@ -4,6 +4,8 @@
         <item name="elevation">0dp</item>
     </style>
 
+    <style name="TopBarOverflowPopup" parent="ThemeOverlay.AppCompat.Light" />
+
     <!--The following is a workaround needed to run unit tests in command line-->
     <style name="Widget.Support.CoordinatorLayout" parent="android:Widget">
         @null
