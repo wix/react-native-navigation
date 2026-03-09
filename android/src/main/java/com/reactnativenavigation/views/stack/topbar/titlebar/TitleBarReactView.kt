@@ -14,7 +14,7 @@ class TitleBarReactView(context: Context?, componentId: String?,
         if (centered) {
             val availableWidth = MeasureSpec.getSize(widthMeasureSpec)
             super.onMeasure(
-                MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.AT_MOST),
                 heightMeasureSpec
             )
         } else {
