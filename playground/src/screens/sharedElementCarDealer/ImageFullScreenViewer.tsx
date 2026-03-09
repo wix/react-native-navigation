@@ -22,7 +22,7 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
       <FastImage
         // @ts-ignore nativeID isn't included in FastImage props.
         nativeID={sharedElementId}
-        style={StyleSheet.absoluteFill}
+        style={StyleSheet.absoluteFillObject}
         source={source}
         resizeMode="contain"
       />

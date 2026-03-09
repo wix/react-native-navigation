@@ -2,6 +2,8 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
+#ifndef RCT_REMOVE_LEGACY_ARCH
+
 @interface RNNModalHostViewManagerHandlerTest : XCTestCase
 @end
 
@@ -42,3 +44,5 @@
 }
 
 @end
+
+#endif

@@ -1,6 +1,5 @@
 #import "RNNOverlayWindow.h"
 #import "RNNReactView.h"
-#import <React/RCTModalHostView.h>
 
 @implementation RNNOverlayWindow
 
@@ -9,7 +8,7 @@
 
     if ([hitTestResult isKindOfClass:[UIWindow class]] ||
         [hitTestResult.subviews.firstObject isKindOfClass:RNNReactView.class] ||
-        [hitTestResult isKindOfClass:[RCTModalHostView class]] ||
+        [hitTestResult isKindOfClass:NSClassFromString(@"RCTModalHostView")] ||
         [hitTestResult isKindOfClass:NSClassFromString(@"RCTRootComponentView")]) {
         return nil;
     }

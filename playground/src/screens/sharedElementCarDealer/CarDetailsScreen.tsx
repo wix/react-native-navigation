@@ -112,7 +112,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           // @ts-ignore nativeID isn't included in react-native-fast-image props.
           nativeID={`image${car.id}Dest`}
           resizeMode="cover"
-          style={StyleSheet.absoluteFill}
+          style={StyleSheet.absoluteFillObject}
         />
       </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
