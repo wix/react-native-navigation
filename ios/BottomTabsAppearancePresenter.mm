@@ -40,17 +40,12 @@
 }
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
+    UITabBarAppearance *appearance = [self appearanceWithColor:backgroundColor];
+    [self applyTabBarAppearance:appearance];
+    self.tabBar.barTintColor = backgroundColor;
+    self.tabBar.translucent = NO;
     if (@available(iOS 26.0, *)) {
-        UITabBarAppearance *appearance = [self appearanceWithColor:backgroundColor];
-        [self applyTabBarAppearance:appearance];
-        self.tabBar.barTintColor = backgroundColor;
         self.tabBar.backgroundColor = backgroundColor;
-        self.tabBar.translucent = NO;
-    } else {
-        UITabBarAppearance *appearance = [self appearanceWithColor:backgroundColor];
-        [self applyTabBarAppearance:appearance];
-        self.tabBar.barTintColor = backgroundColor;
-        self.tabBar.translucent = NO;
     }
 }
 
