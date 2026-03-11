@@ -27,11 +27,12 @@
     [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]];
 
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
+    [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
+    if (options.bottomTabs.barStyle.hasValue) {
+        [bottomTabs setTabBarStyle:[RNNConvert UIBarStyle:options.bottomTabs.barStyle.get]];
+    }
     [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor withDefault:nil]
                    translucent:[withDefault.bottomTabs.translucent withDefault:NO]];
-    [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
-    [bottomTabs setTabBarStyle:[RNNConvert UIBarStyle:[withDefault.bottomTabs.barStyle
-                                                          withDefault:@"default"]]];
     [self applyTabBarBorder:withDefault.bottomTabs];
     [self applyTabBarShadow:withDefault.bottomTabs.shadow];
 }
@@ -65,7 +66,7 @@
     }
 
     if (mergeOptions.bottomTabs.translucent.hasValue) {
-        [bottomTabs setTabBarTranslucent:mergeOptions.bottomTabs.translucent.get];
+        [self setTabBarTranslucent:mergeOptions.bottomTabs.translucent.get];
     }
 
     if (mergeOptions.bottomTabs.hideShadow.hasValue) {

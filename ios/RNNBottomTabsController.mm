@@ -48,14 +48,27 @@
                       eventEmitter:eventEmitter
               childViewControllers:childViewControllers];
 
-    if (@available(iOS 13.0, *)) {
-        self.tabBar.standardAppearance = [UITabBarAppearance new];
-    }
+    if (@available(iOS 26.0, *)) {
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        [appearance configureWithTransparentBackground];
+        appearance.backgroundEffect = nil;
+        appearance.backgroundColor = UIColor.clearColor;
+        self.tabBar.standardAppearance = appearance;
+        self.tabBar.scrollEdgeAppearance = [appearance copy];
+        self.tabBar.barTintColor = UIColor.clearColor;
+    } else if (@available(iOS 13.0, *)) {
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        [appearance configureWithOpaqueBackground];
+        appearance.backgroundEffect = nil;
+        appearance.backgroundColor = UIColor.systemBackgroundColor;
+        self.tabBar.standardAppearance = appearance;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-    if (@available(iOS 15.0, *)) {
-        self.tabBar.scrollEdgeAppearance = [UITabBarAppearance new];
-    }
+        if (@available(iOS 15.0, *)) {
+            self.tabBar.scrollEdgeAppearance = [appearance copy];
+        }
 #endif
+        self.tabBar.translucent = NO;
+    }
 
     [self createTabBarItems:childViewControllers];
 
