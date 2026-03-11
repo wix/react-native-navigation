@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationComponent, NavigationProps, Navigation as Nav } from 'react-native-navigation';
 import Button from '../components/Button';
 import Root from '../components/Root';
@@ -11,6 +11,8 @@ const {
     TOPBAR_TITLE_AVATAR,
     SET_TOPBAR_WITH_SUBTITLE_BTN,
     SET_TOPBAR_WITHOUT_SUBTITLE_BTN,
+    SET_TOPBAR_CENTER_WITH_BUTTONS_BTN,
+    SET_TOPBAR_FILL_WITH_BUTTONS_BTN,
 } = testIDs;
 
 // TopBar title component WITH subtitle
@@ -53,8 +55,37 @@ function TopBarWithoutSubtitle() {
     );
 }
 
+// Mimics an inbox conversation header: avatar + long name + status line.
+// With center alignment + right buttons, ellipsizeMode won't fire because
+// TitleBarReactView measures with UNSPECIFIED — the text renders at full
+// natural width and gets clipped behind the buttons.
+function InboxConversationHeader() {
+    return (
+        <View style={inboxStyles.row}>
+            <View style={inboxStyles.avatar} />
+            <View style={inboxStyles.textContainer}>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={inboxStyles.name}>
+                    John Jacob Jingleheimer Schmidt-Wolfeschlegelsteinhausen
+                </Text>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={inboxStyles.status}>
+                    Online - Last message received 2 minutes ago via mobile
+                </Text>
+            </View>
+        </View>
+    );
+}
+
+const inboxStyles = StyleSheet.create({
+    row: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+    avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#4A90D9', marginRight: 8 },
+    textContainer: { flex: 1, justifyContent: 'center' },
+    name: { fontSize: 16, fontWeight: '600', color: '#000' },
+    status: { fontSize: 12, color: '#888' },
+});
+
 Nav.registerComponent('TopBarWithSubtitle', () => TopBarWithSubtitle);
 Nav.registerComponent('TopBarWithoutSubtitle', () => TopBarWithoutSubtitle);
+Nav.registerComponent('InboxConversationHeader', () => InboxConversationHeader);
 
 interface Props extends NavigationProps { }
 
@@ -90,6 +121,16 @@ export default class TopBarTitleTestScreen extends NavigationComponent<Props> {
                     testID={SET_TOPBAR_WITHOUT_SUBTITLE_BTN}
                     onPress={this.setTopBarWithoutSubtitle}
                 />
+                <Button
+                    label="Center + Right Buttons (Cut-off Bug)"
+                    testID={SET_TOPBAR_CENTER_WITH_BUTTONS_BTN}
+                    onPress={this.setCenterWithRightButtons}
+                />
+                <Button
+                    label="Fill + Right Buttons (Working)"
+                    testID={SET_TOPBAR_FILL_WITH_BUTTONS_BTN}
+                    onPress={this.setFillWithRightButtons}
+                />
             </Root>
         );
     }
@@ -112,6 +153,38 @@ export default class TopBarTitleTestScreen extends NavigationComponent<Props> {
                 title: {
                     component: {
                         name: 'TopBarWithoutSubtitle',
+                        alignment: 'fill',
+                    },
+                },
+            },
+        });
+
+    setCenterWithRightButtons = () =>
+        Navigation.mergeOptions(this, {
+            topBar: {
+                rightButtons: [
+                    { id: 'SEARCH', icon: require('../../img/clear.png') },
+                    { id: 'MORE', icon: require('../../img/star.png') },
+                ],
+                title: {
+                    component: {
+                        name: 'InboxConversationHeader',
+                        alignment: 'center',
+                    },
+                },
+            },
+        });
+
+    setFillWithRightButtons = () =>
+        Navigation.mergeOptions(this, {
+            topBar: {
+                rightButtons: [
+                    { id: 'SEARCH', icon: require('../../img/clear.png') },
+                    { id: 'MORE', icon: require('../../img/star.png') },
+                ],
+                title: {
+                    component: {
+                        name: 'InboxConversationHeader',
                         alignment: 'fill',
                     },
                 },
