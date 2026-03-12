@@ -31,5 +31,6 @@ ext.rnInfo = [
     minorVersion  : rnMinorVer,
     isRN79OrHigher: rnMinorVer >= 79,
     isRN80OrHigher: rnMinorVer >= 80,
+    isRN84OrHigher: rnMinorVer >= 84,
 ]
 

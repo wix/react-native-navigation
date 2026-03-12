@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';
@@ -112,7 +112,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           // @ts-ignore nativeID isn't included in react-native-fast-image props.
           nativeID={`image${car.id}Dest`}
           resizeMode="cover"
-          style={StyleSheet.absoluteFill}
+          style={StyleSheet.absoluteFillObject}
         />
       </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>

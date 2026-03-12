@@ -19,8 +19,15 @@
     [self setBackgroundColor:[options.background.color withDefault:nil]];
     [self setScrollEdgeAppearanceColor:[options.scrollEdgeAppearance.background.color
                                            withDefault:nil]];
+    
     [self setTitleAttributes:options.title];
     [self setLargeTitleAttributes:options.largeTitle];
+    if (options.scrollEdgeAppearance.title.hasValue) {
+        [self setScrollEdgeTitleAttributes:options.scrollEdgeAppearance.title];
+    } else {
+        [self setScrollEdgeTitleAttributes:options.title];
+    }
+    
     [self setBorderColor:[options.borderColor withDefault:nil]];
     [self showBorder:![options.noBorder withDefault:NO]];
     [self setBackButtonOptions:options.backButton];
@@ -47,6 +54,12 @@
 
     if (options.scrollEdgeAppearance.noBorder.hasValue) {
         [self showScrollEdgeBorder:!options.scrollEdgeAppearance.noBorder.get];
+    }
+
+    if (options.scrollEdgeAppearance.title.hasValue) {
+        [self setScrollEdgeTitleAttributes:defaultOptions.scrollEdgeAppearance.title];
+    } else if (options.title.hasValue && !defaultOptions.scrollEdgeAppearance.title.hasValue) {
+        [self setScrollEdgeTitleAttributes:defaultOptions.title];
     }
 }
 
@@ -155,6 +168,28 @@
     }
     
     self.getAppearance.titleTextAttributes = titleTextAttributes;
+}
+
+- (void)setScrollEdgeTitleAttributes:(RNNTitleOptions *)titleOptions {
+    NSString *fontFamily = [titleOptions.fontFamily withDefault:nil];
+    NSString *fontWeight = [titleOptions.fontWeight withDefault:nil];
+    NSNumber *fontSize = [titleOptions.fontSize withDefault:nil];
+    UIColor *fontColor = [titleOptions.color withDefault:nil];
+
+    NSDictionary *titleTextAttributes =
+        [RNNFontAttributesCreator createFromDictionary:self.getScrollEdgeAppearance.titleTextAttributes
+                                            fontFamily:fontFamily
+                                              fontSize:fontSize
+                                            fontWeight:fontWeight
+                                                 color:fontColor
+                                              centered:YES];
+
+    id attrib = titleTextAttributes[NSParagraphStyleAttributeName];
+    if ([attrib isKindOfClass:[NSMutableParagraphStyle class]]) {
+        ((NSMutableParagraphStyle *)titleTextAttributes[NSParagraphStyleAttributeName]).lineBreakMode =
+            NSLineBreakByTruncatingTail;
+    }
+
     self.getScrollEdgeAppearance.titleTextAttributes = titleTextAttributes;
 }
 

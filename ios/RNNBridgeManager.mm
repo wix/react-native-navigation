@@ -107,8 +107,10 @@
 
 - (void)onJavaScriptLoaded {
 	[_commandsHandler setReadyToReceiveCommands:true];
+#ifndef RCT_REMOVE_LEGACY_ARCH
 	[_modalHostViewHandler
 		connectModalHostViewManager:[self.bridge moduleForClass:RCTModalHostViewManager.class]];
+#endif
 	[[_bridge moduleForClass:[RNNBridgeEventEmitter class]] sendOnAppLaunched];
 }
 

@@ -25,7 +25,7 @@ function run() {
 function assertAllTsFilesInSrc() {
   const allFiles = exec.execSyncRead('find ./src -type f');
   const lines = split(allFiles, '\n');
-  const offenders = filter(lines, (f) => !f.endsWith('.ts') && !f.endsWith('.tsx'));
+  const offenders = filter(lines, (f) => !f.endsWith('.ts') && !f.endsWith('.tsx') && !f.endsWith('.md'));
   if (offenders.length) {
     throw new Error(`\n\nOnly ts/tsx files are allowed:\n${offenders.join('\n')}\n\n\n`);
   }
