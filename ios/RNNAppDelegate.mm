@@ -5,11 +5,17 @@
 
 #import "RCTAppSetupUtils.h"
 #import <React/CoreModulesPlugins.h>
+#if __has_include(<React/RCTCxxBridgeDelegate.h>)
 #import <React/RCTCxxBridgeDelegate.h>
+#endif
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
 #import <React/RCTSurfacePresenter.h>
+#if __has_include(<React/RCTSurfacePresenterStub.h>)
 #import <React/RCTSurfacePresenterStub.h>
+#endif
+#if __has_include(<React/RCTSurfacePresenterBridgeAdapter.h>)
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
+#endif
 #import <ReactCommon/RCTTurboModuleManager.h>
 
 #if __has_include(<react/config/ReactNativeConfig.h>)
@@ -19,9 +25,13 @@
 #import <react/renderer/runtimescheduler/RuntimeScheduler.h>
 #import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
 #import <React/RCTSurfacePresenter.h>
+#if __has_include(<React/RCTBridge+Private.h>)
 #import <React/RCTBridge+Private.h>
+#endif
 #import <React/RCTImageLoader.h>
+#if __has_include(<React/RCTBridgeProxy.h>)
 #import <React/RCTBridgeProxy.h>
+#endif
 #import <React/RCTSurfacePresenter.h>
 #import <react/utils/ManagedObjectWrapper.h>
 

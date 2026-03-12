@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
 import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import { CarItem } from '../../assets/cars';
 import { hexToRgba } from '../../commons/Colors';
 import PressableScale from '../../components/PressableScale';

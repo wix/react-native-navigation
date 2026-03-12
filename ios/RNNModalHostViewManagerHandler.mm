@@ -10,6 +10,7 @@
     return self;
 }
 
+#ifndef RCT_REMOVE_LEGACY_ARCH
 - (void)connectModalHostViewManager:(RCTModalHostViewManager *)modalHostViewManager {
     modalHostViewManager.presentationBlock =
         ^(UIViewController *reactViewController, UIViewController *viewController, BOOL animated,
@@ -36,5 +37,6 @@
                                  }];
         };
 }
+#endif
 
 @end

@@ -1,6 +1,8 @@
 #import "RCTHelpers.h"
 #import <React/RCTFont.h>
+#if __has_include(<React/RCTScrollView.h>)
 #import <React/RCTScrollView.h>
+#endif
 #import <React/RCTView.h>
 
 @implementation RCTHelpers
@@ -201,7 +203,7 @@
                 UIView *yelloboxParentView = view;
                 while (view.superview != nil) {
                     yelloboxParentView = yelloboxParentView.superview;
-                    if ([yelloboxParentView isKindOfClass:[RCTScrollView class]]) {
+                    if ([yelloboxParentView isKindOfClass:NSClassFromString(@"RCTScrollView")]) {
                         yelloboxParentView = yelloboxParentView.superview;
                         break;
                     }
