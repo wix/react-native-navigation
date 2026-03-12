@@ -38,6 +38,7 @@ const Screens = {
   Lifecycle: 'Lifecycle',
   BackHandler: 'BackHandler',
   BottomTabs: 'BottomTabs',
+  BottomTabsStyling: 'BottomTabsStyling',
   FirstBottomTabsScreen: 'FirstBottomTabsScreen',
   SecondBottomTabsScreen: 'SecondBottomTabsScreen',
   Navigation: 'Navigation',

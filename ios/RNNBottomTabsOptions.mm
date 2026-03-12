@@ -72,7 +72,11 @@
 }
 
 - (BOOL)shouldDrawBehind {
-    return [self.drawBehind withDefault:NO] || [self.translucent withDefault:NO] ||
+    BOOL defaultDrawBehind = NO;
+    if (@available(iOS 26.0, *)) {
+        defaultDrawBehind = YES;
+    }
+    return [self.drawBehind withDefault:defaultDrawBehind] || [self.translucent withDefault:NO] ||
            ![self.visible withDefault:YES];
 }
 

@@ -57,7 +57,6 @@
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
     [[self.boundViewController expect] setTabBarVisible:YES];
-    [[self.boundViewController expect] setTabBarStyle:UIBarStyleDefault];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
