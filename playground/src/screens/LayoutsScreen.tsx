@@ -75,6 +75,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button label="BottomTabs Styling" onPress={this.bottomTabsStyling} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
@@ -103,6 +104,37 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
             testID: BOTTOM_TABS,
           },
         },
+      },
+    });
+  };
+
+  bottomTabsStyling = () => {
+    Navigation.showModal({
+      bottomTabs: {
+        children: [
+          {
+            stack: {
+              children: [{ component: { name: Screens.BottomTabsStyling } }],
+              options: {
+                bottomTab: {
+                  text: 'Styling',
+                  icon: require('../../img/whatshot.png'),
+                },
+              },
+            },
+          },
+          {
+            stack: {
+              children: [{ component: { name: Screens.Pushed } }],
+              options: {
+                bottomTab: {
+                  text: 'Content',
+                  icon: require('../../img/layouts.png'),
+                },
+              },
+            },
+          },
+        ],
       },
     });
   };

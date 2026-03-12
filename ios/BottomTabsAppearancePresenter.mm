@@ -7,6 +7,11 @@
 #pragma mark - public
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {
+    if (@available(iOS 26.0, *)) {
+        [self setTabBarTransparentBackground];
+        self.tabBar.backgroundColor = UIColor.clearColor;
+        return;
+    }
     if (translucent)
         [self setTabBarTranslucent:YES];
     else if (backgroundColor.isTransparent)
@@ -19,26 +24,33 @@
 
 - (void)applyTabBarBorder:(RNNBottomTabsOptions *)options {
     if (options.borderColor.hasValue || options.borderWidth.hasValue) {
-        for (UIViewController *childViewController in self.tabBarController.childViewControllers)
-            childViewController.tabBarItem.standardAppearance.shadowImage = [UIImage
-                imageWithSize:CGSizeMake(1.0, [[options.borderWidth withDefault:@(0.1)] floatValue])
-                        color:[options.borderColor withDefault:UIColor.blackColor]];
+        UIImage *borderImage = [UIImage
+            imageWithSize:CGSizeMake(1.0, [[options.borderWidth withDefault:@(0.1)] floatValue])
+                    color:[options.borderColor withDefault:UIColor.blackColor]];
+
+        for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
+            childViewController.tabBarItem.standardAppearance.shadowImage = borderImage;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+            if (@available(iOS 15.0, *)) {
+                childViewController.tabBarItem.scrollEdgeAppearance.shadowImage = borderImage;
+            }
+#endif
+        }
     }
 }
 
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor {
-    [self setTabBarOpaqueBackground];
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
-        childViewController.tabBarItem.standardAppearance.backgroundColor = backgroundColor;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-        if (@available(iOS 15.0, *)) {
-            childViewController.tabBarItem.scrollEdgeAppearance.backgroundColor = backgroundColor;
-        }
-#endif
+    UITabBarAppearance *appearance = [self appearanceWithColor:backgroundColor];
+    [self applyTabBarAppearance:appearance];
+    self.tabBar.barTintColor = backgroundColor;
+    self.tabBar.translucent = NO;
+    if (@available(iOS 26.0, *)) {
+        self.tabBar.backgroundColor = backgroundColor;
     }
 }
 
 - (void)setTabBarTranslucent:(BOOL)translucent {
+    self.tabBar.translucent = translucent;
     if (translucent)
         [self setTabBarTranslucentBackground];
     else
@@ -48,38 +60,63 @@
 #pragma mark - private
 
 - (void)setTabBarDefaultBackground {
-    [self setTabBarOpaqueBackground];
+    if (@available(iOS 26.0, *)) {
+        [self setTabBarTransparentBackground];
+        self.tabBar.backgroundColor = UIColor.clearColor;
+    } else {
+        [self setTabBarOpaqueBackground];
+    }
 }
 
 - (void)setTabBarTranslucentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
-        [childViewController.tabBarItem.standardAppearance configureWithDefaultBackground];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-        if (@available(iOS 15.0, *)) {
-            [childViewController.tabBarItem.scrollEdgeAppearance configureWithDefaultBackground];
-        }
-#endif
-    }
+    UITabBarAppearance *appearance = [UITabBarAppearance new];
+    [appearance configureWithDefaultBackground];
+    [self applyTabBarAppearance:appearance];
+    self.tabBar.barTintColor = nil;
 }
 
 - (void)setTabBarTransparentBackground {
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
-        [childViewController.tabBarItem.standardAppearance configureWithTransparentBackground];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-        if (@available(iOS 15.0, *)) {
-            [childViewController.tabBarItem
-                    .scrollEdgeAppearance configureWithTransparentBackground];
-        }
-#endif
-    }
+    UITabBarAppearance *appearance = [UITabBarAppearance new];
+    [appearance configureWithTransparentBackground];
+    appearance.backgroundEffect = nil;
+    appearance.backgroundColor = UIColor.clearColor;
+    [self applyTabBarAppearance:appearance];
+    self.tabBar.barTintColor = UIColor.clearColor;
 }
 
 - (void)setTabBarOpaqueBackground {
+    UITabBarAppearance *appearance = [self appearanceWithColor:nil];
+    [self applyTabBarAppearance:appearance];
+    self.tabBar.barTintColor = UIColor.systemBackgroundColor;
+    self.tabBar.translucent = NO;
+}
+
+#pragma mark - helpers
+
+- (UITabBarAppearance *)appearanceWithColor:(UIColor *)color {
+    UITabBarAppearance *appearance = [UITabBarAppearance new];
+    [appearance configureWithOpaqueBackground];
+    appearance.backgroundEffect = nil;
+    appearance.shadowColor = nil;
+    UIColor *resolvedColor = color ?: UIColor.systemBackgroundColor;
+    appearance.backgroundColor = resolvedColor;
+    appearance.backgroundImage = [UIImage imageWithSize:CGSizeMake(1, 1) color:resolvedColor];
+    return appearance;
+}
+
+- (void)applyTabBarAppearance:(UITabBarAppearance *)appearance {
+    self.tabBar.standardAppearance = appearance;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+    if (@available(iOS 15.0, *)) {
+        self.tabBar.scrollEdgeAppearance = [appearance copy];
+    }
+#endif
+
     for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
-        [childViewController.tabBarItem.standardAppearance configureWithOpaqueBackground];
+        childViewController.tabBarItem.standardAppearance = [appearance copy];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
         if (@available(iOS 15.0, *)) {
-            [childViewController.tabBarItem.scrollEdgeAppearance configureWithOpaqueBackground];
+            childViewController.tabBarItem.scrollEdgeAppearance = [appearance copy];
         }
 #endif
     }

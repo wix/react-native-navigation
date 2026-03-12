@@ -48,6 +48,10 @@ function registerScreens() {
     () => require('./ExternalComponentScreen').default
   );
   Navigation.registerComponent(
+    Screens.BottomTabsStyling,
+    () => require('./BottomTabsStylingScreen').default
+  );
+  Navigation.registerComponent(
     Screens.FirstBottomTabsScreen,
     () => require('./FirstBottomTabScreen').default
   );
