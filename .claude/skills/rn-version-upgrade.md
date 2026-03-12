@@ -183,19 +183,54 @@ cd playground/android && ./gradlew assembleDebug
 
 ### 4a. Batch-Fix: Guard Legacy iOS Imports
 
-If the new RN version removes legacy headers from precompiled binaries, guard ALL identified imports at once:
+If the new RN version removes legacy headers from precompiled binaries, guard ALL identified imports at once.
+
+**Preferred approach: `__has_include` (compile-time header check)**
+
+The best way to guard optional headers is `#if __has_include(...)`. This is forward-compatible — if a future RN version removes more headers, the code adapts automatically without needing new flags:
+
+```objc
+#if __has_include(<React/RCTScrollView.h>)
+#import <React/RCTScrollView.h>
+#endif
+
+#if __has_include(<React/RCTCxxBridgeDelegate.h>)
+#import <React/RCTCxxBridgeDelegate.h>
+#endif
+```
+
+Use `__has_include` for **imports** where the header may or may not exist. Then use `NSClassFromString` (see Pattern 3 below) for runtime references to classes from those headers.
+
+**Alternative: `#ifndef RCT_REMOVE_LEGACY_ARCH`**
+
+Starting with RN 0.84, React Native defines `RCT_REMOVE_LEGACY_ARCH=1` when legacy/bridge APIs are fully removed. This is more precise than `RCT_NEW_ARCH_ENABLED` (which has been true since RN 0.76 even though legacy APIs were still available). Use this for guarding **code blocks** that use legacy APIs:
+
+```objc
+#ifndef RCT_REMOVE_LEGACY_ARCH
+#import <React/RCTModalHostViewManager.h>
+#endif
+
+// In implementation:
+#ifndef RCT_REMOVE_LEGACY_ARCH
+- (void)connectModalHostViewManager:(RCTModalHostViewManager *)manager {
+    // old-arch-only code
+}
+#endif
+```
+
+**When to use which:**
+- `__has_include(...)` — for **imports** of headers that may not exist. Most robust, no flag dependency.
+- `#ifndef RCT_REMOVE_LEGACY_ARCH` — for **code blocks** using legacy APIs (method declarations, implementations, protocol conformances). Semantically correct: "this code requires the legacy arch."
+- `#ifdef RCT_NEW_ARCH_ENABLED` — only for code that differs **between architectures** (e.g., `RCTHost` vs `RCTBridge` parameters). NOT for "is legacy available?" checks.
+
+**Steps:**
 
 1. List all files importing legacy headers:
    ```bash
-   grep -rn "#import <React/RCTRootView\|#import <React/RCTRootViewDelegate\|#import <React/RCTBridge+Private\|#import <React/RCTModalHostView\|#import <React/RCTScrollView\|#import <React/RCTRootContentView" ios/ --include="*.h" --include="*.mm"
+   grep -rn "#import <React/RCTRootView\|#import <React/RCTRootViewDelegate\|#import <React/RCTBridge+Private\|#import <React/RCTModalHostView\|#import <React/RCTScrollView\|#import <React/RCTRootContentView\|#import <React/RCTSurfacePresenterStub\|#import <React/RCTBridgeProxy" ios/ --include="*.h" --include="*.mm"
    ```
 
-2. For each file, determine if the import is used only in old-arch code. If so, guard it:
-   ```objc
-   #ifndef RCT_NEW_ARCH_ENABLED
-   #import <React/RCTRootView.h>
-   #endif
-   ```
+2. For each file, apply the appropriate guard (prefer `__has_include` for imports, `#ifndef RCT_REMOVE_LEGACY_ARCH` for code blocks).
 
 3. **Guard the full chain**: import -> type usage -> method declarations -> protocol conformances -> method implementations. Guarding just the import without guarding the code that uses the type causes "undeclared identifier" errors.
 
@@ -208,12 +243,30 @@ If the new RN version removes legacy headers from precompiled binaries, guard AL
 
 ### 4b. Common iOS Fix Patterns
 
-**Pattern 1: Guard legacy imports** -- Wrap in `#ifndef RCT_NEW_ARCH_ENABLED` / `#endif`.
+**Pattern 1: Guard optional imports with `__has_include`** -- Preferred for headers that may not exist:
+```objc
+#if __has_include(<React/RCTSurfacePresenterBridgeAdapter.h>)
+#import <React/RCTSurfacePresenterBridgeAdapter.h>
+#endif
+```
 
-**Pattern 2: Guard entire files** -- If a file is only used on old arch (e.g., `RNNBridgeManager.h/.mm`), wrap the entire content in `#ifndef RCT_NEW_ARCH_ENABLED`.
+**Pattern 2: Guard legacy code blocks with `RCT_REMOVE_LEGACY_ARCH`** -- For methods/classes that only exist on old arch:
+```objc
+#ifndef RCT_REMOVE_LEGACY_ARCH
+- (void)connectModalHostViewManager:(RCTModalHostViewManager *)manager { ... }
+#endif
+```
 
-**Pattern 3: Runtime class lookup** -- When you need to reference a class that may not exist at compile time, use `NSClassFromString` instead of direct class references. Cache the result if it's in a hot path (like `hitTest:withEvent:`):
+**Pattern 3: Guard entire files** -- If a file is only used on old arch (e.g., `RNNBridgeManager.h/.mm`), wrap the entire content in `#ifndef RCT_REMOVE_LEGACY_ARCH`.
 
+**Pattern 4: Runtime class lookup** -- When you need to reference a class that may not exist at compile time (e.g., in `hitTest:withEvent:` or `isKindOfClass:` checks), use `NSClassFromString` instead of direct class references. This pairs well with `__has_include` — the import is conditional, and the runtime check handles the case where the class doesn't exist:
+
+```objc
+// Instead of: [view isKindOfClass:[RCTModalHostView class]]
+[view isKindOfClass:NSClassFromString(@"RCTModalHostView")]
+```
+
+Cache the result with `dispatch_once` if it's in a hot path:
 ```objc
 static Class myClass;
 static dispatch_once_t onceToken;
@@ -222,9 +275,9 @@ dispatch_once(&onceToken, ^{
 });
 ```
 
-**Pattern 4: Remove dead code paths** -- A `#ifdef RCT_NEW_ARCH_ENABLED` block that calls `getBridge` (old-arch only) is dead code -- remove it.
+**Pattern 5: Remove dead code paths** -- A `#ifdef RCT_NEW_ARCH_ENABLED` block that calls `getBridge` (old-arch only) is dead code -- remove it.
 
-**Pattern 5: Protocol conformance guards** -- If a protocol (e.g., `RCTRootViewDelegate`) only exists on old arch, guard the conformance declaration AND the delegate method implementations:
+**Pattern 6: Protocol conformance guards** -- If a protocol (e.g., `RCTRootViewDelegate`) only exists on old arch, guard the conformance declaration AND the delegate method implementations:
 
 ```objc
 @interface MyView : UIView
@@ -243,16 +296,56 @@ dispatch_once(&onceToken, ^{
 
 **Pattern 4: Changed method signatures** -- RN may change method signatures without deprecation (e.g., nullable parameters becoming non-nullable, or new required parameters). These cause compile errors that aren't caught by searching for removed/deprecated APIs. Check the RN changelog for API changes in utility classes like `ColorPropConverter`, `ColorParser`, etc.
 
-### 4d. Compile Error Triage
+### 4d. Research Before Fixing: Don't Just Pattern-Match
+
+**When you hit a new compilation error, resist the urge to immediately copy the fix pattern from nearby code.** Instead:
+
+1. **Check what the target RN version introduces.** Read the RN changelog/blog for new preprocessor flags, build system features, or recommended migration patterns. For example, RN 0.84 introduced `RCT_REMOVE_LEGACY_ARCH` — a flag specifically designed for the exact guarding problem we need to solve. Using it is better than repurposing `RCT_NEW_ARCH_ENABLED`.
+
+2. **Search for how other RN libraries solved it.** Check how major community libraries (react-native-screens, react-native-reanimated, react-native-gesture-handler) handle the same compatibility issue. They often discover better patterns first.
+
+3. **Evaluate the existing codebase pattern critically.** The pattern used in the current code may predate better alternatives. Ask: is there a more forward-compatible approach? Would `__has_include` be more robust than a flag check? Would `NSClassFromString` be cleaner than a compile-time guard?
+
+4. **Prefer compile-time safety over runtime safety, and standard compiler features over framework-specific flags.** `__has_include` is a C/ObjC compiler feature that works regardless of RN version. Framework flags like `RCT_REMOVE_LEGACY_ARCH` are next best. `NSClassFromString` is a runtime fallback for when compile-time checks aren't sufficient.
+
+### 4e. Compile Error Triage
 
 When you get a compile error:
 1. Identify the missing symbol (header, class, method)
-2. Check if it's used only in old-arch or new-arch code paths
-3. If old-arch only: guard with `#ifndef RCT_NEW_ARCH_ENABLED`
-4. If new-arch only: this shouldn't happen -- investigate the API replacement
-5. If used in both: find the new-arch equivalent and branch with `#ifdef`
+2. **Research** the best available guard mechanism (see 4d above)
+3. Check if it's used only in old-arch or new-arch code paths
+4. If old-arch only: guard with `__has_include` (imports) or `#ifndef RCT_REMOVE_LEGACY_ARCH` (code)
+5. If new-arch only: this shouldn't happen -- investigate the API replacement
+6. If used in both: find the new-arch equivalent and branch with `#ifdef RCT_NEW_ARCH_ENABLED`
 
-### 4e. clang-format
+### 4e. Fix Test Files
+
+**Test files are easily overlooked.** They often reference arch-specific APIs (like `RCTBridge` vs `RCTHost`, or methods that only exist under `#ifdef RCT_NEW_ARCH_ENABLED`). Check all test files for arch-specific calls:
+
+```bash
+# Find test files referencing RCTBridge (old-arch only in new-arch builds)
+grep -rn "RCTBridge\|registerExternalComponent" playground/ios/NavigationTests/ --include="*.mm"
+
+# Check that test method calls match the current header signatures
+# e.g., RNNExternalComponentStore exposes different methods under #ifdef RCT_NEW_ARCH_ENABLED
+```
+
+Guard test code the same way as production code — use `#ifndef RCT_REMOVE_LEGACY_ARCH` for tests that only apply to legacy arch:
+
+```objc
+#ifndef RCT_REMOVE_LEGACY_ARCH
+
+@interface RNNModalHostViewManagerHandlerTest : XCTestCase
+@end
+// ... entire test class ...
+@end
+
+#endif
+```
+
+**Key lesson from RN 0.84**: All 4 iOS CI jobs failed because a single test file (`RNNViewControllerFactoryTest.mm`) called an old-arch method on `RNNExternalComponentStore` without a guard. The fix was trivial but blocked the entire build.
+
+### 4f. clang-format
 
 RNN uses clang-format on iOS files via a pre-commit hook. After editing `.h`/`.mm` files, verify formatting:
 
@@ -319,7 +412,7 @@ Update `website/docs/docs/docs-Installing.mdx`:
 
 2. **Search for ALL references when replacing a package** -- TypeScript imports, Android gradle `implementation project()` lines, iOS pod references, root AND playground package.json. Missing one causes CI failures.
 
-3. **Legacy headers in precompiled binaries** -- When RN enforces new arch by default (like 0.84 with `RCT_REMOVE_LEGACY_ARCH=1`), headers for old-arch classes are stripped from the xcframework. Any unguarded `#import` of these headers causes a compile error. Batch-fix all legacy imports identified in Phase 1b rather than finding them one build at a time.
+3. **Legacy headers in precompiled binaries** -- When RN enforces new arch by default (like 0.84 with `RCT_REMOVE_LEGACY_ARCH=1`), headers for old-arch classes are stripped from the xcframework. Use `__has_include` for conditional imports and `#ifndef RCT_REMOVE_LEGACY_ARCH` for code blocks. Batch-fix all legacy imports identified in Phase 1b rather than finding them one build at a time.
 
 4. **Guard code, not just imports** -- Guarding an import without guarding the code that uses the imported types leads to "undeclared identifier" errors. Always guard the full chain: import -> type usage -> method declarations -> method implementations.
 
@@ -334,3 +427,7 @@ Update `website/docs/docs/docs-Installing.mdx`:
 9. **Android SDK level cascading effects** -- Bumping `compileSdkVersion`/`targetSdkVersion` can require bumping Robolectric, which may require a higher Java version than CI provides. Solution: pin the Robolectric SDK via `robolectric.properties` (e.g., `sdk=35` when SDK 36 needs Java 21).
 
 10. **Podspec can be a major effort** -- Don't underestimate podspec changes. RN 0.80 required replacing the entire dependency declaration strategy. Compare your podspec against the RN template's pattern for the target version.
+
+11. **Don't forget test files** -- Test files (`NavigationTests/*.mm`) often call arch-specific APIs directly. When guarding production code, search test files for the same APIs and guard them too. A single unguarded test call can fail the entire CI build across all RN versions.
+
+12. **Don't just follow existing patterns — research better ones** -- When fixing a compilation error, don't blindly copy the guarding pattern already used in the codebase. The existing pattern may predate better alternatives introduced in newer RN versions. For example, RN 0.84 introduced `RCT_REMOVE_LEGACY_ARCH` and the codebase already supported `__has_include`, but initial fixes used the older `#ifdef RCT_NEW_ARCH_ENABLED` pattern because that's what the existing code used. Always check: what new preprocessor flags or build-system features does the target RN version introduce? Is there a more robust/forward-compatible way to solve this?
