@@ -91,6 +91,7 @@
                                   }];
         self.reactView.backgroundColor = UIColor.clearColor;
         self.reactView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.reactView.clipsToBounds = YES;
         [self.reactView setFrame:self.view.frame];
         [self.view addSubview:self.reactView];
         [self updateReactViewFrame];
@@ -118,14 +119,15 @@
     if (self.isViewLoaded && self.reactView) {
         CGFloat bottomInset = self.shouldDrawBehindBottomTabs ? 0 : self.view.safeAreaInsets.bottom;
         CGFloat topInset = self.shouldDrawBehindTopBar ? 0 : self.view.safeAreaInsets.top;
+
         [self.reactView setFrame:CGRectMake(0, topInset, self.view.frame.size.width,
                                             self.view.frame.size.height - topInset - bottomInset)];
     }
 }
 
 - (BOOL)shouldDrawBehindBottomTabs {
-    return (!self.tabBarController.tabBar || self.tabBarController.tabBar.isHidden ||
-            _drawBehindBottomTabs);
+    return !self.tabBarController.tabBar || self.tabBarController.tabBar.isHidden ||
+           _drawBehindBottomTabs;
 }
 
 - (BOOL)shouldDrawBehindTopBar {
