@@ -7,7 +7,7 @@ import {
   OptionsModalTransitionStyle,
 } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
 import DismissableView from './DismissableView';
 import useDismissGesture from './useDismissGesture';

@@ -70,7 +70,7 @@
     "prettier": "2.8.8",
     "react": "19.2.3",
     "react-native": "0.84.0",
-    "react-native-fast-image": "^8.6.3",
+    "@d11/react-native-fast-image": "^8.13.0",
     "react-native-gesture-handler": "^2.29.1",
     "react-native-monorepo-config": "^0.3.0",
     "react-native-reanimated": "4.2.2",
