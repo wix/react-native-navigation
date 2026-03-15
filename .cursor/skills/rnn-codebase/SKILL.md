@@ -141,6 +141,56 @@ API layout → OptionsCrawler.crawl() → LayoutProcessor.process()
 - `yarn prepare` — Builds `src/` → `lib/` (ESM + types)
 - Codegen config: `rnnavigation` in `package.json`
 
+## Engine Integration (Wix One App)
+
+RNN is a standalone library but also a core dependency of `mobile-apps-engine` (the Wix One App platform). Changes to RNN's public API surface can break engine.
+
+### Version Management
+
+- Version pinned in two files (must match):
+  - `packages/native/mobile-apps-engine-native/package.json`
+  - `packages/wix-one-app-storage/package.json`
+- `yarn.config.cjs` has a constraint that reads the version from `mobile-apps-engine-native` and validates all workspaces use the same version. It's a validation rule — bumping the native package.json is sufficient.
+
+### iOS Integration
+
+- Engine's `AppDelegate` subclasses `RNNAppDelegate` — breaking changes to that class will break engine.
+- Podfile resolves `ReactNativeNavigation` pod from node_modules.
+- Xcode project has header search paths pointing into `node_modules/react-native-navigation/ios/**`.
+
+### Android Integration
+
+- Engine's `EngineRN.kt` extends `NavigationApplication` and uses `NavigationPackage` / `NavigationReactNativeHost`.
+- `missingDimensionStrategy "RNN.reactNativeVersion"` is set in `app/build.gradle` — may need updating if RNN changes its flavor dimensions.
+- Build variables `RNNKotlinVersion`, `RNNKotlinStdlib`, `RNNKotlinCoroutinesCore` are forwarded from engine's Kotlin config.
+
+### Active Patches (in engine's setup)
+
+- **OptionsProcessor.js** — engine replaces RNN's `OptionsProcessor.js` at setup time via `patchRNNOptionsProcessor()` in `packages/cli/mobile-apps-engine-setup/src/index.js`. The patched copy lives at `packages/cli/mobile-apps-engine-setup/etc/OptionsProcessor.js`. It adds:
+  - Custom iOS color processing with `DynamicColorIOS` (dark/light/dynamic object shapes)
+  - Custom Android color processing wrapping colors in `{dark, light}` objects with `semantic`/`resource_paths` support
+  - Component ID uses `value.name` instead of `uniqueIdProvider.generate()`
+- Any changes to `src/commands/OptionsProcessor.ts` require checking if the engine patch needs updating.
+
+### JS Wrappers
+
+Engine wraps RNN's `Navigation` API in several services:
+- `Navigator.ts` — root layout, overlays, error screens, tab navigation
+- `BottomTabsBackHandler.ts` — back handling on bottom tabs via `Navigation.events()`
+- `TabsManager.ts` — tab management using RNN `Layout` types
+- Various other services import `Layout`, `LayoutRoot`, `LayoutSideMenu`, `OptionsSideMenu` from RNN
+
+### Upgrade Checklist
+
+1. Bump version in both `package.json` files
+2. Verify `OptionsProcessor.js` patch still applies (diff upstream changes)
+3. Check `RNNAppDelegate` API compatibility (iOS)
+4. Check `NavigationApplication` / `NavigationPackage` / `NavigationReactNativeHost` API compatibility (Android)
+5. Verify `missingDimensionStrategy` value is still valid
+6. Check `react-native-navigation-hooks` and `rnn-copilot` compatibility
+7. Run `yarn install` to update lockfile
+8. Verify test mocks (`react-native-navigation/Mock`) still work
+
 ## Common Gotchas
 
 - iOS uses UIKit subclasses (UINavigationController, UITabBarController); Android uses custom View hierarchy
