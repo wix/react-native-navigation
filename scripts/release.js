@@ -97,10 +97,13 @@ function tryPublishAndTag(version) {
       console.log(`Released ${theCandidate}`);
       return;
     } catch (err) {
-      const alreadyPublished = includes(
-        err.toString(),
-        'You cannot publish over the previously published version'
-      );
+      let alreadyPublished = false;
+      try {
+        cp.execSync(`npm view ${process.env.npm_package_name}@${theCandidate} version`, {stdio: 'pipe'});
+        alreadyPublished = true;
+      } catch (_) {
+        alreadyPublished = false;
+      }
       if (!alreadyPublished) {
         throw err;
       }
