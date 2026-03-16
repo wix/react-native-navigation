@@ -1,0 +1,92 @@
+name: Notify Engine of RNN Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to use (e.g. 8.7.6)'
+        required: true
+
+jobs:
+  notify-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine release version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.release_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get previous release date
+        id: prev_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREV_TAG=$(gh release list --limit 2 --json tagName -q '.[1].tagName')
+          PREV_DATE=$(gh release view "$PREV_TAG" --json publishedAt -q '.publishedAt' | cut -d'T' -f1)
+          echo "tag=$PREV_TAG" >> $GITHUB_OUTPUT
+          echo "date=$PREV_DATE" >> $GITHUB_OUTPUT
+          echo "Previous release: $PREV_TAG (published $PREV_DATE)"
+
+      - name: Check for PRs with wix label
+        id: wix_prs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          WIX_PRS=$(gh pr list \
+            --label wix \
+            --state merged \
+            --base master \
+            --search "merged:>=${{ steps.prev_release.outputs.date }}" \
+            --json number,title \
+            --jq '.')
+
+          COUNT=$(echo "$WIX_PRS" | jq 'length')
+          echo "Found $COUNT PR(s) with 'wix' label"
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "has_wix=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_wix=true" >> $GITHUB_OUTPUT
+            PR_LIST=$(echo "$WIX_PRS" | jq -r '.[] | "- #\(.number) \(.title)"')
+            {
+              echo "pr_list<<EOF"
+              echo "$PR_LIST"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          fi
+
+      - name: Dispatch to engine
+        if: steps.wix_prs.outputs.has_wix == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.ENGINE_GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.tag }}
+          PREV_VERSION: ${{ steps.prev_release.outputs.tag }}
+          PR_LIST: ${{ steps.wix_prs.outputs.pr_list }}
+        run: |
+          jq -n \
+            --arg version "$VERSION" \
+            --arg prev_version "$PREV_VERSION" \
+            --arg pr_list "$PR_LIST" \
+            '{
+              event_type: "rnn-version-update",
+              client_payload: {
+                version: $version,
+                prev_version: $prev_version,
+                pr_list: $pr_list
+              }
+            }' | gh api repos/wix-private/mobile-apps-engine/dispatches \
+              --method POST \
+              --input -
+
+          echo "Dispatched rnn-version-update to engine for version $VERSION"
