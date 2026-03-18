@@ -18,6 +18,17 @@
     return nil;
 }
 
+- (UIView *)findDescendantByClass:(id)clazz {
+    for (UIView *child in [self subviews]) {
+        if ([child isKindOfClass:clazz])
+            return child;
+        UIView *found = [child findDescendantByClass:clazz];
+        if (found)
+            return found;
+    }
+    return nil;
+}
+
 - (ViewType)viewType {
 #ifdef RCT_NEW_ARCH_ENABLED
 	if ([self isKindOfClass:[RCTImageComponentView class]]) {
