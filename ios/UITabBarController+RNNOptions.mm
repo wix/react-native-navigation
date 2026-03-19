@@ -26,10 +26,11 @@ static const void *RNNTabBarTestIDRetryScheduledKey = &RNNTabBarTestIDRetrySched
 
     for (NSUInteger tabIndex = 0; tabIndex < items.count; tabIndex++) {
         UITabBarItem *item = items[tabIndex];
+        NSString *testID = item.accessibilityIdentifier;
         UIView *tabView = [self.tabBar tabBarItemViewAtIndex:tabIndex];
-        if (tabView) {
-            [self rnn_applyTestID:item.accessibilityIdentifier toTabView:tabView];
-        } else if (item.accessibilityIdentifier) {
+        if (testID.length > 0 && tabView) {
+            [self rnn_applyTestID:testID toTabView:tabView];
+        } else if (testID.length > 0) {
             appliedAllKnownTestIDs = NO;
         }
     }
