@@ -72,11 +72,15 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
     if (!contentView)
         return nil;
 
-    UIView *barButton = [contentView findChildByClass:NSClassFromString(@"_UIButtonBarButton")];
-    if (!barButton) {
-        barButton = [contentView findDescendantByClass:NSClassFromString(@"_UIButtonBarButton")];
-    }
-    return barButton;
+    Class buttonClass = NSClassFromString(@"_UIButtonBarButton");
+
+    return [contentView findDescendantByClass:buttonClass
+                                 passingTest:^BOOL(UIView *view) {
+        if ([view respondsToSelector:NSSelectorFromString(@"isBackButton")]) {
+            return [[view valueForKey:@"backButton"] boolValue];
+        }
+        return YES;
+    }];
 }
 
 - (void)rnn_applyTestID:(NSString *)testID toBackButtonView:(UIView *)barButton {
@@ -87,19 +91,6 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 - (void)setBackButtonTestID:(NSString *)testID {
     if (!testID)
         return;
-
-    if (@available(iOS 26.0, *)) {
-        NSArray<UIViewController *> *vcs = self.viewControllers;
-        if (vcs.count >= 2) {
-            UIViewController *belowTop = vcs[vcs.count - 2];
-            if (!belowTop.navigationItem.backBarButtonItem) {
-                belowTop.navigationItem.backBarButtonItem =
-                    [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-            }
-            belowTop.navigationItem.backBarButtonItem.accessibilityIdentifier = testID;
-            belowTop.navigationItem.backBarButtonItem.isAccessibilityElement = YES;
-        }
-    }
 
     UIView *barButton = [self rnn_findBackButtonView];
     if (barButton) {
