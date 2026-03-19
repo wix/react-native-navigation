@@ -1,13 +1,23 @@
 #import "RNNBottomTabsController.h"
 #import "UITabBar+utils.h"
 #import "UITabBarController+RNNOptions.h"
+#import <objc/runtime.h>
+
+static const void *RNNTabBarTestIDRetryScheduledKey = &RNNTabBarTestIDRetryScheduledKey;
 
 @implementation UITabBarController (RNNOptions)
 
 - (void)rnn_applyTestID:(NSString *)testID toTabView:(UIView *)tabView {
     tabView.accessibilityIdentifier = testID;
-    if (testID)
-        tabView.isAccessibilityElement = YES;
+}
+
+- (BOOL)rnn_isTabBarTestIDRetryScheduled {
+    return [objc_getAssociatedObject(self, RNNTabBarTestIDRetryScheduledKey) boolValue];
+}
+
+- (void)rnn_setTabBarTestIDRetryScheduled:(BOOL)scheduled {
+    objc_setAssociatedObject(self, RNNTabBarTestIDRetryScheduledKey, @(scheduled),
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)rnn_applyTabBarItemTestIDs {
@@ -40,8 +50,15 @@
 }
 
 - (void)syncTabBarItemTestIDs {
-    if ([self rnn_applyTabBarItemTestIDs])
+    if ([self rnn_applyTabBarItemTestIDs]) {
+        [self rnn_setTabBarTestIDRetryScheduled:NO];
         return;
+    }
+
+    if ([self rnn_isTabBarTestIDRetryScheduled])
+        return;
+
+    [self rnn_setTabBarTestIDRetryScheduled:YES];
 
     __weak UITabBarController *weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)),
@@ -50,6 +67,7 @@
         if (!controller)
             return;
 
+        [controller rnn_setTabBarTestIDRetryScheduled:NO];
         [controller rnn_applyTabBarItemTestIDs];
     });
 }
