@@ -4,6 +4,29 @@
 
 @implementation UITabBarController (RNNOptions)
 
+- (void)rnn_applyTestID:(NSString *)testID toTabView:(UIView *)tabView {
+    tabView.accessibilityIdentifier = testID;
+    if (testID)
+        tabView.isAccessibilityElement = YES;
+}
+
+- (BOOL)rnn_applyTabBarItemTestIDs {
+    NSArray<UITabBarItem *> *items = self.tabBar.items ?: @[];
+    BOOL appliedAllKnownTestIDs = YES;
+
+    for (NSUInteger tabIndex = 0; tabIndex < items.count; tabIndex++) {
+        UITabBarItem *item = items[tabIndex];
+        UIView *tabView = [self.tabBar tabBarItemViewAtIndex:tabIndex];
+        if (tabView) {
+            [self rnn_applyTestID:item.accessibilityIdentifier toTabView:tabView];
+        } else if (item.accessibilityIdentifier) {
+            appliedAllKnownTestIDs = NO;
+        }
+    }
+
+    return appliedAllKnownTestIDs;
+}
+
 - (void)setCurrentTabIndex:(NSUInteger)currentTabIndex {
     [self setSelectedIndex:currentTabIndex];
 }
@@ -14,6 +37,21 @@
 
 - (void)setTabBarTestID:(NSString *)testID {
     self.tabBar.accessibilityIdentifier = testID;
+}
+
+- (void)syncTabBarItemTestIDs {
+    if ([self rnn_applyTabBarItemTestIDs])
+        return;
+
+    __weak UITabBarController *weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        UITabBarController *controller = weakSelf;
+        if (!controller)
+            return;
+
+        [controller rnn_applyTabBarItemTestIDs];
+    });
 }
 
 - (void)setTabBarStyle:(UIBarStyle)barStyle {
