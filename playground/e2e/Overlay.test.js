@@ -25,6 +25,21 @@ describe('Overlay', () => {
     await expect(elementByLabel('Alert displayed')).toBeVisible();
   });
 
+  it.e2e('overlay interceptTouchOutside false - touches inside overlay still work', async () => {
+    await elementById(TestIDs.SHOW_TOUCH_THROUGH_OVERLAY_BTN).tap();
+    await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+    await elementById(TestIDs.DISMISS_BTN).tap();
+    await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeNotVisible();
+  });
+
+  it.e2e('overlay interceptTouchOutside toggled via mergeOptions', async () => {
+    await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+    await elementById(TestIDs.SET_INTERCEPT_TOUCH).tap();
+    await elementById(TestIDs.ALERT_BUTTON).tap();
+    await expect(elementByLabel('Alert displayed')).toBeVisible();
+  });
+
   it.e2e('overlay should redraw after orientation change', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await device.setOrientation('landscape');
@@ -48,12 +63,11 @@ describe('Overlay', () => {
     await expect(elementByLabel('Outer button clicked')).toBeVisible();
   });
 
-  xtest('overlay pass touches - false', async () => {
-    await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
-    await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();
-    await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
-    await elementById(TestIDs.HIDE_TOP_BAR_BUTTON).tap();
-    await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
+  it.e2e('overlay interceptTouchOutside true - overlay buttons still respond', async () => {
+    await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+    await elementById(TestIDs.DISMISS_BTN).tap();
+    await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeNotVisible();
   });
 
   it.e2e(':android: should show banner overlay and not block the screen', async () => {
