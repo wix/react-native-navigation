@@ -111,15 +111,6 @@
         self.tabBar.scrollEdgeAppearance = [appearance copy];
     }
 #endif
-
-    for (UIViewController *childViewController in self.tabBarController.childViewControllers) {
-        childViewController.tabBarItem.standardAppearance = [appearance copy];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-        if (@available(iOS 15.0, *)) {
-            childViewController.tabBarItem.scrollEdgeAppearance = [appearance copy];
-        }
-#endif
-    }
 }
 
 @end
