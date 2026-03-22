@@ -1,4 +1,5 @@
 #import "RNNBottomTabsController.h"
+#import "UITabBarController+RNNOptions.h"
 #import "UITabBarController+RNNUtils.h"
 
 @interface RNNBottomTabsController ()
@@ -100,6 +101,8 @@
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
     }
+
+    [self syncTabBarItemTestIDs];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -111,6 +114,8 @@
     [_dotIndicatorPresenter mergeOptions:options
                          resolvedOptions:childViewController.resolveOptions
                                    child:childViewController];
+
+    [self syncTabBarItemTestIDs];
 }
 
 - (id<UITabBarControllerDelegate>)delegate {
@@ -123,6 +128,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    [self syncTabBarItemTestIDs];
     [self.presenter viewDidLayoutSubviews];
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
 }
