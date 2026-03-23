@@ -38,7 +38,10 @@
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    child.tabBarItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
+    UITabBarItem *updatedItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
+    if (updatedItem != child.tabBarItem) {
+        child.tabBarItem = updatedItem;
+    }
 }
 
 @end
