@@ -135,13 +135,31 @@ function readPackageJson() {
 }
 
 function updatePackageJsonGit(version) {
+  const prBranch = `ci/update-version-${version}`;
   exec.execSync(`git checkout ${BRANCH}`);
+  exec.execSync(`git checkout -b ${prBranch}`);
   const packageJson = readPackageJson();
   packageJson.version = version;
   writePackageJson(packageJson);
   exec.execSync(`git add package.json`);
   exec.execSync(`git commit -m"Update package.json version to ${version} [buildkite skip]"`);
-  exec.execSync(`git push deploy ${BRANCH}`);
+  exec.execSync(`git push deploy ${prBranch}`);
+
+  const prData = JSON.stringify({
+    title: `Update package.json version to ${version}`,
+    head: prBranch,
+    base: BRANCH,
+    body: `Automated version bump to ${version} from CI release.`,
+  });
+
+  cp.execSync(
+    `curl -s -X POST ` +
+    `-H "Authorization: token ${process.env.GIT_TOKEN}" ` +
+    `-H "Content-Type: application/json" ` +
+    `-d '${prData}' ` +
+    `https://api.github.com/repos/wix/react-native-navigation/pulls`
+  );
+
   draftGitRelease(version);
 }
 
