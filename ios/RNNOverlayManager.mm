@@ -19,6 +19,7 @@
     [overlayWindow setHidden:NO];
     
     overlayWindow.previousWindow.accessibilityElementsHidden = YES;
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, overlayWindow);
 }
 
 - (void)showOverlayWindowAsKeyWindow:(RNNOverlayWindow *)overlayWindow {
@@ -41,6 +42,7 @@
 
 - (void)detachOverlayWindow:(RNNOverlayWindow *)overlayWindow {
     overlayWindow.previousWindow.accessibilityElementsHidden = NO;
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
     
     [overlayWindow.previousWindow makeKeyWindow];
     [overlayWindow setHidden:YES];
