@@ -25,6 +25,7 @@ object SystemUiUtils {
 
     private var statusBarBackgroundView: View? = null
     private var navBarBackgroundView: View? = null
+    private var isEdgeToEdgeActive = false
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -97,6 +98,7 @@ object SystemUiUtils {
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            isEdgeToEdgeActive = navBarHeight > 0
             val lp = v.layoutParams
             if (lp.height != navBarHeight) {
                 lp.height = navBarHeight
@@ -115,6 +117,7 @@ object SystemUiUtils {
     fun tearDown() {
         statusBarBackgroundView = null
         navBarBackgroundView = null
+        isEdgeToEdgeActive = false
         statusBarHeight = -1
     }
 
@@ -236,7 +239,9 @@ object SystemUiUtils {
         window?.let {
             WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = lightColor
         }
-        navBarBackgroundView?.setBackgroundColor(color) ?: run {
+        if (isEdgeToEdgeActive) {
+            navBarBackgroundView?.setBackgroundColor(color)
+        } else {
             @Suppress("DEPRECATION")
             window?.navigationBarColor = color
         }
