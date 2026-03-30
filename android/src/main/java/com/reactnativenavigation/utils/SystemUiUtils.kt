@@ -22,10 +22,12 @@ object SystemUiUtils {
     private var statusBarHeight = -1
 
     const val DEFAULT_NAV_BAR_COLOR = Color.BLACK
+    private const val THREE_BUTTON_NAV_BAR_OPACITY = 0.8f
 
     private var statusBarBackgroundView: View? = null
     private var navBarBackgroundView: View? = null
     private var isEdgeToEdgeActive = false
+    private var isThreeButtonNav = false
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -98,7 +100,13 @@ object SystemUiUtils {
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            val tappableHeight = insets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom
+            val wasThreeButton = isThreeButtonNav
             isEdgeToEdgeActive = navBarHeight > 0
+            isThreeButtonNav = tappableHeight > 0
+            if (isThreeButtonNav != wasThreeButton) {
+                v.setBackgroundColor(getDefaultNavBarColor())
+            }
             val lp = v.layoutParams
             if (lp.height != navBarHeight) {
                 lp.height = navBarHeight
@@ -113,11 +121,23 @@ object SystemUiUtils {
      * Clears references to system bar background views.
      * Call from Activity.onDestroy to avoid leaking views across activity recreation.
      */
+    /**
+     * Returns the default navigation bar color, applying 80% opacity for 3-button navigation.
+     * Gesture navigation gets a fully opaque color since the bar is minimal.
+     */
+    @JvmStatic
+    fun getDefaultNavBarColor(): Int {
+        if (!isThreeButtonNav) return DEFAULT_NAV_BAR_COLOR
+        val alpha = (THREE_BUTTON_NAV_BAR_OPACITY * 255).toInt()
+        return Color.argb(alpha, Color.red(DEFAULT_NAV_BAR_COLOR), Color.green(DEFAULT_NAV_BAR_COLOR), Color.blue(DEFAULT_NAV_BAR_COLOR))
+    }
+
     @JvmStatic
     fun tearDown() {
         statusBarBackgroundView = null
         navBarBackgroundView = null
         isEdgeToEdgeActive = false
+        isThreeButtonNav = false
         statusBarHeight = -1
     }
 
