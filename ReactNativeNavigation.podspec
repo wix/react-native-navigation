@@ -2,7 +2,9 @@ require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-fabric_enabled = ENV['RCT_NEW_ARCH_ENABLED'] == '1'
+folly_compiler_flags = folly_flags()
+use_hermes = ENV['USE_HERMES'] == nil || ENV['USE_HERMES'] == '1'
+use_hermes_flag = use_hermes ? "-DUSE_HERMES=1" : ""
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeNavigation"
@@ -12,49 +14,32 @@ Pod::Spec.new do |s|
   s.authors      = "Wix.com"
   s.homepage     = package['homepage']
   s.license      = package['license']
-  s.platform     = :ios, "11.0"
+  s.platform     = :ios, min_ios_version_supported
 
   s.module_name  = 'ReactNativeNavigation'
-  s.default_subspec = 'Core'
 
-  s.subspec 'Core' do |ss|
-    s.source              = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
-    s.source_files    = 'lib/ios/**/*.{h,m,mm,cpp}'
-    s.exclude_files       = "lib/ios/ReactNativeNavigationTests/**/*.*", "lib/ios/OCMock/**/*.*"
-  end
+  s.source       = { :git => "https://github.com/wix/react-native-navigation.git", :tag => "#{s.version}" }
+  s.source_files = 'ios/**/*.{h,m,mm,cpp}'
+  s.exclude_files = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
 
-  if fabric_enabled
-    install_modules_dependencies(s)
+  s.public_header_files = [
+    'ios/RNNAppDelegate.h'
+  ]
 
-    folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
-    fabric_flags = fabric_enabled ? '-DRCT_NEW_ARCH_ENABLED' : ''
+  # Add Folly compiler flags to prevent coroutines header issues
+  # Add Hermes flag when using Hermes engine
+  s.compiler_flags = "#{folly_compiler_flags} #{use_hermes_flag}"
 
-    s.pod_target_xcconfig = {
-      'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/boost" "$(PODS_ROOT)/boost-for-react-native"  "$(PODS_ROOT)/RCT-Folly" "$(PODS_ROOT)/Headers/Private/React-Core" "$(PODS_ROOT)/Headers/Private/Yoga"',
-      "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
-      "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
-    }
+  # Add header search paths for React-Core private headers (needed for RCTCxxBridgeDelegate.h, etc.)
+  s.pod_target_xcconfig = {
+    'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers/Private/React-Core"',
+    'DEFINES_MODULE' => 'YES'
+  }
 
-    s.compiler_flags  = folly_compiler_flags + ' ' + '-DRCT_NEW_ARCH_ENABLED'
-    s.requires_arc    = true
+  # Let install_modules_dependencies handle all React Native dependencies
+  install_modules_dependencies(s)
 
-    s.dependency "React"
-    s.dependency "React-RCTFabric"
-    s.dependency "React-cxxreact"
-    s.dependency "React-Fabric"
-    s.dependency "React-Codegen"
-    s.dependency "RCT-Folly"
-    s.dependency "RCTRequired"
-    s.dependency "RCTTypeSafety"
-    s.dependency "ReactCommon/turbomodule/core"
-    s.dependency "React-runtimeexecutor"
-    s.dependency "React-rncore"
-  end
-
-  s.dependency 'React-Core'
-  s.dependency 'React-CoreModules'
-  s.dependency 'React-RCTImage'
-  s.dependency 'React-RCTText'
+  s.requires_arc = true
   s.dependency 'HMSegmentedControl'
   s.frameworks = 'UIKit'
 end

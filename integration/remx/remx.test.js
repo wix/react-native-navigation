@@ -1,7 +1,7 @@
 const React = require('react');
 require('react-native');
-const renderer = require('react-test-renderer');
-const { Navigation } = require('../../lib/src/index');
+const { render, act } = require('@testing-library/react-native');
+const { Navigation } = require('../../src/index');
 
 describe('remx support', () => {
   let MyConnectedComponent;
@@ -13,39 +13,45 @@ describe('remx support', () => {
   });
 
   it('renders normally', () => {
-    const tree = renderer.create(<MyConnectedComponent />);
-    const tree2 = renderer.create(<MyConnectedComponent />);
-    expect(tree.toJSON().children).toEqual(['no name']);
+    const { getByText } = render(<MyConnectedComponent />);
+    const { getByText: getByText2 } = render(<MyConnectedComponent />);
+    expect(getByText('no name')).toBeTruthy();
+    expect(getByText2('no name')).toBeTruthy();
   });
 
   it('rerenders as a result of an underlying state change (by selector)', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(
+    const { getByText } = render(
       <MyConnectedComponent renderCountIncrement={renderCountIncrement} />
     );
 
-    expect(tree.toJSON().children).toEqual(['no name']);
+    expect(getByText('no name')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.setters.setName('Bob');
+    act(() => {
+      store.setters.setName('Bob');
+    });
     expect(store.getters.getName()).toEqual('Bob');
-    expect(tree.toJSON().children).toEqual(['Bob']);
-
+    expect(getByText('Bob')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 
   it('rerenders as a result of an underlying state change with a new key', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(
+    const { queryByText } = render(
       <MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />
     );
 
-    expect(tree.toJSON().children).toEqual(null);
+    // Initially should show nothing (null children means no text)
+    expect(queryByText('30')).toBeNull();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.setters.setAge(30);
+    act(() => {
+      store.setters.setAge(30);
+    });
     expect(store.getters.getAge()).toEqual(30);
-    expect(tree.toJSON().children).toEqual(['30']);
+
+    expect(queryByText('30')).toBeTruthy();
 
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });

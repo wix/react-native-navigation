@@ -1,0 +1,39 @@
+---
+id: layout-stack
+title: Stack
+sidebar_label: Stack
+---
+
+A stack is a container layout promoting a hierarchical navigation. It is used to navigate between screens at consecutive levels of hierarchy, steps in a flow or across an app.
+
+```js
+{
+  id: 'PROFILE_TAB',
+  children: [
+    {
+      component: {
+        id: 'PROFILE_SCREEN',
+        name: 'ProfileScreen'
+      }
+    }
+  ]
+}
+```
+
+## `id`
+
+| Type   | Required | Description                                                                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string | No       | Unique id used to interact with the view via the Navigation api, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `children`
+
+| Type               | Required | Description                   |
+| ------------------ | -------- | ----------------------------- |
+| [Layout[]](layout-layout.mdx) | YES      | Child layouts of any kind. |
+
+## `options`
+
+| Type                    | Required | Description                                              |
+| ----------------------- | -------- | -------------------------------------------------------- |
+| [Options](options-root.mdx) | No       | Options that will apply to all screens in stack |

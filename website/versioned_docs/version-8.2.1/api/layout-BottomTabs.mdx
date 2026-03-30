@@ -1,0 +1,52 @@
+---
+id: layout-bottomTabs
+title: Bottom Tabs
+sidebar_label: Bottom Tabs
+---
+
+A container view for managing a radio-style selection interface, where a selection determines which child view controller to display.
+
+```js
+{
+  id: 'BOTTOM_TABS_LAYOUT',
+  children: [
+    {
+      component: {
+        id: 'HOME_SCREEN',
+        name: 'HomeScreen'
+      }
+    },
+    {
+      stack: {
+        id: 'PROFILE_TAB',
+        children: [
+          {
+            component: {
+              id: 'PROFILE_SCREEN',
+              name: 'ProfileScreen'
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+## `id`
+
+| Type   | Required | Description                                                                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string | No       | Unique id used to interact with the view via the Navigation api, usually `Navigation.mergeOptions` which accepts the componentId as it's first argument. |
+
+## `children`
+
+| Type               | Required | Description                   |
+| ------------------ | -------- | ----------------------------- |
+| [Layout[]](layout-layout.mdx) | YES      | Child layouts of any kind. |
+
+## `options`
+
+| Type                    | Required | Description                                                   |
+| ----------------------- | -------- | ------------------------------------------------------------- |
+| [Options](options-root.mdx) | No       | dynamic options which will apply to all screens in bottomTabs |

@@ -1,0 +1,95 @@
+---
+id: options-title
+title: Title Options
+sidebar_label: Title
+---
+
+Controls the top bar title.
+
+```js
+const options = {
+  topBar: {
+    title: {},
+  },
+};
+```
+
+### `text`
+
+Set the title for the TopBar.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| string | No       | Both     |
+
+### `fontSize`
+
+Set the title font size. On Android this value is in `sp`.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Both     |
+
+### `color`
+
+Set the title color.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `fontFamily`
+
+Set the title font family.
+
+| Type       | Required | Platform |
+| ---------- | -------- | -------- |
+| FontFamily | No       | Both     |
+
+### `fontStyle`
+
+| Type                     | Required | Platform |
+| ------------------------ | -------- | -------- |
+| enum('normal', 'italic') | No       | Both     |
+
+### `fontWeight`
+
+| Type                                                                                  | Required | Platform |
+| ------------------------------------------------------------------------------------- | -------- | -------- |
+| enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900') | No       | Both     |
+
+### `alignment`
+
+`fill` will make the title stretch and consume all available space in the TopBar while `center` will center the title in the middle of the TopBar.
+
+:::info defaults
+`center` is the default option on iOS while `fill` is the default for Android.
+:::
+
+| Type                  | Required | Platform |
+| --------------------- | -------- | -------- |
+| enum('center','fill') | No       | Both     |
+
+### `component`
+
+Set a react [component](layout-component.mdx) as the title. If this option is specified then text is ignored.
+
+| Type                              | Required | Platform |
+| --------------------------------- | -------- | -------- |
+| [Component](layout-component.mdx) | No       | Both     |
+
+### `topMargin`
+
+Change to TopBar's top margin.
+
+| Type   | Required | Platform |
+| ------ | -------- | -------- |
+| number | No       | Android  |
+
+### `visible`
+
+Determines whether the TopBar is visible or not.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |

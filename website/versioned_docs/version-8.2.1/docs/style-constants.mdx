@@ -1,0 +1,44 @@
+---
+id: style-constants
+title: Constants
+sidebar_label: Constants
+---
+
+React Native Navigation exposes a set of constants which can be used to get the dimensions of various navigation elements on the screen: StatusBar, TopBar and BottomTabs.
+
+## When are constants evaluated
+Some of the values exposed through the constants API are actually evaluated only after the UI is created (`setRoot` has been called) and therefore are not accessible through static getters.
+
+For example, if you need to get the height of the BottomTabs, you'll first need to have BottomTabs visible on the screen and only then retrieve their height via the constants API.
+
+:::important
+We recommend you don't cache the actual constants object returned by `await Navigation.constants()` or `Navigation.constantsSync()` as it might not be accurate later on when, for example, a new root is set or orientation changes.
+:::
+
+## API
+As explained above, constants are evaluated in native each time the API is invoked. There are two methods for accessing constants:
+
+- `Navigation.constants()`, which is async and thus returns a promise
+- `Navigation.constantsSync()`, which returns the constants synchronously, blocking the main thread
+
+Where possible, it is better to use the async method, since this will not block the main thread.
+
+```js
+const { Navigation } = require('react-native-navigation');
+const {
+  statusBarHeight,
+  topBarHeight,
+  bottomTabsHeight
+} = await Navigation.constants();
+```
+
+But, if you need to access the constants synchronously (e.g. within the `render()` method of a React component), you can do so as follows:
+
+```js
+const { Navigation } = require('react-native-navigation');
+const {
+  statusBarHeight,
+  topBarHeight,
+  bottomTabsHeight
+} = Navigation.constantsSync();
+```

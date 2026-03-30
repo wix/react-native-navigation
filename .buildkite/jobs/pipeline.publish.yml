@@ -1,0 +1,16 @@
+  - wait
+  - label: ":package: Publish"
+    env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
+    if: "build.pull_request.id == null"
+    command:
+    - "nvm install"
+    - "./scripts/ci.sh"
+    - "yarn run release"
+    timeout_in_minutes: 90
+    retry:
+      automatic:
+      - exit_status: [1, -1]
+        limit: 2
+
+

@@ -26,6 +26,7 @@ const {
 } = testIDs;
 
 interface State {
+  componentWillAppear: boolean;
   componentDidAppear: boolean;
 }
 
@@ -34,11 +35,13 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
     super(props);
     Navigation.events().bindComponent(this);
     this.state = {
+      componentWillAppear: false,
       componentDidAppear: false,
     };
   }
   componentWillAppear() {
     console.log('componentWillAppear:', this.props.componentId);
+    this.setState(previousState => ({ ...previousState, componentWillAppear: true }));
   }
 
   componentDidDisappear() {
@@ -47,7 +50,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
 
   componentDidAppear() {
     console.log('componentDidAppear:', this.props.componentId);
-    this.setState({ componentDidAppear: true });
+    this.setState(previousState => ({ ...previousState, componentDidAppear: true }));
   }
 
   static options(): Options {
@@ -72,6 +75,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button label="BottomTabs Styling" onPress={this.bottomTabsStyling} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
@@ -80,6 +84,7 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           platform="ios"
           onPress={this.splitView}
         />
+        <Text>{this.state.componentWillAppear && 'componentWillAppear'}</Text>
         <Text>{this.state.componentDidAppear && 'componentDidAppear'}</Text>
       </Root>
     );
@@ -99,6 +104,37 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
             testID: BOTTOM_TABS,
           },
         },
+      },
+    });
+  };
+
+  bottomTabsStyling = () => {
+    Navigation.showModal({
+      bottomTabs: {
+        children: [
+          {
+            stack: {
+              children: [{ component: { name: Screens.BottomTabsStyling } }],
+              options: {
+                bottomTab: {
+                  text: 'Styling',
+                  icon: require('../../img/whatshot.png'),
+                },
+              },
+            },
+          },
+          {
+            stack: {
+              children: [{ component: { name: Screens.Pushed } }],
+              options: {
+                bottomTab: {
+                  text: 'Content',
+                  icon: require('../../img/layouts.png'),
+                },
+              },
+            },
+          },
+        ],
       },
     });
   };

@@ -1,0 +1,177 @@
+---
+id: stack
+title: Stack
+sidebar_label: Stack
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## `push()`
+Push a screen into the stack and update the display according to the screen options.
+#### Parameters
+| Name        | Required | Type   | Description                                                                                                                                                                                                      |
+| ----------- | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| componentId | Yes      | string | The componentId of a screen pushed into the stack, or the id of the stack.                                                                                                                                            |
+| layout      | No       | Layout | The layout being pushed into the stack. Any type of layout (except stack) can be pushed into stacks. Typically, Component layout is pushed into stacks but it's possible to push SideMenu or BottomTabs as well. |
+
+#### Example
+
+<Tabs
+  defaultValue='component'
+  values={[
+    { label: 'Component', value: 'component', },
+    { label: 'Update options on push', value: 'push', },
+    { label: 'Push other layouts', value: 'otherLayout', },
+  ]
+}>
+
+<TabItem value='component'>
+The most common use case - push a single React component.
+
+```js
+Navigation.push(this.props.componentId, {
+  component: {
+    name: 'example.PushedScreen'
+  }
+});
+```
+
+</TabItem>
+
+<TabItem value='push'>
+Options are applied when the screen becomes visible.
+
+```js
+Navigation.push(this.props.componentId, {
+  component: {
+    name: 'example.PushedScreen',
+    options: {
+      topBar: {
+        title: {
+          text: 'Pushed screen title'
+        }
+      }
+    }
+  }
+});
+```
+
+</TabItem>
+
+<TabItem value='otherLayout'>
+Any layout type can be pushed. In this example we push a SideMenu layout.
+
+```js
+Navigation.push(this.props.componentId, {
+  sideMenu: {
+    left: {
+      component: {
+        name: 'drawerScreen'
+      }
+    },
+    center: {
+      component: {
+        name: 'centerScreen'
+      }
+    }
+  }
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+## `pop()`
+Pop the top screen from the stack.
+#### Parameters
+| Name         | Required | Type                                | Description                                                           |
+| ------------ | -------- | ----------------------------------- | --------------------------------------------------------------------- |
+| componentId  | Yes      | string                              | The componentId of a screen pushed into the stack, or the stack id. |
+| mergeOptions | No       | [Options](options-root.mdx) | Options to be merged before popping the screen (optional).              |
+
+```js
+Navigation.pop(this.props.componentId);
+```
+
+## `popToRoot()`
+Pop all screens pushed into the stack.
+
+#### Parameters
+| Name         | Required | Type    | Description                                                           |
+| ------------ | -------- | ------- | --------------------------------------------------------------------- |
+| componentId  | Yes      | string  | The componentId of a screen pushed into the stack, or the stack id. |
+| mergeOptions | No       | [Options](options-root.mdx) | Options to be merged before popping the screen (optional).              |
+
+```js
+Navigation.popToRoot(this.props.componentId);
+```
+
+## `popTo()`
+Pop the stack to a given component.
+
+#### Parameters
+| Name         | Required | Type                  | Description                                              |
+| ------------ | -------- | --------------------- | -------------------------------------------------------- |
+| componentId  | Yes      | string                | The destination componentId                              |
+| mergeOptions | No       | [Options](options-root.mdx) | Options to be merged before popping the screen (optional). |
+
+```js
+Navigation.popTo(componentId);
+```
+
+## `setStackRoot()`
+Reset the stack to the given layout (accepts multiple children).
+
+#### Parameters
+| Name        | Required | Type                                                     | Description                                                           |
+| ----------- | -------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
+| componentId | Yes      | string                                                   | The componentId of a screen pushed into the stack, or the stack id. |
+| layout      | Yes      | [Layout](layout-layout.mdx) or [Layout](layout-layout.mdx)[] | A single Component or array of components.                            |
+
+
+#### Example
+
+
+<Tabs
+  defaultValue='single'
+  values={[
+    { label: 'Single child', value: 'single' },
+    { label: 'Multiple children', value: 'multiple' }
+  ]
+}>
+
+<TabItem value='single'>
+
+```js
+Navigation.setStackRoot(this.props.componentId, {
+  component: {
+    name: 'example.NewRootScreen'
+  }
+});
+```
+
+</TabItem>
+
+<TabItem value='multiple'>
+
+In the example below we reset the stack with two components. The first one will be the root component and the second (`PushedScreen`) will be displayed. Pressing the back button (either hardware or software) will pop it, revealing the root component - `NewRootScreen`.
+
+```js
+Navigation.setStackRoot(this.props.componentId, [
+  {
+    component: {
+      name: 'NewRootScreen',
+    }
+  },
+  {
+    component: {
+      name: 'PushedScreen',
+    }
+  }
+]);
+```
+</TabItem>
+
+</Tabs>

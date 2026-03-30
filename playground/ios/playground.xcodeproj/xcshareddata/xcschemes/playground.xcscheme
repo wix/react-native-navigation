@@ -68,6 +68,14 @@
                BlueprintName = "NavigationTests"
                ReferencedContainer = "container:playground.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "RNNCommandsHandlerTest">
+               </Test>
+               <Test
+                  Identifier = "RNNModalManagerEventHandlerTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

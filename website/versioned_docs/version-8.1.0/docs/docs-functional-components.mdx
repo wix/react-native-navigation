@@ -1,0 +1,88 @@
+---
+id: functionalComponents
+title: Using functional components as screens
+sidebar_label: Using functional components
+---
+
+Both class components and functional components can be used as screens. There is no performance difference between the two. Deciding which type component to use boils down to user preference.
+
+## Declaring static options
+Static options are a great way to declare options close to where they are used. Declaring static options is done by first declaring the functional component, and then declaring the options on the function component.
+```jsx
+const MyScreen = (props) => {
+  return (
+      <View>
+        <Text>Screen Component</Text>
+      </View>
+    );
+};
+
+MyScreen.options = {
+  topBar: {
+    background: {
+      color: 'red'
+    }
+  }
+}
+```
+
+## Listening to navigation events
+Navigation events let you react to various events related to a specific component or the app itself. Read more about them [here](/react-native-navigation/api/events)
+
+```jsx
+import { useEffect } from 'react';
+import { Navigation } from 'react-native-navigation';
+
+function MyScreen(props) {
+  useEffect(() => {
+    const listener = {
+      componentDidAppear: () => {
+        console.log('RNN', `componentDidAppear`);
+      },
+      componentDidDisappear: () => {
+        console.log('RNN', `componentDidDisappear`);
+      }
+    };
+    // Register the listener to all events related to our component
+    const unsubscribe = Navigation.events().registerComponentListener(listener, props.componentId);
+    return () => {
+      // Make sure to unregister the listener during cleanup
+      unsubscribe.remove();
+    };
+  }, []);
+
+  return (
+      <View>
+        <Text>Screen Component</Text>
+      </View>
+    );
+}
+```
+
+In the example above, our listener is registered with the `componentId` passed in the second argument, and will receive only its related events.
+
+:::tip
+[underscopeio/react-native-navigation-hooks](https://github.com/underscopeio/react-native-navigation-hooks) is a wonderful library which greatly simplifies usage with hooks by introducing dedicated hooks for each event. The following example, which is taken from their docs, shows how to listen to all appear events and a particular screen's appear events:
+
+```jsx
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks'
+
+const ScreenComponent = ({ componentId }) => {
+  // Global listener
+  useNavigationComponentDidAppear(e => {
+    console.log(`${e.componentName} (${e.componentId}) appeared`)
+  })
+
+  // Listen events only for this screen (componentId)
+  useNavigationComponentDidAppear(e => {
+    console.log(`${e.componentName} appeared`)
+  }, componentId)
+
+  return (
+    <View>
+      <Text>Screen Component</Text>
+    </View>
+  )
+}
+```
+:::

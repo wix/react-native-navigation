@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
   EmitterSubscription,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
-import { Navigation, NavigationProps, EventSubscription, Options } from 'react-native-navigation';
+import { EventSubscription, Navigation, NavigationProps, Options } from 'react-native-navigation';
 import TestIDs from '../testIDs';
 
 type Event = {
@@ -25,7 +25,7 @@ type Event = {
 
 let _overlayInstance: any;
 export const logLifecycleEvent = (event: Event) => {
-  _overlayInstance.addEvent(event);
+  _overlayInstance?.addEvent(event);
 };
 
 type State = {

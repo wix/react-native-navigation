@@ -1,8 +1,8 @@
 const React = require('react');
 require('react-native');
-const renderer = require('react-test-renderer');
+const { render, act } = require('@testing-library/react-native');
 const { Provider } = require('react-redux');
-const { Navigation } = require('../../lib/src/index');
+const { Navigation } = require('../../src/index');
 
 describe('redux support', () => {
   let MyConnectedComponent;
@@ -30,8 +30,8 @@ describe('redux support', () => {
       store.reduxStore
     );
 
-    const tree = renderer.create(<HOC />);
-    expect(tree.toJSON().children).toEqual(['no name']);
+    const { getByText } = render(<HOC />);
+    expect(getByText('no name')).toBeTruthy();
   });
 
   it('passes props into wrapped components', () => {
@@ -50,46 +50,49 @@ describe('redux support', () => {
       <HOC {...props} />
     ))();
 
-    const tree = renderer.create(
+    const { getByText } = render(
       <CompFromNavigation componentId="componentId" renderCountIncrement={renderCountIncrement} />
     );
-    expect(tree.toJSON().children).toEqual(['no name']);
+    expect(getByText('no name')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
   });
 
   it('rerenders as a result of an underlying state change (by selector)', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(
+    const { getByText, rerender } = render(
       <Provider store={store.reduxStore}>
         <MyConnectedComponent renderCountIncrement={renderCountIncrement} />
       </Provider>
     );
 
-    expect(tree.toJSON().children).toEqual(['no name']);
+    expect(getByText('no name')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.reduxStore.dispatch({ type: 'redux.MyStore.setName', name: 'Bob' });
+    act(() => {
+      store.reduxStore.dispatch({ type: 'redux.MyStore.setName', name: 'Bob' });
+    });
     expect(store.selectors.getName(store.reduxStore.getState())).toEqual('Bob');
-    expect(tree.toJSON().children).toEqual(['Bob']);
-
+    expect(getByText('Bob')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 
   it('rerenders as a result of an underlying state change with a new key', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(
+    const { queryByText, rerender } = render(
       <Provider store={store.reduxStore}>
         <MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />
       </Provider>
     );
 
-    expect(tree.toJSON().children).toEqual(null);
+    // Initially should show nothing (null children means no text)
+    expect(queryByText('30')).toBeNull();
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
 
-    store.reduxStore.dispatch({ type: 'redux.MyStore.setAge', age: 30 });
+    act(() => {
+      store.reduxStore.dispatch({ type: 'redux.MyStore.setAge', age: 30 });
+    });
     expect(store.selectors.getAge(store.reduxStore.getState())).toEqual(30);
-    expect(tree.toJSON().children).toEqual(['30']);
-
+    expect(queryByText('30')).toBeTruthy();
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 });

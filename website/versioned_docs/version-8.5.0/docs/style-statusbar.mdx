@@ -1,0 +1,48 @@
+---
+id: style-statusBar
+title: StatusBar
+sidebar_label: StatusBar
+---
+
+The StatusBar appearance is controlled through options.
+
+For example, the following options will change the StatusBar background color to white will use dark colors for the StatusBar content (time, battery information, notification icons etc)
+
+```js
+options: {
+  statusBar: {
+    backgroundColor: 'white',
+    style: 'dark'
+  }
+}
+```
+
+:::warning Compatibility with StatusBar component
+React native's [StatusBar](https://reactnative.dev/docs/statusbar#__docusaurus) component is incompatible with React Native Navigation and you should avoid using it.
+:::
+
+## Changing StatusBar style dynamically
+
+As the StatusBar is controlled through options, it can be configured dynamically by calling `Navigation.mergeOptions` with the desired StatusBar options.
+
+For example, here's how you would hide the StatusBar dynamically
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  statusBar: {
+    visible: false
+  }
+});
+```
+
+## How to keep current StatusBar color when displaying screens
+
+When screens are displayed, the StatusBar color always changes to the color associated with the current screen. If a color isn't specified for a given screen (and thus for the StatusBar), the default (System default or from defaultOptions) color is used. Sometimes you might want to keep the current StatusBar color, for example when displaying an alert or a toast. To keep StatusBar color unchanged when displaying a screen, use `null` as a StatusBar color.
+
+```js
+options: {
+  statusBar: {
+    backgroundColor: null
+  }
+}
+```

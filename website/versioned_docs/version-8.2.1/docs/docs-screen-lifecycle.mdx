@@ -1,0 +1,49 @@
+---
+id: screen-lifecycle
+title: Screen Lifecycle
+sidebar_label: Screen Lifecycle
+---
+
+Any React Component registered with react-native-navigation is enhanced with two additional lifecycle events:
+
+* `componentDidAppear` - called each time a component is revealed to the user
+* `componentDidDisappear` - called each time a component is hidden from user's view **as a result of being detached from hierarchy**
+
+These methods compliment React's lifecycle methods:
+
+* `componentDidMount` - called once, when a component is attached to hierarchy **for the first time**
+* `componentWillUnmount` - called once, when a component is destroyed
+
+### Mounting
+These methods are called in the following order when a component is created and attached to hierarchy.
+
+* constructor()
+* render()
+* componentDidMount()
+* componentDidAppear()
+
+### Unmounting
+These methods are called when a component is being removed from hierarchy
+
+* componentDidDisappear()
+* componentWillUnmount()
+
+### Modal
+
+When a modal is displayed, depending on the [modalPresentationStyle](/react-native-navigation/api/options-root#modalpresentationstyle), content behind it might be detached from hierarchy. This affects the visibility events which are emitted to the content behind the modal.
+
+When Modals with `pageSheet` or `overCurrentContext` modalPresentationStyle are displayed, previous content is still visible to the user. Thus `componentDidDisappear` event is **not** emitted.
+
+Same is applied when a modal is dismissed. If it was originally presented with `pageSheet` or `overCurrentContext` modalPresentationStyle, when that modal is then dismissed, the previous context won't receive a `componentDidAppear` event.
+
+### Overlay
+These methods are called in the following order when a component is displayed as an Overlay:
+
+* constructor()
+* render()
+* componentDidMount()
+* componentDidAppear()
+
+:::note
+Content displayed behind an Overlay does not receive the `componentDidDisappear`, since it's still visible to user and attached to the hierarchy.
+:::

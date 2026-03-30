@@ -1,0 +1,37 @@
+---
+id: app-launch
+title: Launching the app
+sidebar_label: Launching the app
+---
+
+When your app is launched for the first time, the bundle is parsed and executed. At this point you need to display your UI. To do so, listen to the `appLaunched` event and call `Navigation.setRoot` when that event is received.
+
+```js
+Navigation.events().registerAppLaunchedListener(() => {
+  // Each time the event is received you should call Navigation.setRoot
+});
+```
+
+:::important
+Register the app launched listener as soon as possible - this should be one of the first lines in your `index.js` file.
+:::
+
+If you're observing a "white screen" or a hanging splash screen after relaunching your app, it probably means `Navigation.setRoot` isn't called as soon as the app is launched. Perhaps the listener was registered too late.
+
+## Difference between the platforms
+When your app is launched, RN makes sure JS context (which is what enables you to execute JavaScript code) is running. There are quite a few differences between iOS and Android in this regard.
+
+### iOS
+Whenever an app is put into the background, the app process can potentially be destroyed by the system. If this destruction takes place, the JS context will be destroyed alongside with the app process.
+
+### Android
+An Android application is typically bound to two contexts:
+
+1. Application context - bound to the app process
+1. Activity context - bound to app UI
+
+React's JS Context is executed on and bound to the Application context. This means that even when the Activity context (and thus the UI) is destroyed, React's JS Context remains active until the Application (and your process) are destroyed by the system.
+
+:::caution
+Because of this, when your app returns to foreground, JS Context might still exist on Android, even when the Activity and UI contexts have been destroyed - meaning you might not need to initialise all of your app logic; instead, you'll only need to call `Navigation.setRoot` to repopulate the UI context. This circumstance can easily be determined by setting a flag on your app's first `appLaunched` event, and checking the value of that flag on subsequent `appLaunched` events -- if the flag is true in your `appLaunched` callback, you need to call `Navigation.setRoot` to repopulate the UI.
+:::

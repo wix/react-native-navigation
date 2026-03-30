@@ -1,6 +1,7 @@
 // @ts-check
 var fs = require('fs');
 var path = require('./path');
+var nodePath = require('path');
 var { warnn, logn, infon, debugn, errorn } = require('./log');
 
 class AppDelegateLinker {
@@ -9,6 +10,9 @@ class AppDelegateLinker {
     this.appDelegateHeaderPath = path.appDelegateHeader;
     this.removeUnneededImportsSuccess = false;
     this.removeApplicationLaunchContentSuccess = false;
+    const rnVersion = this._getReactNativeVersion();
+    infon('Found React Native version: ' + (rnVersion ? rnVersion.raw : 'unknown'));
+    this.isRN79orHigher = rnVersion && (rnVersion.major > 0 || rnVersion.minor >= 79);
   }
 
   link() {
@@ -19,35 +23,47 @@ class AppDelegateLinker {
       return;
     }
 
-    logn('Linking AppDelegate...');
+    logn('Linking AppDelegate: ' + this.appDelegatePath);
 
-    var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+    // New flow for Swift
+    if (nodePath.extname(this.appDelegatePath) === '.swift') {
+      debugn('Entering Swift flow ...');
+      var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+      appDelegateContents = this._extendRNNAppDelegateSwift(appDelegateContents);
+      fs.writeFileSync(this.appDelegatePath, appDelegateContents);
+      this.removeUnneededImportsSuccess = true
+      this.removeApplicationLaunchContentSuccess = true
 
-    if (this.appDelegateHeaderPath) {
-      var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
-      appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
-      fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+    } else { // Old flow for Objective-C
+      debugn('Entering Objective-C flow ...');
+      var appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf8');
+
+      if (this.appDelegateHeaderPath) {
+        var appDelegateHeaderContents = fs.readFileSync(this.appDelegateHeaderPath, 'utf8');
+        appDelegateHeaderContents = this._extendRNNAppDelegate(appDelegateHeaderContents);
+        fs.writeFileSync(this.appDelegateHeaderPath, appDelegateHeaderContents);
+      }
+
+      try {
+        appDelegateContents = this._removeUnneededImports(appDelegateContents);
+        this.removeUnneededImportsSuccess = true;
+      } catch (e) {
+        errorn('   ' + e.message);
+      }
+
+      appDelegateContents = this._importNavigation(appDelegateContents);
+
+      appDelegateContents = this._bootstrapNavigation(appDelegateContents);
+
+      try {
+        appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
+        this.removeApplicationLaunchContentSuccess = true;
+      } catch (e) {
+        errorn('   ' + e.message);
+      }
+
+      fs.writeFileSync(this.appDelegatePath, appDelegateContents);
     }
-
-    try {
-      appDelegateContents = this._removeUnneededImports(appDelegateContents);
-      this.removeUnneededImportsSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
-    appDelegateContents = this._importNavigation(appDelegateContents);
-
-    appDelegateContents = this._bootstrapNavigation(appDelegateContents);
-
-    try {
-      appDelegateContents = this._removeApplicationLaunchContent(appDelegateContents);
-      this.removeApplicationLaunchContentSuccess = true;
-    } catch (e) {
-      errorn('   ' + e.message);
-    }
-
-    fs.writeFileSync(this.appDelegatePath, appDelegateContents);
 
     if (this.removeUnneededImportsSuccess && this.removeApplicationLaunchContentSuccess) {
       infon('AppDelegate linked successfully!\n');
@@ -177,6 +193,90 @@ class AppDelegateLinker {
 
   _doesImportNavigation(content) {
     return /#import\s+\<ReactNativeNavigation\/ReactNativeNavigation.h>/.test(content);
+  }
+
+  // SWIFT implementation
+  _extendRNNAppDelegateSwift(content) {
+    let newContent = content;
+
+    newContent = newContent
+      .replace(
+        /import React_RCTAppDelegate/,
+        'import ReactNativeNavigation'
+      )
+
+    // add this ONLY for < RN079
+    if (!this.isRN79orHigher) {
+      newContent = this._updateRNNAppDelegateSwift_77_78(newContent);
+    } else {
+      newContent = this._updateRNNAppDelegateSwift_79(newContent);
+    }
+
+    return newContent;
+  }
+
+  _updateRNNAppDelegateSwift_77_78(content) {
+    return content
+      .replace(
+        /class AppDelegate: RCTAppDelegate/,
+        'class AppDelegate: RNNAppDelegate'
+      )
+  }
+  _updateRNNAppDelegateSwift_79(content) {
+    let newContent = content;
+    newContent = newContent
+      .replace(
+        'class AppDelegate: UIResponder, UIApplicationDelegate',
+        'class AppDelegate: RNNAppDelegate'
+      )
+
+    newContent = newContent
+      .replace(/^\s*var window: UIWindow\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeDelegate: ReactNativeDelegate\?\s*$/gm, '')
+      .replace(/^\s*var reactNativeFactory: RCTReactNativeFactory\?\s*$/gm, '')
+
+    newContent = newContent
+      .replace(
+        /func application/,
+        'override func application'
+      )
+
+    newContent = newContent
+      .replace(
+        /let delegate = ReactNativeDelegate\(\)/,
+        'self.reactNativeDelegate = ReactNativeDelegate\(\)'
+      )
+
+    newContent = newContent
+      .replace(
+        /let factory = RCTReactNativeFactory\(delegate: delegate\)/,
+        'super.application\(application, didFinishLaunchingWithOptions: launchOptions\)'
+      )
+
+    newContent = newContent
+      .replace(/^\s*delegate.dependencyProvider = RCTAppDependencyProvider\(\)\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*reactNativeDelegate = delegate\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*reactNativeFactory = factory\s*$/gm, '')
+    newContent = newContent
+      .replace(/^\s*window = UIWindow\(frame: UIScreen.main.bounds\)\s*$/gm, '')
+    newContent = newContent
+      .replace(
+        /factory\.startReactNative\([\s\S]*?withModuleName:\s*".*?"[\s\S]*?\)/g,
+        ''
+      )
+
+    return newContent;
+  }
+
+  /**
+ * Get React Native version from package.json
+ * @returns {Object} { major, minor, patch } or null
+ */
+  _getReactNativeVersion() {
+    const { getReactNativeVersion } = require('./__helpers__/reactNativeVersion');
+    return getReactNativeVersion();
   }
 }
 

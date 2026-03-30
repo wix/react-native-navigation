@@ -12,8 +12,7 @@ import { stack } from '../commons/Layouts';
 import Screens from './Screens';
 import flags from '../flags';
 import testIDs from '../testIDs';
-import { Dimensions, Modal, Image, Platform, StyleSheet } from 'react-native';
-import { View } from 'react-native-ui-lib';
+import { Dimensions, Modal, Image, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native';
 
 const height = Math.round(Dimensions.get('window').height);

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { EmitterSubscription, Platform, Text } from 'react-native';
 import { NavigationProps, Options } from 'react-native-navigation';
 
 import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from './../services/Navigation';
 import Screens from './Screens';
-import { component } from '../commons/Layouts';
+import { stack, component } from '../commons/Layouts';
 import testIDs from '../testIDs';
 import bottomTabsStruct from './BottomTabsLayoutStructure';
+import { resetWebViewLoadedOrder, TAB_SCREENS } from './TabbedWebViewScreen';
 
 export class MountedBottomTabScreensState {
   static mountedBottomTabScreens: string[] = [];
-  static callback: (mountedBottomTabScreens: string[]) => void = () => {};
+  static callback: (mountedBottomTabScreens: string[]) => void = () => { };
 
   static addScreen(screen: string) {
     this.mountedBottomTabScreens.push(screen);
@@ -34,6 +35,7 @@ const {
   SCREEN_ROOT,
   SET_ROOT_BTN,
   BOTTOM_TABS,
+  TABS_TOGETHER_BTN,
 } = testIDs;
 
 interface NavigationState {
@@ -74,9 +76,19 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   }
 
   badgeVisible = true;
-  bottomTabPressedListener = Navigation.events().registerBottomTabPressedListener((event) => {
-    if (event.tabIndex == 2) {
-      alert('BottomTabPressed');
+
+  registerBottomTabListener = () => {
+    return Navigation.events().registerBottomTabPressedListener((event) => {
+      if (event.tabIndex == 2) {
+        alert('BottomTabPressed');
+      }
+    });
+  };
+
+  bottomTabPressedListener: EmitterSubscription | null = this.registerBottomTabListener();
+  modalDismissedListener = Navigation.events().registerModalDismissedListener((event) => {
+    if (event.componentId === 'TogetherFlagTabTest' && !this.bottomTabPressedListener) {
+      this.bottomTabPressedListener = this.registerBottomTabListener();
     }
   });
 
@@ -93,6 +105,13 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
           testID={SWITCH_TAB_BY_COMPONENT_ID_BTN}
           onPress={this.switchTabByComponentId}
         />
+        {Platform.OS === 'ios' && (
+          <Button
+            label="Tabs loading with 'together' flag"
+            testID={TABS_TOGETHER_BTN}
+            onPress={this.launchTabbedWebViewScreen}
+          />
+        )}
         <Button label="Set Badge" testID={SET_BADGE_BTN} onPress={() => this.setBadge('NEW')} />
         <Button label="Clear Badge" testID={CLEAR_BADGE_BTN} onPress={() => this.setBadge('')} />
         <Button label="Show Notification Dot" onPress={() => this.setNotificationDot(true)} />
@@ -117,7 +136,8 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   }
 
   componentWillUnmount() {
-    this.bottomTabPressedListener.remove();
+    this.bottomTabPressedListener?.remove();
+    this.modalDismissedListener.remove();
   }
 
   modifyBottomTabs = () => {
@@ -214,4 +234,19 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
     );
 
   push = () => Navigation.push(this, Screens.Pushed);
+
+  launchTabbedWebViewScreen = () => {
+    resetWebViewLoadedOrder();
+    this.bottomTabPressedListener?.remove();
+    this.bottomTabPressedListener = null;
+    Navigation.showModal({
+      bottomTabs: {
+        id: 'TogetherFlagTabTest',
+        options: { bottomTabs: { tabsAttachMode: 'together', titleDisplayMode: 'alwaysShow' } },
+        children: TAB_SCREENS.map((tab) =>
+          stack(component(tab.name, undefined, { tabIndex: tab.tabIndex }))
+        ),
+      },
+    });
+  };
 }

@@ -1,0 +1,40 @@
+---
+id: stack-backButton
+title: The Back button
+sidebar_label: Back button
+---
+
+The back button is added automatically when two or more screens are pushed into the stack.
+
+## Styling the back button
+The back button's style can be customised by declaring a backButton options object. This configuration can be part of a screen's static options, or default options.
+
+```js
+backButton: {
+  color: 'red',
+  icon: require('../../img/customChevron.png')
+}
+```
+
+## Controling visibility
+The back buttons visbility can be controlled with the visible property.
+
+```js
+backButton: {
+  visible: false
+}
+```
+
+## Changing visbility programmatically
+Back button visibility can be changed dynamically using the mergeOptions command. When using a screen's componentId, the change will affect only that specific screen. But when using the stack's id, the change will affect all screens pushed into the stack.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  backButton: {
+    visible: false
+  }
+});
+```
+
+## Handling the back button
+Handling the back button is not possible. However, you can set a left button with a chevron and handle it like you'd handle any other button and calling `Navigation.pop` when desired.

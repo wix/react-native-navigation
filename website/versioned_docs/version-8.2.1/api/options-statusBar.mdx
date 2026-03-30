@@ -1,0 +1,75 @@
+---
+id: options-statusBar
+title: Status Bar Options
+sidebar_label: Status Bar
+---
+
+```js
+const options = {
+  statusBar: {},
+};
+```
+
+### `visible`
+
+Set the status bar visibility.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Both     |
+
+### `style`
+
+Set the text color of the status bar.
+
+| Type                  | Required | Platform | Default |
+| --------------------- | -------- | -------- | ------- |
+| enum('light', 'dark') | No       | Both     | 'light' |
+
+### `backgroundColor`
+
+Set the background color of the status bar.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Android  |
+
+### `drawBehind`
+
+Draw screen behind the status bar.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+### `translucent`
+
+Set the status bar to be translucent.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |
+
+### `animate`
+
+Animate StatusBar style changes.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `blur`
+
+Blur content beneath the StatusBar.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `hideWithTopBar`
+
+Automatically hide the StatusBar when the TopBar hides.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |

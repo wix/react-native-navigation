@@ -20,7 +20,7 @@ const {
   CHANGE_RIGHT_SIDE_MENU_WIDTH_BTN,
   DISABLE_DRAWERS,
   ENABLE_DRAWERS,
-  SIDE_MENU_CENTER_SCREEN_CONTAINER,
+  SIDE_MENU_CENTER_SCREEN_CONTAINER
 } = testIDs;
 
 interface ScreenState {
@@ -87,7 +87,7 @@ export default class SideMenuCenterScreen extends NavigationComponent {
         <Button
           label="Change Left Drawer Width"
           testID={CHANGE_LEFT_SIDE_MENU_WIDTH_BTN}
-          onPress={() => this.changeDrawerWidth('left', 50)}
+          onPress={() => this.changeDrawerWidth('left', 100)}
         />
         <Button
           label="Change Right Drawer Width"
@@ -131,12 +131,12 @@ export default class SideMenuCenterScreen extends NavigationComponent {
 
   toggleOpenMode = () => {
     this.setState((state: ScreenState) => ({
-      openMode:
-        state.openMode === 'aboveContent'
-          ? 'pushContent'
-          : state.openMode === 'pushContent'
-          ? undefined
-          : 'aboveContent',
+      openMode: state.openMode === 'aboveContent'
+        ? 'pushContent'
+        : (state.openMode === 'pushContent'
+            ? undefined
+            : 'aboveContent'
+        ),
     }));
   };
 

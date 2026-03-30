@@ -15,7 +15,6 @@ import Screens from './Screens';
 
 const {
   PUSHED_SCREEN_HEADER,
-  TOP_BAR_BTN,
   PUSH_BTN,
   POP_BTN,
   PUSH_NO_ANIM_BTN,
@@ -54,16 +53,16 @@ export default class PushedScreen extends NavigationComponent<Props> {
         title: {
           text: 'Pushed Screen',
         },
-        rightButtons: [
-          {
-            id: 'singleBtn',
-            text: 'single',
-            testID: TOP_BAR_BTN,
-          },
-        ],
+        
         backButton: {
           testID: BACK_BUTTON,
           enableMenu: false,
+          iconBackground: {
+            color: '#FF0000',
+            cornerRadius: 20,
+            width: 40,
+            height: 40,
+          },
         },
         background: {
           color: PushedScreen.topBarColors[0],

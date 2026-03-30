@@ -48,6 +48,10 @@ function registerScreens() {
     () => require('./ExternalComponentScreen').default
   );
   Navigation.registerComponent(
+    Screens.BottomTabsStyling,
+    () => require('./BottomTabsStylingScreen').default
+  );
+  Navigation.registerComponent(
     Screens.FirstBottomTabsScreen,
     () => require('./FirstBottomTabScreen').default
   );
@@ -123,12 +127,17 @@ function registerScreens() {
     () => require('../components/TopBarBackground').default
   );
   Navigation.registerComponent(Screens.Toast, () => require('./Toast').default);
+  Navigation.registerComponent(
+    Screens.TopBarTitleTest,
+    () => require('./TopBarTitleTestScreen').default
+  );
 
   const { ContextProvider } = require('../context');
   const ContextScreen = require('./ContextScreen').default;
   Navigation.registerComponent(
     Screens.ContextScreen,
-    () => (props) => (
+    () => (props) =>
+    (
       <ContextProvider>
         <ContextScreen {...props} />
       </ContextProvider>
@@ -150,6 +159,10 @@ function registerScreens() {
   );
   Navigation.registerComponent('CustomTextButton', () => require('./CustomTextButton').default);
   Navigation.registerComponent(Screens.KeyboardScreen, () => require('./KeyboardScreen').default);
+  Navigation.registerComponent(
+    Screens.WebViewTab,
+    () => require('./TabbedWebViewScreen').WebViewTab
+  );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

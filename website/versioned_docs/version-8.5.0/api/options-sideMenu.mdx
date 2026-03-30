@@ -1,0 +1,39 @@
+---
+id: options-sideMenu
+title: Side Menu Options
+sidebar_label: Side Menu
+---
+
+```js
+const options = {
+  sideMenu: {
+    left: {},
+    right: {},
+    openGestureMode: 'entireScreen',
+  },
+};
+```
+
+### `left`
+
+Configure the left side menu.
+
+| Type                                     | Required | Platform |
+| ---------------------------------------- | -------- | -------- |
+| [SideMenuSide](options-sideMenuSide.mdx) | No       | Both     |
+
+### `right`
+
+Configure the right side menu.
+
+| Type                                     | Required | Platform |
+| ---------------------------------------- | -------- | -------- |
+| [SideMenuSide](options-sideMenuSide.mdx) | No       | Both     |
+
+### `openGestureMode`
+
+Configure how a user is allowed to open a drawer using gestures.
+
+| Type                          | Required | Platform | Default |
+| ----------------------------- | -------- | -------- | ------- |
+| enum('entireScreen', 'bezel') | No       | iOS      | 'bezel' |

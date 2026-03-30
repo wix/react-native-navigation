@@ -13,18 +13,18 @@ function run() {
 }
 
 function runAndroidUnitTests() {
-  const conf = release ? 'testReactNative71ReleaseUnitTest' : 'testReactNative71DebugUnitTest';
+  const conf = release ? 'testReleaseUnitTest' : 'testDebugUnitTest';
   if (android && process.env.JENKINS_CI) {
     const sdkmanager = '/usr/local/share/android-sdk/tools/bin/sdkmanager';
     exec.execSync(`yes | ${sdkmanager} --licenses`);
     // exec.execSync(`echo y | ${sdkmanager} --update && echo y | ${sdkmanager} --licenses`);
   }
   exec.execSync(`cd playground/android && ./gradlew ${conf}`);
+  exec.execSync(`cd playground/android && ./gradlew :react-native-navigation:pixel3aapi34DebugAndroidTest`);
 }
 
 function runIosUnitTests() {
-  exec.execSync('npm run build');
-  exec.execSync('npm run pod-install');
+  exec.execSync('yarn run pod-install');
   testTarget('playground', 'iPhone 13', '15.5');
 }
 

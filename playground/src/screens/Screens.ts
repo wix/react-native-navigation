@@ -38,6 +38,7 @@ const Screens = {
   Lifecycle: 'Lifecycle',
   BackHandler: 'BackHandler',
   BottomTabs: 'BottomTabs',
+  BottomTabsStyling: 'BottomTabsStyling',
   FirstBottomTabsScreen: 'FirstBottomTabsScreen',
   SecondBottomTabsScreen: 'SecondBottomTabsScreen',
   Navigation: 'Navigation',
@@ -132,6 +133,8 @@ const Screens = {
   SearchBar: 'SearchBar',
   SearchBarModal: 'SearchBarModal',
   TopBar: 'TopBar',
+  TopBarTitleTest: 'TopBarTitleTest',
+  WebViewTab: 'TabbedWebViewScreen.WebViewTab',
 };
 
 export default Screens;

@@ -1,16 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    apply from: './rninfo.gradle'
+
     ext {
-        kotlinVersion = "1.8.10"
+        // RN 0.79+ uses Kotlin 2.1.x, older versions use 2.0.21
+        kotlinVersion = ext.rnInfo.isRN79OrHigher ? '2.1.20' : '2.0.21'
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 34
-        buildToolsVersion = "34.0.0"
-        minSdkVersion = 21
-        targetSdkVersion = 34
-        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
+        compileSdkVersion = 36
+        buildToolsVersion = "36.0.0"
+        minSdkVersion = 24
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
     }
 
     repositories {
@@ -29,11 +31,12 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "$rootDir/../../node_modules/detox/Detox-android" }
+        maven { url "$rootDir/../node_modules/detox/Detox-android" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         flatDir {
             dirs "$rootProject.projectDir/libs"
         }
+        mavenCentral()
     }
 }
 

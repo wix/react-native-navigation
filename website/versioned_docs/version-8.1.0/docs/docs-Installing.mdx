@@ -1,0 +1,309 @@
+---
+id: installing
+title: Installation
+sidebar_label: Installation
+---
+
+## Requirements
+
+- node >= 18.18
+- react-native = 0.77 (0.78 - 0.80 support is in progress)
+- new architecture enabled (if you are not using the new architecture, you can still use react-native-navigation of version 7.x.x with react-native 0.73 and lower)
+
+## npm or yarn
+
+npm:
+
+```sh
+npm install --save react-native-navigation
+```
+
+yarn:
+
+```sh
+yarn add react-native-navigation
+```
+
+## Installing with `npx rnn-link` (automatic installation)
+
+You can benefit from autolinking for some of the necessary installation steps. But unlike most other libraries, react-native-navigation requires you to make a few changes to native files.
+
+We've simplified the process through a set of scripts. So to make all the necessary changes automatically, in your project's root folder run:
+
+```sh
+npx rnn-link
+````
+
+Make sure to commit the changes introduced by the `rnn-link` script.
+
+> The automatic linking is optimized for new applications created via the `npx @react-native-community/cli@latest init` command. If you are migrating from a version of react-native-navigation older than v7, it's recommended to check the steps manually after the script runs.
+
+If one of the steps failed or you can't run (or are not comfortable with) the automatic scripts, you'll need to complete the relevant steps in the manual installation steps below, for both platforms.
+
+### CocoaPods
+
+After the the automatic scripts completed successfully, run pod install:
+
+```sh
+pod install --project-directory=ios
+```
+
+### Update index.js file
+
+`index.js` is typically used as an entry point into the app. It's first parsed and executed by the JS engine, therefore we'll want to show our UI from there.
+
+The following diff demonstrates changes needed to be made to `index.js`, initialized by `react-native init`.
+
+```diff
++import { Navigation } from "react-native-navigation";
+-import {AppRegistry} from 'react-native';
+import App from "./App";
+-import {name as appName} from './app.json';
+
+-AppRegistry.registerComponent(appName, () => App);
++Navigation.registerComponent('com.myApp.WelcomeScreen', () => App);
+
++Navigation.events().registerAppLaunchedListener(() => {
++   Navigation.setRoot({
++     root: {
++       stack: {
++         children: [
++           {
++             component: {
++               name: 'com.myApp.WelcomeScreen'
++             }
++           }
++         ]
++       }
++     }
++  });
++});
+```
+
+### Finish
+
+If you followed the steps successfully up to this point, then rebuild your application and you are good to go:
+
+```sh
+react-native run-ios
+react-native run-android
+```
+
+:::tip
+This is a good moment to build your application in both platforms, validate that everything is working properly and commit your changes. If you're coming from a fresh `npx @react-native-community/cli@latest init` project, then you should be seeing the Welcome screen as usual, but under the hood your application is using react-native-navigation!
+::::
+
+---
+
+## Manual Installation
+
+If installation with `npx rnn-link` did not work, follow the manual installation steps below.
+
+### iOS
+
+> Make sure your Xcode is updated. We recommend editing `.h`, `.mm` and `.swift` files in Xcode as the IDE will usually point out common errors.
+
+#### Installation with CocoaPods
+
+```sh
+cd ios && pod install
+```
+
+#### Native Installation
+
+> **Choose your implementation language**: Depending on whether your project uses Swift or Objective-C, follow the appropriate section below. Most new React Native projects use Swift by default.
+
+##### For Swift projects
+
+In Xcode, you will need to update this file: `AppDelegate.swift`
+
+```diff
+import UIKit
+import React
+- import React_RCTAppDelegate
++ import ReactNativeNavigation
+import ReactAppDependencyProvider
+
+@main
+- class AppDelegate: RCTAppDelegate {
++ class AppDelegate: RNNAppDelegate {
+...
+```
+
+##### For Objective-C projects
+
+In Xcode, you will need to edit this file: `AppDelegate.h`. Its content should look like this:
+
+```diff
+#import <UIKit/UIKit.h>
+- #import <RCTAppDelegate.h>
++ #import "RNNAppDelegate.h"
+
+- @interface AppDelegate : RCTAppDelegate
++ @interface AppDelegate : RNNAppDelegate
+
+@end
+
+```
+
+### Android
+
+> Make sure your Android Studio installation is up to date. We recommend editing `gradle` and `kotlin` files in Android Studio as the IDE will suggest fixes and point out errors, this way you avoid most common pitfalls.
+
+#### 1. Update `android/build.gradle`:
+
+```diff
+buildscript {
+    ext {
+        kotlinVersion = "2.0.21"
++        RNNKotlinVersion = kotlinVersion
+        compileSdkVersion = 35
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        targetSdkVersion = 34
+        ndkVersion = "27.1.12297006"
+    }
+  repositories {
+        google()
+        mavenCentral()
+  }
+  dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath 'com.android.tools.build:gradle'
+  }
+}
+
+allprojects {
+  repositories {
+   google()
+    maven {
+      // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+      url "$rootDir/../node_modules/react-native/android"
+    }
+  }
+}
+```
+
+#### 2. Update `MainActivity.kt`
+
+
+```diff
+-import com.facebook.react.ReactActivity
++import com.reactnativenavigation.NavigationActivity
+
+-class MainActivity : ReactActivity() {
+-    override fun getMainComponentName(): String {
+-        return "yourproject"
+-    }
+-}
++class MainActivity : NavigationActivity()
+```
+
+If you have any **react-native** related methods, you can safely delete them.
+
+#### 3. Update `MainApplication.kt`
+
+This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
+
+```diff
+// ...
+
+import com.facebook.react.PackageList
+import com.facebook.react.ReactHost
+import com.facebook.react.ReactNativeHost
+import com.facebook.react.ReactPackage
+import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import com.reactnativenavigation.NavigationApplication
+import com.reactnativenavigation.react.NavigationPackage
+import com.reactnativenavigation.react.NavigationReactNativeHost
+
+class MainApplication : NavigationApplication() {
+    override val reactNativeHost: ReactNativeHost =
+-        object : DefaultReactNativeHost(this) {
++        object : NavigationReactNativeHost(this) {
+
+           override fun getPackages(): List<ReactPackage> =
+               PackageList(this).packages.apply {
+                 // Packages that cannot be autolinked yet can be added manually here, for example:
+                 // add(MyReactNativePackage())
+               }
+
+        override fun getJSMainModuleName(): String = "index"
+
+        override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
+
+        override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+
+        override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
+    }
+
+    override val reactHost: ReactHost
+        get() = getDefaultReactHost(this, reactNativeHost)
+
+    override fun onCreate() {
+        super.onCreate()
+-        SoLoader.init(this, OpenSourceMergedSoMapping)
+-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+-            // If you opted-in for the New Architecture, we load the native entry point for this app.
+-            load()
+-        }
+    }
+}
+
+```
+
+### App root
+
+Now that you're done, don't forget to update the `index.js` file, as [shown above](#update-indexjs-file).
+
+## Troubleshooting
+
+### Build app with gradle command
+
+**prefered solution** - The RNN flavor you would like to build is specified in `app/build.gradle`. Therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:assembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK .
+
+```
+"scripts": {
+  // ...
+  "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
+}
+```
+
+Now run `npm run android` to build your application
+
+### Force the same support library version across all dependencies
+
+Some of your dependencies might require a different version of one of Google's support library packages. This results in compilation errors similar to this:
+
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:preDebugBuild'.
+> Android dependency 'com.android.support:design' has different version for the compile (25.4.0) and runtime (26.1.0) classpath. You should manually set the same version via DependencyResolution
+```
+
+To resolve these conflicts, add the following to your `app/build.gradle`:
+
+```groovy
+android {
+    ...
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support' && requested.name != 'multidex') {
+            details.useVersion "${rootProject.ext.supportLibVersion}"
+        }
+    }
+}
+
+dependencies {
+    ...
+    implementation 'com.android.support:design:25.4.0'
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+}
+
+```

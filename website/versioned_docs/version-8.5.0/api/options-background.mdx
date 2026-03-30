@@ -1,0 +1,58 @@
+---
+id: options-background
+title: Background Options
+sidebar_label: Background
+---
+
+Controls the top bar background styling.
+
+```js
+const options = {
+  topBar: {
+    background: {}
+  }
+};
+```
+
+### `color`
+
+Set the background color. Ignored if a component is specified.
+
+| Type  | Required | Platform |
+| ----- | -------- | -------- |
+| Color | No       | Both     |
+
+### `component`
+
+Set a react [component](layout-component.mdx) as the background. Useful when you need to show a gradient as background, for instance.
+
+
+On Android, setting an `id` to the Component will prevent the component from being recreated each time it's used by a screen. The component will be created once and whenever possible it will be reused.
+
+| Type                   | Required | Platform |
+| ---------------------- | -------- | -------- |
+| [Component](layout-component.mdx) | No       | Both     |
+
+### `clipToBounds`
+
+Clip the top bar background to bounds if set to true.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `translucent`
+
+Allows the NavBar to be translucent (blurred).
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |
+
+### `blur`
+
+Enable background blur.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS      |

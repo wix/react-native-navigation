@@ -1,0 +1,91 @@
+---
+id: style-orientation
+title: Orientation
+sidebar_label: Orientation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Locking orientation
+
+Orientation can be locked either in the layout level, or across the app via default options. You can declare orientations you'd like your app to support in default options.
+
+<Tabs
+  defaultValue="defaultOptions"
+  values={[
+    { label: 'Locking orientation in default options', value: 'defaultOptions', },
+    { label: 'Locking root layout orientation', value: 'root', },
+    { label: 'Showing landscape modal', value: 'modal', }
+  ]
+}>
+<TabItem value="defaultOptions">
+
+
+Setting orientation in default options will affect all screens in all hierarchy levels. It's still possible to override orientation for specific screens.
+
+```js
+Navigation.setDefaultOptions({
+  layout: {
+    orientation: ['portrait'],
+  },
+});
+```
+
+</TabItem>
+<TabItem value="root">
+
+
+Applying orientation in the root level will affect all screens in the root hierarchy level. It **will not** apply to modals.
+
+```js
+Navigation.setRoot({
+  root: {
+    bottomTabs: {
+      options: {
+        layout: {
+          orientation: ['portrait']
+        }
+      },
+      children: [
+        ...
+      ]
+    }
+  }
+});
+```
+
+</TabItem>
+<TabItem value="modal">
+
+
+The following example demonstrates how to show a modal in landscape orientation.
+
+```js
+Navigation.showModal({
+  component: {
+    name: 'VideoPlayer'
+    options: {
+      layout: {
+        orientation: ['landscape']
+      }
+    }
+  }
+});
+```
+
+</TabItem>
+</Tabs>
+
+
+## Changing orientation dynamically
+
+Changing orientation dynamically through `Navigation.mergeOption()` is supported only on Android.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  layout: {
+    orientation: ['landscape'],
+  },
+});
+```

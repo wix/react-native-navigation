@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "RNNAppDelegate.h"
 
-@interface AppDelegate : RNNAppDelegate
 
+@interface AppDelegate : RNNAppDelegate
 @end

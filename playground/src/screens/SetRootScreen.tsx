@@ -51,8 +51,6 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
     };
   }
 
-  unmounted = false;
-
   render() {
     return (
       <Root componentId={this.props.componentId}>
@@ -97,13 +95,15 @@ export default class SetRootScreen extends React.Component<NavigationProps> {
   }
 
   componentWillUnmount() {
-    this.unmounted = true;
+    logLifecycleEvent({
+      text: `component unmounted`,
+    });
   }
 
   setSingleRoot = async () => {
     await this.setRoot();
     logLifecycleEvent({
-      text: `setRoot complete - previous root is${this.unmounted ? '' : ' not'} unmounted`,
+      text: `setRoot complete`,
     });
   };
 

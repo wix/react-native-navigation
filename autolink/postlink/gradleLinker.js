@@ -2,16 +2,14 @@
 var path = require('./path');
 var fs = require('fs');
 var { warnn, errorn, logn, infon, debugn } = require('./log');
-var { insertString } = require('./stringUtils');
-var DEFAULT_KOTLIN_VERSION = '1.7.10';
+var DEFAULT_KOTLIN_VERSION = '2.0.21';
 // This should be the minSdkVersion required for RNN.
-var DEFAULT_MIN_SDK_VERSION = 21;
+var DEFAULT_MIN_SDK_VERSION = 24;
 
 class GradleLinker {
   constructor() {
     this.gradlePath = path.rootGradle;
     this.setKlotinVersionSuccess = false;
-    this.setKotlinPluginDependencySuccess = false;
     this.setMinSdkVersionSuccess = false;
   }
 
@@ -33,12 +31,6 @@ class GradleLinker {
       errorn('   ' + e);
     }
     try {
-      contents = this._setKotlinPluginDependency(contents);
-      this.setKotlinPluginDependencySuccess = true;
-    } catch (e) {
-      errorn('   ' + e);
-    }
-    try {
       contents = this._setMinSdkVersion(contents);
       this.setMinSdkVersionSuccess = true;
     } catch (e) {
@@ -49,13 +41,11 @@ class GradleLinker {
 
     if (
       this.setKlotinVersionSuccess &&
-      this.setKotlinPluginDependencySuccess &&
       this.setMinSdkVersionSuccess
     ) {
       infon('Root build.gradle linked successfully!\n');
     } else if (
       !this.setKlotinVersionSuccess &&
-      !this.setKotlinPluginDependencySuccess &&
       !this.setMinSdkVersionSuccess
     ) {
       errorn(
@@ -68,24 +58,6 @@ class GradleLinker {
     }
   }
 
-  _setKotlinPluginDependency(contents) {
-    if (this._isKotlinPluginDeclared(contents)) {
-      warnn('   Kotlin plugin already declared');
-      return contents;
-    }
-
-    var match = /classpath\s*\(*["']com\.android\.tools\.build:gradle.*/.exec(contents);
-    if (match) {
-      debugn('   Adding Kotlin plugin');
-      return insertString(
-        contents,
-        match.index,
-        `classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$RNNKotlinVersion"\n        `
-      );
-    } else {
-      throw new Error('   Could not add kotlin plugin dependency');
-    }
-  }
 
   _setKotlinVersion(contents) {
     if (this._isKotlinVersionSpecified(contents)) {
@@ -167,13 +139,6 @@ class GradleLinker {
    */
   _isKotlinVersionSpecified(contents) {
     return /RNNKotlinVersion/.test(contents);
-  }
-
-  /**
-   * @param {string} contents
-   */
-  _isKotlinPluginDeclared(contents) {
-    return /org.jetbrains.kotlin:kotlin-gradle-plugin:/.test(contents);
   }
 }
 

@@ -1,4 +1,4 @@
 import { LogBox } from 'react-native';
-LogBox.ignoreAllLogs();
 
+LogBox.ignoreAllLogs();
 require('./playground/index');
