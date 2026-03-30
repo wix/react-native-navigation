@@ -3,10 +3,13 @@ package com.reactnativenavigation.utils
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.Rect
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
+import android.widget.FrameLayout
 import androidx.annotation.ColorInt
-import androidx.core.view.WindowCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlin.math.abs
@@ -16,8 +19,10 @@ object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
-    var navigationBarDefaultColor = -1
+    var navigationBarDefaultColor = Color.BLACK
         private set
+
+    private var navBarBackgroundView: View? = null
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -55,7 +60,6 @@ object SystemUiUtils {
     @JvmStatic
     fun hideNavigationBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             WindowInsetsControllerCompat(window, view).let { controller ->
                 controller.hide(WindowInsetsCompat.Type.navigationBars())
                 controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -66,7 +70,6 @@ object SystemUiUtils {
     @JvmStatic
     fun showNavigationBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.navigationBars())
         }
     }
@@ -75,16 +78,6 @@ object SystemUiUtils {
     fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
         window?.let {
             WindowInsetsControllerCompat(window, view).isAppearanceLightStatusBars = isDark
-           // Workaround: on devices with api 30 status bar icons flickers or get hidden when removing view
-            //turns out it is a bug on such devices, fixed by using system flags until it is fixed.
-            var flags = view.systemUiVisibility
-            flags = if (isDark) {
-                flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            } else {
-                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-            }
-
-            view.systemUiVisibility = flags
         }
     }
 
@@ -136,7 +129,6 @@ object SystemUiUtils {
     @JvmStatic
     fun hideStatusBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             WindowInsetsControllerCompat(window, view).let { controller ->
                 controller.hide(WindowInsetsCompat.Type.statusBars())
                 controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -147,22 +139,43 @@ object SystemUiUtils {
     @JvmStatic
     fun showStatusBar(window: Window?, view: View) {
         window?.let {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.statusBars())
         }
     }
 
     @JvmStatic
+    fun setupNavigationBarBackground(contentLayout: ViewGroup) {
+        if (navBarBackgroundView != null) return
+
+        val view = View(contentLayout.context).apply {
+            setBackgroundColor(navigationBarDefaultColor)
+        }
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM
+        )
+        contentLayout.addView(view, params)
+        navBarBackgroundView = view
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            val lp = v.layoutParams
+            if (lp.height != navBarHeight) {
+                lp.height = navBarHeight
+                v.layoutParams = lp
+            }
+            insets
+        }
+        view.requestApplyInsets()
+    }
+
+    @JvmStatic
     fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
         window?.let {
-            if (navigationBarDefaultColor == -1) {
-                navigationBarDefaultColor = window.navigationBarColor
-            }
             WindowInsetsControllerCompat(window, window.decorView).let { controller ->
                 controller.isAppearanceLightNavigationBars = lightColor
             }
-            window.navigationBarColor = color
         }
+        navBarBackgroundView?.setBackgroundColor(color)
     }
 
 }

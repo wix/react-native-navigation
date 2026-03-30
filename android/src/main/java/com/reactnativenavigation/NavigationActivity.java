@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -17,10 +18,12 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.react.CommandListenerAdapter;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +39,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         if (isFinishing()) {
             return;
@@ -63,7 +67,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        navigator.setContentLayout(findViewById(android.R.id.content));
+        ViewGroup contentLayout = findViewById(android.R.id.content);
+        navigator.setContentLayout(contentLayout);
+        SystemUiUtils.setupNavigationBarBackground(contentLayout);
     }
 
     @Override
