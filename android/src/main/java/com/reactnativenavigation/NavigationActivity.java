@@ -69,6 +69,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPostCreate(savedInstanceState);
         ViewGroup contentLayout = findViewById(android.R.id.content);
         navigator.setContentLayout(contentLayout);
+        SystemUiUtils.setupStatusBarBackground(this);
         SystemUiUtils.setupNavigationBarBackground(contentLayout);
     }
 

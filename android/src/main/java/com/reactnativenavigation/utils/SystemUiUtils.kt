@@ -23,6 +23,8 @@ object SystemUiUtils {
         private set
 
     private var navBarBackgroundView: View? = null
+    private var statusBarBackgroundView: View? = null
+    private var statusBarDefaultColor = Color.BLACK
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -83,22 +85,21 @@ object SystemUiUtils {
 
     @JvmStatic
     fun setStatusBarTranslucent(window: Window?) {
-        window?.let {
-            setStatusBarColor(window, window.statusBarColor, true)
+        getStatusBarColor(window)?.let { currentColor ->
+            setStatusBarColor(window, currentColor, true)
         }
     }
 
     @JvmStatic
     fun isTranslucent(window: Window?): Boolean {
-        return window?.let {
-            Color.alpha(it.statusBarColor) < 255
-        } ?: false
+        val color = getStatusBarColor(window) ?: return false
+        return Color.alpha(color) < 255
     }
 
     @JvmStatic
     fun clearStatusBarTranslucency(window: Window?) {
-        window?.let {
-            setStatusBarColor(it, it.statusBarColor, false)
+        getStatusBarColor(window)?.let { currentColor ->
+            setStatusBarColor(window, currentColor, false)
         }
     }
 
@@ -118,11 +119,21 @@ object SystemUiUtils {
     }
 
     fun setStatusBarColor(window: Window?, color: Int) {
-        window?.statusBarColor = color
+        statusBarBackgroundView?.setBackgroundColor(color) ?: run {
+            @Suppress("DEPRECATION")
+            window?.statusBarColor = color
+        }
     }
 
     @JvmStatic
     fun getStatusBarColor(window: Window?): Int? {
+        statusBarBackgroundView?.let { view ->
+            val bg = view.background
+            if (bg is android.graphics.drawable.ColorDrawable) {
+                return bg.color
+            }
+        }
+        @Suppress("DEPRECATION")
         return window?.statusBarColor
     }
 
@@ -140,6 +151,19 @@ object SystemUiUtils {
     fun showStatusBar(window: Window?, view: View) {
         window?.let {
             WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.statusBars())
+        }
+    }
+
+    @JvmStatic
+    fun setupStatusBarBackground(activity: Activity) {
+        if (statusBarBackgroundView != null) return
+
+        val sbView = activity.window.decorView.findViewById<View>(
+            android.R.id.statusBarBackground
+        )
+        if (sbView != null) {
+            sbView.setBackgroundColor(statusBarDefaultColor)
+            statusBarBackgroundView = sbView
         }
     }
 
