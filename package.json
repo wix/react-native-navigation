@@ -95,6 +95,7 @@
     "@babel/runtime": "^7.25.0",
     "@babel/types": "7.25.0",
     "@d11/react-native-fast-image": "^8.13.0",
+    "@react-native-community/blur": "^4.4.1",
     "@react-native-community/cli": "20.0.0",
     "@react-native-community/cli-platform-android": "20.0.0",
     "@react-native-community/cli-platform-ios": "20.0.0",
