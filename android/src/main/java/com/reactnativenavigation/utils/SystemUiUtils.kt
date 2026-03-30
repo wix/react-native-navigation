@@ -118,10 +118,6 @@ object SystemUiUtils {
     }
 
     /**
-     * Clears references to system bar background views.
-     * Call from Activity.onDestroy to avoid leaking views across activity recreation.
-     */
-    /**
      * Returns the default navigation bar color, applying 80% opacity for 3-button navigation.
      * Gesture navigation gets a fully opaque color since the bar is minimal.
      */
@@ -132,6 +128,10 @@ object SystemUiUtils {
         return Color.argb(alpha, Color.red(DEFAULT_NAV_BAR_COLOR), Color.green(DEFAULT_NAV_BAR_COLOR), Color.blue(DEFAULT_NAV_BAR_COLOR))
     }
 
+    /**
+     * Clears references to system bar background views.
+     * Call from Activity.onDestroy to avoid leaking views across activity recreation.
+     */
     @JvmStatic
     fun tearDown() {
         statusBarBackgroundView = null
