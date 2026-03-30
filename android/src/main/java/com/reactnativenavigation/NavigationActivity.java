@@ -39,7 +39,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdge();
         super.onCreate(savedInstanceState);
         if (isFinishing()) {
             return;
@@ -69,8 +69,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPostCreate(savedInstanceState);
         ViewGroup contentLayout = findViewById(android.R.id.content);
         navigator.setContentLayout(contentLayout);
-        SystemUiUtils.setupStatusBarBackground(this);
-        SystemUiUtils.setupNavigationBarBackground(contentLayout);
+        SystemUiUtils.setupSystemBarBackgrounds(this, contentLayout);
     }
 
     @Override
@@ -95,6 +94,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUiUtils.tearDown();
         if (navigator != null) {
             navigator.destroy();
         }
@@ -151,6 +151,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onReload() {
         navigator.destroyViews();
+    }
+
+    /**
+     * Override to disable or customize edge-to-edge behavior.
+     * Called at the start of onCreate, before super.onCreate.
+     */
+    protected void enableEdgeToEdge() {
+        EdgeToEdge.enable(this);
     }
 
     protected void addDefaultSplashLayout() {

@@ -3,6 +3,7 @@ package com.reactnativenavigation.utils
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +20,11 @@ object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
     internal const val STATUS_BAR_HEIGHT_TRANSLUCENCY = 0.65f
     private var statusBarHeight = -1
-    var navigationBarDefaultColor = Color.BLACK
-        private set
 
-    private var navBarBackgroundView: View? = null
+    const val DEFAULT_NAV_BAR_COLOR = Color.BLACK
+
     private var statusBarBackgroundView: View? = null
-    private var statusBarDefaultColor = Color.BLACK
+    private var navBarBackgroundView: View? = null
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -52,29 +52,75 @@ object SystemUiUtils {
         statusBarHeight = height
     }
 
-
     @JvmStatic
     fun getStatusBarHeightDp(activity: Activity?): Int {
-        return UiUtils.pxToDp(activity, getStatusBarHeight(activity).toFloat())
-            .toInt()
+        return UiUtils.pxToDp(activity, getStatusBarHeight(activity).toFloat()).toInt()
     }
 
+    // region Setup
+
+    /**
+     * Initializes view-based system bar backgrounds for edge-to-edge.
+     * Call from Activity.onPostCreate after the navigator content layout is set.
+     *
+     * Status bar: reuses the system's android:id/statusBarBackground DecorView child.
+     * Navigation bar: creates a view in [contentLayout] sized by WindowInsets,
+     * since the system's navigationBarBackground is not available with EdgeToEdge.
+     *
+     * Both fall back to deprecated window APIs when the views are unavailable.
+     */
     @JvmStatic
-    fun hideNavigationBar(window: Window?, view: View) {
-        window?.let {
-            WindowInsetsControllerCompat(window, view).let { controller ->
-                controller.hide(WindowInsetsCompat.Type.navigationBars())
-                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    fun setupSystemBarBackgrounds(activity: Activity, contentLayout: ViewGroup) {
+        setupStatusBarBackground(activity)
+        setupNavigationBarBackground(contentLayout)
+    }
+
+    private fun setupStatusBarBackground(activity: Activity) {
+        if (statusBarBackgroundView != null) return
+        val sbView = activity.window.decorView.findViewById<View>(android.R.id.statusBarBackground)
+        if (sbView != null) {
+            sbView.setBackgroundColor(Color.BLACK)
+            statusBarBackgroundView = sbView
+        }
+    }
+
+    private fun setupNavigationBarBackground(contentLayout: ViewGroup) {
+        if (navBarBackgroundView != null) return
+        val view = View(contentLayout.context).apply {
+            setBackgroundColor(Color.BLACK)
+        }
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM
+        )
+        contentLayout.addView(view, params)
+        navBarBackgroundView = view
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            val lp = v.layoutParams
+            if (lp.height != navBarHeight) {
+                lp.height = navBarHeight
+                v.layoutParams = lp
             }
+            insets
         }
+        view.requestApplyInsets()
     }
 
+    /**
+     * Clears references to system bar background views.
+     * Call from Activity.onDestroy to avoid leaking views across activity recreation.
+     */
     @JvmStatic
-    fun showNavigationBar(window: Window?, view: View) {
-        window?.let {
-            WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.navigationBars())
-        }
+    fun tearDown() {
+        statusBarBackgroundView = null
+        navBarBackgroundView = null
+        statusBarHeight = -1
     }
+
+    // endregion
+
+    // region Status Bar
 
     @JvmStatic
     fun setStatusBarColorScheme(window: Window?, view: View, isDark: Boolean) {
@@ -104,20 +150,23 @@ object SystemUiUtils {
     }
 
     @JvmStatic
-    fun setStatusBarColor(
-        window: Window?,
-        @ColorInt color: Int,
-        translucent: Boolean
-    ) {
+    fun setStatusBarColor(window: Window?, @ColorInt color: Int, translucent: Boolean) {
         val colorAlpha = Color.alpha(color)
-        val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha/255.0f
-        val red: Int = Color.red(color)
-        val green: Int = Color.green(color)
-        val blue: Int = Color.blue(color)
-        val opaqueColor = Color.argb(ceil(alpha * 255).toInt(), red, green, blue)
+        val alpha = if (translucent && colorAlpha == 255) STATUS_BAR_HEIGHT_TRANSLUCENCY else colorAlpha / 255.0f
+        val opaqueColor = Color.argb(
+            ceil(alpha * 255).toInt(),
+            Color.red(color),
+            Color.green(color),
+            Color.blue(color)
+        )
         setStatusBarColor(window, opaqueColor)
     }
 
+    /**
+     * Sets the status bar background color.
+     * Uses the view-based background when available (edge-to-edge),
+     * falls back to the deprecated window API on older configurations.
+     */
     fun setStatusBarColor(window: Window?, color: Int) {
         statusBarBackgroundView?.setBackgroundColor(color) ?: run {
             @Suppress("DEPRECATION")
@@ -125,13 +174,15 @@ object SystemUiUtils {
         }
     }
 
+    /**
+     * Gets the current status bar background color.
+     * Reads from the view-based background when available,
+     * falls back to the deprecated window API on older configurations.
+     */
     @JvmStatic
     fun getStatusBarColor(window: Window?): Int? {
         statusBarBackgroundView?.let { view ->
-            val bg = view.background
-            if (bg is android.graphics.drawable.ColorDrawable) {
-                return bg.color
-            }
+            (view.background as? ColorDrawable)?.let { return it.color }
         }
         @Suppress("DEPRECATION")
         return window?.statusBarColor
@@ -154,52 +205,42 @@ object SystemUiUtils {
         }
     }
 
-    @JvmStatic
-    fun setupStatusBarBackground(activity: Activity) {
-        if (statusBarBackgroundView != null) return
+    // endregion
 
-        val sbView = activity.window.decorView.findViewById<View>(
-            android.R.id.statusBarBackground
-        )
-        if (sbView != null) {
-            sbView.setBackgroundColor(statusBarDefaultColor)
-            statusBarBackgroundView = sbView
-        }
-    }
+    // region Navigation Bar
 
     @JvmStatic
-    fun setupNavigationBarBackground(contentLayout: ViewGroup) {
-        if (navBarBackgroundView != null) return
-
-        val view = View(contentLayout.context).apply {
-            setBackgroundColor(navigationBarDefaultColor)
-        }
-        val params = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM
-        )
-        contentLayout.addView(view, params)
-        navBarBackgroundView = view
-
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
-            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-            val lp = v.layoutParams
-            if (lp.height != navBarHeight) {
-                lp.height = navBarHeight
-                v.layoutParams = lp
+    fun hideNavigationBar(window: Window?, view: View) {
+        window?.let {
+            WindowInsetsControllerCompat(window, view).let { controller ->
+                controller.hide(WindowInsetsCompat.Type.navigationBars())
+                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
-            insets
         }
-        view.requestApplyInsets()
     }
 
+    @JvmStatic
+    fun showNavigationBar(window: Window?, view: View) {
+        window?.let {
+            WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.navigationBars())
+        }
+    }
+
+    /**
+     * Sets the navigation bar background color and icon appearance.
+     * Uses the view-based background when available (edge-to-edge),
+     * falls back to the deprecated window API on older configurations.
+     */
     @JvmStatic
     fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
         window?.let {
-            WindowInsetsControllerCompat(window, window.decorView).let { controller ->
-                controller.isAppearanceLightNavigationBars = lightColor
-            }
+            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = lightColor
         }
-        navBarBackgroundView?.setBackgroundColor(color)
+        navBarBackgroundView?.setBackgroundColor(color) ?: run {
+            @Suppress("DEPRECATION")
+            window?.navigationBarColor = color
+        }
     }
 
+    // endregion
 }

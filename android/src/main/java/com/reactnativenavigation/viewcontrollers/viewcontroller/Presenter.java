@@ -136,14 +136,12 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-        int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
-        navigationBarDefaultColor = navigationBarDefaultColor == -1 ? Color.BLACK : navigationBarDefaultColor;
+        int defaultColor = SystemUiUtils.DEFAULT_NAV_BAR_COLOR;
         if (navigationBar.backgroundColor.canApplyValue()) {
-            int color = navigationBar.backgroundColor.get(navigationBarDefaultColor);
+            int color = navigationBar.backgroundColor.get(defaultColor);
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
         } else {
-            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), navigationBarDefaultColor, isColorLight(navigationBarDefaultColor));
-
+            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), defaultColor, isColorLight(defaultColor));
         }
     }
 
