@@ -24,6 +24,7 @@ public class TitleBarReactViewControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         viewCreator = spy(new TitleBarReactViewCreatorMock());
         activity = newActivity();
         component = createComponent();

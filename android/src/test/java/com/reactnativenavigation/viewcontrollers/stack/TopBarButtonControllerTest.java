@@ -42,6 +42,7 @@ public class TopBarButtonControllerTest extends BaseTest {
 
     @Override
     public void beforeEach() {
+        super.beforeEach();
         button = new ButtonOptions();
         final Activity activity = newActivity();
 
