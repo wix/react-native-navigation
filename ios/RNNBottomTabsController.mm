@@ -51,12 +51,9 @@
 
     if (@available(iOS 26.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
-        [appearance configureWithTransparentBackground];
-        appearance.backgroundEffect = nil;
-        appearance.backgroundColor = UIColor.clearColor;
+        [appearance configureWithDefaultBackground];
         self.tabBar.standardAppearance = appearance;
         self.tabBar.scrollEdgeAppearance = [appearance copy];
-        self.tabBar.barTintColor = UIColor.clearColor;
     } else if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithOpaqueBackground];
