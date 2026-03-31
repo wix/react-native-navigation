@@ -70,7 +70,7 @@
     stack.interactivePopGestureRecognizer.delegate = _interactivePopGestureDelegate;
 
     [stack
-        setBarStyle:[RCTConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
+        setBarStyle:[RNNConvert UIBarStyle:[withDefault.topBar.barStyle withDefault:@"default"]]];
     [stack setRootBackgroundImage:[withDefault.rootBackgroundImage withDefault:nil]];
     [stack setNavigationBarTestId:[withDefault.topBar.testID withDefault:nil]];
     [stack setNavigationBarVisible:[withDefault.topBar.visible withDefault:YES]
@@ -128,7 +128,7 @@
     }
 
     if (mergeOptions.topBar.barStyle.hasValue) {
-        [stack setBarStyle:[RCTConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
+        [stack setBarStyle:[RNNConvert UIBarStyle:mergeOptions.topBar.barStyle.get]];
     }
 
     if (mergeOptions.topBar.background.clipToBounds.hasValue) {
