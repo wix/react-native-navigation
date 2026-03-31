@@ -1665,7 +1665,7 @@ __metadata:
 
 "@d11/react-native-fast-image@npm:^8.13.0":
   version: 8.13.0
-  resolution: "@d11/react-native-fast-image@npm:8.13.0::__archiveUrl=https%3A%2F%2Fnpm.dev.wixpress.com%2Fapi%2Fnpm%2Fnpm-repos%2F%40d11%2Freact-native-fast-image%2F-%2Freact-native-fast-image-8.13.0.tgz"
+  resolution: "@d11/react-native-fast-image@npm:8.13.0"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -2262,7 +2262,7 @@ __metadata:
 
 "@react-native-community/blur@npm:^4.4.1":
   version: 4.4.1
-  resolution: "@react-native-community/blur@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.dev.wixpress.com%2Fapi%2Fnpm%2Fnpm-repos%2F%40react-native-community%2Fblur%2F-%2Fblur-4.4.1.tgz"
+  resolution: "@react-native-community/blur@npm:4.4.1"
   peerDependencies:
     react: "*"
     react-native: "*"
