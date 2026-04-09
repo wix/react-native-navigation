@@ -1663,6 +1663,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@d11/react-native-fast-image@npm:^8.13.0":
+  version: 8.13.0
+  resolution: "@d11/react-native-fast-image@npm:8.13.0::__archiveUrl=https%3A%2F%2Fnpm.dev.wixpress.com%2Fapi%2Fnpm%2Fnpm-repos%2F%40d11%2Freact-native-fast-image%2F-%2Freact-native-fast-image-8.13.0.tgz"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/bbd3ed3db96ca54c86173ae9a0de8c254448a5ff495d9b4a33fe491bee8ad03b655ed2d7d862996af8817ee5562c2031e7e2969880229cac133e84fd1c3e9f78
+  languageName: node
+  linkType: hard
+
 "@dabh/diagnostics@npm:^2.0.8":
   version: 2.0.8
   resolution: "@dabh/diagnostics@npm:2.0.8"
@@ -5016,13 +5026,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"compare-versions@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "compare-versions@npm:3.6.0"
-  checksum: 10/7492a50cdaa2c27f5254eee7c4b38856e1c164991bab3d98d7fd067fe4b570d47123ecb92523b78338be86aa221668fd3868bfe8caa5587dc3ebbe1a03d52b5d
-  languageName: node
-  linkType: hard
-
 "compressible@npm:~2.0.18":
   version: 2.0.18
   resolution: "compressible@npm:2.0.18"
@@ -6794,15 +6797,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-versions@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "find-versions@npm:3.2.0"
-  dependencies:
-    semver-regex: "npm:^2.0.0"
-  checksum: 10/f010e00f9dedd5b83206762d668b4b3b86bbb81f3c2d957e2559969b9eadb6124297c4a2a1d51c5efea3d79557b19660a2758c77bb6a5ba5ce7750fba9847082
-  languageName: node
-  linkType: hard
-
 "flat-cache@npm:^3.0.4":
   version: 3.2.0
   resolution: "flat-cache@npm:3.2.0"
@@ -7730,27 +7724,6 @@ __metadata:
   dependencies:
     ms: "npm:^2.0.0"
   checksum: 10/9c7a74a2827f9294c009266c82031030eae811ca87b0da3dceb8d6071b9bde22c9f3daef0469c3c533cc67a97d8a167cd9fc0389350e5f415f61a79b171ded16
-  languageName: node
-  linkType: hard
-
-"husky@npm:4.2.5":
-  version: 4.2.5
-  resolution: "husky@npm:4.2.5"
-  dependencies:
-    chalk: "npm:^4.0.0"
-    ci-info: "npm:^2.0.0"
-    compare-versions: "npm:^3.6.0"
-    cosmiconfig: "npm:^6.0.0"
-    find-versions: "npm:^3.2.0"
-    opencollective-postinstall: "npm:^2.0.2"
-    pkg-dir: "npm:^4.2.0"
-    please-upgrade-node: "npm:^3.2.0"
-    slash: "npm:^3.0.0"
-    which-pm-runs: "npm:^1.0.0"
-  bin:
-    husky-run: bin/run.js
-    husky-upgrade: lib/upgrader/bin.js
-  checksum: 10/57fb1723f5c6e28edffd79896a5b10a69b4c55f89ddfa1fe6354cf37cf2dab27d7159213d4fc90e9bef2ea10ea1ca60d2003985b77480b4fa719f29d0e89153f
   languageName: node
   linkType: hard
 
@@ -11430,15 +11403,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"opencollective-postinstall@npm:^2.0.2":
-  version: 2.0.3
-  resolution: "opencollective-postinstall@npm:2.0.3"
-  bin:
-    opencollective-postinstall: index.js
-  checksum: 10/69d63778087cd10c9d707d9ed360556780cfdd0cd6241ded0e26632f467f1d5a064f4a9aec19a30c187770c17adba034d988f7684b226f3a73e79f44e73fab0e
-  languageName: node
-  linkType: hard
-
 "opener@npm:^1.5.2":
   version: 1.5.2
   resolution: "opener@npm:1.5.2"
@@ -12278,16 +12242,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fast-image@npm:^8.6.3":
-  version: 8.6.3
-  resolution: "react-native-fast-image@npm:8.6.3"
-  peerDependencies:
-    react: ^17 || ^18
-    react-native: ">=0.60.0"
-  checksum: 10/ed340c2b6c2e76658fa0a899a45132871017018bec0a03423b7456610810e79b2844dfa16063c05d98b89a7613eeb0de2fdf3ad978cdfa4d488a4e01228a7349
-  languageName: node
-  linkType: hard
-
 "react-native-gesture-handler@npm:^2.29.1":
   version: 2.30.0
   resolution: "react-native-gesture-handler@npm:2.30.0"
@@ -12332,6 +12286,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@babel/types": "npm:7.25.0"
+    "@d11/react-native-fast-image": "npm:^8.13.0"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native-community/cli-platform-android": "npm:20.0.0"
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
@@ -12361,7 +12316,6 @@ __metadata:
     eslint-plugin-prettier: "npm:3.1.4"
     github-release-notes: "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58"
     hoist-non-react-statics: "npm:^3.3.2"
-    husky: "npm:4.2.5"
     identity-obj-proxy: "npm:3.0.0"
     jest: "npm:^29.6.3"
     lint-staged: "npm:10.2.11"
@@ -12373,7 +12327,6 @@ __metadata:
     react: "npm:19.2.3"
     react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.84.0"
-    react-native-fast-image: "npm:^8.6.3"
     react-native-gesture-handler: "npm:^2.29.1"
     react-native-monorepo-config: "npm:^0.3.0"
     react-native-reanimated: "npm:4.2.2"
@@ -12405,6 +12358,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@babel/types": "npm:7.25.0"
+    "@d11/react-native-fast-image": "npm:^8.13.0"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native-community/cli-platform-android": "npm:20.0.0"
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
@@ -12435,7 +12389,6 @@ __metadata:
     eslint-plugin-prettier: "npm:3.1.4"
     github-release-notes: "https://github.com/yogevbd/github-release-notes/tarball/e601b3dba72dcd6cba323c1286ea6dd0c0110b58"
     hoist-non-react-statics: "npm:3.3.2"
-    husky: "npm:4.2.5"
     identity-obj-proxy: "npm:3.0.0"
     jest: "npm:^29.6.3"
     lint-staged: "npm:10.2.11"
@@ -12448,7 +12401,6 @@ __metadata:
     react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.84.0"
     react-native-builder-bob: "npm:^0.40.13"
-    react-native-fast-image: "npm:^8.6.3"
     react-native-gesture-handler: "npm:^2.29.1"
     react-native-reanimated: "npm:4.2.2"
     react-native-worklets: "npm:0.7.4"
@@ -13304,13 +13256,6 @@ __metadata:
   dependencies:
     semver: "npm:^5.0.3"
   checksum: 10/14e50363d12ac7e77c2dd89319d97f9ec075ed8ee7ab1bde867b30f8e890fffd637dd90c7c2559e2431278d555b8bc6abc5796bb40b734cea267631c9501827c
-  languageName: node
-  linkType: hard
-
-"semver-regex@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "semver-regex@npm:2.0.0"
-  checksum: 10/da7d6f5ceae80e2097933b1e4ea2815c2cfa2c50c6501db1a3d435a6063c0f23d66bc25fe8d06755048f3d7588d85339db6471446b2c91fea907e5c2ada5b0df
   languageName: node
   linkType: hard
 
@@ -15097,13 +15042,6 @@ __metadata:
   version: 2.0.1
   resolution: "which-module@npm:2.0.1"
   checksum: 10/1967b7ce17a2485544a4fdd9063599f0f773959cca24176dbe8f405e55472d748b7c549cd7920ff6abb8f1ab7db0b0f1b36de1a21c57a8ff741f4f1e792c52be
-  languageName: node
-  linkType: hard
-
-"which-pm-runs@npm:^1.0.0":
-  version: 1.1.0
-  resolution: "which-pm-runs@npm:1.1.0"
-  checksum: 10/39a56ee50886fb33ec710e3b36dc9fe3d0096cac44850d9ca0c6186c4cb824d6c8125f013e0562e7c94744e1e8e4a6ab695592cdb12555777c7a4368143d822c
   languageName: node
   linkType: hard
 
