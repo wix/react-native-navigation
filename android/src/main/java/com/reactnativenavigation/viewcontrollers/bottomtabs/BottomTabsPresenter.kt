@@ -391,7 +391,8 @@ class BottomTabsPresenter(
     }
 
     private fun syncNavigationBarColor(options: Options, tabsColor: Int) {
-        if (options.navigationBar.backgroundColor.hasValue()) return
+        val resolved = options.copy().withDefaultOptions(defaultOptions)
+        if (resolved.navigationBar.backgroundColor.hasValue()) return
         val window = (bottomTabsContainer.context as? Activity)?.window ?: return
         SystemUiUtils.setNavigationBarBackgroundColor(window, tabsColor, isColorLight(tabsColor))
     }

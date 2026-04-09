@@ -30,6 +30,7 @@ object SystemUiUtils {
     var isEdgeToEdgeActive = false
         private set
     private var isThreeButtonNav = false
+    private var lastExplicitNavBarColor: Int? = null
 
     @JvmStatic
     fun getStatusBarHeight(activity: Activity?): Int {
@@ -104,10 +105,10 @@ object SystemUiUtils {
             val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
             val tappableHeight = insets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom
             val wasThreeButton = isThreeButtonNav
-            isEdgeToEdgeActive = navBarHeight > 0
             isThreeButtonNav = tappableHeight > 0
             if (isThreeButtonNav != wasThreeButton) {
-                v.setBackgroundColor(getDefaultNavBarColor())
+                val color = lastExplicitNavBarColor ?: getDefaultNavBarColor()
+                v.setBackgroundColor(color)
             }
             val lp = v.layoutParams
             if (lp.height != navBarHeight) {
@@ -131,6 +132,16 @@ object SystemUiUtils {
     }
 
     /**
+     * Marks edge-to-edge as active. Call after EdgeToEdge.enable() in the activity.
+     * This flag controls whether navigation bar insets are forwarded to SafeAreaView
+     * and whether the view-based nav bar background is used for color changes.
+     */
+    @JvmStatic
+    fun activateEdgeToEdge() {
+        isEdgeToEdgeActive = true
+    }
+
+    /**
      * Clears references to system bar background views.
      * Call from Activity.onDestroy to avoid leaking views across activity recreation.
      */
@@ -140,6 +151,7 @@ object SystemUiUtils {
         navBarBackgroundView = null
         isEdgeToEdgeActive = false
         isThreeButtonNav = false
+        lastExplicitNavBarColor = null
         statusBarHeight = -1
     }
 
@@ -258,6 +270,7 @@ object SystemUiUtils {
      */
     @JvmStatic
     fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
+        lastExplicitNavBarColor = color
         window?.let {
             WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = lightColor
         }

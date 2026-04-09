@@ -167,6 +167,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             a.recycle();
             if (!optOut) {
                 EdgeToEdge.enable(this);
+                SystemUiUtils.activateEdgeToEdge();
             }
         }
     }
