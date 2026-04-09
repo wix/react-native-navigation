@@ -103,7 +103,11 @@
 
 - (UITabBarAppearance *)appearanceWithColor:(UIColor *)color {
     UITabBarAppearance *appearance = [UITabBarAppearance new];
-    [appearance configureWithOpaqueBackground];
+    if (@available(iOS 26.0, *)) {
+        [appearance configureWithTransparentBackground];
+    } else {
+        [appearance configureWithOpaqueBackground];
+    }
     appearance.backgroundEffect = nil;
     appearance.shadowColor = nil;
     UIColor *resolvedColor = color ?: UIColor.systemBackgroundColor;
