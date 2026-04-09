@@ -172,9 +172,12 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
         int systemWindowInsetTop = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top +
                 insets.getInsets(WindowInsetsCompat.Type.navigationBars()).top -
                 systemBarsInsets.top;
-        int systemWindowInsetBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
-                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom -
-                systemBarsInsets.bottom;
+
+        int navBarBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+        int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+        int systemWindowInsetBottom = SystemUiUtils.isEdgeToEdgeActive()
+                ? Math.max(imeBottom, navBarBottom)
+                : imeBottom;
 
         WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder()
                 .setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),

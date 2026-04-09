@@ -1,4 +1,3 @@
-import { BlurView } from '@react-native-community/blur';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, Dimensions, ViewProps, Platform } from 'react-native';
 import Reanimated, { EasingNode, useValue } from 'react-native-reanimated';
@@ -77,7 +76,6 @@ export default function CarCard({
         resizeMode="cover"
       />
       <Reanimated.View style={textContainerStyle}>
-        {Platform.OS === 'ios' && <BlurView blurType="light" style={StyleSheet.absoluteFill} />}
         <Text
           nativeID={`title${car.id}`}
           style={styles.title}

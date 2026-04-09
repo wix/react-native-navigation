@@ -26,7 +26,9 @@ object SystemUiUtils {
 
     private var statusBarBackgroundView: View? = null
     private var navBarBackgroundView: View? = null
-    private var isEdgeToEdgeActive = false
+    @JvmStatic
+    var isEdgeToEdgeActive = false
+        private set
     private var isThreeButtonNav = false
 
     @JvmStatic
