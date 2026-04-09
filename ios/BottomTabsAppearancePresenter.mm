@@ -8,8 +8,15 @@
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {
     if (@available(iOS 26.0, *)) {
-        [self setTabBarTransparentBackground];
-        self.tabBar.backgroundColor = UIColor.clearColor;
+        if (backgroundColor) {
+            if (backgroundColor.isTransparent) {
+                [self setTabBarTransparentBackground];
+            } else {
+                [self setTabBarBackgroundColor:backgroundColor];
+            }
+        } else {
+            [self setTabBarDefaultBackground];
+        }
         return;
     }
     if (translucent)
@@ -61,8 +68,9 @@
 
 - (void)setTabBarDefaultBackground {
     if (@available(iOS 26.0, *)) {
-        [self setTabBarTransparentBackground];
-        self.tabBar.backgroundColor = UIColor.clearColor;
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        [appearance configureWithDefaultBackground];
+        [self applyTabBarAppearance:appearance];
     } else {
         [self setTabBarOpaqueBackground];
     }
@@ -95,7 +103,11 @@
 
 - (UITabBarAppearance *)appearanceWithColor:(UIColor *)color {
     UITabBarAppearance *appearance = [UITabBarAppearance new];
-    [appearance configureWithOpaqueBackground];
+    if (@available(iOS 26.0, *)) {
+        [appearance configureWithTransparentBackground];
+    } else {
+        [appearance configureWithOpaqueBackground];
+    }
     appearance.backgroundEffect = nil;
     appearance.shadowColor = nil;
     UIColor *resolvedColor = color ?: UIColor.systemBackgroundColor;

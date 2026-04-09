@@ -264,7 +264,8 @@
                                        childViewControllers:@[ stack, stack2 ]
                                          bottomTabsAttacher:nil];
 
-    XCTAssertEqual([bottomTabs getTopBarHeight], stack.navigationBar.frame.size.height);
+    XCTAssertEqual([bottomTabs getTopBarHeight],
+                   stack.navigationBar.frame.origin.y + stack.navigationBar.frame.size.height);
 }
 
 - (void)testConstants_shouldReturnNavigationBarHeight_invisible {

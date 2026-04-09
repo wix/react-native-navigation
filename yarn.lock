@@ -2260,16 +2260,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/blur@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "@react-native-community/blur@npm:4.4.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/6fa84036db480af765df08d680955e9b5acaa631a54678b8eef970799fc04bdc7f906cb06a94f2da9af097c52ddb56ca4cff2172372d1d5f7717864f43965e0a
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:20.0.0":
   version: 20.0.0
   resolution: "@react-native-community/cli-clean@npm:20.0.0"
@@ -9853,6 +9843,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:4.18.1":
+  version: 4.18.1
+  resolution: "lodash@npm:4.18.1"
+  checksum: 10/306fea53dfd39dad1f03d45ba654a2405aebd35797b673077f401edb7df2543623dc44b9effbb98f69b32152295fff725a4cec99c684098947430600c6af0c3f
+  languageName: node
+  linkType: hard
+
 "log-symbols@npm:^2.1.0":
   version: 2.2.0
   resolution: "log-symbols@npm:2.2.0"
@@ -12369,7 +12366,6 @@ __metadata:
     "@babel/runtime": "npm:^7.25.0"
     "@babel/types": "npm:7.25.0"
     "@d11/react-native-fast-image": "npm:^8.13.0"
-    "@react-native-community/blur": "npm:^4.4.1"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native-community/cli-platform-android": "npm:20.0.0"
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
@@ -12403,7 +12399,7 @@ __metadata:
     identity-obj-proxy: "npm:3.0.0"
     jest: "npm:^29.6.3"
     lint-staged: "npm:10.2.11"
-    lodash: "npm:4.17.23"
+    lodash: "npm:4.18.1"
     pixelmatch: "npm:^5.2.1"
     pngjs: "npm:^6.0.0"
     prettier: "npm:2.8.8"
