@@ -34,16 +34,18 @@ When edge-to-edge is not active (the default), behavior is unchanged from previo
 
 ## Custom behavior
 
-`NavigationActivity.enableEdgeToEdge()` is a `protected` method. Override it in your `MainActivity` to customize when and how edge-to-edge is enabled:
+`NavigationActivity.enableEdgeToEdge()` is a `protected` method that controls when edge-to-edge is enabled. Override it in your `MainActivity` to customize the decision logic, and call `activateEdgeToEdge()` to enable it:
 
 ```kotlin
 class MainActivity : NavigationActivity() {
     override fun enableEdgeToEdge() {
-        // Always enable edge-to-edge regardless of theme
-        EdgeToEdge.enable(this)
+        // Always enable edge-to-edge regardless of theme or API level
+        activateEdgeToEdge()
     }
 }
 ```
+
+`activateEdgeToEdge()` handles both the Android system call and the internal navigation framework state. Always use it instead of calling `EdgeToEdge.enable()` directly.
 
 ## Styling system bars
 

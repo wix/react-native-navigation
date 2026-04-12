@@ -154,9 +154,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     /**
-     * Enables edge-to-edge display only if the app theme sets
+     * Controls when edge-to-edge is enabled. Override to customize the decision logic.
+     * Call {@link #activateEdgeToEdge()} from your override to enable edge-to-edge.
+     * <p>
+     * The default implementation enables edge-to-edge only if the app theme sets
      * {@code windowOptOutEdgeToEdgeEnforcement} to {@code false} (API 35+).
-     * By default, edge-to-edge is not enabled. Override to customize.
      * Called at the start of onCreate, before super.onCreate.
      */
     protected void enableEdgeToEdge() {
@@ -166,10 +168,19 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             boolean optOut = a.getBoolean(0, true);
             a.recycle();
             if (!optOut) {
-                EdgeToEdge.enable(this);
-                SystemUiUtils.activateEdgeToEdge();
+                activateEdgeToEdge();
             }
         }
+    }
+
+    /**
+     * Enables edge-to-edge display and notifies the navigation framework.
+     * Call this from {@link #enableEdgeToEdge()} overrides instead of
+     * calling {@code EdgeToEdge.enable()} directly.
+     */
+    protected void activateEdgeToEdge() {
+        EdgeToEdge.enable(this);
+        SystemUiUtils.activateEdgeToEdge();
     }
 
     protected void addDefaultSplashLayout() {
