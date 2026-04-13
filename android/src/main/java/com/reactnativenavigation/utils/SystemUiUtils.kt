@@ -69,11 +69,11 @@ object SystemUiUtils {
      * Initializes view-based system bar backgrounds for edge-to-edge.
      * Call from Activity.onPostCreate after the navigator content layout is set.
      *
-     * Status bar: reuses the system's android:id/statusBarBackground DecorView child.
+     * Status bar: reuses the system's android:id/statusBarBackground DecorView child
+     * when available. On API 35+ with EdgeToEdge, this view may not exist, so a
+     * manual view is created in the content layout, sized by status bar insets.
      * Navigation bar: creates a view in [contentLayout] sized by WindowInsets,
      * since the system's navigationBarBackground is not available with EdgeToEdge.
-     *
-     * Both fall back to deprecated window APIs when the views are unavailable.
      */
     @JvmStatic
     fun setupSystemBarBackgrounds(activity: Activity, contentLayout: ViewGroup) {
@@ -87,6 +87,27 @@ object SystemUiUtils {
         if (sbView != null) {
             sbView.setBackgroundColor(Color.BLACK)
             statusBarBackgroundView = sbView
+        } else {
+            val contentLayout = activity.findViewById<ViewGroup>(android.R.id.content)
+            val view = View(activity).apply {
+                setBackgroundColor(Color.BLACK)
+            }
+            val params = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.TOP
+            )
+            contentLayout.addView(view, params)
+            statusBarBackgroundView = view
+
+            ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+                val sbHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+                val lp = v.layoutParams
+                if (lp.height != sbHeight) {
+                    lp.height = sbHeight
+                    v.layoutParams = lp
+                }
+                insets
+            }
+            view.requestApplyInsets()
         }
     }
 
