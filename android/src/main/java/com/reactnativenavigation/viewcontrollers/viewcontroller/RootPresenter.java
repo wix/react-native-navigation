@@ -35,6 +35,10 @@ public class RootPresenter {
     }
 
     public void setRoot(ViewController appearingRoot, ViewController<?> disappearingRoot, Options defaultOptions, CommandListener listener) {
+        if (appearingRoot.isDestroyed()) {
+            listener.onError("Could not set root - appearingRoot is already destroyed");
+            return;
+        }
         layoutDirectionApplier.apply(appearingRoot, defaultOptions);
         rootLayout.addView(appearingRoot.getView(), matchParentWithBehaviour(new BehaviourDelegate(appearingRoot)));
         Options options = appearingRoot.resolveCurrentOptions(defaultOptions);
@@ -60,6 +64,10 @@ public class RootPresenter {
                                                 CommandListener listener,
                                                 Options options)
     {
+        if (root.isDestroyed()) {
+            listener.onError("Could not set root - root is already destroyed");
+            return;
+        }
         AnimationOptions exit = options.animations.setRoot.getExit();
         AnimationOptions enter = options.animations.setRoot.getEnter();
         if ((enter.enabled.isTrueOrUndefined() && enter.hasAnimation())
@@ -68,7 +76,11 @@ public class RootPresenter {
                     disappearingRoot,
                     options.animations.setRoot,
                     () -> {
-                        listener.onSuccess(root.getId());
+                        if (!root.isDestroyed()) {
+                            listener.onSuccess(root.getId());
+                        } else {
+                            listener.onError("Could not set root - root was destroyed before animation completed");
+                        }
                         return Unit.INSTANCE;
                     });
         } else {
