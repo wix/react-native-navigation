@@ -25,6 +25,7 @@ object SystemUiUtils {
     private const val THREE_BUTTON_NAV_BAR_OPACITY = 0.8f
 
     private var statusBarBackgroundView: View? = null
+    private var statusBarBackgroundActivity: java.lang.ref.WeakReference<Activity>? = null
     private var navBarBackgroundView: View? = null
     @JvmStatic
     var isEdgeToEdgeActive = false
@@ -88,27 +89,33 @@ object SystemUiUtils {
             sbView.setBackgroundColor(Color.BLACK)
             statusBarBackgroundView = sbView
         } else {
-            val contentLayout = activity.findViewById<ViewGroup>(android.R.id.content)
-            val view = View(activity).apply {
-                setBackgroundColor(Color.BLACK)
-            }
-            val params = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.TOP
-            )
-            contentLayout.addView(view, params)
-            statusBarBackgroundView = view
-
-            ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
-                val sbHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-                val lp = v.layoutParams
-                if (lp.height != sbHeight) {
-                    lp.height = sbHeight
-                    v.layoutParams = lp
-                }
-                insets
-            }
-            view.requestApplyInsets()
+            statusBarBackgroundActivity = java.lang.ref.WeakReference(activity)
         }
+    }
+
+    private fun ensureStatusBarBackgroundView(): View? {
+        statusBarBackgroundView?.let { return it }
+        val activity = statusBarBackgroundActivity?.get() ?: return null
+        val contentLayout = activity.findViewById<ViewGroup>(android.R.id.content) ?: return null
+        val view = View(activity)
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.TOP
+        )
+        contentLayout.addView(view, params)
+        statusBarBackgroundView = view
+        statusBarBackgroundActivity = null
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val sbHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            val lp = v.layoutParams
+            if (lp.height != sbHeight) {
+                lp.height = sbHeight
+                v.layoutParams = lp
+            }
+            insets
+        }
+        view.requestApplyInsets()
+        return view
     }
 
     private fun setupNavigationBarBackground(contentLayout: ViewGroup) {
@@ -169,6 +176,7 @@ object SystemUiUtils {
     @JvmStatic
     fun tearDown() {
         statusBarBackgroundView = null
+        statusBarBackgroundActivity = null
         navBarBackgroundView = null
         isEdgeToEdgeActive = false
         isThreeButtonNav = false
@@ -217,15 +225,25 @@ object SystemUiUtils {
             Color.green(color),
             Color.blue(color)
         )
-        setStatusBarColor(window, opaqueColor)
+        applyStatusBarColor(window, opaqueColor)
     }
 
     /**
-     * Sets the status bar background color.
-     * Uses the view-based background when available (edge-to-edge),
-     * falls back to the deprecated window API on older configurations.
+     * Sets the status bar background color, lazily creating a manual view on API 35+
+     * if the system view wasn't available at setup time. Use this for explicit app-level
+     * color requests (e.g. from MainActivity).
      */
     fun setStatusBarColor(window: Window?, color: Int) {
+        val view = ensureStatusBarBackgroundView()
+        if (view != null) {
+            view.setBackgroundColor(color)
+        } else {
+            @Suppress("DEPRECATION")
+            window?.statusBarColor = color
+        }
+    }
+
+    private fun applyStatusBarColor(window: Window?, color: Int) {
         statusBarBackgroundView?.setBackgroundColor(color) ?: run {
             @Suppress("DEPRECATION")
             window?.statusBarColor = color
