@@ -70,6 +70,16 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         ViewGroup contentLayout = findViewById(android.R.id.content);
         navigator.setContentLayout(contentLayout);
         SystemUiUtils.setupSystemBarBackgrounds(this, contentLayout);
+        applyThemeStatusBarColor();
+    }
+
+    private void applyThemeStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM
+                && SystemUiUtils.needsManualStatusBarBackground()) {
+            //noinspection deprecation
+            getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+            SystemUiUtils.setStatusBarColor(getWindow(), android.graphics.Color.TRANSPARENT);
+        }
     }
 
     @Override
