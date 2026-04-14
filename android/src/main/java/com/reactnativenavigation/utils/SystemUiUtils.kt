@@ -86,7 +86,6 @@ object SystemUiUtils {
         if (statusBarBackgroundView != null) return
         val sbView = activity.window.decorView.findViewById<View>(android.R.id.statusBarBackground)
         if (sbView != null) {
-            sbView.setBackgroundColor(Color.BLACK)
             statusBarBackgroundView = sbView
         } else {
             statusBarBackgroundActivity = java.lang.ref.WeakReference(activity)
@@ -160,6 +159,14 @@ object SystemUiUtils {
     }
 
     /**
+     * Returns true when the system statusBarBackground view was not found during setup,
+     * meaning a manual view will be lazily created on the first setStatusBarColor call.
+     * Use this to decide whether to apply a theme-based initial status bar color.
+     */
+    @JvmStatic
+    fun needsManualStatusBarBackground(): Boolean = statusBarBackgroundActivity != null
+
+    /**
      * Marks edge-to-edge as active. Call after EdgeToEdge.enable() in the activity.
      * This flag controls whether navigation bar insets are forwarded to SafeAreaView
      * and whether the view-based nav bar background is used for color changes.
@@ -231,8 +238,9 @@ object SystemUiUtils {
     /**
      * Sets the status bar background color, lazily creating a manual view on API 35+
      * if the system view wasn't available at setup time. Use this for explicit app-level
-     * color requests (e.g. from MainActivity).
+     * color requests (e.g. from MainActivity or NavigationActivity).
      */
+    @JvmStatic
     fun setStatusBarColor(window: Window?, color: Int) {
         val view = ensureStatusBarBackgroundView()
         if (view != null) {
