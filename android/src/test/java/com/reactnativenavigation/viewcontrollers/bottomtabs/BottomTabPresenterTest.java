@@ -41,7 +41,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@Ignore("New architecture - WIP")
 public class BottomTabPresenterTest extends BaseTest {
     private Options tab1Options = createTab1Options();
     private Options tab2Options = createTab2Options();

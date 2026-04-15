@@ -37,7 +37,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Ignore("New architecture - WIP")
 public class ParentControllerTest extends BaseTest {
 
     private static final String INITIAL_TITLE = "initial title";

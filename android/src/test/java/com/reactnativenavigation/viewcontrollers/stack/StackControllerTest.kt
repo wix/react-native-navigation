@@ -40,7 +40,6 @@ import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.test.fail
 
-@Ignore("New architecture - WIP")
 class StackControllerTest : BaseTest() {
     private lateinit var activity: Activity
     private lateinit var childRegistry: ChildControllersRegistry

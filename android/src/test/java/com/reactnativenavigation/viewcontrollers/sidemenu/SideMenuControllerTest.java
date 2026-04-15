@@ -45,7 +45,6 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("MagicNumber")
-@Ignore("New architecture - WIP")
 public class SideMenuControllerTest extends BaseTest {
     private SideMenuController uut;
     private Activity activity;
