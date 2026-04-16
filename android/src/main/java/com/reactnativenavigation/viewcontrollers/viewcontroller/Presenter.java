@@ -137,6 +137,7 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+        if (activity == null) return;
         int defaultColor = SystemUiUtils.getDefaultNavBarColor();
         if (navigationBar.backgroundColor.canApplyValue()) {
             int color = navigationBar.backgroundColor.get(defaultColor);

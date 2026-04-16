@@ -10,7 +10,10 @@ class LayoutDirectionApplier {
         val currentContext = root.view?.context ?: return
 
         if (options.layout.direction.hasValue()) {
-            root.activity.window.decorView.layoutDirection = options.layout.direction.get()
+            val direction = options.layout.direction.get()
+            root.activity?.window?.decorView?.let { decor ->
+                decor.layoutDirection = direction
+            }
             I18nUtil.instance.allowRTL(currentContext, options.layout.direction.isRtl)
             I18nUtil.instance.forceRTL(currentContext, options.layout.direction.isRtl)
         }
