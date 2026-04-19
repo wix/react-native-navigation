@@ -166,6 +166,7 @@
                             backButtonOptions.displayMode.hasValue ||
                             backButtonOptions.sfSymbol.hasValue ||
                             backButtonOptions.iconBackground.hasValue ||
+                            backButtonOptions.enableMenu.hasValue ||
                             ![backButtonOptions.showTitle withDefault:YES];
 
     if (!hasCustomization) {
