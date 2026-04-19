@@ -63,7 +63,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Ignore("New architecture - WIP")
 @Config(qualifiers = "xxhdpi")
 public class NavigatorTest extends BaseTest {
     private TestActivity activity;

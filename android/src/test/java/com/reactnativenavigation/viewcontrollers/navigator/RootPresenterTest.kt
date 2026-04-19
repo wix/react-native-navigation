@@ -25,7 +25,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.never
 import org.robolectric.android.controller.ActivityController
 
-@Ignore("New architecture - WIP")
 class RootPresenterTest : BaseTest() {
     private lateinit var uut: RootPresenter
     private lateinit var rootContainer: CoordinatorLayout

@@ -12,7 +12,6 @@ import org.junit.Test
 private const val UUT_WIDTH = 1000
 private const val UUT_HEIGHT = 100
 
-@Ignore("New architecture - WIP")
 class TitleSubTitleLayoutTest : BaseTest() {
     private val testId = "mock-testId"
 

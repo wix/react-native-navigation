@@ -84,6 +84,11 @@ class NavigationTurboModule(
         handle {
             Log.d("NavigationTurboModule", "setRoot handle ${Thread.currentThread()}")
             val viewController = layoutFactory.create(layoutTree)
+            val activity = currentActivity
+            if (activity == null) {
+                promise.reject("ACTIVITY_NULL", "Activity is null")
+                return@handle
+            }
             navigator()?.setRoot(
                 viewController,
                 NativeCommandListener("setRoot", commandId, promise, eventEmitter, now)

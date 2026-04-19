@@ -21,7 +21,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@Ignore("New architecture - WIP")
 public class OverlayManagerTest extends BaseTest {
     private static final String OVERLAY_ID_1 = "OVERLAY_1";
     private static final String OVERLAY_ID_2 = "OVERLAY_2";

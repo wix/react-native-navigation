@@ -40,7 +40,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-@Ignore("New architecture - WIP")
 @LooperMode(LooperMode.Mode.PAUSED)
 public class ButtonPresenterTest extends BaseTest {
     private static final String BTN_TEXT = "button1";

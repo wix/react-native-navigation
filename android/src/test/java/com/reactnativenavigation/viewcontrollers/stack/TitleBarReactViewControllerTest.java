@@ -14,7 +14,6 @@ import org.junit.Test;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-@Ignore("New architecture - WIP")
 public class TitleBarReactViewControllerTest extends BaseTest {
 
     private TitleBarReactViewController uut;
