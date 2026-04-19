@@ -18,6 +18,8 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)destroy;
 
+- (void)destroyReactView;
+
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child;

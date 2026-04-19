@@ -56,6 +56,7 @@
     if (_presentedViewController &&
         ![navigationController.viewControllers containsObject:_presentedViewController]) {
         [_presentedViewController screenPopped];
+        [_presentedViewController destroyReactView];
         _isPopping = NO;
     }
 
