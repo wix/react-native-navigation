@@ -180,6 +180,7 @@
                                            initialOptions:initialOptions];
 
     __unused RNNStackController *nav = [[RNNStackController alloc] initWithRootViewController:vc];
+    [self.mainWindow setRootViewController:nav];
     [vc viewWillAppear:false];
     XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 

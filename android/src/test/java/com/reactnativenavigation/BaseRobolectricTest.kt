@@ -15,7 +15,7 @@ import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = TestApplication::class)
+@Config(application = TestApplication::class, shadows = [ShadowSoLoader::class, ShadowReactView::class])
 abstract class BaseRobolectricTest {
 
     val context: Context = RuntimeEnvironment.getApplication()

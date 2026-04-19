@@ -10,6 +10,10 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 open class RootAnimator {
 
     open fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>?, setRoot: TransitionAnimationOptions, onAnimationEnd: ()->Unit) {
+        if (appearing.isDestroyed) {
+            onAnimationEnd()
+            return
+        }
         appearing.view.visibility = View.VISIBLE
 
         if (!setRoot.hasValue() || (!setRoot.enter.hasAnimation() && !setRoot.exit.hasAnimation())) {
@@ -22,10 +26,9 @@ open class RootAnimator {
         val appearingAnimation = if (setRoot.enter.hasAnimation()) {
             setRoot.enter.getAnimation(appearing.view)
         } else null
-        val disappearingAnimation = if (disappearing != null && setRoot.exit.hasAnimation()) {
+        val disappearingAnimation = if (disappearing != null && !disappearing.isDestroyed && setRoot.exit.hasAnimation()) {
             setRoot.exit.getAnimation(disappearing.view)
         } else null
-
         when {
             appearingAnimation != null && disappearingAnimation != null -> animationSet.playTogether(appearingAnimation, disappearingAnimation)
             appearingAnimation != null -> animationSet.play(appearingAnimation)

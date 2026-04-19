@@ -1,0 +1,7 @@
+---
+description: When the user asks for a GitHub description or PR description
+globs:
+alwaysApply: false
+---
+
+When generating GitHub descriptions (PR descriptions, issue descriptions, commit descriptions), always use GitHub-flavored Markdown formatting: **bold** for emphasis, `backticks` for code/class/file references, bullet lists with `-`, and `##` headers where appropriate.
