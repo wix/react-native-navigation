@@ -42,26 +42,55 @@
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
-
-    UIViewController *topVC = self.topViewController;
-
-    if (animated && topVC.isViewLoaded && topVC.view.window) {
-        UIView *snapshot = [topVC.view snapshotViewAfterScreenUpdates:NO];
-        if (snapshot) {
-            snapshot.frame = topVC.view.bounds;
-            snapshot.autoresizingMask =
-                UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            [topVC.view addSubview:snapshot];
-        }
-    }
-
-    if ([topVC isKindOfClass:[RNNComponentViewController class]]) {
-        [[(RNNComponentViewController *)topVC reactView] componentDidDisappear];
-    }
+    [self snapshotTopViewIfNeeded:animated];
 
     UIViewController *poppedVC = [super popViewControllerAnimated:animated];
-    [poppedVC destroyReactView];
+    [self teardownPoppedControllers:poppedVC ? @[ poppedVC ] : @[]];
     return poppedVC;
+}
+
+- (NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController
+                                             animated:(BOOL)animated {
+    [self snapshotTopViewIfNeeded:animated];
+
+    NSArray<UIViewController *> *poppedVCs =
+        [super popToViewController:viewController animated:animated];
+    [self teardownPoppedControllers:poppedVCs];
+    return poppedVCs;
+}
+
+- (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
+    [self snapshotTopViewIfNeeded:animated];
+
+    NSArray<UIViewController *> *poppedVCs =
+        [super popToRootViewControllerAnimated:animated];
+    [self teardownPoppedControllers:poppedVCs];
+    return poppedVCs;
+}
+
+#pragma mark - React view teardown
+
+- (void)snapshotTopViewIfNeeded:(BOOL)animated {
+    if (!animated) return;
+    UIViewController *topVC = self.topViewController;
+    if (!topVC.isViewLoaded || !topVC.view.window) return;
+
+    UIView *snapshot = [topVC.view snapshotViewAfterScreenUpdates:NO];
+    if (snapshot) {
+        snapshot.frame = topVC.view.bounds;
+        snapshot.autoresizingMask =
+            UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [topVC.view addSubview:snapshot];
+    }
+}
+
+- (void)teardownPoppedControllers:(NSArray<UIViewController *> *)poppedVCs {
+    for (UIViewController *vc in poppedVCs) {
+        if ([vc isKindOfClass:[RNNComponentViewController class]]) {
+            [[(RNNComponentViewController *)vc reactView] componentDidDisappear];
+        }
+        [vc destroyReactView];
+    }
 }
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
