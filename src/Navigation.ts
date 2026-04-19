@@ -28,6 +28,8 @@ import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import { LinkingHandler } from './linking/LinkingHandler';
+import { LinkingConfig } from './linking/types';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -45,6 +47,7 @@ export class NavigationRoot {
   private readonly componentEventsObserver: ComponentEventsObserver;
   private readonly componentWrapper: ComponentWrapper;
   private readonly optionsCrawler: OptionsCrawler;
+  private readonly linkingHandler: LinkingHandler;
 
   constructor(
     private readonly nativeCommandsSender: NativeCommandsSender,
@@ -96,6 +99,7 @@ export class NavigationRoot {
       this.commandsObserver,
       this.componentEventsObserver
     );
+    this.linkingHandler = new LinkingHandler((layout) => this.setRoot(layout));
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
@@ -278,6 +282,29 @@ export class NavigationRoot {
    */
   public getLaunchArgs(): Promise<any> {
     return this.commands.getLaunchArgs();
+  }
+
+  /**
+   * Configure deep link handling. Maps URL patterns to screens and
+   * translates incoming links into navigation commands.
+   */
+  public setLinking(config: LinkingConfig): void {
+    this.linkingHandler.configure(config);
+  }
+
+  /**
+   * Manually handle a deep link URL as if it was received from the OS.
+   */
+  public handleDeepLink(url: string): void {
+    this.linkingHandler.handleURL(url);
+  }
+
+  /**
+   * Signal that the app is ready to process deep links (e.g. after auth).
+   * When set to true, any queued deferred links are flushed.
+   */
+  public setLinkingReady(ready: boolean): void {
+    this.linkingHandler.setReady(ready);
   }
 
   /**
