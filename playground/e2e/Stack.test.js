@@ -183,6 +183,15 @@ describe('Stack', () => {
     await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
   });
 
+  it.e2e('pop and re-push same component should not have stale unmount', async () => {
+    await elementById(TestIDs.PUSH_UNMOUNT_RACE_BTN).tap();
+    await sleep(800);
+    await expect(elementByLabel('loaded')).toBeVisible();
+    await elementById(TestIDs.POP_AND_REPUSH_BTN).tap();
+    await sleep(1000);
+    await expect(elementByLabel('loaded')).toBeVisible();
+  });
+
   it('pop from root screen should do nothing', async () => {
     await elementById(TestIDs.POP_BTN).tap();
     await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();

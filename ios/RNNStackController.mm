@@ -42,7 +42,26 @@
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
-    return [super popViewControllerAnimated:animated];
+
+    UIViewController *topVC = self.topViewController;
+
+    if (animated && topVC.isViewLoaded && topVC.view.window) {
+        UIView *snapshot = [topVC.view snapshotViewAfterScreenUpdates:NO];
+        if (snapshot) {
+            snapshot.frame = topVC.view.bounds;
+            snapshot.autoresizingMask =
+                UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            [topVC.view addSubview:snapshot];
+        }
+    }
+
+    if ([topVC isKindOfClass:[RNNComponentViewController class]]) {
+        [[(RNNComponentViewController *)topVC reactView] componentDidDisappear];
+    }
+
+    UIViewController *poppedVC = [super popViewControllerAnimated:animated];
+    [poppedVC destroyReactView];
+    return poppedVC;
 }
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {

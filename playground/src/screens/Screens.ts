@@ -122,6 +122,7 @@ const Screens = {
   },
   SystemUiOptions: SystemUiOptions,
   StatusBarFirstTab,
+  UnmountRace: 'UnmountRace',
   KeyboardScreen: 'KeyboardScreen',
   TopBarBackground: 'TopBarBackground',
   Toast: 'Toast',

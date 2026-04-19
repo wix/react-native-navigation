@@ -117,6 +117,7 @@ function registerScreens() {
     () => require('./SideMenuRightScreen').default
   );
   Navigation.registerComponent(Screens.Stack, () => require('./StackScreen').default);
+  Navigation.registerComponent(Screens.UnmountRace, () => require('./UnmountRaceScreen').default);
   Navigation.registerComponent(Screens.SystemUiOptions, () => require('./SystemUiOptions').default);
   Navigation.registerComponent(
     Screens.StatusBarFirstTab,
