@@ -1,0 +1,387 @@
+---
+id: deep-linking
+title: Deep Linking
+sidebar_label: Deep Linking
+---
+
+Deep linking lets users open a specific screen in your app from a URL — whether from a custom scheme (`myapp://user/42`) or a universal link (`https://myapp.com/user/42`). React Native Navigation provides a built-in linking framework that handles URL parsing, route matching, and navigation for you.
+
+## Setting up linking
+
+Call `Navigation.setLinking()` early in your app's initialization, before `registerAppLaunchedListener`:
+
+```js
+import { Navigation } from 'react-native-navigation';
+
+Navigation.setLinking({
+  prefixes: ['myapp://', 'https://myapp.com'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'user/:id',
+      Settings: {
+        path: 'settings',
+        screens: {
+          Notifications: 'notifications',
+          Privacy: 'privacy',
+        },
+      },
+    },
+  },
+  getLayout: (match) => ({
+    root: {
+      stack: {
+        children: match.path.map((segment) => ({
+          component: {
+            name: segment.screen,
+            passProps: { ...segment.params, ...match.queryParams },
+          },
+        })),
+      },
+    },
+  }),
+});
+```
+
+This configures URL-to-screen mapping and tells RNN how to build a layout when a deep link is received.
+
+## Configuration
+
+### prefixes
+
+An array of URL prefixes your app handles. Both custom URL schemes and universal link domains are supported. The longest matching prefix is used.
+
+```js
+prefixes: ['myapp://', 'https://myapp.com', 'https://www.myapp.com']
+```
+
+### config.screens
+
+A map of screen names to URL path patterns. Each key is the component name you registered with `Navigation.registerComponent`. Values can be:
+
+**A string** — a path pattern:
+
+```js
+screens: {
+  Home: 'home',           // matches myapp://home
+  Profile: 'user/:id',    // matches myapp://user/42, extracts { id: '42' }
+}
+```
+
+**An object** — for nested routes:
+
+```js
+screens: {
+  Settings: {
+    path: 'settings',
+    screens: {
+      Notifications: 'notifications', // matches myapp://settings/notifications
+      Account: 'account/:section',    // matches myapp://settings/account/billing
+    },
+  },
+}
+```
+
+**A grouping node** (no `path`) — for logical grouping without consuming URL segments:
+
+```js
+screens: {
+  Main: {
+    screens: {
+      Feed: 'feed',    // matches myapp://feed (not myapp://Main/feed)
+      Search: 'search',
+    },
+  },
+}
+```
+
+### Path parameters
+
+Use `:paramName` in path patterns to extract dynamic segments. Extracted parameters are available in `match.path[n].params`:
+
+```js
+screens: {
+  Post: 'user/:userId/post/:postId',
+  // myapp://user/5/post/99 → { userId: '5', postId: '99' }
+}
+```
+
+### Query parameters
+
+Query parameters are parsed automatically and available in `match.queryParams`:
+
+```
+myapp://search?q=hello&page=2
+→ match.queryParams = { q: 'hello', page: '2' }
+```
+
+## Handling matched links
+
+When a URL matches a route, RNN creates a `RouteMatch` object:
+
+```ts
+interface RouteMatch {
+  url: string;                    // the original URL
+  path: RouteMatchSegment[];      // matched screen path
+  queryParams: Record<string, string>;
+}
+
+interface RouteMatchSegment {
+  screen: string;                 // registered component name
+  params: Record<string, string>; // extracted path parameters
+}
+```
+
+There are two ways to handle a matched link:
+
+### getLayout
+
+Provide a `getLayout` function that returns a `LayoutRoot`. RNN calls `Navigation.setRoot()` with the result.
+
+```js
+Navigation.setLinking({
+  // ...
+  getLayout: (match) => ({
+    root: {
+      stack: {
+        children: match.path.map((segment) => ({
+          component: {
+            name: segment.screen,
+            passProps: segment.params,
+          },
+        })),
+      },
+    },
+  }),
+});
+```
+
+Return `undefined` from `getLayout` to skip navigation for a particular match.
+
+This is useful when your app has a consistent layout structure (e.g. always a single stack). You control exactly what layout tree gets built for each deep link.
+
+### onLink
+
+For full control, provide `onLink` instead. This lets you call any navigation command — `push`, `showModal`, `setRoot`, etc. When `onLink` is provided, `getLayout` is ignored.
+
+```js
+Navigation.setLinking({
+  // ...
+  onLink: (match) => {
+    const leaf = match.path[match.path.length - 1];
+
+    if (leaf.screen === 'Profile') {
+      // Push onto existing stack
+      Navigation.push('mainStack', {
+        component: {
+          name: 'Profile',
+          passProps: { userId: leaf.params.id },
+        },
+      });
+    } else {
+      // Fall back to setRoot for other screens
+      Navigation.setRoot({
+        root: {
+          stack: {
+            children: [{ component: { name: leaf.screen } }],
+          },
+        },
+      });
+    }
+  },
+});
+```
+
+## Deferred deep links
+
+Often you need to delay deep link handling until the app is ready — for example, until the user has authenticated. Use the `isReady` predicate and `setLinkingReady()` to defer links:
+
+```js
+let isAuthenticated = false;
+
+Navigation.setLinking({
+  prefixes: ['myapp://'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'user/:id',
+    },
+  },
+  getLayout: (match) => ({
+    root: {
+      stack: {
+        children: match.path.map((segment) => ({
+          component: { name: segment.screen, passProps: segment.params },
+        })),
+      },
+    },
+  }),
+  isReady: () => isAuthenticated,
+});
+```
+
+When `isReady` returns `false`, incoming deep links are queued. After the user logs in, flush the queue:
+
+```js
+async function onLoginSuccess() {
+  isAuthenticated = true;
+  Navigation.setLinkingReady(true);
+  // Any queued deep link is now processed
+}
+```
+
+If multiple links arrive while deferred, they are replayed in order.
+
+## Manual deep link handling
+
+You can trigger deep link handling programmatically — useful for handling links from push notifications or other sources:
+
+```js
+Navigation.handleDeepLink('myapp://user/42?ref=notification');
+```
+
+This runs the URL through the same parse → match → resolve pipeline as OS-delivered links.
+
+## Complete example
+
+```js
+import { Navigation } from 'react-native-navigation';
+
+// Register screens
+Navigation.registerComponent('Home', () => require('./screens/Home').default);
+Navigation.registerComponent('Profile', () => require('./screens/Profile').default);
+Navigation.registerComponent('Settings', () => require('./screens/Settings').default);
+Navigation.registerComponent('Notifications', () => require('./screens/Notifications').default);
+Navigation.registerComponent('Login', () => require('./screens/Login').default);
+
+let isLoggedIn = false;
+
+// Configure deep linking
+Navigation.setLinking({
+  prefixes: ['myapp://', 'https://myapp.com'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'user/:id',
+      Settings: {
+        path: 'settings',
+        screens: {
+          Notifications: 'notifications',
+        },
+      },
+    },
+  },
+  getLayout: (match) => ({
+    root: {
+      stack: {
+        children: match.path.map((segment) => ({
+          component: {
+            name: segment.screen,
+            passProps: { ...segment.params, ...match.queryParams },
+          },
+        })),
+      },
+    },
+  }),
+  isReady: () => isLoggedIn,
+});
+
+// Launch the app
+Navigation.events().registerAppLaunchedListener(() => {
+  if (isLoggedIn) {
+    Navigation.setRoot({
+      root: { stack: { children: [{ component: { name: 'Home' } }] } },
+    });
+  } else {
+    Navigation.setRoot({
+      root: { stack: { children: [{ component: { name: 'Login' } }] } },
+    });
+  }
+});
+
+// Call from your login screen after successful auth
+export function onLoginComplete() {
+  isLoggedIn = true;
+  Navigation.setRoot({
+    root: { stack: { children: [{ component: { name: 'Home' } }] } },
+  });
+  Navigation.setLinkingReady(true);
+}
+```
+
+With this setup:
+- `myapp://home` navigates to the Home screen
+- `myapp://user/42` navigates to the Profile screen with `{ id: '42' }` as props
+- `myapp://settings/notifications` creates a stack with Settings and Notifications
+- If the user isn't logged in, the link is queued and replayed after `onLoginComplete()`
+
+## Native setup
+
+The linking framework uses React Native's built-in `Linking` API to receive URLs from the OS. You need to configure your native projects to handle the URL schemes and universal links you want to support. This is standard React Native setup, not specific to RNN.
+
+### iOS
+
+Add your URL scheme to `Info.plist`:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>myapp</string>
+    </array>
+  </dict>
+</array>
+```
+
+For universal links, add the Associated Domains entitlement and configure your server's `apple-app-site-association` file. See [Apple's documentation](https://developer.apple.com/documentation/xcode/supporting-associated-domains).
+
+### Android
+
+Add an intent filter to your `MainActivity` in `AndroidManifest.xml`:
+
+```xml
+<activity
+  android:name=".MainActivity"
+  android:launchMode="singleTask">
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="myapp" />
+  </intent-filter>
+</activity>
+```
+
+For App Links (universal links on Android), add `android:autoVerify="true"` to the intent filter and configure your server's `assetlinks.json`. See [Android's documentation](https://developer.android.com/training/app-links).
+
+## API reference
+
+### `Navigation.setLinking(config)`
+
+Configure deep link handling.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `config.prefixes` | `string[]` | Yes | URL prefixes to match |
+| `config.config.screens` | `ScreensConfig` | Yes | Screen-to-path mapping |
+| `config.getLayout` | `(match: RouteMatch) => LayoutRoot \| undefined` | No | Build a layout for the matched route |
+| `config.onLink` | `(match: RouteMatch) => void` | No | Custom handler (overrides `getLayout`) |
+| `config.isReady` | `() => boolean` | No | Predicate for deferred links |
+
+### `Navigation.handleDeepLink(url)`
+
+Manually process a URL through the linking pipeline.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `url` | `string` | Yes | The URL to handle |
+
+### `Navigation.setLinkingReady(ready)`
+
+Signal that the app is ready to process deep links. When `true`, any queued deferred links are flushed.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ready` | `boolean` | Yes | Whether the app is ready |
