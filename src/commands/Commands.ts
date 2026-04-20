@@ -13,6 +13,8 @@ import { Store } from '../components/Store';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
+import { CommandMiddleware } from '../processors/CommandMiddleware';
+import { NavigationCommand } from '../interfaces/NavigationMiddleware';
 
 export class Commands {
   constructor(
@@ -24,11 +26,27 @@ export class Commands {
     private readonly uniqueIdProvider: UniqueIdProvider,
     private readonly optionsProcessor: OptionsProcessor,
     private readonly layoutProcessor: LayoutProcessor,
-    private readonly optionsCrawler: OptionsCrawler
+    private readonly optionsCrawler: OptionsCrawler,
+    private readonly commandMiddleware: CommandMiddleware
   ) {}
 
+  private runMiddleware(command: NavigationCommand): NavigationCommand | null {
+    return this.commandMiddleware.run(command);
+  }
+
+  private cancelled<T = string>(): Promise<T> {
+    // Commands typically return Promise<string> (a componentId/commandId).
+    // When cancelled by middleware, resolve with an empty string so awaiters don't reject.
+    return Promise.resolve('' as unknown as T);
+  }
+
   public setRoot(simpleApi: LayoutRoot) {
-    const input = cloneLayout(simpleApi);
+    const mw = this.runMiddleware({
+      commandName: CommandName.SetRoot,
+      layoutRoot: simpleApi,
+    });
+    if (mw === null) return this.cancelled();
+    const input = cloneLayout(mw.layoutRoot ?? simpleApi);
     this.optionsCrawler.crawl(input.root);
     const processedRoot = this.layoutProcessor.process(input.root, CommandName.SetRoot);
     const root = this.layoutTreeParser.parse(processedRoot);
@@ -92,6 +110,9 @@ export class Commands {
   }
 
   public showModal<P>(layout: Layout<P>) {
+    const mw = this.runMiddleware({ commandName: CommandName.ShowModal, layout });
+    if (mw === null) return this.cancelled();
+    layout = (mw.layout as Layout<P>) ?? layout;
     const layoutCloned = cloneLayout(layout);
     this.optionsCrawler.crawl(layoutCloned);
     const layoutProcessed = this.layoutProcessor.process(layoutCloned, CommandName.ShowModal);
@@ -106,6 +127,14 @@ export class Commands {
   }
 
   public dismissModal(componentId: string, mergeOptions?: Options) {
+    const mw = this.runMiddleware({
+      commandName: CommandName.DismissModal,
+      componentId,
+      mergeOptions,
+    });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    mergeOptions = mw.mergeOptions ?? mergeOptions;
     const commandId = this.uniqueIdProvider.generate(CommandName.DismissModal);
     this.optionsProcessor.processOptions(CommandName.DismissModal, mergeOptions);
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
@@ -126,6 +155,14 @@ export class Commands {
   }
 
   public push<P>(componentId: string, simpleApi: Layout<P>) {
+    const mw = this.runMiddleware({
+      commandName: CommandName.Push,
+      componentId,
+      layout: simpleApi,
+    });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    simpleApi = (mw.layout as Layout<P>) ?? simpleApi;
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.Push);
@@ -140,6 +177,10 @@ export class Commands {
   }
 
   public pop(componentId: string, mergeOptions?: Options) {
+    const mw = this.runMiddleware({ commandName: CommandName.Pop, componentId, mergeOptions });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    mergeOptions = mw.mergeOptions ?? mergeOptions;
     const commandId = this.uniqueIdProvider.generate(CommandName.Pop);
     this.optionsProcessor.processOptions(CommandName.Pop, mergeOptions);
     const result = this.nativeCommandsSender.pop(commandId, componentId, mergeOptions);
@@ -148,6 +189,10 @@ export class Commands {
   }
 
   public popTo(componentId: string, mergeOptions?: Options) {
+    const mw = this.runMiddleware({ commandName: CommandName.PopTo, componentId, mergeOptions });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    mergeOptions = mw.mergeOptions ?? mergeOptions;
     const commandId = this.uniqueIdProvider.generate(CommandName.PopTo);
     this.optionsProcessor.processOptions(CommandName.PopTo, mergeOptions);
     const result = this.nativeCommandsSender.popTo(commandId, componentId, mergeOptions);
@@ -156,6 +201,14 @@ export class Commands {
   }
 
   public popToRoot(componentId: string, mergeOptions?: Options) {
+    const mw = this.runMiddleware({
+      commandName: CommandName.PopToRoot,
+      componentId,
+      mergeOptions,
+    });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    mergeOptions = mw.mergeOptions ?? mergeOptions;
     const commandId = this.uniqueIdProvider.generate(CommandName.PopToRoot);
     this.optionsProcessor.processOptions(CommandName.PopToRoot, mergeOptions);
     const result = this.nativeCommandsSender.popToRoot(commandId, componentId, mergeOptions);
@@ -164,6 +217,14 @@ export class Commands {
   }
 
   public setStackRoot<P>(componentId: string, children: Layout<P>[]) {
+    const mw = this.runMiddleware({
+      commandName: CommandName.SetStackRoot,
+      componentId,
+      children,
+    });
+    if (mw === null) return this.cancelled();
+    componentId = mw.componentId ?? componentId;
+    children = (mw.children as Layout<P>[]) ?? children;
     const input = map(cloneLayout(children), (simpleApi) => {
       this.optionsCrawler.crawl(simpleApi);
       const layoutProcessed = this.layoutProcessor.process(simpleApi, CommandName.SetStackRoot);
@@ -186,6 +247,9 @@ export class Commands {
   }
 
   public showOverlay<P>(simpleApi: Layout<P>) {
+    const mw = this.runMiddleware({ commandName: CommandName.ShowOverlay, layout: simpleApi });
+    if (mw === null) return this.cancelled();
+    simpleApi = (mw.layout as Layout<P>) ?? simpleApi;
     const input = cloneLayout(simpleApi);
     this.optionsCrawler.crawl(input);
     const layoutProcessed = this.layoutProcessor.process(input, CommandName.ShowOverlay);

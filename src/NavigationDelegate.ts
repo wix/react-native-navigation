@@ -6,6 +6,7 @@ import { Options } from './interfaces/Options';
 import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import { NavigationMiddleware } from './interfaces/NavigationMiddleware';
 import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
@@ -62,6 +63,14 @@ export class NavigationDelegate {
     processor: (layout: Layout, commandName: CommandName) => Layout
   ): ProcessorSubscription {
     return this.concreteNavigation.addLayoutProcessor(processor);
+  }
+
+  /**
+   * Registers a navigation middleware that intercepts every command before dispatch.
+   * Return the (possibly modified) command to proceed, or `null` to cancel.
+   */
+  public addMiddleware(middleware: NavigationMiddleware): ProcessorSubscription {
+    return this.concreteNavigation.addMiddleware(middleware);
   }
 
   public setLazyComponentRegistrator(

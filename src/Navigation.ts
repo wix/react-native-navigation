@@ -28,6 +28,9 @@ import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import { CommandMiddlewareStore } from './processors/CommandMiddlewareStore';
+import { CommandMiddleware } from './processors/CommandMiddleware';
+import { NavigationMiddleware } from './interfaces/NavigationMiddleware';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -35,6 +38,7 @@ export class NavigationRoot {
   public readonly store: Store;
   private readonly optionProcessorsStore: OptionProcessorsStore;
   private readonly layoutProcessorsStore: LayoutProcessorsStore;
+  private readonly commandMiddlewareStore: CommandMiddlewareStore;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
   private readonly layoutTreeParser: LayoutTreeParser;
@@ -55,6 +59,7 @@ export class NavigationRoot {
     this.store = new Store();
     this.optionProcessorsStore = new OptionProcessorsStore();
     this.layoutProcessorsStore = new LayoutProcessorsStore();
+    this.commandMiddlewareStore = new CommandMiddlewareStore();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(
       this.nativeEventsReceiver,
@@ -77,6 +82,7 @@ export class NavigationRoot {
       new Deprecations()
     );
     const layoutProcessor = new LayoutProcessor(this.layoutProcessorsStore);
+    const commandMiddleware = new CommandMiddleware(this.commandMiddlewareStore);
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
     this.optionsCrawler = new OptionsCrawler(this.store, this.uniqueIdProvider);
@@ -89,7 +95,8 @@ export class NavigationRoot {
       this.uniqueIdProvider,
       optionsProcessor,
       layoutProcessor,
-      this.optionsCrawler
+      this.optionsCrawler,
+      commandMiddleware
     );
     this.eventsRegistry = new EventsRegistry(
       this.nativeEventsReceiver,
@@ -133,6 +140,17 @@ export class NavigationRoot {
     processor: (layout: Layout, commandName: CommandName) => Layout
   ): ProcessorSubscription {
     return this.layoutProcessorsStore.addProcessor(processor);
+  }
+
+  /**
+   * Registers a navigation middleware. Middleware intercept every navigation command
+   * before it is sent to native, in registration order. A middleware can:
+   *  - return the command unchanged to observe it (analytics),
+   *  - return a modified command to redirect/rewrite (auth guard, A/B test, deep link),
+   *  - return `null` to cancel the command entirely.
+   */
+  public addMiddleware(middleware: NavigationMiddleware): ProcessorSubscription {
+    return this.commandMiddlewareStore.addMiddleware(middleware);
   }
 
   public setLazyComponentRegistrator(

@@ -14,6 +14,8 @@ import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
+import { CommandMiddleware } from '../processors/CommandMiddleware';
+import { CommandMiddlewareStore } from '../processors/CommandMiddlewareStore';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
 import React from 'react';
@@ -52,7 +54,8 @@ describe('Commands', () => {
       uniqueIdProvider,
       optionsProcessor,
       layoutProcessor,
-      new OptionsCrawler(instance(mockedStore), uniqueIdProvider)
+      new OptionsCrawler(instance(mockedStore), uniqueIdProvider),
+      new CommandMiddleware(new CommandMiddlewareStore())
     );
   });
 
@@ -669,13 +672,18 @@ describe('Commands', () => {
         instance(mockedUniqueIdProvider),
         instance(mockedOptionsProcessor),
         new LayoutProcessor(new LayoutProcessorsStore()),
-        new OptionsCrawler(instance(mockedStore), mockedUniqueIdProvider)
+        new OptionsCrawler(instance(mockedStore), mockedUniqueIdProvider),
+        new CommandMiddleware(new CommandMiddlewareStore())
       );
     });
 
     function getAllMethodsOfUut() {
       const uutFns = Object.getOwnPropertyNames(Commands.prototype);
-      const methods = filter(uutFns, (fn) => fn !== 'constructor');
+      const privateHelpers = ['runMiddleware', 'cancelled'];
+      const methods = filter(
+        uutFns,
+        (fn) => fn !== 'constructor' && !privateHelpers.includes(fn)
+      );
       expect(methods.length).toBeGreaterThan(1);
       return methods;
     }
