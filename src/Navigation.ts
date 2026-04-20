@@ -28,6 +28,7 @@ import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import { NavigationState } from './interfaces/NavigationState';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -278,6 +279,13 @@ export class NavigationRoot {
    */
   public getLaunchArgs(): Promise<any> {
     return this.commands.getLaunchArgs();
+  }
+
+  /**
+   * Returns a serializable representation of the current navigation tree
+   */
+  public getState(): Promise<NavigationState> {
+    return this.commands.getState();
   }
 
   /**

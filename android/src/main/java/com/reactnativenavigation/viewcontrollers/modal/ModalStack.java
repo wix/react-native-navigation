@@ -13,6 +13,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ModalOverlay;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.List;
 
@@ -145,6 +146,10 @@ public class ModalStack {
 
     public int size() {
         return modals.size();
+    }
+
+    public List<ViewController<?>> getModals() {
+        return Collections.unmodifiableList(modals);
     }
 
     private boolean isTop(ViewController<?> modal) {

@@ -9,6 +9,14 @@
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
 #import "RNNUtils.h"
+#import "RNNStackController.h"
+#import "RNNBottomTabsController.h"
+#import "RNNSideMenuViewController.h"
+#import "RNNSideMenuChildViewController.h"
+#import "RNNTopTabsViewController.h"
+#import "RNNSplitViewController.h"
+#import "RNNExternalViewController.h"
+#import "RNNOverlayWindow.h"
 
 static NSString *const setRoot = @"setRoot";
 static NSString *const setStackRoot = @"setStackRoot";
@@ -103,6 +111,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
           completion:^{
             [self->_layoutManager removePendingViewController:weakVC];
             [self->_eventEmitter sendOnNavigationCommandCompletion:setRoot commandId:commandId];
+            [self emitStateChangedForCommand:setRoot commandId:commandId];
             completion(weakVC.layoutInfo.componentId);
           }];
     }];
@@ -180,6 +189,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                     [self->_layoutManager removePendingViewController:newVc];
                     [self->_eventEmitter sendOnNavigationCommandCompletion:push
                                                                  commandId:commandId];
+                    [self emitStateChangedForCommand:push commandId:commandId];
                     completion(newVc.layoutInfo.componentId);
                   }];
                   [rvc.navigationController pushViewController:newVc animated:YES];
@@ -235,6 +245,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                     [self->_layoutManager removePendingViewController:weakNewVC];
                     [self->_eventEmitter sendOnNavigationCommandCompletion:push
                                                                  commandId:commandId];
+                    [self emitStateChangedForCommand:push commandId:commandId];
                     completion(weakNewVC.layoutInfo.componentId);
                   }
                    rejection:rejection];
@@ -278,6 +289,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                             [self->_layoutManager removePendingViewController:weakNewVC];
                             [weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot
                                                                       commandId:commandId];
+                            [self emitStateChangedForCommand:setStackRoot commandId:commandId];
                             completion();
                           }
                            rejection:rejection];
@@ -304,7 +316,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                    completion:^{
                      [self->_eventEmitter sendOnNavigationCommandCompletion:pop
                                                                   commandId:commandId];
-                NSLog(@"Pop commandshandler completed");
+                     [self emitStateChangedForCommand:pop commandId:commandId];
                      completion();
                    }
                     rejection:rejection];
@@ -336,6 +348,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
              completion:^(NSArray *poppedViewControllers) {
                [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
+               [self emitStateChangedForCommand:popTo commandId:commandId];
                completion();
              }
               rejection:rejection];
@@ -368,6 +381,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                  completion:^(NSArray *poppedViewControllers) {
                    [self->_eventEmitter sendOnNavigationCommandCompletion:popToRoot
                                                                 commandId:commandId];
+                   [self emitStateChangedForCommand:popToRoot commandId:commandId];
                    completion();
                  }
                   rejection:rejection];
@@ -411,6 +425,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                             [self->_layoutManager removePendingViewController:weakNewVC];
                             [self->_eventEmitter sendOnNavigationCommandCompletion:showModal
                                                                          commandId:commandId];
+                            [self emitStateChangedForCommand:showModal commandId:commandId];
                             completion(weakNewVC.layoutInfo.componentId);
                           }];
     }];
@@ -447,6 +462,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
           completion:^{
             [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal
                                                          commandId:commandId];
+            [self emitStateChangedForCommand:dismissModal commandId:commandId];
             completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
           }];
 }
@@ -463,6 +479,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
                       completion:^{
                         [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals
                                                                      commandId:commandId];
+                        [self emitStateChangedForCommand:dismissAllModals commandId:commandId];
                         completion();
                       }];
 }
@@ -489,6 +506,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
       [self->_layoutManager removePendingViewController:weakOverlayVC];
       [self->_eventEmitter sendOnNavigationCommandCompletion:showOverlay commandId:commandId];
+      [self emitStateChangedForCommand:showOverlay commandId:commandId];
       completion(weakOverlayVC.layoutInfo.componentId);
     }];
 
@@ -506,6 +524,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     if (viewController) {
         [_overlayManager dismissOverlay:viewController];
         [_eventEmitter sendOnNavigationCommandCompletion:dismissOverlay commandId:commandId];
+        [self emitStateChangedForCommand:dismissOverlay commandId:commandId];
         completion();
     } else {
         [RNNErrorHandler reject:reject
@@ -520,6 +539,131 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     [_overlayManager dismissAllOverlays];
     [self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllOverlays commandId:commandId];
+    [self emitStateChangedForCommand:dismissAllOverlays commandId:commandId];
+}
+
+- (void)emitStateChangedForCommand:(NSString *)commandName commandId:(NSString *)commandId {
+    NSDictionary *state = [self getNavigationState];
+    [_eventEmitter sendNavigationStateChanged:state commandName:commandName commandId:commandId];
+}
+
+- (NSDictionary *)getNavigationState {
+    NSMutableDictionary *state = [NSMutableDictionary dictionary];
+
+    UIViewController *rootVC = _mainWindow.rootViewController;
+    if (rootVC && rootVC.layoutInfo) {
+        state[@"root"] = [self serializeViewController:rootVC];
+    } else {
+        state[@"root"] = [NSNull null];
+    }
+
+    NSMutableArray *modals = [NSMutableArray array];
+    UIViewController *presented = rootVC.presentedViewController;
+    while (presented) {
+        if (presented.layoutInfo) {
+            [modals addObject:[self serializeViewController:presented]];
+        }
+        presented = presented.presentedViewController;
+    }
+    state[@"modals"] = modals;
+
+    NSMutableArray *overlays = [NSMutableArray array];
+    for (RNNOverlayWindow *window in _overlayManager.overlayWindows) {
+        UIViewController *overlayVC = window.rootViewController;
+        if (overlayVC && overlayVC.layoutInfo) {
+            [overlays addObject:[self serializeViewController:overlayVC]];
+        }
+    }
+    state[@"overlays"] = overlays;
+
+    return state;
+}
+
+- (NSDictionary *)serializeViewController:(UIViewController *)vc {
+    NSMutableDictionary *node = [NSMutableDictionary dictionary];
+    node[@"id"] = vc.layoutInfo.componentId ?: @"";
+    node[@"type"] = [self layoutTypeForViewController:vc];
+
+    if (vc.layoutInfo.name) {
+        node[@"name"] = vc.layoutInfo.name;
+    }
+
+    NSMutableArray *children = [NSMutableArray array];
+
+    if ([vc isKindOfClass:[RNNStackController class]]) {
+        RNNStackController *stack = (RNNStackController *)vc;
+        for (UIViewController *child in stack.childViewControllers) {
+            if (child.layoutInfo) {
+                [children addObject:[self serializeViewController:child]];
+            }
+        }
+    } else if ([vc isKindOfClass:[RNNBottomTabsController class]]) {
+        RNNBottomTabsController *tabs = (RNNBottomTabsController *)vc;
+        for (UIViewController *child in tabs.childViewControllers) {
+            if (child.layoutInfo) {
+                [children addObject:[self serializeViewController:child]];
+            }
+        }
+        node[@"selectedIndex"] = @(tabs.selectedIndex);
+    } else if ([vc isKindOfClass:[RNNSideMenuViewController class]]) {
+        RNNSideMenuViewController *sideMenu = (RNNSideMenuViewController *)vc;
+        if (sideMenu.left) {
+            [children addObject:[self serializeViewController:sideMenu.left]];
+        }
+        if (sideMenu.center) {
+            [children addObject:[self serializeViewController:sideMenu.center]];
+        }
+        if (sideMenu.right) {
+            [children addObject:[self serializeViewController:sideMenu.right]];
+        }
+    } else if ([vc isKindOfClass:[RNNSideMenuChildViewController class]]) {
+        RNNSideMenuChildViewController *sideMenuChild = (RNNSideMenuChildViewController *)vc;
+        if (sideMenuChild.child) {
+            [children addObject:[self serializeViewController:sideMenuChild.child]];
+        }
+    } else if ([vc isKindOfClass:[RNNSplitViewController class]]) {
+        for (UIViewController *child in vc.childViewControllers) {
+            if (child.layoutInfo) {
+                [children addObject:[self serializeViewController:child]];
+            }
+        }
+    } else if ([vc isKindOfClass:[RNNTopTabsViewController class]]) {
+        for (UIViewController *child in vc.childViewControllers) {
+            if (child.layoutInfo) {
+                [children addObject:[self serializeViewController:child]];
+            }
+        }
+    }
+
+    node[@"children"] = children;
+    return node;
+}
+
+- (NSString *)layoutTypeForViewController:(UIViewController *)vc {
+    if ([vc isKindOfClass:[RNNBottomTabsController class]]) {
+        return @"BottomTabs";
+    } else if ([vc isKindOfClass:[RNNStackController class]]) {
+        return @"Stack";
+    } else if ([vc isKindOfClass:[RNNSideMenuViewController class]]) {
+        return @"SideMenuRoot";
+    } else if ([vc isKindOfClass:[RNNSideMenuChildViewController class]]) {
+        RNNSideMenuChildViewController *sideMenuChild = (RNNSideMenuChildViewController *)vc;
+        switch (sideMenuChild.type) {
+            case RNNSideMenuChildTypeCenter:
+                return @"SideMenuCenter";
+            case RNNSideMenuChildTypeLeft:
+                return @"SideMenuLeft";
+            case RNNSideMenuChildTypeRight:
+                return @"SideMenuRight";
+        }
+    } else if ([vc isKindOfClass:[RNNTopTabsViewController class]]) {
+        return @"TopTabs";
+    } else if ([vc isKindOfClass:[RNNSplitViewController class]]) {
+        return @"SplitView";
+    } else if ([vc isKindOfClass:[RNNExternalViewController class]]) {
+        return @"ExternalComponent";
+    }
+    return @"Component";
 }
 
 #pragma mark - private

@@ -42,6 +42,7 @@ const Screens = {
   FirstBottomTabsScreen: 'FirstBottomTabsScreen',
   SecondBottomTabsScreen: 'SecondBottomTabsScreen',
   Navigation: 'Navigation',
+  NavigationState: 'NavigationState',
   NativeScreen: 'RNNCustomComponent',
   RoundButton: 'CustomRoundedButton',
   LifecycleButton: 'LifecycleButton',

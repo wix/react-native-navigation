@@ -67,6 +67,13 @@ RCT_EXPORT_MODULE()
     resolve(args);
 }
 
+- (void)getNavigationState:(NSString *)commandId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    RCTExecuteOnMainQueue(^{
+        NSDictionary *state = [[RNNTurboCommandsHandler sharedInstance] getNavigationState];
+        resolve(state);
+    });
+}
+
 
 - (void)pop:(NSString *)commandId componentId:(NSString *)componentId options:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
     RCTExecuteOnMainQueue(^{

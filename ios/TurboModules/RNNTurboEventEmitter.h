@@ -19,6 +19,7 @@ extern EmitterEvents const SearchBarCancelPressed;
 extern EmitterEvents const PreviewCompleted;
 extern EmitterEvents const ScreenPopped;
 extern EmitterEvents const BottomTabPressed;
+extern EmitterEvents const NavigationStateChanged;
 
 @interface RNNTurboEventEmitter : RCTEventEmitter <NativeRNNTurboEventEmitterSpec>
 - (void)send:(NSString *)eventName body:(id)body;

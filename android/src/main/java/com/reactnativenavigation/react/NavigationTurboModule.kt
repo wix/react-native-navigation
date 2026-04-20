@@ -18,6 +18,9 @@ import com.reactnativenavigation.utils.Now
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.UiThread
 import com.reactnativenavigation.utils.UiUtils
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.WritableArray
+import com.facebook.react.bridge.WritableMap
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.Objects
@@ -89,9 +92,10 @@ class NavigationTurboModule(
                 promise.reject("ACTIVITY_NULL", "Activity is null")
                 return@handle
             }
-            navigator()?.setRoot(
+            val nav = navigator()
+            nav?.setRoot(
                 viewController,
-                NativeCommandListener("setRoot", commandId, promise, eventEmitter, now)
+                NativeCommandListener("setRoot", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -117,10 +121,11 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator()?.push(
+            val nav = navigator()
+            nav?.push(
                 componentId,
                 viewController,
-                NativeCommandListener("push", commandId, promise, eventEmitter, now)
+                NativeCommandListener("push", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -132,10 +137,11 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator()?.pop(
+            val nav = navigator()
+            nav?.pop(
                 componentId,
                 parse(options),
-                NativeCommandListener("pop", commandId, promise, eventEmitter, now)
+                NativeCommandListener("pop", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -147,10 +153,11 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator()?.popTo(
+            val nav = navigator()
+            nav?.popTo(
                 componentId,
                 parse(options),
-                NativeCommandListener("popTo", commandId, promise, eventEmitter, now)
+                NativeCommandListener("popTo", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -162,10 +169,11 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator()?.popToRoot(
+            val nav = navigator()
+            nav?.popToRoot(
                 componentId,
                 parse(options),
-                NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now)
+                NativeCommandListener("popToRoot", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -182,10 +190,11 @@ class NavigationTurboModule(
                 val layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)))
                 _children.add(layoutFactory.create(layoutTree))
             }
-            navigator()?.setStackRoot(
+            val nav = navigator()
+            nav?.setStackRoot(
                 componentId,
                 _children,
-                NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now)
+                NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -194,9 +203,10 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator()?.showModal(
+            val nav = navigator()
+            nav?.showModal(
                 viewController,
-                NativeCommandListener("showModal", commandId, promise, eventEmitter, now)
+                NativeCommandListener("showModal", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -208,19 +218,21 @@ class NavigationTurboModule(
         promise: Promise
     ) {
         handle {
-            navigator()?.mergeOptions(componentId, parse(options))
-            navigator()?.dismissModal(
+            val nav = navigator()
+            nav?.mergeOptions(componentId, parse(options))
+            nav?.dismissModal(
                 componentId,
-                NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now)
+                NativeCommandListener("dismissModal", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
 
     override fun dismissAllModals(commandId: String, options: ReadableMap?, promise: Promise) {
         handle {
-            navigator()?.dismissAllModals(
+            val nav = navigator()
+            nav?.dismissAllModals(
                 parse(options),
-                NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now)
+                NativeCommandListener("dismissAllModals", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
@@ -229,31 +241,35 @@ class NavigationTurboModule(
         val layoutTree = LayoutNodeParser.parse(jsonParser.parse(layout))
         handle {
             val viewController = layoutFactory.create(layoutTree)
-            navigator()?.showOverlay(
+            val nav = navigator()
+            nav?.showOverlay(
                 viewController,
-                NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now)
+                NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
 
     override fun dismissOverlay(commandId: String, componentId: String, promise: Promise) {
         handle {
-            navigator()?.dismissOverlay(
+            val nav = navigator()
+            nav?.dismissOverlay(
                 componentId,
-                NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now)
+                NativeCommandListener("dismissOverlay", commandId, promise, eventEmitter, now, nav)
             )
         }
     }
 
     override fun dismissAllOverlays(commandId: String, promise: Promise) {
         handle {
-            navigator()?.dismissAllOverlays(
+            val nav = navigator()
+            nav?.dismissAllOverlays(
                 NativeCommandListener(
                     "dismissAllOverlays",
                     commandId,
                     promise,
                     eventEmitter,
-                    now
+                    now,
+                    nav
                 )
             )
         }
@@ -261,7 +277,47 @@ class NavigationTurboModule(
 
     override fun getLaunchArgs(commandId: String, promise: Promise) {
         promise.resolve(LaunchArgsParser.parse(activity()))
+    }
 
+    override fun getNavigationState(commandId: String, promise: Promise) {
+        handle {
+            val state = navigator()?.getNavigationState()
+            promise.resolve(state?.let { mapToWritable(it) })
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun mapToWritable(map: Map<String, Any?>): WritableMap {
+        val writableMap = Arguments.createMap()
+        for ((key, value) in map) {
+            when (value) {
+                null -> writableMap.putNull(key)
+                is String -> writableMap.putString(key, value)
+                is Int -> writableMap.putInt(key, value)
+                is Double -> writableMap.putDouble(key, value)
+                is Boolean -> writableMap.putBoolean(key, value)
+                is Map<*, *> -> writableMap.putMap(key, mapToWritable(value as Map<String, Any?>))
+                is List<*> -> writableMap.putArray(key, listToWritable(value))
+            }
+        }
+        return writableMap
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun listToWritable(list: List<*>): WritableArray {
+        val writableArray = Arguments.createArray()
+        for (value in list) {
+            when (value) {
+                null -> writableArray.pushNull()
+                is String -> writableArray.pushString(value)
+                is Int -> writableArray.pushInt(value)
+                is Double -> writableArray.pushDouble(value)
+                is Boolean -> writableArray.pushBoolean(value)
+                is Map<*, *> -> writableArray.pushMap(mapToWritable(value as Map<String, Any?>))
+                is List<*> -> writableArray.pushArray(listToWritable(value))
+            }
+        }
+        return writableArray
     }
 
     private fun parse(mergeOptions: ReadableMap?): Options {

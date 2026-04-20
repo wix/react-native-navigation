@@ -22,6 +22,7 @@ const {
   PAGE_SHEET_MODAL_BTN,
   NAVIGATION_SCREEN,
   BACK_BUTTON_SCREEN_BTN,
+  NAV_STATE_BTN,
 } = testIDs;
 
 interface Props extends NavigationProps {}
@@ -90,6 +91,7 @@ export default class NavigationScreen extends NavigationComponent<Props> {
           testID={BACK_BUTTON_SCREEN_BTN}
           onPress={this.pushBackButtonScreen}
         />
+        <Button label="Navigation State" testID={NAV_STATE_BTN} onPress={this.pushNavigationState} />
         <Button label="React Context API" onPress={this.pushContextScreen} />
         <Button label="Shared Element (Cocktails)" onPress={this.sharedElement} />
         <Button label="Shared Element (Car Dealer)" onPress={this.sharedElementAlt} />
@@ -120,6 +122,7 @@ export default class NavigationScreen extends NavigationComponent<Props> {
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);
   pushStaticEventsScreen = () => Navigation.showModal(Screens.EventsScreen);
   orientation = () => Navigation.showModal(Screens.Orientation);
+  pushNavigationState = () => Navigation.push(this, Screens.NavigationState);
   pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);
   sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen);
   sharedElementAlt = () => Navigation.push(this, Screens.CarsListScreen);

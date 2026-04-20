@@ -16,3 +16,9 @@ export interface BottomTabLongPressedEvent {
 export interface BottomTabPressedEvent {
   tabIndex: number;
 }
+
+export interface NavigationStateChangedEvent {
+  state: import('./NavigationState').NavigationState;
+  commandName: string;
+  commandId: string;
+}

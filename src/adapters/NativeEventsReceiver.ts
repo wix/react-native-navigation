@@ -16,6 +16,7 @@ import {
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
+  NavigationStateChangedEvent,
 } from '../interfaces/Events';
 import RNNEventEmitter from './NativeRNNTurboEventEmitter';
 
@@ -121,5 +122,11 @@ export class NativeEventsReceiver {
     callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
     return this.emitter.addListener('RNN.ScreenPopped', callback);
+  }
+
+  public registerNavigationStateChangedListener(
+    callback: (event: NavigationStateChangedEvent) => void
+  ): EmitterSubscription {
+    return this.emitter.addListener('RNN.NavigationStateChanged', callback);
   }
 }

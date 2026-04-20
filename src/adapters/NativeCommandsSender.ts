@@ -1,4 +1,5 @@
 import { NavigationConstants } from './Constants';
+import { NavigationState } from '../interfaces/NavigationState';
 import RNNCommandsModule, { Spec } from './NativeRNNTurboModule';
 
 interface NativeCommandsModule {
@@ -17,6 +18,7 @@ interface NativeCommandsModule {
   dismissOverlay(commandId: string, componentId: string): Promise<any>;
   dismissAllOverlays(commandId: string): Promise<any>;
   getLaunchArgs(commandId: string): Promise<any>;
+  getNavigationState(commandId: string): Promise<any>;
   getNavigationConstants(): Promise<NavigationConstants>;
   getNavigationConstantsSync(): NavigationConstants;
   // Turbo
@@ -87,6 +89,10 @@ export class NativeCommandsSender implements NativeCommandsModule {
 
   getLaunchArgs(commandId: string) {
     return this.nativeCommandsModule.getLaunchArgs(commandId);
+  }
+
+  getNavigationState(commandId: string): Promise<NavigationState> {
+    return this.nativeCommandsModule.getNavigationState(commandId) as Promise<NavigationState>;
   }
 
   getNavigationConstants() {

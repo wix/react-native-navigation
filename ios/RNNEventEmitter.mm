@@ -116,6 +116,17 @@
     [self send:ScreenPopped body:@{@"componentId" : componentId}];
 }
 
+- (void)sendNavigationStateChanged:(NSDictionary *)state
+                       commandName:(NSString *)commandName
+                         commandId:(NSString *)commandId {
+    [self send:NavigationStateChanged
+          body:@{
+              @"state" : state,
+              @"commandName" : commandName,
+              @"commandId" : commandId
+          }];
+}
+
 #pragma mark private
 
 - (void)send:(NSString *)eventName body:(id)body {

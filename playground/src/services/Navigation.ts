@@ -65,6 +65,7 @@ const compId = (selfOrCompId: SelfOrCompId): string => {
 };
 
 const constants = Navigation.constants;
+const getState = Navigation.getState.bind(Navigation);
 
 const CustomNavigation = {
   mergeOptions,
@@ -86,6 +87,7 @@ const CustomNavigation = {
   TouchablePreview: Navigation.TouchablePreview,
   setStackRoot,
   constants,
+  getState,
 };
 
 export default CustomNavigation;

@@ -648,6 +648,20 @@ describe('Commands', () => {
     });
   });
 
+  describe('getState', () => {
+    it('calls native getNavigationState', async () => {
+      const mockState = {
+        root: { id: 'root', type: 'Stack', children: [] },
+        modals: [],
+        overlays: [],
+      };
+      when(mockedNativeCommandsSender.getNavigationState(anyString())).thenResolve(mockState as any);
+      const result = await uut.getState();
+      verify(mockedNativeCommandsSender.getNavigationState(anyString())).called();
+      expect(result).toEqual(mockState);
+    });
+  });
+
   describe('notifies commandsObserver', () => {
     let cb: any;
     let mockedLayoutTreeParser: LayoutTreeParser;
@@ -673,9 +687,11 @@ describe('Commands', () => {
       );
     });
 
+    const readOnlyMethods = ['getState'];
+
     function getAllMethodsOfUut() {
       const uutFns = Object.getOwnPropertyNames(Commands.prototype);
-      const methods = filter(uutFns, (fn) => fn !== 'constructor');
+      const methods = filter(uutFns, (fn) => fn !== 'constructor' && !readOnlyMethods.includes(fn));
       expect(methods.length).toBeGreaterThan(1);
       return methods;
     }

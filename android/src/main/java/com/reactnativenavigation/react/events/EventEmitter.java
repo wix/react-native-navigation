@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -22,6 +23,7 @@ public class EventEmitter {
     private static final String NavigationButtonPressed = "RNN.NavigationButtonPressed";
     private static final String ModalDismissed = "RNN.ModalDismissed";
     private static final String ScreenPopped = "RNN.ScreenPopped";
+    private static final String NavigationStateChanged = "RNN.NavigationStateChanged";
     @Nullable
     private ReactContext reactContext;
 
@@ -97,6 +99,14 @@ public class EventEmitter {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", componentId);
         emit(ScreenPopped, event);
+    }
+
+    public void emitNavigationStateChanged(WritableMap state, String commandName, String commandId) {
+        WritableMap event = Arguments.createMap();
+        event.putMap("state", state);
+        event.putString("commandName", commandName);
+        event.putString("commandId", commandId);
+        emit(NavigationStateChanged, event);
     }
 
     private void emit(String eventName, WritableMap data) {

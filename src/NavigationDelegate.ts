@@ -10,6 +10,7 @@ import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { AppRegistryService } from './adapters/AppRegistryService';
+import { NavigationState } from './interfaces/NavigationState';
 
 export class NavigationDelegate {
   private concreteNavigation: NavigationRoot;
@@ -202,6 +203,13 @@ export class NavigationDelegate {
    */
   public getLaunchArgs(): Promise<any> {
     return this.concreteNavigation.getLaunchArgs();
+  }
+
+  /**
+   * Returns a serializable representation of the current navigation tree
+   */
+  public getState(): Promise<NavigationState> {
+    return this.concreteNavigation.getState();
   }
 
   /**

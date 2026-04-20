@@ -72,6 +72,7 @@ function registerScreens() {
     () => require('./FullScreenModalScreen').default
   );
   Navigation.registerComponent(Screens.Navigation, () => require('./NavigationScreen').default);
+  Navigation.registerComponent(Screens.NavigationState, () => require('./NavigationStateScreen').default);
   Navigation.registerComponent(Screens.Options, () => require('./OptionsScreen').default);
   Navigation.registerComponent(Screens.Buttons, () => require('./ButtonsScreen').default);
   Navigation.registerComponent(Screens.Orientation, () => require('./OrientationScreen').default);

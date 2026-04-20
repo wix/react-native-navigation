@@ -18,6 +18,7 @@ EmitterEvents const SearchBarCancelPressed = @"RNN.SearchBarCancelPressed";
 EmitterEvents const PreviewCompleted = @"RNN.PreviewCompleted";
 EmitterEvents const ScreenPopped = @"RNN.ScreenPopped";
 EmitterEvents const BottomTabPressed = @"RNN.BottomTabPressed";
+EmitterEvents const NavigationStateChanged = @"RNN.NavigationStateChanged";
 
 @implementation RNNTurboEventEmitter {
   NSInteger _appLaunchedListenerCount;
@@ -48,7 +49,7 @@ RCT_EXPORT_MODULE()
     AppLaunched, CommandCompleted, BottomTabSelected, BottomTabLongPressed, BottomTabPressed,
     ComponentWillAppear, ComponentDidAppear, ComponentDidDisappear, NavigationButtonPressed,
     ModalDismissed, SearchBarUpdated, SearchBarCancelPressed, PreviewCompleted, ScreenPopped,
-    ModalAttemptedToDismiss
+    ModalAttemptedToDismiss, NavigationStateChanged
   ];
 }
 

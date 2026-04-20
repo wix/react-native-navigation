@@ -50,4 +50,8 @@
 
 - (void)sendBottomTabPressed:(NSNumber *)tabIndex;
 
+- (void)sendNavigationStateChanged:(NSDictionary *)state
+                       commandName:(NSString *)commandName
+                         commandId:(NSString *)commandId;
+
 @end

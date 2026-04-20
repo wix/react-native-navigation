@@ -90,4 +90,6 @@
 
 - (void)dismissAllOverlays:(NSString *)commandId;
 
+- (NSDictionary *)getNavigationState;
+
 @end

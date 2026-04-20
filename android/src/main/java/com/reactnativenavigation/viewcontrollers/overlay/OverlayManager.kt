@@ -54,6 +54,8 @@ class OverlayManager {
 
     fun size() = overlayRegistry.size
 
+    fun getOverlays(): Collection<ViewController<*>> = overlayRegistry.values
+
     fun findControllerById(id: String?): ViewController<*>? {
         return overlayRegistry[id]
     }

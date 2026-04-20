@@ -42,6 +42,8 @@ export interface Spec extends TurboModule {
   dismissAllOverlays(commandId: string): Promise<string>;
 
   getLaunchArgs(commandId: string): Promise<Array<string>>;
+
+  getNavigationState(commandId: string): Promise<UnsafeObject>;
 }
 
 const commands = TurboModuleRegistry.get<Spec>('RNNTurboModule')!;

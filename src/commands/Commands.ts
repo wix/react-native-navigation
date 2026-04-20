@@ -13,6 +13,7 @@ import { Store } from '../components/Store';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
+import { NavigationState } from '../interfaces/NavigationState';
 
 export class Commands {
   constructor(
@@ -218,6 +219,11 @@ export class Commands {
     const result = this.nativeCommandsSender.getLaunchArgs(commandId);
     this.commandsObserver.notify(CommandName.GetLaunchArgs, { commandId });
     return result;
+  }
+
+  public getState(): Promise<NavigationState> {
+    const commandId = this.uniqueIdProvider.generate(CommandName.GetNavigationState);
+    return this.nativeCommandsSender.getNavigationState(commandId);
   }
 }
 

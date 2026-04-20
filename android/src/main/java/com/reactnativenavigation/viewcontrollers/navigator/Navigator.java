@@ -26,12 +26,20 @@ import com.reactnativenavigation.viewcontrollers.parent.ParentController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.RootPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.RootOverlay;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Navigator extends ParentController<ViewGroup> {
 
@@ -295,5 +303,62 @@ public class Navigator extends ParentController<ViewGroup> {
         } else {
             onViewDidAppear();
         }
+    }
+
+    public Map<String, Object> getNavigationState() {
+        Map<String, Object> state = new HashMap<>();
+        if (root != null) {
+            state.put("root", serializeController(root));
+        }
+        List<Map<String, Object>> modalsList = new ArrayList<>();
+        for (ViewController<?> modal : modalStack.getModals()) {
+            modalsList.add(serializeController(modal));
+        }
+        state.put("modals", modalsList);
+
+        List<Map<String, Object>> overlaysList = new ArrayList<>();
+        for (ViewController<?> overlay : overlayManager.getOverlays()) {
+            overlaysList.add(serializeController(overlay));
+        }
+        state.put("overlays", overlaysList);
+        return state;
+    }
+
+    private Map<String, Object> serializeController(ViewController<?> controller) {
+        Map<String, Object> node = new HashMap<>();
+        node.put("id", controller.getId());
+        node.put("type", getLayoutType(controller));
+
+        if (controller.getCurrentComponentName() != null) {
+            node.put("name", controller.getCurrentComponentName());
+        }
+
+        List<Map<String, Object>> children = new ArrayList<>();
+        if (controller instanceof ParentController) {
+            ParentController<?> parent = (ParentController<?>) controller;
+            for (ViewController<?> child : parent.getChildControllers()) {
+                children.add(serializeController(child));
+            }
+            if (controller instanceof BottomTabsController) {
+                node.put("selectedIndex", ((BottomTabsController) controller).getSelectedIndex());
+            }
+        }
+        node.put("children", children);
+        return node;
+    }
+
+    private String getLayoutType(ViewController<?> controller) {
+        if (controller instanceof BottomTabsController) {
+            return "BottomTabs";
+        } else if (controller instanceof StackController) {
+            return "Stack";
+        } else if (controller instanceof SideMenuController) {
+            return "SideMenuRoot";
+        } else if (controller instanceof TopTabsController) {
+            return "TopTabs";
+        } else if (controller instanceof ExternalComponentViewController) {
+            return "ExternalComponent";
+        }
+        return "Component";
     }
 }

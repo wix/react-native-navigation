@@ -23,6 +23,7 @@ import {
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
+  NavigationStateChangedEvent,
 } from '../interfaces/Events';
 
 export class EventsRegistry {
@@ -133,5 +134,11 @@ export class EventsRegistry {
     callback: (event: ScreenPoppedEvent) => void
   ): EmitterSubscription {
     return this.nativeEventsReceiver.registerScreenPoppedListener(callback);
+  }
+
+  public registerNavigationStateChangedListener(
+    callback: (event: NavigationStateChangedEvent) => void
+  ): EmitterSubscription {
+    return this.nativeEventsReceiver.registerNavigationStateChangedListener(callback);
   }
 }
