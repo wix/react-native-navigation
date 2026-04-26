@@ -1,5 +1,5 @@
 module.exports = {
-  preset: 'react-native',
+  preset: '@react-native/jest-preset',
   transformIgnorePatterns: [
     'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable|react-native-reanimated|react-native-webview)/)',
   ],

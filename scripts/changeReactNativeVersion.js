@@ -14,7 +14,9 @@ const {
     getReactNativeToolsVersion,
     getCliVersion,
     getGradleVersion,
+    getJestPresetVersion,
     getReanimatedOverride,
+    getWorkletsOverride,
     shouldRemoveWorklets,
     getTestingLibraryOverride,
 } = require('./versionMapping');
@@ -70,18 +72,29 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
     packageJson.dependencies = packageJson.dependencies || {};
     packageJson.devDependencies = packageJson.devDependencies || {};
 
-    packageJson.dependencies['react-native'] = targetRn;
-    packageJson.dependencies['react'] = reactVersion;
-    packageJson.devDependencies['react-test-renderer'] = reactVersion;
+    const hasReactNativeInDependencies = packageJson.dependencies['react-native'] !== undefined;
+    const hasReactNativeInDevDependencies = packageJson.devDependencies['react-native'] !== undefined;
+    const hasReactInDependencies = packageJson.dependencies['react'] !== undefined;
+    const hasReactInDevDependencies = packageJson.devDependencies['react'] !== undefined;
 
-    if (packageJson.devDependencies['react-native'] !== undefined) {
+    if (hasReactNativeInDependencies || !hasReactNativeInDevDependencies) {
+        packageJson.dependencies['react-native'] = targetRn;
+    }
+    if (hasReactInDependencies || !hasReactInDevDependencies) {
+        packageJson.dependencies['react'] = reactVersion;
+    }
+
+    if (hasReactNativeInDevDependencies) {
         packageJson.devDependencies['react-native'] = targetRn;
     }
-    if (packageJson.devDependencies['react'] !== undefined) {
+    if (hasReactInDevDependencies) {
         packageJson.devDependencies['react'] = reactVersion;
     }
+    if (packageJson.devDependencies['react-test-renderer'] !== undefined) {
+        packageJson.devDependencies['react-test-renderer'] = reactVersion;
+    }
 
-    const toolsVersion = getReactNativeToolsVersion(rnMinor);
+    const toolsVersion = getReactNativeToolsVersion(rnMinor, targetRn);
     for (const pkg of REACT_NATIVE_TOOLS_PACKAGES) {
         if (packageJson.devDependencies[pkg] !== undefined) {
             packageJson.devDependencies[pkg] = toolsVersion;
@@ -100,9 +113,21 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
         packageJson.devDependencies['@testing-library/react-native'] = testingLibOverride;
     }
 
+    const jestPresetVersion = getJestPresetVersion(rnMinor, targetRn);
+    if (jestPresetVersion) {
+        packageJson.devDependencies['@react-native/jest-preset'] = jestPresetVersion;
+    } else {
+        delete packageJson.devDependencies['@react-native/jest-preset'];
+    }
+
     const reanimatedOverride = getReanimatedOverride(rnMinor);
     if (reanimatedOverride) {
         packageJson.devDependencies['react-native-reanimated'] = reanimatedOverride;
+    }
+
+    const workletsOverride = getWorkletsOverride(rnMinor);
+    if (workletsOverride && packageJson.devDependencies['react-native-worklets'] !== undefined) {
+        packageJson.devDependencies['react-native-worklets'] = workletsOverride;
     }
 
     if (shouldRemoveWorklets(rnMinor)) {
