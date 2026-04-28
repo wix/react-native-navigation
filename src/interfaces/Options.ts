@@ -1668,9 +1668,64 @@ setRoot: {
    */
   window?: WindowOptions;
   /**
+   * Show / hide or change the style of the iOS 26 scroll edge effect on every
+   * UIScrollView contained in the screen.
+   * #### (iOS 26+ specific)
+   */
+  scrollEdgeEffect?: OptionsScrollEdgeEffect;
+  /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)
    * @default false
    */
   blurOnUnmount?: boolean;
+}
+
+export interface OptionsScrollEdge {
+  /**
+   * Hide the scroll edge effect on this edge.
+   * #### (iOS 26+ specific)
+   */
+  hidden?: boolean;
+  /**
+   * Style of the scroll edge effect on this edge.
+   * #### (iOS 26+ specific)
+   * @default 'automatic'
+   */
+  style?: 'automatic' | 'soft' | 'hard';
+}
+
+export interface OptionsScrollEdgeEffect {
+  /**
+   * Hide the scroll edge effect on all four edges of contained scroll views.
+   * Per-edge values (top / bottom / left / right) take precedence over this.
+   * #### (iOS 26+ specific)
+   */
+  hidden?: boolean;
+  /**
+   * Style of the scroll edge effect on all four edges. Per-edge values take precedence.
+   * #### (iOS 26+ specific)
+   * @default 'automatic'
+   */
+  style?: 'automatic' | 'soft' | 'hard';
+  /**
+   * Per-edge override for the top edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  top?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the bottom edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  bottom?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the left edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  left?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the right edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  right?: OptionsScrollEdge;
 }
