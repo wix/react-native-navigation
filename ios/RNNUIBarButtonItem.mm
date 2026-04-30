@@ -71,6 +71,11 @@
     [button.widthAnchor constraintEqualToConstant:icon.size.width].active = YES;
     [button.heightAnchor constraintEqualToConstant:icon.size.height].active = YES;
     self = [super initWithCustomView:button];
+    if (@available(iOS 26.0, *)) {
+        // The UIButton already paints its own iconBackground chrome, so the
+        // iOS 26 shared Platter would double-decorate it.
+        self.hidesSharedBackground = YES;
+    }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
