@@ -20,6 +20,7 @@
     self.displayMode = [TextParser parse:dict key:@"displayMode"];
     self.popStackOnPress = [BoolParser parse:dict key:@"popStackOnPress"];
     self.iconBackground = [[RNNIconBackgroundOptions alloc] initWithDict:dict[@"iconBackground"] enabled:nil];
+    self.hideSharedBackground = [BoolParser parse:dict key:@"hideSharedBackground"];
 
     return self;
 }
@@ -54,6 +55,8 @@
         self.popStackOnPress = options.popStackOnPress;
     if (options.sfSymbol.hasValue)
         self.sfSymbol = options.sfSymbol;
+    if (options.hideSharedBackground.hasValue)
+        self.hideSharedBackground = options.hideSharedBackground;
 }
 
 - (BOOL)hasValue {

@@ -37,22 +37,22 @@ describe('BottomTabs', () => {
 
   it('set Tab Bar badge on current Tab', async () => {
     await elementById(TestIDs.SET_BADGE_BTN).tap();
-    await expect(element(by.text('NEW'))).toBeVisible();
+    await expect(element(by.text('NEW')).atIndex(0)).toBeVisible();
   });
 
   it('Badge not cleared after showing/dismissing modal', async () => {
     await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
     await elementById(TestIDs.SET_BADGE_BTN).tap();
-    await expect(element(by.text('Badge'))).toBeVisible();
+    await expect(element(by.text('Badge')).atIndex(0)).toBeVisible();
     await elementById(TestIDs.MODAL_BTN).tap();
     await elementById(TestIDs.MODAL_BTN).tap();
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-    await expect(element(by.text('Badge'))).toBeVisible();
+    await expect(element(by.text('Badge')).atIndex(0)).toBeVisible();
   });
 
   it('set empty string badge on a current Tab should clear badge', async () => {
     await elementById(TestIDs.SET_BADGE_BTN).tap();
-    await expect(element(by.text('NEW'))).toBeVisible();
+    await expect(element(by.text('NEW')).atIndex(0)).toBeVisible();
     await elementById(TestIDs.CLEAR_BADGE_BTN).tap();
     await expect(element(by.text('NEW'))).toBeNotVisible();
   });

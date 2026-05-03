@@ -24,6 +24,25 @@ jest.mock('react-native-gesture-handler', () => {
 
 mockDetox(() => require('./playground/index'));
 
+// detox-testing-library-rnn-adapter sets global.element to identity; real Detox chains .atIndex().
+const origElement = global.element;
+global.element = (matcher) => {
+  const el = origElement(matcher);
+  if (el == null || typeof el.atIndex === 'function') {
+    return el;
+  }
+  return new Proxy(el, {
+    get(target, prop, receiver) {
+      if (prop === 'atIndex') {
+        return function atIndex() {
+          return target;
+        };
+      }
+      return Reflect.get(target, prop, receiver);
+    },
+  });
+};
+
 beforeEach(() => {
   const { mockNativeComponents } = require('react-native-navigation/Mock');
   mockNativeComponents();
