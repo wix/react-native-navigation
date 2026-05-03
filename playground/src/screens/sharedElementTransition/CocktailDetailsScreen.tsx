@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationProps, NavigationButtonPressedEvent, Options } from 'react-native-navigation';
 import Screens from '../Screens';
 import Navigation from '../../services/Navigation';
@@ -49,26 +49,28 @@ export default class CocktailDetailsScreen extends React.Component<Props> {
 
   render() {
     return (
-      <ScrollView style={styles.root}>
-        <View
-          nativeID={'backdrop'}
-          style={[styles.backdrop, { backgroundColor: this.props.color }]}
-        />
-        <View style={styles.header} testID={COCKTAILS_DETAILS_HEADER}>
-          <Image
-            source={this.props.image}
-            // @ts-ignore nativeID isn't included in react-native Image props.
-            nativeID={`image${this.props.id}Dest`}
-            style={styles.image}
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView style={styles.root}>
+          <View
+            nativeID={'backdrop'}
+            style={[styles.backdrop, { backgroundColor: this.props.color }]}
           />
-          <Text style={styles.title} nativeID={`title${this.props.id}Dest`}>
-            {this.props.name}
+          <View style={styles.header} testID={COCKTAILS_DETAILS_HEADER}>
+            <Image
+              source={this.props.image}
+              // @ts-ignore nativeID isn't included in react-native Image props.
+              nativeID={`image${this.props.id}Dest`}
+              style={styles.image}
+            />
+            <Text style={styles.title} nativeID={`title${this.props.id}Dest`}>
+              {this.props.name}
+            </Text>
+          </View>
+          <Text nativeID="description" style={styles.description}>
+            {this.props.description}
           </Text>
-        </View>
-        <Text nativeID="description" style={styles.description}>
-          {this.props.description}
-        </Text>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -76,6 +78,9 @@ export default class CocktailDetailsScreen extends React.Component<Props> {
 const SIZE = 100;
 const HEADER = 150;
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   root: {
     marginTop: 0,
   },
