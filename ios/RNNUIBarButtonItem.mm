@@ -73,8 +73,10 @@
     self = [super initWithCustomView:button];
     if (@available(iOS 26.0, *)) {
         // The UIButton already paints its own iconBackground chrome, so the
-        // iOS 26 shared Platter would double-decorate it.
-        self.hidesSharedBackground = YES;
+        // iOS 26 shared Platter would double-decorate it. Defaults to YES;
+        // callers can opt back in via the hideSharedBackground option.
+        self.hidesSharedBackground =
+            [buttonOptions.hideSharedBackground withDefault:YES];
     }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
@@ -100,8 +102,10 @@
         // iOS 26 wraps every bar button item in a shared Platter/Liquid-Glass
         // background. React-rendered custom views supply their own chrome, and
         // the Platter both double-decorates and misaligns custom views taller
-        // than the standard pill (~30pt).
-        self.hidesSharedBackground = YES;
+        // than the standard pill (~30pt). Defaults to YES; callers can opt
+        // back in via the hideSharedBackground option.
+        self.hidesSharedBackground =
+            [buttonOptions.hideSharedBackground withDefault:YES];
         // Pin the custom view to a stable 44pt bar-item size so the navbar
         // reserves the final slot up-front (incl. during push-transition
         // snapshots) and doesn't relayout once React mounts. Without this,

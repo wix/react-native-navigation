@@ -423,6 +423,14 @@ export interface OptionsTopBarBackButton {
    * @default true
    */
   popStackOnPress?: boolean;
+  /**
+   * (iOS 26+ only) Hide the shared Liquid-Glass / Platter background that
+   * UIKit draws behind the back button. Defaults to true to avoid
+   * double-decorating a back button whose icon already carries its own
+   * iconBackground. Set to false to keep the system-drawn background.
+   * @default true
+   */
+  hideSharedBackground?: boolean;
 }
 
 export interface HardwareBackButtonOptions {
@@ -636,6 +644,15 @@ export interface OptionsTopBarButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+  /**
+   * (iOS 26+ only) Hide the shared Liquid-Glass / Platter background that
+   * UIKit draws behind every bar button item. Defaults to true to avoid
+   * double-decorating React-rendered custom views and icons that already
+   * carry their own background. Set to false to keep the system-drawn
+   * background.
+   * @default true
+   */
+  hideSharedBackground?: boolean;
   /**
    * (Android only) Set showAsAction value
    * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
