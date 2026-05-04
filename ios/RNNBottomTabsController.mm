@@ -1,4 +1,5 @@
 #import "RNNBottomTabsController.h"
+#import "RNNTabBarItemCreator.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UITabBarController+RNNUtils.h"
 
@@ -95,6 +96,7 @@
 }
 
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
+    _bottomTabPresenter.tabCreator.searchRoleUsed = NO;
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
     }
