@@ -8,6 +8,8 @@
 @property(nonatomic, strong) RNNDotIndicatorPresenter *dotIndicatorPresenter;
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressRecognizer;
 
+- (void)rnn_cycleAllTabsThenRestoreInitialSelection;
+
 @end
 
 @implementation RNNBottomTabsController {
@@ -17,6 +19,8 @@
     BOOL _tabBarNeedsRestore;
     RNNNavigationOptions *_options;
     BOOL _didFinishSetup;
+    BOOL _rnnDidApplyInitialTabBarSelectionFix;
+    BOOL _rnnSuppressTabSelectionEvents;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -50,12 +54,7 @@
                       eventEmitter:eventEmitter
               childViewControllers:childViewControllers];
 
-    if (@available(iOS 26.0, *)) {
-        UITabBarAppearance *appearance = [UITabBarAppearance new];
-        [appearance configureWithDefaultBackground];
-        self.tabBar.standardAppearance = appearance;
-        self.tabBar.scrollEdgeAppearance = [appearance copy];
-    } else if (@available(iOS 13.0, *)) {
+    if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithOpaqueBackground];
         appearance.backgroundEffect = nil;
@@ -91,8 +90,40 @@
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // iOS 26: first layout can misplace tab item titles; cycling selection (then restoring) forces a
+    // correct layout without user interaction. Defer so all tab children are in the hierarchy.
+    if (@available(iOS 26.0, *)) {
+        if (!_rnnDidApplyInitialTabBarSelectionFix) {
+            _rnnDidApplyInitialTabBarSelectionFix = YES;
+            __weak RNNBottomTabsController *weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf rnn_cycleAllTabsThenRestoreInitialSelection];
+            });
+        }
+    }
+}
+
+- (void)rnn_cycleAllTabsThenRestoreInitialSelection {
+    NSUInteger count = self.childViewControllers.count;
+    if (count <= 1) {
+        return;
+    }
+
+    NSUInteger initial = _currentTabIndex;
+    if (initial >= count) {
+        initial = 0;
+    }
+
+    _rnnSuppressTabSelectionEvents = YES;
+    [UIView performWithoutAnimation:^{
+        for (NSUInteger i = 0; i < count; i++) {
+            [self setSelectedIndex:i];
+        }
+        [self setSelectedIndex:initial];
+    }];
+    _rnnSuppressTabSelectionEvents = NO;
 }
 
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
@@ -202,6 +233,9 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController
     didSelectViewController:(UIViewController *)viewController {
+    if (_rnnSuppressTabSelectionEvents) {
+        return;
+    }
     [self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex)
                                   unselected:@(_previousTabIndex)];
 }
@@ -217,6 +251,10 @@
     shouldSelectViewController:(UIViewController *)viewController {
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
     BOOL isMoreTab = ![tabBarController.viewControllers containsObject:viewController];
+
+    if (_rnnSuppressTabSelectionEvents) {
+        return YES;
+    }
 
     [self.eventEmitter sendBottomTabPressed:@(_index)];
 
