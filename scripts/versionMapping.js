@@ -9,6 +9,7 @@ const CLI_VERSION_MAP = {
     82: '20.0.0',
     83: '20.0.0',
     84: '20.1.0',
+    85: '20.1.0',
 };
 
 function parseRnMinor(rnVersion) {
@@ -16,7 +17,10 @@ function parseRnMinor(rnVersion) {
     return match ? Number(match[1]) : NaN;
 }
 
-function getReactNativeToolsVersion(rnMinor) {
+function getReactNativeToolsVersion(rnMinor, rnVersion) {
+    if (rnMinor >= 85) {
+        return rnVersion;
+    }
     return `0.${rnMinor}.0`;
 }
 
@@ -25,11 +29,25 @@ function getCliVersion(rnMinor) {
 }
 
 function getGradleVersion(rnMinor) {
+    if (rnMinor >= 85) {
+        return '9.3.1';
+    }
     return rnMinor < 82 ? '8.14.1' : '9.0.0';
 }
 
+function getJestPresetVersion(rnMinor, rnVersion) {
+    return rnMinor >= 85 ? rnVersion : null;
+}
+
 function getReanimatedOverride(rnMinor) {
+    if (rnMinor >= 85) {
+        return '4.3.0';
+    }
     return rnMinor <= 78 ? '3.18.0' : null;
+}
+
+function getWorkletsOverride(rnMinor) {
+    return rnMinor >= 85 ? '0.8.1' : null;
 }
 
 function shouldRemoveWorklets(rnMinor) {
@@ -45,7 +63,9 @@ module.exports = {
     getReactNativeToolsVersion,
     getCliVersion,
     getGradleVersion,
+    getJestPresetVersion,
     getReanimatedOverride,
+    getWorkletsOverride,
     shouldRemoveWorklets,
     getTestingLibraryOverride,
 };

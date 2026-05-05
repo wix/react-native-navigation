@@ -1,5 +1,11 @@
+let preset = 'react-native';
+try {
+  require.resolve('@react-native/jest-preset');
+  preset = '@react-native/jest-preset';
+} catch (_) {}
+
 module.exports = {
-  preset: 'react-native',
+  preset,
   transformIgnorePatterns: [
     'node_modules/(?!(@react-native|react-native|react-native-ui-lib|react-native-animatable|react-native-reanimated|react-native-webview)/)',
   ],
