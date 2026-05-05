@@ -175,6 +175,16 @@
 
     UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
 
+    if (@available(iOS 26.0, *)) {
+        if (backButtonOptions.iconBackground.hasValue) {
+            // The icon is rendered with iconBackground baked in, so the iOS 26
+            // shared Platter would double-decorate it. Defaults to YES;
+            // callers can opt back in via the hideSharedBackground option.
+            backItem.hidesSharedBackground =
+                [backButtonOptions.hideSharedBackground withDefault:YES];
+        }
+    }
+
     if (@available(iOS 13.0, *)) {
         UIImage *sfSymbol = [UIImage systemImageNamed:[backButtonOptions.sfSymbol withDefault:nil]];
         if (backButtonOptions.sfSymbol.hasValue) {

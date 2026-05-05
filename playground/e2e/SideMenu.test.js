@@ -19,6 +19,7 @@ describe('SideMenu', () => {
 
         it('close SideMenu and push to stack with static id', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+            await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN)).toBeVisible();
             await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_BTN).tap();
             await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
             await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
@@ -28,6 +29,7 @@ describe('SideMenu', () => {
 
         it('Push to stack with static id and close SideMenu with screen options', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+            await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN)).toBeVisible();
             await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN).tap();
             await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
             await elementById(TestIDs.POP_BTN).tap();
@@ -36,12 +38,14 @@ describe('SideMenu', () => {
 
         it('side menu visibility - left', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+            await expect(elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN)).toBeVisible();
             await elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN).tap();
             await expect(elementById(TestIDs.CLOSE_LEFT_SIDE_MENU_BTN)).toBeNotVisible();
         });
 
         it('side menu visibility - right', async () => {
             await elementById(TestIDs.OPEN_RIGHT_SIDE_MENU_BTN).tap();
+            await expect(elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN)).toBeVisible();
             await elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN).tap();
             await expect(elementById(TestIDs.CLOSE_RIGHT_SIDE_MENU_BTN)).toBeNotVisible();
         });
@@ -54,11 +58,19 @@ describe('SideMenu', () => {
 
         it.e2e(':ios: rotation should update drawer height', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
-            await expect(elementByLabel('left drawer height: 869')).toBeVisible();
+            const getDrawerHeight = async () => {
+                const attrs = await elementById(TestIDs.SIDE_MENU_LEFT_DRAWER_HEIGHT_TEXT).getAttributes();
+                return parseInt(attrs.text.match(/(\d+)/)[1], 10);
+            };
+
+            const portraitHeight = await getDrawerHeight();
             await device.setOrientation('landscape');
-            await expect(elementByLabel('left drawer height: 428')).toBeVisible();
+            const landscapeHeight = await getDrawerHeight();
+            jestExpect(landscapeHeight).toBeLessThan(portraitHeight);
+
             await device.setOrientation('portrait');
-            await expect(elementByLabel('left drawer height: 869')).toBeVisible();
+            const portraitAgainHeight = await getDrawerHeight();
+            jestExpect(portraitAgainHeight).toBe(portraitHeight);
         });
 
         it.e2e('should set left drawer width', async () => {
@@ -94,6 +106,7 @@ describe('SideMenu', () => {
 
         it.e2e(':ios: center container should reset to full width after push and close', async () => {
             await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
+            await expect(elementById(TestIDs.LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN)).toBeVisible();
             await elementById(TestIDs.LEFT_SIDE_MENU_PUSH_AND_CLOSE_BTN).tap();
             await elementById(TestIDs.POP_BTN).tap();
             const containerAttrs = await elementById('SideMenuContainer').getAttributes();

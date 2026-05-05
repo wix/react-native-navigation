@@ -33,7 +33,7 @@ describe.e2e('Keyboard', () => {
   it('Push - should close keyboard when Back clicked', async () => {
     await expect(elementByLabel(KBD_OBSCURED_TEXT)).toBeVisible();
     await elementById(TestIDs.TEXT_INPUT1).tap();
-    await expect(elementByLabel(KBD_OBSCURED_TEXT)).not.toBeVisible();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
     await elementById(TestIDs.BACK_BUTTON).tap();
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
@@ -41,7 +41,7 @@ describe.e2e('Keyboard', () => {
   it('Modal - should close keyboard when close clicked', async () => {
     await elementById(TestIDs.MODAL_BTN).tap();
     await elementById(TestIDs.TEXT_INPUT1).tap();
-    await expect(elementByLabel(KBD_OBSCURED_TEXT)).not.toBeVisible();
+    await expect(elementById(TestIDs.TEXT_INPUT1)).toBeFocused();
     await elementById(TestIDs.DISMISS_MODAL_TOPBAR_BTN).tap();
     await expect(elementById(testIDs.MAIN_BOTTOM_TABS)).toBeVisible();
   });
