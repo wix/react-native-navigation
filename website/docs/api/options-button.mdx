@@ -124,3 +124,11 @@ System icon; ignored if an [icon](#icon-number) is specified. For more informati
 | Type           | Required | Platform |
 | -------------- | -------- | -------- |
 | iconBackground | No       | Both     |
+
+### `hideSharedBackground`
+
+Hide the shared Liquid-Glass / Platter background that UIKit draws behind every bar button item starting with iOS 26. RNN defaults this to `true` for buttons that paint their own chrome (custom react `component` views and icons with [`iconBackground`](options-iconBackground.mdx)) so the system Platter does not double-decorate them. Set to `false` to keep the system-drawn background.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | iOS 26+  | true    |

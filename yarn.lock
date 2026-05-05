@@ -5570,9 +5570,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detox@npm:20.46.0":
-  version: 20.46.0
-  resolution: "detox@npm:20.46.0"
+"detox@npm:20.51.1":
+  version: 20.51.1
+  resolution: "detox@npm:20.51.1"
   dependencies:
     "@wix-pilot/core": "npm:^3.4.2"
     "@wix-pilot/detox": "npm:^1.0.13"
@@ -5618,7 +5618,7 @@ __metadata:
       optional: true
   bin:
     detox: local-cli/cli.js
-  checksum: 10/b3bbeea8163105c645081406b4b0b19bbc997cfadbd15ac12ef9e4f58e86d6899bc8f5597a0cf6b1d0b5ad4803150101baf9899d408f4d2e26891ee77306d772
+  checksum: 10/d6924ce496fbc7b429cacb255d1a9485a313fa01de05e0682d69135af7aef598fb9f902a765ec2834cce5d03a9b1974954f795248c0e682d7827bb181ec28ec5
   languageName: node
   linkType: hard
 
@@ -12358,7 +12358,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.21.0"
     "@typescript-eslint/parser": "npm:8.21.0"
     clang-format: "npm:^1.4.0"
-    detox: "npm:20.46.0"
+    detox: "npm:20.51.1"
     detox-testing-library-rnn-adapter: "npm:^2.0.3"
     eslint: "npm:^8.19.0"
     eslint-config-prettier: "npm:6.11.0"
@@ -12432,7 +12432,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:8.21.0"
     "@typescript-eslint/parser": "npm:8.21.0"
     clang-format: "npm:^1.4.0"
-    detox: "npm:20.46.0"
+    detox: "npm:20.51.1"
     detox-testing-library-rnn-adapter: "npm:^2.0.3"
     eslint: "npm:^8.19.0"
     eslint-config-prettier: "npm:6.11.0"
