@@ -5,6 +5,6 @@
     - "nvm install"
     - "./scripts/ci.ios.sh"
     key: "ios_rn_85"
-    timeout_in_minutes: 90
+    timeout_in_minutes: 60
     artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
 
