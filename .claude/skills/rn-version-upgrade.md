@@ -68,9 +68,9 @@ Also check the full peer dependency tree: `npm info react-native@<version> peerD
 Copy an existing job file and update the version:
 
 ```bash
-# Copy from the previous version
-cp .buildkite/jobs/pipeline.android_rn_83.yml .buildkite/jobs/pipeline.android_rn_84.yml
-cp .buildkite/jobs/pipeline.ios_rn_83.yml .buildkite/jobs/pipeline.ios_rn_84.yml
+# Copy from the latest supported RN lane (adjust source/target versions)
+cp .buildkite/jobs/pipeline.android_rn_84.yml .buildkite/jobs/pipeline.android_rn_85.yml
+cp .buildkite/jobs/pipeline.ios_rn_84.yml .buildkite/jobs/pipeline.ios_rn_85.yml
 ```
 
 Edit both files:
