@@ -9,6 +9,10 @@
       for (UIViewController *viewController in bottomTabsController.deselectedViewControllers) {
         dispatch_async(dispatch_get_main_queue(), ^{
           UIWindow *preloadWindow = [[UIWindow alloc] initWithFrame:CGRectZero];
+          // Clip the preload window so the deselected tab's full-screen reactView,
+          // which is briefly hosted here while it renders, can't draw outside the
+          // zero-frame window and flicker over the already-visible selected tab.
+          preloadWindow.clipsToBounds = YES;
           preloadWindow.hidden = NO;
 
           dispatch_group_t ready = dispatch_group_create();
