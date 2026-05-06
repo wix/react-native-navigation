@@ -179,7 +179,7 @@ describe('BottomTabs', () => {
     ).toBeVisible();
   });
 
-  describe(':ios: BottomTab Role', () => {
+  describe.e2e(':ios: BottomTab Role', () => {
     beforeEach(async () => {
       await device.launchApp({ newInstance: true });
       await elementById(TestIDs.BOTTOM_TABS_ROLE_BTN).tap();
