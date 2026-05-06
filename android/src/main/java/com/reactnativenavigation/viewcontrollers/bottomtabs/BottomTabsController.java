@@ -319,7 +319,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
         Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
 
-        int bottomInset = (imeInsets.bottom > 0) ? 0 : sysInsets.bottom;
+        final boolean hideBottomInset = resolveCurrentOptions().bottomTabsOptions.isHiddenOrDrawBehind();
+        int bottomInset = (imeInsets.bottom > 0 || hideBottomInset) ? 0 : sysInsets.bottom;
         view.setPaddingRelative(0, 0, 0, bottomInset);
         return insets;
     }
