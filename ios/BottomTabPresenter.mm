@@ -3,9 +3,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter {
-    RNNTabBarItemCreator *_tabCreator;
-}
+@implementation BottomTabPresenter
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
                             tabCreator:(RNNTabBarItemCreator *)tabCreator {

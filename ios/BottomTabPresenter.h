@@ -2,6 +2,8 @@
 #import "RNNTabBarItemCreator.h"
 @interface BottomTabPresenter : RNNBasePresenter
 
+@property(nonatomic, strong, readonly) RNNTabBarItemCreator *tabCreator;
+
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
                             tabCreator:(RNNTabBarItemCreator *)tabCreator;
 

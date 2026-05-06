@@ -1148,6 +1148,43 @@ export interface OptionsBottomTab {
    * #### (iOS 13+ specific)
    */
   sfSelectedSymbol?: string;
+  /**
+   * Set the tab bar item to a system-provided role.
+   * Uses `UITabBarItem(tabBarSystemItem:)` on iOS.
+   *
+   * By default the system provides the icon and title. You can
+   * override the icon by providing `icon`, `selectedIcon`,
+   * `sfSymbol`, or `sfSelectedSymbol` — they are applied after
+   * creation and replace the system-provided image.
+   * `iconColor` and `selectedIconColor` are applied as a tint
+   * to the custom icon when one is provided.
+   *
+   * **`'search'`** — on iOS 26+ this renders as a floating
+   * Liquid Glass button. Only one tab per `bottomTabs` layout
+   * may use this role; duplicates fall back to a normal tab.
+   *
+   * **`'more'`** — activates UIKit's built-in "More" navigation
+   * controller. Tabs beyond the visible limit are moved into
+   * it automatically.
+   *
+   * Properties that remain ignored for role tabs: `text`,
+   * `fontSize`, `fontFamily`, `fontWeight`, `iconInsets`.
+   *
+   * #### (iOS specific)
+   */
+  role?:
+    | 'search'
+    | 'bookmarks'
+    | 'contacts'
+    | 'downloads'
+    | 'favorites'
+    | 'featured'
+    | 'history'
+    | 'more'
+    | 'mostRecent'
+    | 'mostViewed'
+    | 'recents'
+    | 'topRated';
 }
 
 export interface SideMenuSide {
