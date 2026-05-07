@@ -31,6 +31,7 @@
     self.selectTabOnPress = [BoolParser parse:dict key:@"selectTabOnPress"];
     self.sfSymbol = [TextParser parse:dict key:@"sfSymbol"];
     self.sfSelectedSymbol = [TextParser parse:dict key:@"sfSelectedSymbol"];
+    self.role = [TextParser parse:dict key:@"role"];
 
     return self;
 }
@@ -76,6 +77,8 @@
         self.sfSymbol = options.sfSymbol;
     if (options.sfSelectedSymbol.hasValue)
         self.sfSelectedSymbol = options.sfSelectedSymbol;
+    if (options.role.hasValue)
+        self.role = options.role;
 }
 
 - (BOOL)hasValue {
@@ -85,7 +88,7 @@
            self.iconColor.hasValue || self.selectedIconColor.hasValue ||
            self.selectedTextColor.hasValue || self.iconInsets.hasValue || self.textColor.hasValue ||
            self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue ||
-           self.sfSelectedSymbol.hasValue;
+           self.sfSelectedSymbol.hasValue || self.role.hasValue;
 }
 
 @end

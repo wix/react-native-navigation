@@ -7,7 +7,7 @@
     - "nvm install"
     - "./scripts/ci.sh"
     - "yarn run release"
-    timeout_in_minutes: 90
+    timeout_in_minutes: 60
     retry:
       automatic:
       - exit_status: [1, -1]

@@ -71,6 +71,13 @@
     [button.widthAnchor constraintEqualToConstant:icon.size.width].active = YES;
     [button.heightAnchor constraintEqualToConstant:icon.size.height].active = YES;
     self = [super initWithCustomView:button];
+    if (@available(iOS 26.0, *)) {
+        // The UIButton already paints its own iconBackground chrome, so the
+        // iOS 26 shared Platter would double-decorate it. Defaults to YES;
+        // callers can opt back in via the hideSharedBackground option.
+        self.hidesSharedBackground =
+            [buttonOptions.hideSharedBackground withDefault:YES];
+    }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
@@ -91,6 +98,25 @@
                      buttonOptions:(RNNButtonOptions *)buttonOptions
                            onPress:(RNNButtonPressCallback)onPress {
     self = [super initWithCustomView:reactView];
+    if (@available(iOS 26.0, *)) {
+        // iOS 26 wraps every bar button item in a shared Platter/Liquid-Glass
+        // background. React-rendered custom views supply their own chrome, and
+        // the Platter both double-decorates and misaligns custom views taller
+        // than the standard pill (~30pt). Defaults to YES; callers can opt
+        // back in via the hideSharedBackground option.
+        self.hidesSharedBackground =
+            [buttonOptions.hideSharedBackground withDefault:YES];
+        // Pin the custom view to a stable 44pt bar-item size so the navbar
+        // reserves the final slot up-front (incl. during push-transition
+        // snapshots) and doesn't relayout once React mounts. Without this,
+        // React's post-mount sizeToFit changes bounds, the navbar relayouts,
+        // and the customView visibly snaps from a 0x0 / wrong-position state
+        // to its centered final frame. React content centers within via its
+        // own flex layout.
+        reactView.translatesAutoresizingMaskIntoConstraints = NO;
+        [reactView.widthAnchor constraintEqualToConstant:44].active = YES;
+        [reactView.heightAnchor constraintEqualToConstant:44].active = YES;
+    }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;

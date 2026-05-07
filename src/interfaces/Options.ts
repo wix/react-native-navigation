@@ -423,6 +423,14 @@ export interface OptionsTopBarBackButton {
    * @default true
    */
   popStackOnPress?: boolean;
+  /**
+   * (iOS 26+ only) Hide the shared Liquid-Glass / Platter background that
+   * UIKit draws behind the back button. Defaults to true to avoid
+   * double-decorating a back button whose icon already carries its own
+   * iconBackground. Set to false to keep the system-drawn background.
+   * @default true
+   */
+  hideSharedBackground?: boolean;
 }
 
 export interface HardwareBackButtonOptions {
@@ -636,6 +644,15 @@ export interface OptionsTopBarButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+  /**
+   * (iOS 26+ only) Hide the shared Liquid-Glass / Platter background that
+   * UIKit draws behind every bar button item. Defaults to true to avoid
+   * double-decorating React-rendered custom views and icons that already
+   * carry their own background. Set to false to keep the system-drawn
+   * background.
+   * @default true
+   */
+  hideSharedBackground?: boolean;
   /**
    * (Android only) Set showAsAction value
    * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
@@ -1131,6 +1148,43 @@ export interface OptionsBottomTab {
    * #### (iOS 13+ specific)
    */
   sfSelectedSymbol?: string;
+  /**
+   * Set the tab bar item to a system-provided role.
+   * Uses `UITabBarItem(tabBarSystemItem:)` on iOS.
+   *
+   * By default the system provides the icon and title. You can
+   * override the icon by providing `icon`, `selectedIcon`,
+   * `sfSymbol`, or `sfSelectedSymbol` — they are applied after
+   * creation and replace the system-provided image.
+   * `iconColor` and `selectedIconColor` are applied as a tint
+   * to the custom icon when one is provided.
+   *
+   * **`'search'`** — on iOS 26+ this renders as a floating
+   * Liquid Glass button. Only one tab per `bottomTabs` layout
+   * may use this role; duplicates fall back to a normal tab.
+   *
+   * **`'more'`** — activates UIKit's built-in "More" navigation
+   * controller. Tabs beyond the visible limit are moved into
+   * it automatically.
+   *
+   * Properties that remain ignored for role tabs: `text`,
+   * `fontSize`, `fontFamily`, `fontWeight`, `iconInsets`.
+   *
+   * #### (iOS specific)
+   */
+  role?:
+    | 'search'
+    | 'bookmarks'
+    | 'contacts'
+    | 'downloads'
+    | 'favorites'
+    | 'featured'
+    | 'history'
+    | 'more'
+    | 'mostRecent'
+    | 'mostViewed'
+    | 'recents'
+    | 'topRated';
 }
 
 export interface SideMenuSide {

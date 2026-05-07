@@ -111,3 +111,11 @@ Controls whether the default back button should pop screen or not.
 | Type    | Required | Default |
 | ------- | -------- | ------- |
 | boolean | No       | true    |
+
+### `hideSharedBackground`
+
+Hide the shared Liquid-Glass / Platter background that UIKit draws behind the back button starting with iOS 26. RNN defaults this to `true` when the back button uses an [`iconBackground`](options-iconBackground.mdx) so the system Platter does not double-decorate it. Set to `false` to keep the system-drawn background.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | iOS 26+  | true    |

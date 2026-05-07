@@ -18,6 +18,7 @@
 @property(nonatomic, strong) Text *identifier;
 @property(nonatomic, strong) Bool *popStackOnPress;
 @property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
+@property(nonatomic, strong) Bool *hideSharedBackground;
 
 - (BOOL)hasValue;
 

@@ -7,6 +7,10 @@
     dispatch_group_t ready = dispatch_group_create();
     
     UIWindow *preloadWindow = [[UIWindow alloc] initWithFrame:CGRectZero];
+    // Clip the preload window so the full-screen reactViews hosted here while
+    // they render can't draw outside the zero-frame window. Today the splash
+    // screen masks this, but without clipping it's a latent flicker.
+    preloadWindow.clipsToBounds = YES;
     preloadWindow.hidden = NO;
     
     NSMapTable *reactViewToParent = [NSMapTable strongToStrongObjectsMapTable];

@@ -15,8 +15,8 @@
     self.translationY = [[TransitionDetailsOptions alloc] initWithDict:dict[@"translationY"]];
     self.rotationX = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationX"]];
     self.rotationY = [[TransitionDetailsOptions alloc] initWithDict:dict[@"rotationY"]];
-
-	self.waitForRender = [Bool withValue:[[BoolParser parse:dict key:@"waitForRender"] withDefault:[RNNUtils getDefaultWaitForRender]]];
+    
+    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
     self.enable = [BoolParser parse:dict key:@"enabled"];
 
     return self;
