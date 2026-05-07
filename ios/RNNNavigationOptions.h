@@ -6,6 +6,7 @@
 #import "RNNModalOptions.h"
 #import "RNNOverlayOptions.h"
 #import "RNNPreviewOptions.h"
+#import "RNNScrollEdgeEffectOptions.h"
 #import "RNNSharedElementAnimationOptions.h"
 #import "RNNSideMenuOptions.h"
 #import "RNNSplitViewOptions.h"
@@ -34,6 +35,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property(nonatomic, strong) RNNModalOptions *modal;
 @property(nonatomic, strong) DeprecationOptions *deprecations;
 @property(nonatomic, strong) WindowOptions *window;
+@property(nonatomic, strong) RNNScrollEdgeEffectOptions *scrollEdgeEffect;
 
 @property(nonatomic, strong) Bool *popGesture;
 @property(nonatomic, strong) Bool *navigationButtonEventOnSwipeBack;
