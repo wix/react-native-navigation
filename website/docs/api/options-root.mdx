@@ -14,7 +14,8 @@ const options = {
   overlay,
   modal,
   preview,
-  navigationBar
+  navigationBar,
+  scrollEdgeEffect,
 };
 ```
 
@@ -172,6 +173,14 @@ Enable or disable automaticall blur of the focused input, dismissing keyboard on
 | Type    | Required | Platform | Default |
 | ------- | -------- | -------- | ------- |
 | boolean | No       | Android  | false   |
+
+## `scrollEdgeEffect`
+
+Show / hide or change the style of the iOS 26 scroll edge effect on every `UIScrollView` contained in the screen.
+
+| Type                                                     | Required | Platform |
+| -------------------------------------------------------- | -------- | -------- |
+| [ScrollEdgeEffectOptions](options-scrollEdgeEffect.mdx)   | No       | iOS 26+  |
 
 ## `navigationBar`
 Enable or disable automaticall blur of the focused input, dismissing keyboard on unmount.
