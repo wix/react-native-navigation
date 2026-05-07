@@ -117,8 +117,46 @@
 - (void)testTabBarBackgroundColor {
     UIColor *tabBarBackgroundColor = [UIColor redColor];
     [self.uut setTabBarBackgroundColor:tabBarBackgroundColor];
-    XCTAssertTrue([self.children.lastObject.tabBarItem.standardAppearance.backgroundColor
-        isEqual:tabBarBackgroundColor]);
+    XCTAssertTrue(
+        [((UITabBarController *)self.boundViewController).tabBar.standardAppearance.backgroundColor
+            isEqual:tabBarBackgroundColor]);
+}
+
+- (void)testSetTabBarBackgroundColor_shouldPreserveBottomTabTitleColors {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:@{
+        @"text" : @"Home",
+        @"textColor" : @(0xFFFF0000),
+        @"selectedTextColor" : @(0xFF00FF00)
+    }];
+
+    BottomTabPresenter *bottomTabPresenter =
+        [BottomTabPresenterCreator createWithDefaultOptions:nil];
+    UIViewController *child = self.children.lastObject;
+    [bottomTabPresenter applyOptions:options child:child];
+
+    [self.uut setTabBarBackgroundColor:UIColor.blueColor];
+
+    UIColor *normalColor = child.tabBarItem.standardAppearance.stackedLayoutAppearance.normal
+                               .titleTextAttributes[NSForegroundColorAttributeName];
+    UIColor *selectedColor = child.tabBarItem.standardAppearance.stackedLayoutAppearance.selected
+                                 .titleTextAttributes[NSForegroundColorAttributeName];
+
+    XCTAssertTrue([normalColor isEqual:UIColor.redColor]);
+    XCTAssertTrue([selectedColor isEqual:UIColor.greenColor]);
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
+    if (@available(iOS 15.0, *)) {
+        UIColor *scrollEdgeNormalColor =
+            child.tabBarItem.scrollEdgeAppearance.stackedLayoutAppearance.normal
+                .titleTextAttributes[NSForegroundColorAttributeName];
+        UIColor *scrollEdgeSelectedColor =
+            child.tabBarItem.scrollEdgeAppearance.stackedLayoutAppearance.selected
+                .titleTextAttributes[NSForegroundColorAttributeName];
+
+        XCTAssertTrue([scrollEdgeNormalColor isEqual:UIColor.redColor]);
+        XCTAssertTrue([scrollEdgeSelectedColor isEqual:UIColor.greenColor]);
+    }
+#endif
 }
 
 - (void)testApplyOptions_applyTabBarShadowDefaultValues {

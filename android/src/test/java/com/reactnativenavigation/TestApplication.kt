@@ -6,7 +6,7 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import org.mockito.Mockito
 
 class TestApplication : Application(), ReactApplication {
     override val reactNativeHost: ReactNativeHost = object : ReactNativeHost(this) {
@@ -25,5 +25,5 @@ class TestApplication : Application(), ReactApplication {
     }
 
     override val reactHost: ReactHost
-        get() = getDefaultReactHost(this, reactNativeHost)
+        get() = Mockito.mock(ReactHost::class.java)
 }

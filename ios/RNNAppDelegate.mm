@@ -4,7 +4,6 @@
 #import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 
 #import "RCTAppSetupUtils.h"
-#import <React/CoreModulesPlugins.h>
 #if __has_include(<React/RCTCxxBridgeDelegate.h>)
 #import <React/RCTCxxBridgeDelegate.h>
 #endif
@@ -56,12 +55,17 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+// RN 0.77 & RN0.78
 #if !RNN_RN_VERSION_79_OR_NEWER
-    [self _setUpFeatureFlags];
+#if __has_include(<ReactAppDependencyProvider/RCTAppDependencyProvider.h>)
+    self.dependencyProvider = [RCTAppDependencyProvider new];
+#endif
+    // RN 0.77
     #if !RNN_RN_VERSION_78
+        [self _setUpFeatureFlags];
         self.rootViewFactory = [self createRCTRootViewFactory];
-    #else
-        self.reactNativeFactory = [[RCTReactNativeFactory alloc] init];
+    #else // RN0.78
+        self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self];
         self.reactNativeFactory.rootViewFactory = [self createRCTRootViewFactory];
     #endif
     
@@ -117,6 +121,13 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
     return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
+}
+
+#pragma mark - RCTTurboModuleManagerDelegate
+
+- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
+{
+    return RCTAppSetupDefaultModuleFromClass(moduleClass, self.dependencyProvider);
 }
 
 #pragma mark - Feature Flags

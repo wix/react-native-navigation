@@ -160,8 +160,30 @@
     NSNumber *fontSize = [backButtonOptions.fontSize withDefault:nil];
 
     UIViewController *previousViewControllerInStack = self.previousViewControllerInStack;
-    UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
     UINavigationItem *previousNavigationItem = previousViewControllerInStack.navigationItem;
+
+    BOOL hasCustomization = icon || color || title || fontFamily || fontSize ||
+                            backButtonOptions.displayMode.hasValue ||
+                            backButtonOptions.sfSymbol.hasValue ||
+                            backButtonOptions.iconBackground.hasValue ||
+                            backButtonOptions.enableMenu.hasValue ||
+                            ![backButtonOptions.showTitle withDefault:YES];
+
+    if (!hasCustomization) {
+        return;
+    }
+
+    UIBarButtonItem *backItem = [[RNNUIBarBackButtonItem alloc] initWithOptions:backButtonOptions];
+
+    if (@available(iOS 26.0, *)) {
+        if (backButtonOptions.iconBackground.hasValue) {
+            // The icon is rendered with iconBackground baked in, so the iOS 26
+            // shared Platter would double-decorate it. Defaults to YES;
+            // callers can opt back in via the hideSharedBackground option.
+            backItem.hidesSharedBackground =
+                [backButtonOptions.hideSharedBackground withDefault:YES];
+        }
+    }
 
     if (@available(iOS 13.0, *)) {
         UIImage *sfSymbol = [UIImage systemImageNamed:[backButtonOptions.sfSymbol withDefault:nil]];
@@ -195,7 +217,9 @@
                    cornerRadius:cornerRadius];
     }
 
-    [self setBackIndicatorImage:icon withColor:color];
+    if (icon) {
+        [self setBackIndicatorImage:icon withColor:color];
+    }
 
     title = title ? title : (previousNavigationItem.title ? previousNavigationItem.title : @"");
 

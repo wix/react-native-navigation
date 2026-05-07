@@ -118,14 +118,18 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     UIViewController<RNNLayoutProtocol> *vc = [_layoutManager findComponentForId:componentId];
     RNNNavigationOptions *newOptions = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] ||
-        [vc isKindOfClass:[RNNComponentViewController class]]) {
+    if (vc && ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] ||
+               [vc isKindOfClass:[RNNComponentViewController class]])) {
         [CATransaction begin];
         [CATransaction setCompletionBlock:completion];
 
         [vc mergeOptions:newOptions];
 
         [CATransaction commit];
+    } else {
+        if (completion) {
+            completion();
+        }
     }
 }
 
@@ -324,10 +328,10 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     RNNComponentViewController *vc =
         (RNNComponentViewController *)[_layoutManager findComponentForId:componentId];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    [vc mergeOptions:options];
-
     if (vc) {
+        RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+        [vc mergeOptions:options];
+
         [vc.stack popTo:vc
                animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
              completion:^(NSArray *poppedViewControllers) {
@@ -355,25 +359,27 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     RNNComponentViewController *vc =
         (RNNComponentViewController *)[_layoutManager findComponentForId:componentId];
-    RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-    [vc mergeOptions:options];
+    if (vc) {
+        RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+        [vc mergeOptions:options];
 
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
-      [self->_eventEmitter sendOnNavigationCommandCompletion:popToRoot commandId:commandId];
-      completion();
-    }];
-
-    [vc.stack popToRoot:vc
-               animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
-             completion:^(NSArray *poppedViewControllers) {
-
-             }
-              rejection:^(NSString *code, NSString *message, NSError *error){
-
-              }];
-
-    [CATransaction commit];
+        [vc.stack popToRoot:vc
+                   animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
+                 completion:^(NSArray *poppedViewControllers) {
+                   [self->_eventEmitter sendOnNavigationCommandCompletion:popToRoot
+                                                                commandId:commandId];
+                   completion();
+                 }
+                  rejection:rejection];
+    } else {
+        [RNNErrorHandler
+                      reject:rejection
+               withErrorCode:1012
+            errorDescription:
+                [NSString stringWithFormat:
+                              @"PopToRoot component failed - componentId '%@' not found",
+                              componentId]];
+    }
 }
 
 - (void)showModal:(NSDictionary *)layout

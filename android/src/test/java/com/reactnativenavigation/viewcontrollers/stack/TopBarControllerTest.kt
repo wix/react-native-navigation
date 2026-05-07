@@ -35,7 +35,6 @@ import java.util.*
 
 private const val BKG_COLOR = 0x010203
 
-@Ignore("New architecture - WIP")
 class TopBarControllerTest : BaseTest() {
     private lateinit var uut: TopBarController
     private lateinit var activity: Activity
@@ -51,7 +50,6 @@ class TopBarControllerTest : BaseTest() {
 
     override fun beforeEach() {
         super.beforeEach()
-
         activity = newActivity()
         appearAnimator = spy(TopBarAppearanceAnimator())
         colorAnimator = mock<ColorAnimator>()

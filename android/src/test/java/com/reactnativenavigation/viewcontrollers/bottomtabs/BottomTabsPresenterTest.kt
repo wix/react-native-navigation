@@ -30,7 +30,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
-@Ignore("New architecture - WIP")
 class BottomTabsPresenterTest : BaseTest() {
     private lateinit var tabs: List<ViewController<*>>
     private lateinit var uut: BottomTabsPresenter

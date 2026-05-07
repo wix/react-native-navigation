@@ -19,7 +19,6 @@ import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-@Ignore("New architecture - WIP")
 public class TitleBarButtonControllerTest extends BaseTest {
     private ButtonController uut;
     private ButtonBar titleBar;

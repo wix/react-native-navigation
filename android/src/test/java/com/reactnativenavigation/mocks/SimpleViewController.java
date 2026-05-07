@@ -8,17 +8,16 @@ import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.react.ReactInstanceManager;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenterBase;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.component.ReactComponent;
-
-import org.mockito.Mockito;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
     private final ComponentPresenterBase presenter = new ComponentPresenterBase();
@@ -69,10 +68,10 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         return null;
     }
 
-    public static class SimpleView extends ReactView implements ReactComponent {
+    public static class SimpleView extends FrameLayout implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
-            super(context, "compId", "compName");
+            super(context);
         }
 
         @Override
@@ -86,12 +85,20 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
-        public ReactView asView() {
+        public ViewGroup asView() {
             return this;
         }
 
         @Override
         public void destroy() {}
+
+        @Override
+        protected void onAttachedToWindow() {
+            super.onAttachedToWindow();
+            start();
+        }
+
+        public void start() {}
 
         @Override
         public void sendOnNavigationButtonPressed(String buttonId) {}

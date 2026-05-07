@@ -18,7 +18,6 @@ import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Ignore
 import org.junit.Test
 
-@Ignore("New architecture - WIP")
 class StackAnimatorTest : BaseTest() {
     private lateinit var uut: StackAnimator
     private lateinit var activity: Activity

@@ -45,7 +45,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import java.util.*
 
-@Ignore("New architecture - WIP")
 class BottomTabsControllerTest : BaseTest() {
     private lateinit var activity: Activity
     private lateinit var bottomTabs: BottomTabs

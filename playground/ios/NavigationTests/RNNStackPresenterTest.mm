@@ -73,9 +73,8 @@
 
 - (void)testApplyOptions_shouldSetBackButtonOnBoundViewController_withDefaultValues {
     [self.uut applyOptions:self.options];
-    XCTAssertTrue(
-        [self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem.title
-            isEqualToString:@""]);
+    XCTAssertNil(
+        self.boundViewController.viewControllers.firstObject.navigationItem.backBarButtonItem);
 }
 
 - (void)testSetBackButtonIcon_withColor_shouldSetColor {

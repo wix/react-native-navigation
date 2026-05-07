@@ -20,7 +20,6 @@ import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore("New architecture - WIP")
 public class LayoutFactoryTest extends BaseTest {
     private LayoutFactory uut;
     private ReactHost reactHost;

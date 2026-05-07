@@ -22,6 +22,7 @@ module.exports = {
       'docs/stack-buttons',
       'docs/style-theme',
       'docs/style-statusBar',
+      'docs/style-edge-to-edge',
       'docs/style-orientation',
       'docs/style-animations',
       'docs/style-fonts',

@@ -155,6 +155,11 @@
                                     isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)destroyReactView {
+    [self.reactView removeFromSuperview];
+    self.reactView = nil;
+}
+
 - (void)screenPopped {
     [_eventEmitter sendScreenPoppedEvent:self.layoutInfo.componentId];
 }

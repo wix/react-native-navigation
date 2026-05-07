@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-@Ignore("New architecture - WIP")
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
     private ComponentLayout view;

@@ -21,6 +21,7 @@ const {
   SET_STACK_ROOT_WITH_ID_BTN,
   STACK_COMMANDS_BTN,
   SET_ROOT_NAVIGATION_TAB,
+  PUSH_UNMOUNT_RACE_BTN,
   POP_BTN,
 } = testIDs;
 
@@ -82,6 +83,11 @@ export default class StackScreen extends React.Component<NavigationProps> {
           label="Push Stack Commands"
           testID={STACK_COMMANDS_BTN}
           onPress={this.pushStackCommands}
+        />
+        <Button
+          label="Push Unmount Race"
+          testID={PUSH_UNMOUNT_RACE_BTN}
+          onPress={this.pushUnmountRace}
         />
         <Button label="Pop" testID={POP_BTN} onPress={this.pop} />
       </Root>
@@ -165,6 +171,14 @@ export default class StackScreen extends React.Component<NavigationProps> {
   }
 
   pushStackCommands = () => Navigation.push(this, component(Screens.StackCommands));
+
+  pushUnmountRace = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.UnmountRace,
+        passProps: { stackComponentId: this.props.componentId },
+      },
+    });
 
   pop = () => Navigation.pop(this);
 }

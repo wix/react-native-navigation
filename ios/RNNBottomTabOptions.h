@@ -25,6 +25,7 @@
 @property(nonatomic, strong) Bool *selectTabOnPress;
 @property(nonatomic, strong) Text *sfSymbol;
 @property(nonatomic, strong) Text *sfSelectedSymbol;
+@property(nonatomic, strong) Text *role;
 
 - (BOOL)hasValue;
 

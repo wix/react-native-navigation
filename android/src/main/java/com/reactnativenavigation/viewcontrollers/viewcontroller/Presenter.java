@@ -65,7 +65,7 @@ public class Presenter {
     }
 
     private void applyOrientation(OrientationOptions options) {
-        activity.setRequestedOrientation(options.getValue());
+        if (activity != null) activity.setRequestedOrientation(options.getValue());
     }
 
     private void applyViewOptions(ViewController view, Options options) {
@@ -127,6 +127,7 @@ public class Presenter {
     }
 
     private void applyNavigationBarVisibility(NavigationBarOptions options) {
+        if (activity == null) return;
         View decorView = activity.getWindow().getDecorView();
         if (options.isVisible.isTrueOrUndefined()) {
             SystemUiUtils.showNavigationBar(activity.getWindow(), decorView);
@@ -136,14 +137,13 @@ public class Presenter {
     }
 
     private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
-        int navigationBarDefaultColor = SystemUiUtils.INSTANCE.getNavigationBarDefaultColor();
-        navigationBarDefaultColor = navigationBarDefaultColor == -1 ? Color.BLACK : navigationBarDefaultColor;
+        if (activity == null) return;
+        int defaultColor = SystemUiUtils.getDefaultNavBarColor();
         if (navigationBar.backgroundColor.canApplyValue()) {
-            int color = navigationBar.backgroundColor.get(navigationBarDefaultColor);
+            int color = navigationBar.backgroundColor.get(defaultColor);
             SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
         } else {
-            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), navigationBarDefaultColor, isColorLight(navigationBarDefaultColor));
-
+            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), defaultColor, isColorLight(defaultColor));
         }
     }
 

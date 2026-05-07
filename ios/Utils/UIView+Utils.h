@@ -12,6 +12,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (UIView *)findChildByClass:clazz;
 
+- (UIView *)findDescendantByClass:clazz;
+
+- (UIView *)findDescendantByClass:(Class)clazz passingTest:(BOOL (^)(UIView *view))test;
+
 - (ViewType)viewType;
 
 - (void)stopMomentumScrollViews;

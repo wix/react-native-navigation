@@ -42,7 +42,82 @@
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     [self prepareForPop];
-    return [super popViewControllerAnimated:animated];
+    UIViewController *previousTop = self.topViewController;
+    UIView *snapshot = [self snapshotTopView:animated];
+
+    UIViewController *poppedVC = [super popViewControllerAnimated:animated];
+    if (!poppedVC) {
+        [snapshot removeFromSuperview];
+        return nil;
+    }
+
+    id<UIViewControllerTransitionCoordinator> coordinator = self.transitionCoordinator;
+    if (coordinator && coordinator.isInteractive) {
+        // Interactive pop (swipe-back): remove snapshot overlay — UIKit shows the live
+        // view during the gesture. Skip early teardown so the React view stays alive
+        // if the gesture is cancelled. The delegate's didShowViewController handles
+        // cleanup once the animation finishes.
+        [snapshot removeFromSuperview];
+    } else {
+        [self teardownPoppedControllers:@[ poppedVC ] previousTop:previousTop];
+    }
+    return poppedVC;
+}
+
+- (NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController
+                                             animated:(BOOL)animated {
+    UIViewController *previousTop = self.topViewController;
+    UIView *snapshot = [self snapshotTopView:animated];
+
+    NSArray<UIViewController *> *poppedVCs =
+        [super popToViewController:viewController animated:animated];
+    if (poppedVCs.count > 0) {
+        [self teardownPoppedControllers:poppedVCs previousTop:previousTop];
+    } else {
+        [snapshot removeFromSuperview];
+    }
+    return poppedVCs;
+}
+
+- (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
+    UIViewController *previousTop = self.topViewController;
+    UIView *snapshot = [self snapshotTopView:animated];
+
+    NSArray<UIViewController *> *poppedVCs =
+        [super popToRootViewControllerAnimated:animated];
+    if (poppedVCs.count > 0) {
+        [self teardownPoppedControllers:poppedVCs previousTop:previousTop];
+    } else {
+        [snapshot removeFromSuperview];
+    }
+    return poppedVCs;
+}
+
+#pragma mark - React view teardown
+
+- (UIView *)snapshotTopView:(BOOL)animated {
+    if (!animated) return nil;
+    UIViewController *topVC = self.topViewController;
+    if (!topVC.isViewLoaded || !topVC.view.window) return nil;
+
+    UIView *snapshot = [topVC.view snapshotViewAfterScreenUpdates:NO];
+    if (snapshot) {
+        snapshot.frame = topVC.view.bounds;
+        snapshot.autoresizingMask =
+            UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [topVC.view addSubview:snapshot];
+    }
+    return snapshot;
+}
+
+- (void)teardownPoppedControllers:(NSArray<UIViewController *> *)poppedVCs
+                      previousTop:(UIViewController *)previousTop {
+    for (UIViewController *vc in poppedVCs) {
+        if (vc == previousTop && [vc isKindOfClass:[RNNComponentViewController class]]) {
+            [[(RNNComponentViewController *)vc reactView] componentDidDisappear];
+        }
+        [vc destroyReactView];
+    }
 }
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {

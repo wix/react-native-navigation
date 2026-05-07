@@ -179,8 +179,20 @@ describe('Stack', () => {
   it.e2e('push promise is resolved with pushed ViewController id', async () => {
     await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
+    // Screen chains push -> setTimeout(100) -> setState -> setTimeout(500) -> pop -> setState.
+    // Detox does not track these timers, so wait for the chain to settle before asserting.
+    await sleep(2000);
     await expect(elementByLabel('push promise resolved with: ChildId')).toBeVisible();
     await expect(elementByLabel('pop promise resolved with: ChildId')).toBeVisible();
+  });
+
+  it.e2e('pop and re-push same component should not have stale unmount', async () => {
+    await elementById(TestIDs.PUSH_UNMOUNT_RACE_BTN).tap();
+    await sleep(800);
+    await expect(elementByLabel('loaded')).toBeVisible();
+    await elementById(TestIDs.POP_AND_REPUSH_BTN).tap();
+    await sleep(1000);
+    await expect(elementByLabel('loaded')).toBeVisible();
   });
 
   it('pop from root screen should do nothing', async () => {

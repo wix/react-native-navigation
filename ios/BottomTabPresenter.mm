@@ -3,9 +3,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter {
-    RNNTabBarItemCreator *_tabCreator;
-}
+@implementation BottomTabPresenter
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
                             tabCreator:(RNNTabBarItemCreator *)tabCreator {
@@ -38,7 +36,10 @@
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-    child.tabBarItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
+    UITabBarItem *updatedItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
+    if (updatedItem != child.tabBarItem) {
+        child.tabBarItem = updatedItem;
+    }
 }
 
 @end

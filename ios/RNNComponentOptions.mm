@@ -9,7 +9,7 @@
     self.name = [TextParser parse:dict key:@"name"];
     self.componentId = [TextParser parse:dict key:@"componentId"];
     self.alignment = [TextParser parse:dict key:@"alignment"];
-	self.waitForRender = [Bool withValue:[[BoolParser parse:dict key:@"waitForRender"] withDefault:[RNNUtils getDefaultWaitForRender]]];
+    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
 
     return self;
 }

@@ -1,3 +1,19 @@
+require 'json'
+
+# RN 0.85+ ships React-Core as a prebuilt XCFramework by default
+# (RCT_USE_PREBUILT_RNCORE=1). The download has been flaky and produces
+# "missing VFS artifacts" errors during pod install. Force source build
+# on RN 85+ unless the env var is explicitly set by the caller.
+rn_pkg_path = File.expand_path('../../node_modules/react-native/package.json', __dir__)
+if File.exist?(rn_pkg_path)
+  rn_version = JSON.parse(File.read(rn_pkg_path))['version']
+  rn_minor = rn_version.split('.')[1].to_i
+  if rn_minor >= 85 && ENV['RCT_USE_PREBUILT_RNCORE'].nil?
+    ENV['RCT_USE_PREBUILT_RNCORE'] = '0'
+    Pod::UI.puts "RNN: forcing RCT_USE_PREBUILT_RNCORE=0 for RN #{rn_version}".yellow
+  end
+end
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(

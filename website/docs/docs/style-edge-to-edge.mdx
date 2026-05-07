@@ -1,0 +1,66 @@
+---
+id: style-edge-to-edge
+title: Edge-to-Edge (Android)
+sidebar_label: Edge-to-Edge
+---
+
+Starting with Android 15 (API 35), the system enforces edge-to-edge display by default — app content draws behind the transparent status bar and navigation bar. React Native Navigation provides built-in support for this behavior, disabled by default.
+
+## Enabling edge-to-edge
+
+To enable edge-to-edge, set `windowOptOutEdgeToEdgeEnforcement` to `false` in your app's theme:
+
+```xml
+<!-- android/app/src/main/res/values/styles.xml -->
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">false</item>
+    </style>
+</resources>
+```
+
+`NavigationActivity` reads this attribute on startup. When set to `false` on API 35+, it calls `EdgeToEdge.enable()` to draw content behind system bars. On older API levels this attribute has no effect.
+
+## How it works
+
+When edge-to-edge is active:
+
+- **Status bar and navigation bar** become transparent. React Native Navigation manages view-based background overlays for both, replacing the deprecated `window.statusBarColor` / `window.navigationBarColor` APIs.
+- **`SafeAreaView`** receives correct navigation bar insets, so content is automatically inset from the system navigation bar.
+- **Bottom tabs** account for navigation bar insets when positioning.
+- **Navigation mode detection** — the library detects gesture navigation vs 3-button navigation at runtime and applies appropriate default styling for the navigation bar background.
+
+When edge-to-edge is not active (the default), behavior is unchanged from previous versions.
+
+## Custom behavior
+
+`NavigationActivity.enableEdgeToEdge()` is a `protected` method that controls when edge-to-edge is enabled. Override it in your `MainActivity` to customize the decision logic, and call `activateEdgeToEdge()` to enable it:
+
+```kotlin
+class MainActivity : NavigationActivity() {
+    override fun enableEdgeToEdge() {
+        // Always enable edge-to-edge regardless of theme or API level
+        activateEdgeToEdge()
+    }
+}
+```
+
+`activateEdgeToEdge()` handles both the Android system call and the internal navigation framework state. Always use it instead of calling `EdgeToEdge.enable()` directly.
+
+## Styling system bars
+
+Status bar and navigation bar colors can still be controlled per-screen via options:
+
+```js
+options: {
+  statusBar: {
+    backgroundColor: 'white',
+    style: 'dark'
+  },
+  navigationBar: {
+    backgroundColor: '#000000'
+  }
+}
+```
+
+These options work in both edge-to-edge and non-edge-to-edge modes. In edge-to-edge mode, the colors are applied to the view-based overlays rather than the deprecated window APIs.

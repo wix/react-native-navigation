@@ -11,7 +11,7 @@
     self.content = [[RNNEnterExitAnimation alloc] initWithDict:dict[@"content"]];
     self.bottomTabs = [[ElementTransitionOptions alloc] initWithDict:dict[@"bottomTabs"]];
     self.enable = [BoolParser parse:dict key:@"enabled"];
-	self.waitForRender = [Bool withValue: [[BoolParser parse:dict key:@"waitForRender"] withDefault: [RNNUtils getDefaultWaitForRender]]];
+    self.waitForRender = [BoolParser parse:dict key:@"waitForRender"];
     self.duration = [TimeIntervalParser parse:dict key:@"duration"];
     self.sharedElementTransitions = [OptionsArrayParser parse:dict
                                                           key:@"sharedElementTransitions"

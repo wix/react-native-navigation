@@ -19,6 +19,7 @@ import com.reactnativenavigation.utils.SystemUiUtils
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeight
 import com.reactnativenavigation.utils.SystemUiUtils.getStatusBarHeightDp
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.viewcontrollers.statusbar.StatusBarPresenter
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import org.assertj.core.api.Java6Assertions
 import org.junit.After
@@ -37,7 +38,7 @@ import org.robolectric.shadows.ShadowLooper
 import java.util.Arrays
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], application = TestApplication::class)
+@Config(sdk = [28], application = TestApplication::class, shadows = [ShadowSoLoader::class, ShadowReactView::class])
 abstract class BaseTest {
     private val handler = Handler(Looper.getMainLooper())
     private val shadowMainLooper: ShadowLooper = Shadows.shadowOf(Looper.getMainLooper())
@@ -49,7 +50,6 @@ abstract class BaseTest {
     @Before
     open fun beforeEach() {
         mockReactNativeFeatureFlags = mockStatic(ReactNativeFeatureFlags::class.java)
-        mockReactNativeFeatureFlags?.close()
 
         NavigationApplication.instance = Mockito.mock(NavigationApplication::class.java)
         mockConfiguration = Mockito.mock(Configuration::class.java)
@@ -62,6 +62,7 @@ abstract class BaseTest {
             .thenReturn(0x00000)
 
         RNNFeatureToggles.init()
+        StatusBarPresenter.init(newActivity())
     }
 
 

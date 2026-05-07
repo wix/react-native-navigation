@@ -62,13 +62,52 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
     self.navigationBar.clipsToBounds = clipsToBounds;
 }
 
-- (void)setBackButtonTestID:(NSString *)testID {
-    UIView *navigationBarContentView =
+- (UIView *)rnn_findBackButtonView {
+    UIView *contentView =
         [self.navigationBar findChildByClass:NSClassFromString(@"_UINavigationBarContentView")];
-    UIView *barButton =
-        [navigationBarContentView findChildByClass:NSClassFromString(@"_UIButtonBarButton")];
-    if (barButton)
-        barButton.accessibilityIdentifier = testID;
+    if (!contentView) {
+        contentView =
+            [self.navigationBar findChildByClass:NSClassFromString(@"UIKit.NavigationBarContentView")];
+    }
+    if (!contentView)
+        return nil;
+
+    Class buttonClass = NSClassFromString(@"_UIButtonBarButton");
+
+    return [contentView findDescendantByClass:buttonClass
+                                 passingTest:^BOOL(UIView *view) {
+        if ([view respondsToSelector:NSSelectorFromString(@"isBackButton")]) {
+            return [[view valueForKey:@"backButton"] boolValue];
+        }
+        return YES;
+    }];
+}
+
+- (void)rnn_applyTestID:(NSString *)testID toBackButtonView:(UIView *)barButton {
+    barButton.accessibilityIdentifier = testID;
+    barButton.isAccessibilityElement = YES;
+}
+
+- (void)setBackButtonTestID:(NSString *)testID {
+    if (!testID)
+        return;
+
+    UIView *barButton = [self rnn_findBackButtonView];
+    if (barButton) {
+        [self rnn_applyTestID:testID toBackButtonView:barButton];
+    } else {
+        __weak UINavigationController *weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+            UINavigationController *nc = weakSelf;
+            if (!nc)
+                return;
+            UIView *btn = [nc rnn_findBackButtonView];
+            if (btn) {
+                [nc rnn_applyTestID:testID toBackButtonView:btn];
+            }
+        });
+    }
 }
 
 - (CGFloat)getTopBarHeight {

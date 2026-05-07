@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs
 
 import android.animation.Animator
+import android.app.Activity
 import android.graphics.Color
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -12,6 +13,8 @@ import com.reactnativenavigation.RNNToggles.TAB_BAR_TRANSLUCENCE
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.BottomTabsLayoutStyle
 import com.reactnativenavigation.options.params.Fraction
+import com.reactnativenavigation.utils.ColorUtils.isColorLight
+import com.reactnativenavigation.utils.SystemUiUtils
 import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -92,7 +95,9 @@ class BottomTabsPresenter(
 
         // Keep this before the translucent check below
         if (bottomTabsOptions.backgroundColor.hasValue()) {
-            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get())
+            val color = bottomTabsOptions.backgroundColor.get()
+            bottomTabsContainer.setBackgroundColor(color)
+            syncNavigationBarColor(options, color)
         }
 
         if (RNNFeatureToggles.isEnabled(TAB_BAR_TRANSLUCENCE)) {
@@ -212,7 +217,9 @@ class BottomTabsPresenter(
             bottomTabsContainer.enableBackgroundBlur()
         } else {
             bottomTabsContainer.disableBackgroundBlur()
-            bottomTabsContainer.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+            val color = bottomTabsOptions.backgroundColor.get(Color.WHITE)!!
+            bottomTabsContainer.setBackgroundColor(color)
+            syncNavigationBarColor(options, color)
         }
 
         bottomTabs.setLayoutDirection(options.layout.direction)
@@ -282,13 +289,17 @@ class BottomTabsPresenter(
         bottomTabs.setBehaviorTranslationEnabled(bottomTabsOptions.hideOnScroll[false])
     }
 
-    fun applyBottomInset(bottomInset: Int) {
+    fun applyChildrenInset(bottomInset: Int) {
         (bottomTabsContainer.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(bottom = bottomInset)
         bottomTabsContainer.requestLayout()
     }
 
-    fun getBottomInset(resolvedOptions: Options): Int {
-        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else bottomTabs.height
+    fun getChildrenBottomInset(resolvedOptions: Options): Int {
+        return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else (bottomTabsContainer.height)
+    }
+
+    fun applySelfInset(bottomInset: Int) {
+        bottomTabsContainer.setBottomInset(bottomInset)
     }
 
     fun getPushAnimation(appearingOptions: Options): Animator? {
@@ -351,7 +362,9 @@ class BottomTabsPresenter(
             bottomTabsContainer.disableBackgroundBlur()
 
             // TODO Change to bottomTabsContainer.setBackgroundColor()?
-            bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor.get(Color.WHITE)!!)
+            val color = bottomTabsOptions.backgroundColor.get(Color.WHITE)!!
+            bottomTabs.setBackgroundColor(color)
+            syncNavigationBarColor(options, color)
         }
 
         if (bottomTabsOptions.shadowOptions.hasValue()) {
@@ -375,5 +388,12 @@ class BottomTabsPresenter(
         val marginDp = bottomMargin.get()
         val margin = UiUtils.dpToPx(bottomTabsContainer.context, marginDp.toFloat()).roundToInt()
         return margin
+    }
+
+    private fun syncNavigationBarColor(options: Options, tabsColor: Int) {
+        val resolved = options.copy().withDefaultOptions(defaultOptions)
+        if (resolved.navigationBar.backgroundColor.hasValue()) return
+        val window = (bottomTabsContainer.context as? Activity)?.window ?: return
+        SystemUiUtils.setNavigationBarBackgroundColor(window, tabsColor, isColorLight(tabsColor))
     }
 }

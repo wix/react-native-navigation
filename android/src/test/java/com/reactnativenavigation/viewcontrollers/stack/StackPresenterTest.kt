@@ -41,7 +41,6 @@ import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Ignore("New architecture - WIP")
 class StackPresenterTest : BaseTest() {
     private lateinit var parent: StackController
     private lateinit var uut: StackPresenter

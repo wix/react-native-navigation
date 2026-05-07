@@ -21,7 +21,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-@Ignore("New architecture - WIP")
 public class BackButtonHelperTest extends BaseTest {
     private BackButtonHelper uut;
     private StackController stack;
