@@ -67,6 +67,7 @@ module.exports = {
       },
       'api/options-statusBar',
       'api/options-layout',
+      'api/options-scrollEdgeEffect',
       'api/options-modal',
       'api/options-navigationBar',
       'api/options-overlay',
