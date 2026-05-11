@@ -138,6 +138,7 @@ export class NativeCommandsSender {
 
   getLaunchArgs(commandId: string) {
     this.reportCommandCompletion(CommandName.GetLaunchArgs, commandId);
+    return Promise.resolve({});
   }
 
   getNavigationConstants(): Promise<Constants> {

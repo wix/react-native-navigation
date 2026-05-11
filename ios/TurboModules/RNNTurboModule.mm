@@ -2,6 +2,7 @@
 #import "RNNTurboModule.h"
 #import "Constants.h"
 #import "RNNTurboCommandsHandler.h"
+#import "ReactNativeNavigation.h"
 #import <ReactCommon/RCTTurboModule.h>
 
 @implementation RNNTurboModule
@@ -62,9 +63,8 @@ RCT_EXPORT_MODULE()
     });
 }
 
-- (void)getLaunchArgs:(NSString *)commandId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
-    NSArray *args = [[NSProcessInfo processInfo] arguments];
-    resolve(args);
+- (void)getLaunchArgs:(NSString *)commandId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    resolve([ReactNativeNavigation launchArgs]);
 }
 
 

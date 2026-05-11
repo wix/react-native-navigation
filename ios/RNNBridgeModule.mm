@@ -1,5 +1,6 @@
 #import "RNNBridgeModule.h"
 #import "Constants.h"
+#import "ReactNativeNavigation.h"
 
 @implementation RNNBridgeModule {
     RNNCommandsHandler *_commandsHandler;
@@ -232,8 +233,7 @@ RCT_EXPORT_METHOD(getLaunchArgs
                   : (NSString *)commandId
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-    NSArray *args = [[NSProcessInfo processInfo] arguments];
-    resolve(args);
+    resolve([ReactNativeNavigation launchArgs]);
 }
 
 RCT_EXPORT_METHOD(getNavigationConstants

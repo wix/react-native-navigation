@@ -28,4 +28,11 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props, RCTBri
 
 + (UIViewController *)findViewController:(NSString *)componentId;
 
+/// Sets the dictionary returned to JS by Navigation.getLaunchArgs(), matching Android's intent extra
+/// bundle "launchArgs" (JSON-serializable entries only). Pass nil to clear to an empty object.
++ (void)setLaunchArgs:(nullable NSDictionary *)launchArgs;
+
+/// Immutable copy of the current launch-args dictionary, or @{} if unset.
++ (NSDictionary *)launchArgs;
+
 @end

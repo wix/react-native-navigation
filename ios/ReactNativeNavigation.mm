@@ -16,6 +16,8 @@
 
 @end
 
+static NSDictionary *_RNNLaunchArgs;
+
 @implementation ReactNativeNavigation
 
 #pragma mark - public API
@@ -112,6 +114,18 @@
         UIApplication.sharedApplication.delegate.window = keyWindow;
     }
     return keyWindow;
+}
+
++ (void)setLaunchArgs:(NSDictionary *)launchArgs {
+    @synchronized([ReactNativeNavigation class]) {
+        _RNNLaunchArgs = launchArgs ? [launchArgs copy] : nil;
+    }
+}
+
++ (NSDictionary *)launchArgs {
+    @synchronized([ReactNativeNavigation class]) {
+        return _RNNLaunchArgs != nil ? [_RNNLaunchArgs copy] : @{};
+    }
 }
 
 @end
