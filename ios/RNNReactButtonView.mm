@@ -63,6 +63,15 @@
     }
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (@available(iOS 26.0, *)) {
+        if (![self designRequiresCompatibility] && self.window) {
+            [self syncButtonBackground];
+        }
+    }
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (@available(iOS 26.0, *)) {
@@ -76,7 +85,19 @@
                 self.layer.affineTransform = CGAffineTransformMakeTranslation(tx, 0);
             }
         }
+        [self syncButtonBackground];
     }
+}
+
+- (void)syncButtonBackground {
+    if (!_buttonBackgroundColor) return;
+
+    UIView *target = self.superview.superview.superview;
+    if (!target || target.bounds.size.height <= 0) return;
+
+    target.backgroundColor = _buttonBackgroundColor;
+    target.layer.cornerRadius = target.bounds.size.height / 2.0;
+    target.clipsToBounds = YES;
 }
 
 - (NSString *)componentType {
