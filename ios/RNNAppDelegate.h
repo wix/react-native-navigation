@@ -56,4 +56,20 @@
 @property(nonatomic) BOOL bridgelessEnabled;
 #endif
 
+/**
+ * Dispatch a deep link URL through React Native's Linking module so JS
+ * subscribers (including RNN's built-in deep linking framework) receive it.
+ *
+ * Safe to call before the JS bridge is ready: URLs that arrive early
+ * (e.g. cold-start notification taps) are queued natively and flushed
+ * automatically once Fabric/React content first appears.
+ *
+ * Custom-scheme and universal-link openings dispatched by the OS are
+ * forwarded through this method automatically; call it manually only
+ * when your app receives a deep link from a source RNN can't intercept
+ * (e.g. a custom `UNUserNotificationCenterDelegate`, a third-party push
+ * SDK callback, etc.).
+ */
+- (void)dispatchDeepLinkURL:(NSURL *)url;
+
 @end
