@@ -4,6 +4,7 @@
 @implementation RNNReactButtonView {
     NSLayoutConstraint *_widthConstraint;
     NSLayoutConstraint *_heightConstraint;
+    BOOL _didCenter;
 }
 
 - (instancetype)initWithHost:(RCTHost *)host
@@ -25,6 +26,7 @@
             _heightConstraint.priority = UILayoutPriorityDefaultHigh;
             _widthConstraint.active = YES;
             _heightConstraint.active = YES;
+            _didCenter = NO;
         }
     }
 
@@ -58,6 +60,22 @@
     if (size.width > 0 && size.height > 0) {
         _widthConstraint.constant = size.width;
         _heightConstraint.constant = size.height;
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (@available(iOS 26.0, *)) {
+        if ([self designRequiresCompatibility]) return;
+        if (!_didCenter && self.superview && self.frame.size.width > 0) {
+            CGFloat wrapperWidth = self.superview.bounds.size.width;
+            CGFloat selfWidth = self.frame.size.width;
+            if (wrapperWidth > selfWidth) {
+                _didCenter = YES;
+                CGFloat tx = (wrapperWidth - selfWidth) / 2.0;
+                self.layer.affineTransform = CGAffineTransformMakeTranslation(tx, 0);
+            }
+        }
     }
 }
 
