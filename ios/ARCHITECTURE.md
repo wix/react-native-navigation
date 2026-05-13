@@ -28,6 +28,11 @@ Base class that user's AppDelegate must extend. Handles React Native and navigat
 - Creates `RCTRootViewFactory` and `ReactHost`
 - Calls `[ReactNativeNavigation bootstrapWithHost:]` to initialize navigation
 - Handles RN version differences (0.77, 0.78, 0.79+) via compile-time macros
+- **Deep linking plumbing**:
+  - Implements `application:openURL:options:` and `application:continueUserActivity:restorationHandler:`; both call `-dispatchDeepLinkURL:`.
+  - `-dispatchDeepLinkURL:` posts `RCTOpenURLNotification` directly if the React runtime is ready, otherwise enqueues the URL.
+  - Observes `RCTContentDidAppearNotification` (the Fabric/bridgeless signal) to flush the queue. This solves the cold-start race where URLs (push notifications, OS link launches) arrive before `RCTLinkingManager` is listening.
+  - Subclasses can call `-dispatchDeepLinkURL:` manually from notification delegates or any other URL source; the queueing behavior is reused automatically.
 
 ### ReactNativeNavigation Bootstrap
 **File**: `ReactNativeNavigation.h/mm`

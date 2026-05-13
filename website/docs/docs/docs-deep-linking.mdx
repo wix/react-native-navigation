@@ -110,6 +110,15 @@ myapp://search?q=hello&page=2
 → Search screen receives passProps: { q: 'hello', page: '2' }
 ```
 
+#### Reserved keys
+
+The query/path keys `ref` and `key` are **not** forwarded as `passProps`. React reserves these names (`ref` is consumed by React itself; passing a string `ref` to a component crashes under React 19's stricter validation). RNN silently drops them and logs a dev-mode warning. Rename any conflicting URL parameters before they reach your links:
+
+```
+myapp://user/42?ref=push   →  passProps: { id: '42' }       (ref dropped + warning)
+myapp://user/42?source=push →  passProps: { id: '42', source: 'push' }
+```
+
 ## Customizing presentation
 
 By default, every matched link becomes a modal containing a stack with the matched chain pushed in order. If you need to customize either the layout or the navigation command itself, the config exposes two hooks.
@@ -240,10 +249,12 @@ async function onLoginSuccess() {
 Some links don't arrive via the system URL handler — push-notification payloads, branch.io tokens, App Clips. Feed them into the same pipeline with `Navigation.handleDeepLink(url)`:
 
 ```js
-Navigation.handleDeepLink('myapp://user/42?ref=notification');
+Navigation.handleDeepLink('myapp://user/42?source=notification');
 ```
 
 This runs the URL through parse → match → present exactly like a system-delivered link, including readiness gates.
+
+If you'd rather hand the URL off natively (e.g. from a `UNUserNotificationCenterDelegate` you already maintain), call `[self dispatchDeepLinkURL:url]` inside your `RNNAppDelegate` subclass — same behavior, with cold-start queueing built in. See [Native setup → iOS → Notification taps](#ios) for an example.
 
 ## Complete example
 
@@ -295,11 +306,11 @@ With this configuration:
 
 ## Native setup
 
-The framework consumes URLs from React Native's `Linking` API. You still configure the URL schemes and universal links at the platform level.
+The framework consumes URLs from React Native's `Linking` API. You still configure the URL schemes and universal links at the platform level — but, unlike most React Native apps, you don't need to hand-write `application:openURL:` or `application:continueUserActivity:` glue. As long as your `AppDelegate` subclasses `RNNAppDelegate`, custom-scheme openings and universal links are forwarded to JS automatically, including cold-start URLs that arrive before the React runtime is ready.
 
 ### iOS
 
-Add your URL scheme to `Info.plist`:
+**1. Register your URL scheme in `Info.plist`:**
 
 ```xml
 <key>CFBundleURLTypes</key>
@@ -313,7 +324,50 @@ Add your URL scheme to `Info.plist`:
 </array>
 ```
 
-For universal links, add the Associated Domains entitlement and host an `apple-app-site-association` file. See [Apple's documentation](https://developer.apple.com/documentation/xcode/supporting-associated-domains).
+**2. (Optional) Universal links.** Add the Associated Domains entitlement and host an `apple-app-site-association` file — see [Apple's docs](https://developer.apple.com/documentation/xcode/supporting-associated-domains). `RNNAppDelegate` already implements `application:continueUserActivity:restorationHandler:` and forwards browser-activity URLs through the same pipeline.
+
+**3. (Optional) Notification taps.** Notifications aren't routed automatically because most apps already own `UNUserNotificationCenter.current.delegate` via Firebase / OneSignal / etc. From your existing notification handler, hand the URL off to RNN:
+
+```objc
+#import "AppDelegate.h"  // your subclass of RNNAppDelegate
+#import <UserNotifications/UserNotifications.h>
+
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@end
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+  return YES;
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+  completionHandler(UNNotificationPresentationOptionBanner |
+                    UNNotificationPresentationOptionList |
+                    UNNotificationPresentationOptionSound);
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+  NSString *urlString = response.notification.request.content.userInfo[@"url"];
+  if ([urlString isKindOfClass:[NSString class]]) {
+    [self dispatchDeepLinkURL:[NSURL URLWithString:urlString]];
+  }
+  completionHandler();
+}
+
+@end
+```
+
+`dispatchDeepLinkURL:` is inherited from `RNNAppDelegate`. It safely handles cold-start (URLs arriving before the React runtime is ready are queued and flushed automatically once content first renders) so you can call it from anywhere — push handlers, deferred-deep-link SDKs, branch.io callbacks, etc.
+
+The JS equivalent is `Navigation.handleDeepLink(url)`; use whichever fits the layer you're working at.
 
 ### Android
 
@@ -333,6 +387,8 @@ Add an intent filter to your `MainActivity` in `AndroidManifest.xml`:
 ```
 
 For App Links, add `android:autoVerify="true"` and host an `assetlinks.json`. See [Android's documentation](https://developer.android.com/training/app-links).
+
+`NavigationActivity` already forwards both cold-start (`getIntent()`) and warm (`onNewIntent`) URLs to React Native's `Linking` module — no extra Java/Kotlin needed. Notification taps that carry a deep-link URI (via `PendingIntent` with `ACTION_VIEW`) flow through the same `onNewIntent` path automatically.
 
 ## API reference
 

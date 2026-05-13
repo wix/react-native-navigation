@@ -75,6 +75,10 @@ Core commands available through the Navigation API:
 - **Modal**: `showModal()`, `dismissModal()`, `dismissAllModals()`
 - **Overlay**: `showOverlay()`, `dismissOverlay()`, `dismissAllOverlays()`
 - **Options**: `setDefaultOptions()`, `mergeOptions()`, `updateProps()`
+- **Linking**: `setLinking()`, `handleDeepLink()`, `setLinkingReady()` - URL-to-screen routing
+
+### Deep Linking
+URL-driven navigation is implemented entirely in the JS layer (`src/linking/`) and feeds into the standard command pipeline. Configure with `Navigation.setLinking({ prefixes, config: { screens } })`; matched URLs are presented as modals by default (preserving the user's current navigation state). Customize via `getModal`/`onLink` hooks; gate processing on auth via `isReady`/`setLinkingReady`. Native plumbing — `application:openURL:`, `application:continueUserActivity:`, cold-start URL queueing — lives in `RNNAppDelegate` (iOS) and `NavigationActivity.onNewIntent` (Android), so subclassing the base classes is sufficient. See [Deep Linking docs](https://wix.github.io/react-native-navigation/docs/deep-linking).
 
 ### Options System
 Styling and behavior is controlled via a hierarchical options object:
