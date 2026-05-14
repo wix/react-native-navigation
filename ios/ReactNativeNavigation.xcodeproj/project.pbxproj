@@ -73,6 +73,8 @@
 		5012242B217372B3000F5F98 /* ImageParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50122429217372B3000F5F98 /* ImageParser.mm */; };
 		5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */; };
 		5016E8F020209690009D4F7C /* RNNCustomTitleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5016E8EE2020968F009D4F7C /* RNNCustomTitleView.mm */; };
+		EE4A5C0001000000ABCD0001 /* RNNCustomTabBarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0003 /* RNNCustomTabBarItemView.h */; };
+		EE4A5C0001000000ABCD0002 /* RNNCustomTabBarItemView.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */; };
 		50175CD1207A2AA1004FE91B /* RNNComponentOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */; };
 		50175CD2207A2AA1004FE91B /* RNNComponentOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50175CD0207A2AA1004FE91B /* RNNComponentOptions.mm */; };
 		5017D9E1239D2C6C00B74047 /* BottomTabsAttachModeFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5017D9DF239D2C6C00B74047 /* BottomTabsAttachModeFactory.h */; };
@@ -568,6 +570,8 @@
 		50122429217372B3000F5F98 /* ImageParser.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageParser.mm; sourceTree = "<group>"; };
 		5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCustomTitleView.h; sourceTree = "<group>"; };
 		5016E8EE2020968F009D4F7C /* RNNCustomTitleView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomTitleView.mm; sourceTree = "<group>"; };
+		EE4A5C0001000000ABCD0003 /* RNNCustomTabBarItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCustomTabBarItemView.h; sourceTree = "<group>"; };
+		EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomTabBarItemView.mm; sourceTree = "<group>"; };
 		50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNComponentOptions.h; sourceTree = "<group>"; };
 		50175CD0207A2AA1004FE91B /* RNNComponentOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentOptions.mm; sourceTree = "<group>"; };
 		5017D9DF239D2C6C00B74047 /* BottomTabsAttachModeFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsAttachModeFactory.h; sourceTree = "<group>"; };
@@ -1663,6 +1667,8 @@
 			children = (
 				5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */,
 				5016E8EE2020968F009D4F7C /* RNNCustomTitleView.mm */,
+				EE4A5C0001000000ABCD0003 /* RNNCustomTabBarItemView.h */,
+				EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */,
 				E8A5CD601F49114F00E89D0D /* RNNElement.h */,
 				E8A5CD611F49114F00E89D0D /* RNNElement.mm */,
 				E8AEDB3A1F55A1C2000F5A6A /* RNNElementView.h */,
@@ -1737,6 +1743,7 @@
 				E5F6C3A422DB4D0F0093C2CE /* UIColor+RNNUtils.h in Headers */,
 				5038A3C1216E1E66009280BC /* RNNFontAttributesCreator.h in Headers */,
 				5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */,
+				EE4A5C0001000000ABCD0001 /* RNNCustomTabBarItemView.h in Headers */,
 				500623A525B7003A0086AB39 /* RNNShadowOptions.h in Headers */,
 				50415CBA20553B8E00BB682E /* RNNScreenTransition.h in Headers */,
 				5039558B2174829400B0A663 /* IntNumberParser.h in Headers */,
@@ -2042,6 +2049,7 @@
 				50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.mm in Sources */,
 				503A8A0623BB850A0094D1C4 /* TimeInterval.mm in Sources */,
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.mm in Sources */,
+				EE4A5C0001000000ABCD0002 /* RNNCustomTabBarItemView.mm in Sources */,
 				5061B6C823D48449008B9827 /* VerticalRotationTransition.mm in Sources */,
 				5022EDB62405224B00852BA6 /* BottomTabPresenter.mm in Sources */,
 				503955982174864E00B0A663 /* NullDouble.mm in Sources */,

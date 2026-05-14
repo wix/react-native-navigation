@@ -461,6 +461,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:_eventEmmiter
                                        childViewControllers:@[ _vc1, _vc2 ]
                                          bottomTabsAttacher:attacher];
@@ -494,6 +495,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:_eventEmmiter
                                        childViewControllers:@[ _vc1, _vc2 ]
                                          bottomTabsAttacher:attacher];
@@ -531,6 +533,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:_eventEmmiter
                                        childViewControllers:@[ _vc1, _vc2, _vc3 ]
                                          bottomTabsAttacher:attacher];
@@ -575,6 +578,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:_eventEmmiter
                                        childViewControllers:@[ _vc1, _vc2 ]
                                          bottomTabsAttacher:attacher];

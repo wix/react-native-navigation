@@ -20,7 +20,9 @@ import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.LateInit;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
+import com.reactnativenavigation.views.bottomtabs.CustomBottomTabItemView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BottomTabPresenter {
@@ -33,6 +35,7 @@ public class BottomTabPresenter {
     private final LateInit<BottomTabs> bottomTabs = new LateInit<>();
     private final List<ViewController<?>> tabs;
     private final int defaultDotIndicatorSize;
+    private boolean useCustomItemViews;
 
     public BottomTabPresenter(Context context, List<ViewController<?>> tabs, ImageLoader imageLoader,  TypefaceLoader typefaceLoader, Options defaultOptions) {
         this.tabs = tabs;
@@ -53,10 +56,27 @@ public class BottomTabPresenter {
         this.bottomTabs.set(bottomTabs);
     }
 
+    /**
+     * When `true`, tabs whose options declare `bottomTab.component` are
+     * skipped during native icon/text application. The accompanying
+     * `CustomBottomTabItemView` overlay is responsible for visual rendering.
+     */
+    public void setUseCustomItemViews(boolean useCustomItemViews) {
+        this.useCustomItemViews = useCustomItemViews;
+    }
+
     public void applyOptions() {
         bottomTabs.perform(bottomTabs -> {
             for (int i = 0; i < tabs.size(); i++) {
                 BottomTabOptions tab = tabs.get(i).resolveCurrentOptions(defaultOptions).bottomTabOptions;
+                if (useCustomItemViews && tab.component.hasValue()) {
+                    if (tab.testId.hasValue()) bottomTabs.setTag(i, tab.testId.get());
+                    if (tab.badge.hasValue()) {
+                        CustomBottomTabItemView v = bottomTabs.getCustomItemView(i);
+                        if (v != null) v.setBadge(tab.badge.get(""));
+                    }
+                    continue;
+                }
                 bottomTabs.setIconWidth(i, tab.iconWidth.get(null));
                 bottomTabs.setIconHeight(i, tab.iconHeight.get(null));
                 bottomTabs.setTitleTypeface(i, tab.font.getTypeface(typefaceLoader, defaultTypeface));
@@ -86,6 +106,14 @@ public class BottomTabPresenter {
             int index = bottomTabFinder.findByControllerId(child.getId());
             if (index >= 0) {
                 BottomTabOptions tab = options.bottomTabOptions;
+                if (useCustomItemViews && bottomTabs.getCustomItemView(index) != null) {
+                    if (tab.badge.hasValue()) {
+                        CustomBottomTabItemView v = bottomTabs.getCustomItemView(index);
+                        if (v != null) v.setBadge(tab.badge.get(""));
+                    }
+                    if (tab.testId.hasValue()) bottomTabs.setTag(index, tab.testId.get());
+                    return;
+                }
                 if (tab.iconWidth.hasValue()) bottomTabs.setIconWidth(index, tab.iconWidth.get(null));
                 if (tab.iconHeight.hasValue()) bottomTabs.setIconHeight(index, tab.iconHeight.get(null));
                 if (tab.font.hasValue()) bottomTabs.setTitleTypeface(index, tab.font.getTypeface(typefaceLoader, defaultTypeface));

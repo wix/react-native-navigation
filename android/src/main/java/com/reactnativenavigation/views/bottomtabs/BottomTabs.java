@@ -8,6 +8,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IntRange;
@@ -25,6 +27,7 @@ public class BottomTabs extends AHBottomNavigation {
     private boolean itemsCreationEnabled = true;
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
+    private final List<CustomBottomTabItemView> customItemViews = new ArrayList<>();
 
     public BottomTabs(Context context) {
         super(context);
@@ -129,6 +132,66 @@ public class BottomTabs extends AHBottomNavigation {
     public void setLayoutDirection(LayoutDirection direction) {
         LinearLayout tabsContainer = findChildByClass(this, LinearLayout.class);
         if (tabsContainer != null) tabsContainer.setLayoutDirection(direction.get());
+    }
+
+    /**
+     * Replace the visual content of every tab cell with the provided custom
+     * views. The custom view is attached as a child of the AHBottomNavigation
+     * cell view so taps continue to be handled by the native cell. Pass an
+     * empty list to remove all overlays.
+     */
+    public void setCustomItemViews(List<CustomBottomTabItemView> customViews) {
+        clearCustomItemViews();
+        if (customViews == null || customViews.isEmpty()) return;
+
+        customItemViews.addAll(customViews);
+        attachCustomItemViews();
+    }
+
+    public void onCustomItemViewSelectionChanged(int selectedIndex) {
+        for (int i = 0; i < customItemViews.size(); i++) {
+            customItemViews.get(i).setItemSelected(i == selectedIndex);
+        }
+    }
+
+    public CustomBottomTabItemView getCustomItemView(int index) {
+        if (index < 0 || index >= customItemViews.size()) return null;
+        return customItemViews.get(index);
+    }
+
+    public boolean hasCustomItemViews() {
+        return !customItemViews.isEmpty();
+    }
+
+    private void clearCustomItemViews() {
+        for (CustomBottomTabItemView view : customItemViews) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) parent.removeView(view);
+        }
+        customItemViews.clear();
+    }
+
+    private void attachCustomItemViews() {
+        for (int i = 0; i < customItemViews.size(); i++) {
+            View cell = getViewAtPosition(i);
+            if (!(cell instanceof ViewGroup)) continue;
+            CustomBottomTabItemView itemView = customItemViews.get(i);
+            ViewGroup parent = (ViewGroup) itemView.getParent();
+            if (parent != null && parent != cell) parent.removeView(itemView);
+            if (itemView.getParent() == null) {
+                ((ViewGroup) cell).addView(itemView, new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT));
+            }
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (changed && !customItemViews.isEmpty()) {
+            attachCustomItemViews();
+        }
     }
 
     private boolean hasItemsAndIsMeasured(int w, int h, int oldw, int oldh) {

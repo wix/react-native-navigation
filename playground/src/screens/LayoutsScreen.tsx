@@ -25,6 +25,7 @@ const {
   SPLIT_VIEW_BUTTON,
   BOTTOM_TABS_ROLE_BTN,
   BOTTOM_TABS_ROLE_SEARCH_TAB,
+  BOTTOM_TABS_CUSTOM_COMPONENT_BTN,
 } = testIDs;
 
 interface State {
@@ -83,6 +84,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           testID={BOTTOM_TABS_ROLE_BTN}
           platform="ios"
           onPress={this.bottomTabsWithRole}
+        />
+        <Button
+          label="BottomTabs Custom Component"
+          testID={BOTTOM_TABS_CUSTOM_COMPONENT_BTN}
+          onPress={this.bottomTabsWithCustomComponent}
         />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
@@ -185,6 +191,29 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
             },
           },
         ],
+      },
+    });
+  };
+
+  bottomTabsWithCustomComponent = () => {
+    const tab = (label: string, badge?: string) => ({
+      component: {
+        name: Screens.CustomBottomTabContent,
+        passProps: { title: `${label} content` },
+        options: {
+          bottomTab: {
+            text: label,
+            ...(badge ? { badge } : {}),
+            component: {
+              name: Screens.CustomBottomTabItem,
+            },
+          },
+        },
+      },
+    });
+    Navigation.showModal({
+      bottomTabs: {
+        children: [tab('Home'), tab('Search', '3'), tab('Profile')],
       },
     });
   };

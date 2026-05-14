@@ -1036,6 +1036,45 @@ export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
 
   /**
+   * Render a React component as the tab item content (icon + text area).
+   *
+   * When set, the native icon, text and font props (`text`, `icon`,
+   * `selectedIcon`, `sfSymbol`, `sfSelectedSymbol`, `iconColor`,
+   * `selectedIconColor`, `iconWidth`, `iconHeight`, `iconInsets`,
+   * `fontFamily`, `fontWeight`, `fontSize`, `selectedFontSize`,
+   * `textColor`, `selectedTextColor`) are ignored for that tab.
+   *
+   * For the custom rendering to take effect every tab in the
+   * `bottomTabs` layout must declare a `component`. If only some
+   * tabs declare one a warning is logged and native rendering is
+   * used for all tabs.
+   *
+   * The component receives the following initial props and
+   * subsequent prop updates:
+   * - `componentId`: stable id for this tab item instance
+   * - `tabIndex`: position of the tab (0-based)
+   * - `selected`: whether this tab is currently selected
+   * - `badge`: current badge text (mirrors `bottomTab.badge`)
+   *
+   * Native still owns selection, hide/show, drawBehind, animations
+   * and the dot indicator. To switch tabs from inside the component
+   * use `Navigation.mergeOptions(parentId, { bottomTabs: { currentTabIndex } })`.
+   */
+  component?: {
+    /**
+     * The registered name of the component (passed to
+     * `Navigation.registerComponent`).
+     */
+    name: string;
+    /**
+     * Props passed once when the component is created. Updates from
+     * native (`selected`, `badge`) are delivered as separate prop
+     * updates.
+     */
+    passProps?: object;
+  };
+
+  /**
    * Set the text to display below the icon
    */
   text?: string;
