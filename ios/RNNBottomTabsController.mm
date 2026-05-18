@@ -251,6 +251,7 @@
         };
     }
     [_customRow setItemViews:_customTabItemViews];
+    [_customRow applyOptions:_options.bottomTabs.customRow];
     if (_customRow.superview != self.view) {
         [self.view addSubview:_customRow];
     } else {
@@ -268,15 +269,15 @@
     }
     CGRect rowFrame = [self.view convertRect:tabBarFrame fromView:self.tabBar.superview];
 
-    // iOS 26 native floating tab bars are visibly taller than the legacy
-    // 49pt bar. Extend the row upward (overlapping the screen content
-    // behind the glass) to match that proportion and to give the React
-    // cells room for an icon + label + a comfortable pill.
-    if (@available(iOS 26.0, *)) {
-        CGFloat extraHeight = 18.0;
-        rowFrame.origin.y -= extraHeight;
-        rowFrame.size.height += extraHeight;
-    }
+    // Let the row decide how tall it wants to be; anchor at the tab bar's
+    // bottom edge and extend upward (overlapping the screen content behind
+    // the row chrome).
+    CGFloat desiredHeight = [_customRow
+        desiredRowHeightForNativeTabBarHeight:rowFrame.size.height
+                                   safeBottom:self.tabBar.safeAreaInsets.bottom];
+    CGFloat delta = desiredHeight - rowFrame.size.height;
+    rowFrame.origin.y -= delta;
+    rowFrame.size.height = desiredHeight;
 
     _customRow.frame = rowFrame;
     _customRow.hidden = self.tabBar.hidden;

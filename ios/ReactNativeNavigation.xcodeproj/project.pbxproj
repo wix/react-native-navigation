@@ -77,6 +77,8 @@
 		EE4A5C0001000000ABCD0002 /* RNNCustomTabBarItemView.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */; };
 		EE4A5C0001000000ABCD0011 /* RNNBottomTabsCustomRow.h in Headers */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0013 /* RNNBottomTabsCustomRow.h */; };
 		EE4A5C0001000000ABCD0012 /* RNNBottomTabsCustomRow.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0014 /* RNNBottomTabsCustomRow.mm */; };
+		EE4A5C0001000000ABCD0021 /* RNNBottomTabsCustomRowOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0023 /* RNNBottomTabsCustomRowOptions.h */; };
+		EE4A5C0001000000ABCD0022 /* RNNBottomTabsCustomRowOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE4A5C0001000000ABCD0024 /* RNNBottomTabsCustomRowOptions.mm */; };
 		50175CD1207A2AA1004FE91B /* RNNComponentOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */; };
 		50175CD2207A2AA1004FE91B /* RNNComponentOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50175CD0207A2AA1004FE91B /* RNNComponentOptions.mm */; };
 		5017D9E1239D2C6C00B74047 /* BottomTabsAttachModeFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5017D9DF239D2C6C00B74047 /* BottomTabsAttachModeFactory.h */; };
@@ -576,6 +578,8 @@
 		EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomTabBarItemView.mm; sourceTree = "<group>"; };
 		EE4A5C0001000000ABCD0013 /* RNNBottomTabsCustomRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsCustomRow.h; sourceTree = "<group>"; };
 		EE4A5C0001000000ABCD0014 /* RNNBottomTabsCustomRow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsCustomRow.mm; sourceTree = "<group>"; };
+		EE4A5C0001000000ABCD0023 /* RNNBottomTabsCustomRowOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabsCustomRowOptions.h; sourceTree = "<group>"; };
+		EE4A5C0001000000ABCD0024 /* RNNBottomTabsCustomRowOptions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsCustomRowOptions.mm; sourceTree = "<group>"; };
 		50175CCF207A2AA1004FE91B /* RNNComponentOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNComponentOptions.h; sourceTree = "<group>"; };
 		50175CD0207A2AA1004FE91B /* RNNComponentOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentOptions.mm; sourceTree = "<group>"; };
 		5017D9DF239D2C6C00B74047 /* BottomTabsAttachModeFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomTabsAttachModeFactory.h; sourceTree = "<group>"; };
@@ -1675,6 +1679,8 @@
 				EE4A5C0001000000ABCD0004 /* RNNCustomTabBarItemView.mm */,
 				EE4A5C0001000000ABCD0013 /* RNNBottomTabsCustomRow.h */,
 				EE4A5C0001000000ABCD0014 /* RNNBottomTabsCustomRow.mm */,
+				EE4A5C0001000000ABCD0023 /* RNNBottomTabsCustomRowOptions.h */,
+				EE4A5C0001000000ABCD0024 /* RNNBottomTabsCustomRowOptions.mm */,
 				E8A5CD601F49114F00E89D0D /* RNNElement.h */,
 				E8A5CD611F49114F00E89D0D /* RNNElement.mm */,
 				E8AEDB3A1F55A1C2000F5A6A /* RNNElementView.h */,
@@ -1751,6 +1757,7 @@
 				5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */,
 				EE4A5C0001000000ABCD0001 /* RNNCustomTabBarItemView.h in Headers */,
 				EE4A5C0001000000ABCD0011 /* RNNBottomTabsCustomRow.h in Headers */,
+				EE4A5C0001000000ABCD0021 /* RNNBottomTabsCustomRowOptions.h in Headers */,
 				500623A525B7003A0086AB39 /* RNNShadowOptions.h in Headers */,
 				50415CBA20553B8E00BB682E /* RNNScreenTransition.h in Headers */,
 				5039558B2174829400B0A663 /* IntNumberParser.h in Headers */,
@@ -2058,6 +2065,7 @@
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.mm in Sources */,
 				EE4A5C0001000000ABCD0002 /* RNNCustomTabBarItemView.mm in Sources */,
 				EE4A5C0001000000ABCD0012 /* RNNBottomTabsCustomRow.mm in Sources */,
+				EE4A5C0001000000ABCD0022 /* RNNBottomTabsCustomRowOptions.mm in Sources */,
 				5061B6C823D48449008B9827 /* VerticalRotationTransition.mm in Sources */,
 				5022EDB62405224B00852BA6 /* BottomTabPresenter.mm in Sources */,
 				503955982174864E00B0A663 /* NullDouble.mm in Sources */,
