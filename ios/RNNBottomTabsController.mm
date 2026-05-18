@@ -1,4 +1,5 @@
 #import "RNNBottomTabsController.h"
+#import "RNNBottomTabsCustomRow.h"
 #import "RNNCustomTabBarItemView.h"
 #import "RNNTabBarItemCreator.h"
 #import "UITabBarController+RNNOptions.h"
@@ -26,6 +27,7 @@
     RNNReactComponentRegistry *_componentRegistry;
     NSMutableArray<RNNCustomTabBarItemView *> *_customTabItemViews;
     BOOL _useCustomItemViews;
+    RNNBottomTabsCustomRow *_customRow;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -63,26 +65,18 @@
                       eventEmitter:eventEmitter
               childViewControllers:childViewControllers];
 
-    [self resolveCustomItemViewMode:childViewControllers];
-
     if (@available(iOS 13.0, *)) {
-        // The opaque-white standardAppearance below was added long ago for an
-        // iOS 13/15 background-color issue. On iOS 26 it overrides the new
-        // floating-glass platter look. Skip it when custom item views are
-        // active so iOS 26 renders its native floating tab bar.
-        if (!_useCustomItemViews) {
-            UITabBarAppearance *appearance = [UITabBarAppearance new];
-            [appearance configureWithOpaqueBackground];
-            appearance.backgroundEffect = nil;
-            appearance.backgroundColor = UIColor.systemBackgroundColor;
-            self.tabBar.standardAppearance = appearance;
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        [appearance configureWithOpaqueBackground];
+        appearance.backgroundEffect = nil;
+        appearance.backgroundColor = UIColor.systemBackgroundColor;
+        self.tabBar.standardAppearance = appearance;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 150000
-            if (@available(iOS 15.0, *)) {
-                self.tabBar.scrollEdgeAppearance = [appearance copy];
-            }
-#endif
-            self.tabBar.translucent = NO;
+        if (@available(iOS 15.0, *)) {
+            self.tabBar.scrollEdgeAppearance = [appearance copy];
         }
+#endif
+        self.tabBar.translucent = NO;
     }
 
     [self createTabBarItems:childViewControllers];
@@ -105,14 +99,20 @@
         [selectedChild pushViewController: [UIViewController new] animated:NO];
         [selectedChild popViewControllerAnimated:NO];
     }
+
+    if (_useCustomItemViews) {
+        [self ensureCustomRowAttached];
+        [self layoutCustomRow];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     // iOS 26: first layout can misplace tab item titles; cycling selection (then restoring) forces a
     // correct layout without user interaction. Defer so all tab children are in the hierarchy.
+    // Skipped when custom item views are active — the native tab bar visuals are hidden anyway.
     if (@available(iOS 26.0, *)) {
-        if (!_rnnDidApplyInitialTabBarSelectionFix) {
+        if (!_useCustomItemViews && !_rnnDidApplyInitialTabBarSelectionFix) {
             _rnnDidApplyInitialTabBarSelectionFix = YES;
             __weak RNNBottomTabsController *weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -153,9 +153,25 @@
 
     if (_useCustomItemViews) {
         [self buildCustomTabItemViews:childViewControllers];
+        [self applyCustomItemViewsTabBarConfiguration];
+        [self ensureCustomRowAttached];
     }
 
     [self syncTabBarItemTestIDs];
+}
+
+- (void)applyCustomItemViewsTabBarConfiguration {
+    // Hide the native tab bar visuals so our custom row is the only thing
+    // shown. The bar itself stays in the view hierarchy so that
+    // `UITabBarController` keeps reserving the bottom safe-area inset for
+    // the selected child controller and exposes the right frame for the
+    // row to match.
+    for (UIView *subview in self.tabBar.subviews) {
+        subview.hidden = YES;
+    }
+    self.tabBar.tintColor = UIColor.clearColor;
+    self.tabBar.unselectedItemTintColor = UIColor.clearColor;
+    self.tabBar.backgroundColor = UIColor.clearColor;
 }
 
 - (void)resolveCustomItemViewMode:(NSArray<UIViewController *> *)childViewControllers {
@@ -219,119 +235,56 @@
         [itemView removeFromSuperview];
     }
     [_customTabItemViews removeAllObjects];
+    [_customRow removeFromSuperview];
+    _customRow = nil;
 }
 
-// Walks `tabBar`'s view tree and returns the views that look like tab buttons.
-// On iOS <26 these are direct `UITabBarButton` subviews of `UITabBar`. On
-// iOS 26 the floating platter wraps a layout container that holds private
-// `_UITabButton` views. We don't depend on the exact class hierarchy: we
-// match by class name suffix and return only views that are visible (non-zero
-// frame, not hidden, alpha > 0).
-- (NSArray<UIView *> *)findTabBarButtonViews {
-    NSMutableArray<UIView *> *result = [NSMutableArray array];
-    [self collectTabBarButtonViewsInView:self.tabBar into:result];
-
-    [result filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIView *view, NSDictionary *_) {
-        if (view.hidden || view.alpha < 0.01) {
-            return NO;
-        }
-        return view.bounds.size.width > 0 && view.bounds.size.height > 0;
-    }]];
-
-    UITabBarController *strongSelf = self;
-    [result sortUsingComparator:^NSComparisonResult(UIView *a, UIView *b) {
-        CGRect frameA = [a.superview convertRect:a.frame toView:strongSelf.view];
-        CGRect frameB = [b.superview convertRect:b.frame toView:strongSelf.view];
-        if (frameA.origin.x < frameB.origin.x) return NSOrderedAscending;
-        if (frameA.origin.x > frameB.origin.x) return NSOrderedDescending;
-        return NSOrderedSame;
-    }];
-
-    return result;
-}
-
-- (void)collectTabBarButtonViewsInView:(UIView *)view
-                                  into:(NSMutableArray<UIView *> *)result {
-    NSString *className = NSStringFromClass([view class]);
-    // `UITabBarButton` (legacy) and `_UITabButton` (iOS 26) are the leaf tap
-    // targets we care about.
-    if ([className isEqualToString:@"UITabBarButton"] ||
-        [className isEqualToString:@"_UITabButton"]) {
-        // iOS 26 renders TWO `_UITabButton`s per tab: one inside the
-        // platter (`_UITabBarPlatterView.ContentView`) — that's the real
-        // interactive button — and one inside the selection-content view
-        // (`_UITabBarVisualProvider_Floating.SelectedContentView`) used to
-        // animate the highlighted pill background. Skip the latter so we
-        // don't attach our React view to a non-interactive duplicate.
-        UIView *ancestor = view.superview;
-        while (ancestor) {
-            NSString *aName = NSStringFromClass([ancestor class]);
-            if ([aName containsString:@"SelectedContentView"]) {
-                return;
-            }
-            ancestor = ancestor.superview;
-        }
-        [result addObject:view];
-        return; // Don't descend — these are leaf controls.
-    }
-    for (UIView *subview in view.subviews) {
-        [self collectTabBarButtonViewsInView:subview into:result];
-    }
-}
-
-// Attaches each `RNNCustomTabBarItemView` as a subview of the corresponding
-// native tab button, frame-matched to the button's bounds. The native bar
-// keeps drawing its background (legacy chrome / iOS 26 floating glass) and
-// the system selected pill — our React view renders inside the slot.
-//
-// Native taps reach the underlying button because our React view stack has
-// `userInteractionEnabled = NO`, so hit-testing falls through to the button.
-// UIKit then triggers `tabBarController:didSelectViewController:` and
-// `setSelectedViewController:`, which already update our selection state.
-- (void)attachCustomItemViewsToButtons {
-    if (!_useCustomItemViews || _customTabItemViews.count == 0) {
+- (void)ensureCustomRowAttached {
+    if (!_useCustomItemViews) {
         return;
     }
-
-    NSArray<UIView *> *buttons = [self findTabBarButtonViews];
-    NSLog(@"[RNN.CustomTab] attach attempt buttons=%lu items=%lu tabBar.bounds=%@ tabBar.safeBottom=%.1f",
-          (unsigned long)buttons.count,
-          (unsigned long)_customTabItemViews.count,
-          NSStringFromCGRect(self.tabBar.bounds),
-          self.tabBar.safeAreaInsets.bottom);
-    for (NSUInteger i = 0; i < buttons.count; i++) {
-        UIView *b = buttons[i];
-        CGRect inSelf = [b.superview convertRect:b.frame toView:self.view];
-        NSLog(@"[RNN.CustomTab] candidate %lu cls=%@ parent=%@ frame=%@ inSelf=%@ hidden=%d alpha=%.2f",
-              (unsigned long)i,
-              NSStringFromClass([b class]),
-              NSStringFromClass([b.superview class]),
-              NSStringFromCGRect(b.frame),
-              NSStringFromCGRect(inSelf),
-              b.hidden,
-              b.alpha);
+    if (!_customRow) {
+        _customRow = [[RNNBottomTabsCustomRow alloc] initWithFrame:CGRectZero];
+        __weak RNNBottomTabsController *weakSelf = self;
+        _customRow.onTapAtIndex = ^(NSUInteger index) {
+            [weakSelf handleCustomRowTapAtIndex:index];
+        };
     }
-    NSUInteger count = MIN(buttons.count, _customTabItemViews.count);
-    if (count == 0) {
+    [_customRow setItemViews:_customTabItemViews];
+    if (_customRow.superview != self.view) {
+        [self.view addSubview:_customRow];
+    } else {
+        [self.view bringSubviewToFront:_customRow];
+    }
+}
+
+- (void)layoutCustomRow {
+    if (!_useCustomItemViews || !_customRow) {
         return;
     }
+    CGRect tabBarFrame = self.tabBar.frame;
+    if (CGRectIsEmpty(tabBarFrame)) {
+        return;
+    }
+    _customRow.frame = [self.view convertRect:tabBarFrame fromView:self.tabBar.superview];
+    _customRow.hidden = self.tabBar.hidden;
+    [_customRow setSelectedIndex:_currentTabIndex];
+}
 
-    CGFloat safeBottom = self.tabBar.safeAreaInsets.bottom;
-
-    for (NSUInteger i = 0; i < count; i++) {
-        UIView *button = buttons[i];
-        RNNCustomTabBarItemView *itemView = _customTabItemViews[i];
-        if (itemView.superview != button) {
-            [itemView removeFromSuperview];
-            [button addSubview:itemView];
-        }
-        CGRect contentFrame = button.bounds;
-        if (safeBottom > 0 && contentFrame.size.height > safeBottom + 24) {
-            contentFrame.size.height -= safeBottom;
-        }
-        itemView.frame = contentFrame;
-        itemView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [button bringSubviewToFront:itemView];
+- (void)handleCustomRowTapAtIndex:(NSUInteger)index {
+    if (index >= self.childViewControllers.count) {
+        return;
+    }
+    UIViewController *target = self.childViewControllers[index];
+    [self.eventEmitter sendBottomTabPressed:@(index)];
+    BOOL select = [[target resolveOptions].bottomTab.selectTabOnPress withDefault:YES];
+    if (!select) {
+        return;
+    }
+    NSUInteger previous = _currentTabIndex;
+    [self setSelectedIndex:index];
+    if (!_rnnSuppressTabSelectionEvents) {
+        [self.eventEmitter sendBottomTabSelected:@(index) unselected:@(previous)];
     }
 }
 
@@ -342,6 +295,7 @@
     for (NSUInteger i = 0; i < _customTabItemViews.count; i++) {
         [_customTabItemViews[i] setSelected:(i == _currentTabIndex)];
     }
+    [_customRow setSelectedIndex:_currentTabIndex];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -377,7 +331,12 @@
     [self syncTabBarItemTestIDs];
     [self.presenter viewDidLayoutSubviews];
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
-    [self attachCustomItemViewsToButtons];
+    if (_useCustomItemViews) {
+        // Re-hide native subviews; UIKit recreates them on bounds changes.
+        [self applyCustomItemViewsTabBarConfiguration];
+        [self ensureCustomRowAttached];
+        [self layoutCustomRow];
+    }
 }
 
 - (UIViewController *)getCurrentChild {
