@@ -999,6 +999,53 @@ export interface OptionsBottomTabs {
    * Control the shadow of the Bottom tabs bar
    */
   shadow?: ShadowOptions;
+  /**
+   * Visual options for the row that hosts custom React-component bottom
+   * tab cells (only takes effect when every `bottomTab.component` is set).
+   *
+   * iOS-only at the moment. On Android these options are ignored — Android
+   * keeps the native Material bottom bar chrome and overlays the React
+   * component on each cell.
+   */
+  customRow?: BottomTabsCustomRowOptions;
+}
+
+export interface BottomTabsCustomRowOptions {
+  /**
+   * Total content height of the row, in points (excludes safe-area inset).
+   * Defaults to the native tab bar height, plus 18pt on iOS 26+ to match
+   * the larger floating tab bar.
+   */
+  height?: number;
+  /**
+   * Solid background color for the row. When set, overrides
+   * `backgroundEffect`.
+   */
+  backgroundColor?: Color;
+  /**
+   * Visual effect for the row background.
+   * - `glass`: iOS 26+ `UIGlassEffect`.
+   * - `blur`: `UIBlurEffect` with `systemChromeMaterial`.
+   * - `none`: fully transparent.
+   *
+   * Default: `glass` on iOS 26+, `blur` on older versions.
+   */
+  backgroundEffect?: 'glass' | 'blur' | 'none';
+  /**
+   * Corner radius applied to the row's background.
+   * Default: 28 on iOS 26+, 0 below.
+   */
+  cornerRadius?: number;
+  /**
+   * Horizontal inset from the screen edges.
+   * Default: 16 on iOS 26+, 0 below.
+   */
+  horizontalMargin?: number;
+  /**
+   * Distance between the row's bottom edge and the safe-area bottom.
+   * Default: 0.
+   */
+  bottomMargin?: number;
 }
 
 export interface ShadowOptions {
