@@ -267,17 +267,27 @@
     if (CGRectIsEmpty(tabBarFrame)) {
         return;
     }
-    CGRect rowFrame = [self.view convertRect:tabBarFrame fromView:self.tabBar.superview];
+    CGRect tabBarInView = [self.view convertRect:tabBarFrame fromView:self.tabBar.superview];
 
-    // Let the row decide how tall it wants to be; anchor at the tab bar's
-    // bottom edge and extend upward (overlapping the screen content behind
-    // the row chrome).
     CGFloat desiredHeight = [_customRow
-        desiredRowHeightForNativeTabBarHeight:rowFrame.size.height
-                                   safeBottom:self.tabBar.safeAreaInsets.bottom];
-    CGFloat delta = desiredHeight - rowFrame.size.height;
-    rowFrame.origin.y -= delta;
-    rowFrame.size.height = desiredHeight;
+        desiredRowHeightForNativeTabBarHeight:tabBarInView.size.height
+                                   safeBottom:0];
+
+    CGFloat bottomMargin = [_customRow effectiveBottomMargin];
+    CGFloat rowBottom;
+    UIWindow *window = self.view.window;
+    if (window) {
+        // Map the window's safe-area bottom into this controller's view — reliable
+        // for modals where `self.view.safeAreaInsets` is often zero.
+        CGFloat yInWindow = CGRectGetHeight(window.bounds) - window.safeAreaInsets.bottom;
+        CGPoint pInView = [self.view convertPoint:CGPointMake(0, yInWindow) fromView:window];
+        rowBottom = pInView.y - bottomMargin;
+    } else {
+        rowBottom = CGRectGetMaxY(self.view.safeAreaLayoutGuide.layoutFrame) - bottomMargin;
+    }
+
+    CGRect rowFrame = CGRectMake(tabBarInView.origin.x, rowBottom - desiredHeight,
+                                 tabBarInView.size.width, desiredHeight);
 
     _customRow.frame = rowFrame;
     _customRow.hidden = self.tabBar.hidden;

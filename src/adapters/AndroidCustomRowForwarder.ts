@@ -16,15 +16,12 @@ import { Options } from '../interfaces/Options';
  */
 export class AndroidCustomRowForwarder {
   forwardFromLayout(layout: any) {
-    console.log('[CustomRowFwd] forwardFromLayout enter', this.shouldForward(), !!layout);
     if (!this.shouldForward()) return;
     const config = this.findCustomRowInLayout(layout);
-    console.log('[CustomRowFwd] forwardFromLayout config=', JSON.stringify(config));
     if (config) this.send(config);
   }
 
   forwardFromLayouts(layouts: any[]) {
-    console.log('[CustomRowFwd] forwardFromLayouts enter', this.shouldForward(), layouts?.length);
     if (!this.shouldForward()) return;
     for (const layout of layouts) {
       const config = this.findCustomRowInLayout(layout);
@@ -75,14 +72,12 @@ export class AndroidCustomRowForwarder {
   private send(config: object): void {
     const nativeModule = (NativeModules as any).RNNBottomTabsCustomRowModule;
     if (!nativeModule || typeof nativeModule.configure !== 'function') {
-      console.log('[CustomRowFwd] module unavailable, dropping', Object.keys(NativeModules));
       return;
     }
     try {
-      console.log('[CustomRowFwd] sending', config);
       nativeModule.configure(config);
-    } catch (e) {
-      console.log('[CustomRowFwd] send error', String(e));
+    } catch {
+      // Native module not ready yet; attacher will pick up config on next rescan.
     }
   }
 }

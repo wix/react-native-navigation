@@ -175,9 +175,14 @@ class BottomTabsCustomRow(
      * Content-area height (where cells live), excluding the bottom safe-area
      * inset and bottomMargin.
      */
-    private fun effectiveContentHeightPx(nativeBarHeightPx: Int): Int {
-        val dp = currentOptions.height
-        if (dp != null) return dp(dp).toInt()
+    fun effectiveContentHeightPx(nativeBarHeightPx: Int): Int {
+        val heightOption = currentOptions.height
+        if (heightOption != null) {
+            val configured = dp(heightOption).toInt()
+            // JS height targets iOS floating chrome; keep Android shell tight so
+            // the pill sits on the tab bar without a tall empty box above nav.
+            return minOf(configured, nativeBarHeightPx.coerceAtLeast(dp(52f).toInt()))
+        }
         // Default: a touch taller than the native bar's content area to give
         // icon + label + pill enough room — mirrors iOS's +18pt default.
         val nativeContent = (nativeBarHeightPx - safeBottomInsetPx).coerceAtLeast(0)

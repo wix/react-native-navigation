@@ -149,15 +149,16 @@
 
 - (CGFloat)desiredRowHeightForNativeTabBarHeight:(CGFloat)nativeTabBarHeight
                                        safeBottom:(CGFloat)safeBottom {
-    CGFloat defaultContentHeight = MAX(0, nativeTabBarHeight - safeBottom);
-    CGFloat contentHeight = defaultContentHeight;
+    (void)safeBottom;
+    CGFloat contentHeight = nativeTabBarHeight;
     if (@available(iOS 26.0, *)) {
         contentHeight += 18.0;  // default extra for iOS 26 floating bar look
     }
     if (self.options.height.hasValue) {
         contentHeight = [self.options.height.get doubleValue];
     }
-    return contentHeight + safeBottom + [self effectiveBottomMargin];
+  // Safe area is applied by the controller when positioning the row frame.
+    return contentHeight + [self effectiveBottomMargin];
 }
 
 - (void)setItemViews:(NSArray<RNNCustomTabBarItemView *> *)itemViews {
@@ -196,10 +197,10 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    // Inset by the bottom safe area so cell content stays above the home
-    // indicator, plus any user-supplied bottom margin.
-    UIEdgeInsets safe = self.safeAreaInsets;
-    CGFloat bottomInset = safe.bottom + [self effectiveBottomMargin];
+    // Bottom safe area is already included in the row frame height via
+    // `desiredRowHeightForNativeTabBarHeight:safeBottom:` — do not inset it
+    // again here or the chrome shrinks by ~home-indicator height.
+    CGFloat bottomInset = [self effectiveBottomMargin];
     CGRect content =
         UIEdgeInsetsInsetRect(self.bounds, UIEdgeInsetsMake(0, 0, bottomInset, 0));
 

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.customrow
 
 import android.app.Application
-import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
@@ -20,7 +19,6 @@ class BottomTabsCustomRowModule(
 ) : ReactContextBaseJavaModule(reactContext) {
 
     init {
-        Log.d(TAG, "init")
         val app = reactContext.applicationContext as? Application
         if (app != null) BottomTabsCustomRowAttacher.registerOnce(app)
     }
@@ -29,13 +27,11 @@ class BottomTabsCustomRowModule(
 
     @ReactMethod
     fun configure(config: ReadableMap?) {
-        Log.d(TAG, "configure $config")
         BottomTabsCustomRowConfigStore.update(BottomTabsCustomRowOptions.fromMap(config))
         BottomTabsCustomRowAttacher.rescan()
     }
 
     companion object {
         const val NAME = "RNNBottomTabsCustomRowModule"
-        private const val TAG = "RNNCustomRow"
     }
 }

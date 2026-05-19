@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, StyleSheet, Text, View } from 'react-native';
 import testIDs from '../testIDs';
 
 interface Props {
@@ -193,7 +193,9 @@ export default function CustomBottomTabItem(props: Props) {
           {renderIcon(tabIndex, tintColor)}
           {props.badge ? (
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>{props.badge}</Text>
+              <Text testID={testIDs.CUSTOM_BOTTOM_TAB_BADGE} style={styles.badgeText}>
+                {props.badge}
+              </Text>
             </View>
           ) : null}
         </View>
@@ -208,8 +210,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: Platform.OS === 'android' ? 'flex-end' : 'center',
     paddingHorizontal: 4,
+    paddingBottom: Platform.OS === 'android' ? 2 : 0,
   },
   pill: {
     alignSelf: 'stretch',

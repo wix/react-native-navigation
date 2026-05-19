@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Replaces the cells displayed by this row. The previously held views are
  * removed from the hierarchy. Each cell is rendered at equal width inside
- * the safe-area-insetted content rect.
+ * the content rect (safe area is reserved in the row frame, not inset here).
  */
 - (void)setItemViews:(NSArray<RNNCustomTabBarItemView *> *)itemViews;
 
@@ -43,13 +43,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)applyOptions:(nullable RNNBottomTabsCustomRowOptions *)options;
 
 /**
- * Returns the total row height the row wants to occupy, given the native
- * tab bar height and its safe-area inset. The controller uses this to
- * compute the row's frame (anchored to the tab bar's bottom, extending
- * upward as needed).
+ * Returns the chrome height (plus bottom margin). The controller positions
+ * the row above the home-indicator safe area.
  */
 - (CGFloat)desiredRowHeightForNativeTabBarHeight:(CGFloat)nativeTabBarHeight
                                        safeBottom:(CGFloat)safeBottom;
+
+/** User `bottomMargin` option, or 0. */
+- (CGFloat)effectiveBottomMargin;
 
 @end
 
