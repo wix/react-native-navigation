@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
@@ -10,7 +11,6 @@ import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.react.ReactView;
 
 import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.UNSPECIFIED;
 import static android.view.View.MeasureSpec.makeMeasureSpec;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
@@ -39,7 +39,19 @@ public class TitleBarReactButtonView extends ReactView {
         if (dimension.hasValue()) {
             return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
         } else {
-            return makeMeasureSpec(MeasureSpec.getSize(measureSpec), UNSPECIFIED);
+            // When JS doesn't pass width/height, default to the theme's actionBarSize (48dp on Material).
+            // Yoga's intrinsic measurement of the React view collapses `paddingHorizontal` on the
+            // trailing edge in RTL (RN/Fabric measurement quirk), so we cannot trust UNSPECIFIED here -
+            // it produces a 0dp visible inset against the screen edge in RTL.
+            return makeMeasureSpec(resolveActionBarSize(), EXACTLY);
         }
+    }
+
+    private int resolveActionBarSize() {
+        TypedValue tv = new TypedValue();
+        if (getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            return TypedValue.complexToDimensionPixelSize(tv.data, getContext().getResources().getDisplayMetrics());
+        }
+        return (int) dpToPx(getContext(), 48f);
     }
 }
