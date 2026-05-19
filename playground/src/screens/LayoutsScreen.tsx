@@ -214,6 +214,17 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
     Navigation.showModal({
       bottomTabs: {
         children: [tab('Home'), tab('Search', '3'), tab('Profile')],
+        options: {
+          bottomTabs: {
+            customRow: {
+              backgroundEffect: 'glass',
+              cornerRadius: 28,
+              horizontalMargin: 16,
+              bottomMargin: 0,
+              height: 67,
+            },
+          },
+        },
       },
     });
   };

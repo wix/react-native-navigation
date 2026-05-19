@@ -13,8 +13,11 @@ import { Store } from '../components/Store';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { CommandName } from '../interfaces/CommandName';
 import { OptionsCrawler } from './OptionsCrawler';
+import { AndroidCustomRowForwarder } from '../adapters/AndroidCustomRowForwarder';
 
 export class Commands {
+  private readonly androidCustomRowForwarder = new AndroidCustomRowForwarder();
+
   constructor(
     private readonly store: Store,
     private readonly nativeCommandsSender: NativeCommandsSender,
@@ -59,6 +62,8 @@ export class Commands {
       this.layoutTreeCrawler.crawl(overlayLayout, CommandName.SetRoot);
     });
 
+    this.androidCustomRowForwarder.forwardFromLayouts([root, ...modals, ...overlays]);
+
     const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
     return result;
   }
@@ -66,6 +71,8 @@ export class Commands {
   public setDefaultOptions(options: Options) {
     const input = cloneDeep(options);
     this.optionsProcessor.processDefaultOptions(input, CommandName.SetDefaultOptions);
+
+    this.androidCustomRowForwarder.forwardFromOptions(input);
 
     this.nativeCommandsSender.setDefaultOptions(input);
     this.commandsObserver.notify(CommandName.SetDefaultOptions, { options });
@@ -81,6 +88,8 @@ export class Commands {
       console.warn(
         `Navigation.mergeOptions was invoked on component with id: ${componentId} before it is mounted, this can cause UI issues and should be avoided.\n Use static options instead.`
       );
+
+    this.androidCustomRowForwarder.forwardFromOptions(input);
 
     this.nativeCommandsSender.mergeOptions(componentId, input);
     this.commandsObserver.notify(CommandName.MergeOptions, { componentId, options });
@@ -100,6 +109,8 @@ export class Commands {
     const commandId = this.uniqueIdProvider.generate(CommandName.ShowModal);
     this.commandsObserver.notify(CommandName.ShowModal, { commandId, layout: layoutNode });
     this.layoutTreeCrawler.crawl(layoutNode, CommandName.ShowModal);
+
+    this.androidCustomRowForwarder.forwardFromLayout(layoutNode);
 
     const result = this.nativeCommandsSender.showModal(commandId, layoutNode);
     return result;
@@ -134,6 +145,8 @@ export class Commands {
     const commandId = this.uniqueIdProvider.generate(CommandName.Push);
     this.commandsObserver.notify(CommandName.Push, { commandId, componentId, layout });
     this.layoutTreeCrawler.crawl(layout, CommandName.Push);
+
+    this.androidCustomRowForwarder.forwardFromLayout(layout);
 
     const result = this.nativeCommandsSender.push(commandId, componentId, layout);
     return result;
@@ -180,6 +193,8 @@ export class Commands {
     input.forEach((layoutNode) => {
       this.layoutTreeCrawler.crawl(layoutNode, CommandName.SetStackRoot);
     });
+
+    this.androidCustomRowForwarder.forwardFromLayouts(input);
 
     const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, input);
     return result;

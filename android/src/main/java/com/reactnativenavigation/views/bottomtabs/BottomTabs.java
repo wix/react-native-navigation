@@ -28,6 +28,18 @@ public class BottomTabs extends AHBottomNavigation {
     private boolean shouldCreateItems = true;
     private List<Runnable> onItemCreationEnabled = new ArrayList<>();
     private final List<CustomBottomTabItemView> customItemViews = new ArrayList<>();
+    private boolean externalCustomItemViewHost = false;
+
+    /**
+     * When enabled, this view stops re-parenting custom React tab item views
+     * into its native cells on every layout pass — the caller assumes full
+     * ownership of where those item views live in the view tree (used by
+     * the customRow floating-row implementation). Existing behavior is
+     * unchanged when this remains {@code false} (the default).
+     */
+    public void setExternalCustomItemViewHost(boolean enabled) {
+        this.externalCustomItemViewHost = enabled;
+    }
 
     public BottomTabs(Context context) {
         super(context);
@@ -172,6 +184,7 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void attachCustomItemViews() {
+        if (externalCustomItemViewHost) return;
         for (int i = 0; i < customItemViews.size(); i++) {
             View cell = getViewAtPosition(i);
             if (!(cell instanceof ViewGroup)) continue;

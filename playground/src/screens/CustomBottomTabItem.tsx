@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
 import testIDs from '../testIDs';
 
 interface Props {
@@ -18,16 +19,71 @@ const TAB_TEST_IDS = [
 
 const TAB_LABELS = ['Home', 'Search', 'Profile'];
 
-const TAB_GLYPHS = ['◉', '◎', '◍'];
-
 const UNSELECTED_COLOR = '#9aa0a6';
 const SELECTED_COLOR = '#007aff';
 const SELECTED_PILL_COLOR = 'rgba(0, 122, 255, 0.14)';
 
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+function renderIcon(tabIndex: number, color: Animated.AnimatedInterpolation<string>) {
+  switch (tabIndex) {
+    case 0:
+      return (
+        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+          <AnimatedPath
+            d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.5z"
+            stroke={color as unknown as string}
+            strokeWidth={1.8}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        </Svg>
+      );
+    case 1:
+      return (
+        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+          <AnimatedCircle
+            cx={10.5}
+            cy={10.5}
+            r={6.5}
+            stroke={color as unknown as string}
+            strokeWidth={1.8}
+          />
+          <AnimatedPath
+            d="M20 20l-4.5-4.5"
+            stroke={color as unknown as string}
+            strokeWidth={1.8}
+            strokeLinecap="round"
+          />
+        </Svg>
+      );
+    case 2:
+    default:
+      return (
+        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+          <AnimatedCircle
+            cx={12}
+            cy={8}
+            r={4}
+            stroke={color as unknown as string}
+            strokeWidth={1.8}
+          />
+          <AnimatedPath
+            d="M4 20c0-4 4-6 8-6s8 2 8 6"
+            stroke={color as unknown as string}
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+  }
+}
+
 export default function CustomBottomTabItem(props: Props) {
   const tabIndex = props.tabIndex ?? 0;
   const label = props.label ?? TAB_LABELS[tabIndex] ?? `Tab ${tabIndex}`;
-  const glyph = TAB_GLYPHS[tabIndex] ?? '●';
   const testID = TAB_TEST_IDS[tabIndex];
   const selected = !!props.selected;
 
@@ -61,7 +117,7 @@ export default function CustomBottomTabItem(props: Props) {
         style={[styles.pill, { backgroundColor: pillBackground, transform: [{ scale }] }]}
       >
         <View style={styles.iconWrapper}>
-          <Animated.Text style={[styles.glyph, { color: tintColor }]}>{glyph}</Animated.Text>
+          {renderIcon(tabIndex, tintColor)}
           {props.badge ? (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>{props.badge}</Text>
@@ -78,23 +134,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
   pill: {
     alignSelf: 'stretch',
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 6,
-    borderRadius: 999,
+    borderRadius: 26,
   },
   iconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  glyph: {
-    fontSize: 22,
-    color: UNSELECTED_COLOR,
   },
   label: {
     marginTop: 2,
