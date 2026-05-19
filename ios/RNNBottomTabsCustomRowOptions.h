@@ -1,14 +1,13 @@
 #import "RNNOptions.h"
 
 /**
- * Visual options for the row that hosts custom-component bottom tab cells.
+ * Visual options for the floating row that hosts custom-component bottom tab
+ * cells. Applies only when every tab declares `bottomTab.component`. All
+ * fields are optional; if omitted the row uses sensible defaults (iOS 26
+ * glass pill on iOS 26+, blur with no inset on older versions).
  *
- * Applies only when every tab declares `bottomTab.component`. All fields are
- * optional; if omitted the row uses sensible defaults (iOS 26 glass pill on
- * iOS 26+, blur with no inset on older versions).
- *
- * On Android these options are currently ignored (Android keeps the native
- * Material bottom bar chrome and overlays the React component on it).
+ * The same option keys are exposed in JS as `bottomTabs.customRow` on both
+ * platforms. Android applies them via `RNNBottomTabsCustomRowModule`.
  */
 @interface RNNBottomTabsCustomRowOptions : RNNOptions
 

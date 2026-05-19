@@ -10,6 +10,32 @@ const options = {
 };
 ```
 
+Recommended: [Custom bottom tabs guide](../docs/customBottomTabs.mdx) for React tab items and examples.
+
+## `component`
+
+Render a registered React component as the tab item content (icon + label area).
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| object | No | Both |
+
+```js
+bottomTab: {
+  component: {
+    name: 'MyTabItem',
+    passProps: { /* optional, merged at creation */ },
+  },
+}
+```
+
+**Requirements:** Every tab in the same `bottomTabs` layout must declare `component`, or RNN falls back to native rendering for all tabs.
+
+**Props delivered to the component:** `componentId`, `tabIndex`, `selected`, `badge` (updated when selection/badge changes).
+
+**Ignored when set:** `text`, `icon`, `selectedIcon`, `sfSymbol`, `sfSelectedSymbol`, `iconColor`, `selectedIconColor`, `iconWidth`, `iconHeight`, `iconInsets`, `fontFamily`, `fontWeight`, `fontSize`, `selectedFontSize`, `textColor`, `selectedTextColor`.
+
+Native still owns selection, visibility, `drawBehind`, animations, and `dotIndicator`. Pair with [`bottomTabs.customRow`](options-bottomTabs.mdx#customrow) to style the floating row.
 
 ## `selectTabOnPress`
 

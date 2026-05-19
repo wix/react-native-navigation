@@ -1,0 +1,202 @@
+---
+id: customBottomTabs
+title: Custom bottom tab items
+sidebar_label: Custom bottom tabs
+---
+
+Custom bottom tabs let you render a **React component** for each tab item instead of the built-in icon + label. Use this when you need Lottie animations, SVG icons, custom badge layouts, or a fully custom tab bar design.
+
+The same JavaScript API works on **iOS and Android**. Both platforms use a floating custom row when every tab declares `bottomTab.component`.
+
+## Requirements
+
+1. **Every tab** in a `bottomTabs` layout must set `bottomTab.component`. If only some tabs use a custom component, RNN logs a warning and falls back to native rendering for **all** tabs in that bar.
+2. Register your tab item component with `Navigation.registerComponent` (same as any other screen).
+3. Optionally set `bottomTabs.customRow` on the layout to style the floating row chrome (margins, height, background, corner radius).
+
+## Basic example
+
+```js
+// 1. Register the tab item component (e.g. in index.js)
+Navigation.registerComponent('MyTabItem', () => require('./MyTabItem'));
+
+// 2. Use it on every tab
+Navigation.setRoot({
+  root: {
+    bottomTabs: {
+      options: {
+        bottomTabs: {
+          customRow: {
+            backgroundEffect: 'glass',
+            cornerRadius: 28,
+            horizontalMargin: 16,
+            bottomMargin: 0,
+            height: 67,
+          },
+        },
+      },
+      children: [
+        {
+          stack: {
+            children: [{ component: { name: 'HomeScreen' } }],
+            options: {
+              bottomTab: {
+                component: { name: 'MyTabItem' },
+                badge: '3',
+              },
+            },
+          },
+        },
+        {
+          stack: {
+            children: [{ component: { name: 'SearchScreen' } }],
+            options: {
+              bottomTab: {
+                component: { name: 'MyTabItem' },
+              },
+            },
+          },
+        },
+        {
+          stack: {
+            children: [{ component: { name: 'ProfileScreen' } }],
+            options: {
+              bottomTab: {
+                component: { name: 'MyTabItem' },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
+See the playground: **Layouts → BottomTabs Custom Component** (`LayoutsScreen.bottomTabsWithCustomComponent`).
+
+## Tab item component props
+
+RNN creates one React surface per tab and pushes prop updates when selection or badge changes.
+
+| Prop | Type | Description |
+| ---- | ---- | ----------- |
+| `componentId` | `string` | Stable id for this tab item instance |
+| `tabIndex` | `number` | Zero-based index of the tab |
+| `selected` | `boolean` | Whether this tab is currently selected |
+| `badge` | `string \| null` | Mirrors `bottomTab.badge` |
+
+`passProps` from `bottomTab.component.passProps` are merged at creation time only. Use `tabIndex` inside your component to pick icon/label per tab.
+
+### Example tab item
+
+```js
+function MyTabItem({ tabIndex, selected, badge }) {
+  const labels = ['Home', 'Search', 'Profile'];
+  return (
+    <View style={{ alignItems: 'center' }}>
+      <MyIcon index={tabIndex} selected={selected} />
+      <Text style={{ color: selected ? '#007aff' : '#9aa0a6' }}>
+        {labels[tabIndex]}
+      </Text>
+      {badge ? <Badge>{badge}</Badge> : null}
+    </View>
+  );
+}
+```
+
+## What is ignored when `component` is set
+
+For tabs that use `bottomTab.component`, these options are **ignored** for that tab's visual content:
+
+`text`, `icon`, `selectedIcon`, `sfSymbol`, `sfSelectedSymbol`, `iconColor`, `selectedIconColor`, `iconWidth`, `iconHeight`, `iconInsets`, `fontFamily`, `fontWeight`, `fontSize`, `selectedFontSize`, `textColor`, `selectedTextColor`
+
+Native still handles tab selection, visibility, `drawBehind`, animations, and `dotIndicator`. Switch tabs from JS with:
+
+```js
+Navigation.mergeOptions('BOTTOM_TABS_LAYOUT_ID', {
+  bottomTabs: { currentTabIndex: 1 },
+});
+```
+
+## Custom row (`bottomTabs.customRow`)
+
+When all tabs use custom components, RNN replaces the visible tab bar chrome with a **floating row** that hosts your React tab cells. Configure it with `bottomTabs.customRow` on the `bottomTabs` layout options.
+
+```js
+bottomTabs: {
+  options: {
+    bottomTabs: {
+      customRow: {
+        height: 67,
+        backgroundEffect: 'glass', // 'glass' | 'blur' | 'none'
+        cornerRadius: 28,
+        horizontalMargin: 16,
+        bottomMargin: 0,
+        // backgroundColor: '#ffffff', // optional; overrides backgroundEffect
+      },
+    },
+  },
+  children: [/* ... */],
+}
+```
+
+Options apply on **`setRoot`**, **`showModal`**, **`mergeOptions`**, and **`setDefaultOptions`** (same as other bottom-tabs options).
+
+### `customRow` fields
+
+| Option | Type | Default (when omitted) | Description |
+| ------ | ---- | ---------------------- | ----------- |
+| `height` | `number` | Native tab content height (+18 on iOS 26+) | Content height of the row in **points/dp**, excluding safe-area inset |
+| `backgroundColor` | color | — | Solid background; overrides `backgroundEffect` |
+| `backgroundEffect` | `'glass' \| 'blur' \| 'none'` | `'glass'` on iOS 26+, `'blur'` below | Row background style |
+| `cornerRadius` | `number` | `28` on iOS 26+, `0` below | Corner radius of the row background |
+| `horizontalMargin` | `number` | `16` on iOS 26+, `0` below | Inset from left/right screen edges |
+| `bottomMargin` | `number` | `0` | Gap between row bottom and safe-area bottom |
+
+**Total row height** = `height` + safe-area bottom inset + `bottomMargin` (same formula on both platforms).
+
+## Platform behavior
+
+| Topic | iOS | Android |
+| ----- | --- | ------- |
+| Custom tab cells | React component in custom floating row | Same |
+| Native tab bar visuals | Hidden; blank `UITabBarItem`s keep selection | Native bar hidden (`alpha = 0`); `BottomTabs` still drives selection |
+| `backgroundEffect: 'glass'` | `UIGlassEffect` (iOS 26+), blur fallback | Semi-opaque material chrome (no system glass API) |
+| `backgroundEffect: 'blur'` | `UIBlurEffect` systemChromeMaterial | Semi-opaque material chrome |
+| Row shadow | From glass/blur material | Subtle elevation shadow (~3dp, low alpha) to approximate iOS lift |
+| Options delivery | Native options parser | JS forwards `customRow` to `RNNBottomTabsCustomRowModule` before layout commands |
+| Min tabs | 2 (UIKit) | 3 (`AHBottomNavigation`) |
+
+### iOS implementation notes
+
+- Custom row: `RNNBottomTabsCustomRow` — hosts cells, applies `customRow` options, handles layout and taps.
+- iOS 26+: defaults match the floating tab bar (glass, 28pt radius, 16pt horizontal margin).
+- `tabBarMinimizeBehavior` is forced to `never` when custom item views are active.
+
+### Android implementation notes
+
+- Custom row lives in `com.reactnativenavigation.customrow` and attaches when a `BottomTabs` view with custom items appears.
+- `BottomTabs.setExternalCustomItemViewHost(true)` prevents the legacy overlay path from re-parenting React views into native cells.
+- No changes required in app `MainApplication` — the module registers via `NavigationPackage`.
+
+## Updating `customRow` at runtime
+
+```js
+Navigation.mergeOptions('BOTTOM_TABS_LAYOUT_ID', {
+  bottomTabs: {
+    customRow: {
+      backgroundColor: '#1c1c1e',
+      cornerRadius: 20,
+    },
+  },
+});
+```
+
+On Android, merged `customRow` is picked up on the next layout pass via `BottomTabsCustomRowConfigStore`.
+
+## Related API
+
+- [`bottomTab.component`](api/options-bottomTab.mdx#component)
+- [`bottomTabs.customRow`](api/options-bottomTabs.mdx#customrow)
+- [Bottom tabs guide](bottomTabs)

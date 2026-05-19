@@ -4,13 +4,101 @@ title: Bottom Tabs Options
 sidebar_label: Bottom Tabs
 ---
 
-Recommended: Read about Bottom Tabs in the [Bottom Tabs Guide](../docs/docs-bottomTabs.mdx).
+Recommended: Read about Bottom Tabs in the [Bottom Tabs Guide](../docs/docs-bottomTabs.mdx). For React tab items, see [Custom bottom tabs](../docs/customBottomTabs.mdx).
 
 ```js
 const options = {
   bottomTabs: {},
 };
 ```
+
+## `customRow`
+
+Visual options for the floating row that hosts custom React tab cells. **Only applies when every tab uses [`bottomTab.component`](options-bottomTab.mdx#component).**
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| [BottomTabsCustomRowOptions](#bottomtabscustomrowoptions) | No | Both |
+
+```js
+bottomTabs: {
+  customRow: {
+    height: 67,
+    backgroundEffect: 'glass',
+    cornerRadius: 28,
+    horizontalMargin: 16,
+    bottomMargin: 0,
+  },
+}
+```
+
+On Android, `customRow` is forwarded from JS via `RNNBottomTabsCustomRowModule` (no change to existing `BottomTabs` layout code). On iOS, options are parsed natively from the layout tree.
+
+### BottomTabsCustomRowOptions
+
+#### `height`
+
+Content height of the row in points (iOS) / dp (Android). Excludes safe-area inset.
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| number | No | Both |
+
+Default: native tab content height; on iOS 26+ an extra 18pt is added when `height` is omitted.
+
+**Total visible row height** = `height` + safe-area bottom + `bottomMargin`.
+
+#### `backgroundColor`
+
+Solid row background. When set, overrides `backgroundEffect`.
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| color | No | Both |
+
+#### `backgroundEffect`
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| enum(`glass`, `blur`, `none`) | No | Both |
+
+| Value | iOS | Android |
+| ----- | --- | ------- |
+| `glass` | `UIGlassEffect` on iOS 26+, blur fallback | Semi-opaque material chrome |
+| `blur` | `UIBlurEffect` systemChromeMaterial | Semi-opaque material chrome |
+| `none` | Transparent | Transparent |
+
+Default: `glass` on iOS 26+, `blur` on older iOS.
+
+#### `cornerRadius`
+
+Corner radius of the row background.
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| number | No | Both |
+
+Default: `28` on iOS 26+, `0` on older iOS / when omitted on Android until configured.
+
+#### `horizontalMargin`
+
+Horizontal inset from the screen edges.
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| number | No | Both |
+
+Default: `16` on iOS 26+, `0` when omitted.
+
+#### `bottomMargin`
+
+Distance between the row's bottom edge and the safe-area bottom.
+
+| Type | Required | Platform |
+| ---- | -------- | -------- |
+| number | No | Both |
+
+Default: `0`.
 
 ## `animate`
 

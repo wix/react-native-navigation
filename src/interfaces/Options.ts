@@ -1000,21 +1000,22 @@ export interface OptionsBottomTabs {
    */
   shadow?: ShadowOptions;
   /**
-   * Visual options for the row that hosts custom React-component bottom
-   * tab cells (only takes effect when every `bottomTab.component` is set).
+   * Visual options for the floating row that hosts custom React-component
+   * bottom tab cells. Only takes effect when every `bottomTab.component`
+   * is set on that `bottomTabs` layout.
    *
-   * iOS-only at the moment. On Android these options are ignored — Android
-   * keeps the native Material bottom bar chrome and overlays the React
-   * component on each cell.
+   * Same JS shape on iOS and Android. iOS applies options via the native
+   * parser; Android receives them through `RNNBottomTabsCustomRowModule`.
    */
   customRow?: BottomTabsCustomRowOptions;
 }
 
 export interface BottomTabsCustomRowOptions {
   /**
-   * Total content height of the row, in points (excludes safe-area inset).
-   * Defaults to the native tab bar height, plus 18pt on iOS 26+ to match
-   * the larger floating tab bar.
+   * Content height of the row in points (iOS) / dp (Android). Excludes
+   * safe-area inset. Total row height = `height` + safe bottom + `bottomMargin`.
+   *
+   * Default: native tab content height; on iOS 26+ an extra 18pt when omitted.
    */
   height?: number;
   /**
