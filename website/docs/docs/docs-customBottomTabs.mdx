@@ -119,6 +119,22 @@ Navigation.mergeOptions('BOTTOM_TABS_LAYOUT_ID', {
 });
 ```
 
+## Events
+
+Taps on custom tab items use the same native selection pipeline as the built-in tab bar. Use the standard [Navigation events](../api/events) listeners:
+
+| Listener | Custom row |
+| -------- | ---------- |
+| [`registerBottomTabPressedListener`](../api/events#registerbottomtabpressedlistener) | Yes — every tap (iOS and Android) |
+| [`registerBottomTabSelectedListener`](../api/events#registerbottomtabselectedlistener) | Yes — when the selected tab changes |
+| [`registerBottomTabLongPressedListener`](../api/events#registerbottomtablongpressedlistener) | **No** |
+
+[`bottomTab.selectTabOnPress`](api/options-bottomTab.mdx#selecttabonpress): when `false`, **pressed** still fires; **selected** does not until you change the tab programmatically (for example via `bottomTabs.currentTabIndex`).
+
+[`bottomTab.popToRoot`](api/options-bottomTab.mdx#poptoroot) and Android hardware-back tab history behave the same as with native tab items.
+
+`registerBottomTabLongPressedListener` is **iOS-only** and is wired to the native `UITabBar` long-press gesture. With custom tabs the native bar is hidden and touches go to the custom row, so this listener does not fire for custom tab items.
+
 ## Custom row (`bottomTabs.customRow`)
 
 When all tabs use custom components, RNN replaces the visible tab bar chrome with a **floating row** that hosts your React tab cells. Configure it with `bottomTabs.customRow` on the `bottomTabs` layout options.
