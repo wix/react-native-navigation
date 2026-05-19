@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import Svg, { Path, Circle } from 'react-native-svg';
 import testIDs from '../testIDs';
 
 interface Props {
@@ -22,62 +21,136 @@ const TAB_LABELS = ['Home', 'Search', 'Profile'];
 const UNSELECTED_COLOR = '#9aa0a6';
 const SELECTED_COLOR = '#007aff';
 const SELECTED_PILL_COLOR = 'rgba(0, 122, 255, 0.14)';
+const ICON_BOX = 22;
+const STROKE = 1.8;
 
-const AnimatedPath = Animated.createAnimatedComponent(Path);
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+/**
+ * Pure-RN-primitive icons composed from absolutely-positioned Views with
+ * borderRadius / rotation. They render byte-identically on both platforms
+ * (no system font, no native dependency).
+ */
+function HomeIcon({
+  color,
+  size = ICON_BOX,
+}: {
+  color: Animated.AnimatedInterpolation<string>;
+  size?: number;
+}) {
+  const halfRoof = size / 2;
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center' }}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 1,
+          width: halfRoof * 1.3,
+          height: halfRoof * 1.3,
+          borderTopWidth: STROKE,
+          borderLeftWidth: STROKE,
+          borderColor: color as unknown as string,
+          transform: [{ rotate: '45deg' }],
+        }}
+      />
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: size - 4,
+          height: size / 2 - 1,
+          borderWidth: STROKE,
+          borderTopWidth: 0,
+          borderColor: color as unknown as string,
+        }}
+      />
+    </View>
+  );
+}
+
+function SearchIcon({
+  color,
+  size = ICON_BOX,
+}: {
+  color: Animated.AnimatedInterpolation<string>;
+  size?: number;
+}) {
+  const lens = size * 0.65;
+  return (
+    <View style={{ width: size, height: size }}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 1,
+          left: 1,
+          width: lens,
+          height: lens,
+          borderWidth: STROKE,
+          borderColor: color as unknown as string,
+          borderRadius: lens / 2,
+        }}
+      />
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: 1,
+          right: 1,
+          width: size * 0.34,
+          height: STROKE,
+          borderRadius: STROKE,
+          backgroundColor: color as unknown as string,
+          transform: [{ rotate: '45deg' }],
+        }}
+      />
+    </View>
+  );
+}
+
+function ProfileIcon({
+  color,
+  size = ICON_BOX,
+}: {
+  color: Animated.AnimatedInterpolation<string>;
+  size?: number;
+}) {
+  const headSize = size * 0.42;
+  const bodyHeight = size * 0.5;
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center' }}>
+      <Animated.View
+        style={{
+          marginTop: 1,
+          width: headSize,
+          height: headSize,
+          borderWidth: STROKE,
+          borderColor: color as unknown as string,
+          borderRadius: headSize / 2,
+        }}
+      />
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: size - 1,
+          height: bodyHeight,
+          borderTopLeftRadius: size,
+          borderTopRightRadius: size,
+          borderWidth: STROKE,
+          borderBottomWidth: 0,
+          borderColor: color as unknown as string,
+        }}
+      />
+    </View>
+  );
+}
 
 function renderIcon(tabIndex: number, color: Animated.AnimatedInterpolation<string>) {
   switch (tabIndex) {
     case 0:
-      return (
-        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-          <AnimatedPath
-            d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.5z"
-            stroke={color as unknown as string}
-            strokeWidth={1.8}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </Svg>
-      );
+      return <HomeIcon color={color} />;
     case 1:
-      return (
-        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-          <AnimatedCircle
-            cx={10.5}
-            cy={10.5}
-            r={6.5}
-            stroke={color as unknown as string}
-            strokeWidth={1.8}
-          />
-          <AnimatedPath
-            d="M20 20l-4.5-4.5"
-            stroke={color as unknown as string}
-            strokeWidth={1.8}
-            strokeLinecap="round"
-          />
-        </Svg>
-      );
+      return <SearchIcon color={color} />;
     case 2:
     default:
-      return (
-        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-          <AnimatedCircle
-            cx={12}
-            cy={8}
-            r={4}
-            stroke={color as unknown as string}
-            strokeWidth={1.8}
-          />
-          <AnimatedPath
-            d="M4 20c0-4 4-6 8-6s8 2 8 6"
-            stroke={color as unknown as string}
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </Svg>
-      );
+      return <ProfileIcon color={color} />;
   }
 }
 

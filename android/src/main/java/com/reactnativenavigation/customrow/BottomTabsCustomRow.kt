@@ -40,18 +40,35 @@ class BottomTabsCustomRow(
     private var selectedIndex: Int = bottomTabs.currentItem
     private var safeBottomInsetPx: Int = 0
 
-    private val configListener: (BottomTabsCustomRowOptions) -> Unit = { opts ->
-        post { applyOptions(opts) }
-    }
-
-    init {
+    /**
+     * Visible chrome (background colour, rounded corners, shadow) that also
+     * hosts the cell views as children. Lives as a dedicated child of the
+     * row so it can be inset from the row's bottom by
+     * `safeBottom + bottomMargin` and only paint over the content area —
+     * mirrors iOS's `backgroundColorView` / `backgroundEffectView`. Hosting
+     * the cells inside it ensures cells render *above* the chrome regardless
+     * of elevation.
+     */
+    private val backgroundView: FrameLayout = FrameLayout(context).apply {
         clipToOutline = true
+        clipChildren = true
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
                 val r = effectiveCornerRadiusPx()
                 outline.setRoundRect(0, 0, view.width, view.height, r)
             }
         }
+    }
+
+    private val configListener: (BottomTabsCustomRowOptions) -> Unit = { opts ->
+        post { applyOptions(opts) }
+    }
+
+    init {
+        setWillNotDraw(true)
+        clipChildren = false
+        clipToPadding = false
+        addView(backgroundView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         BottomTabsCustomRowConfigStore.addListener(configListener)
         applyOptions(currentOptions)
         rebuildCells()
@@ -79,7 +96,13 @@ class BottomTabsCustomRow(
                     setSelectedIndex(i)
                 }
             }
-            addView(cell, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+            backgroundView.addView(
+                cell,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+            )
             cells.add(cell)
         }
         setSelectedIndex(selectedIndex)
@@ -102,7 +125,7 @@ class BottomTabsCustomRow(
             else
                 materialChromeColor()
 
-        setBackgroundColor(backgroundColorToUse)
+        backgroundView.setBackgroundColor(backgroundColorToUse)
 
         // NOTE: Android does not expose a true blur-behind API for arbitrary
         // views (the `RenderEffect.createBlurEffect` API blurs the view's own
@@ -111,11 +134,20 @@ class BottomTabsCustomRow(
         // colour; a future enhancement can swap this for `eightbitlab/
         // BlurView` to get true blur-behind on Android.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            setRenderEffect(null)
+            backgroundView.setRenderEffect(null)
         }
 
-        elevation = dp(8f)
-        invalidateOutline()
+        // iOS gets a soft visual lift from `UIGlassEffect`'s built-in ring +
+        // highlight. Android has no equivalent, so we emulate it with a
+        // low-elevation shadow tinted at low alpha. Hard `elevation = 8` (the
+        // Material default) looks much heavier than the iOS reference, so
+        // we stay subtle: ~3dp elevation, ~30% / 12% shadow alpha.
+        backgroundView.elevation = dp(3f)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            backgroundView.outlineSpotShadowColor = Color.argb(0x4C, 0, 0, 0)
+            backgroundView.outlineAmbientShadowColor = Color.argb(0x1E, 0, 0, 0)
+        }
+        backgroundView.invalidateOutline()
         requestLayout()
     }
 
@@ -170,25 +202,32 @@ class BottomTabsCustomRow(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        layoutCells()
+        val w = width
+        // Visible chrome only covers the content area — never the safe-area
+        // strip below (matches iOS where `backgroundEffectView.frame =
+        // content` excludes `safe.bottom + bottomMargin`).
+        val contentBottom = (height - safeBottomInsetPx - effectiveBottomMarginPx()).coerceAtLeast(0)
+        val bgSpec = MeasureSpec.makeMeasureSpec(w, MeasureSpec.EXACTLY)
+        val bgHeightSpec = MeasureSpec.makeMeasureSpec(contentBottom, MeasureSpec.EXACTLY)
+        backgroundView.measure(bgSpec, bgHeightSpec)
+        backgroundView.layout(0, 0, w, contentBottom)
+        backgroundView.invalidateOutline()
+        layoutCells(w, contentBottom)
     }
 
-    private fun layoutCells() {
-        if (cells.isEmpty()) return
-        val w = width
-        // Reserve the bottom safe area + bottomMargin so cells (icons, labels,
-        // pill) never sit underneath the gesture/nav bar. The row's chrome
-        // (background, rounded corners) still spans the full height.
-        val contentBottom = (height - safeBottomInsetPx - effectiveBottomMarginPx()).coerceAtLeast(0)
-        val per = w.toFloat() / cells.size.toFloat()
+    private fun layoutCells(parentWidth: Int, parentHeight: Int) {
+        if (cells.isEmpty() || parentWidth <= 0 || parentHeight <= 0) return
+        val per = parentWidth.toFloat() / cells.size.toFloat()
         for (i in cells.indices) {
             val cell = cells[i]
             val l = (i * per).toInt()
             val r = ((i + 1) * per).toInt()
             val widthSpec = MeasureSpec.makeMeasureSpec(r - l, MeasureSpec.EXACTLY)
-            val heightSpec = MeasureSpec.makeMeasureSpec(contentBottom, MeasureSpec.EXACTLY)
+            val heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY)
             cell.measure(widthSpec, heightSpec)
-            cell.layout(l, 0, r, contentBottom)
+            // Cells are children of `backgroundView`, laid out in its local
+            // coordinate space (which is already 0..contentBottom).
+            cell.layout(l, 0, r, parentHeight)
         }
     }
 

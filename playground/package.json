@@ -21,7 +21,6 @@
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "^3.0.4",
     "react-native-redash": "^12.6.1",
-    "react-native-svg": "^15.15.4",
     "react-native-webview": "^13.12.5",
     "reanimated-color-picker": "^3.0.6",
     "ssim.js": "^3.5.0",
