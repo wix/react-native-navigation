@@ -678,6 +678,7 @@
            bottomTabPresenter:[BottomTabPresenterCreator
                                   createWithDefaultOptions:[RNNNavigationOptions emptyOptions]]
         dotIndicatorPresenter:nil
+            componentRegistry:nil
                  eventEmitter:_eventEmmiter
          childViewControllers:@[ firstChild, secondChild ]
            bottomTabsAttacher:nil];
@@ -733,6 +734,7 @@
            bottomTabPresenter:[BottomTabPresenterCreator
                                   createWithDefaultOptions:[RNNNavigationOptions emptyOptions]]
         dotIndicatorPresenter:nil
+            componentRegistry:nil
                  eventEmitter:_eventEmmiter
          childViewControllers:@[ stack, secondChild ]
            bottomTabsAttacher:nil];
