@@ -18,8 +18,8 @@ const {
 // TopBar title component WITH subtitle
 function TopBarWithSubtitle() {
     return (
-        <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row' }}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View
                     testID={TOPBAR_TITLE_AVATAR}
                     style={{ alignSelf: 'center', marginRight: 20, width: 10, height: 10, backgroundColor: 'red' }}
@@ -38,8 +38,8 @@ function TopBarWithSubtitle() {
 // TopBar title component WITHOUT subtitle - this triggers the bug on Android
 function TopBarWithoutSubtitle() {
     return (
-        <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row' }}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View
                     testID={TOPBAR_TITLE_AVATAR}
                     style={{ alignSelf: 'center', marginRight: 20, width: 10, height: 10, backgroundColor: 'red' }}
