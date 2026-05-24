@@ -24,7 +24,8 @@ Sheet options apply when `modalPresentationStyle` is `'pageSheet'` or `'formShee
 | | iOS | Android |
 | --- | --- | --- |
 | Native API | `UISheetPresentationController` | Material `BottomSheetBehavior` |
-| Minimum OS | iOS 15 (`medium` / custom detents: iOS 16+) | API 21+ (half-expanded depends on Material version) |
+| Minimum OS | iOS 15 (`medium` / custom detents: iOS 16+) | API 21+ |
+| `medium` detent | iOS 16+ | Half-expanded (`halfExpandedRatio` 0.5) |
 | `pageSheet` without `modal.detents` | System sheet (default large detent) | Bottom sheet with Material default sizing |
 | No `pageSheet`, no sheet `modal` options | Per `modalPresentationStyle` | Full-screen modal (previous Android behavior) |
 | Custom `{ height }` unit | Points | dp |
@@ -40,7 +41,9 @@ Navigation.showModal({ stack: { children: [{ component: { name: 'MyModal' } }] }
 // modalPresentationStyle omitted → fullScreen on Android
 ```
 
-**Bottom sheet (Android)** — `pageSheet` or `formSheet`, *or* any of `modal.detents`, `modal.selectedDetent`, `modal.largestUndimmedDetent`, `modal.prefersGrabberVisible`:
+**Bottom sheet (Android)** — `pageSheet` or `formSheet`, *or* any of `modal.detents`, `modal.selectedDetent`, `modal.prefersGrabberVisible`:
+
+`largestUndimmedDetent` alone does **not** enable bottom-sheet mode on Android (option is parsed but ignored at runtime).
 
 ```js
 // Sheet without explicit detents (Material default snap behavior)
@@ -57,7 +60,7 @@ On iOS, `pageSheet` always uses `UISheetPresentationController`. Detents refine 
 
 ### Runtime detent changes
 
-Update the active detent with `Navigation.mergeOptions`:
+Update the active detent (and optionally replace `detents`) with `Navigation.mergeOptions`:
 
 ```js
 Navigation.mergeOptions(componentId, {
@@ -65,13 +68,19 @@ Navigation.mergeOptions(componentId, {
 });
 ```
 
+On Android, sheet options are reapplied on the UI thread after merge (same `componentId` as the modal root).
+
+### E2E
+
+Playground: `playground/e2e/SheetDetents.test.js` (Detox, iOS and Android). Navigation tab → **Sheet detents**.
+
 ### Platform differences (not in parity)
 
 | Option | iOS | Android |
 | --- | --- | --- |
 | `largestUndimmedDetent` | Supported | Ignored |
-| `prefersGrabberVisible` | System grabber | Simple grabber view |
-| `swipeToDismiss` | Dismisses modal on swipe | Sets `isHideable` on the behavior; does not call `dismissModal` when swiped away yet — use **Dismiss** or back |
+| `prefersGrabberVisible` | System grabber | Custom grabber pill at the top of the sheet (tracks TopBar / sheet position) |
+| `swipeToDismiss` | Dismisses modal on swipe | Sets `BottomSheetBehavior.isHideable`; does not call `dismissModal` when swiped away yet — use **Dismiss** or back |
 
 ---
 
@@ -93,7 +102,7 @@ Ordered list of sheet snap heights.
 
 Each item is either:
 
-- `'medium'` — half-height detent (iOS 16+; Android: half-expanded when supported)
+- `'medium'` — half-height detent (iOS 16+; Android: `STATE_HALF_EXPANDED` at 50% height)
 - `'large'` — full-height detent
 - `{ id: string, height: number }` — fixed height: **points** on iOS, **dp** on Android (iOS 16+)
 
@@ -132,4 +141,4 @@ Show the grabber on the sheet.
 | ------- | -------- | -------- | ------- |
 | boolean | No       | Both     | false   |
 
-On Android, a simple grabber view is drawn at the top of the sheet when `true` (not the UIKit system grabber).
+On Android, a custom grabber view is shown at the top of the sheet when `true` (not the UIKit system grabber). It is positioned below the TopBar when one is present, and moves with the sheet while dragging.

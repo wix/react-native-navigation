@@ -1272,7 +1272,7 @@ export interface ModalOptions {
   swipeToDismiss?: boolean;
   /**
    * Sheet detents for `pageSheet` / `formSheet` modals.
-   * System detents: `'medium'` (iOS 16+; Android half-expanded when supported), `'large'`.
+   * System detents: `'medium'` (iOS 16+; Android half-expanded at 50%), `'large'`.
    * Custom detents: `{ id, height }` — points on iOS (16+), dp on Android.
    */
   detents?: ModalSheetDetent[];
@@ -1287,7 +1287,7 @@ export interface ModalOptions {
    */
   largestUndimmedDetent?: string;
   /**
-   * Show the grabber on the sheet (system grabber on iOS; simple view on Android).
+   * Show the grabber on the sheet (system grabber on iOS; custom pill on Android).
    */
   prefersGrabberVisible?: boolean;
 }
