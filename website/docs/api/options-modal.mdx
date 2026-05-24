@@ -6,14 +6,69 @@ sidebar_label: Modal
 
 ```js
 const options = {
-  swipeToDismiss
+  modal: {
+    swipeToDismiss: true,
+    detents: ['medium', 'large'],
+    selectedDetent: 'medium',
+    largestUndimmedDetent: 'medium',
+    prefersGrabberVisible: true,
+  },
 };
 ```
 
+Use with `modalPresentationStyle: 'pageSheet'` or `'formSheet'`. Sheet options are **iOS only** and require iOS 15+ (`UISheetPresentationController`). Custom detents and the `medium` system detent require iOS 16+.
+
 ## `swipeToDismiss`
 
-Control wether this modal should be dismiss using swipe gesture when the `modalPresentationStyle` is `pageSheet`
+Control whether this modal should be dismiss using swipe gesture when the `modalPresentationStyle` is `pageSheet`
 
-| Type                                  | Required | Platform |  Default |
-| ------------------------------------- | -------- | -------- | -------- |
-| boolean                               | No       | Both     | true     |
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | Both     | true    |
+
+## `detents`
+
+Ordered list of sheet snap heights.
+
+| Type | Required | Platform | Default |
+| ---- | -------- | -------- | ------- |
+| array | No | iOS | System default (`large` on iOS 15; `large` on iOS 16+) |
+
+Each item is either:
+
+- `'medium'` — half-height detent (iOS 16+)
+- `'large'` — full-height detent
+- `{ id: string, height: number }` — fixed-height custom detent in points (iOS 16+)
+
+Example:
+
+```js
+modal: {
+  detents: ['medium', { id: 'compact', height: 220 }, 'large'],
+  selectedDetent: 'medium',
+}
+```
+
+## `selectedDetent`
+
+Initially selected detent. Use `'medium'`, `'large'`, or a custom detent `id`. Can be updated with `Navigation.mergeOptions`.
+
+| Type   | Required | Platform | Default |
+| ------ | -------- | -------- | ------- |
+| string | No       | iOS      | —       |
+
+## `largestUndimmedDetent`
+
+Highest detent at which the presenting content stays undimmed.
+
+| Type   | Required | Platform | Default |
+| ------ | -------- | -------- | ------- |
+| string | No       | iOS      | —       |
+
+## `prefersGrabberVisible`
+
+Show the system grabber on the sheet.
+
+| Type    | Required | Platform | Default |
+| ------- | -------- | -------- | ------- |
+| boolean | No       | iOS      | false   |

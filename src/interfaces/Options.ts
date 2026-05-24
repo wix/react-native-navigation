@@ -1250,12 +1250,49 @@ export interface OverlayOptions {
   handleKeyboardEvents?: boolean;
 }
 
+export type ModalSheetDetentIdentifier = 'medium' | 'large';
+
+export interface ModalSheetCustomDetent {
+  /**
+   * Identifier used for `selectedDetent` and `largestUndimmedDetent`.
+   */
+  id: string;
+  /**
+   * Fixed height in points (iOS 16+).
+   */
+  height: number;
+}
+
+export type ModalSheetDetent = ModalSheetDetentIdentifier | ModalSheetCustomDetent;
+
 export interface ModalOptions {
   /**
    * Control whether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
    * #### (iOS specific)
    */
   swipeToDismiss?: boolean;
+  /**
+   * Sheet detents for `pageSheet` / `formSheet` modals.
+   * System detents: `'medium'` (iOS 16+), `'large'`.
+   * Custom detents: `{ id, height }` (iOS 16+).
+   * #### (iOS 15+ specific)
+   */
+  detents?: ModalSheetDetent[];
+  /**
+   * Initially selected detent identifier (`'medium'`, `'large'`, or a custom `id`).
+   * #### (iOS 15+ specific)
+   */
+  selectedDetent?: string;
+  /**
+   * Highest detent that keeps the content behind the sheet undimmed.
+   * #### (iOS 15+ specific)
+   */
+  largestUndimmedDetent?: string;
+  /**
+   * Show the system grabber on the sheet.
+   * #### (iOS 15+ specific)
+   */
+  prefersGrabberVisible?: boolean;
 }
 
 export interface OptionsPreviewAction {
