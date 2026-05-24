@@ -81,9 +81,7 @@
     }
 
     if ([mergeOptions.modal hasSheetPresentationOptions]) {
-        BOOL updateDetents = mergeOptions.modal.detents.count > 0;
-        [withDefault.modal applySheetPresentationToViewController:self.boundViewController
-                                                    updateDetents:updateDetents];
+        [withDefault.modal applySheetPresentationToViewController:self.boundViewController];
     }
 
     if (mergeOptions.window.backgroundColor.hasValue) {

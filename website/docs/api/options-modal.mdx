@@ -6,6 +6,7 @@ sidebar_label: Modal
 
 ```js
 const options = {
+  modalPresentationStyle: 'pageSheet',
   modal: {
     swipeToDismiss: true,
     detents: ['medium', 'large'],
@@ -16,7 +17,63 @@ const options = {
 };
 ```
 
-Use with `modalPresentationStyle: 'pageSheet'` or `'formSheet'`. Sheet options are **iOS only** and require iOS 15+ (`UISheetPresentationController`). Custom detents and the `medium` system detent require iOS 16+.
+Sheet options apply when `modalPresentationStyle` is `'pageSheet'` or `'formSheet'`.
+
+## Platform overview
+
+| | iOS | Android |
+| --- | --- | --- |
+| Native API | `UISheetPresentationController` | Material `BottomSheetBehavior` |
+| Minimum OS | iOS 15 (`medium` / custom detents: iOS 16+) | API 21+ (half-expanded depends on Material version) |
+| `pageSheet` without `modal.detents` | System sheet (default large detent) | Bottom sheet with Material default sizing |
+| No `pageSheet`, no sheet `modal` options | Per `modalPresentationStyle` | Full-screen modal (previous Android behavior) |
+| Custom `{ height }` unit | Points | dp |
+| Underlying screen | Stays visible; no `componentDidDisappear` | Stays attached; no `componentDidDisappear` |
+| Playground | Navigation → **Sheet detents** | Same screen (both platforms) |
+
+### When is it a full-screen modal vs a sheet?
+
+**Full-screen modal (Android)** — default modal presentation, or any style other than `pageSheet` / `formSheet`, and no sheet-related `modal` fields:
+
+```js
+Navigation.showModal({ stack: { children: [{ component: { name: 'MyModal' } }] } });
+// modalPresentationStyle omitted → fullScreen on Android
+```
+
+**Bottom sheet (Android)** — `pageSheet` or `formSheet`, *or* any of `modal.detents`, `modal.selectedDetent`, `modal.largestUndimmedDetent`, `modal.prefersGrabberVisible`:
+
+```js
+// Sheet without explicit detents (Material default snap behavior)
+{ modalPresentationStyle: 'pageSheet' }
+
+// Sheet with snap points
+{
+  modalPresentationStyle: 'pageSheet',
+  modal: { detents: ['medium', 'large'], selectedDetent: 'medium' },
+}
+```
+
+On iOS, `pageSheet` always uses `UISheetPresentationController`. Detents refine snap heights; omitting `detents` uses the system default (typically large).
+
+### Runtime detent changes
+
+Update the active detent with `Navigation.mergeOptions`:
+
+```js
+Navigation.mergeOptions(componentId, {
+  modal: { selectedDetent: 'large' },
+});
+```
+
+### Platform differences (not in parity)
+
+| Option | iOS | Android |
+| --- | --- | --- |
+| `largestUndimmedDetent` | Supported | Ignored |
+| `prefersGrabberVisible` | System grabber | Simple grabber view |
+| `swipeToDismiss` | Dismisses modal on swipe | Sets `isHideable` on the behavior; does not call `dismissModal` when swiped away yet — use **Dismiss** or back |
+
+---
 
 ## `swipeToDismiss`
 
@@ -32,13 +89,13 @@ Ordered list of sheet snap heights.
 
 | Type | Required | Platform | Default |
 | ---- | -------- | -------- | ------- |
-| array | No | iOS | System default (`large` on iOS 15; `large` on iOS 16+) |
+| array | No | Both | System / Material default when omitted |
 
 Each item is either:
 
-- `'medium'` — half-height detent (iOS 16+)
+- `'medium'` — half-height detent (iOS 16+; Android: half-expanded when supported)
 - `'large'` — full-height detent
-- `{ id: string, height: number }` — fixed-height custom detent in points (iOS 16+)
+- `{ id: string, height: number }` — fixed height: **points** on iOS, **dp** on Android (iOS 16+)
 
 Example:
 
@@ -55,7 +112,7 @@ Initially selected detent. Use `'medium'`, `'large'`, or a custom detent `id`. C
 
 | Type   | Required | Platform | Default |
 | ------ | -------- | -------- | ------- |
-| string | No       | iOS      | —       |
+| string | No       | Both     | —       |
 
 ## `largestUndimmedDetent`
 
@@ -65,10 +122,14 @@ Highest detent at which the presenting content stays undimmed.
 | ------ | -------- | -------- | ------- |
 | string | No       | iOS      | —       |
 
+Not supported on Android.
+
 ## `prefersGrabberVisible`
 
-Show the system grabber on the sheet.
+Show the grabber on the sheet.
 
 | Type    | Required | Platform | Default |
 | ------- | -------- | -------- | ------- |
-| boolean | No       | iOS      | false   |
+| boolean | No       | Both     | false   |
+
+On Android, a simple grabber view is drawn at the top of the sheet when `true` (not the UIKit system grabber).

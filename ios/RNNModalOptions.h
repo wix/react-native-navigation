@@ -13,7 +13,5 @@
 
 - (BOOL)hasSheetPresentationOptions;
 - (void)applySheetPresentationToViewController:(UIViewController *)viewController;
-- (void)applySheetPresentationToViewController:(UIViewController *)viewController
-                                  updateDetents:(BOOL)updateDetents;
 
 @end

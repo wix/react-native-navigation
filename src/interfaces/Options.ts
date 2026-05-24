@@ -1258,7 +1258,7 @@ export interface ModalSheetCustomDetent {
    */
   id: string;
   /**
-   * Fixed height in points (iOS 16+).
+   * Fixed height in points on iOS (16+), dp on Android.
    */
   height: number;
 }
@@ -1268,29 +1268,26 @@ export type ModalSheetDetent = ModalSheetDetentIdentifier | ModalSheetCustomDete
 export interface ModalOptions {
   /**
    * Control whether this modal should be dismiss using swipe gesture when the modalPresentationStyle = 'pageSheet'
-   * #### (iOS specific)
    */
   swipeToDismiss?: boolean;
   /**
    * Sheet detents for `pageSheet` / `formSheet` modals.
-   * System detents: `'medium'` (iOS 16+), `'large'`.
-   * Custom detents: `{ id, height }` (iOS 16+).
-   * #### (iOS 15+ specific)
+   * System detents: `'medium'` (iOS 16+; Android half-expanded when supported), `'large'`.
+   * Custom detents: `{ id, height }` — points on iOS (16+), dp on Android.
    */
   detents?: ModalSheetDetent[];
   /**
    * Initially selected detent identifier (`'medium'`, `'large'`, or a custom `id`).
-   * #### (iOS 15+ specific)
+   * Updatable via `Navigation.mergeOptions` on iOS and Android.
    */
   selectedDetent?: string;
   /**
    * Highest detent that keeps the content behind the sheet undimmed.
-   * #### (iOS 15+ specific)
+   * #### (iOS only)
    */
   largestUndimmedDetent?: string;
   /**
-   * Show the system grabber on the sheet.
-   * #### (iOS 15+ specific)
+   * Show the grabber on the sheet (system grabber on iOS; simple view on Android).
    */
   prefersGrabberVisible?: boolean;
 }

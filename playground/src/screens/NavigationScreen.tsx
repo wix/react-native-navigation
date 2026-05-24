@@ -73,6 +73,11 @@ export default class NavigationScreen extends NavigationComponent<Props> {
           onPress={this.showPageSheetModal}
           platform="ios"
         />
+        <Button
+          label="Sheet detents"
+          testID={testIDs.SHEET_DETENTS_BTN}
+          onPress={this.showSheetModal}
+        />
         <Button label="Overlay" testID={OVERLAY_BTN} onPress={this.showOverlay} />
         <Button
           label="External Component"
@@ -115,6 +120,8 @@ export default class NavigationScreen extends NavigationComponent<Props> {
         swipeToDismiss: false,
       },
     });
+
+  showSheetModal = () => Navigation.showModal(Screens.SheetModal);
   pushBackButtonScreen = () => Navigation.push(this, Screens.BackButton);
   showOverlay = () => Navigation.showModal(Screens.Overlay);
   externalComponent = () => Navigation.showModal(Screens.ExternalComponent);

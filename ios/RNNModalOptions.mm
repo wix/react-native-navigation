@@ -57,11 +57,6 @@ static NSString *RNNSheetDetentIdentifierFromString(NSString *identifier) API_AV
 }
 
 - (void)applySheetPresentationToViewController:(UIViewController *)viewController {
-    [self applySheetPresentationToViewController:viewController updateDetents:YES];
-}
-
-- (void)applySheetPresentationToViewController:(UIViewController *)viewController
-                                  updateDetents:(BOOL)updateDetents {
     if (![self hasSheetPresentationOptions]) {
         return;
     }
@@ -80,7 +75,7 @@ static NSString *RNNSheetDetentIdentifierFromString(NSString *identifier) API_AV
               return;
           }
 
-          if (updateDetents && strongSelf.detents.count > 0) {
+          if (strongSelf.detents.count > 0) {
               NSArray<UISheetPresentationControllerDetent *> *resolvedDetents = [strongSelf resolveDetents];
               if (resolvedDetents.count > 0) {
                   sheet.detents = resolvedDetents;
