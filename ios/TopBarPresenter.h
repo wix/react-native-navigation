@@ -1,11 +1,17 @@
 #import "RNNBasePresenter.h"
 #import "RNNTopBarOptions.h"
+#import <UIKit/UIKit.h>
 
 @interface TopBarPresenter : RNNBasePresenter
+
+- (UINavigationController *)navigationController;
 
 - (void)applyOptions:(RNNTopBarOptions *)options;
 
 - (void)applyOptionsBeforePopping:(RNNTopBarOptions *)options;
+
+- (void)applyBackgroundForTransitionToViewController:(UIViewController *)viewController
+                                       topBarOptions:(RNNTopBarOptions *)options API_AVAILABLE(ios(26.0));
 
 - (void)mergeOptions:(RNNTopBarOptions *)options withDefault:(RNNTopBarOptions *)defaultOptions;
 
