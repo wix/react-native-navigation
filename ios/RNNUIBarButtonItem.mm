@@ -21,6 +21,7 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
     RNNIconCreator *_iconCreator;
     RNNButtonOptions *_buttonOptions;
     BOOL _didApplyWidthResize;
+    BOOL _hasDeferredNavigationBarLayout;
 }
 
 - (instancetype)init {
@@ -42,6 +43,9 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
                           style:UIBarButtonItemStylePlain
                          target:self
                          action:@selector(onButtonPressed:)];
+    if (@available(iOS 26.0, *)) {
+        self.hidesSharedBackground = [buttonOptions.hideSharedBackground withDefault:YES];
+    }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
@@ -54,6 +58,9 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
                           style:UIBarButtonItemStylePlain
                          target:self
                          action:@selector(onButtonPressed:)];
+    if (@available(iOS 26.0, *)) {
+        self.hidesSharedBackground = [buttonOptions.hideSharedBackground withDefault:YES];
+    }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
     return self;
@@ -92,6 +99,10 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
                           style:UIBarButtonItemStylePlain
                          target:self
                          action:@selector(onButtonPressed:)];
+    if (@available(iOS 26.0, *)) {
+        self.hidesSharedBackground = [buttonOptions.hideSharedBackground withDefault:YES];
+        self.sharesBackground = NO;
+    }
     self.onPress = onPress;
     [self applyOptions:buttonOptions];
     return self;
@@ -126,10 +137,62 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
     _didApplyWidthResize = YES;
 
     [self.customView setNeedsLayout];
+    if (@available(iOS 26.0, *)) {
+        if ([self isNavigationTransitionInProgress]) {
+            _hasDeferredNavigationBarLayout = YES;
+            return;
+        }
+    }
     [self invalidateNavigationBarLayout];
 }
 
+- (BOOL)isNavigationTransitionInProgress {
+    UIView *view = self.customView;
+    while (view) {
+        UIResponder *responder = view.nextResponder;
+        if ([responder isKindOfClass:[UIViewController class]]) {
+            UINavigationController *navigationController =
+                [(UIViewController *)responder navigationController];
+            if (navigationController.transitionCoordinator.isAnimated) {
+                return YES;
+            }
+            return NO;
+        }
+        view = view.superview;
+    }
+    return NO;
+}
+
+- (void)flushDeferredNavigationBarLayout {
+    if (!_hasDeferredNavigationBarLayout) {
+        return;
+    }
+    _hasDeferredNavigationBarLayout = NO;
+    [self invalidateNavigationBarLayout];
+}
+
+- (BOOL)resolvesHidesSharedBackground {
+    if (_buttonOptions.hideSharedBackground.hasValue) {
+        return _buttonOptions.hideSharedBackground.get;
+    }
+    return self.customView != nil;
+}
+
 - (void)invalidateNavigationBarLayout {
+    if (!self.customView) {
+        return;
+    }
+
+    if (@available(iOS 26.0, *)) {
+        UIView *host = self.customView;
+        while (host.superview && ![host.superview isKindOfClass:[UINavigationBar class]]) {
+            host = host.superview;
+        }
+        [host setNeedsLayout];
+        [host layoutIfNeeded];
+        return;
+    }
+
     UIView *view = self.customView;
     while (view) {
         if ([view isKindOfClass:[UINavigationBar class]]) {

@@ -31,6 +31,9 @@
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     if (@available(iOS 26.0, *)) {
         [self.presenter applyTopBarBackgroundBeforeShowingViewController:viewController];
+        [self.presenter applyTopBarButtonsBeforeShowingViewController:viewController];
+        [self.presenter applyTopBarTitleBeforeShowingViewController:viewController
+                                                      navigationBar:self.navigationBar];
     }
     [super pushViewController:viewController animated:animated];
 }

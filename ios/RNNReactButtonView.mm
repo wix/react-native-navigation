@@ -190,13 +190,12 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
 
         [self centerSurfaceContentIfNeeded];
 
-        if (!_didCenterHorizontally && self.superview && self.frame.size.width > 0) {
+        if (self.superview && self.frame.size.width > 0) {
             CGFloat wrapperWidth = self.superview.bounds.size.width;
             CGFloat selfWidth = self.frame.size.width;
-            if (wrapperWidth > selfWidth + 0.5) {
-                _didCenterHorizontally = YES;
-                CGFloat tx = (wrapperWidth - selfWidth) / 2.0;
-                CGAffineTransform transform = self.layer.affineTransform;
+            CGFloat tx = wrapperWidth > selfWidth + 0.5 ? (wrapperWidth - selfWidth) / 2.0 : 0;
+            CGAffineTransform transform = self.layer.affineTransform;
+            if (fabs(transform.tx - tx) > 0.5) {
                 self.layer.affineTransform = CGAffineTransformMakeTranslation(tx, transform.ty);
             }
         }

@@ -1,4 +1,8 @@
+#import "RNNStackController.h"
+#import "RNNComponentPresenter.h"
+#import "RNNStackPresenter.h"
 #import "StackControllerDelegate.h"
+#import "TopBarAppearancePresenter.h"
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -26,6 +30,36 @@
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {
+    if (@available(iOS 26.0, *)) {
+        id<UIViewControllerTransitionCoordinator> coordinator = navigationController.transitionCoordinator;
+        __weak UIViewController *weakViewController = viewController;
+        void (^finishTopBar)(void) = ^{
+            if ([weakViewController.presenter isKindOfClass:[RNNComponentPresenter class]]) {
+                [UIView performWithoutAnimation:^{
+                    [(RNNComponentPresenter *)weakViewController.presenter
+                        finishTopBarAfterPushTransition];
+                }];
+            }
+        };
+        if (animated && coordinator) {
+            UINavigationItem *navigationItem = viewController.navigationItem;
+            [coordinator
+                animateAlongsideTransition:^(
+                    id<UIViewControllerTransitionCoordinatorContext> context) {
+                      [TopBarAppearancePresenter
+                          suppressSharedBackgroundForNavigationItem:navigationItem];
+                    }
+                                         completion:^(
+                                             id<UIViewControllerTransitionCoordinatorContext> context) {
+                                               if (!context.isCancelled) {
+                                                   finishTopBar();
+                                               }
+                                           }];
+        } else {
+            finishTopBar();
+        }
+    }
+
     if (_presentedViewController) {
         if (![navigationController.viewControllers containsObject:_presentedViewController]) {
             _isPopping = YES;
@@ -61,6 +95,13 @@
     }
 
     _presentedViewController = viewController;
+
+    if (@available(iOS 26.0, *)) {
+        if ([navigationController isKindOfClass:[RNNStackController class]]) {
+            RNNStackController *stack = (RNNStackController *)navigationController;
+            [stack.presenter handleIOS26NavigationBarDidShowForViewController:viewController];
+        }
+    }
 }
 
 - (BOOL)navigationController:(UINavigationController *)navigationController

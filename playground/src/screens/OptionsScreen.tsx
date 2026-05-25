@@ -21,6 +21,7 @@ const {
   REPLACE_TAB_TEST_ID,
   REPLACED_TAB,
   GOTO_TOPBAR_TITLE_TEST,
+  GOTO_EDITOR_HEADER_REPRO,
 } = testIDs;
 
 interface Props extends NavigationProps { }
@@ -80,6 +81,11 @@ export default class Options extends NavigationComponent<Props> {
           label="TopBar Title Test"
           testID={GOTO_TOPBAR_TITLE_TEST}
           onPress={this.gotoTopBarTitleTest}
+        />
+        <Button
+          label="Editor Header Repro"
+          testID={GOTO_EDITOR_HEADER_REPRO}
+          onPress={this.gotoEditorHeaderRepro}
         />
         <Button
           label="Show Yellow Box"
@@ -146,6 +152,13 @@ export default class Options extends NavigationComponent<Props> {
     Navigation.push(this, {
       component: {
         name: Screens.TopBarTitleTest,
+      },
+    });
+
+  gotoEditorHeaderRepro = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.EditorHeaderRepro,
       },
     });
 

@@ -1,4 +1,7 @@
 #import "TopBarAppearancePresenter.h"
+#import "RNNUIBarButtonItem.h"
+#import "RNNReactButtonView.h"
+#import "RNNReactTitleView.h"
 #import "RNNFontAttributesCreator.h"
 #import "UIColor+RNNUtils.h"
 #import "UIImage+utils.h"
@@ -7,38 +10,90 @@
 @interface TopBarAppearancePresenter ()
 
 - (void)applyBackgroundToNavigationItem:(UINavigationItem *)item topBarOptions:(RNNTopBarOptions *)options;
-- (void)syncNavigationBarAppearanceFromNavigationItem:(UINavigationItem *)item;
 - (void)applyBackgroundToAppearance:(UINavigationBarAppearance *)appearance
                    withOpaqueColor:(UIColor *)color
                         transparent:(BOOL)transparent
                         translucent:(BOOL)translucent;
-
 @end
+
+static void RNNApplyIOS26SolidColorToAppearance(UINavigationBarAppearance *appearance, UIColor *color) {
+    if (appearance.backgroundEffect == nil && appearance.backgroundImage != nil && color &&
+        CGColorEqualToColor(appearance.backgroundColor.CGColor, color.CGColor)) {
+        return;
+    }
+    appearance.backgroundEffect = nil;
+    appearance.shadowColor = nil;
+    appearance.backgroundColor = color;
+    appearance.backgroundImage = [UIImage imageWithSize:CGSizeMake(1, 1) color:color];
+}
 
 @implementation TopBarAppearancePresenter
 
 @synthesize borderColor = _borderColor;
 @synthesize scrollEdgeBorderColor = _scrollEdgeBorderColor;
 
-- (void)applyBackgroundToNavigationItem:(UINavigationItem *)item topBarOptions:(RNNTopBarOptions *)options {
-    UIColor *color = [options.background.color withDefault:nil];
-    BOOL transparent = color.isTransparent;
-    BOOL translucent = [options.background.translucent withDefault:NO];
-
++ (void)applyBackgroundToNavigationItem:(UINavigationItem *)item
+                                  color:(UIColor *)color
+                             transparent:(BOOL)transparent
+                              translucent:(BOOL)translucent {
     if (!item.standardAppearance) {
         item.standardAppearance = [UINavigationBarAppearance new];
     }
     if (!item.scrollEdgeAppearance) {
         item.scrollEdgeAppearance = [UINavigationBarAppearance new];
     }
-    [self applyBackgroundToAppearance:item.standardAppearance
-                        withOpaqueColor:color
-                             transparent:transparent
-                              translucent:translucent];
-    [self applyBackgroundToAppearance:item.scrollEdgeAppearance
-                        withOpaqueColor:color
-                             transparent:transparent
-                              translucent:translucent];
+
+    if (@available(iOS 26.0, *)) {
+        if (transparent || color.isTransparent) {
+            [item.standardAppearance configureWithTransparentBackground];
+            item.standardAppearance.backgroundEffect = nil;
+            item.standardAppearance.backgroundColor = UIColor.clearColor;
+            item.standardAppearance.backgroundImage = nil;
+            [item.scrollEdgeAppearance configureWithTransparentBackground];
+            item.scrollEdgeAppearance.backgroundEffect = nil;
+            item.scrollEdgeAppearance.backgroundColor = UIColor.clearColor;
+            item.scrollEdgeAppearance.backgroundImage = nil;
+            return;
+        }
+        if (color) {
+            RNNApplyIOS26SolidColorToAppearance(item.standardAppearance, color);
+            RNNApplyIOS26SolidColorToAppearance(item.scrollEdgeAppearance, color);
+            return;
+        }
+    }
+
+    if (transparent || color.isTransparent) {
+        [item.standardAppearance configureWithTransparentBackground];
+        item.standardAppearance.backgroundColor = UIColor.clearColor;
+        [item.scrollEdgeAppearance configureWithTransparentBackground];
+        item.scrollEdgeAppearance.backgroundColor = UIColor.clearColor;
+        return;
+    }
+    if (color) {
+        [item.standardAppearance configureWithOpaqueBackground];
+        item.standardAppearance.backgroundColor = color;
+        [item.scrollEdgeAppearance configureWithOpaqueBackground];
+        item.scrollEdgeAppearance.backgroundColor = color;
+        return;
+    }
+    if (translucent) {
+        [item.standardAppearance configureWithDefaultBackground];
+        [item.scrollEdgeAppearance configureWithDefaultBackground];
+    } else {
+        [item.standardAppearance configureWithOpaqueBackground];
+        [item.scrollEdgeAppearance configureWithOpaqueBackground];
+    }
+}
+
+- (void)applyBackgroundToNavigationItem:(UINavigationItem *)item topBarOptions:(RNNTopBarOptions *)options {
+    UIColor *color = [options.background.color withDefault:nil];
+    BOOL transparent = color.isTransparent;
+    BOOL translucent = [options.background.translucent withDefault:NO];
+
+    [TopBarAppearancePresenter applyBackgroundToNavigationItem:item
+                                                           color:color
+                                                      transparent:transparent
+                                                       translucent:translucent];
 
     if ([options.scrollEdgeAppearance.active withDefault:NO]) {
         UIColor *scrollEdgeColor = [options.scrollEdgeAppearance.background.color withDefault:nil];
@@ -46,33 +101,118 @@
         BOOL scrollEdgeTranslucent =
             [options.scrollEdgeAppearance.background.translucent withDefault:translucent];
         UIColor *resolvedScrollEdgeColor = scrollEdgeColor ?: color;
-        [self applyBackgroundToAppearance:item.scrollEdgeAppearance
-                            withOpaqueColor:resolvedScrollEdgeColor
-                                 transparent:scrollEdgeTransparent
-                                  translucent:scrollEdgeTranslucent];
+        if (@available(iOS 26.0, *)) {
+            if (scrollEdgeTransparent || resolvedScrollEdgeColor.isTransparent) {
+                [item.scrollEdgeAppearance configureWithTransparentBackground];
+                item.scrollEdgeAppearance.backgroundEffect = nil;
+                item.scrollEdgeAppearance.backgroundColor = UIColor.clearColor;
+                item.scrollEdgeAppearance.backgroundImage = nil;
+            } else if (resolvedScrollEdgeColor) {
+                RNNApplyIOS26SolidColorToAppearance(item.scrollEdgeAppearance, resolvedScrollEdgeColor);
+            }
+        } else {
+            [self applyBackgroundToAppearance:item.scrollEdgeAppearance
+                                withOpaqueColor:resolvedScrollEdgeColor
+                                     transparent:scrollEdgeTransparent
+                                      translucent:scrollEdgeTranslucent];
+        }
     }
+}
 
+- (void)applyTransitionBackgroundToNavigationItem:(UINavigationItem *)item
+                                      topBarOptions:(RNNTopBarOptions *)options {
+    [self applyBackgroundToNavigationItem:item topBarOptions:options];
     if (@available(iOS 26.0, *)) {
-        [self syncNavigationBarAppearanceFromNavigationItem:item];
+        self.navigationController.navigationBar.translucent = NO;
     }
 }
 
 - (void)applyBackgroundForTransitionToViewController:(UIViewController *)viewController
                                        topBarOptions:(RNNTopBarOptions *)options {
     if (@available(iOS 26.0, *)) {
-        [self applyBackgroundToNavigationItem:viewController.navigationItem topBarOptions:options];
+        [self applyTransitionBackgroundToNavigationItem:viewController.navigationItem
+                                          topBarOptions:options];
     }
 }
 
-- (void)syncNavigationBarAppearanceFromNavigationItem:(UINavigationItem *)item {
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    if (item.standardAppearance) {
-        navigationBar.standardAppearance = [item.standardAppearance copy];
++ (void)suppressSharedBackgroundForNavigationItem:(UINavigationItem *)item {
+    if (@available(iOS 26.0, *)) {
+        void (^suppress)(NSArray<UIBarButtonItem *> *) = ^(NSArray<UIBarButtonItem *> *items) {
+            for (UIBarButtonItem *barButton in items) {
+                barButton.hidesSharedBackground = YES;
+                barButton.sharesBackground = NO;
+            }
+        };
+        suppress(item.leftBarButtonItems);
+        suppress(item.rightBarButtonItems);
     }
-    UINavigationBarAppearance *scrollEdgeAppearance =
-        item.scrollEdgeAppearance ?: item.standardAppearance;
-    if (scrollEdgeAppearance) {
-        navigationBar.scrollEdgeAppearance = [scrollEdgeAppearance copy];
+}
+
++ (void)applySharedBackgroundSettingsForNavigationItem:(UINavigationItem *)item {
+    if (@available(iOS 26.0, *)) {
+        void (^apply)(NSArray<UIBarButtonItem *> *) = ^(NSArray<UIBarButtonItem *> *items) {
+            for (UIBarButtonItem *barButton in items) {
+                if ([barButton isKindOfClass:[RNNUIBarButtonItem class]]) {
+                    RNNUIBarButtonItem *rnnButton = (RNNUIBarButtonItem *)barButton;
+                    BOOL hidesSharedBackground = [rnnButton resolvesHidesSharedBackground];
+                    barButton.hidesSharedBackground = hidesSharedBackground;
+                    barButton.sharesBackground = NO;
+                }
+            }
+        };
+        apply(item.leftBarButtonItems);
+        apply(item.rightBarButtonItems);
+    }
+}
+
++ (void)flushDeferredBarButtonLayoutsForNavigationItem:(UINavigationItem *)item {
+    if (@available(iOS 26.0, *)) {
+        void (^flush)(NSArray<UIBarButtonItem *> *) = ^(NSArray<UIBarButtonItem *> *items) {
+            for (UIBarButtonItem *barButton in items) {
+                if ([barButton isKindOfClass:[RNNUIBarButtonItem class]]) {
+                    [(RNNUIBarButtonItem *)barButton flushDeferredNavigationBarLayout];
+                }
+            }
+        };
+        flush(item.leftBarButtonItems);
+        flush(item.rightBarButtonItems);
+    }
+}
+
++ (void)relayoutBarContentForNavigationItem:(UINavigationItem *)item
+                              navigationBar:(UINavigationBar *)navigationBar {
+    if (@available(iOS 26.0, *)) {
+        if (!navigationBar || CGRectIsEmpty(navigationBar.bounds)) {
+            return;
+        }
+
+        if ([item.titleView isKindOfClass:[RNNReactTitleView class]]) {
+            RNNReactTitleView *titleView = (RNNReactTitleView *)item.titleView;
+            [titleView setAlignment:@"fill" inFrame:navigationBar.bounds];
+            [titleView setNeedsLayout];
+            [titleView layoutIfNeeded];
+        }
+
+        void (^relayoutCustomButtons)(NSArray<UIBarButtonItem *> *) = ^(NSArray<UIBarButtonItem *> *items) {
+            for (UIBarButtonItem *barButton in items) {
+                if ([barButton.customView isKindOfClass:[RNNReactButtonView class]]) {
+                    RNNReactButtonView *buttonView = (RNNReactButtonView *)barButton.customView;
+                    buttonView.layer.affineTransform = CGAffineTransformIdentity;
+                    [buttonView setNeedsLayout];
+                }
+            }
+        };
+        relayoutCustomButtons(item.leftBarButtonItems);
+        relayoutCustomButtons(item.rightBarButtonItems);
+
+        [navigationBar setNeedsLayout];
+        [navigationBar layoutIfNeeded];
+    }
+}
+
+- (void)finalizeNavigationBarAfterTransitionForViewController:(UIViewController *)viewController {
+    if (@available(iOS 26.0, *)) {
+        self.navigationController.navigationBar.translucent = NO;
     }
 }
 
@@ -92,11 +232,7 @@
 
     if (color) {
         if (@available(iOS 26.0, *)) {
-            [appearance configureWithTransparentBackground];
-            appearance.backgroundEffect = nil;
-            appearance.shadowColor = nil;
-            appearance.backgroundColor = color;
-            appearance.backgroundImage = [UIImage imageWithSize:CGSizeMake(1, 1) color:color];
+            RNNApplyIOS26SolidColorToAppearance(appearance, color);
         } else {
             [appearance configureWithOpaqueBackground];
             appearance.backgroundColor = color;
@@ -185,6 +321,17 @@
 }
 
 - (void)updateBackgroundAppearance {
+    if (@available(iOS 26.0, *)) {
+        UINavigationItem *item = self.currentNavigationItem;
+        [TopBarAppearancePresenter applyBackgroundToNavigationItem:item
+                                                             color:self.backgroundColor
+                                                        transparent:self.transparent
+                                                         translucent:self.translucent];
+        self.navigationController.navigationBar.translucent =
+            self.translucent || self.transparent || !self.backgroundColor;
+        return;
+    }
+
     [self applyBackgroundToAppearance:self.getAppearance
                         withOpaqueColor:self.backgroundColor
                              transparent:self.transparent
@@ -193,9 +340,6 @@
                         withOpaqueColor:self.backgroundColor
                              transparent:self.transparent
                               translucent:self.translucent];
-    if (@available(iOS 26.0, *)) {
-        [self syncNavigationBarAppearanceFromNavigationItem:self.currentNavigationItem];
-    }
 }
 
 - (void)showBorder:(BOOL)showBorder {

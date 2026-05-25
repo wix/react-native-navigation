@@ -1,9 +1,11 @@
 #import "RNNStackPresenter.h"
 #import "InteractivePopGestureDelegate.h"
+#import "RNNComponentPresenter.h"
 #import "RNNConvert.h"
 #import "RNNCustomTitleView.h"
 #import "RNNReactBackgroundView.h"
 #import "RNNStackController.h"
+#import "TopBarAppearancePresenter.h"
 #import "TopBarPresenterCreator.h"
 #import "UINavigationController+RNNOptions.h"
 #import "RNNUtils.h"
@@ -104,8 +106,40 @@
 - (void)applyTopBarBackgroundBeforeShowingViewController:(UIViewController *)viewController {
     if (@available(iOS 26.0, *)) {
         RNNNavigationOptions *withDefault = viewController.resolveOptionsWithDefault;
-        [_topBarPresenter applyBackgroundForTransitionToViewController:viewController
-                                                         topBarOptions:withDefault.topBar];
+        if ([_topBarPresenter isKindOfClass:[TopBarAppearancePresenter class]]) {
+            [(TopBarAppearancePresenter *)_topBarPresenter
+                applyTransitionBackgroundToNavigationItem:viewController.navigationItem
+                                              topBarOptions:withDefault.topBar];
+        }
+    }
+}
+
+- (void)applyTopBarButtonsBeforeShowingViewController:(UIViewController *)viewController {
+    if (@available(iOS 26.0, *)) {
+        if ([viewController.presenter isKindOfClass:[RNNComponentPresenter class]]) {
+            [(RNNComponentPresenter *)viewController.presenter prepareTopBarPlatterForPushTransition];
+        }
+    }
+}
+
+- (void)applyTopBarTitleBeforeShowingViewController:(UIViewController *)viewController
+                                      navigationBar:(UINavigationBar *)navigationBar {
+    if (@available(iOS 26.0, *)) {
+        if ([viewController.presenter isKindOfClass:[RNNComponentPresenter class]]) {
+            [(RNNComponentPresenter *)viewController.presenter
+                attachTopBarTitleBeforePushUsingNavigationBar:navigationBar];
+        }
+    }
+}
+
+- (void)handleIOS26NavigationBarDidShowForViewController:(UIViewController *)viewController {
+    if (@available(iOS 26.0, *)) {
+        if (![_topBarPresenter isKindOfClass:[TopBarAppearancePresenter class]]) {
+            return;
+        }
+        RNNNavigationOptions *withDefault = viewController.resolveOptionsWithDefault;
+        [(TopBarAppearancePresenter *)_topBarPresenter
+            finalizeNavigationBarAfterTransitionForViewController:viewController];
     }
 }
 

@@ -1,7 +1,11 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
+#import "RNNButtonOptions.h"
 #import "RNNScrollEdgeEffectOptions.h"
+#import "RNNTopBarOptions.h"
+#import "TopBarAppearancePresenter.h"
 #import "TopBarTitlePresenter.h"
+#import "UIColor+RNNUtils.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
 
@@ -81,6 +85,7 @@ static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOpti
 @implementation RNNComponentPresenter {
     TopBarTitlePresenter *_topBarTitlePresenter;
     RNNButtonsPresenter *_buttonsPresenter;
+    BOOL _topBarButtonsAppliedBeforeShowing;
 }
 
 - (instancetype)initWithComponentRegistry:(RNNReactComponentRegistry *)componentRegistry
@@ -118,6 +123,7 @@ static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOpti
 - (void)componentDidDisappear {
     [_topBarTitlePresenter componentDidDisappear];
     [_buttonsPresenter componentDidDisappear];
+    _topBarButtonsAppliedBeforeShowing = NO;
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -165,24 +171,134 @@ static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOpti
                                                      withDefault:SearchBarPlacementStacked]];
     }
 
+    if (@available(iOS 26.0, *)) {
+        if (!_topBarButtonsAppliedBeforeShowing) {
+            if (withDefault.topBar.leftButtons) {
+                [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
+                                       defaultColor:withDefault.topBar.leftButtonColor
+                               defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                           animated:[withDefault.topBar.animateLeftButtons
+                                                        withDefault:NO]];
+            }
+            if (withDefault.topBar.rightButtons) {
+                [_buttonsPresenter
+                       applyRightButtons:withDefault.topBar.rightButtons
+                            defaultColor:withDefault.topBar.rightButtonColor
+                    defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                                animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
+            }
+        }
+        if (!_topBarButtonsAppliedBeforeShowing) {
+            [_topBarTitlePresenter attachDeferredComponentTitleIfNeeded:withDefault.topBar
+                                                            navigationBar:nil];
+            [TopBarAppearancePresenter
+                applySharedBackgroundSettingsForNavigationItem:viewController.navigationItem];
+        }
+    } else {
+        if (withDefault.topBar.leftButtons) {
+            [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
+                                   defaultColor:withDefault.topBar.leftButtonColor
+                           defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
+                                       animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
+        }
+        if (withDefault.topBar.rightButtons) {
+            [_buttonsPresenter
+                   applyRightButtons:withDefault.topBar.rightButtons
+                        defaultColor:withDefault.topBar.rightButtonColor
+                defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                            animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
+        }
+    }
+
     [_topBarTitlePresenter applyOptions:withDefault.topBar];
+
+    RNNApplyScrollEdgeEffectToView(viewController.view, withDefault.scrollEdgeEffect);
+}
+
+- (NSArray<RNNButtonOptions *> *)topBarComponentButtonsFromOptions:(RNNTopBarOptions *)topBar {
+    NSMutableArray<RNNButtonOptions *> *componentButtons = [NSMutableArray new];
+    for (RNNButtonOptions *button in topBar.leftButtons ?: @[]) {
+        if (button.component.hasValue) {
+            [componentButtons addObject:button];
+        }
+    }
+    for (RNNButtonOptions *button in topBar.rightButtons ?: @[]) {
+        if (button.component.hasValue) {
+            [componentButtons addObject:button];
+        }
+    }
+    return componentButtons;
+}
+
+- (void)preRenderTopBarComponentButtons:(RNNTopBarOptions *)topBar
+                                perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+    NSString *parentComponentId = self.boundViewController.layoutInfo.componentId;
+    for (RNNButtonOptions *button in [self topBarComponentButtonsFromOptions:topBar]) {
+        [self.componentRegistry createComponentIfNotExists:button.component
+                                         parentComponentId:parentComponentId
+                                             componentType:RNNComponentTypeTopBarButton
+                                       reactViewReadyBlock:nil];
+    }
+    if (readyBlock) {
+        readyBlock();
+    }
+}
+
+- (void)applyTopBarButtonsBeforeShowing {
+    if (_topBarButtonsAppliedBeforeShowing) {
+        return;
+    }
+
+    RNNComponentViewController *viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = viewController.resolveOptionsWithDefault;
 
     if (withDefault.topBar.leftButtons) {
         [_buttonsPresenter applyLeftButtons:withDefault.topBar.leftButtons
                                defaultColor:withDefault.topBar.leftButtonColor
                        defaultDisabledColor:withDefault.topBar.leftButtonDisabledColor
-                                   animated:[withDefault.topBar.animateLeftButtons withDefault:NO]];
+                                   animated:NO];
     }
 
     if (withDefault.topBar.rightButtons) {
-        [_buttonsPresenter
-               applyRightButtons:withDefault.topBar.rightButtons
-                    defaultColor:withDefault.topBar.rightButtonColor
-            defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
-                        animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
+        [_buttonsPresenter applyRightButtons:withDefault.topBar.rightButtons
+                                defaultColor:withDefault.topBar.rightButtonColor
+                        defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
+                                    animated:NO];
     }
 
-    RNNApplyScrollEdgeEffectToView(viewController.view, withDefault.scrollEdgeEffect);
+    [TopBarAppearancePresenter
+        suppressSharedBackgroundForNavigationItem:viewController.navigationItem];
+    _topBarButtonsAppliedBeforeShowing = YES;
+}
+
+- (void)prepareTopBarPlatterForPushTransition {
+    if (!_topBarButtonsAppliedBeforeShowing) {
+        [self applyTopBarButtonsBeforeShowing];
+        return;
+    }
+    [TopBarAppearancePresenter
+        suppressSharedBackgroundForNavigationItem:self.boundViewController.navigationItem];
+}
+
+- (void)attachTopBarTitleBeforePushUsingNavigationBar:(UINavigationBar *)navigationBar {
+    if (!navigationBar || CGRectIsEmpty(navigationBar.bounds)) {
+        return;
+    }
+    RNNNavigationOptions *withDefault = self.boundViewController.resolveOptionsWithDefault;
+    [_topBarTitlePresenter attachDeferredComponentTitleIfNeeded:withDefault.topBar
+                                                navigationBar:navigationBar];
+}
+
+- (void)finishTopBarAfterPushTransition {
+    RNNComponentViewController *viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault = viewController.resolveOptionsWithDefault;
+    UINavigationItem *item = viewController.navigationItem;
+    UINavigationBar *navigationBar = viewController.navigationController.navigationBar;
+
+    [_topBarTitlePresenter attachDeferredComponentTitleIfNeeded:withDefault.topBar
+                                                navigationBar:navigationBar];
+    [TopBarAppearancePresenter applySharedBackgroundSettingsForNavigationItem:item];
+    [TopBarAppearancePresenter flushDeferredBarButtonLayoutsForNavigationItem:item];
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -197,6 +313,16 @@ static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOpti
         setTopBarPrefersLargeTitle:[withDefault.topBar.largeTitle.visible withDefault:NO]];
     [viewController setDrawBehindTopBar:[withDefault.topBar shouldDrawBehind]];
     [viewController setDrawBehindBottomTabs:[withDefault.bottomTabs shouldDrawBehind]];
+
+    if (@available(iOS 26.0, *)) {
+        UIColor *barColor = [withDefault.topBar.background.color withDefault:nil];
+        BOOL transparent = barColor.isTransparent;
+        BOOL translucent = [withDefault.topBar.background.translucent withDefault:NO];
+        [TopBarAppearancePresenter applyBackgroundToNavigationItem:viewController.navigationItem
+                                                             color:barColor
+                                                        transparent:transparent
+                                                         translucent:translucent];
+    }
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
@@ -326,7 +452,19 @@ static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOpti
 - (void)renderComponents:(RNNNavigationOptions *)options
                  perform:(RNNReactViewReadyCompletionBlock)readyBlock {
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
-	[_topBarTitlePresenter renderComponents:(RNNNavigationOptions *)withDefault.topBar perform:readyBlock];
+    if (@available(iOS 26.0, *)) {
+        [self preRenderTopBarComponentButtons:withDefault.topBar
+                                      perform:^{
+                                        [self->_topBarTitlePresenter
+                                            preCreateDeferredComponentTitleIfNeeded:withDefault.topBar];
+                                        [self applyTopBarButtonsBeforeShowing];
+                                        [self->_topBarTitlePresenter
+                                            renderComponents:withDefault.topBar
+                                                     perform:readyBlock];
+                                      }];
+        return;
+    }
+    [_topBarTitlePresenter renderComponents:withDefault.topBar perform:readyBlock];
 }
 
 - (void)dealloc {

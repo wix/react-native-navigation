@@ -33,4 +33,8 @@ typedef void (^RNNButtonPressCallback)(NSString *buttonId);
 - (void)notifyDidAppear;
 - (void)notifyDidDisappear;
 
+- (BOOL)resolvesHidesSharedBackground API_AVAILABLE(ios(26.0));
+
+- (void)flushDeferredNavigationBarLayout API_AVAILABLE(ios(26.0));
+
 @end

@@ -5,6 +5,7 @@ static const CGFloat kTitleViewDefaultHeight = 44.0;
 @implementation RNNReactTitleView {
     BOOL _fillParent;
     CGFloat _expectedHeight;
+    BOOL _intrinsicSizeLocked;
 }
 
 - (NSString *)componentType {
@@ -38,9 +39,22 @@ static const CGFloat kTitleViewDefaultHeight = 44.0;
         _fillParent = NO;
         self.autoresizingMask = UIViewAutoresizingNone;
         self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-        __weak RNNReactView *weakSelf = self;
+        __weak RNNReactTitleView *weakSelf = self;
         [self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
-          [weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
+            RNNReactTitleView *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            if (intrinsicSize.width <= 0 || intrinsicSize.height <= 0) {
+                return;
+            }
+            if (@available(iOS 26.0, *)) {
+                if (strongSelf->_intrinsicSizeLocked) {
+                    return;
+                }
+                strongSelf->_intrinsicSizeLocked = YES;
+            }
+            [strongSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
         }];
     }
 }

@@ -87,8 +87,16 @@
                             sendOnNavigationButtonPressed:self.viewController.layoutInfo.componentId
                                                  buttonId:buttonId];
                       }];
-        if (barButtonItem)
+        if (barButtonItem) {
+            if (@available(iOS 26.0, *)) {
+                if (button.identifier.hasValue) {
+                    barButtonItem.identifier = button.identifier.get;
+                }
+                barButtonItem.hidesSharedBackground = YES;
+                barButtonItem.sharesBackground = NO;
+            }
             [barButtonItems addObject:barButtonItem];
+        }
     }
 
     if ([side isEqualToString:@"left"]) {
