@@ -28,6 +28,13 @@
     return self;
 }
 
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (@available(iOS 26.0, *)) {
+        [self.presenter applyTopBarBackgroundBeforeShowingViewController:viewController];
+    }
+    [super pushViewController:viewController animated:animated];
+}
+
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.presenter applyOptionsOnViewDidLayoutSubviews:self.resolveOptions];
