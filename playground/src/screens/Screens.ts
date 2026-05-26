@@ -135,6 +135,7 @@ const Screens = {
   SearchBarModal: 'SearchBarModal',
   TopBar: 'TopBar',
   TopBarTitleTest: 'TopBarTitleTest',
+  NavigationBarEdgeToEdgeRepro: 'NavigationBarEdgeToEdgeRepro',
   WebViewTab: 'TabbedWebViewScreen.WebViewTab',
 };
 

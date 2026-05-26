@@ -21,6 +21,7 @@ const {
   REPLACE_TAB_TEST_ID,
   REPLACED_TAB,
   GOTO_TOPBAR_TITLE_TEST,
+  GOTO_NAV_BAR_E2E_REPRO,
 } = testIDs;
 
 interface Props extends NavigationProps { }
@@ -91,6 +92,12 @@ export default class Options extends NavigationComponent<Props> {
           testID={GOTO_BUTTONS_SCREEN}
           onPress={this.pushButtonsScreen}
         />
+        <Button
+          label="Nav Bar E2E Repro"
+          platform="android"
+          testID={GOTO_NAV_BAR_E2E_REPRO}
+          onPress={this.gotoNavBarEdgeToEdgeRepro}
+        />
         <Button label="SystemUi" onPress={this.systemUi} />
         <Button
           platform={'ios'}
@@ -146,6 +153,13 @@ export default class Options extends NavigationComponent<Props> {
     Navigation.push(this, {
       component: {
         name: Screens.TopBarTitleTest,
+      },
+    });
+
+  gotoNavBarEdgeToEdgeRepro = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.NavigationBarEdgeToEdgeRepro,
       },
     });
 

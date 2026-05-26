@@ -5,6 +5,10 @@ import android.widget.ImageView
 import com.reactnativenavigation.NavigationActivity
 
 class MainActivity : NavigationActivity() {
+    override fun enableEdgeToEdge() {
+        activateEdgeToEdge()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSplashLayout()

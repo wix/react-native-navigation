@@ -132,6 +132,10 @@ function registerScreens() {
     Screens.TopBarTitleTest,
     () => require('./TopBarTitleTestScreen').default
   );
+  Navigation.registerComponent(
+    Screens.NavigationBarEdgeToEdgeRepro,
+    () => require('./NavigationBarEdgeToEdgeReproScreen').default
+  );
 
   const { ContextProvider } = require('../context');
   const ContextScreen = require('./ContextScreen').default;
