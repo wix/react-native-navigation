@@ -1574,6 +1574,11 @@ export interface AnimationOptions {
 export interface NavigationBarOptions {
   backgroundColor?: Color;
   visible?: boolean;
+  /**
+   * Draw screen content behind the system navigation bar while keeping it visible.
+   * On Android 15+ edge-to-edge, use with `backgroundColor: 'transparent'`.
+   */
+  drawBehind?: boolean;
 }
 
 /**

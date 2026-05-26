@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -25,6 +25,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -156,6 +157,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public void applyChildOptions(Options options, ViewController<?> child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
+        onNavigationBarOptionsChanged(options);
         performOnParentController(parent -> parent.applyChildOptions(
                 this.options.copy()
                         .clearBottomTabsOptions()
@@ -170,6 +172,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
+        onNavigationBarOptionsChanged(options);
         performOnParentController(parent -> parent.mergeChildOptions(options.copy().clearBottomTabsOptions(), child));
     }
 
@@ -316,12 +319,21 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
-
-        int bottomInset = (imeInsets.bottom > 0) ? 0 : sysInsets.bottom;
-        view.setPaddingRelative(0, 0, 0, bottomInset);
+        boolean drawBehindNavBar = resolveCurrentOptions().navigationBar.isDrawBehindAndVisible();
+        view.setPaddingRelative(0, 0, 0, SystemUiUtils.getBottomTabsSystemBarPadding(insets, drawBehindNavBar));
         return insets;
+    }
+
+    private void onNavigationBarOptionsChanged(Options options) {
+        if (!options.navigationBar.hasAnyValue()) return;
+        refreshNavigationBarInsets();
+    }
+
+    private void refreshNavigationBarInsets() {
+        if (getView() != null) {
+            applyBottomInset();
+            ViewCompat.requestApplyInsets(getView());
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
