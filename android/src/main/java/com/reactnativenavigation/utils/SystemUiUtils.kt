@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlin.math.abs
 import kotlin.math.ceil
+import kotlin.math.max
 
 object SystemUiUtils {
     private const val STATUS_BAR_HEIGHT_M = 24
@@ -176,6 +178,29 @@ object SystemUiUtils {
         isEdgeToEdgeActive = true
     }
 
+    @JvmStatic
+    fun setNavigationBarContrastEnforced(window: Window?, enforced: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window?.isNavigationBarContrastEnforced = enforced
+        }
+    }
+
+    @JvmStatic
+    fun getContentBottomSystemBarInset(insets: WindowInsetsCompat, drawBehindNavigationBar: Boolean): Int {
+        val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+        if (!isEdgeToEdgeActive) return imeBottom
+        if (drawBehindNavigationBar) return imeBottom
+        val navBarBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+        return max(imeBottom, navBarBottom)
+    }
+
+    @JvmStatic
+    fun getBottomTabsSystemBarPadding(insets: WindowInsetsCompat, drawBehindNavigationBar: Boolean): Int {
+        if (insets.getInsets(WindowInsetsCompat.Type.ime()).bottom > 0) return 0
+        if (isEdgeToEdgeActive && drawBehindNavigationBar) return 0
+        return insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+    }
+
     /**
      * Clears references to system bar background views.
      * Call from Activity.onDestroy to avoid leaking views across activity recreation.
@@ -316,17 +341,34 @@ object SystemUiUtils {
      * falls back to the deprecated window API on older configurations.
      */
     @JvmStatic
-    fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
-        lastExplicitNavBarColor = color
+    fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean, hideOverlay: Boolean) {
         window?.let {
             WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = lightColor
         }
+        if (hideOverlay) {
+            lastExplicitNavBarColor = null
+            navBarBackgroundView?.apply {
+                visibility = View.GONE
+                setBackgroundColor(Color.TRANSPARENT)
+            }
+            @Suppress("DEPRECATION")
+            window?.navigationBarColor = Color.TRANSPARENT
+            return
+        }
+
+        lastExplicitNavBarColor = color
+        navBarBackgroundView?.visibility = View.VISIBLE
         if (isEdgeToEdgeActive) {
             navBarBackgroundView?.setBackgroundColor(color)
         } else {
             @Suppress("DEPRECATION")
             window?.navigationBarColor = color
         }
+    }
+
+    @JvmStatic
+    fun setNavigationBarBackgroundColor(window: Window?, color: Int, lightColor: Boolean) {
+        setNavigationBarBackgroundColor(window, color, lightColor, Color.alpha(color) == 0)
     }
 
     // endregion

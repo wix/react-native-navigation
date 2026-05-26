@@ -173,11 +173,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                 insets.getInsets(WindowInsetsCompat.Type.navigationBars()).top -
                 systemBarsInsets.top;
 
-        int navBarBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
-        int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-        int systemWindowInsetBottom = SystemUiUtils.isEdgeToEdgeActive()
-                ? Math.max(imeBottom, navBarBottom)
-                : imeBottom;
+        boolean drawBehindNavBar = resolveCurrentOptions(presenter.defaultOptions).navigationBar.isDrawBehindAndVisible();
+        int systemWindowInsetBottom = SystemUiUtils.getContentBottomSystemBarInset(insets, drawBehindNavBar);
 
         WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder()
                 .setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),

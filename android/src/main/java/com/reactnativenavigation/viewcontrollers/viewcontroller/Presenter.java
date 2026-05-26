@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
+import androidx.core.view.ViewCompat;
+
 import com.reactnativenavigation.options.NavigationBarOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.OrientationOptions;
@@ -114,16 +116,16 @@ public class Presenter {
 
     private void applyNavigationBarOptions(NavigationBarOptions options) {
         applyNavigationBarVisibility(options);
-        setNavigationBarBackgroundColor(options);
+        applyNavigationBarBackground(options);
+        refreshNavigationBarInsets();
     }
 
     private void mergeNavigationBarOptions(NavigationBarOptions options) {
-        mergeNavigationBarVisibility(options);
-        setNavigationBarBackgroundColor(options);
-    }
-
-    private void mergeNavigationBarVisibility(NavigationBarOptions options) {
-        if (options.isVisible.hasValue()) applyNavigationBarOptions(options);
+        if (options.isVisible.hasValue()) {
+            applyNavigationBarVisibility(options);
+        }
+        applyNavigationBarBackground(options);
+        refreshNavigationBarInsets();
     }
 
     private void applyNavigationBarVisibility(NavigationBarOptions options) {
@@ -136,20 +138,38 @@ public class Presenter {
         }
     }
 
-    private void setNavigationBarBackgroundColor(NavigationBarOptions navigationBar) {
+    private void applyNavigationBarBackground(NavigationBarOptions navigationBar) {
         if (activity == null) return;
         int defaultColor = SystemUiUtils.getDefaultNavBarColor();
-        if (navigationBar.backgroundColor.canApplyValue()) {
-            int color = navigationBar.backgroundColor.get(defaultColor);
-            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), color, isColorLight(color));
+        int color;
+        boolean hideOverlay;
+        if (navigationBar.isDrawBehindAndVisible()) {
+            if (navigationBar.backgroundColor.canApplyValue()) {
+                color = navigationBar.backgroundColor.get(defaultColor);
+                hideOverlay = Color.alpha(color) == 0;
+            } else {
+                color = Color.TRANSPARENT;
+                hideOverlay = true;
+            }
         } else {
-            SystemUiUtils.setNavigationBarBackgroundColor(activity.getWindow(), defaultColor, isColorLight(defaultColor));
+            hideOverlay = false;
+            color = navigationBar.backgroundColor.canApplyValue()
+                    ? navigationBar.backgroundColor.get(defaultColor)
+                    : defaultColor;
         }
+        SystemUiUtils.setNavigationBarBackgroundColor(
+                activity.getWindow(), color, isColorLight(color), hideOverlay);
+    }
+
+    private void refreshNavigationBarInsets() {
+        if (activity == null) return;
+        ViewCompat.requestApplyInsets(activity.getWindow().getDecorView());
     }
 
     public void onConfigurationChanged(ViewController controller, Options options) {
         Options withDefault = options.withDefaultOptions(defaultOptions);
-        setNavigationBarBackgroundColor(withDefault.navigationBar);
+        applyNavigationBarBackground(withDefault.navigationBar);
+        refreshNavigationBarInsets();
         StatusBarPresenter.instance.onConfigurationChanged(withDefault.statusBar);
         applyBackgroundColor(controller, withDefault);
     }
