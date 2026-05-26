@@ -81,7 +81,7 @@ object SystemUiUtils {
     @JvmStatic
     fun setupSystemBarBackgrounds(activity: Activity, contentLayout: ViewGroup) {
         setupStatusBarBackground(activity)
-        setupNavigationBarBackground(contentLayout)
+        setupNavigationBarBackground(activity.window, contentLayout)
     }
 
     private fun setupStatusBarBackground(activity: Activity) {
@@ -119,10 +119,10 @@ object SystemUiUtils {
         return view
     }
 
-    private fun setupNavigationBarBackground(contentLayout: ViewGroup) {
+    private fun setupNavigationBarBackground(window: Window?, contentLayout: ViewGroup) {
         if (navBarBackgroundView != null) return
         val view = View(contentLayout.context).apply {
-            setBackgroundColor(Color.BLACK)
+            setBackgroundColor(getNavigationBarBackgroundColor(window))
         }
         val params = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM
@@ -136,7 +136,7 @@ object SystemUiUtils {
             val wasThreeButton = isThreeButtonNav
             isThreeButtonNav = tappableHeight > 0
             if (isThreeButtonNav != wasThreeButton) {
-                val color = lastExplicitNavBarColor ?: getDefaultNavBarColor()
+                val color = lastExplicitNavBarColor ?: getNavigationBarBackgroundColor(v)
                 v.setBackgroundColor(color)
             }
             val lp = v.layoutParams
@@ -147,6 +147,17 @@ object SystemUiUtils {
             insets
         }
         view.requestApplyInsets()
+    }
+
+    private fun getNavigationBarBackgroundColor(window: Window?): Int {
+        lastExplicitNavBarColor?.let { return it }
+        @Suppress("DEPRECATION")
+        return window?.navigationBarColor ?: getDefaultNavBarColor()
+    }
+
+    private fun getNavigationBarBackgroundColor(view: View): Int {
+        lastExplicitNavBarColor?.let { return it }
+        return (view.background as? ColorDrawable)?.color ?: getDefaultNavBarColor()
     }
 
     /**
@@ -357,10 +368,11 @@ object SystemUiUtils {
         }
 
         lastExplicitNavBarColor = color
-        navBarBackgroundView?.visibility = View.VISIBLE
-        if (isEdgeToEdgeActive) {
-            navBarBackgroundView?.setBackgroundColor(color)
-        } else {
+        navBarBackgroundView?.apply {
+            visibility = View.VISIBLE
+            setBackgroundColor(color)
+        }
+        if (!isEdgeToEdgeActive) {
             @Suppress("DEPRECATION")
             window?.navigationBarColor = color
         }
