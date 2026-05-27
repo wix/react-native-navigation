@@ -7,6 +7,8 @@
 #import <React/RCTSurface.h>
 #endif
 
+static const CGFloat kMinBarButtonSlotSize = 44.0;
+
 @interface RNNUIBarButtonItem ()
 
 @property(nonatomic, strong) NSLayoutConstraint *widthConstraint;
@@ -18,6 +20,7 @@
 @implementation RNNUIBarButtonItem {
     RNNIconCreator *_iconCreator;
     RNNButtonOptions *_buttonOptions;
+    BOOL _didApplyWidthResize;
 }
 
 - (instancetype)init {
@@ -94,6 +97,49 @@
     return self;
 }
 
+- (BOOL)designRequiresCompatibility {
+    static BOOL checked = NO;
+    static BOOL result = NO;
+    if (!checked) {
+        checked = YES;
+        result = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIDesignRequiresCompatibility"] boolValue];
+    }
+    return result;
+}
+
+- (void)applyCustomViewIntrinsicSize:(CGSize)intrinsicSize {
+    if (!self.widthConstraint || !self.heightConstraint || intrinsicSize.width <= 0) {
+        return;
+    }
+
+    CGFloat width = MAX(intrinsicSize.width, kMinBarButtonSlotSize);
+    if (_didApplyWidthResize && width <= self.widthConstraint.constant) {
+        return;
+    }
+
+    if (self.widthConstraint.constant == width) {
+        _didApplyWidthResize = YES;
+        return;
+    }
+
+    self.widthConstraint.constant = width;
+    _didApplyWidthResize = YES;
+
+    [self.customView setNeedsLayout];
+    [self invalidateNavigationBarLayout];
+}
+
+- (void)invalidateNavigationBarLayout {
+    UIView *view = self.customView;
+    while (view) {
+        if ([view isKindOfClass:[UINavigationBar class]]) {
+            [view setNeedsLayout];
+            return;
+        }
+        view = view.superview;
+    }
+}
+
 - (instancetype)initWithCustomView:(RNNReactView *)reactView
                      buttonOptions:(RNNButtonOptions *)buttonOptions
                            onPress:(RNNButtonPressCallback)onPress {
@@ -106,16 +152,25 @@
         // back in via the hideSharedBackground option.
         self.hidesSharedBackground =
             [buttonOptions.hideSharedBackground withDefault:YES];
-        // Pin the custom view to a stable 44pt bar-item size so the navbar
-        // reserves the final slot up-front (incl. during push-transition
-        // snapshots) and doesn't relayout once React mounts. Without this,
-        // React's post-mount sizeToFit changes bounds, the navbar relayouts,
-        // and the customView visibly snaps from a 0x0 / wrong-position state
-        // to its centered final frame. React content centers within via its
-        // own flex layout.
-        reactView.translatesAutoresizingMaskIntoConstraints = NO;
-        [reactView.widthAnchor constraintEqualToConstant:44].active = YES;
-        [reactView.heightAnchor constraintEqualToConstant:44].active = YES;
+        if (![self designRequiresCompatibility]) {
+            // Reserve a stable 44pt slot for push-transition snapshots, then grow
+            // width once when React reports intrinsic size (e.g. wide pickers).
+            // Height stays 44; vertical alignment is handled in React.
+            reactView.translatesAutoresizingMaskIntoConstraints = NO;
+            self.widthConstraint = [reactView.widthAnchor constraintEqualToConstant:kMinBarButtonSlotSize];
+            self.heightConstraint = [reactView.heightAnchor constraintEqualToConstant:kMinBarButtonSlotSize];
+            self.widthConstraint.priority = UILayoutPriorityRequired;
+            self.heightConstraint.priority = UILayoutPriorityRequired;
+            self.widthConstraint.active = YES;
+            self.heightConstraint.active = YES;
+            if ([reactView isKindOfClass:[RNNReactButtonView class]]) {
+                RNNReactButtonView *buttonView = (RNNReactButtonView *)reactView;
+                __weak RNNUIBarButtonItem *weakSelf = self;
+                buttonView.intrinsicSizeDidChangeHandler = ^(CGSize intrinsicSize) {
+                    [weakSelf applyCustomViewIntrinsicSize:intrinsicSize];
+                };
+            }
+        }
     }
     [self applyOptions:buttonOptions];
     self.onPress = onPress;
@@ -218,26 +273,6 @@
     }
 }
 
-
-#ifdef RCT_NEW_ARCH_ENABLED
-// TODO: Verify
-- (void)surface:(RCTSurface *)surface didChangeIntrinsicSize:(CGSize)intrinsicSize {
-	self.widthConstraint.constant = intrinsicSize.width;
-	self.heightConstraint.constant = intrinsicSize.height;
-	[surface setSize:intrinsicSize];
-	//[rootView setNeedsUpdateConstraints];
-	//[rootView updateConstraintsIfNeeded];
-	//surface.hidden = NO;
-}
-#else
-- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-    self.widthConstraint.constant = rootView.intrinsicContentSize.width;
-    self.heightConstraint.constant = rootView.intrinsicContentSize.height;
-    [rootView setNeedsUpdateConstraints];
-    [rootView updateConstraintsIfNeeded];
-    rootView.hidden = NO;
-}
-#endif
 
 - (void)onButtonPressed:(RNNUIBarButtonItem *)barButtonItem {
     self.onPress(self.buttonId);

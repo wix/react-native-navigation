@@ -7,6 +7,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 import com.facebook.soloader.SoLoader;
+import com.reactnativenavigation.customrow.BottomTabsCustomRowAttacher;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
@@ -45,6 +46,8 @@ public abstract class NavigationApplication extends Application implements React
         DefaultNewArchitectureEntryPoint.load();
 
         reactGateway = createReactGateway();
+
+        BottomTabsCustomRowAttacher.INSTANCE.registerOnce(this, null);
 	}
 
     /**

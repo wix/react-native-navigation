@@ -42,6 +42,7 @@
                     presenter:self.mockTabBarPresenter
            bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:nil]
         dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc] initWithDefaultOptions:nil]
+            componentRegistry:nil
                  eventEmitter:self.mockEventEmitter
          childViewControllers:children
            bottomTabsAttacher:nil];
@@ -77,6 +78,7 @@
                                                   presenter:presenter
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:eventEmmiter
                                        childViewControllers:childViewControllers
                                          bottomTabsAttacher:nil];
@@ -287,6 +289,7 @@
                                                   presenter:nil
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:dotIndicator
+                                          componentRegistry:nil
                                                eventEmitter:nil
                                        childViewControllers:@[ [UIViewController new], vc ]
                                          bottomTabsAttacher:nil];
@@ -352,6 +355,7 @@
            bottomTabPresenter:[BottomTabPresenterCreator
                                   createWithDefaultOptions:RNNNavigationOptions.emptyOptions]
         dotIndicatorPresenter:dotIndicator
+            componentRegistry:nil
                  eventEmitter:nil
          childViewControllers:@[ vc1, stack ]
            bottomTabsAttacher:nil];

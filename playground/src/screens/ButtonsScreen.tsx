@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationComponent, Options, OptionsTopBarButton } from 'react-native-navigation';
 import Root from '../components/Root';
 import Button from '../components/Button';
@@ -145,17 +146,23 @@ export default class ButtonOptions extends NavigationComponent {
     );
   }
 
-  toggleBack= ()=> {
+  toggleBack = () => {
     this.backButtonVisibile = !this.backButtonVisibile;
-    Navigation.mergeOptions(this.props.componentId,{
-      topBar:{
-        backButton:{
-          testID:BACK_BUTTON,
-          visible:this.backButtonVisibile
-        }
-      }
-    })
-  }
+    Navigation.mergeOptions(this.props.componentId, {
+      topBar: {
+        backButton: {
+          testID: BACK_BUTTON,
+          visible: this.backButtonVisibile,
+        },
+        // iOS: leftButtons replace the back chevron slot, so the back button
+        // can't render unless leftButtons are cleared. Android's back
+        // affordance is independent of leftButtons.
+        ...(Platform.OS === 'ios' && this.backButtonVisibile
+          ? { leftButtons: [] }
+          : {}),
+      },
+    });
+  };
 
   setRightButtons = () =>
     Navigation.mergeOptions(this, {

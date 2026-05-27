@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,11 @@ import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.SystemBarStyle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
@@ -189,8 +192,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
      * calling {@code EdgeToEdge.enable()} directly.
      */
     protected void activateEdgeToEdge() {
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(
+                this,
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
+        );
         SystemUiUtils.activateEdgeToEdge();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        SystemUiUtils.setNavigationBarContrastEnforced(getWindow(), false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
     }
 
     protected void addDefaultSplashLayout() {

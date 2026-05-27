@@ -96,4 +96,18 @@ public class PresenterTest extends BaseTest {
         verify(parentView).setPadding(2,1,4,3);
     }
 
+    @Test
+    public void applyNavigationBarDrawBehind_usesTransparentOverlay() {
+        mockSystemUiUtils(0, 0, (mockedStatic) -> {
+            ViewGroup spy = spy(new FrameLayout(activity));
+            Mockito.when(controller.getView()).thenReturn(spy);
+            Mockito.when(controller.resolveCurrentOptions()).thenReturn(Options.EMPTY);
+            Options options = new Options();
+            options.navigationBar.drawBehind = new Bool(true);
+            uut.applyOptions(controller, options);
+            mockedStatic.verify(() -> SystemUiUtils.setNavigationBarBackgroundColor(
+                    any(), eq(android.graphics.Color.TRANSPARENT), eq(false), eq(true)), times(1));
+        });
+    }
+
 }

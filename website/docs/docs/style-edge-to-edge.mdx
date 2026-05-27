@@ -63,4 +63,28 @@ options: {
 }
 ```
 
+Use `navigationBar.drawBehind` with edge-to-edge to draw content behind the system navigation bar while keeping it visible (gesture pill or 3-button bar stay on screen). Layout insets skip the navigation bar height; RNN paints an optional scrim via `backgroundColor`:
+
+```js
+// Transparent nav bar — content shows through, pill visible
+options: {
+  navigationBar: {
+    visible: true,
+    drawBehind: true,
+    backgroundColor: 'transparent'
+  }
+}
+
+// Opaque scrim over content behind the nav bar
+options: {
+  navigationBar: {
+    visible: true,
+    drawBehind: true,
+    backgroundColor: '#20303C'
+  }
+}
+```
+
+Without `drawBehind`, an opaque `backgroundColor` reserves bottom inset so content sits above the navigation bar (traditional behavior). See [Navigation Bar options](../api/options-navigationBar) for `visible` and other fields.
+
 These options work in both edge-to-edge and non-edge-to-edge modes. In edge-to-edge mode, the colors are applied to the view-based overlays rather than the deprecated window APIs.

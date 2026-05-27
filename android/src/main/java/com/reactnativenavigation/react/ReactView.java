@@ -16,6 +16,7 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactHost;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.interfaces.fabric.ReactSurface;
+import com.facebook.react.runtime.ReactSurfaceImpl;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.common.UIManagerType;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -69,6 +70,18 @@ public class ReactView extends FrameLayout implements IReactView, Renderable {
     @Override
     public void destroy() {
         reactSurface.stop();
+    }
+
+    /**
+     * Replace the surface's initial props. Useful for components that need to
+     * receive runtime updates from native (e.g. bottom tab item components).
+     * No-op when the underlying surface implementation does not support
+     * runtime prop updates.
+     */
+    public void setProps(Bundle props) {
+        if (reactSurface instanceof ReactSurfaceImpl) {
+            ((ReactSurfaceImpl) reactSurface).updateInitProps(props);
+        }
     }
 
     public void sendComponentWillStart(ComponentType type) {

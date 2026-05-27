@@ -1,3 +1,4 @@
+#import "RNNComponentOptions.h"
 #import "RNNOptions.h"
 
 @class DotIndicatorOptions;
@@ -5,6 +6,7 @@
 @interface RNNBottomTabOptions : RNNOptions
 
 @property(nonatomic) NSUInteger tag;
+@property(nonatomic, strong) RNNComponentOptions *component;
 @property(nonatomic, strong) Text *text;
 @property(nonatomic, strong) Text *badge;
 @property(nonatomic, strong) Color *badgeColor;
