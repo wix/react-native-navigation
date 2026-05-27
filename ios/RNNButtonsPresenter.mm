@@ -91,6 +91,19 @@
             [barButtonItems addObject:barButtonItem];
     }
 
+    if (@available(iOS 26.0, *)) {
+        if (barButtonItems.count > 1) {
+            NSMutableArray *separated = [NSMutableArray arrayWithCapacity:barButtonItems.count * 2 - 1];
+            for (NSUInteger i = 0; i < barButtonItems.count; i++) {
+                [separated addObject:barButtonItems[i]];
+                if (i < barButtonItems.count - 1) {
+                    [separated addObject:[UIBarButtonItem fixedSpaceItemOfWidth:0]];
+                }
+            }
+            barButtonItems = separated;
+        }
+    }
+
     if ([side isEqualToString:@"left"]) {
         [self replaceCurrentButtons:self.viewController.navigationItem.leftBarButtonItems
                         withButtons:barButtonItems];
