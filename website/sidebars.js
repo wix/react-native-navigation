@@ -16,7 +16,13 @@ module.exports = {
       'docs/customBackNavigation',
       'docs/deep-linking',
     ],
-    Layouts: ['docs/stack', 'docs/bottomTabs', 'docs/sideMenu', 'docs/externalComponent'],
+    Layouts: [
+      'docs/stack',
+      'docs/bottomTabs',
+      'docs/customBottomTabs',
+      'docs/sideMenu',
+      'docs/externalComponent',
+    ],
     Hierarchy: ['docs/root', 'docs/modal', 'docs/overlay'],
     Styling: [
       'docs/style-options',

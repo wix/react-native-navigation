@@ -144,6 +144,13 @@
 }
 
 - (UINavigationItem *)currentNavigationItem {
+    if ([self.boundViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController =
+            (UINavigationController *)self.boundViewController;
+        if (navigationController.topViewController) {
+            return navigationController.topViewController.navigationItem;
+        }
+    }
     return self.boundViewController.getCurrentChild.navigationItem;
 }
 

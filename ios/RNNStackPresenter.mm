@@ -101,6 +101,14 @@
     [_topBarPresenter applyOptionsBeforePopping:options.topBar];
 }
 
+- (void)applyTopBarBackgroundBeforeShowingViewController:(UIViewController *)viewController {
+    if (@available(iOS 26.0, *)) {
+        RNNNavigationOptions *withDefault = viewController.resolveOptionsWithDefault;
+        [_topBarPresenter applyBackgroundForTransitionToViewController:viewController
+                                                         topBarOptions:withDefault.topBar];
+    }
+}
+
 - (void)mergeOptions:(RNNNavigationOptions *)mergeOptions
      resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
     [super mergeOptions:mergeOptions resolvedOptions:resolvedOptions];

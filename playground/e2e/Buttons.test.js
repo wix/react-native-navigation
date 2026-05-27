@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import Utils from './Utils';
 import TestIDs from '../src/testIDs';
 
@@ -22,14 +23,21 @@ describe('Buttons', () => {
   });
 
   it(':android: should not effect left buttons when hiding back button', async () => {
-    await elementById(TestIDs.TOGGLE_BACK).tap();
-    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
-    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
-    await expect(elementById(TestIDs.BACK_BUTTON)).toBeVisible();
+    // Jest mock runs with Platform.OS === 'ios'; this test asserts Android-only topBar behavior.
+    const platform = Platform.OS;
+    Platform.OS = 'android';
+    try {
+      await elementById(TestIDs.TOGGLE_BACK).tap();
+      await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.BACK_BUTTON)).toBeVisible();
 
-    await elementById(TestIDs.TOGGLE_BACK).tap();
-    await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
-    await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+      await elementById(TestIDs.TOGGLE_BACK).tap();
+      await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+    } finally {
+      Platform.OS = platform;
+    }
   });
   it('sets right buttons', async () => {
     await expect(elementById(TestIDs.BUTTON_ONE)).toBeVisible();

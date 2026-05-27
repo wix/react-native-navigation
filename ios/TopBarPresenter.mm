@@ -71,6 +71,10 @@
     [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
 }
 
+- (void)applyBackgroundForTransitionToViewController:(UIViewController *)viewController
+                                       topBarOptions:(RNNTopBarOptions *)options {
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     [self updateBackgroundAppearance];

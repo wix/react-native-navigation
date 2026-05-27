@@ -3,6 +3,7 @@
 #import "RNNBottomTabsPresenter.h"
 #import "RNNDotIndicatorPresenter.h"
 #import "RNNEventEmitter.h"
+#import "RNNReactComponentRegistry.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <UIKit/UIKit.h>
 
@@ -16,6 +17,7 @@
                          presenter:(RNNBasePresenter *)presenter
                 bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
+                 componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
                 bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher;
