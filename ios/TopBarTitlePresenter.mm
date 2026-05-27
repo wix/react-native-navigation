@@ -83,12 +83,26 @@
                    reactViewReadyBlock:readyBlock];
         _customTitleView.backgroundColor = UIColor.clearColor;
         NSString *alignment = [options.title.component.alignment withDefault:@""];
-        [_customTitleView setAlignment:alignment
-                               inFrame:viewController.navigationController.navigationBar.frame];
+        UINavigationBar *navigationBar = viewController.navigationController.navigationBar;
+        CGRect barBounds = navigationBar.bounds;
+        [_customTitleView setAlignment:alignment inFrame:barBounds];
         [_customTitleView layoutIfNeeded];
 
         viewController.navigationItem.titleView = nil;
         viewController.navigationItem.titleView = _customTitleView;
+
+        __weak RNNReactTitleView *weakTitleView = _customTitleView;
+        __weak UIViewController *weakViewController = viewController;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UINavigationController *navigationController = weakViewController.navigationController;
+            if (!navigationController || !weakTitleView) {
+                return;
+            }
+            [weakTitleView setAlignment:alignment inFrame:navigationController.navigationBar.bounds];
+            weakViewController.navigationItem.titleView = weakTitleView;
+            [weakTitleView setNeedsLayout];
+            [weakTitleView layoutIfNeeded];
+        });
         [_customTitleView componentWillAppear];
         [_customTitleView componentDidAppear];
     } else {

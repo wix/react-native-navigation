@@ -6,4 +6,6 @@
 
 @interface RNNReactButtonView : RNNComponentView
 
+@property(nonatomic, copy) void (^intrinsicSizeDidChangeHandler)(CGSize intrinsicSize);
+
 @end
