@@ -8,6 +8,9 @@
     self = [super initWithDict:dict];
     self.tag = arc4random();
 
+    self.component =
+        [[RNNComponentOptions alloc] initWithDict:[dict objectForKey:@"component"]];
+
     self.text = [TextParser parse:dict key:@"text"];
     self.badge = [TextParser parse:dict key:@"badge"];
     self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
@@ -38,6 +41,7 @@
 
 - (void)mergeOptions:(RNNBottomTabOptions *)options {
     [self.dotIndicator mergeOptions:options.dotIndicator];
+    [self.component mergeOptions:options.component];
 
     if (options.text.hasValue)
         self.text = options.text;
@@ -88,7 +92,7 @@
            self.iconColor.hasValue || self.selectedIconColor.hasValue ||
            self.selectedTextColor.hasValue || self.iconInsets.hasValue || self.textColor.hasValue ||
            self.visible.hasValue || self.selectTabOnPress.hasValue || self.sfSymbol.hasValue ||
-           self.sfSelectedSymbol.hasValue || self.role.hasValue;
+           self.sfSelectedSymbol.hasValue || self.role.hasValue || self.component.hasValue;
 }
 
 @end

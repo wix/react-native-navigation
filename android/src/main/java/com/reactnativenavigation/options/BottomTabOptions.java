@@ -44,6 +44,7 @@ public class BottomTabOptions {
         options.dotIndicator = DotIndicatorOptions.parse(context, json.optJSONObject("dotIndicator"));
         options.selectTabOnPress = BoolParser.parse(json, "selectTabOnPress");
         options.popToRoot = BoolParser.parse(json, "popToRoot");
+        options.component = ComponentOptions.parse(json.optJSONObject("component"));
 
         return options;
     }
@@ -67,6 +68,7 @@ public class BottomTabOptions {
     public Bool selectTabOnPress = new NullBool();
     public Bool popToRoot = new NullBool();
     public FontOptions font = new FontOptions();
+    public ComponentOptions component = new ComponentOptions();
 
 
     void mergeWith(final BottomTabOptions other) {
@@ -90,6 +92,7 @@ public class BottomTabOptions {
         if (other.dotIndicator.hasValue()) dotIndicator = other.dotIndicator;
         if (other.selectTabOnPress.hasValue()) selectTabOnPress = other.selectTabOnPress;
         if (other.popToRoot.hasValue()) popToRoot = other.popToRoot;
+        if (other.component.hasValue()) component = other.component;
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {
@@ -113,7 +116,7 @@ public class BottomTabOptions {
         if (!dotIndicator.hasValue()) dotIndicator = defaultOptions.dotIndicator;
         if (!selectTabOnPress.hasValue()) selectTabOnPress = defaultOptions.selectTabOnPress;
         if (!popToRoot.hasValue()) popToRoot = defaultOptions.popToRoot;
-
+        if (!component.hasValue()) component = defaultOptions.component;
     }
 
 }

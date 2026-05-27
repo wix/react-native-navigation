@@ -25,6 +25,7 @@
            bottomTabPresenter:[BottomTabPresenterCreator createWithDefaultOptions:defaultOptions]
         dotIndicatorPresenter:[[RNNDotIndicatorPresenter alloc]
                                   initWithDefaultOptions:defaultOptions]
+            componentRegistry:nil
                  eventEmitter:[OCMockObject partialMockForObject:[RNNEventEmitter new]]
          childViewControllers:children
            bottomTabsAttacher:nil];
