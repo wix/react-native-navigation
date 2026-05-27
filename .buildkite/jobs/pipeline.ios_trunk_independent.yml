@@ -1,0 +1,6 @@
+  - label: ":ios: Trunk-independent + SPM"
+    command:
+    - "./scripts/ci.check-trunk-independent.sh"
+    - "./scripts/ci.spm.sh"
+    key: "ios_trunk_independent"
+    timeout_in_minutes: 15

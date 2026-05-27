@@ -11,4 +11,6 @@ cat .buildkite/jobs/pipeline.ios_rn_77.yml
 cat .buildkite/jobs/pipeline.ios_rn_78.yml
 cat .buildkite/jobs/pipeline.ios_rn_84.yml
 cat .buildkite/jobs/pipeline.ios_rn_85.yml
+cat .buildkite/jobs/pipeline.ios_trunk_independent.yml
+cat .buildkite/jobs/pipeline.ios_xcframework.yml
 cat .buildkite/jobs/pipeline.publish.yml

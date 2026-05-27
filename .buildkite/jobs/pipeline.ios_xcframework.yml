@@ -1,0 +1,13 @@
+  # Optional: produces SPM xcframework artifact (does not block merge by default).
+  - label: ":ios: RNN xcframework (Release)"
+    if: build.branch == "master" || build.message =~ /xcframework/i
+    command:
+    - "nvm install"
+    - "yarn install"
+    - "cd playground/ios && bundle install && bundle exec pod install"
+    - "./scripts/build-ios-xcframework.sh"
+    key: "ios_xcframework"
+    timeout_in_minutes: 90
+    artifact_paths:
+      - "build/spm/ReactNativeNavigation.xcframework.zip"
+      - "build/spm/rnn-static-libs.env"

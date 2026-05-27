@@ -36,6 +36,13 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
+# Swift Package Manager
+.build/
+build/spm/
+
+# xcframework build intermediates
+playground/ios/build/DerivedData-rnn-xcframework/
+
 # Dependency directories
 node_modules
 jspm_packages

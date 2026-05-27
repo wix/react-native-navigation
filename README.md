@@ -35,3 +35,5 @@ Apps using React Native Navigation may target iOS 11 and Android 5.0 (API 21). Y
 # Installation
 
 As `react-native-navigation` is a native navigation library - integrating it into your app will require editing native files. Follow the installation guides in the [documentation](https://wix.github.io/react-native-navigation/).
+
+For iOS: install from **npm** and use autolinking (do not add `pod 'ReactNativeNavigation'` manually). See [iOS dependency management](docs/IOS_DEPENDENCY_MANAGEMENT.md) for CocoaPods Trunk sunset (Dec 2026) and experimental SPM.

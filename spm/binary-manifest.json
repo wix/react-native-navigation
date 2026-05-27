@@ -1,0 +1,6 @@
+{
+  "version": "0.0.0",
+  "url": "",
+  "checksum": "REPLACE_ON_RELEASE",
+  "note": "Populated by scripts/update-spm-binary-manifest.sh when publishing a GitHub Release xcframework asset."
+}

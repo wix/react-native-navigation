@@ -1,0 +1,35 @@
+name: iOS Trunk-independent
+
+on:
+  pull_request:
+    paths:
+      - 'ReactNativeNavigation.podspec'
+      - 'ios/**'
+      - 'playground/ios/Podfile'
+      - 'Package.swift'
+      - 'spm/**'
+      - 'scripts/ci.check-trunk-independent.sh'
+      - 'scripts/ci.spm.sh'
+  push:
+    branches:
+      - master
+    paths:
+      - 'ReactNativeNavigation.podspec'
+      - 'ios/**'
+      - 'playground/ios/Podfile'
+      - 'Package.swift'
+      - 'spm/**'
+      - 'scripts/ci.check-trunk-independent.sh'
+      - 'scripts/ci.spm.sh'
+
+jobs:
+  trunk-independent:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trunk-independent checks
+        run: ./scripts/ci.check-trunk-independent.sh
+
+      - name: SPM manifest validation
+        run: ./scripts/ci.spm.sh

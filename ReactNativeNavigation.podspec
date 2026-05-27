@@ -40,6 +40,6 @@ Pod::Spec.new do |s|
   install_modules_dependencies(s)
 
   s.requires_arc = true
-  s.dependency 'HMSegmentedControl'
-  s.frameworks = 'UIKit'
+  # HMSegmentedControl is vendored under ios/Vendor/HMSegmentedControl (no CocoaPods Trunk)
+  s.frameworks = 'UIKit', 'QuartzCore'
 end
