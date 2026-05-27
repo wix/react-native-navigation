@@ -6,4 +6,6 @@
 
 @interface RNNReactButtonView : RNNComponentView
 
+@property(nonatomic, strong) UIColor *buttonBackgroundColor;
+
 @end

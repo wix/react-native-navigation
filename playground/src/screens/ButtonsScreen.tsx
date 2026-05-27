@@ -26,6 +26,7 @@ const {
   RESET_BUTTONS,
   CHANGE_BUTTON_PROPS,
   CHANGE_LEFT_RIGHT_COLORS,
+  SET_BUTTON_BACKGROUND_COLOR,
 } = testIDs;
 
 export default class ButtonOptions extends NavigationComponent {
@@ -129,6 +130,11 @@ export default class ButtonOptions extends NavigationComponent {
           testID={CHANGE_LEFT_RIGHT_COLORS}
           label="Set leftButtons default Color"
           onPress={this.changeButtonsColor}
+        />
+        <Button
+          testID={SET_BUTTON_BACKGROUND_COLOR}
+          label="Set Button Background Color"
+          onPress={this.setButtonBackgroundColor}
         />
         <Button
           label="Toggle back"
@@ -284,6 +290,28 @@ export default class ButtonOptions extends NavigationComponent {
   changeButtonProps = () => {
     Navigation.updateProps('ROUND_COMPONENT', {
       title: 'Three',
+    });
+  };
+
+  setButtonBackgroundColor = () => {
+    Navigation.mergeOptions(this, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'ROUND',
+            testID: ROUND_BUTTON,
+            component: {
+              id: 'ROUND_COMPONENT',
+              name: Screens.RoundButton,
+              passProps: {
+                title: 'Two',
+                timesCreated: 1,
+              },
+            },
+            backgroundColor: 'yellow',
+          },
+        ],
+      },
     });
   };
 }
