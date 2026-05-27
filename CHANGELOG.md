@@ -2,6 +2,37 @@
 ___
 # Changelog
 
+## Unreleased — CocoaPods Trunk (iOS)
+
+**Context:** [CocoaPods Trunk goes read-only on December 2, 2026](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). New RNN releases are distributed via **npm**, not Trunk.
+
+### Migration (action required for Trunk-only installs)
+
+If your `Podfile` contains `pod 'ReactNativeNavigation'`, remove it and install from npm with autolinking instead. See **[Migrating for CocoaPods Trunk](docs/MIGRATION_COCOAPODS_TRUNK.md)**.
+
+```bash
+yarn add react-native-navigation
+cd ios && bundle exec pod install
+```
+
+`pod install` is still required for React Native core; only the **source of RNN** moves off Trunk.
+
+### Changed (iOS)
+
+- **Vendored `HMSegmentedControl`** (v1.5.6) inside the library — apps no longer resolve HMS from CocoaPods Trunk when using RNN from npm.
+- Removed `s.dependency 'HMSegmentedControl'` from `ReactNativeNavigation.podspec`.
+- Documentation: [iOS dependency management](docs/IOS_DEPENDENCY_MANAGEMENT.md), [migration guide](docs/MIGRATION_COCOAPODS_TRUNK.md).
+- CI: `yarn check-ios-trunk-independent`, `yarn check-ios-spm`.
+- Experimental: `Package.swift`, xcframework build scripts under `scripts/build-ios-xcframework.sh` (maintainers; optional).
+- Playground unit tests: `OCMock` from GitHub (`erikdoe/ocmock` v3.9.1), not CocoaPods Trunk.
+- Maintainers: [release checklist](docs/RELEASE_CHECKLIST.md), `scripts/release-ios-assets.sh`.
+- Fixed `testTopBarNoBorderOff` on iOS 26 (border visibility assertion).
+
+### Unchanged
+
+- React Native apps still integrate RNN through **autolinking + CocoaPods** (`use_native_modules!`).
+- Android integration unchanged.
+
 # 7.0.0
 
 This release mainly focuses on adding support for TurboModules (Integrating Reanimated2 is now possible!) and aligning the Navigation commands API once and for all.

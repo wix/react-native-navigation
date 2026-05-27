@@ -1,5 +1,7 @@
 # iOS dependency management (CocoaPods, Trunk, SPM)
 
+**Migrating from Trunk-only or manual Podfile installs?** See **[MIGRATION_COCOAPODS_TRUNK.md](MIGRATION_COCOAPODS_TRUNK.md)**.
+
 ## Recommended install (React Native apps)
 
 Install RNN from **npm** and use **autolinking**. Do not add `pod 'ReactNativeNavigation'` manually.

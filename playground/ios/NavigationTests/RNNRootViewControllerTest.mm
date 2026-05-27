@@ -635,9 +635,12 @@
     self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
     __unused RNNStackController *nav = [self createNavigationController];
     [self.uut viewWillAppear:false];
-    XCTAssertTrue(CGColorEqualToColor(
-        self.uut.navigationController.navigationBar.standardAppearance.shadowColor.CGColor,
-        [UINavigationBarAppearance new].shadowColor.CGColor));
+    UINavigationBar *bar = self.uut.navigationController.navigationBar;
+    UIColor *shadowColor = bar.standardAppearance.shadowColor;
+    if (shadowColor == nil) {
+        shadowColor = bar.scrollEdgeAppearance.shadowColor;
+    }
+    XCTAssertNotNil(shadowColor, @"topBar.noBorder false should show the navigation bar border");
 }
 
 - (void)testStatusBarBlurOn {

@@ -26,6 +26,11 @@ if grep -E "pod ['\"]HMSegmentedControl['\"]" playground/ios/Podfile; then
   fail "playground Podfile must not declare HMSegmentedControl (vendored in RNN)"
 fi
 
+# Bare `pod 'OCMock'` resolves via CocoaPods Trunk (read-only after Dec 2026).
+if grep -E "^\s*pod ['\"]OCMock['\"]\s*$" playground/ios/Podfile; then
+  fail "playground Podfile must use rnn_ocmock_pod (git source), not Trunk OCMock"
+fi
+
 echo "Checking vendored HMSegmentedControl sources..."
 
 for f in HMSegmentedControl.h HMSegmentedControl.m LICENSE.md; do

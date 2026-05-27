@@ -9,7 +9,7 @@ Last updated: 2026-05-27
 | `HMSegmentedControl` | CocoaPods Trunk | Yes | **Vendored** in `ios/Vendor/HMSegmentedControl/` |
 | React Native core (via `install_modules_dependencies`) | npm + RN CocoaPods | Partially (RN's pods) | Unchanged; host app still uses CocoaPods for RN |
 | MMDrawerController | Vendored in `ios/RNNSideMenu/` | No | Already in-tree |
-| OCMock (playground tests only) | CocoaPods Trunk | Yes (tests) | Kept for test targets only |
+| OCMock (playground tests only) | GitHub `erikdoe/ocmock` v3.9.1 | Yes (tests) | `rnn_ocmock_pod` in playground Podfile |
 
 ## Distribution
 

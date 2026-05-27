@@ -168,6 +168,18 @@ function draftGitRelease(version) {
   exec.execSync(`sleep 30`);
   // For some unknown reason, gren release works well only when calling it twice.
   exec.execSync(`npx gren release --tags=${version}`);
+  printIosReleaseFollowUp(version);
+}
+
+function printIosReleaseFollowUp(version) {
+  console.log(`
+=== iOS release follow-up (CocoaPods Trunk / SPM) ===
+- Consumers: npm + autolinking only (see docs/MIGRATION_COCOAPODS_TRUNK.md).
+- Optional SPM xcframework: ./scripts/release-ios-assets.sh ${version}
+  (add --build to produce build/spm/ReactNativeNavigation.xcframework.zip first).
+- Full checklist: docs/RELEASE_CHECKLIST.md
+=====================================================
+`);
 }
 
 run();

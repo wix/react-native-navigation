@@ -24,6 +24,11 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+# OCMock via GitHub (not CocoaPods Trunk) for playground unit-test targets
+def rnn_ocmock_pod
+  pod 'OCMock', :git => 'https://github.com/erikdoe/ocmock.git', :tag => 'v3.9.1'
+end
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -70,7 +75,7 @@ target 'NavigationTests' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'OCMock'
+  rnn_ocmock_pod
 end
 
 target 'NavigationIOS12Tests' do
@@ -81,7 +86,7 @@ target 'NavigationIOS12Tests' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'OCMock'
+  rnn_ocmock_pod
 end
 
 target 'SnapshotTests' do
@@ -92,5 +97,5 @@ target 'SnapshotTests' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'OCMock'
+  rnn_ocmock_pod
 end
