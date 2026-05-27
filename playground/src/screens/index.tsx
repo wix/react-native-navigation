@@ -164,6 +164,14 @@ function registerScreens() {
     Screens.WebViewTab,
     () => require('./TabbedWebViewScreen').WebViewTab
   );
+  Navigation.registerComponent(
+    Screens.CustomBottomTabItem,
+    () => require('./CustomBottomTabItem').default
+  );
+  Navigation.registerComponent(
+    Screens.CustomBottomTabContent,
+    () => require('./CustomBottomTabContentScreen').default
+  );
   Navigation.setLazyComponentRegistrator((componentName) => {
     switch (componentName) {
       case Screens.LazyTitleView:

@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.util.Log;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -25,6 +27,7 @@ import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.SystemUiUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -34,13 +37,17 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsContainer;
 import com.reactnativenavigation.views.bottomtabs.BottomTabsLayout;
+import com.reactnativenavigation.views.bottomtabs.CustomBottomTabItemView;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BottomTabsController extends ParentController<BottomTabsLayout> implements AHBottomNavigation.OnTabSelectedListener, TabSelector {
+
+    private static final String LOG_TAG = "BottomTabsController";
 
     private BottomTabsContainer bottomTabsContainer;
     private BottomTabs bottomTabs;
@@ -51,6 +58,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabsAttacher tabsAttacher;
     private final BottomTabsPresenter presenter;
     private final BottomTabPresenter tabPresenter;
+    private boolean useCustomItemViews;
 
     public BottomTabsAnimator getAnimator() {
         return presenter.getAnimator();
@@ -105,11 +113,57 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         bottomTabs.setOnTabSelectedListener(this);
         root.addBottomTabsContainer(bottomTabsContainer);
 
+        useCustomItemViews = resolveUseCustomItemViews();
+        tabPresenter.setUseCustomItemViews(useCustomItemViews);
+
         bottomTabs.addItems(createTabs());
+
+        if (useCustomItemViews) {
+            attachCustomItemViewsToCells();
+        }
+
         setInitialTab(resolveCurrentOptions);
         tabsAttacher.attach();
 
         return root;
+    }
+
+    private boolean resolveUseCustomItemViews() {
+        if (tabs.isEmpty()) return false;
+        int withComponent = 0;
+        for (ViewController<?> tab : tabs) {
+            BottomTabOptions options = tab.resolveCurrentOptions(initialOptions).bottomTabOptions;
+            if (options.component.hasValue()) withComponent++;
+        }
+        if (withComponent == 0) return false;
+        if (withComponent != tabs.size()) {
+            Log.w(LOG_TAG,
+                    "Mixed bottomTab.component usage detected (" + withComponent + " of "
+                            + tabs.size() + " tabs). All tabs must declare a component or none — "
+                            + "falling back to native rendering for all tabs.");
+            return false;
+        }
+        return true;
+    }
+
+    private void attachCustomItemViewsToCells() {
+        List<CustomBottomTabItemView> overlays = new ArrayList<>();
+        int initialIndex = bottomTabs.getCurrentItem();
+        for (int i = 0; i < tabs.size(); i++) {
+            BottomTabOptions options = tabs.get(i).resolveCurrentOptions(initialOptions).bottomTabOptions;
+            String componentId = options.component.componentId.get(tabs.get(i).getId() + "_tab_" + i);
+            String componentName = options.component.name.get();
+            String badge = options.badge.hasValue() ? options.badge.get() : null;
+            CustomBottomTabItemView itemView = new CustomBottomTabItemView(
+                    getActivity(),
+                    componentId,
+                    componentName,
+                    i,
+                    i == initialIndex,
+                    badge);
+            overlays.add(itemView);
+        }
+        bottomTabs.setCustomItemViews(overlays);
     }
 
     private void setInitialTab(Options resolveCurrentOptions) {
@@ -120,6 +174,9 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
             initialTabIndex = resolveCurrentOptions.bottomTabsOptions.currentTabIndex.get();
         }
         bottomTabs.setCurrentItem(initialTabIndex, false);
+        if (useCustomItemViews) {
+            bottomTabs.onCustomItemViewSelectionChanged(initialTabIndex);
+        }
     }
 
     @NonNull
@@ -156,6 +213,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     public void applyChildOptions(Options options, ViewController<?> child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
+        onNavigationBarOptionsChanged(options);
         performOnParentController(parent -> parent.applyChildOptions(
                 this.options.copy()
                         .clearBottomTabsOptions()
@@ -170,6 +228,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
+        onNavigationBarOptionsChanged(options);
         performOnParentController(parent -> parent.mergeChildOptions(options.copy().clearBottomTabsOptions(), child));
     }
 
@@ -291,6 +350,9 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         ViewController<?> previouslyVisible = getCurrentChild();
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentChild().onSelected(previouslyVisible);
+        if (useCustomItemViews) {
+            bottomTabs.onCustomItemViewSelectionChanged(newIndex);
+        }
     }
 
     private void saveTabSelection(int newIndex, boolean enableSelectionHistory) {
@@ -316,12 +378,21 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     @Override
     protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
-
-        int bottomInset = (imeInsets.bottom > 0) ? 0 : sysInsets.bottom;
-        view.setPaddingRelative(0, 0, 0, bottomInset);
+        boolean drawBehindNavBar = resolveCurrentOptions().navigationBar.isDrawBehindAndVisible();
+        view.setPaddingRelative(0, 0, 0, SystemUiUtils.getBottomTabsSystemBarPadding(insets, drawBehindNavBar));
         return insets;
+    }
+
+    private void onNavigationBarOptionsChanged(Options options) {
+        if (!options.navigationBar.hasAnyValue()) return;
+        refreshNavigationBarInsets();
+    }
+
+    private void refreshNavigationBarInsets() {
+        if (getView() != null) {
+            applyBottomInset();
+            ViewCompat.requestApplyInsets(getView());
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

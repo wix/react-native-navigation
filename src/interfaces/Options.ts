@@ -1011,6 +1011,54 @@ export interface OptionsBottomTabs {
    * Control the shadow of the Bottom tabs bar
    */
   shadow?: ShadowOptions;
+  /**
+   * Visual options for the floating row that hosts custom React-component
+   * bottom tab cells. Only takes effect when every `bottomTab.component`
+   * is set on that `bottomTabs` layout.
+   *
+   * Same JS shape on iOS and Android. iOS applies options via the native
+   * parser; Android receives them through `RNNBottomTabsCustomRowModule`.
+   */
+  customRow?: BottomTabsCustomRowOptions;
+}
+
+export interface BottomTabsCustomRowOptions {
+  /**
+   * Content height of the row in points (iOS) / dp (Android). Excludes
+   * safe-area inset. Total row height = `height` + safe bottom + `bottomMargin`.
+   *
+   * Default: native tab content height; on iOS 26+ an extra 18pt when omitted.
+   */
+  height?: number;
+  /**
+   * Solid background color for the row. When set, overrides
+   * `backgroundEffect`.
+   */
+  backgroundColor?: Color;
+  /**
+   * Visual effect for the row background.
+   * - `glass`: iOS 26+ `UIGlassEffect`.
+   * - `blur`: `UIBlurEffect` with `systemChromeMaterial`.
+   * - `none`: fully transparent.
+   *
+   * Default: `glass` on iOS 26+, `blur` on older versions.
+   */
+  backgroundEffect?: 'glass' | 'blur' | 'none';
+  /**
+   * Corner radius applied to the row's background.
+   * Default: 28 on iOS 26+, 0 below.
+   */
+  cornerRadius?: number;
+  /**
+   * Horizontal inset from the screen edges.
+   * Default: 16 on iOS 26+, 0 below.
+   */
+  horizontalMargin?: number;
+  /**
+   * Distance between the row's bottom edge and the safe-area bottom.
+   * Default: 0.
+   */
+  bottomMargin?: number;
 }
 
 export interface ShadowOptions {
@@ -1046,6 +1094,45 @@ export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
+
+  /**
+   * Render a React component as the tab item content (icon + text area).
+   *
+   * When set, the native icon, text and font props (`text`, `icon`,
+   * `selectedIcon`, `sfSymbol`, `sfSelectedSymbol`, `iconColor`,
+   * `selectedIconColor`, `iconWidth`, `iconHeight`, `iconInsets`,
+   * `fontFamily`, `fontWeight`, `fontSize`, `selectedFontSize`,
+   * `textColor`, `selectedTextColor`) are ignored for that tab.
+   *
+   * For the custom rendering to take effect every tab in the
+   * `bottomTabs` layout must declare a `component`. If only some
+   * tabs declare one a warning is logged and native rendering is
+   * used for all tabs.
+   *
+   * The component receives the following initial props and
+   * subsequent prop updates:
+   * - `componentId`: stable id for this tab item instance
+   * - `tabIndex`: position of the tab (0-based)
+   * - `selected`: whether this tab is currently selected
+   * - `badge`: current badge text (mirrors `bottomTab.badge`)
+   *
+   * Native still owns selection, hide/show, drawBehind, animations
+   * and the dot indicator. To switch tabs from inside the component
+   * use `Navigation.mergeOptions(parentId, { bottomTabs: { currentTabIndex } })`.
+   */
+  component?: {
+    /**
+     * The registered name of the component (passed to
+     * `Navigation.registerComponent`).
+     */
+    name: string;
+    /**
+     * Props passed once when the component is created. Updates from
+     * native (`selected`, `badge`) are delivered as separate prop
+     * updates.
+     */
+    passProps?: object;
+  };
 
   /**
    * Set the text to display below the icon
@@ -1598,6 +1685,11 @@ export interface AnimationOptions {
 export interface NavigationBarOptions {
   backgroundColor?: Color;
   visible?: boolean;
+  /**
+   * Draw screen content behind the system navigation bar while keeping it visible.
+   * On Android 15+ edge-to-edge, use with `backgroundColor: 'transparent'`.
+   */
+  drawBehind?: boolean;
 }
 
 /**

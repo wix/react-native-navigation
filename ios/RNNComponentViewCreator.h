@@ -9,7 +9,8 @@ typedef enum RNNComponentType {
     RNNComponentTypeComponent,
     RNNComponentTypeTopBarTitle,
     RNNComponentTypeTopBarButton,
-    RNNComponentTypeTopBarBackground
+    RNNComponentTypeTopBarBackground,
+    RNNComponentTypeBottomTabItem
 } RNNComponentType;
 
 @protocol RNNComponentViewCreator
