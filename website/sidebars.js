@@ -14,6 +14,7 @@ module.exports = {
       'docs/passing-data-to-components',
       'docs/functionalComponents',
       'docs/customBackNavigation',
+      'docs/deep-linking',
     ],
     Layouts: [
       'docs/stack',
