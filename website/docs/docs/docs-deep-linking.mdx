@@ -1,0 +1,414 @@
+---
+id: deep-linking
+title: Deep Linking
+sidebar_label: Deep Linking
+---
+
+Deep linking opens a specific screen in your app from a URL — whether from a custom scheme (`myapp://user/42`) or a universal link (`https://myapp.com/user/42`). React Native Navigation maps URLs to screens and **presents the matched content as a modal** on top of whatever the user is currently doing, so their navigation state is preserved when they dismiss the modal.
+
+## Setting up linking
+
+Call `Navigation.setLinking()` once during app startup, alongside your `Navigation.registerComponent` calls:
+
+```js
+import { Navigation } from 'react-native-navigation';
+
+Navigation.setLinking({
+  prefixes: ['myapp://', 'https://myapp.com'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'user/:id',
+      Settings: {
+        path: 'settings',
+        screens: {
+          Notifications: 'notifications',
+        },
+      },
+    },
+  },
+});
+```
+
+When a deep link arrives:
+
+1. RNN parses the URL, strips the longest matching prefix, and matches the path against the `screens` tree.
+2. The matched chain is wrapped in a `stack` and presented via `showModal`. The user can dismiss the modal to return to their previous flow.
+3. If no route matches, the optional `fallback` callback is invoked.
+
+Path parameters (`:id`) and query parameters are extracted and passed as `passProps` to each component in the modal.
+
+## Configuration
+
+### `prefixes`
+
+Array of URL prefixes your app handles. Custom schemes and universal-link hosts are both supported. The longest matching prefix wins.
+
+```js
+prefixes: ['myapp://', 'https://myapp.com', 'https://myapp.com/v2'],
+```
+
+### `config.screens`
+
+Map of screen names (must match the names you registered with `Navigation.registerComponent`) to URL path patterns.
+
+**String value** — a leaf route:
+
+```js
+screens: {
+  Home: 'home',          // matches myapp://home
+  Profile: 'user/:id',   // matches myapp://user/42, extracts { id: '42' }
+}
+```
+
+**Object value** — a route with nested children:
+
+```js
+screens: {
+  Settings: {
+    path: 'settings',
+    screens: {
+      Notifications: 'notifications',
+      Account: 'account/:section',
+    },
+  },
+}
+// myapp://settings/notifications      → stack: [Settings, Notifications]
+// myapp://settings/account/billing    → stack: [Settings, Account] with { section: 'billing' }
+```
+
+**Object value with no `path`** — a grouping node that contributes a screen to the chain but consumes no URL segments:
+
+```js
+screens: {
+  Main: {
+    screens: {
+      Feed: 'feed',     // matches myapp://feed → stack: [Main, Feed]
+      Search: 'search',
+    },
+  },
+}
+```
+
+### Path parameters
+
+Use `:paramName` in a pattern segment to capture it. Path params are merged with query params and handed to that segment's component as `passProps`. Path params win on key collision.
+
+```js
+screens: { Post: 'user/:userId/post/:postId' }
+
+// myapp://user/5/post/99
+// → Post screen receives passProps: { userId: '5', postId: '99' }
+```
+
+### Query parameters
+
+Query string values are parsed automatically and merged into every segment's `passProps`:
+
+```
+myapp://search?q=hello&page=2
+→ Search screen receives passProps: { q: 'hello', page: '2' }
+```
+
+#### Reserved keys
+
+The query/path keys `ref` and `key` are **not** forwarded as `passProps`. React reserves these names (`ref` is consumed by React itself; passing a string `ref` to a component crashes under React 19's stricter validation). RNN silently drops them and logs a dev-mode warning. Rename any conflicting URL parameters before they reach your links:
+
+```
+myapp://user/42?ref=push   →  passProps: { id: '42' }       (ref dropped + warning)
+myapp://user/42?source=push →  passProps: { id: '42', source: 'push' }
+```
+
+## Customizing presentation
+
+By default, every matched link becomes a modal containing a stack with the matched chain pushed in order. If you need to customize either the layout or the navigation command itself, the config exposes two hooks.
+
+### `getModal` — customize the modal layout
+
+Provide a function that returns the `Layout` to present. Useful for adding default options, wrapping in a different layout, or skipping certain matches conditionally.
+
+```js
+Navigation.setLinking({
+  // ...
+  getModal: (match) => ({
+    stack: {
+      children: match.path.map((segment) => ({
+        component: {
+          name: segment.screen,
+          passProps: { ...match.queryParams, ...segment.params },
+          options: {
+            topBar: {
+              leftButtons: [{ id: 'close', text: 'Close' }],
+            },
+          },
+        },
+      })),
+    },
+  }),
+});
+```
+
+Return `undefined` from `getModal` to skip presenting a modal for a particular match (e.g. ignore certain paths).
+
+### `onLink` — full escape hatch
+
+For complete control — pushing onto an existing stack instead of showing a modal, dismissing existing modals first, or composing multiple commands — provide `onLink`. When supplied, RNN does not present anything itself; you call navigation commands yourself.
+
+```js
+Navigation.setLinking({
+  // ...
+  onLink: (match) => {
+    const leaf = match.path[match.path.length - 1];
+
+    if (leaf.screen === 'Profile') {
+      Navigation.push('mainStack', {
+        component: {
+          name: 'Profile',
+          passProps: { id: leaf.params.id },
+        },
+      });
+      return;
+    }
+
+    Navigation.showModal({
+      stack: {
+        children: match.path.map((segment) => ({
+          component: { name: segment.screen, passProps: segment.params },
+        })),
+      },
+    });
+  },
+});
+```
+
+When `onLink` is set, `getModal` is ignored.
+
+## Match payload
+
+Both `getModal` and `onLink` receive the same `RouteMatch` object:
+
+```ts
+interface RouteMatch {
+  url: string;
+  path: RouteMatchSegment[];
+  queryParams: Record<string, string>;
+}
+
+interface RouteMatchSegment {
+  screen: string;
+  params: Record<string, string>;
+}
+```
+
+## Fallback for unmatched URLs
+
+If a received URL has no matching prefix or doesn't match any configured route, the optional `fallback` callback is invoked. Use it for logging, analytics, or routing to a "not found" screen.
+
+```js
+Navigation.setLinking({
+  // ...
+  fallback: (url) => {
+    console.warn(`Unhandled deep link: ${url}`);
+  },
+});
+```
+
+## Deferred deep links
+
+Two readiness gates control when links are processed; both must be open before a link is dispatched.
+
+### Automatic root gate
+
+RNN automatically defers link processing until your first `Navigation.setRoot()` resolves. This handles the common case where the OS delivers an initial URL before your app has a root window — the link is queued and replayed once `setRoot` mounts the root.
+
+You don't need to opt into this behavior; it always applies.
+
+### Optional `isReady` gate
+
+For application-level gates such as authentication, supply an `isReady` predicate. The predicate is consulted on every incoming link; when it returns `false`, the link is queued. Once the gate opens, call `setLinkingReady(true)` to flush queued links in order.
+
+```js
+let isAuthenticated = false;
+
+Navigation.setLinking({
+  prefixes: ['myapp://'],
+  config: { screens: { Profile: 'user/:id' } },
+  isReady: () => isAuthenticated,
+});
+
+async function onLoginSuccess() {
+  isAuthenticated = true;
+  Navigation.setLinkingReady(true);
+}
+```
+
+`setLinkingReady(true)` overrides `isReady` once called, so you can also drive the gate purely with explicit calls if you prefer.
+
+## Manual handling
+
+Some links don't arrive via the system URL handler — push-notification payloads, branch.io tokens, App Clips. Feed them into the same pipeline with `Navigation.handleDeepLink(url)`:
+
+```js
+Navigation.handleDeepLink('myapp://user/42?source=notification');
+```
+
+This runs the URL through parse → match → present exactly like a system-delivered link, including readiness gates.
+
+If you'd rather hand the URL off natively (e.g. from a `UNUserNotificationCenterDelegate` you already maintain), call `[self dispatchDeepLinkURL:url]` inside your `RNNAppDelegate` subclass — same behavior, with cold-start queueing built in. See [Native setup → iOS → Notification taps](#ios) for an example.
+
+## Complete example
+
+```js
+import { Navigation } from 'react-native-navigation';
+
+Navigation.registerComponent('Home', () => require('./screens/Home').default);
+Navigation.registerComponent('Profile', () => require('./screens/Profile').default);
+Navigation.registerComponent('Settings', () => require('./screens/Settings').default);
+Navigation.registerComponent('Notifications', () => require('./screens/Notifications').default);
+
+let isLoggedIn = false;
+
+Navigation.setLinking({
+  prefixes: ['myapp://', 'https://myapp.com'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'user/:id',
+      Settings: {
+        path: 'settings',
+        screens: { Notifications: 'notifications' },
+      },
+    },
+  },
+  isReady: () => isLoggedIn,
+  fallback: (url) => console.warn(`Unhandled: ${url}`),
+});
+
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: { stack: { children: [{ component: { name: 'Home' } }] } },
+  });
+});
+
+export function onLoginComplete() {
+  isLoggedIn = true;
+  Navigation.setLinkingReady(true);
+}
+```
+
+With this configuration:
+
+- `myapp://home` opens the Home screen as a modal on top of the current screen.
+- `myapp://user/42` opens Profile as a modal with `{ id: '42' }` as props.
+- `myapp://settings/notifications` opens a modal containing a stack with `Settings` → `Notifications` pushed in order.
+- Links arriving before `setRoot` resolves are queued automatically and replayed.
+- Links arriving before login are queued and replayed when `onLoginComplete()` runs.
+
+## Native setup
+
+The framework consumes URLs from React Native's `Linking` API. You still configure the URL schemes and universal links at the platform level — but, unlike most React Native apps, you don't need to hand-write `application:openURL:` or `application:continueUserActivity:` glue. As long as your `AppDelegate` subclasses `RNNAppDelegate`, custom-scheme openings and universal links are forwarded to JS automatically, including cold-start URLs that arrive before the React runtime is ready.
+
+### iOS
+
+**1. Register your URL scheme in `Info.plist`:**
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>myapp</string>
+    </array>
+  </dict>
+</array>
+```
+
+**2. (Optional) Universal links.** Add the Associated Domains entitlement and host an `apple-app-site-association` file — see [Apple's docs](https://developer.apple.com/documentation/xcode/supporting-associated-domains). `RNNAppDelegate` already implements `application:continueUserActivity:restorationHandler:` and forwards browser-activity URLs through the same pipeline.
+
+**3. (Optional) Notification taps.** Notifications aren't routed automatically because most apps already own `UNUserNotificationCenter.current.delegate` via Firebase / OneSignal / etc. From your existing notification handler, hand the URL off to RNN:
+
+```objc
+#import "AppDelegate.h"  // your subclass of RNNAppDelegate
+#import <UserNotifications/UserNotifications.h>
+
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@end
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+  return YES;
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+  completionHandler(UNNotificationPresentationOptionBanner |
+                    UNNotificationPresentationOptionList |
+                    UNNotificationPresentationOptionSound);
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+  NSString *urlString = response.notification.request.content.userInfo[@"url"];
+  if ([urlString isKindOfClass:[NSString class]]) {
+    [self dispatchDeepLinkURL:[NSURL URLWithString:urlString]];
+  }
+  completionHandler();
+}
+
+@end
+```
+
+`dispatchDeepLinkURL:` is inherited from `RNNAppDelegate`. It safely handles cold-start (URLs arriving before the React runtime is ready are queued and flushed automatically once content first renders) so you can call it from anywhere — push handlers, deferred-deep-link SDKs, branch.io callbacks, etc.
+
+The JS equivalent is `Navigation.handleDeepLink(url)`; use whichever fits the layer you're working at.
+
+### Android
+
+Add an intent filter to your `MainActivity` in `AndroidManifest.xml`:
+
+```xml
+<activity
+  android:name=".MainActivity"
+  android:launchMode="singleTask">
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="myapp" />
+  </intent-filter>
+</activity>
+```
+
+For App Links, add `android:autoVerify="true"` and host an `assetlinks.json`. See [Android's documentation](https://developer.android.com/training/app-links).
+
+`NavigationActivity` already forwards both cold-start (`getIntent()`) and warm (`onNewIntent`) URLs to React Native's `Linking` module — no extra Java/Kotlin needed. Notification taps that carry a deep-link URI (via `PendingIntent` with `ACTION_VIEW`) flow through the same `onNewIntent` path automatically.
+
+## API reference
+
+### `Navigation.setLinking(config)`
+
+Configure deep link handling. Subsequent calls reconfigure cleanly (the previous subscription is torn down).
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `prefixes` | `string[]` | Yes | URL prefixes to match. Longest wins. |
+| `config.screens` | `ScreensConfig` | Yes | Screen-to-path mapping. |
+| `getModal` | `(match) => Layout \| undefined` | No | Build a custom modal layout for the match. |
+| `onLink` | `(match) => void` | No | Full escape hatch. Overrides default and `getModal`. |
+| `fallback` | `(url) => void` | No | Called when a URL doesn't match any prefix or route. |
+| `isReady` | `() => boolean` | No | Predicate gating link processing. |
+
+### `Navigation.handleDeepLink(url)`
+
+Feed a URL into the pipeline as if it had been delivered by the OS.
+
+### `Navigation.setLinkingReady(ready)`
+
+Set the user-controlled readiness gate. Passing `true` flushes queued links; passing `false` blocks future links until called again with `true`.

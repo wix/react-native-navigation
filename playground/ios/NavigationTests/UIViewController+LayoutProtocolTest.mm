@@ -260,6 +260,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:nil
                                        childViewControllers:@[ stack, stack2 ]
                                          bottomTabsAttacher:nil];
@@ -299,6 +300,7 @@
                                                   presenter:[RNNBasePresenter new]
                                          bottomTabPresenter:nil
                                       dotIndicatorPresenter:nil
+                                          componentRegistry:nil
                                                eventEmitter:nil
                                        childViewControllers:@[ stack, stack2 ]
                                          bottomTabsAttacher:nil];

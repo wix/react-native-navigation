@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import {
+  Navigation as RNNavigation,
   NavigationComponent,
   NavigationProps,
   OptionsModalPresentationStyle,
@@ -22,6 +23,7 @@ const {
   PAGE_SHEET_MODAL_BTN,
   NAVIGATION_SCREEN,
   BACK_BUTTON_SCREEN_BTN,
+  SIMULATE_NESTED_DEEP_LINK_BTN,
 } = testIDs;
 
 interface Props extends NavigationProps {}
@@ -94,6 +96,11 @@ export default class NavigationScreen extends NavigationComponent<Props> {
         <Button label="Shared Element (Cocktails)" onPress={this.sharedElement} />
         <Button label="Shared Element (Car Dealer)" onPress={this.sharedElementAlt} />
         <Button label="Shared Element (ImageGallery)" onPress={this.sharedElementImageGallery} />
+        <Button
+          label="Simulate Nested Deep Link"
+          testID={SIMULATE_NESTED_DEEP_LINK_BTN}
+          onPress={this.simulateNestedDeepLink}
+        />
         {Platform.OS === 'ios' && (
           <Navigation.TouchablePreview
             touchableComponent={Button}
@@ -124,6 +131,8 @@ export default class NavigationScreen extends NavigationComponent<Props> {
   sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen);
   sharedElementAlt = () => Navigation.push(this, Screens.CarsListScreen);
   sharedElementImageGallery = () => Navigation.push(this, Screens.ImageGalleryListScreen);
+  simulateNestedDeepLink = () =>
+    RNNavigation.handleDeepLink('rnnplayground://pushed/42/detail/99');
   preview = ({ reactTag }: { reactTag: number | null }) => {
     if (reactTag === null) {
       return;

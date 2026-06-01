@@ -28,6 +28,8 @@ import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsCrawler } from './commands/OptionsCrawler';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
+import { LinkingHandler } from './linking/LinkingHandler';
+import { LinkingConfig } from './linking/types';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
@@ -45,6 +47,7 @@ export class NavigationRoot {
   private readonly componentEventsObserver: ComponentEventsObserver;
   private readonly componentWrapper: ComponentWrapper;
   private readonly optionsCrawler: OptionsCrawler;
+  private readonly linkingHandler: LinkingHandler;
 
   constructor(
     private readonly nativeCommandsSender: NativeCommandsSender,
@@ -96,6 +99,7 @@ export class NavigationRoot {
       this.commandsObserver,
       this.componentEventsObserver
     );
+    this.linkingHandler = new LinkingHandler((layout) => this.commands.showModal(layout));
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
@@ -168,7 +172,9 @@ export class NavigationRoot {
    * Reset the app to a new layout
    */
   public setRoot(layout: LayoutRoot): Promise<string> {
-    return this.commands.setRoot(layout);
+    const result = this.commands.setRoot(layout);
+    result.then(() => this.linkingHandler.setRootReady()).catch(() => {});
+    return result;
   }
 
   /**
@@ -278,6 +284,35 @@ export class NavigationRoot {
    */
   public getLaunchArgs(): Promise<any> {
     return this.commands.getLaunchArgs();
+  }
+
+  /**
+   * Configure deep link handling. Maps URL prefixes and path patterns to
+   * RNN components. By default each matched link is presented as a modal
+   * (wrapped in a stack so a topBar close button can be configured); supply
+   * `getModal` to customize the modal layout or `onLink` to bypass the
+   * default behavior entirely.
+   */
+  public setLinking(config: LinkingConfig): void {
+    this.linkingHandler.configure(config);
+  }
+
+  /**
+   * Manually run a URL through the deep link pipeline as if it had been
+   * delivered by the OS. Useful for URLs received from push notifications
+   * or other non-`Linking` sources.
+   */
+  public handleDeepLink(url: string): void {
+    this.linkingHandler.handleURL(url);
+  }
+
+  /**
+   * Signal that the app is ready to process deep links (e.g. after the
+   * user has authenticated). When set to `true`, any links that were
+   * queued while not ready are replayed in order.
+   */
+  public setLinkingReady(ready: boolean): void {
+    this.linkingHandler.setLinkingReady(ready);
   }
 
   /**
