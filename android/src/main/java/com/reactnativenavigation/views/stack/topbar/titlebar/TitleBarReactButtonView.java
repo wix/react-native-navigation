@@ -42,18 +42,25 @@ public class TitleBarReactButtonView extends ReactView {
     }
 
     private int createHeightSpec(int measureSpec, Number dimension) {
-        return createSpec(measureSpec, dimension, Math.max(resolveActionBarSize(), 1));
+        if (dimension.hasValue()) {
+            return createExactSpec(dimension);
+        }
+        return makeMeasureSpec(Math.max(resolveActionBarSize(), 1), EXACTLY);
     }
 
     private int createSpec(int measureSpec, Number dimension, int fallbackSize) {
         if (dimension.hasValue()) {
-            return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
+            return createExactSpec(dimension);
         } else {
-            // Use bounded wrap-content measurement to avoid RN/Yoga RTL padding issues caused by
+            // Use bounded wrap-content width to avoid RN/Yoga RTL padding issues caused by
             // UNSPECIFIED, without forcing every custom button to actionBarSize width.
             int availableSize = MeasureSpec.getSize(measureSpec);
             return makeMeasureSpec(availableSize > 0 ? availableSize : fallbackSize, AT_MOST);
         }
+    }
+
+    private int createExactSpec(Number dimension) {
+        return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
     }
 
     private int resolveActionBarSize() {
