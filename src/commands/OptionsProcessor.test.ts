@@ -890,6 +890,9 @@ describe('navigation options', () => {
                 waitForRender: true,
                 sharedElementTransitions: [],
                 elementTransitions: [],
+                zoom: {
+                  fromId: 'thumb-1',
+                },
               },
             },
           };
@@ -899,7 +902,114 @@ describe('navigation options', () => {
             waitForRender: true,
             sharedElementTransitions: [],
             elementTransitions: [],
+            zoom: {
+              fromId: 'thumb-1',
+            },
           });
+        });
+      });
+
+      it('preserves push zoom options', () => {
+        const options: Options = {
+          animations: {
+            push: {
+              zoom: {
+                fromId: 'thumb-1',
+              },
+            },
+          },
+        };
+
+        uut.processOptions(CommandName.SetRoot, options);
+
+        expect(options.animations!!.push).toStrictEqual({
+          zoom: {
+            fromId: 'thumb-1',
+          },
+        });
+      });
+
+      it('preserves disabled push zoom options', () => {
+        const options: Options = {
+          animations: {
+            push: {
+              zoom: {
+                fromId: 'thumb-1',
+                enabled: false,
+              },
+            },
+          },
+        };
+
+        uut.processOptions(CommandName.SetRoot, options);
+
+        expect(options.animations!!.push).toStrictEqual({
+          zoom: {
+            fromId: 'thumb-1',
+            enabled: false,
+          },
+        });
+      });
+
+      it('does not treat zoom as a legacy push animation shape', () => {
+        const options: Options = {
+          animations: {
+            push: {
+              zoom: {
+                fromId: 'thumb-1',
+              },
+              content: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+              topBar: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+              bottomTabs: {
+                alpha: {
+                  from: 0,
+                  to: 1,
+                },
+              },
+            },
+          },
+        };
+
+        uut.processOptions(CommandName.SetRoot, options);
+
+        expect(options.animations!!.push).toStrictEqual({
+          zoom: {
+            fromId: 'thumb-1',
+          },
+          content: {
+            enter: {
+              alpha: {
+                from: 0,
+                to: 1,
+              },
+            },
+          },
+          topBar: {
+            enter: {
+              alpha: {
+                from: 0,
+                to: 1,
+              },
+            },
+          },
+          bottomTabs: {
+            enter: {
+              alpha: {
+                from: 0,
+                to: 1,
+              },
+            },
+          },
         });
       });
     });
