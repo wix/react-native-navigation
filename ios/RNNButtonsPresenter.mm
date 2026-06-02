@@ -48,26 +48,34 @@
 }
 
 - (void)applyLeftButtonsColor:(Color *)color {
-    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
-        [button mergeColor:color];
+    for (UIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
+        if ([self isRNNUIBarButton:button]) {
+            [(RNNUIBarButtonItem *)button mergeColor:color];
+        }
     }
 }
 
 - (void)applyRightButtonsColor:(Color *)color {
-    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
-        [button mergeColor:color];
+    for (UIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
+        if ([self isRNNUIBarButton:button]) {
+            [(RNNUIBarButtonItem *)button mergeColor:color];
+        }
     }
 }
 
 - (void)applyRightButtonsBackgroundColor:(Color *)color {
-    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
-        [button mergeBackgroundColor:color];
+    for (UIBarButtonItem *button in self.viewController.navigationItem.rightBarButtonItems) {
+        if ([self isRNNUIBarButton:button]) {
+            [(RNNUIBarButtonItem *)button mergeBackgroundColor:color];
+        }
     }
 }
 
 - (void)applyLeftButtonsBackgroundColor:(Color *)color {
-    for (RNNUIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
-        [button mergeBackgroundColor:color];
+    for (UIBarButtonItem *button in self.viewController.navigationItem.leftBarButtonItems) {
+        if ([self isRNNUIBarButton:button]) {
+            [(RNNUIBarButtonItem *)button mergeBackgroundColor:color];
+        }
     }
 }
 
@@ -93,7 +101,8 @@
 
     if (@available(iOS 26.0, *)) {
         if (barButtonItems.count > 1) {
-            NSMutableArray *separated = [NSMutableArray arrayWithCapacity:barButtonItems.count * 2 - 1];
+            NSMutableArray *separated =
+                [NSMutableArray arrayWithCapacity:barButtonItems.count * 2 - 1];
             for (NSUInteger i = 0; i < barButtonItems.count; i++) {
                 [separated addObject:barButtonItems[i]];
                 if (i < barButtonItems.count - 1) {
