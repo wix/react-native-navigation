@@ -35,6 +35,12 @@
       "source": "./src/Mock/index.ts",
       "react-native": "./src/Mock/index.ts"
     },
+    "./nativescript": {
+      "types": "./lib/typescript/nativescript/index.d.ts",
+      "default": "./lib/module/nativescript/index.js",
+      "source": "./src/nativescript/index.ts",
+      "react-native": "./src/nativescript/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -71,6 +77,7 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./"
   },
   "peerDependencies": {
+    "@nativescript/react-native": "*",
     "react": "*",
     "react-native": "*",
     "remx": "*"

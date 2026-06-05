@@ -1,4 +1,4 @@
-import { NativeCommandsSender } from './NativeCommandsSender';
+import { NativeCommandsModule } from './NativeCommandsSender';
 
 export interface NavigationConstants {
   statusBarHeight: number;
@@ -8,12 +8,12 @@ export interface NavigationConstants {
 }
 
 export class Constants {
-  static async get(nativeCommandSender: NativeCommandsSender): Promise<NavigationConstants> {
+  static async get(nativeCommandSender: NativeCommandsModule): Promise<NavigationConstants> {
     const constants: NavigationConstants = await nativeCommandSender.getNavigationConstants();
     return new Constants(constants);
   }
 
-  static getSync(nativeCommandSender: NativeCommandsSender): NavigationConstants {
+  static getSync(nativeCommandSender: NativeCommandsModule): NavigationConstants {
     const constants: NavigationConstants = nativeCommandSender.getNavigationConstantsSync();
     return new Constants(constants);
   }

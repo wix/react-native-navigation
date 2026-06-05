@@ -7,7 +7,7 @@ import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
 import { CommandName } from './interfaces/CommandName';
 import { OptionsProcessor as OptionProcessor } from './interfaces/Processors';
 import { NavigationRoot } from './Navigation';
-import { NativeCommandsSender } from './adapters/NativeCommandsSender';
+import { NativeCommandsModule, NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 import { LinkingConfig } from './linking/types';
@@ -23,7 +23,7 @@ export class NavigationDelegate {
   }
 
   private createConcreteNavigation(
-    nativeCommandsSender: NativeCommandsSender,
+    nativeCommandsSender: NativeCommandsModule,
     nativeEventsReceiver: NativeEventsReceiver,
     appRegistryService: AppRegistryService
   ) {
@@ -249,7 +249,7 @@ export class NavigationDelegate {
   }
 
   public mockNativeComponents(
-    mockedNativeCommandsSender: NativeCommandsSender,
+    mockedNativeCommandsSender: NativeCommandsModule,
     mockedNativeEventsReceiver: NativeEventsReceiver,
     mockedAppRegistryService: AppRegistryService
   ) {

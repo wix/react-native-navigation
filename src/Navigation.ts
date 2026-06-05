@@ -1,5 +1,5 @@
 import isArray from 'lodash/isArray';
-import { NativeCommandsSender } from './adapters/NativeCommandsSender';
+import { NativeCommandsModule } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { UniqueIdProvider } from './adapters/UniqueIdProvider';
 import { Store } from './components/Store';
@@ -50,7 +50,7 @@ export class NavigationRoot {
   private readonly linkingHandler: LinkingHandler;
 
   constructor(
-    private readonly nativeCommandsSender: NativeCommandsSender,
+    private readonly nativeCommandsSender: NativeCommandsModule,
     private readonly nativeEventsReceiver: NativeEventsReceiver,
     private readonly appRegistryService: AppRegistryService
   ) {

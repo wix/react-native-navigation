@@ -1,7 +1,7 @@
 import { NavigationConstants } from './Constants';
 import RNNCommandsModule, { Spec } from './NativeRNNTurboModule';
 
-interface NativeCommandsModule {
+export interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
   setDefaultOptions(options: object): void;
   mergeOptions(componentId: string, options: object): void;

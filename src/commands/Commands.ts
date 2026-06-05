@@ -2,7 +2,7 @@ import cloneDeepWith from 'lodash/cloneDeepWith';
 import cloneDeep from 'lodash/cloneDeep';
 import map from 'lodash/map';
 import { CommandsObserver } from '../events/CommandsObserver';
-import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
+import { NativeCommandsModule } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Options } from '../interfaces/Options';
 import { Layout, LayoutRoot } from '../interfaces/Layout';
@@ -20,7 +20,7 @@ export class Commands {
 
   constructor(
     private readonly store: Store,
-    private readonly nativeCommandsSender: NativeCommandsSender,
+    private readonly nativeCommandsSender: NativeCommandsModule,
     private readonly layoutTreeParser: LayoutTreeParser,
     private readonly layoutTreeCrawler: LayoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver,
