@@ -4,6 +4,18 @@ declare module '@nativescript/react-native' {
 
   export type UIKitViewContext<Props extends object> = {
     props: Readonly<Props>;
+    emit<K extends keyof Props>(
+      eventName: K,
+      payload?: Props[K] extends ((arg: infer Payload) => unknown) | undefined
+        ? Payload
+        : unknown
+    ): void;
+    delegate<T extends object>(
+      object: unknown,
+      protocolRef: unknown,
+      implementation: Partial<T>
+    ): T;
+    targetAction(control: unknown, events: unknown, callback: () => void): void;
   };
 
   export type UIKitLayoutOptions = {

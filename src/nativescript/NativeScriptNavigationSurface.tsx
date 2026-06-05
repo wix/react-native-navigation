@@ -37,11 +37,13 @@ type NativeScriptNavigationStore = {
   setRoot(root: ParsedLayoutNode, modals?: ParsedLayoutNode[], overlays?: ParsedLayoutNode[]): void;
   setDefaultOptions(options: Options): void;
   mergeOptions(componentId: string, options: Options): void;
-  push(componentId: string, layout: ParsedLayoutNode): void;
+  getStackIdForComponent(componentId: string): string | undefined;
+  push(componentId: string, layout: ParsedLayoutNode): {didPush: boolean; pushedId?: string; stackId?: string};
   pop(componentId: string): string | undefined;
   popTo(componentId: string): string | undefined;
   popToRoot(componentId: string): string | undefined;
   setStackRoot(componentId: string, children: ParsedLayoutNode[]): void;
+  syncStackChildren(componentId: string, childIds: string[]): string[];
   showModal(layout: ParsedLayoutNode): void;
   dismissModal(componentId: string): string | undefined;
   dismissAllModals(): void;
@@ -117,6 +119,79 @@ function makeNativeScriptNavigationStore(): NativeScriptNavigationStore {
     return undefined;
   };
 
+  const findStackIdForComponent = (
+    root: ParsedLayoutNode | undefined,
+    componentId: string,
+    nearestStackId?: string,
+  ): string | undefined => {
+    if (!root) {
+      return undefined;
+    }
+    const currentStackId = root.type === 'Stack' ? root.id ?? nearestStackId : nearestStackId;
+    if (root.id === componentId) {
+      return currentStackId;
+    }
+    for (const child of root.children ?? []) {
+      const found = findStackIdForComponent(child, componentId, currentStackId);
+      if (found) {
+        return found;
+      }
+    }
+    return undefined;
+  };
+
+  const getStackIdForComponent = (componentId: string): string | undefined => {
+    const rootStackId = findStackIdForComponent(state.snapshot.root, componentId);
+    if (rootStackId) {
+      return rootStackId;
+    }
+    for (const modal of state.snapshot.modals) {
+      const modalStackId = findStackIdForComponent(modal, componentId);
+      if (modalStackId) {
+        return modalStackId;
+      }
+    }
+    for (const overlay of state.snapshot.overlays) {
+      const overlayStackId = findStackIdForComponent(overlay, componentId);
+      if (overlayStackId) {
+        return overlayStackId;
+      }
+    }
+    return undefined;
+  };
+
+  const syncStackChildren = (componentId: string, childIds: string[]): string[] => {
+    const snapshot = cloneSnapshot(state.snapshot);
+    let didSync = false;
+    let removedIds: string[] = [];
+    mutateTree(snapshot.root, componentId, (node) => {
+      if (node.type !== 'Stack' || !node.children) {
+        return;
+      }
+      const nextChildren: ParsedLayoutNode[] = [];
+      for (const childId of childIds) {
+        const child = node.children.find((candidate) => candidate.id === childId);
+        if (child) {
+          nextChildren.push(child);
+        }
+      }
+      const nextKey = nextChildren.map((child) => child.id).join('|');
+      const previousKey = node.children.map((child) => child.id).join('|');
+      if (nextKey === previousKey) {
+        return;
+      }
+      removedIds = node.children
+        .filter((child) => child.id != null && !childIds.includes(child.id))
+        .map((child) => child.id as string);
+      node.children = nextChildren;
+      didSync = true;
+    });
+    if (didSync) {
+      replaceState({...state, snapshot});
+    }
+    return removedIds;
+  };
+
   return {
     getState: () => state,
     subscribe(listener) {
@@ -144,19 +219,23 @@ function makeNativeScriptNavigationStore(): NativeScriptNavigationStore {
         },
       });
     },
+    getStackIdForComponent,
     push(componentId, layout) {
       const snapshot = cloneSnapshot(state.snapshot);
       let didPush = false;
+      let stackId: string | undefined;
       mutateTree(snapshot.root, componentId, (node, parent) => {
         const stackNode = node.type === 'Stack' ? node : parent?.type === 'Stack' ? parent : undefined;
         if (stackNode) {
           stackNode.children = [...(stackNode.children ?? []), layout];
+          stackId = stackNode.id ?? componentId;
           didPush = true;
         }
       });
       if (didPush) {
         replaceState({...state, snapshot});
       }
+      return {didPush, pushedId: layout.id, stackId};
     },
     pop(componentId) {
       const snapshot = cloneSnapshot(state.snapshot);
@@ -211,6 +290,7 @@ function makeNativeScriptNavigationStore(): NativeScriptNavigationStore {
       });
       replaceState({...state, snapshot});
     },
+    syncStackChildren,
     showModal(layout) {
       replaceState({
         ...state,
@@ -422,6 +502,22 @@ function NativeScriptLayoutNode({
   const componentId = node.id ?? `${node.type ?? 'node'}-${Math.random().toString(36).slice(2)}`;
   const options = mergeOptions(node.data?.options, mergedOptions[componentId]);
   const attachToReactView = parentId == null;
+  const handleNativeStackChange = React.useCallback((event: any) => {
+    const childIds = event?.nativeEvent?.childIds;
+    if (Array.isArray(childIds)) {
+      navigationStore.syncStackChildren(
+        componentId,
+        childIds.filter((childId): childId is string => typeof childId === 'string'),
+      );
+    }
+  }, [componentId]);
+  const handleNativeBackPress = React.useCallback((event: any) => {
+    const targetComponentId =
+      typeof event?.nativeEvent?.componentId === 'string'
+        ? event.nativeEvent.componentId
+        : componentId;
+    navigationStore.pop(targetComponentId);
+  }, [componentId]);
 
   if (node.type === 'Stack') {
     return (
@@ -429,6 +525,7 @@ function NativeScriptLayoutNode({
         attachController={parentId == null ? attachRootController : false}
         attachNativeView={attachToReactView}
         componentId={componentId}
+        onNativeStackChange={handleNativeStackChange}
         options={options}
         parentId={parentId}
         style={styles.rootFill}>
@@ -475,6 +572,7 @@ function NativeScriptLayoutNode({
       attachNativeView={attachToReactView}
       componentId={componentId}
       componentName={node.data?.name}
+      onNativeBackPress={handleNativeBackPress}
       options={options}
       parentId={parentId}
       style={styles.rootFill}>
@@ -826,6 +924,275 @@ function layoutVisibleController(controller: any) {
   layoutHostedReactSubviews(controller);
 }
 
+function getNavigationRegistry(globalObject: Record<string, any>): any {
+  'worklet';
+  const key = '__rnnNativeScriptNavigationRegistry';
+  const registry = globalObject[key] ?? {};
+  registry.controllers = registry.controllers ?? {};
+  registry.kinds = registry.kinds ?? {};
+  registry.parentChildren = registry.parentChildren ?? {};
+  registry.containerChildKeys = registry.containerChildKeys ?? {};
+  registry.containerChildCounts = registry.containerChildCounts ?? {};
+  globalObject[key] = registry;
+  return registry;
+}
+
+function addNavigationChild(registry: any, parentId: string, childId: string) {
+  'worklet';
+  const children = registry.parentChildren[parentId] ?? [];
+  let exists = false;
+  for (let index = 0; index < children.length; index++) {
+    if (children[index] === childId) {
+      exists = true;
+      break;
+    }
+  }
+  if (!exists) {
+    children[children.length] = childId;
+    registry.parentChildren[parentId] = children;
+  }
+}
+
+function removeNavigationChild(registry: any, parentId: string, childId: string) {
+  'worklet';
+  const children = registry.parentChildren[parentId] ?? [];
+  for (let index = children.length - 1; index >= 0; index--) {
+    if (children[index] === childId) {
+      for (let moveIndex = index; moveIndex < children.length - 1; moveIndex++) {
+        children[moveIndex] = children[moveIndex + 1];
+      }
+      children.length = children.length - 1;
+    }
+  }
+  registry.parentChildren[parentId] = children;
+}
+
+function navigationChildKey(childIds: any[]): string {
+  'worklet';
+  let key = '';
+  for (let index = 0; index < childIds.length; index++) {
+    key += '|' + childIds[index];
+  }
+  return key;
+}
+
+function nativeControllerArray(globalObject: Record<string, any>, childControllers: any[]): any {
+  'worklet';
+  const api = globalObject.__nativeScriptNativeApi;
+  const NSArray = api?.NSArray ?? globalObject.NSArray;
+  return NSArray && typeof NSArray.arrayWithArray === 'function'
+    ? NSArray.arrayWithArray(childControllers)
+    : childControllers;
+}
+
+function collectChildControllers(
+  parent: any,
+  children: any[],
+  registry: any,
+): {controllers: any[]; ids: any[]} {
+  'worklet';
+  const childControllers: any[] = [];
+  const activeChildIds: any[] = [];
+  for (let index = 0; index < children.length; index++) {
+    const childId = children[index];
+    const child = registry.controllers[childId];
+    if (!child) {
+      continue;
+    }
+    const childParent = child.parentViewController;
+    if (childParent && childParent !== parent) {
+      child.willMoveToParentViewController(null);
+      child.removeFromParentViewController();
+      if (child.view?.superview) {
+        child.view.removeFromSuperview();
+      }
+    }
+    childControllers[childControllers.length] = child;
+    activeChildIds[activeChildIds.length] = childId;
+  }
+  return {controllers: childControllers, ids: activeChildIds};
+}
+
+function componentIdForNativeController(registry: any, controller: any): string | null {
+  'worklet';
+  if (!controller) {
+    return null;
+  }
+  const controllers = registry.controllers ?? {};
+  for (const componentId in controllers) {
+    if (controllers[componentId] === controller) {
+      return componentId;
+    }
+  }
+  return null;
+}
+
+function navigationControllerChildIds(navigationController: any, registry: any): string[] {
+  'worklet';
+  const childIds: string[] = [];
+  const viewControllers = navigationController?.viewControllers;
+  const count = arrayCount(viewControllers);
+  for (let index = 0; index < count; index++) {
+    const childController = arrayItem(viewControllers, index);
+    const childId = componentIdForNativeController(registry, childController);
+    if (childId) {
+      childIds[childIds.length] = childId;
+    }
+  }
+  return childIds;
+}
+
+function navigationChildIndex(registry: any, parentId: string, childId: string): number {
+  'worklet';
+  const children = registry.parentChildren[parentId] ?? [];
+  for (let index = 0; index < children.length; index++) {
+    if (children[index] === childId) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+function configureNativeBackButton(controller: any, props: any, registry: any, ctx: any) {
+  'worklet';
+  if (!ctx || !controller?.navigationItem || !props.parentId) {
+    return;
+  }
+  const parentKind = registry.kinds[props.parentId];
+  const childIndex = navigationChildIndex(registry, props.parentId, props.componentId);
+  if (parentKind !== 'stack' || childIndex <= 0) {
+    controller.navigationItem.leftBarButtonItem = null;
+    controller.navigationItem.hidesBackButton = false;
+    controller.__rnnNativeBackButtonId = null;
+    return;
+  }
+  if (controller.__rnnNativeBackButtonId === props.componentId) {
+    return;
+  }
+  const globalObject = globalThis as Record<string, any>;
+  const api = globalObject.__nativeScriptNativeApi;
+  const UIButton = api?.UIButton ?? globalObject.UIButton;
+  const UIBarButtonItem = api?.UIBarButtonItem ?? globalObject.UIBarButtonItem;
+  if (!UIButton || !UIBarButtonItem) {
+    return;
+  }
+  const UIButtonType = api?.UIButtonType ?? globalObject.UIButtonType;
+  const UIControlEvents = api?.UIControlEvents ?? globalObject.UIControlEvents;
+  const UIControlState = api?.UIControlState ?? globalObject.UIControlState;
+  const button =
+    typeof UIButton.buttonWithType === 'function'
+      ? UIButton.buttonWithType(UIButtonType?.System ?? 1)
+      : UIButton.alloc().init();
+  const normalState = UIControlState?.Normal ?? 0;
+  const previousChildId = (registry.parentChildren[props.parentId] ?? [])[childIndex - 1];
+  const previousController = registry.controllers[previousChildId];
+  const backTitle = previousController?.title ?? 'Back';
+  const UIImage = api?.UIImage ?? globalObject.UIImage;
+  const backImage =
+    UIImage && typeof UIImage.systemImageNamed === 'function'
+      ? UIImage.systemImageNamed('chevron.backward')
+      : null;
+  if (backImage && typeof button.setImageForState === 'function') {
+    button.setImageForState(backImage, normalState);
+  }
+  if (typeof button.setTitleForState === 'function') {
+    button.setTitleForState(backTitle, normalState);
+  }
+  if (typeof button.sizeToFit === 'function') {
+    button.sizeToFit();
+  }
+  ctx.targetAction(button, UIControlEvents?.TouchUpInside ?? 64, () => {
+    'worklet';
+    ctx.emit('onNativeBackPress', {
+      nativeEvent: {
+        componentId: props.componentId,
+      },
+    });
+  });
+  const allocatedItem = UIBarButtonItem.alloc();
+  controller.navigationItem.leftBarButtonItem =
+    allocatedItem && typeof allocatedItem.initWithCustomView === 'function'
+      ? allocatedItem.initWithCustomView(button)
+      : allocatedItem;
+  controller.navigationItem.hidesBackButton = true;
+  controller.__rnnNativeBackButtonId = props.componentId;
+}
+
+function emitNativeStackChange(ctx: any, navigationController: any) {
+  'worklet';
+  const globalObject = globalThis as Record<string, any>;
+  const registry = getNavigationRegistry(globalObject);
+  const childIds = navigationControllerChildIds(navigationController, registry);
+  const knownChildren = registry.parentChildren[ctx.componentId] ?? [];
+  if (childIds.length === 0 || childIds.length >= knownChildren.length) {
+    return;
+  }
+  registry.parentChildren[ctx.componentId] = childIds;
+  registry.containerChildKeys[ctx.componentId] = navigationChildKey(childIds);
+  registry.containerChildCounts[ctx.componentId] = childIds.length;
+  ctx.emit('onNativeStackChange', {
+    nativeEvent: {
+      componentId: ctx.componentId,
+      childIds,
+    },
+  });
+}
+
+function reconcileNavigationChildren(
+  parent: any,
+  parentId: string,
+  parentKind: string | undefined,
+  registry: any,
+  globalObject: Record<string, any>,
+) {
+  'worklet';
+  if (!parent || !parentKind) {
+    return;
+  }
+  const children = registry.parentChildren[parentId] ?? [];
+  const collected = collectChildControllers(parent, children, registry);
+  const childControllers = collected.controllers;
+  const activeChildIds = collected.ids;
+  const nextKey = navigationChildKey(activeChildIds);
+  const previousKey = registry.containerChildKeys[parentId];
+  const previousCount = registry.containerChildCounts[parentId] ?? 0;
+  const nextCount = childControllers.length;
+  const didChangeChildren = previousKey !== nextKey;
+  if (didChangeChildren) {
+    registry.containerChildKeys[parentId] = nextKey;
+    registry.containerChildCounts[parentId] = nextCount;
+  }
+
+  const nativeChildControllers = nativeControllerArray(globalObject, childControllers);
+  if (parentKind === 'stack') {
+    if (nextCount === 0) {
+      return;
+    }
+    const animated =
+      didChangeChildren &&
+      previousKey != null &&
+      previousCount > 0 &&
+      Math.abs(nextCount - previousCount) === 1;
+    if (typeof parent.setViewControllersAnimated === 'function') {
+      parent.setViewControllersAnimated(nativeChildControllers, animated);
+    } else {
+      parent.viewControllers = nativeChildControllers;
+    }
+  } else if (parentKind === 'tabs') {
+    if (typeof parent.setViewControllersAnimated === 'function') {
+      parent.setViewControllersAnimated(nativeChildControllers, false);
+    } else {
+      parent.viewControllers = nativeChildControllers;
+    }
+    if (parent.selectedIndex >= nextCount) {
+      parent.selectedIndex = 0;
+    }
+  }
+
+  layoutVisibleController(parent);
+  scheduleAncestorTabBarFront(parent);
+}
+
 function rectEdgeAll(): number {
   'worklet';
   const edge = nativeValue('UIRectEdge');
@@ -878,6 +1245,7 @@ function configureNavigationBar(controller: any) {
 const NativeScriptComponentController = NativeScriptRuntime.defineUIViewController<{
   componentId: string;
   componentName?: string | number;
+  onNativeBackPress?: (event: {nativeEvent: {componentId: string}}) => void;
   options?: Options;
   parentId?: string;
   style?: unknown;
@@ -922,7 +1290,7 @@ const NativeScriptComponentController = NativeScriptRuntime.defineUIViewControll
     'worklet';
     return controller.view;
   },
-  update(controller, props) {
+  update(controller, props, _previousProps, ctx) {
     'worklet';
     const topBarTitle = (props.options as any)?.topBar?.title?.text;
     const bottomTabTitle = (props.options as any)?.bottomTab?.text;
@@ -945,126 +1313,31 @@ const NativeScriptComponentController = NativeScriptRuntime.defineUIViewControll
       }
       controller.tabBarItem = tabBarItem;
     }
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'component';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
       const parent = registry.controllers[props.parentId];
-      if (parent) {
-        const childControllers: any[] = [];
-        for (let index = 0; index < children.length; index++) {
-          const child = registry.controllers[children[index]];
-          if (child) {
-            const childParent = child.parentViewController;
-            if (childParent && childParent !== parent) {
-              child.willMoveToParentViewController(null);
-              child.removeFromParentViewController();
-            }
-            if (child.view?.superview) {
-              child.view.removeFromSuperview();
-            }
-            childControllers[childControllers.length] = child;
-          }
-        }
-        const kind = registry.kinds[props.parentId];
-        const NSArray = api?.NSArray ?? globals.NSArray;
-        const nativeChildControllers =
-          NSArray && typeof NSArray.arrayWithArray === 'function'
-            ? NSArray.arrayWithArray(childControllers)
-            : childControllers;
-        if (kind === 'stack' && childControllers.length > 0) {
-          parent.setViewControllersAnimated(nativeChildControllers, false);
-        } else if (kind === 'tabs') {
-          if (typeof parent.setViewControllersAnimated === 'function') {
-            parent.setViewControllersAnimated(nativeChildControllers, false);
-          } else {
-            parent.viewControllers = nativeChildControllers;
-          }
-          if (parent.selectedIndex >= childControllers.length) {
-            parent.selectedIndex = 0;
-          }
-        }
-        layoutVisibleController(parent);
-      }
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
+    configureNativeBackButton(controller, props, registry, ctx);
     layoutVisibleController(controller);
     scheduleAncestorTabBarFront(controller);
   },
-  mounted(controller, props) {
+  mounted(controller, props, ctx) {
     'worklet';
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'component';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
       const parent = registry.controllers[props.parentId];
-      if (parent) {
-        const childControllers: any[] = [];
-        for (let index = 0; index < children.length; index++) {
-          const child = registry.controllers[children[index]];
-          if (child) {
-            const childParent = child.parentViewController;
-            if (childParent && childParent !== parent) {
-              child.willMoveToParentViewController(null);
-              child.removeFromParentViewController();
-            }
-            if (child.view?.superview) {
-              child.view.removeFromSuperview();
-            }
-            childControllers[childControllers.length] = child;
-          }
-        }
-        const kind = registry.kinds[props.parentId];
-        const api = globalObject.__nativeScriptNativeApi;
-        const NSArray = api?.NSArray ?? globalObject.NSArray;
-        const nativeChildControllers =
-          NSArray && typeof NSArray.arrayWithArray === 'function'
-            ? NSArray.arrayWithArray(childControllers)
-            : childControllers;
-        if (kind === 'stack' && childControllers.length > 0) {
-          parent.setViewControllersAnimated(nativeChildControllers, false);
-        } else if (kind === 'tabs') {
-          if (typeof parent.setViewControllersAnimated === 'function') {
-            parent.setViewControllersAnimated(nativeChildControllers, false);
-          } else {
-            parent.viewControllers = nativeChildControllers;
-          }
-          if (parent.selectedIndex >= childControllers.length) {
-            parent.selectedIndex = 0;
-          }
-        }
-        layoutVisibleController(parent);
-      }
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
+    configureNativeBackButton(controller, props, registry, ctx);
     layoutVisibleController(controller);
     scheduleAncestorTabBarFront(controller);
   },
@@ -1080,29 +1353,23 @@ const NativeScriptComponentController = NativeScriptRuntime.defineUIViewControll
     registry.kinds[props.componentId] = undefined;
     registry.parentChildren[props.componentId] = undefined;
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      for (let index = children.length - 1; index >= 0; index--) {
-        if (children[index] === props.componentId) {
-          for (let moveIndex = index; moveIndex < children.length - 1; moveIndex++) {
-            children[moveIndex] = children[moveIndex + 1];
-          }
-          children.length = children.length - 1;
-        }
-      }
-      registry.parentChildren[props.parentId] = children;
+      removeNavigationChild(registry, props.parentId, props.componentId);
+      const parent = registry.controllers[props.parentId];
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
   },
 });
 
 const NativeScriptStackController = NativeScriptRuntime.defineUIViewController<{
   componentId: string;
+  onNativeStackChange?: (event: {nativeEvent: {componentId: string; childIds: string[]}}) => void;
   options?: Options;
   parentId?: string;
   style?: unknown;
   }, any>({
   debugName: 'RNNStackController',
   layout: {sizing: 'fill'},
-  createController() {
+  createController(ctx) {
     'worklet';
     const api = (globalThis as Record<string, any>).__nativeScriptNativeApi;
     const globals = globalThis as Record<string, any>;
@@ -1126,6 +1393,27 @@ const NativeScriptStackController = NativeScriptRuntime.defineUIViewController<{
     const controller = allocated && typeof allocated.init === 'function' ? allocated.init() : allocated;
     configureExtendedLayout(controller);
     configureNavigationBar(controller);
+    const delegateProtocol =
+      api?.getProtocol?.('UINavigationControllerDelegate') ??
+      api?.UINavigationControllerDelegate ??
+      globals.UINavigationControllerDelegate;
+    if (delegateProtocol) {
+      controller.delegate = ctx.delegate(controller, delegateProtocol, {
+        navigationControllerWillShowViewControllerAnimated(navigationController: any) {
+          'worklet';
+          if (typeof setTimeout === 'function') {
+            setTimeout(() => {
+              'worklet';
+              emitNativeStackChange(ctx, navigationController);
+            }, 0);
+          }
+        },
+        navigationControllerDidShowViewControllerAnimated(navigationController: any) {
+          'worklet';
+          emitNativeStackChange(ctx, navigationController);
+        },
+      });
+    }
     const UIView = api?.UIView ?? globals.UIView;
     if (UIView && typeof UIView.alloc === 'function') {
       const mountViewAllocated = UIView.alloc();
@@ -1181,105 +1469,29 @@ const NativeScriptStackController = NativeScriptRuntime.defineUIViewController<{
       controller.setNavigationBarHiddenAnimated(false, false);
     }
     configureNavigationBar(controller);
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'stack';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
+      const parent = registry.controllers[props.parentId];
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
-    const ownChildren = registry.parentChildren[props.componentId] ?? [];
-    const childControllers: any[] = [];
-    for (let index = 0; index < ownChildren.length; index++) {
-      const child = registry.controllers[ownChildren[index]];
-      if (child) {
-        const childParent = child.parentViewController;
-        if (childParent && childParent !== controller) {
-          child.willMoveToParentViewController(null);
-          child.removeFromParentViewController();
-        }
-        if (child.view?.superview) {
-          child.view.removeFromSuperview();
-        }
-        childControllers[childControllers.length] = child;
-      }
-    }
-    if (childControllers.length > 0) {
-      const api = globalObject.__nativeScriptNativeApi;
-      const NSArray = api?.NSArray ?? globalObject.NSArray;
-      controller.setViewControllersAnimated(
-        NSArray && typeof NSArray.arrayWithArray === 'function'
-          ? NSArray.arrayWithArray(childControllers)
-          : childControllers,
-        false,
-      );
-    }
-    layoutVisibleController(controller);
-    scheduleAncestorTabBarFront(controller);
+    reconcileNavigationChildren(controller, props.componentId, 'stack', registry, globalObject);
   },
   mounted(controller, props) {
     'worklet';
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'stack';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
+      const parent = registry.controllers[props.parentId];
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
-    const ownChildren = registry.parentChildren[props.componentId] ?? [];
-    const childControllers: any[] = [];
-    for (let index = 0; index < ownChildren.length; index++) {
-      const child = registry.controllers[ownChildren[index]];
-      if (child) {
-        const childParent = child.parentViewController;
-        if (childParent && childParent !== controller) {
-          child.willMoveToParentViewController(null);
-          child.removeFromParentViewController();
-        }
-        if (child.view?.superview) {
-          child.view.removeFromSuperview();
-        }
-        childControllers[childControllers.length] = child;
-      }
-    }
-    if (childControllers.length > 0) {
-      const api = globalObject.__nativeScriptNativeApi;
-      const NSArray = api?.NSArray ?? globalObject.NSArray;
-      controller.setViewControllersAnimated(
-        NSArray && typeof NSArray.arrayWithArray === 'function'
-          ? NSArray.arrayWithArray(childControllers)
-          : childControllers,
-        false,
-      );
-    }
-    layoutVisibleController(controller);
-    scheduleAncestorTabBarFront(controller);
+    reconcileNavigationChildren(controller, props.componentId, 'stack', registry, globalObject);
   },
   dispose(_controller, props) {
     'worklet';
@@ -1293,16 +1505,9 @@ const NativeScriptStackController = NativeScriptRuntime.defineUIViewController<{
     registry.kinds[props.componentId] = undefined;
     registry.parentChildren[props.componentId] = undefined;
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      for (let index = children.length - 1; index >= 0; index--) {
-        if (children[index] === props.componentId) {
-          for (let moveIndex = index; moveIndex < children.length - 1; moveIndex++) {
-            children[moveIndex] = children[moveIndex + 1];
-          }
-          children.length = children.length - 1;
-        }
-      }
-      registry.parentChildren[props.parentId] = children;
+      removeNavigationChild(registry, props.parentId, props.componentId);
+      const parent = registry.controllers[props.parentId];
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
   },
 });
@@ -1387,187 +1592,29 @@ const NativeScriptTabsController = NativeScriptRuntime.defineUIViewController<{
     } else if (bottomTabs?.visible === true) {
       controller.tabBar.hidden = false;
     }
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'tabs';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
       const parent = registry.controllers[props.parentId];
-      if (parent) {
-        const childControllers: any[] = [];
-        for (let index = 0; index < children.length; index++) {
-          const child = registry.controllers[children[index]];
-          if (child) {
-            const childParent = child.parentViewController;
-            if (childParent && childParent !== parent) {
-              child.willMoveToParentViewController(null);
-              child.removeFromParentViewController();
-            }
-            if (child.view?.superview) {
-              child.view.removeFromSuperview();
-            }
-            childControllers[childControllers.length] = child;
-          }
-        }
-        const parentKind = registry.kinds[props.parentId];
-        const api = globalObject.__nativeScriptNativeApi;
-        const NSArray = api?.NSArray ?? globalObject.NSArray;
-        const nativeChildControllers =
-          NSArray && typeof NSArray.arrayWithArray === 'function'
-            ? NSArray.arrayWithArray(childControllers)
-            : childControllers;
-        if (parentKind === 'stack' && childControllers.length > 0) {
-          parent.setViewControllersAnimated(nativeChildControllers, false);
-        } else if (parentKind === 'tabs') {
-          if (typeof parent.setViewControllersAnimated === 'function') {
-            parent.setViewControllersAnimated(nativeChildControllers, false);
-          } else {
-            parent.viewControllers = nativeChildControllers;
-          }
-          if (parent.selectedIndex >= childControllers.length) {
-            parent.selectedIndex = 0;
-          }
-        }
-        layoutVisibleController(parent);
-      }
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
-    const ownChildren = registry.parentChildren[props.componentId] ?? [];
-    const childControllers: any[] = [];
-    for (let index = 0; index < ownChildren.length; index++) {
-      const child = registry.controllers[ownChildren[index]];
-      if (child) {
-        const childParent = child.parentViewController;
-        if (childParent && childParent !== controller) {
-          child.willMoveToParentViewController(null);
-          child.removeFromParentViewController();
-        }
-        if (child.view?.superview) {
-          child.view.removeFromSuperview();
-        }
-        childControllers[childControllers.length] = child;
-      }
-    }
-    const api = globalObject.__nativeScriptNativeApi;
-    const NSArray = api?.NSArray ?? globalObject.NSArray;
-    const nativeChildControllers =
-      NSArray && typeof NSArray.arrayWithArray === 'function'
-        ? NSArray.arrayWithArray(childControllers)
-        : childControllers;
-    if (typeof controller.setViewControllersAnimated === 'function') {
-      controller.setViewControllersAnimated(nativeChildControllers, false);
-    } else {
-      controller.viewControllers = nativeChildControllers;
-    }
-    if (controller.selectedIndex >= childControllers.length) {
-      controller.selectedIndex = 0;
-    }
-    layoutVisibleController(controller);
+    reconcileNavigationChildren(controller, props.componentId, 'tabs', registry, globalObject);
   },
   mounted(controller, props) {
     'worklet';
-    const key = '__rnnNativeScriptNavigationRegistry';
     const globalObject = globalThis as Record<string, any>;
-    const registry = globalObject[key] ?? {controllers: {}, kinds: {}, parentChildren: {}};
-    globalObject[key] = registry;
+    const registry = getNavigationRegistry(globalObject);
     registry.controllers[props.componentId] = controller;
     registry.kinds[props.componentId] = 'tabs';
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      let exists = false;
-      for (let index = 0; index < children.length; index++) {
-        if (children[index] === props.componentId) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        children[children.length] = props.componentId;
-        registry.parentChildren[props.parentId] = children;
-      }
+      addNavigationChild(registry, props.parentId, props.componentId);
       const parent = registry.controllers[props.parentId];
-      if (parent) {
-        const childControllers: any[] = [];
-        for (let index = 0; index < children.length; index++) {
-          const child = registry.controllers[children[index]];
-          if (child) {
-            const childParent = child.parentViewController;
-            if (childParent && childParent !== parent) {
-              child.willMoveToParentViewController(null);
-              child.removeFromParentViewController();
-            }
-            if (child.view?.superview) {
-              child.view.removeFromSuperview();
-            }
-            childControllers[childControllers.length] = child;
-          }
-        }
-        const parentKind = registry.kinds[props.parentId];
-        const api = globalObject.__nativeScriptNativeApi;
-        const NSArray = api?.NSArray ?? globalObject.NSArray;
-        const nativeChildControllers =
-          NSArray && typeof NSArray.arrayWithArray === 'function'
-            ? NSArray.arrayWithArray(childControllers)
-            : childControllers;
-        if (parentKind === 'stack' && childControllers.length > 0) {
-          parent.setViewControllersAnimated(nativeChildControllers, false);
-        } else if (parentKind === 'tabs') {
-          if (typeof parent.setViewControllersAnimated === 'function') {
-            parent.setViewControllersAnimated(nativeChildControllers, false);
-          } else {
-            parent.viewControllers = nativeChildControllers;
-          }
-          if (parent.selectedIndex >= childControllers.length) {
-            parent.selectedIndex = 0;
-          }
-        }
-        layoutVisibleController(parent);
-      }
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
-    const ownChildren = registry.parentChildren[props.componentId] ?? [];
-    const childControllers: any[] = [];
-    for (let index = 0; index < ownChildren.length; index++) {
-      const child = registry.controllers[ownChildren[index]];
-      if (child) {
-        const childParent = child.parentViewController;
-        if (childParent && childParent !== controller) {
-          child.willMoveToParentViewController(null);
-          child.removeFromParentViewController();
-        }
-        if (child.view?.superview) {
-          child.view.removeFromSuperview();
-        }
-        childControllers[childControllers.length] = child;
-      }
-    }
-    const api = globalObject.__nativeScriptNativeApi;
-    const NSArray = api?.NSArray ?? globalObject.NSArray;
-    const nativeChildControllers =
-      NSArray && typeof NSArray.arrayWithArray === 'function'
-        ? NSArray.arrayWithArray(childControllers)
-        : childControllers;
-    if (typeof controller.setViewControllersAnimated === 'function') {
-      controller.setViewControllersAnimated(nativeChildControllers, false);
-    } else {
-      controller.viewControllers = nativeChildControllers;
-    }
-    if (controller.selectedIndex >= childControllers.length) {
-      controller.selectedIndex = 0;
-    }
-    layoutVisibleController(controller);
+    reconcileNavigationChildren(controller, props.componentId, 'tabs', registry, globalObject);
   },
   dispose(_controller, props) {
     'worklet';
@@ -1581,16 +1628,9 @@ const NativeScriptTabsController = NativeScriptRuntime.defineUIViewController<{
     registry.kinds[props.componentId] = undefined;
     registry.parentChildren[props.componentId] = undefined;
     if (props.parentId) {
-      const children = registry.parentChildren[props.parentId] ?? [];
-      for (let index = children.length - 1; index >= 0; index--) {
-        if (children[index] === props.componentId) {
-          for (let moveIndex = index; moveIndex < children.length - 1; moveIndex++) {
-            children[moveIndex] = children[moveIndex + 1];
-          }
-          children.length = children.length - 1;
-        }
-      }
-      registry.parentChildren[props.parentId] = children;
+      removeNavigationChild(registry, props.parentId, props.componentId);
+      const parent = registry.controllers[props.parentId];
+      reconcileNavigationChildren(parent, props.parentId, registry.kinds[props.parentId], registry, globalObject);
     }
   },
 });

@@ -11,10 +11,49 @@ type LayoutRootPayload = {
   overlays?: any[];
 };
 
+const STACK_TRANSITION_LOCK_MS = 360;
+
 export class NativeScriptCommandsSender implements NativeCommandsModule {
   private readonly store = getNativeScriptNavigationStore();
+  private readonly pendingStackCommands = new Map<string, Promise<string>>();
+
+  private resolveAfterStackTransition(stackId: string, result: string): Promise<string> {
+    const pending = new Promise<string>((resolve) => {
+      setTimeout(() => {
+        if (this.pendingStackCommands.get(stackId) === pending) {
+          this.pendingStackCommands.delete(stackId);
+        }
+        resolve(result);
+      }, STACK_TRANSITION_LOCK_MS);
+    });
+    this.pendingStackCommands.set(stackId, pending);
+    return pending;
+  }
+
+  private runStackCommand(
+    componentId: string,
+    fallbackResult: string,
+    command: () => {didMutate: boolean; result: string; stackId?: string}
+  ): Promise<string> {
+    const candidateStackId = this.store.getStackIdForComponent(componentId) ?? componentId;
+    const pending = this.pendingStackCommands.get(candidateStackId);
+    if (pending) {
+      return pending;
+    }
+
+    const mutation = command();
+    if (!mutation.didMutate) {
+      return Promise.resolve(fallbackResult);
+    }
+
+    return this.resolveAfterStackTransition(
+      mutation.stackId ?? candidateStackId,
+      mutation.result
+    );
+  }
 
   setRoot(_commandId: string, layout: LayoutRootPayload): Promise<string> {
+    this.pendingStackCommands.clear();
     const root = normalizeNativeScriptLayout(layout.root);
     const modals = (layout.modals ?? []).map(normalizeNativeScriptLayout);
     const overlays = (layout.overlays ?? []).map(normalizeNativeScriptLayout);
@@ -32,20 +71,51 @@ export class NativeScriptCommandsSender implements NativeCommandsModule {
 
   push(_commandId: string, componentId: string, layout: object): Promise<string> {
     const node = normalizeNativeScriptLayout(layout);
-    this.store.push(componentId, node);
-    return Promise.resolve(node.id ?? '');
+    const pushedId = node.id ?? '';
+    return this.runStackCommand(componentId, pushedId, () => {
+      const mutation = this.store.push(componentId, node);
+      return {
+        didMutate: mutation.didPush,
+        result: mutation.pushedId ?? pushedId,
+        stackId: mutation.stackId,
+      };
+    });
   }
 
   pop(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return Promise.resolve(this.store.pop(componentId) ?? componentId);
+    return this.runStackCommand(componentId, componentId, () => {
+      const stackId = this.store.getStackIdForComponent(componentId);
+      const removed = this.store.pop(componentId);
+      return {
+        didMutate: removed != null,
+        result: removed ?? componentId,
+        stackId,
+      };
+    });
   }
 
   popTo(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return Promise.resolve(this.store.popTo(componentId) ?? componentId);
+    return this.runStackCommand(componentId, componentId, () => {
+      const stackId = this.store.getStackIdForComponent(componentId);
+      const removed = this.store.popTo(componentId);
+      return {
+        didMutate: removed != null,
+        result: removed ?? componentId,
+        stackId,
+      };
+    });
   }
 
   popToRoot(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return Promise.resolve(this.store.popToRoot(componentId) ?? componentId);
+    return this.runStackCommand(componentId, componentId, () => {
+      const stackId = this.store.getStackIdForComponent(componentId);
+      const removed = this.store.popToRoot(componentId);
+      return {
+        didMutate: removed != null,
+        result: removed ?? componentId,
+        stackId,
+      };
+    });
   }
 
   setStackRoot(_commandId: string, componentId: string, layout: object[]): Promise<string> {
