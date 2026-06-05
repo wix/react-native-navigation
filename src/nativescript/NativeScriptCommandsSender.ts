@@ -15,45 +15,55 @@ const STACK_TRANSITION_LOCK_MS = 360;
 
 export class NativeScriptCommandsSender implements NativeCommandsModule {
   private readonly store = getNativeScriptNavigationStore();
-  private readonly pendingStackCommands = new Map<string, Promise<string>>();
+  private readonly pendingCommandKeys = new Map<string, Promise<string>>();
+  private readonly stackCommandTails = new Map<string, Promise<unknown>>();
 
-  private resolveAfterStackTransition(stackId: string, result: string): Promise<string> {
-    const pending = new Promise<string>((resolve) => {
+  private resolveAfterStackTransition(result: string): Promise<string> {
+    return new Promise<string>((resolve) => {
       setTimeout(() => {
-        if (this.pendingStackCommands.get(stackId) === pending) {
-          this.pendingStackCommands.delete(stackId);
-        }
         resolve(result);
       }, STACK_TRANSITION_LOCK_MS);
     });
-    this.pendingStackCommands.set(stackId, pending);
-    return pending;
   }
 
   private runStackCommand(
+    kind: string,
     componentId: string,
     fallbackResult: string,
     command: () => {didMutate: boolean; result: string; stackId?: string}
   ): Promise<string> {
     const candidateStackId = this.store.getStackIdForComponent(componentId) ?? componentId;
-    const pending = this.pendingStackCommands.get(candidateStackId);
+    const commandKey = `${kind}:${candidateStackId}:${componentId}`;
+    const pending = this.pendingCommandKeys.get(commandKey);
     if (pending) {
       return pending;
     }
 
-    const mutation = command();
-    if (!mutation.didMutate) {
-      return Promise.resolve(fallbackResult);
-    }
-
-    return this.resolveAfterStackTransition(
-      mutation.stackId ?? candidateStackId,
-      mutation.result
-    );
+    const previousTail = this.stackCommandTails.get(candidateStackId);
+    const run = () => {
+      const mutation = command();
+      if (!mutation.didMutate) {
+        return fallbackResult;
+      }
+      return this.resolveAfterStackTransition(mutation.result);
+    };
+    const queued = previousTail ? previousTail.then(run, run) : Promise.resolve(run());
+    this.pendingCommandKeys.set(commandKey, queued);
+    const nextTail = queued.finally(() => {
+      if (this.pendingCommandKeys.get(commandKey) === queued) {
+        this.pendingCommandKeys.delete(commandKey);
+      }
+      if (this.stackCommandTails.get(candidateStackId) === nextTail) {
+        this.stackCommandTails.delete(candidateStackId);
+      }
+    });
+    this.stackCommandTails.set(candidateStackId, nextTail);
+    return queued;
   }
 
   setRoot(_commandId: string, layout: LayoutRootPayload): Promise<string> {
-    this.pendingStackCommands.clear();
+    this.pendingCommandKeys.clear();
+    this.stackCommandTails.clear();
     const root = normalizeNativeScriptLayout(layout.root);
     const modals = (layout.modals ?? []).map(normalizeNativeScriptLayout);
     const overlays = (layout.overlays ?? []).map(normalizeNativeScriptLayout);
@@ -72,7 +82,7 @@ export class NativeScriptCommandsSender implements NativeCommandsModule {
   push(_commandId: string, componentId: string, layout: object): Promise<string> {
     const node = normalizeNativeScriptLayout(layout);
     const pushedId = node.id ?? '';
-    return this.runStackCommand(componentId, pushedId, () => {
+    return this.runStackCommand('push', componentId, pushedId, () => {
       const mutation = this.store.push(componentId, node);
       return {
         didMutate: mutation.didPush,
@@ -83,7 +93,7 @@ export class NativeScriptCommandsSender implements NativeCommandsModule {
   }
 
   pop(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return this.runStackCommand(componentId, componentId, () => {
+    return this.runStackCommand('pop', componentId, componentId, () => {
       const stackId = this.store.getStackIdForComponent(componentId);
       const removed = this.store.pop(componentId);
       return {
@@ -95,7 +105,7 @@ export class NativeScriptCommandsSender implements NativeCommandsModule {
   }
 
   popTo(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return this.runStackCommand(componentId, componentId, () => {
+    return this.runStackCommand('popTo', componentId, componentId, () => {
       const stackId = this.store.getStackIdForComponent(componentId);
       const removed = this.store.popTo(componentId);
       return {
@@ -107,7 +117,7 @@ export class NativeScriptCommandsSender implements NativeCommandsModule {
   }
 
   popToRoot(_commandId: string, componentId: string, _options?: object): Promise<string> {
-    return this.runStackCommand(componentId, componentId, () => {
+    return this.runStackCommand('popToRoot', componentId, componentId, () => {
       const stackId = this.store.getStackIdForComponent(componentId);
       const removed = this.store.popToRoot(componentId);
       return {

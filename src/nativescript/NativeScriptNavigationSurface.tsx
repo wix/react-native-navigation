@@ -58,6 +58,7 @@ const NativeScript = require('@nativescript/react-native') as
 const NativeScriptRuntime = ((NativeScript as {default?: NativeScriptModule}).default ??
   NativeScript) as NativeScriptModule;
 const initialWindowHeight = Dimensions.get('window').height;
+const NATIVE_STACK_TRANSITION_MS = 360;
 
 function makeNativeScriptNavigationStore(): NativeScriptNavigationStore {
   let state: NavigationSurfaceState = {
@@ -933,6 +934,9 @@ function getNavigationRegistry(globalObject: Record<string, any>): any {
   registry.parentChildren = registry.parentChildren ?? {};
   registry.containerChildKeys = registry.containerChildKeys ?? {};
   registry.containerChildCounts = registry.containerChildCounts ?? {};
+  registry.containerTransitioning = registry.containerTransitioning ?? {};
+  registry.containerTransitionTokens = registry.containerTransitionTokens ?? {};
+  registry.pendingNativeBackPresses = registry.pendingNativeBackPresses ?? {};
   globalObject[key] = registry;
   return registry;
 }
@@ -1101,8 +1105,41 @@ function configureNativeBackButton(controller: any, props: any, registry: any, c
   if (typeof button.sizeToFit === 'function') {
     button.sizeToFit();
   }
+  const currentWidth = button.frame?.size?.width ?? 0;
+  const CGRectMake = api?.CGRectMake ?? globalObject.CGRectMake;
+  if (typeof CGRectMake === 'function') {
+    button.frame = CGRectMake(0, 0, Math.max(96, currentWidth + 20), 44);
+  }
+  button.accessibilityIdentifier = `RNNBackButton.${props.componentId}`;
+  button.accessibilityLabel = backTitle;
+  button.exclusiveTouch = true;
   ctx.targetAction(button, UIControlEvents?.TouchUpInside ?? 64, () => {
     'worklet';
+    if (registry.containerTransitioning[props.parentId]) {
+      if (registry.pendingNativeBackPresses[props.parentId]) {
+        return;
+      }
+      registry.pendingNativeBackPresses[props.parentId] = true;
+      if (typeof setTimeout === 'function') {
+        setTimeout(() => {
+          'worklet';
+          registry.pendingNativeBackPresses[props.parentId] = false;
+          ctx.emit('onNativeBackPress', {
+            nativeEvent: {
+              componentId: props.componentId,
+            },
+          });
+        }, NATIVE_STACK_TRANSITION_MS);
+      } else {
+        registry.pendingNativeBackPresses[props.parentId] = false;
+        ctx.emit('onNativeBackPress', {
+          nativeEvent: {
+            componentId: props.componentId,
+          },
+        });
+      }
+      return;
+    }
     ctx.emit('onNativeBackPress', {
       nativeEvent: {
         componentId: props.componentId,
@@ -1136,6 +1173,30 @@ function emitNativeStackChange(ctx: any, navigationController: any) {
       childIds,
     },
   });
+}
+
+function applyNavigationChildren(
+  parent: any,
+  parentId: string,
+  registry: any,
+  globalObject: Record<string, any>,
+  animated: boolean,
+) {
+  'worklet';
+  const children = registry.parentChildren[parentId] ?? [];
+  const collected = collectChildControllers(parent, children, registry);
+  const childControllers = collected.controllers;
+  if (childControllers.length === 0) {
+    return;
+  }
+  const nativeChildControllers = nativeControllerArray(globalObject, childControllers);
+  if (typeof parent.setViewControllersAnimated === 'function') {
+    parent.setViewControllersAnimated(nativeChildControllers, animated);
+  } else {
+    parent.viewControllers = nativeChildControllers;
+  }
+  layoutVisibleController(parent);
+  scheduleAncestorTabBarFront(parent);
 }
 
 function reconcileNavigationChildren(
@@ -1173,6 +1234,28 @@ function reconcileNavigationChildren(
       previousKey != null &&
       previousCount > 0 &&
       Math.abs(nextCount - previousCount) === 1;
+    if (!didChangeChildren && registry.containerTransitioning[parentId]) {
+      layoutVisibleController(parent);
+      scheduleAncestorTabBarFront(parent);
+      return;
+    }
+    if (animated) {
+      const transitionToken = (registry.containerTransitionTokens[parentId] ?? 0) + 1;
+      registry.containerTransitionTokens[parentId] = transitionToken;
+      registry.containerTransitioning[parentId] = true;
+      if (typeof setTimeout === 'function') {
+        setTimeout(() => {
+          'worklet';
+          if (registry.containerTransitionTokens[parentId] !== transitionToken) {
+            return;
+          }
+          registry.containerTransitioning[parentId] = false;
+          applyNavigationChildren(parent, parentId, registry, globalObject, false);
+        }, NATIVE_STACK_TRANSITION_MS);
+      } else {
+        registry.containerTransitioning[parentId] = false;
+      }
+    }
     if (typeof parent.setViewControllersAnimated === 'function') {
       parent.setViewControllersAnimated(nativeChildControllers, animated);
     } else {

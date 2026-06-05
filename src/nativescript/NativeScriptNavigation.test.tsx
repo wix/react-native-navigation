@@ -132,6 +132,54 @@ describe('createNativeScriptNavigation', () => {
     expect(finalChildren.map((child) => child.id)).toEqual(['rootComponent', 'detailOne']);
   });
 
+  it('queues opposite stack commands while a transition is pending', async () => {
+    const { Navigation } = createNativeScriptNavigation();
+
+    Navigation.registerComponent('com.example.Root', () => () => null);
+    Navigation.registerComponent('com.example.Detail', () => () => null);
+    await Navigation.setRoot({
+      root: {
+        stack: {
+          id: 'stack',
+          children: [
+            {
+              component: {
+                id: 'rootComponent',
+                name: 'com.example.Root',
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    jest.useFakeTimers();
+    const push = Navigation.push('rootComponent', {
+      component: {
+        id: 'detailComponent',
+        name: 'com.example.Detail',
+      },
+    });
+    const pop = Navigation.pop('detailComponent');
+
+    expect(
+      getNativeScriptNavigationStore().getState().snapshot.root?.children?.map((child) => child.id)
+    ).toEqual(['rootComponent', 'detailComponent']);
+
+    jest.advanceTimersByTime(360);
+    await expect(push).resolves.toBe('detailComponent');
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(
+      getNativeScriptNavigationStore().getState().snapshot.root?.children?.map((child) => child.id)
+    ).toEqual(['rootComponent']);
+
+    jest.advanceTimersByTime(360);
+    await expect(pop).resolves.toBe('detailComponent');
+    jest.useRealTimers();
+  });
+
   it('syncs native back changes into the JS stack snapshot', async () => {
     const { Navigation } = createNativeScriptNavigation();
 
