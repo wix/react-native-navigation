@@ -19,12 +19,14 @@ fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, lef
     return if (isCenter) {
         val availableWidth = containerWidth - rightBarWidth - leftBarWidth
         View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
+    } else if (isFill) {
+        // Fill alignment must span the entire space between left and right button bars,
+        // so do not reserve the DEFAULT_LEFT_MARGIN_PX padding used for left-aligned titles.
+        val availableWidth = containerWidth - rightBarWidth - leftBarWidth
+        View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.EXACTLY)
     } else {
         val availableWidth = containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX
-        View.MeasureSpec.makeMeasureSpec(
-            availableWidth,
-            if (isFill) View.MeasureSpec.EXACTLY else View.MeasureSpec.AT_MOST
-        )
+        View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
     }
 }
 
