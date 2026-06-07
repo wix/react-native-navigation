@@ -3,7 +3,9 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.params.Number;
@@ -16,12 +18,23 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 @SuppressLint("ViewConstructor")
 public class TitleBarReactButtonView extends ReactView {
-    private static final float FINAL_WIDTH_PADDING_DP = 2f;
+    private static final float FINAL_WIDTH_PADDING_DP = 1f;
     private final ComponentOptions component;
 
     public TitleBarReactButtonView(Context context, ComponentOptions component) {
         super(context, component.componentId.get(), component.name.get());
         this.component = component;
+    }
+
+    @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        if (child.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) child.getLayoutParams();
+            layoutParams.gravity = layoutParams.gravity == -1
+                    ? Gravity.CENTER_VERTICAL
+                    : (layoutParams.gravity & ~Gravity.VERTICAL_GRAVITY_MASK) | Gravity.CENTER_VERTICAL;
+        }
     }
 
     @Override

@@ -9,8 +9,10 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 import android.app.Activity;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.ComponentOptions;
@@ -113,6 +115,39 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(CHILD_HEIGHT);
     }
 
+    @Test
+    public void contentRemainsCenteredWhenMenuCellLaysButtonOutTallerThanMeasuredHeight() {
+        Activity activity = newActivity();
+        TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
+        RecordingContentView child = new RecordingContentView(activity);
+        setContentView(uut, child);
+
+        uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
+        uut.layout(0, 0, uut.getMeasuredWidth(), PARENT_HEIGHT);
+
+        assertThat(uut.getMeasuredHeight()).isEqualTo(CHILD_HEIGHT);
+        assertThat(child.getTop()).isEqualTo((PARENT_HEIGHT - CHILD_HEIGHT) / 2);
+        assertThat(child.getBottom()).isEqualTo((PARENT_HEIGHT + CHILD_HEIGHT) / 2);
+    }
+
+    @Test
+    public void contentCenteringReplacesExistingVerticalGravityOnly() {
+        Activity activity = newActivity();
+        TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
+        RecordingContentView child = new RecordingContentView(activity);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        params.gravity = Gravity.TOP | Gravity.RIGHT;
+
+        uut.addView(child, params);
+
+        FrameLayout.LayoutParams updatedParams = (FrameLayout.LayoutParams) child.getLayoutParams();
+        assertThat(updatedParams.gravity & Gravity.VERTICAL_GRAVITY_MASK).isEqualTo(Gravity.CENTER_VERTICAL);
+        assertThat(updatedParams.gravity & Gravity.HORIZONTAL_GRAVITY_MASK).isEqualTo(Gravity.RIGHT);
+    }
+
     private TitleBarReactButtonView createView(Activity activity, ComponentOptions component) {
         component.name = new Text("ButtonComponent");
         component.componentId = new Text("ButtonComponentId");
@@ -136,7 +171,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
     }
 
     private int finalWidth(Activity activity) {
-        return CHILD_WIDTH + (int) Math.ceil(UiUtils.dpToPx(activity, 2));
+        return CHILD_WIDTH + (int) Math.ceil(UiUtils.dpToPx(activity, 1f));
     }
 
     private static class RecordingContentView extends View {
