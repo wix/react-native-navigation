@@ -39,13 +39,13 @@ public class TitleBarReactButtonViewTest extends BaseTest {
 
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
 
-        assertThat(uut.getMeasuredWidth()).isEqualTo(CHILD_WIDTH);
+        assertThat(uut.getMeasuredWidth()).isEqualTo(finalWidth(activity));
         assertThat(uut.getMeasuredHeight()).isEqualTo(resolveActionBarSize(activity));
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(2);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
-        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(CHILD_WIDTH);
+        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
         assertThat(getMode(child.heightMeasureSpecs.get(1))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(resolveActionBarSize(activity));
     }
@@ -85,7 +85,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getSize(child.widthMeasureSpecs.get(0)))
                 .isEqualTo(Math.max(activity.getResources().getDisplayMetrics().widthPixels, 1));
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
-        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(CHILD_WIDTH);
+        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
         assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(Math.max(resolveActionBarSize(activity), 1));
     }
@@ -104,7 +104,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
-        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(CHILD_WIDTH);
+        assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
         assertThat(getMode(child.heightMeasureSpecs.get(1))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(resolveActionBarSize(activity));
     }
@@ -129,6 +129,10 @@ public class TitleBarReactButtonViewTest extends BaseTest {
             return TypedValue.complexToDimensionPixelSize(tv.data, activity.getResources().getDisplayMetrics());
         }
         return UiUtils.dpToPx(activity, 48);
+    }
+
+    private int finalWidth(Activity activity) {
+        return CHILD_WIDTH + (int) Math.ceil(UiUtils.dpToPx(activity, 2));
     }
 
     private static class RecordingContentView extends View {

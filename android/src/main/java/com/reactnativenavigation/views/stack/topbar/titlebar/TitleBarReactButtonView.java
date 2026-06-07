@@ -16,6 +16,7 @@ import static com.reactnativenavigation.utils.UiUtils.dpToPx;
 
 @SuppressLint("ViewConstructor")
 public class TitleBarReactButtonView extends ReactView {
+    private static final float FINAL_WIDTH_PADDING_DP = 2f;
     private final ComponentOptions component;
 
     public TitleBarReactButtonView(Context context, ComponentOptions component) {
@@ -41,7 +42,8 @@ public class TitleBarReactButtonView extends ReactView {
         super.onMeasure(makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST), finalHeightSpec);
 
         // Then give RN/Yoga a stable exact final box for compatibility with centered button layouts.
-        super.onMeasure(makeMeasureSpec(Math.max(getMeasuredWidth(), 1), EXACTLY), finalHeightSpec);
+        // A small allowance avoids clipping implicit RN padding/subpixel layout while staying content-based.
+        super.onMeasure(makeMeasureSpec(resolveFinalWidth(getMeasuredWidth()), EXACTLY), finalHeightSpec);
     }
 
     private int createHeightSpec(Number dimension) {
@@ -54,6 +56,10 @@ public class TitleBarReactButtonView extends ReactView {
     private int resolveAvailableWidth(int measureSpec) {
         int availableSize = MeasureSpec.getSize(measureSpec);
         return availableSize > 0 ? availableSize : Math.max(getResources().getDisplayMetrics().widthPixels, 1);
+    }
+
+    private int resolveFinalWidth(int measuredContentWidth) {
+        return Math.max(measuredContentWidth + (int) Math.ceil(dpToPx(getContext(), FINAL_WIDTH_PADDING_DP)), 1);
     }
 
     private int createExactSpec(Number dimension) {
