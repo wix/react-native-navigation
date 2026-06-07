@@ -40,14 +40,16 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
 
         assertThat(uut.getMeasuredWidth()).isEqualTo(finalWidth(activity));
-        assertThat(uut.getMeasuredHeight()).isEqualTo(resolveActionBarSize(activity));
+        assertThat(uut.getMeasuredHeight()).isEqualTo(CHILD_HEIGHT);
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(2);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
+        assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(PARENT_HEIGHT);
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
         assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
         assertThat(getMode(child.heightMeasureSpecs.get(1))).isEqualTo(EXACTLY);
-        assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(resolveActionBarSize(activity));
+        assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(CHILD_HEIGHT);
     }
 
     @Test
@@ -72,7 +74,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
     }
 
     @Test
-    public void zeroParentWidthFallbacksToBoundedAtMostSpecAndHeightUsesActionBarSize() {
+    public void zeroParentSpecsFallbackToBoundedAtMostSpecs() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -86,8 +88,10 @@ public class TitleBarReactButtonViewTest extends BaseTest {
                 .isEqualTo(Math.max(activity.getResources().getDisplayMetrics().widthPixels, 1));
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
         assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(Math.max(resolveActionBarSize(activity), 1));
+        assertThat(getMode(child.heightMeasureSpecs.get(1))).isEqualTo(EXACTLY);
+        assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(CHILD_HEIGHT);
     }
 
     @Test
@@ -106,7 +110,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getMode(child.widthMeasureSpecs.get(1))).isEqualTo(EXACTLY);
         assertThat(getSize(child.widthMeasureSpecs.get(1))).isEqualTo(finalWidth(activity));
         assertThat(getMode(child.heightMeasureSpecs.get(1))).isEqualTo(EXACTLY);
-        assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(resolveActionBarSize(activity));
+        assertThat(getSize(child.heightMeasureSpecs.get(1))).isEqualTo(CHILD_HEIGHT);
     }
 
     private TitleBarReactButtonView createView(Activity activity, ComponentOptions component) {

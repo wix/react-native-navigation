@@ -32,25 +32,35 @@ public class TitleBarReactButtonView extends ReactView {
             this.setId(View.NO_ID);
         }
 
-        int finalHeightSpec = createHeightSpec(component.height);
-        if (component.width.hasValue()) {
-            super.onMeasure(createExactSpec(component.width), finalHeightSpec);
+        int initialWidthSpec = component.width.hasValue()
+                ? createExactSpec(component.width)
+                : makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST);
+        int initialHeightSpec = createHeightSpec(heightMeasureSpec, component.height);
+
+        // First discover the content size without forcing every custom button to actionBarSize.
+        super.onMeasure(initialWidthSpec, initialHeightSpec);
+
+        if (component.width.hasValue() && component.height.hasValue()) {
             return;
         }
 
-        // First discover the content width without forcing every custom button to actionBarSize.
-        super.onMeasure(makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST), finalHeightSpec);
-
         // Then give RN/Yoga a stable exact final box for compatibility with centered button layouts.
         // A small allowance avoids clipping implicit RN padding/subpixel layout while staying content-based.
-        super.onMeasure(makeMeasureSpec(resolveFinalWidth(getMeasuredWidth()), EXACTLY), finalHeightSpec);
+        int finalWidth = component.width.hasValue()
+                ? MeasureSpec.getSize(initialWidthSpec)
+                : resolveFinalWidth(getMeasuredWidth());
+        int finalHeight = component.height.hasValue()
+                ? MeasureSpec.getSize(initialHeightSpec)
+                : Math.max(getMeasuredHeight(), 1);
+        super.onMeasure(makeMeasureSpec(finalWidth, EXACTLY), makeMeasureSpec(finalHeight, EXACTLY));
     }
 
-    private int createHeightSpec(Number dimension) {
+    private int createHeightSpec(int measureSpec, Number dimension) {
         if (dimension.hasValue()) {
             return createExactSpec(dimension);
         }
-        return makeMeasureSpec(Math.max(resolveActionBarSize(), 1), EXACTLY);
+        int availableSize = MeasureSpec.getSize(measureSpec);
+        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), AT_MOST);
     }
 
     private int resolveAvailableWidth(int measureSpec) {
