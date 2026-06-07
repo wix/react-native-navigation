@@ -31,32 +31,29 @@ public class TitleBarReactButtonView extends ReactView {
             this.setId(View.NO_ID);
         }
 
-        super.onMeasure(
-                createWidthSpec(widthMeasureSpec, component.width),
-                createHeightSpec(heightMeasureSpec, component.height)
-        );
+        int finalHeightSpec = createHeightSpec(component.height);
+        if (component.width.hasValue()) {
+            super.onMeasure(createExactSpec(component.width), finalHeightSpec);
+            return;
+        }
+
+        // First discover the content width without forcing every custom button to actionBarSize.
+        super.onMeasure(makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST), finalHeightSpec);
+
+        // Then give RN/Yoga a stable exact final box for compatibility with centered button layouts.
+        super.onMeasure(makeMeasureSpec(Math.max(getMeasuredWidth(), 1), EXACTLY), finalHeightSpec);
     }
 
-    private int createWidthSpec(int measureSpec, Number dimension) {
-        return createSpec(measureSpec, dimension, Math.max(getResources().getDisplayMetrics().widthPixels, 1));
-    }
-
-    private int createHeightSpec(int measureSpec, Number dimension) {
+    private int createHeightSpec(Number dimension) {
         if (dimension.hasValue()) {
             return createExactSpec(dimension);
         }
         return makeMeasureSpec(Math.max(resolveActionBarSize(), 1), EXACTLY);
     }
 
-    private int createSpec(int measureSpec, Number dimension, int fallbackSize) {
-        if (dimension.hasValue()) {
-            return createExactSpec(dimension);
-        } else {
-            // Use bounded wrap-content width to avoid RN/Yoga RTL padding issues caused by
-            // UNSPECIFIED, without forcing every custom button to actionBarSize width.
-            int availableSize = MeasureSpec.getSize(measureSpec);
-            return makeMeasureSpec(availableSize > 0 ? availableSize : fallbackSize, AT_MOST);
-        }
+    private int resolveAvailableWidth(int measureSpec) {
+        int availableSize = MeasureSpec.getSize(measureSpec);
+        return availableSize > 0 ? availableSize : Math.max(getResources().getDisplayMetrics().widthPixels, 1);
     }
 
     private int createExactSpec(Number dimension) {
