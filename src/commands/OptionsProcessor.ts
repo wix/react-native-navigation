@@ -20,6 +20,7 @@ import {
   OptionsSearchBar,
   OptionsTopBar,
   StackAnimationOptions,
+  StackPushAnimationOptions,
   StatusBarAnimationOptions,
   TopBarAnimationOptions,
   ViewAnimationOptions,
@@ -390,7 +391,7 @@ export class OptionsProcessor {
 
   private processPush(
     key: string,
-    animation: StackAnimationOptions,
+    animation: StackPushAnimationOptions,
     parentOptions: AnimationOptions
   ) {
     if (key !== 'push') return;

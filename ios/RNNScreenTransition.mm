@@ -1,6 +1,12 @@
 #import "RNNScreenTransition.h"
+#import "BoolParser.h"
 #import "OptionsArrayParser.h"
+#import "RNNElementFinder.h"
+#import "RNNLayoutProtocol.h"
 #import "RNNUtils.h"
+#import "TextParser.h"
+#import "UIViewController+LayoutProtocol.h"
+#import <UIKit/UIKit.h>
 
 @implementation RNNScreenTransition
 
@@ -19,6 +25,11 @@
     self.elementTransitions = [OptionsArrayParser parse:dict
                                                     key:@"elementTransitions"
                                                 ofClass:ElementTransitionOptions.class];
+    NSDictionary *zoom = dict[@"zoom"];
+    if ([zoom isKindOfClass:[NSDictionary class]]) {
+        self.zoomFromId = [TextParser parse:zoom key:@"fromId"];
+        self.zoomEnabled = [BoolParser parse:zoom key:@"enabled"];
+    }
 
     return self;
 }
@@ -38,6 +49,10 @@
         self.sharedElementTransitions = options.sharedElementTransitions;
     if (options.elementTransitions)
         self.elementTransitions = options.elementTransitions;
+    if (options.zoomFromId.hasValue)
+        self.zoomFromId = options.zoomFromId;
+    if (options.zoomEnabled.hasValue)
+        self.zoomEnabled = options.zoomEnabled;
 }
 
 - (BOOL)hasCustomAnimation {
@@ -45,8 +60,45 @@
             self.sharedElementTransitions || self.elementTransitions);
 }
 
+- (BOOL)hasZoomTransition {
+    if (self.hasCustomAnimation) {
+        return NO;
+    }
+
+    NSString *fromId = [self.zoomFromId withDefault:@""];
+    return [self.zoomEnabled withDefault:YES] && fromId.length > 0;
+}
+
 - (BOOL)shouldWaitForRender {
 	return [self.waitForRender withDefault: [RNNUtils getDefaultWaitForRender]] || self.hasCustomAnimation;
+}
+
+- (void)applyZoomToViewController:(UIViewController *)destination
+         fromSourceViewController:(UIViewController *)source {
+    if (![self hasZoomTransition]) {
+        return;
+    }
+
+    if (@available(iOS 18.0, *)) {
+        NSString *fromId = [[self.zoomFromId withDefault:@""] copy];
+        destination.preferredTransition = [UIViewControllerTransition
+            zoomWithOptions:nil
+            sourceViewProvider:^UIView *(UIZoomTransitionSourceViewProviderContext *context) {
+              UIViewController *sourceVC = context.sourceViewController ?: source;
+              if (![sourceVC conformsToProtocol:@protocol(RNNLayoutProtocol)]) {
+                  return nil;
+              }
+
+              UIViewController<RNNLayoutProtocol> *rnnSourceVC =
+                  (UIViewController<RNNLayoutProtocol> *)sourceVC;
+              UIView *reactView = rnnSourceVC.presentedComponentViewController.reactView;
+              if (reactView == nil) {
+                  return nil;
+              }
+
+              return [RNNElementFinder findElementForId:fromId inView:reactView];
+            }];
+    }
 }
 
 - (NSTimeInterval)maxDuration {

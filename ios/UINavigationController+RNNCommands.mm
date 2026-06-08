@@ -1,5 +1,7 @@
 #import "RNNErrorHandler.h"
+#import "RNNScreenTransition.h"
 #import "UINavigationController+RNNCommands.h"
+#import "UIViewController+LayoutProtocol.h"
 #import <React/RCTI18nUtil.h>
 
 typedef void (^RNNAnimationBlock)(void);
@@ -17,6 +19,11 @@ typedef void (^RNNAnimationBlock)(void);
     } else {
         self.view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
         self.navigationBar.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+
+    RNNScreenTransition *pushTransition = newTop.resolveOptionsWithDefault.animations.push;
+    if (animated && [pushTransition hasZoomTransition]) {
+        [pushTransition applyZoomToViewController:newTop fromSourceViewController:onTopViewController];
     }
 
     [self
