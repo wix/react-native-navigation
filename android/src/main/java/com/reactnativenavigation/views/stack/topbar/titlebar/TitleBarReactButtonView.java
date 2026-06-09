@@ -35,6 +35,24 @@ public class TitleBarReactButtonView extends ReactView {
                     ? Gravity.CENTER_VERTICAL
                     : (layoutParams.gravity & ~Gravity.VERTICAL_GRAVITY_MASK) | Gravity.CENTER_VERTICAL;
         }
+
+        // The hosted React content lays out asynchronously (off the native measure pass, especially
+        // under Fabric), so the first onMeasure can observe a 0-sized child and freeze the button at
+        // ~1px. When the content later reports a non-zero size, re-request layout so onMeasure re-runs
+        // and sizes the button to the content. The size-changed guard makes this converge: once the
+        // button re-measures to the content, the child's bounds stop changing and no further layout is
+        // requested. The explicit-dimensions check is done lazily inside the listener rather than here
+        // because onViewAdded fires from the superclass constructor (before `component` is assigned)
+        // for the React surface view, which is the very child whose size we need to observe.
+        child.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            if (component != null && component.width.hasValue() && component.height.hasValue()) {
+                return;
+            }
+            boolean sizeChanged = (r - l) != (or - ol) || (b - t) != (ob - ot);
+            if (sizeChanged) {
+                requestLayout();
+            }
+        });
     }
 
     @Override
