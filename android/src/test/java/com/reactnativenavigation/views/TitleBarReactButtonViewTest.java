@@ -161,8 +161,8 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
         uut.layout(0, 0, uut.getMeasuredWidth(), uut.getMeasuredHeight());
 
-        // With zero-sized content the button collapses to the ~1px floor.
-        assertThat(uut.getMeasuredWidth()).isEqualTo(1);
+        // With zero-sized content the button collapses to the content-based floor (~1px at mdpi).
+        assertThat(uut.getMeasuredWidth()).isEqualTo(collapsedWidth(activity));
 
         // The async React content now reports its real size; the layout change must re-request layout.
         child.contentWidth = CHILD_WIDTH;
@@ -202,6 +202,10 @@ public class TitleBarReactButtonViewTest extends BaseTest {
 
     private int finalWidth(Activity activity) {
         return CHILD_WIDTH + (int) Math.ceil(UiUtils.dpToPx(activity, 1f));
+    }
+
+    private int collapsedWidth(Activity activity) {
+        return Math.max((int) Math.ceil(UiUtils.dpToPx(activity, 1f)), 1);
     }
 
     private static class RecordingContentView extends View {
