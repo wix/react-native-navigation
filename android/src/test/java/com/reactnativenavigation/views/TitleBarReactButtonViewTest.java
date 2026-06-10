@@ -164,12 +164,19 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         // With zero-sized content the button collapses to the content-based floor (~1px at mdpi).
         assertThat(uut.getMeasuredWidth()).isEqualTo(collapsedWidth(activity));
 
-        // The async React content now reports its real size; the layout change must re-request layout.
+        // The async React content now reports its real size; the resulting child layout change must
+        // re-request layout on the button (this is what the production OnLayoutChangeListener does).
         child.contentWidth = CHILD_WIDTH;
         child.contentHeight = CHILD_HEIGHT;
         child.layout(0, 0, CHILD_WIDTH, CHILD_HEIGHT);
 
         assertThat(uut.isLayoutRequested()).isTrue();
+
+        // Invalidate the child's measure cache so the re-measure reflects its new content size.
+        // In production RN re-measures the surface when it lays out new content; without this the
+        // parent's super.onMeasure would reuse the stale cached 0-width measurement under the same spec.
+        // (Done after child.layout(), since View.layout() clears the FORCE_LAYOUT flag.)
+        child.forceLayout();
 
         // Re-measuring (as the framework would after requestLayout) now sizes the button to the content.
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
