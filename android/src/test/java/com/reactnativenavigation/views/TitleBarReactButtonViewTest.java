@@ -32,12 +32,14 @@ public class TitleBarReactButtonViewTest extends BaseTest {
     private static final int CHILD_WIDTH = 24;
     private static final int CHILD_HEIGHT = 16;
 
-    // Without explicit dimensions the button measures the hosted React surface ONCE with bounded
-    // (AT_MOST) specs and lets it size itself to its content. It deliberately does not follow up with
-    // a forced EXACTLY pass — under the New Architecture that re-pushes a (initially collapsed) box to
-    // the async Fabric layout and the button never recovers its real size.
+    // Without explicit dimensions the button measures the hosted React surface ONCE:
+    //  - width  AT_MOST  → the surface sizes itself to its content (max-of-children under Fabric).
+    //  - height EXACTLY the available bar height → the surface gets a filled box so content that
+    //    centers itself (flex justifyContent: 'center') stays vertically centered in the bar.
+    // It deliberately does not push a forced EXACTLY *width*; under the New Architecture that re-pushes
+    // a (initially collapsed) width to the async Fabric layout and the button never recovers.
     @Test
-    public void missingDimensionsMeasureToContentWithASingleBoundedPass() {
+    public void missingDimensionsSizeWidthToContentAndFillHeight() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -46,11 +48,11 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
 
         assertThat(uut.getMeasuredWidth()).isEqualTo(CHILD_WIDTH);
-        assertThat(uut.getMeasuredHeight()).isEqualTo(CHILD_HEIGHT);
+        assertThat(uut.getMeasuredHeight()).isEqualTo(PARENT_HEIGHT);
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(1);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(PARENT_HEIGHT);
     }
 
@@ -76,7 +78,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
     }
 
     @Test
-    public void zeroParentSpecsFallbackToBoundedAtMostSpecs() {
+    public void zeroParentSpecsFallBackToScreenWidthAndActionBarHeight() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -88,12 +90,12 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0)))
                 .isEqualTo(Math.max(activity.getResources().getDisplayMetrics().widthPixels, 1));
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(Math.max(resolveActionBarSize(activity), 1));
     }
 
     @Test
-    public void rtlMissingDimensionsUseBoundedSpecs() {
+    public void rtlMissingDimensionsUseBoundedWidthAndFilledHeight() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -105,25 +107,8 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(1);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(PARENT_HEIGHT);
-    }
-
-    @Test
-    public void contentRemainsCenteredWhenMenuCellLaysButtonOutTallerThanMeasuredHeight() {
-        Activity activity = newActivity();
-        TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
-        RecordingContentView child = new RecordingContentView(activity);
-        setContentView(uut, child);
-
-        uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
-        uut.layout(0, 0, uut.getMeasuredWidth(), PARENT_HEIGHT);
-
-        // The button hugs the content height, and when a taller cell lays it out the content stays
-        // vertically centered via the CENTER_VERTICAL gravity applied in onViewAdded.
-        assertThat(uut.getMeasuredHeight()).isEqualTo(CHILD_HEIGHT);
-        assertThat(child.getTop()).isEqualTo((PARENT_HEIGHT - CHILD_HEIGHT) / 2);
-        assertThat(child.getBottom()).isEqualTo((PARENT_HEIGHT + CHILD_HEIGHT) / 2);
     }
 
     @Test

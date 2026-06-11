@@ -44,14 +44,16 @@ public class TitleBarReactButtonView extends ReactView {
             this.setId(View.NO_ID);
         }
 
-        // Measure the hosted React surface with bounded (AT_MOST) specs and let it size itself to its
-        // content. Under Fabric, ReactSurfaceView reports max-of-children under AT_MOST (i.e. the
-        // laid-out content size) and pushes these constraints to the async Fabric layout. We must NOT
-        // follow this with a forced EXACTLY pass: re-pushing a forced box (which, before the content
-        // has laid out, is collapsed to ~1px) makes Fabric lay the content out into that collapsed box
-        // and the button never recovers (#8320/#8326 attempted exactly that and regressed under the
-        // New Architecture). When Fabric mounts/sizes the content, ReactSurfaceView re-requests layout
-        // and this measure runs again against the now-non-zero content.
+        // Width: bounded (AT_MOST) so the hosted React surface sizes itself to its content. Under
+        // Fabric, ReactSurfaceView reports max-of-children under AT_MOST (the laid-out content width)
+        // and pushes that to the async layout. Crucially we must NOT push a forced EXACTLY *width*:
+        // before the content has laid out that width is collapsed (~1px), Fabric lays the content into
+        // it and the button never recovers (#8320/#8326 did this and regressed under the New Arch).
+        //
+        // Height: EXACTLY the available bar height. Giving the surface a filled height (rather than a
+        // content-hugging AT_MOST height) lets content that centers itself (e.g. a flex container with
+        // justifyContent: 'center') sit vertically centered in the bar, matching the legacy layout.
+        // It does not cause the width collapse — only a forced width does.
         int widthSpec = component.width.hasValue()
                 ? createExactSpec(component.width)
                 : makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST);
@@ -64,7 +66,7 @@ public class TitleBarReactButtonView extends ReactView {
             return createExactSpec(dimension);
         }
         int availableSize = MeasureSpec.getSize(measureSpec);
-        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), AT_MOST);
+        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), EXACTLY);
     }
 
     private int resolveAvailableWidth(int measureSpec) {
