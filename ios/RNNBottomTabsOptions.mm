@@ -26,6 +26,7 @@
     self.borderColor = [ColorParser parse:dict key:@"borderColor"];
     self.borderWidth = [NumberParser parse:dict key:@"borderWidth"];
     self.shadow = [[RNNShadowOptions alloc] initWithDict:dict[@"shadow"]];
+    self.customRow = [[RNNBottomTabsCustomRowOptions alloc] initWithDict:dict[@"customRow"]];
 
     return self;
 }
@@ -69,6 +70,7 @@
         self.borderWidth = options.borderWidth;
 
     [self.shadow mergeOptions:options.shadow];
+    [self.customRow mergeOptions:options.customRow];
 }
 
 - (BOOL)shouldDrawBehind {

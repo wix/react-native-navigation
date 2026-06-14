@@ -6,17 +6,14 @@ import javax.annotation.Nullable;
 
 public class DevBundleDownloadListenerAdapter implements DevBundleDownloadListener, NavigationDevBundleDownloadListener {
     @Override
-    public void onSuccess() {
-        onSuccess();
-    }
+    public void onSuccess() {}
 
-    @Override
     public void onProgress(@Nullable String status, @Nullable Integer done, @Nullable Integer total) {
-
+        onProgress(status, done, total, null);
     }
+
+    public void onProgress(@Nullable String status, @Nullable Integer done, @Nullable Integer total, @Nullable Integer totalDone) {}
 
     @Override
-    public void onFailure(Exception cause) {
-
-    }
+    public void onFailure(Exception cause) {}
 }

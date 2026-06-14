@@ -234,6 +234,7 @@
                                                      presenter:presenter
                                             bottomTabPresenter:bottomTabPresenter
                                          dotIndicatorPresenter:dotIndicatorPresenter
+                                             componentRegistry:_componentRegistry
                                                   eventEmitter:_eventEmitter
                                           childViewControllers:childViewControllers
                                             bottomTabsAttacher:bottomTabsAttacher];

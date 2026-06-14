@@ -4,6 +4,8 @@
 
 @interface RNNTabBarItemCreator : NSObject
 
+@property(nonatomic, assign) BOOL searchRoleUsed;
+
 - (UITabBarItem *)createTabBarItem:(RNNBottomTabOptions *)bottomTabOptions
                          mergeItem:(UITabBarItem *)mergeItem;
 

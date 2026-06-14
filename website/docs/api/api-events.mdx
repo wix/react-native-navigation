@@ -211,6 +211,26 @@ screenPoppedListener.remove();
 | :-------------: | :-------------------------------- |
 | **componentId** | Id of the screen which was popped |
 
+## registerBottomTabPressedListener
+
+Invoked when a bottom tab is pressed by the user, including when [`selectTabOnPress`](options-bottomTab.mdx#selecttabonpress) is `false` (the selected tab does not change).
+
+```js
+// Subscribe
+const bottomTabEventListener = Navigation.events().registerBottomTabPressedListener(({ tabIndex }) => {
+
+});
+...
+// Unsubscribe
+bottomTabEventListener.remove();
+```
+
+| Parameter   | Description                         |
+| :---------: | :---------------------------------- |
+| **tabIndex** | Index of the tab that was pressed |
+
+Works with [custom bottom tab items](../docs/docs-customBottomTabs.mdx) on iOS and Android.
+
 ## registerBottomTabSelectedListener
 
 Invoked when BottomTab is selected by a user.
@@ -225,9 +245,16 @@ const bottomTabEventListener = Navigation.events().registerBottomTabSelectedList
 bottomTabEventListener.remove();
 ```
 
+|       Parameter        | Description                          |
+| :--------------------: | :----------------------------------- |
+|  **selectedTabIndex**  | Index of the newly selected tab      |
+| **unselectedTabIndex** | Index of the previously selected tab |
+
+Works with [custom bottom tab items](../docs/docs-customBottomTabs.mdx) on iOS and Android.
+
 ## registerBottomTabLongPressedListener
 
-Invoked when BottomTab is long pressed by a user.
+Invoked when BottomTab is long pressed by a user. **iOS only.** Not emitted for [custom bottom tab items](../docs/docs-customBottomTabs.mdx) — long press is handled on the native tab bar, which is hidden when every tab uses `bottomTab.component`.
 
 ```js
 // Subscribe
@@ -238,11 +265,6 @@ const bottomTabEventListener = Navigation.events().registerBottomTabLongPressedL
 // Unsubscribe
 bottomTabEventListener.remove();
 ```
-
-|       Parameter        | Description                          |
-| :--------------------: | :----------------------------------- |
-|  **selectedTabIndex**  | Index of the newly selected tab      |
-| **unselectedTabIndex** | Index of the previously selected tab |
 
 ## navigationButtonPressed event
 

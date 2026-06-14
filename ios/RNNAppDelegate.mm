@@ -4,11 +4,12 @@
 #import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
 
 #import "RCTAppSetupUtils.h"
-#import <React/CoreModulesPlugins.h>
 #if __has_include(<React/RCTCxxBridgeDelegate.h>)
 #import <React/RCTCxxBridgeDelegate.h>
 #endif
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
+#import <React/RCTLinkingManager.h>
+#import <React/RCTRootView.h>
 #import <React/RCTSurfacePresenter.h>
 #if __has_include(<React/RCTSurfacePresenterStub.h>)
 #import <React/RCTSurfacePresenterStub.h>
@@ -37,6 +38,13 @@
 
 #import <React/RCTComponentViewFactory.h>
 
+// Deep-link URLs that arrive (openURL, universal link, or external dispatch)
+// before the React runtime is ready are queued here and flushed when Fabric
+// posts `RCTContentDidAppearNotification` — by which point
+// `RCTLinkingManager` is instantiated and JS subscribers are listening.
+static NSMutableArray<NSURL *> *gRNNPendingDeepLinkURLs = nil;
+static BOOL gRNNReactRuntimeReady = NO;
+
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
@@ -56,12 +64,17 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+// RN 0.77 & RN0.78
 #if !RNN_RN_VERSION_79_OR_NEWER
-    [self _setUpFeatureFlags];
+#if __has_include(<ReactAppDependencyProvider/RCTAppDependencyProvider.h>)
+    self.dependencyProvider = [RCTAppDependencyProvider new];
+#endif
+    // RN 0.77
     #if !RNN_RN_VERSION_78
+        [self _setUpFeatureFlags];
         self.rootViewFactory = [self createRCTRootViewFactory];
-    #else
-        self.reactNativeFactory = [[RCTReactNativeFactory alloc] init];
+    #else // RN0.78
+        self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self];
         self.reactNativeFactory.rootViewFactory = [self createRCTRootViewFactory];
     #endif
     
@@ -88,7 +101,71 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [ReactNativeNavigation bootstrapWithHost:self.reactNativeFactory.rootViewFactory.reactHost];
 #endif
     
+    [self rnn_installDeepLinkObservers];
+    
     return YES;
+}
+
+#pragma mark - Deep linking
+
+// Forward OS-delivered custom-scheme URLs to React Native's Linking module.
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+    [self dispatchDeepLinkURL:url];
+    return YES;
+}
+
+// Forward universal links (associated domains) to React Native's Linking
+// module by extracting the underlying https URL and routing it through the
+// same pre-bridge queue as everything else.
+- (BOOL)application:(UIApplication *)application
+   continueUserActivity:(NSUserActivity *)userActivity
+     restorationHandler:
+         (void (^)(NSArray<id<UIUserActivityRestoring>> *_Nullable))restorationHandler {
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        [self dispatchDeepLinkURL:userActivity.webpageURL];
+        return YES;
+    }
+    return NO;
+}
+
+- (void)dispatchDeepLinkURL:(NSURL *)url {
+    if (url == nil) {
+        return;
+    }
+    if (gRNNReactRuntimeReady) {
+        [RCTLinkingManager application:[UIApplication sharedApplication]
+                               openURL:url
+                               options:@{}];
+        return;
+    }
+    if (gRNNPendingDeepLinkURLs == nil) {
+        gRNNPendingDeepLinkURLs = [NSMutableArray array];
+    }
+    [gRNNPendingDeepLinkURLs addObject:url];
+}
+
+- (void)rnn_installDeepLinkObservers {
+    // `RCTContentDidAppearNotification` is posted by Fabric's root view
+    // once content has rendered. RNN forces bridgeless/new-arch, so the
+    // legacy `RCTJavaScriptDidLoadNotification` never fires; we rely on
+    // this Fabric signal exclusively.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(rnn_handleReactRuntimeReady:)
+                                                 name:RCTContentDidAppearNotification
+                                               object:nil];
+}
+
+- (void)rnn_handleReactRuntimeReady:(NSNotification *)notification {
+    gRNNReactRuntimeReady = YES;
+    NSArray<NSURL *> *pending = [gRNNPendingDeepLinkURLs copy];
+    [gRNNPendingDeepLinkURLs removeAllObjects];
+    for (NSURL *url in pending) {
+        [RCTLinkingManager application:[UIApplication sharedApplication]
+                               openURL:url
+                               options:@{}];
+    }
 }
 
 
@@ -117,6 +194,13 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
     return [[RCTRootViewFactory alloc] initWithConfiguration:configuration andTurboModuleManagerDelegate:self];
+}
+
+#pragma mark - RCTTurboModuleManagerDelegate
+
+- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
+{
+    return RCTAppSetupDefaultModuleFromClass(moduleClass, self.dependencyProvider);
 }
 
 #pragma mark - Feature Flags

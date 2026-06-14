@@ -77,6 +77,7 @@ Each controller type has a Presenter that applies options to views:
 | React view rendering | — | `ios/RNNReactView.mm` | `react/ReactView.java` |
 | Events to JS | `src/adapters/NativeEventsReceiver.ts` | `ios/RNNEventEmitter.mm` | `react/events/EventEmitter.java` |
 | Component registration | `src/components/ComponentRegistry.ts` | — | — |
+| Deep linking (URL → screen) | `src/linking/` (`LinkingHandler`, `URLParser`, `RouteMatcher`, `DeferredLinkQueue`, `ModalLayoutBuilder`) | `ios/RNNAppDelegate.mm` (`dispatchDeepLinkURL:`, cold-start queue, `RCTContentDidAppearNotification`) | `NavigationActivity.onNewIntent` → `ReactGateway` |
 
 ### By directory
 
@@ -149,3 +150,5 @@ API layout → OptionsCrawler.crawl() → LayoutProcessor.process()
 - Options that exist in JS types may not be implemented on both platforms — check the presenter
 - `passProps` are stored in JS `Store`, not sent to native (cleared before bridge crossing)
 - The `lib/` folder is generated — never edit it, edit `src/` instead
+- Deep links are processed only after the first `setRoot()` resolves; pre-bridge URLs on iOS are queued natively in `RNNAppDelegate` and flushed on `RCTContentDidAppearNotification` (bridgeless mode — `RCTJavaScriptDidLoadNotification` does NOT fire)
+- `ModalLayoutBuilder` strips React-reserved keys (`ref`, `key`) from URL query params before they reach `passProps`, to avoid React 19 ref-validation crashes

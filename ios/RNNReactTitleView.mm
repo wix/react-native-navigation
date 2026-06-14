@@ -1,5 +1,7 @@
 #import "RNNReactTitleView.h"
 
+static const CGFloat kTitleViewDefaultHeight = 44.0;
+
 @implementation RNNReactTitleView {
     BOOL _fillParent;
     CGFloat _expectedHeight;
@@ -11,24 +13,43 @@
 
 - (CGSize)intrinsicContentSize {
     if (_fillParent) {
-        return CGSizeMake(UILayoutFittingExpandedSize.width, _expectedHeight > 0 ? _expectedHeight : 44);
-    } else {
-        return [super intrinsicContentSize];
+        return CGSizeMake(UILayoutFittingExpandedSize.width,
+                          _expectedHeight > 0 ? _expectedHeight : kTitleViewDefaultHeight);
     }
+    return [super intrinsicContentSize];
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    if (_fillParent) {
+        return size;
+    }
+    return [super sizeThatFits:size];
 }
 
 - (void)setAlignment:(NSString *)alignment inFrame:(CGRect)frame {
     if ([alignment isEqualToString:@"fill"]) {
         _fillParent = YES;
-        _expectedHeight = frame.size.height;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+        _expectedHeight = frame.size.height > 0 ? frame.size.height : kTitleViewDefaultHeight;
+        self.frame = frame;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin |
+                                UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
     } else {
+        _fillParent = NO;
+        self.autoresizingMask = UIViewAutoresizingNone;
         self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
         __weak RNNReactView *weakSelf = self;
         [self setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicSize) {
           [weakSelf setFrame:CGRectMake(0, 0, intrinsicSize.width, intrinsicSize.height)];
         }];
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (_fillParent && self.bounds.size.height > 0 && _expectedHeight != self.bounds.size.height) {
+        _expectedHeight = self.bounds.size.height;
+        [self invalidateIntrinsicContentSize];
     }
 }
 

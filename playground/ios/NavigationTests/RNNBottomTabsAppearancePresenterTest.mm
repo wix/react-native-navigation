@@ -43,6 +43,7 @@
                                     bottomTabPresenter:[BottomTabPresenterCreator
                                                            createWithDefaultOptions:nil]
                                  dotIndicatorPresenter:self.dotIndicatorPresenter
+                                      componentRegistry:nil
                                           eventEmitter:nil
                                   childViewControllers:self.children
                                     bottomTabsAttacher:nil]];

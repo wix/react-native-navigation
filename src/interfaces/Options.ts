@@ -999,6 +999,54 @@ export interface OptionsBottomTabs {
    * Control the shadow of the Bottom tabs bar
    */
   shadow?: ShadowOptions;
+  /**
+   * Visual options for the floating row that hosts custom React-component
+   * bottom tab cells. Only takes effect when every `bottomTab.component`
+   * is set on that `bottomTabs` layout.
+   *
+   * Same JS shape on iOS and Android. iOS applies options via the native
+   * parser; Android receives them through `RNNBottomTabsCustomRowModule`.
+   */
+  customRow?: BottomTabsCustomRowOptions;
+}
+
+export interface BottomTabsCustomRowOptions {
+  /**
+   * Content height of the row in points (iOS) / dp (Android). Excludes
+   * safe-area inset. Total row height = `height` + safe bottom + `bottomMargin`.
+   *
+   * Default: native tab content height; on iOS 26+ an extra 18pt when omitted.
+   */
+  height?: number;
+  /**
+   * Solid background color for the row. When set, overrides
+   * `backgroundEffect`.
+   */
+  backgroundColor?: Color;
+  /**
+   * Visual effect for the row background.
+   * - `glass`: iOS 26+ `UIGlassEffect`.
+   * - `blur`: `UIBlurEffect` with `systemChromeMaterial`.
+   * - `none`: fully transparent.
+   *
+   * Default: `glass` on iOS 26+, `blur` on older versions.
+   */
+  backgroundEffect?: 'glass' | 'blur' | 'none';
+  /**
+   * Corner radius applied to the row's background.
+   * Default: 28 on iOS 26+, 0 below.
+   */
+  cornerRadius?: number;
+  /**
+   * Horizontal inset from the screen edges.
+   * Default: 16 on iOS 26+, 0 below.
+   */
+  horizontalMargin?: number;
+  /**
+   * Distance between the row's bottom edge and the safe-area bottom.
+   * Default: 0.
+   */
+  bottomMargin?: number;
 }
 
 export interface ShadowOptions {
@@ -1034,6 +1082,45 @@ export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
+
+  /**
+   * Render a React component as the tab item content (icon + text area).
+   *
+   * When set, the native icon, text and font props (`text`, `icon`,
+   * `selectedIcon`, `sfSymbol`, `sfSelectedSymbol`, `iconColor`,
+   * `selectedIconColor`, `iconWidth`, `iconHeight`, `iconInsets`,
+   * `fontFamily`, `fontWeight`, `fontSize`, `selectedFontSize`,
+   * `textColor`, `selectedTextColor`) are ignored for that tab.
+   *
+   * For the custom rendering to take effect every tab in the
+   * `bottomTabs` layout must declare a `component`. If only some
+   * tabs declare one a warning is logged and native rendering is
+   * used for all tabs.
+   *
+   * The component receives the following initial props and
+   * subsequent prop updates:
+   * - `componentId`: stable id for this tab item instance
+   * - `tabIndex`: position of the tab (0-based)
+   * - `selected`: whether this tab is currently selected
+   * - `badge`: current badge text (mirrors `bottomTab.badge`)
+   *
+   * Native still owns selection, hide/show, drawBehind, animations
+   * and the dot indicator. To switch tabs from inside the component
+   * use `Navigation.mergeOptions(parentId, { bottomTabs: { currentTabIndex } })`.
+   */
+  component?: {
+    /**
+     * The registered name of the component (passed to
+     * `Navigation.registerComponent`).
+     */
+    name: string;
+    /**
+     * Props passed once when the component is created. Updates from
+     * native (`selected`, `badge`) are delivered as separate prop
+     * updates.
+     */
+    passProps?: object;
+  };
 
   /**
    * Set the text to display below the icon
@@ -1148,6 +1235,43 @@ export interface OptionsBottomTab {
    * #### (iOS 13+ specific)
    */
   sfSelectedSymbol?: string;
+  /**
+   * Set the tab bar item to a system-provided role.
+   * Uses `UITabBarItem(tabBarSystemItem:)` on iOS.
+   *
+   * By default the system provides the icon and title. You can
+   * override the icon by providing `icon`, `selectedIcon`,
+   * `sfSymbol`, or `sfSelectedSymbol` — they are applied after
+   * creation and replace the system-provided image.
+   * `iconColor` and `selectedIconColor` are applied as a tint
+   * to the custom icon when one is provided.
+   *
+   * **`'search'`** — on iOS 26+ this renders as a floating
+   * Liquid Glass button. Only one tab per `bottomTabs` layout
+   * may use this role; duplicates fall back to a normal tab.
+   *
+   * **`'more'`** — activates UIKit's built-in "More" navigation
+   * controller. Tabs beyond the visible limit are moved into
+   * it automatically.
+   *
+   * Properties that remain ignored for role tabs: `text`,
+   * `fontSize`, `fontFamily`, `fontWeight`, `iconInsets`.
+   *
+   * #### (iOS specific)
+   */
+  role?:
+    | 'search'
+    | 'bookmarks'
+    | 'contacts'
+    | 'downloads'
+    | 'favorites'
+    | 'featured'
+    | 'history'
+    | 'more'
+    | 'mostRecent'
+    | 'mostViewed'
+    | 'recents'
+    | 'topRated';
 }
 
 export interface SideMenuSide {
@@ -1537,6 +1661,11 @@ export interface AnimationOptions {
 export interface NavigationBarOptions {
   backgroundColor?: Color;
   visible?: boolean;
+  /**
+   * Draw screen content behind the system navigation bar while keeping it visible.
+   * On Android 15+ edge-to-edge, use with `backgroundColor: 'transparent'`.
+   */
+  drawBehind?: boolean;
 }
 
 /**
@@ -1685,9 +1814,64 @@ setRoot: {
    */
   window?: WindowOptions;
   /**
+   * Show / hide or change the style of the iOS 26 scroll edge effect on every
+   * UIScrollView contained in the screen.
+   * #### (iOS 26+ specific)
+   */
+  scrollEdgeEffect?: OptionsScrollEdgeEffect;
+  /**
    * Enable or disable automatically blurring focused input, dismissing keyboard on unmount
    * #### (Android specific)
    * @default false
    */
   blurOnUnmount?: boolean;
+}
+
+export interface OptionsScrollEdge {
+  /**
+   * Hide the scroll edge effect on this edge.
+   * #### (iOS 26+ specific)
+   */
+  hidden?: boolean;
+  /**
+   * Style of the scroll edge effect on this edge.
+   * #### (iOS 26+ specific)
+   * @default 'automatic'
+   */
+  style?: 'automatic' | 'soft' | 'hard';
+}
+
+export interface OptionsScrollEdgeEffect {
+  /**
+   * Hide the scroll edge effect on all four edges of contained scroll views.
+   * Per-edge values (top / bottom / left / right) take precedence over this.
+   * #### (iOS 26+ specific)
+   */
+  hidden?: boolean;
+  /**
+   * Style of the scroll edge effect on all four edges. Per-edge values take precedence.
+   * #### (iOS 26+ specific)
+   * @default 'automatic'
+   */
+  style?: 'automatic' | 'soft' | 'hard';
+  /**
+   * Per-edge override for the top edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  top?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the bottom edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  bottom?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the left edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  left?: OptionsScrollEdge;
+  /**
+   * Per-edge override for the right edge effect. Falls back to the global hidden / style.
+   * #### (iOS 26+ specific)
+   */
+  right?: OptionsScrollEdge;
 }
