@@ -3,9 +3,7 @@
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
-@implementation BottomTabPresenter {
-    RNNTabBarItemCreator *_tabCreator;
-}
+@implementation BottomTabPresenter
 
 - (instancetype)initWithDefaultOptions:(RNNNavigationOptions *)defaultOptions
                             tabCreator:(RNNTabBarItemCreator *)tabCreator {
@@ -38,10 +36,37 @@
 
 - (void)createTabBarItem:(UIViewController *)child
         bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
+    if (_useCustomItemViews && bottomTabOptions.component.name.hasValue) {
+        UITabBarItem *blankItem = [self createBlankTabBarItem:child
+                                             bottomTabOptions:bottomTabOptions];
+        if (blankItem != child.tabBarItem) {
+            child.tabBarItem = blankItem;
+        }
+        return;
+    }
+
     UITabBarItem *updatedItem = [_tabCreator createTabBarItem:bottomTabOptions mergeItem:child.tabBarItem];
     if (updatedItem != child.tabBarItem) {
         child.tabBarItem = updatedItem;
     }
+}
+
+// Builds a truly blank `UITabBarItem` (nil image, nil title). When custom
+// item views are active, `RNNBottomTabsController` hides the native tab bar
+// visuals and renders the custom row on top. The bar item still needs to
+// exist so that `UITabBarController` reserves the right number of slots and
+// the bottom safe-area inset.
+- (UITabBarItem *)createBlankTabBarItem:(UIViewController *)child
+                       bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
+    UITabBarItem *item = child.tabBarItem ?: [UITabBarItem new];
+    item.image = nil;
+    item.selectedImage = nil;
+    item.title = nil;
+    item.tag = bottomTabOptions.tag;
+    item.accessibilityIdentifier = [bottomTabOptions.testID withDefault:nil];
+    item.accessibilityLabel = [bottomTabOptions.accessibilityLabel withDefault:nil];
+    item.imageInsets = UIEdgeInsetsZero;
+    return item;
 }
 
 @end

@@ -10,6 +10,7 @@ import { NavigationRoot } from './Navigation';
 import { NativeCommandsSender } from './adapters/NativeCommandsSender';
 import { NativeEventsReceiver } from './adapters/NativeEventsReceiver';
 import { AppRegistryService } from './adapters/AppRegistryService';
+import { LinkingConfig } from './linking/types';
 
 export class NavigationDelegate {
   private concreteNavigation: NavigationRoot;
@@ -202,6 +203,27 @@ export class NavigationDelegate {
    */
   public getLaunchArgs(): Promise<any> {
     return this.concreteNavigation.getLaunchArgs();
+  }
+
+  /**
+   * Configure deep link handling.
+   */
+  public setLinking(config: LinkingConfig): void {
+    this.concreteNavigation.setLinking(config);
+  }
+
+  /**
+   * Manually feed a URL into the deep link pipeline.
+   */
+  public handleDeepLink(url: string): void {
+    this.concreteNavigation.handleDeepLink(url);
+  }
+
+  /**
+   * Signal readiness to process deep links. Flushes any queued links.
+   */
+  public setLinkingReady(ready: boolean): void {
+    this.concreteNavigation.setLinkingReady(ready);
   }
 
   /**

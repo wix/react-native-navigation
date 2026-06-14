@@ -1,11 +1,17 @@
 #import "RNNBottomTabsController.h"
+#import "RNNBottomTabsCustomRow.h"
+#import "RNNCustomTabBarItemView.h"
+#import "RNNTabBarItemCreator.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UITabBarController+RNNUtils.h"
+#import <React/RCTLog.h>
 
 @interface RNNBottomTabsController ()
 @property(nonatomic, strong) BottomTabPresenter *bottomTabPresenter;
 @property(nonatomic, strong) RNNDotIndicatorPresenter *dotIndicatorPresenter;
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressRecognizer;
+
+- (void)rnn_cycleAllTabsThenRestoreInitialSelection;
 
 @end
 
@@ -16,6 +22,12 @@
     BOOL _tabBarNeedsRestore;
     RNNNavigationOptions *_options;
     BOOL _didFinishSetup;
+    BOOL _rnnDidApplyInitialTabBarSelectionFix;
+    BOOL _rnnSuppressTabSelectionEvents;
+    RNNReactComponentRegistry *_componentRegistry;
+    NSMutableArray<RNNCustomTabBarItemView *> *_customTabItemViews;
+    BOOL _useCustomItemViews;
+    RNNBottomTabsCustomRow *_customRow;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
@@ -25,14 +37,18 @@
                          presenter:(RNNBasePresenter *)presenter
                 bottomTabPresenter:(BottomTabPresenter *)bottomTabPresenter
              dotIndicatorPresenter:(RNNDotIndicatorPresenter *)dotIndicatorPresenter
+                 componentRegistry:(RNNReactComponentRegistry *)componentRegistry
                       eventEmitter:(RNNEventEmitter *)eventEmitter
               childViewControllers:(NSArray *)childViewControllers
                 bottomTabsAttacher:(BottomTabsBaseAttacher *)bottomTabsAttacher {
     _bottomTabsAttacher = bottomTabsAttacher;
     _bottomTabPresenter = bottomTabPresenter;
     _dotIndicatorPresenter = dotIndicatorPresenter;
+    _componentRegistry = componentRegistry;
     _options = options;
     _didFinishSetup = NO;
+    _customTabItemViews = [NSMutableArray new];
+    _useCustomItemViews = NO;
 
     IntNumber *currentTabIndex = options.bottomTabs.currentTabIndex;
     if ([currentTabIndex hasValue]) {
@@ -49,12 +65,7 @@
                       eventEmitter:eventEmitter
               childViewControllers:childViewControllers];
 
-    if (@available(iOS 26.0, *)) {
-        UITabBarAppearance *appearance = [UITabBarAppearance new];
-        [appearance configureWithDefaultBackground];
-        self.tabBar.standardAppearance = appearance;
-        self.tabBar.scrollEdgeAppearance = [appearance copy];
-    } else if (@available(iOS 13.0, *)) {
+    if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         [appearance configureWithOpaqueBackground];
         appearance.backgroundEffect = nil;
@@ -88,18 +99,226 @@
         [selectedChild pushViewController: [UIViewController new] animated:NO];
         [selectedChild popViewControllerAnimated:NO];
     }
+
+    if (_useCustomItemViews) {
+        [self ensureCustomRowAttached];
+        [self layoutCustomRow];
+    }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // iOS 26: first layout can misplace tab item titles; cycling selection (then restoring) forces a
+    // correct layout without user interaction. Defer so all tab children are in the hierarchy.
+    // Skipped when custom item views are active — the native tab bar visuals are hidden anyway.
+    if (@available(iOS 26.0, *)) {
+        if (!_useCustomItemViews && !_rnnDidApplyInitialTabBarSelectionFix) {
+            _rnnDidApplyInitialTabBarSelectionFix = YES;
+            __weak RNNBottomTabsController *weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf rnn_cycleAllTabsThenRestoreInitialSelection];
+            });
+        }
+    }
+}
+
+- (void)rnn_cycleAllTabsThenRestoreInitialSelection {
+    NSUInteger count = self.childViewControllers.count;
+    if (count <= 1) {
+        return;
+    }
+
+    NSUInteger initial = _currentTabIndex;
+    if (initial >= count) {
+        initial = 0;
+    }
+
+    _rnnSuppressTabSelectionEvents = YES;
+    [UIView performWithoutAnimation:^{
+        for (NSUInteger i = 0; i < count; i++) {
+            [self setSelectedIndex:i];
+        }
+        [self setSelectedIndex:initial];
+    }];
+    _rnnSuppressTabSelectionEvents = NO;
 }
 
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
+    _bottomTabPresenter.tabCreator.searchRoleUsed = NO;
+    [self resolveCustomItemViewMode:childViewControllers];
+    _bottomTabPresenter.useCustomItemViews = _useCustomItemViews;
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
     }
 
+    if (_useCustomItemViews) {
+        [self buildCustomTabItemViews:childViewControllers];
+        [self applyCustomItemViewsTabBarConfiguration];
+        [self ensureCustomRowAttached];
+    }
+
     [self syncTabBarItemTestIDs];
+}
+
+- (void)applyCustomItemViewsTabBarConfiguration {
+    // Hide the native tab bar visuals so our custom row is the only thing
+    // shown. The bar itself stays in the view hierarchy so that
+    // `UITabBarController` keeps reserving the bottom safe-area inset for
+    // the selected child controller and exposes the right frame for the
+    // row to match.
+    for (UIView *subview in self.tabBar.subviews) {
+        subview.hidden = YES;
+    }
+    self.tabBar.tintColor = UIColor.clearColor;
+    self.tabBar.unselectedItemTintColor = UIColor.clearColor;
+    self.tabBar.backgroundColor = UIColor.clearColor;
+}
+
+- (void)resolveCustomItemViewMode:(NSArray<UIViewController *> *)childViewControllers {
+    if (childViewControllers.count == 0) {
+        _useCustomItemViews = NO;
+        return;
+    }
+
+    NSUInteger withComponent = 0;
+    for (UIViewController *child in childViewControllers) {
+        RNNNavigationOptions *resolved = child.resolveOptions;
+        if (resolved.bottomTab.component.name.hasValue) {
+            withComponent++;
+        }
+    }
+
+    if (withComponent == 0) {
+        _useCustomItemViews = NO;
+        return;
+    }
+
+    if (withComponent != childViewControllers.count) {
+        RCTLogWarn(
+            @"[RNN] Mixed bottomTab.component usage detected (%lu of %lu tabs). All tabs must "
+            @"declare a component or none — falling back to native rendering for all tabs.",
+            (unsigned long)withComponent, (unsigned long)childViewControllers.count);
+        _useCustomItemViews = NO;
+        return;
+    }
+
+    _useCustomItemViews = YES;
+}
+
+- (void)buildCustomTabItemViews:(NSArray<UIViewController *> *)childViewControllers {
+    [self destroyCustomTabItemViews];
+
+    NSString *parentComponentId = self.layoutInfo.componentId;
+    for (NSUInteger i = 0; i < childViewControllers.count; i++) {
+        UIViewController *child = childViewControllers[i];
+        RNNNavigationOptions *resolved = child.resolveOptions;
+        RNNComponentOptions *componentOptions = resolved.bottomTab.component;
+
+        RNNReactView *reactView =
+            [_componentRegistry createComponentIfNotExists:componentOptions
+                                         parentComponentId:parentComponentId
+                                             componentType:RNNComponentTypeBottomTabItem
+                                       reactViewReadyBlock:nil];
+
+        NSString *badge = [resolved.bottomTab.badge withDefault:nil];
+        RNNCustomTabBarItemView *itemView =
+            [[RNNCustomTabBarItemView alloc] initWithReactView:reactView
+                                                      tabIndex:i
+                                                      selected:(i == _currentTabIndex)
+                                                         badge:badge];
+        [_customTabItemViews addObject:itemView];
+    }
+}
+
+- (void)destroyCustomTabItemViews {
+    for (RNNCustomTabBarItemView *itemView in _customTabItemViews) {
+        [itemView removeFromSuperview];
+    }
+    [_customTabItemViews removeAllObjects];
+    [_customRow removeFromSuperview];
+    _customRow = nil;
+}
+
+- (void)ensureCustomRowAttached {
+    if (!_useCustomItemViews) {
+        return;
+    }
+    if (!_customRow) {
+        _customRow = [[RNNBottomTabsCustomRow alloc] initWithFrame:CGRectZero];
+        __weak RNNBottomTabsController *weakSelf = self;
+        _customRow.onTapAtIndex = ^(NSUInteger index) {
+            [weakSelf handleCustomRowTapAtIndex:index];
+        };
+    }
+    [_customRow setItemViews:_customTabItemViews];
+    [_customRow applyOptions:_options.bottomTabs.customRow];
+    if (_customRow.superview != self.view) {
+        [self.view addSubview:_customRow];
+    } else {
+        [self.view bringSubviewToFront:_customRow];
+    }
+}
+
+- (void)layoutCustomRow {
+    if (!_useCustomItemViews || !_customRow) {
+        return;
+    }
+    CGRect tabBarFrame = self.tabBar.frame;
+    if (CGRectIsEmpty(tabBarFrame)) {
+        return;
+    }
+    CGRect tabBarInView = [self.view convertRect:tabBarFrame fromView:self.tabBar.superview];
+
+    CGFloat desiredHeight = [_customRow
+        desiredRowHeightForNativeTabBarHeight:tabBarInView.size.height
+                                   safeBottom:0];
+
+    CGFloat bottomMargin = [_customRow effectiveBottomMargin];
+    CGFloat rowBottom;
+    UIWindow *window = self.view.window;
+    if (window) {
+        // Map the window's safe-area bottom into this controller's view — reliable
+        // for modals where `self.view.safeAreaInsets` is often zero.
+        CGFloat yInWindow = CGRectGetHeight(window.bounds) - window.safeAreaInsets.bottom;
+        CGPoint pInView = [self.view convertPoint:CGPointMake(0, yInWindow) fromView:window];
+        rowBottom = pInView.y - bottomMargin;
+    } else {
+        rowBottom = CGRectGetMaxY(self.view.safeAreaLayoutGuide.layoutFrame) - bottomMargin;
+    }
+
+    CGRect rowFrame = CGRectMake(tabBarInView.origin.x, rowBottom - desiredHeight,
+                                 tabBarInView.size.width, desiredHeight);
+
+    _customRow.frame = rowFrame;
+    _customRow.hidden = self.tabBar.hidden;
+    [_customRow setSelectedIndex:_currentTabIndex];
+}
+
+- (void)handleCustomRowTapAtIndex:(NSUInteger)index {
+    if (index >= self.childViewControllers.count) {
+        return;
+    }
+    UIViewController *target = self.childViewControllers[index];
+    [self.eventEmitter sendBottomTabPressed:@(index)];
+    BOOL select = [[target resolveOptions].bottomTab.selectTabOnPress withDefault:YES];
+    if (!select) {
+        return;
+    }
+    NSUInteger previous = _currentTabIndex;
+    [self setSelectedIndex:index];
+    if (!_rnnSuppressTabSelectionEvents) {
+        [self.eventEmitter sendBottomTabSelected:@(index) unselected:@(previous)];
+    }
+}
+
+- (void)updateCustomTabItemSelection {
+    if (!_useCustomItemViews) {
+        return;
+    }
+    for (NSUInteger i = 0; i < _customTabItemViews.count; i++) {
+        [_customTabItemViews[i] setSelected:(i == _currentTabIndex)];
+    }
+    [_customRow setSelectedIndex:_currentTabIndex];
 }
 
 - (void)mergeChildOptions:(RNNNavigationOptions *)options child:(UIViewController *)child {
@@ -111,6 +330,13 @@
     [_dotIndicatorPresenter mergeOptions:options
                          resolvedOptions:childViewController.resolveOptions
                                    child:childViewController];
+
+    if (_useCustomItemViews && options.bottomTab.badge.hasValue) {
+        NSUInteger index = [self.childViewControllers indexOfObject:childViewController];
+        if (index != NSNotFound && index < _customTabItemViews.count) {
+            [_customTabItemViews[index] setBadge:[options.bottomTab.badge withDefault:nil]];
+        }
+    }
 
     [self syncTabBarItemTestIDs];
 }
@@ -128,6 +354,12 @@
     [self syncTabBarItemTestIDs];
     [self.presenter viewDidLayoutSubviews];
     [_dotIndicatorPresenter bottomTabsDidLayoutSubviews:self];
+    if (_useCustomItemViews) {
+        // Re-hide native subviews; UIKit recreates them on bounds changes.
+        [self applyCustomItemViewsTabBarConfiguration];
+        [self ensureCustomRowAttached];
+        [self layoutCustomRow];
+    }
 }
 
 - (UIViewController *)getCurrentChild {
@@ -162,6 +394,7 @@
     }
 
     [super setSelectedIndex:_currentTabIndex];
+    [self updateCustomTabItemSelection];
 }
 
 - (UIViewController *)selectedViewController {
@@ -172,6 +405,7 @@
     _previousTabIndex = _currentTabIndex;
     _currentTabIndex = [self.childViewControllers indexOfObject:selectedViewController];
     [super setSelectedViewController:selectedViewController];
+    [self updateCustomTabItemSelection];
 }
 
 - (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated {
@@ -200,6 +434,9 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController
     didSelectViewController:(UIViewController *)viewController {
+    if (_rnnSuppressTabSelectionEvents) {
+        return;
+    }
     [self.eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex)
                                   unselected:@(_previousTabIndex)];
 }
@@ -215,6 +452,10 @@
     shouldSelectViewController:(UIViewController *)viewController {
     NSUInteger _index = [tabBarController.viewControllers indexOfObject:viewController];
     BOOL isMoreTab = ![tabBarController.viewControllers containsObject:viewController];
+
+    if (_rnnSuppressTabSelectionEvents) {
+        return YES;
+    }
 
     [self.eventEmitter sendBottomTabPressed:@(_index)];
 
@@ -241,6 +482,13 @@
 
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];
+}
+
+- (void)dealloc {
+    [self destroyCustomTabItemViews];
+    if (_componentRegistry && self.layoutInfo.componentId) {
+        [_componentRegistry clearComponentsForParentId:self.layoutInfo.componentId];
+    }
 }
 
 @end

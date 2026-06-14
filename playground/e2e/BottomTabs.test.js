@@ -178,4 +178,15 @@ describe('BottomTabs', () => {
       elementByLabel('componentDidAppear | FirstBottomTabsScreen | Component')
     ).toBeVisible();
   });
+
+  describe.e2e(':ios: BottomTab Role', () => {
+    beforeEach(async () => {
+      await device.launchApp({ newInstance: true });
+      await elementById(TestIDs.BOTTOM_TABS_ROLE_BTN).tap();
+    });
+
+    it('should render a search role tab', async () => {
+      await expect(elementById(TestIDs.BOTTOM_TABS_ROLE_SEARCH_TAB)).toExist();
+    });
+  });
 });

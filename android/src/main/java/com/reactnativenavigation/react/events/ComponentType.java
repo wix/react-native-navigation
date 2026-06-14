@@ -4,7 +4,8 @@ public enum ComponentType {
     Component("Component"),
     Button("TopBarButton"),
     Title("TopBarTitle"),
-    Background("TopBarBackground");
+    Background("TopBarBackground"),
+    BottomTabItem("BottomTabItem");
 
     private String name;
 

@@ -18,6 +18,7 @@ src/
 ├── components/              # React component management
 ├── events/                  # Event system
 ├── interfaces/              # TypeScript type definitions
+├── linking/                 # Deep-linking framework (URL → command)
 └── processors/              # Extensibility hooks
 ```
 
@@ -206,6 +207,35 @@ Notifies listeners of command lifecycle (start, complete).
 | `RNN.SearchBarCancelPressed` | Search cancelled |
 | `RNN.PreviewCompleted` | 3D Touch preview completed |
 | `RNN.CommandCompleted` | Navigation command finished |
+
+## Linking Layer
+
+Implements URL-to-screen routing on top of the standard command pipeline. The whole feature is JS-only; it consumes URLs from RN's `Linking` module and dispatches `showModal` (or a user-supplied command) when a match is found.
+
+**Public surface** (proxied through `NavigationDelegate`):
+- `Navigation.setLinking(config)` — configure prefixes, screen map, and customization hooks
+- `Navigation.handleDeepLink(url)` — manually feed a URL (push notifications, branch.io, App Clips)
+- `Navigation.setLinkingReady(ready)` — user-controlled gate for deferred deep links
+
+**Internal modules** (`src/linking/`):
+
+| File | Purpose |
+|------|---------|
+| `LinkingHandler.ts` | Orchestrator. Subscribes to `Linking.url`/`getInitialURL`, drives the queue, dispatches matches. Instantiated by `NavigationRoot`. |
+| `URLParser.ts` | Strips prefix (longest match), removes fragment, decodes path segments + query params. |
+| `RouteMatcher.ts` | Compiles `ScreensConfig` into a `RouteNode` tree; matches paths to screen chains with parameter extraction. |
+| `DeferredLinkQueue.ts` | FIFO queue. Holds URLs until both gates open (root-ready + user-ready). |
+| `ModalLayoutBuilder.ts` | Default presentation: wraps the matched chain in a `stack`, merges params into `passProps`, filters React-reserved keys (`ref`, `key`). |
+| `types.ts` | Public types: `LinkingConfig`, `RouteMatch`, `ScreensConfig`, etc. (re-exported via `src/index.ts`). |
+
+**Readiness gates** — a URL is dispatched only when both are true:
+1. **Root-ready** (automatic): the first `Navigation.setRoot()` has resolved. `NavigationRoot.setRoot` calls `linkingHandler.setRootReady()` after the promise resolves.
+2. **User-ready** (optional): `config.isReady()` returns `true`, or `setLinkingReady(true)` was called.
+
+**Resolution priority** when a match is found:
+1. `config.onLink(match)` — full escape hatch, RNN does nothing else
+2. `config.getModal(match)` — custom modal layout
+3. Default `ModalLayoutBuilder` output
 
 ## Processors Layer
 

@@ -39,6 +39,8 @@
     self.modal = [[RNNModalOptions alloc] initWithDict:dict[@"modal"]];
     self.deprecations = [[DeprecationOptions alloc] initWithDict:dict[@"deprecations"]];
     self.window = [[WindowOptions alloc] initWithDict:dict[@"window"]];
+    self.scrollEdgeEffect =
+        [[RNNScrollEdgeEffectOptions alloc] initWithDict:dict[@"scrollEdgeEffect"]];
 
     self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
     self.navigationButtonEventOnSwipeBack = [[Bool alloc] initWithValue:dict[@"navigationButtonEventOnSwipeBack"]];
@@ -71,6 +73,7 @@
     [result.modal mergeOptions:options.modal];
     [result.deprecations mergeOptions:options.deprecations];
     [result.window mergeOptions:options.window];
+    [result.scrollEdgeEffect mergeOptions:options.scrollEdgeEffect];
 
     if (options.popGesture.hasValue)
         result.popGesture = options.popGesture;
@@ -105,6 +108,7 @@
     [newOptions.modal mergeOptions:self.modal];
     [newOptions.deprecations mergeOptions:self.deprecations];
     [newOptions.window mergeOptions:self.window];
+    [newOptions.scrollEdgeEffect mergeOptions:self.scrollEdgeEffect];
 
     newOptions.popGesture = self.popGesture;
     newOptions.navigationButtonEventOnSwipeBack = self.navigationButtonEventOnSwipeBack;

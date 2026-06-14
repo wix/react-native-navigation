@@ -295,6 +295,20 @@ class TitleAndButtonsContainerTest : BaseTest() {
     }
 
     @Test
+    fun `Component - title width shrinks by measured right buttons only`() {
+        val rightButtonsWidth = 48
+        setup(
+                rightBarWidth = rightButtonsWidth,
+                componentWidth = UUT_WIDTH,
+                alignment = Alignment.Default
+        )
+
+        idleMainLooper()
+        assertThat(uut.getTitleComponent().left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
+        assertThat(uut.getTitleComponent().right).isEqualTo(UUT_WIDTH - rightButtonsWidth - DEFAULT_LEFT_MARGIN_PX)
+    }
+
+    @Test
     fun `Component - should place title between the toolbars`() {
         val leftBarWidth = 50
         val rightBarWidth = 100

@@ -168,6 +168,12 @@ Navigation.setRoot({ // An example; push() also support this
 
 > Note: Settings some of the options via `mergeOptions` is discouraged, as they'd only apply for the currently visible tab.
 
+## Custom React tab items
+
+To render arbitrary React components as tab items (Lottie, SVG, custom badges, full custom bar design), use `bottomTab.component` on **every** tab and optionally `bottomTabs.customRow` for the floating row chrome.
+
+See the [Custom bottom tabs](customBottomTabs) guide for setup, props, platform differences, and examples.
+
 ## Controlling tab loading
 
 By default, all tabs are mounted at the same time. This can have a negative impact on performance since screens which are not visible to the user are mounted.

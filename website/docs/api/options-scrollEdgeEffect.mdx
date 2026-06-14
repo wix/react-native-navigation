@@ -1,0 +1,70 @@
+---
+id: options-scrollEdgeEffect
+title: Scroll Edge Effect Options
+sidebar_label: Scroll Edge Effect
+---
+
+Controls the iOS 26+ `UIScrollEdgeEffect` (Liquid Glass fade) shown at the edges of scroll views when content scrolls under bars.
+
+**Credits**: Contributed by [@manuhook](https://github.com/manuhook) ([PR #8281](https://github.com/wix/react-native-navigation/pull/8281)).
+
+```js
+const options = {
+  scrollEdgeEffect: {
+    hidden: true,
+  },
+};
+```
+
+### `hidden`
+
+Hide the scroll edge effect.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | iOS 26+  |
+
+### `style`
+
+Set the scroll edge effect style.
+
+| Type                                | Required | Platform | Default     |
+| ----------------------------------- | -------- | -------- | ----------- |
+| enum('automatic', 'soft', 'hard')   | No       | iOS 26+  | 'automatic' |
+
+### `top` / `bottom` / `left` / `right`
+
+Per-edge override. Values fall back to the global `hidden` / `style`. Per-edge values take precedence.
+
+| Type                                                                              | Required | Platform |
+| --------------------------------------------------------------------------------- | -------- | -------- |
+| `{ hidden?: boolean; style?: 'automatic' \| 'soft' \| 'hard' }`                    | No       | iOS 26+  |
+
+## Examples
+
+Hide all edges:
+
+```js
+MyScreen.options = {
+  scrollEdgeEffect: { hidden: true },
+};
+```
+
+Top visible, bottom hidden:
+
+```js
+MyScreen.options = {
+  scrollEdgeEffect: {
+    top: { hidden: false },
+    bottom: { hidden: true },
+  },
+};
+```
+
+Dynamic update:
+
+```js
+Navigation.mergeOptions(componentId, {
+  scrollEdgeEffect: { bottom: { hidden: true } },
+});
+```

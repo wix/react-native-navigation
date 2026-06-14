@@ -136,6 +136,8 @@ const Screens = {
   TopBar: 'TopBar',
   TopBarTitleTest: 'TopBarTitleTest',
   WebViewTab: 'TabbedWebViewScreen.WebViewTab',
+  CustomBottomTabItem: 'CustomBottomTabItem',
+  CustomBottomTabContent: 'CustomBottomTabContent',
 };
 
 export default Screens;

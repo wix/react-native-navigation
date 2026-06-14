@@ -1,8 +1,82 @@
 #import "RNNComponentPresenter.h"
 #import "RNNComponentViewController.h"
+#import "RNNScrollEdgeEffectOptions.h"
 #import "TopBarTitlePresenter.h"
 #import "UITabBarController+RNNOptions.h"
 #import "UIViewController+RNNOptions.h"
+
+static NSNumber *RNNScrollEdgeEffectStyleFromString(NSString *value) {
+    if ([value isEqualToString:@"hard"])
+        return @(2);
+    if ([value isEqualToString:@"soft"])
+        return @(1);
+    return @(0); // automatic
+}
+
+static RNNScrollEdgeOptions *RNNScrollEdgeOptionsForKey(RNNScrollEdgeEffectOptions *options,
+                                                       NSString *edgeKey) {
+    if ([edgeKey isEqualToString:@"topEdgeEffect"])
+        return options.top;
+    if ([edgeKey isEqualToString:@"bottomEdgeEffect"])
+        return options.bottom;
+    if ([edgeKey isEqualToString:@"leftEdgeEffect"])
+        return options.left;
+    if ([edgeKey isEqualToString:@"rightEdgeEffect"])
+        return options.right;
+    return nil;
+}
+
+static BOOL RNNScrollEdgeEffectHasAnyValue(RNNScrollEdgeEffectOptions *options) {
+    if (!options)
+        return NO;
+    if (options.hidden.hasValue || options.style.hasValue)
+        return YES;
+    NSArray<RNNScrollEdgeOptions *> *edges =
+        @[ options.top ?: [RNNScrollEdgeOptions new], options.bottom ?: [RNNScrollEdgeOptions new],
+           options.left ?: [RNNScrollEdgeOptions new], options.right ?: [RNNScrollEdgeOptions new] ];
+    for (RNNScrollEdgeOptions *edge in edges) {
+        if (edge.hidden.hasValue || edge.style.hasValue)
+            return YES;
+    }
+    return NO;
+}
+
+static void RNNApplyScrollEdgeEffectToScrollView(UIScrollView *scrollView,
+                                                 RNNScrollEdgeEffectOptions *options) {
+    if (![scrollView respondsToSelector:NSSelectorFromString(@"topEdgeEffect")])
+        return;
+    NSArray<NSString *> *edgeKeys =
+        @[ @"topEdgeEffect", @"bottomEdgeEffect", @"leftEdgeEffect", @"rightEdgeEffect" ];
+    for (NSString *key in edgeKeys) {
+        id effect = [scrollView valueForKey:key];
+        if (!effect)
+            continue;
+        RNNScrollEdgeOptions *perEdge = RNNScrollEdgeOptionsForKey(options, key);
+
+        Bool *hidden = (perEdge.hidden.hasValue) ? perEdge.hidden : options.hidden;
+        Text *style = (perEdge.style.hasValue) ? perEdge.style : options.style;
+
+        if (hidden.hasValue &&
+            [effect respondsToSelector:NSSelectorFromString(@"setHidden:")]) {
+            [effect setValue:@([hidden withDefault:NO]) forKey:@"hidden"];
+        }
+        if (style.hasValue &&
+            [effect respondsToSelector:NSSelectorFromString(@"setStyle:")]) {
+            [effect setValue:RNNScrollEdgeEffectStyleFromString(style.get) forKey:@"style"];
+        }
+    }
+}
+
+static void RNNApplyScrollEdgeEffectToView(UIView *view, RNNScrollEdgeEffectOptions *options) {
+    if (!RNNScrollEdgeEffectHasAnyValue(options))
+        return;
+    if ([view isKindOfClass:[UIScrollView class]]) {
+        RNNApplyScrollEdgeEffectToScrollView((UIScrollView *)view, options);
+    }
+    for (UIView *subview in view.subviews) {
+        RNNApplyScrollEdgeEffectToView(subview, options);
+    }
+}
 
 @implementation RNNComponentPresenter {
     TopBarTitlePresenter *_topBarTitlePresenter;
@@ -34,6 +108,11 @@
 - (void)componentDidAppear {
     [_topBarTitlePresenter componentDidAppear];
     [_buttonsPresenter componentDidAppear];
+
+    RNNComponentViewController *viewController = self.boundViewController;
+    RNNNavigationOptions *withDefault =
+        [viewController.options withDefault:[self defaultOptions]];
+    RNNApplyScrollEdgeEffectToView(viewController.view, withDefault.scrollEdgeEffect);
 }
 
 - (void)componentDidDisappear {
@@ -102,6 +181,8 @@
             defaultDisabledColor:withDefault.topBar.rightButtonDisabledColor
                         animated:[withDefault.topBar.animateRightButtons withDefault:NO]];
     }
+
+    RNNApplyScrollEdgeEffectToView(viewController.view, withDefault.scrollEdgeEffect);
 }
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
@@ -236,6 +317,10 @@
     }
 
     [_topBarTitlePresenter mergeOptions:mergeOptions.topBar resolvedOptions:withDefault.topBar];
+
+    if (RNNScrollEdgeEffectHasAnyValue(mergeOptions.scrollEdgeEffect)) {
+        RNNApplyScrollEdgeEffectToView(viewController.view, mergeOptions.scrollEdgeEffect);
+    }
 }
 
 - (void)renderComponents:(RNNNavigationOptions *)options
