@@ -32,9 +32,9 @@ These methods are called when a component is being removed from hierarchy
 
 When a modal is displayed, depending on the [modalPresentationStyle](/react-native-navigation/api/options-root#modalpresentationstyle), content behind it might be detached from hierarchy. This affects the visibility events which are emitted to the content behind the modal.
 
-When Modals with `pageSheet` or `overCurrentContext` modalPresentationStyle are displayed, previous content is still visible to the user. Thus `componentDidDisappear` event is **not** emitted.
+When modals with `pageSheet` or `overCurrentContext` `modalPresentationStyle` are displayed, previous content is still visible to the user. Thus `componentDidDisappear` is **not** emitted. On Android, `pageSheet` / `formSheet` use a bottom sheet and also keep the underlying screen attached (same lifecycle behavior).
 
-Same is applied when a modal is dismissed. If it was originally presented with `pageSheet` or `overCurrentContext` modalPresentationStyle, when that modal is then dismissed, the previous context won't receive a `componentDidAppear` event.
+Same applies when the modal is dismissed: if it was presented with `pageSheet` or `overCurrentContext`, the previous context won't receive `componentDidAppear` when the modal closes.
 
 ### Overlay
 These methods are called in the following order when a component is displayed as an Overlay:

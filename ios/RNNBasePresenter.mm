@@ -48,6 +48,8 @@
         viewController.modalInPresentation = ![withDefault.modal.swipeToDismiss withDefault:YES];
     }
 
+    [withDefault.modal applySheetPresentationToViewController:viewController];
+
     if (withDefault.window.backgroundColor.hasValue) {
         UIApplication.sharedApplication.delegate.window.backgroundColor =
             withDefault.window.backgroundColor.get;
@@ -76,6 +78,10 @@
     if (@available(iOS 13.0, *)) {
         if (withDefault.modal.swipeToDismiss.hasValue)
             self.boundViewController.modalInPresentation = !withDefault.modal.swipeToDismiss.get;
+    }
+
+    if ([mergeOptions.modal hasSheetPresentationOptions]) {
+        [withDefault.modal applySheetPresentationToViewController:self.boundViewController];
     }
 
     if (mergeOptions.window.backgroundColor.hasValue) {
