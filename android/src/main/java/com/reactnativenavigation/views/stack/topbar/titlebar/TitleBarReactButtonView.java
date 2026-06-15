@@ -3,13 +3,15 @@ package com.reactnativenavigation.views.stack.topbar.titlebar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 
-import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.params.Number;
 import com.reactnativenavigation.react.ReactView;
 
+import static android.view.View.MeasureSpec.AT_MOST;
 import static android.view.View.MeasureSpec.EXACTLY;
 import static android.view.View.MeasureSpec.makeMeasureSpec;
 import static com.reactnativenavigation.utils.UiUtils.dpToPx;
@@ -24,27 +26,56 @@ public class TitleBarReactButtonView extends ReactView {
     }
 
     @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        if (child.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) child.getLayoutParams();
+            layoutParams.gravity = layoutParams.gravity == -1
+                    ? Gravity.CENTER_VERTICAL
+                    : (layoutParams.gravity & ~Gravity.VERTICAL_GRAVITY_MASK) | Gravity.CENTER_VERTICAL;
+        }
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        
-        //This is a workaround, ReactNative throws exception when views have ids, On android MenuItems 
+        // This is a workaround, ReactNative throws exception when views have ids, On android MenuItems
         // With ActionViews like this got an id, see #7253
         if (!this.isAttachedToWindow()) {
             this.setId(View.NO_ID);
         }
 
-        super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(heightMeasureSpec, component.height));
+        // Width: bounded (AT_MOST) so the hosted React surface sizes itself to its content. Under
+        // Fabric, ReactSurfaceView reports max-of-children under AT_MOST (the laid-out content width)
+        // and pushes that to the async layout. Crucially we must NOT push a forced EXACTLY *width*:
+        // before the content has laid out that width is collapsed (~1px), Fabric lays the content into
+        // it and the button never recovers (#8320/#8326 did this and regressed under the New Arch).
+        //
+        // Height: EXACTLY the available bar height. Giving the surface a filled height (rather than a
+        // content-hugging AT_MOST height) lets content that centers itself (e.g. a flex container with
+        // justifyContent: 'center') sit vertically centered in the bar, matching the legacy layout.
+        // It does not cause the width collapse — only a forced width does.
+        int widthSpec = component.width.hasValue()
+                ? createExactSpec(component.width)
+                : makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST);
+        int heightSpec = createHeightSpec(heightMeasureSpec, component.height);
+        super.onMeasure(widthSpec, heightSpec);
     }
 
-    private int createSpec(int measureSpec, Number dimension) {
+    private int createHeightSpec(int measureSpec, Number dimension) {
         if (dimension.hasValue()) {
-            return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
-        } else {
-            // When JS doesn't pass width/height, default to the theme's actionBarSize (48dp on Material).
-            // Yoga's intrinsic measurement of the React view collapses `paddingHorizontal` on the
-            // trailing edge in RTL (RN/Fabric measurement quirk), so we cannot trust UNSPECIFIED here -
-            // it produces a 0dp visible inset against the screen edge in RTL.
-            return makeMeasureSpec(resolveActionBarSize(), EXACTLY);
+            return createExactSpec(dimension);
         }
+        int availableSize = MeasureSpec.getSize(measureSpec);
+        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), EXACTLY);
+    }
+
+    private int resolveAvailableWidth(int measureSpec) {
+        int availableSize = MeasureSpec.getSize(measureSpec);
+        return availableSize > 0 ? availableSize : Math.max(getResources().getDisplayMetrics().widthPixels, 1);
+    }
+
+    private int createExactSpec(Number dimension) {
+        return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
     }
 
     private int resolveActionBarSize() {
