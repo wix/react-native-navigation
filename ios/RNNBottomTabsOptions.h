@@ -1,4 +1,5 @@
 #import "BottomTabsAttachMode.h"
+#import "RNNBottomTabsCustomRowOptions.h"
 #import "RNNOptions.h"
 #import "RNNShadowOptions.h"
 
@@ -22,6 +23,7 @@
 @property(nonatomic, strong) Color *borderColor;
 @property(nonatomic, strong) Number *borderWidth;
 @property(nonatomic, strong) RNNShadowOptions *shadow;
+@property(nonatomic, strong) RNNBottomTabsCustomRowOptions *customRow;
 @property(nonatomic, strong) BottomTabsAttachMode *tabsAttachMode;
 
 - (BOOL)shouldDrawBehind;

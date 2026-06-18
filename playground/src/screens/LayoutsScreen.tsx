@@ -23,6 +23,9 @@ const {
   SIDE_MENU_BTN,
   KEYBOARD_SCREEN_BTN,
   SPLIT_VIEW_BUTTON,
+  BOTTOM_TABS_ROLE_BTN,
+  BOTTOM_TABS_ROLE_SEARCH_TAB,
+  BOTTOM_TABS_CUSTOM_COMPONENT_BTN,
 } = testIDs;
 
 interface State {
@@ -76,6 +79,17 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="BottomTabs Styling" onPress={this.bottomTabsStyling} />
+        <Button
+          label="BottomTabs with Role"
+          testID={BOTTOM_TABS_ROLE_BTN}
+          platform="ios"
+          onPress={this.bottomTabsWithRole}
+        />
+        <Button
+          label="BottomTabs Custom Component"
+          testID={BOTTOM_TABS_CUSTOM_COMPONENT_BTN}
+          onPress={this.bottomTabsWithCustomComponent}
+        />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button label="Keyboard" testID={KEYBOARD_SCREEN_BTN} onPress={this.openKeyboardScreen} />
         <Button
@@ -135,6 +149,82 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
             },
           },
         ],
+      },
+    });
+  };
+
+  bottomTabsWithRole = () => {
+    Navigation.showModal({
+      bottomTabs: {
+        children: [
+          {
+            stack: {
+              children: [{ component: { name: Screens.FirstBottomTabsScreen } }],
+              options: {
+                bottomTab: {
+                  text: 'Home',
+                  icon: require('../../img/whatshot.png'),
+                },
+              },
+            },
+          },
+          {
+            stack: {
+              children: [{ component: { name: Screens.Pushed } }],
+              options: {
+                bottomTab: {
+                  text: 'Content',
+                  icon: require('../../img/layouts.png'),
+                },
+              },
+            },
+          },
+          {
+            component: {
+              name: Screens.Pushed,
+              options: {
+                bottomTab: {
+                  role: 'search',
+                  testID: BOTTOM_TABS_ROLE_SEARCH_TAB,
+                },
+              },
+            },
+          },
+        ],
+      },
+    });
+  };
+
+  bottomTabsWithCustomComponent = () => {
+    const tab = (label: string, badge?: string) => ({
+      component: {
+        name: Screens.CustomBottomTabContent,
+        passProps: { title: `${label} content` },
+        options: {
+          bottomTab: {
+            text: label,
+            ...(badge ? { badge } : {}),
+            component: {
+              name: Screens.CustomBottomTabItem,
+            },
+          },
+        },
+      },
+    });
+    Navigation.showModal({
+      bottomTabs: {
+        children: [tab('Home'), tab('Search', '3'), tab('Profile')],
+        options: {
+          bottomTabs: {
+            customRow: {
+              backgroundEffect: 'glass',
+              cornerRadius: 28,
+              horizontalMargin: 16,
+              bottomMargin: 0,
+              height: 76,
+            },
+          },
+        },
       },
     });
   };

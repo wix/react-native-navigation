@@ -40,3 +40,11 @@ Set the navigation bar color. When a light background color is used, the color o
 | Type                  | Required | Platform | Default |
 | --------------------- | -------- | -------- | ------- |
 | Color | No       | Android     | 'black' |
+
+### `drawBehind`
+
+Draw screen content behind the system navigation bar while keeping it visible (gesture pill / 3-button bar remain on screen). Use with edge-to-edge enabled in your activity. With `backgroundColor: 'transparent'`, content shows through the nav bar area; with an opaque color, RNN paints a scrim overlay without reserving bottom layout inset.
+
+| Type    | Required | Platform |
+| ------- | -------- | -------- |
+| boolean | No       | Android  |

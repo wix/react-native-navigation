@@ -71,6 +71,7 @@
         return RNNReactButtonView.class;
     case RNNComponentTypeTopBarBackground:
         return RNNReactBackgroundView.class;
+    case RNNComponentTypeBottomTabItem:
     case RNNComponentTypeComponent:
     default:
         return RNNComponentRootView.class;
