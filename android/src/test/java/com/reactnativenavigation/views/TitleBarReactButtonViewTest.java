@@ -34,12 +34,14 @@ public class TitleBarReactButtonViewTest extends BaseTest {
 
     // Without explicit dimensions the button measures the hosted React surface ONCE:
     //  - width  AT_MOST  → the surface sizes itself to its content (max-of-children under Fabric).
-    //  - height EXACTLY the available bar height → the surface gets a filled box so content that
-    //    centers itself (flex justifyContent: 'center') stays vertically centered in the bar.
+    //  - height AT_MOST  → the surface sizes to its content height; the view is then centered
+    //    vertically in the bar by the toolbar's action-view layout + the CENTER_VERTICAL gravity from
+    //    onViewAdded(). A forced EXACTLY full-bar height would pin content-hugging buttons (plain
+    //    text, a fixed-size avatar) to the top.
     // It deliberately does not push a forced EXACTLY *width*; under the New Architecture that re-pushes
     // a (initially collapsed) width to the async Fabric layout and the button never recovers.
     @Test
-    public void missingDimensionsSizeWidthToContentAndFillHeight() {
+    public void missingDimensionsSizeToContent() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -48,11 +50,11 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         uut.measure(makeMeasureSpec(PARENT_WIDTH, AT_MOST), makeMeasureSpec(PARENT_HEIGHT, AT_MOST));
 
         assertThat(uut.getMeasuredWidth()).isEqualTo(CHILD_WIDTH);
-        assertThat(uut.getMeasuredHeight()).isEqualTo(PARENT_HEIGHT);
+        assertThat(uut.getMeasuredHeight()).isEqualTo(CHILD_HEIGHT);
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(1);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(PARENT_HEIGHT);
     }
 
@@ -78,7 +80,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
     }
 
     @Test
-    public void zeroParentSpecsFallBackToScreenWidthAndActionBarHeight() {
+    public void zeroParentSpecsFallBackToScreenWidthAndBoundedActionBarHeight() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -90,12 +92,12 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0)))
                 .isEqualTo(Math.max(activity.getResources().getDisplayMetrics().widthPixels, 1));
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(Math.max(resolveActionBarSize(activity), 1));
     }
 
     @Test
-    public void rtlMissingDimensionsUseBoundedWidthAndFilledHeight() {
+    public void rtlMissingDimensionsUseBoundedWidthAndHeight() {
         Activity activity = newActivity();
         TitleBarReactButtonView uut = createView(activity, new ComponentOptions());
         RecordingContentView child = new RecordingContentView(activity);
@@ -107,7 +109,7 @@ public class TitleBarReactButtonViewTest extends BaseTest {
         assertThat(child.widthMeasureSpecs.size()).isEqualTo(1);
         assertThat(getMode(child.widthMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.widthMeasureSpecs.get(0))).isEqualTo(PARENT_WIDTH);
-        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(EXACTLY);
+        assertThat(getMode(child.heightMeasureSpecs.get(0))).isEqualTo(AT_MOST);
         assertThat(getSize(child.heightMeasureSpecs.get(0))).isEqualTo(PARENT_HEIGHT);
     }
 
