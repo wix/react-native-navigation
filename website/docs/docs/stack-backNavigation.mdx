@@ -6,5 +6,183 @@ sidebar_label: Back navigation
 
 ## Disabling back navigation
 
+In some scenarios, you may want to prevent users from navigating back — for example, when a form has unsaved changes, or during a critical process that shouldn't be interrupted. RNN provides several ways to disable back navigation, depending on the platform and the type of back action.
+
+### Disabling the software back button (iOS & Android)
+
+The software back button is the back chevron displayed in the TopBar. By default, pressing it pops the current screen. To disable this behavior, set `popStackOnPress` to `false` in the `backButton` options:
+
+```js
+options: {
+  topBar: {
+    backButton: {
+      popStackOnPress: false,
+    },
+  },
+}
+```
+
+When `popStackOnPress` is `false`, pressing the back button will **not** pop the screen. Instead, RNN emits a `navigationButtonPressed` event with the button id `RNN.back`, which you can handle in your component:
+
+```jsx
+class MyComponent extends React.Component {
+  componentDidMount() {
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    if (buttonId === 'RNN.back') {
+      // Back button was pressed, but the screen was not popped.
+      // Handle it here — e.g., show a confirmation dialog.
+    }
+  }
+}
+```
+
+You can also hide the back button entirely by setting `visible` to `false`:
+
+```js
+options: {
+  topBar: {
+    backButton: {
+      visible: false,
+    },
+  },
+}
+```
+
+:::tip
+Hiding the back button does not prevent programmatic pops. If you need to fully prevent going back, combine hiding the button with handling the `navigationButtonPressed` event and intercepting `Navigation.pop` calls.
+:::
+
+### Disabling the hardware back button (Android)
+
+On Android, the hardware back button (or back gesture in gesture navigation) pops the stack by default. To prevent this, disable `popStackOnPress` in the `hardwareBackButton` options:
+
+```js
+options: {
+  hardwareBackButton: {
+    popStackOnPress: false,
+    dismissModalOnPress: false,
+  },
+}
+```
+
+When both options are `false`, pressing the hardware back button emits a `navigationButtonPressed` event with the id `RNN.hardwareBackButton`:
+
+```jsx
+navigationButtonPressed({ buttonId }) {
+  if (buttonId === 'RNN.hardwareBackButton') {
+    // Hardware back button was pressed.
+    // Handle it here — e.g., prevent dismissal during form editing.
+  }
+}
+```
+
+:::info
+The hardware back button is only available on Android. When gesture navigation is enabled, the back gesture is treated as a hardware back press.
+:::
+
+### Disabling the iOS swipe-back gesture
+
+iOS stack screens support a swipe-back gesture by default — the user can swipe from the left edge to pop the screen. To disable this gesture, set `popGesture` to `false`:
+
+```js
+options: {
+  popGesture: false,
+}
+```
+
+### Updating options dynamically
+
+All of the above options can be changed at runtime using `Navigation.mergeOptions`. This is useful when you want to enable or disable back navigation based on the screen's state (e.g., only blocking back when the user has unsaved changes):
+
+```jsx
+class EditScreen extends React.Component {
+  state = { hasUnsavedChanges: false };
+
+  onFormChange = () => {
+    this.setState({ hasUnsavedChanges: true }, () => {
+      Navigation.mergeOptions(this.props.componentId, {
+        topBar: {
+          backButton: {
+            popStackOnPress: false,
+          },
+        },
+        hardwareBackButton: {
+          popStackOnPress: false,
+        },
+        popGesture: false,
+      });
+    });
+  };
+
+  onFormSaved = () => {
+    this.setState({ hasUnsavedChanges: false }, () => {
+      Navigation.mergeOptions(this.props.componentId, {
+        topBar: {
+          backButton: {
+            popStackOnPress: true,
+          },
+        },
+        hardwareBackButton: {
+          popStackOnPress: true,
+        },
+        popGesture: true,
+      });
+    });
+  };
+}
+```
+
+### Summary
+
+| Method | Platform | Option | Default |
+| --- | --- | --- | --- |
+| Software back button | Both | `topBar.backButton.popStackOnPress` | `true` |
+| Hide back button | Both | `topBar.backButton.visible` | `true` |
+| Hardware back button | Android | `hardwareBackButton.popStackOnPress` | `true` |
+| Dismiss modal (hardware) | Android | `hardwareBackButton.dismissModalOnPress` | `true` |
+| Swipe-back gesture | iOS | `popGesture` | `true` |
+
 ## Handling back navigation
 
+When back navigation is disabled, you'll typically want to handle the back action yourself. This is done by listening for the `navigationButtonPressed` event.
+
+### Handling the software back button
+
+```jsx
+class MyComponent extends React.Component {
+  componentDidMount() {
+    Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    if (buttonId === 'RNN.back') {
+      // Show a confirmation dialog, validate the form, etc.
+      // Then pop manually if appropriate:
+      Navigation.pop(this.props.componentId);
+    }
+  }
+}
+```
+
+### Handling the hardware back button
+
+```jsx
+navigationButtonPressed({ buttonId }) {
+  if (buttonId === 'RNN.hardwareBackButton') {
+    // Custom handling for the Android hardware back button.
+    // For example, close a local modal or dialog first:
+    if (this.state.showingDialog) {
+      this.setState({ showingDialog: false });
+    } else {
+      Navigation.pop(this.props.componentId);
+    }
+  }
+}
+```
+
+:::tip
+When building cross-platform apps, handle **both** `RNN.back` and `RNN.hardwareBackButton` to ensure consistent behavior on iOS and Android.
+:::
