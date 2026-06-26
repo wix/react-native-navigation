@@ -829,6 +829,18 @@ export interface SharedElementTransition {
   interpolation?: Interpolation;
 }
 
+export interface ZoomTransitionOptions {
+  /**
+   * `nativeID` of the view to zoom from when pushing, and zoom back to when popping.
+   * #### (iOS 18+ specific)
+   */
+  fromId: string;
+  /**
+   * @default true
+   */
+  enabled?: boolean;
+}
+
 export interface ElementTransition {
   id: string;
   alpha?: AppearingElementAnimation | DisappearingElementAnimation;
@@ -1625,6 +1637,19 @@ export interface StackAnimationOptions {
 }
 
 /**
+ * Stack push animations. Extends {@link StackAnimationOptions} with iOS 18+ zoom support.
+ */
+export interface StackPushAnimationOptions extends StackAnimationOptions {
+  /**
+   * UIKit fluid zoom from a source view (`nativeID` must match `fromId`).
+   * Only used for `animations.push` — ignored on `pop`, `setStackRoot`, and Android.
+   * Mutually exclusive with `content` / `sharedElementTransitions` on the same push.
+   * #### (iOS 18+ specific)
+   */
+  zoom?: ZoomTransitionOptions;
+}
+
+/**
  * Used for configuring command animations
  */
 export interface AnimationOptions {
@@ -1638,9 +1663,8 @@ export interface AnimationOptions {
   setRoot?: ViewAnimationOptions | EnterExitAnimationOptions;
   /**
    * Configure the animation of the pushed screen
-   * #### (Android specific)
    */
-  push?: StackAnimationOptions;
+  push?: StackPushAnimationOptions;
   /**
    * Configure what animates when a screen is popped
    */
