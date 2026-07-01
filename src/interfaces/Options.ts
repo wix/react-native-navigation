@@ -658,6 +658,13 @@ export interface OptionsTopBarButton {
    * @see {@link https://developer.android.com/guide/topics/resources/menu-resource|Android developer guide: Menu resource}
    */
   showAsAction?: 'ifRoom' | 'withText' | 'always' | 'never';
+  /**
+   * (iOS 26+ only) Set a solid background color on the circular Liquid Glass
+   * platter behind the button. Ignored when UIDesignRequiresCompatibility is
+   * enabled or on iOS < 26.
+   * #### (iOS specific)
+   */
+  backgroundColor?: Color;
 }
 
 export interface OptionsSearchBar {
