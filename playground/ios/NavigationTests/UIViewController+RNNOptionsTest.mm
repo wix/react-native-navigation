@@ -77,4 +77,25 @@
     XCTAssertEqual(imageView.image, image);
 }
 
+- (void)testSetSearchBarWithOptionsWithExistingSearchControllerAndFocusShouldFocusSearchBar {
+    UIViewController *viewController = [UIViewController new];
+    UISearchController *searchController = [UISearchController new];
+    id searchBar = [OCMockObject partialMockForObject:searchController.searchBar];
+    viewController.navigationItem.searchController = searchController;
+
+    [[searchBar expect] becomeFirstResponder];
+
+    [viewController setSearchBarWithOptions:nil
+                                       focus:YES
+                           hideTopBarOnFocus:NO
+                                hideOnScroll:NO
+        obscuresBackgroundDuringPresentation:NO
+                             backgroundColor:nil
+                                   tintColor:nil
+                                  cancelText:nil
+                                   placement:SearchBarPlacementStacked];
+
+    [searchBar verifyWithDelay:1];
+}
+
 @end

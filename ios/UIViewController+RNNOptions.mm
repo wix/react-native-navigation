@@ -94,6 +94,12 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
             }
         }
 #endif
+        if (focus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              self.navigationItem.searchController.active = true;
+              [self.navigationItem.searchController.searchBar becomeFirstResponder];
+            });
+        }
     }
 }
 
