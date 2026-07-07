@@ -50,10 +50,12 @@ public class TitleBarReactButtonView extends ReactView {
         // before the content has laid out that width is collapsed (~1px), Fabric lays the content into
         // it and the button never recovers (#8320/#8326 did this and regressed under the New Arch).
         //
-        // Height: EXACTLY the available bar height. Giving the surface a filled height (rather than a
-        // content-hugging AT_MOST height) lets content that centers itself (e.g. a flex container with
-        // justifyContent: 'center') sit vertically centered in the bar, matching the legacy layout.
-        // It does not cause the width collapse — only a forced width does.
+        // Height: bounded (AT_MOST) so the surface sizes to its content height. The view is then
+        // centered vertically by the toolbar's action-view layout and the CENTER_VERTICAL gravity set
+        // in onViewAdded(). Forcing EXACTLY the full bar height (as #8328 did) made the surface fill
+        // the bar, so content-hugging buttons that don't self-center (plain text like "Publish", a
+        // fixed-size avatar image) were pinned to the top. AT_MOST height does NOT cause the width
+        // collapse — only a forced EXACTLY *width* does.
         int widthSpec = component.width.hasValue()
                 ? createExactSpec(component.width)
                 : makeMeasureSpec(resolveAvailableWidth(widthMeasureSpec), AT_MOST);
@@ -66,7 +68,7 @@ public class TitleBarReactButtonView extends ReactView {
             return createExactSpec(dimension);
         }
         int availableSize = MeasureSpec.getSize(measureSpec);
-        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), EXACTLY);
+        return makeMeasureSpec(availableSize > 0 ? availableSize : Math.max(resolveActionBarSize(), 1), AT_MOST);
     }
 
     private int resolveAvailableWidth(int measureSpec) {
