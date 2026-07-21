@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 
 /**
@@ -77,6 +78,13 @@ internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallb
     }
 
     private fun ensureLayoutObserver(activity: Activity) {
+        // BottomTabs only ever live inside RNN's own NavigationActivity (an
+        // AppCompatActivity). Touching any other activity — e.g. a third-party
+        // relay such as AppAuth's RedirectUriReceiverActivity, whose theme is not
+        // a Theme.AppCompat descendant — forces AppCompat sub-decor inflation and
+        // crashes with "You need to use a Theme.AppCompat theme". Guard here so the
+        // global lifecycle observer never operates on foreign activities.
+        if (activity !is NavigationActivity) return
         val decor = activity.window?.decorView as? ViewGroup ?: return
         if (decor.getTag(TAG_OBSERVING) == true) return
         decor.setTag(TAG_OBSERVING, true)
@@ -90,6 +98,7 @@ internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallb
     }
 
     private fun tryAttach(activity: Activity) {
+        if (activity !is NavigationActivity) return
         val scanRoot = activity.window?.decorView as? ViewGroup
             ?: activity.findViewById<View>(android.R.id.content) as? ViewGroup
             ?: return
