@@ -90,10 +90,10 @@ internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallb
     }
 
     private fun tryAttach(activity: Activity) {
-        val scanRoot = activity.window?.decorView as? ViewGroup
-            ?: activity.findViewById<View>(android.R.id.content) as? ViewGroup
-            ?: return
-        val overlayHost = activity.findViewById<View>(android.R.id.content) as? ViewGroup
+        val scanRoot = activity.window?.decorView as? ViewGroup ?: return
+        // Resolve through the view tree: AppCompatActivity.findViewById() forces
+        // createSubDecor(), which throws unless the activity's theme is Theme.AppCompat.
+        val overlayHost = scanRoot.findViewById<View>(android.R.id.content) as? ViewGroup
             ?: scanRoot
 
         forEachBottomTabs(scanRoot) { bottomTabs ->
