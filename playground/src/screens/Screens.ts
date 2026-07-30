@@ -21,6 +21,7 @@ const Screens = {
   FullScreenModal: 'FullScreenModal',
   Layouts: 'Layouts',
   Modal: 'Modal',
+  SheetModal: 'SheetModal',
   ModalCommands: 'ModalCommands',
   StackCommands: 'StackCommands',
   Options: 'Options',

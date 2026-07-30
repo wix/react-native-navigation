@@ -5,6 +5,9 @@
     <item name="topBarBackgroundComponent" type="id"/>
     <item name="bottomTabs" type="id"/>
     <item name="fab_bottom_margin" type="id" />
+    <item name="modal_bottom_sheet_container" type="id" />
+    <item name="modal_bottom_sheet_behavior" type="id" />
+    <item name="modal_bottom_sheet_grabber_callback" type="id" />
 
     <item name="original_parent" type="id" />
     <item name="original_layout_params" type="id" />

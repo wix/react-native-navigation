@@ -201,4 +201,14 @@ public class ModalStack {
     public boolean peekDisplayedOverCurrentContext() {
         return !isEmpty() && presenter.resolveOptions(peek()).modal.presentationStyle == ModalPresentationStyle.OverCurrentContext;
     }
+
+    public void applySheetMergeOptions(String componentId, Options mergeOptions) {
+        if (mergeOptions == null || mergeOptions == Options.EMPTY) {
+            return;
+        }
+        ViewController<?> modalRoot = findModalByComponentId(componentId);
+        if (modalRoot != null) {
+            presenter.applySheetOptions(modalRoot);
+        }
+    }
 }

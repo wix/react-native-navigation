@@ -280,6 +280,8 @@
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.mm */; };
 		50A246372395399700A192C5 /* RNNModalOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A246352395399700A192C5 /* RNNModalOptions.h */; };
 		50A246382395399700A192C5 /* RNNModalOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A246362395399700A192C5 /* RNNModalOptions.mm */; };
+		50E7A00123BB5CD900717F01 /* RNNSheetDetentOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E7A00323BB5CD900717F03 /* RNNSheetDetentOptions.h */; };
+		50E7A00223BB5CD900717F02 /* RNNSheetDetentOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A00423BB5CD900717F04 /* RNNSheetDetentOptions.mm */; };
 		50A4962323FD51B900F4816D /* WindowOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4962123FD51B900F4816D /* WindowOptions.h */; };
 		50A4962423FD51B900F4816D /* WindowOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A4962223FD51B900F4816D /* WindowOptions.mm */; };
 		50A5628A23DDAB5A0027C219 /* ScreenAnimationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A5628823DDAB5A0027C219 /* ScreenAnimationController.h */; };
@@ -783,6 +785,8 @@
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.mm; sourceTree = "<group>"; };
 		50A246352395399700A192C5 /* RNNModalOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalOptions.h; sourceTree = "<group>"; };
 		50A246362395399700A192C5 /* RNNModalOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalOptions.mm; sourceTree = "<group>"; };
+		50E7A00323BB5CD900717F03 /* RNNSheetDetentOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSheetDetentOptions.h; sourceTree = "<group>"; };
+		50E7A00423BB5CD900717F04 /* RNNSheetDetentOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSheetDetentOptions.mm; sourceTree = "<group>"; };
 		50A4962123FD51B900F4816D /* WindowOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowOptions.h; sourceTree = "<group>"; };
 		50A4962223FD51B900F4816D /* WindowOptions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowOptions.mm; sourceTree = "<group>"; };
 		50A5628823DDAB5A0027C219 /* ScreenAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenAnimationController.h; sourceTree = "<group>"; };
@@ -1309,6 +1313,8 @@
 				30987122507D8CBF16624F93 /* DotIndicatorOptions.h */,
 				50A246352395399700A192C5 /* RNNModalOptions.h */,
 				50A246362395399700A192C5 /* RNNModalOptions.mm */,
+				50E7A00323BB5CD900717F03 /* RNNSheetDetentOptions.h */,
+				50E7A00423BB5CD900717F04 /* RNNSheetDetentOptions.mm */,
 				50D3A37023B8D77C00717F95 /* SharedElementTransitionOptions.h */,
 				50D3A37123B8D77C00717F95 /* SharedElementTransitionOptions.mm */,
 				50FCD83523FC102200000DD0 /* DeprecationOptions.h */,
@@ -1916,6 +1922,7 @@
 				5017D9F2239D2FCB00B74047 /* BottomTabsOnSwitchToTabAttacher.h in Headers */,
 				50706E6D20CE7CA5003345C3 /* UIImage+utils.h in Headers */,
 				50A246372395399700A192C5 /* RNNModalOptions.h in Headers */,
+				50E7A00123BB5CD900717F01 /* RNNSheetDetentOptions.h in Headers */,
 				50996C6D23AA68B900008F89 /* DisplayLinkAnimator.h in Headers */,
 				30987680135A8C78E62D5B8E /* DotIndicatorOptions.h in Headers */,
 				30987CA5048A48D6CE76B06C /* DotIndicatorParser.h in Headers */,
@@ -2105,6 +2112,7 @@
 				5038A3BA216DFCFD009280BC /* UITabBarController+RNNOptions.mm in Sources */,
 				5030B62123D5B4CB008F1642 /* LNInterpolable.mm in Sources */,
 				50A246382395399700A192C5 /* RNNModalOptions.mm in Sources */,
+				50E7A00223BB5CD900717F02 /* RNNSheetDetentOptions.mm in Sources */,
 				50A4962423FD51B900F4816D /* WindowOptions.mm in Sources */,
 				50E38DDE23A7A306009817F6 /* AnimatedImageView.mm in Sources */,
 				263905B21E4C6F440023D7D3 /* MMDrawerController.mm in Sources */,

@@ -401,6 +401,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         UIModalPresentationStyle:[withDefault.modalPresentationStyle withDefault:@"default"]];
     newVc.modalTransitionStyle = [RNNConvert
         UIModalTransitionStyle:[withDefault.modalTransitionStyle withDefault:@"coverVertical"]];
+    [withDefault.modal applySheetPresentationToViewController:newVc];
 
     if (animated && !waitForRender)
         [[AnimationObserver sharedObserver] beginAnimation];

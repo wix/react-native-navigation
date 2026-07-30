@@ -59,6 +59,7 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Layouts, () => require('./LayoutsScreen').default);
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen').default);
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen').default);
+  Navigation.registerComponent(Screens.SheetModal, () => require('./SheetModalScreen').default);
   Navigation.registerComponent(
     Screens.ModalCommands,
     () => require('./ModalCommandsScreen').default

@@ -167,6 +167,7 @@ public class Navigator extends ParentController<ViewGroup> {
         ViewController<?> target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
+            modalStack.applySheetMergeOptions(componentId, options);
         }
     }
 

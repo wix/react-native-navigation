@@ -111,12 +111,12 @@ Configure the presentation style of the modal.
 
 - **overCurrentContext** - Display the modal and do not remove previous content when the show animation ends.
 - **none** - default system presentation style
+- **pageSheet** - Partially covers the underlying content. On iOS uses `UISheetPresentationController`; on Android uses Material `BottomSheetBehavior`. Pair with [`modal` options](options-modal.mdx) (`detents`, `selectedDetent`, etc.) for snap heights. Without `modal.detents`, the platform sheet default still applies (not a classic full-screen modal on Android).
+- **formSheet** - On iOS, centered sheet. On Android, treated like `pageSheet` (bottom sheet).
 
 #### Styles supported only on iOS
 
 - **fullScreen** - The view covers the underlying content completely.
-- **pageSheet** - partially cover the underlying content.
-- **formSheet** - display content centered in the screen.
 - **overFullScreen** - display the modal in full screen mode and do not remove previous content when the show animation ends.
 - **popOver** - Center content on screen and dim the content behind it.
 
