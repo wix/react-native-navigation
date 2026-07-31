@@ -113,6 +113,63 @@ options: {
 </TabItem>
 </Tabs>
 
+### Zoom transition (iOS 18+)
+
+Use UIKit's system **fluid zoom transition** when pushing onto a stack: the tapped view morphs into the next screen. The transition is interactive — users can drag to slow, reverse, or dismiss.
+
+:::info Platform support
+Configure under **`animations.push` only** (not `setStackRoot` or `pop`). Available on **iOS 18 and later**. Android ignores this option. Reverse zoom on pop is automatic when the detail screen is popped.
+:::
+
+This uses `UIViewController.preferredTransition` under the hood. It is separate from [shared element transitions](#shared-element-transitions): you do not declare `sharedElementTransitions` or `content` animations for zoom. If those custom animations are set on the same push, they take precedence and zoom is not applied.
+
+#### Step 1 — Set `nativeID` on the source view
+
+Mark the view that should expand (thumbnail, card, hero image, etc.):
+
+```jsx
+<View nativeID={`product-thumb-${item.id}`} style={styles.thumbnail}>
+  <Image source={item.image} style={styles.image} />
+</View>
+```
+
+#### Step 2 — Pass the same id in push options
+
+```jsx
+const fromId = `product-thumb-${item.id}`;
+
+Navigation.push(componentId, {
+  component: {
+    name: 'ProductDetail',
+    passProps: { item },
+    options: {
+      animations: {
+        push: {
+          zoom: {
+            fromId,
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+On pop, UIKit runs the reverse zoom automatically using the same `fromId` and `nativeID`. You do not need a separate `animations.pop` block for zoom.
+
+#### Options
+
+| Property | Type | Required | Description |
+| -------- | ---- | -------- | ----------- |
+| `fromId` | `string` | Yes | Must match the `nativeID` of the source view on the screen below. |
+| `enabled` | `boolean` | No | Default `true`. Set `false` to skip zoom while keeping the option object. |
+
+#### Notes
+
+- The source view must be mounted and visible when the push runs. If RNN cannot resolve `fromId`, the push falls back to the default slide animation.
+- `fromId` is resolved with the same mechanism as shared element `fromId` / `toId` (search in the source screen's React view hierarchy).
+- Zoom is intended for list → detail flows. For fully custom cross-screen animations, use [shared element transitions](#shared-element-transitions).
+
 ### Modal animations
 
 Modal animations are declared similarly to stack animations, only this time we animate the entire view and not only part of the UI (content).

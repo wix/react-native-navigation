@@ -3,3 +3,42 @@ id: options-animations
 title: Animations
 sidebar_label: Animations
 ---
+
+Animation options are declared on layout `options.animations`. See the [Animations guide](../docs/style-animations) for examples (stack, modal, shared elements, zoom).
+
+## Stack `push` / `pop`
+
+Stack command animations support `content`, `topBar`, `bottomTabs`, `sharedElementTransitions`, `elementTransitions`, and on iOS 18+ [`zoom`](#zoom-ios-18).
+
+## Zoom (iOS 18+)
+
+Declared under **`animations.push.zoom` only** when pushing onto a stack. Ignored on `animations.pop`, `animations.setStackRoot`, and Android.
+
+```js
+animations: {
+  push: {
+    zoom: {
+      fromId: 'my-thumb',
+      enabled: true, // optional, default true
+    },
+  },
+}
+```
+
+| Property | Type | Required | Platform | Description |
+| -------- | ---- | -------- | -------- | ----------- |
+| `fromId` | `string` | Yes | iOS 18+ | Matches `nativeID` on the source view in the screen being pushed from. |
+| `enabled` | `boolean` | No | iOS 18+ | Default `true`. |
+
+See [Zoom transition (iOS 18+)](../docs/style-animations#zoom-transition-ios-18) for usage and behavior.
+
+## Shared element transitions
+
+Array under `animations.push.sharedElementTransitions` / `animations.pop.sharedElementTransitions`. Each item:
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `fromId` | `string` | `nativeID` on the source screen |
+| `toId` | `string` | `nativeID` on the destination screen |
+| `duration` | `number` | Duration in ms |
+| `interpolation` | `object` | Easing — see [Animations guide](../docs/style-animations#step-3---declare-the-shared-element-animation-when-pushing-the-screen) |
