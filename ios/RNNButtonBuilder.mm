@@ -30,6 +30,7 @@
                                          parentComponentId:parentComponentId
                                              componentType:RNNComponentTypeTopBarButton
                                        reactViewReadyBlock:nil];
+        view.buttonBackgroundColor = [button.backgroundColor withDefault:nil];
         return [[RNNUIBarButtonItem alloc] initWithCustomView:view
                                                 buttonOptions:button
                                                       onPress:onPress];

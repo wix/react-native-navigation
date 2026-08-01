@@ -679,6 +679,46 @@ describe('navigation options', () => {
     expect(options).toEqual({ topBar: { rightButtons: [{ passProps }] } });
   });
 
+  it('processes button backgroundColor as color on iOS', () => {
+    Platform.OS = 'ios';
+    const options = {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'btn1',
+            text: 'Save',
+            backgroundColor: 'yellow',
+          },
+        ],
+      },
+    };
+
+    uut.processOptions(CommandName.SetRoot, options);
+
+    expect((options.topBar.rightButtons[0] as any).backgroundColor).toBeDefined();
+    expect((options.topBar.rightButtons[0] as any).backgroundColor).not.toBe('yellow');
+  });
+
+  it('processes button backgroundColor as color on Android', () => {
+    Platform.OS = 'android';
+    const options = {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'btn1',
+            text: 'Save',
+            backgroundColor: 'red',
+          },
+        ],
+      },
+    };
+
+    uut.processOptions(CommandName.SetRoot, options);
+
+    expect((options.topBar.rightButtons[0] as any).backgroundColor).toBeDefined();
+    expect((options.topBar.rightButtons[0] as any).backgroundColor).not.toBe('red');
+  });
+
   it('omits passProps when processing buttons or components', () => {
     const options = {
       topBar: {

@@ -26,6 +26,7 @@
     self.systemItem = [TextParser parse:dict key:@"systemItem"];
     self.disableIconTint = [BoolParser parse:dict key:@"disableIconTint"];
     self.hideSharedBackground = [BoolParser parse:dict key:@"hideSharedBackground"];
+    self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 
     return self;
 }
@@ -51,6 +52,7 @@
     newOptions.systemItem = self.systemItem.copy;
     newOptions.disableIconTint = self.disableIconTint.copy;
     newOptions.hideSharedBackground = self.hideSharedBackground.copy;
+    newOptions.backgroundColor = self.backgroundColor.copy;
     return newOptions;
 }
 
@@ -92,6 +94,8 @@
         self.disableIconTint = options.disableIconTint;
     if (options.hideSharedBackground.hasValue)
         self.hideSharedBackground = options.hideSharedBackground;
+    if (options.backgroundColor.hasValue)
+        self.backgroundColor = options.backgroundColor;
 }
 
 - (BOOL)shouldCreateCustomView {
