@@ -352,8 +352,11 @@ class TitleAndButtonsContainerTest : BaseTest() {
         )
         component = uut.getTitleComponent()
         idleMainLooper()
-        assertThat(component.left).isEqualTo(DEFAULT_LEFT_MARGIN_PX)
-        assertThat(component.right).isEqualTo(titleBarWidth + 2 * DEFAULT_LEFT_MARGIN_PX)
+        // Fill alignment must span the full container width between left and right
+        // button bars (zero-width here). The previous assertion that allowed the
+        // DEFAULT_LEFT_MARGIN_PX reservation matched left-aligned behaviour, not Fill.
+        assertThat(component.left).isEqualTo(0)
+        assertThat(component.right).isEqualTo(UUT_WIDTH)
     }
 
     @Test
