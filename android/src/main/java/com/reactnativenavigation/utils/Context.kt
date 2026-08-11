@@ -1,13 +1,13 @@
 package com.reactnativenavigation.utils
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.facebook.react.ReactApplication
 import com.reactnativenavigation.NavigationApplication
 
 fun Context.isDebug(): Boolean {
-    return (applicationContext as ReactApplication).reactNativeHost.useDeveloperSupport
+    return (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
 }
 fun isDarkMode() = NavigationApplication.instance.isDarkMode()
 fun Context.isDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) {
