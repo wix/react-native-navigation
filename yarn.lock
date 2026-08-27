@@ -12253,7 +12253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-lifecycles-compat@npm:^3.0.2, react-lifecycles-compat@npm:^3.0.4":
+"react-lifecycles-compat@npm:^3.0.2":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: 10/c66b9c98c15cd6b0d0a4402df5f665e8cc7562fb7033c34508865bea51fd7b623f7139b5b7e708515d3cd665f264a6a9403e1fa7e6d61a05759066f5e9f07783
@@ -12376,7 +12376,6 @@ __metadata:
     prettier: "npm:2.8.8"
     prop-types: "npm:15.x.x"
     react: "npm:19.2.3"
-    react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.85.2"
     react-native-gesture-handler: "npm:^2.29.1"
     react-native-monorepo-config: "npm:^0.3.0"
@@ -12450,7 +12449,6 @@ __metadata:
     prettier: "npm:2.8.8"
     prop-types: "npm:15.x.x"
     react: "npm:19.2.3"
-    react-lifecycles-compat: "npm:^3.0.4"
     react-native: "npm:0.85.2"
     react-native-builder-bob: "npm:^0.40.13"
     react-native-gesture-handler: "npm:^2.29.1"

@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import concat from 'lodash/concat';
 import React from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
@@ -83,7 +84,7 @@ export default class PushedScreen extends NavigationComponent<Props> {
   }
 
   navigationButtonPressed({ buttonId }: NavigationButtonPressedEvent) {
-    if (buttonId === 'backPress') alert('back button clicked');
+    if (buttonId === 'backPress') showAlert('back button clicked');
   }
 
   render() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import withGestureHandlerRoot from '../components/withGestureHandlerRoot';
 import { Navigation } from 'react-native-navigation';
 import Screens from './Screens';
 
@@ -18,13 +18,13 @@ function registerScreens() {
     () => require('./sharedElementCarDealer/CarsListScreen').default
   );
   Navigation.registerComponent(Screens.CarDetailsScreen, () =>
-    gestureHandlerRootHOC(require('./sharedElementCarDealer/CarDetailsScreen').default)
+    withGestureHandlerRoot(require('./sharedElementCarDealer/CarDetailsScreen').default)
   );
   Navigation.registerComponent(Screens.CarStoryScreen, () =>
-    gestureHandlerRootHOC(require('./sharedElementCarDealer/CarStoryScreen').default)
+    withGestureHandlerRoot(require('./sharedElementCarDealer/CarStoryScreen').default)
   );
   Navigation.registerComponent(Screens.ImageFullScreenViewer, () =>
-    gestureHandlerRootHOC(require('./sharedElementCarDealer/ImageFullScreenViewer').default)
+    withGestureHandlerRoot(require('./sharedElementCarDealer/ImageFullScreenViewer').default)
   );
   Navigation.registerComponent(
     Screens.ImageGalleryListScreen,

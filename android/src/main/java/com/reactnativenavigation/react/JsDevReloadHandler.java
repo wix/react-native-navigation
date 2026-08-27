@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 import android.widget.EditText;
-import android.os.Build;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.reactnativenavigation.utils.UiUtils;
@@ -19,6 +19,8 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
         void onReload();
     }
 
+    private static final ReloadListener NO_OP_RELOAD_LISTENER = () -> {};
+
 	private final BroadcastReceiver reloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(final Context context, final Intent intent) {
@@ -28,7 +30,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
     private final DevSupportManager devSupportManager;
 
     private long firstRTimestamp = 0;
-    private ReloadListener reloadListener = () -> {};
+    private ReloadListener reloadListener = NO_OP_RELOAD_LISTENER;
 
     JsDevReloadHandler(DevSupportManager devSupportManager) {
         this.devSupportManager = devSupportManager;
@@ -36,7 +38,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 
     @Override
     public void onSuccess() {
-        UiUtils.runOnMainThread(reloadListener::onReload);
+        UiUtils.runOnMainThread(() -> reloadListener.onReload());
     }
 
     public void setReloadListener(ReloadListener listener) {
@@ -45,16 +47,14 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 
     public void removeReloadListener(ReloadListener listener) {
         if (reloadListener == listener) {
-            reloadListener = null;
+            reloadListener = NO_OP_RELOAD_LISTENER;
         }
     }
 
 	public void onActivityResumed(Activity activity) {
-		if (Build.VERSION.SDK_INT >= 34 && activity.getApplicationInfo().targetSdkVersion >= 34) {
-            activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST), Context.RECEIVER_EXPORTED);
-        } else {
-            activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST));
-        }
+        // Exported intentionally so the development reload broadcast can be sent by adb.
+        ContextCompat.registerReceiver(activity, reloadReceiver,
+                new IntentFilter(RELOAD_BROADCAST), ContextCompat.RECEIVER_EXPORTED);
 	}
 
 	public void onActivityPaused(Activity activity) {

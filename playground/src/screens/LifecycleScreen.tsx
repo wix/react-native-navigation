@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React from 'react';
 import { NavigationProps, NavigationButtonPressedEvent } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -42,17 +43,17 @@ export default class LifecycleScreen extends React.Component<Props, State> {
   }
 
   componentDidDisappear() {
-    this.showUnmountAndDisappearAlerts && alert('didDisappear'); // eslint-disable-line no-alert
+    this.showUnmountAndDisappearAlerts && showAlert('didDisappear');
   }
 
   componentWillUnmount() {
     setTimeout(() => {
-      this.showUnmountAndDisappearAlerts && alert('componentWillUnmount'); // eslint-disable-line no-alert
+      this.showUnmountAndDisappearAlerts && showAlert('componentWillUnmount');
     }, 100);
   }
 
   navigationButtonPressed(id: NavigationButtonPressedEvent) {
-    alert(`navigationButtonPressed: ${id}`); // eslint-disable-line no-alert
+    showAlert(`navigationButtonPressed: ${id}`);
   }
 
   render() {
@@ -87,7 +88,7 @@ export default class LifecycleScreen extends React.Component<Props, State> {
     this.showUnmountAndDisappearAlerts = false;
     const promise = new Promise<void>((resolve) => {
       const unregister = Navigation.events().registerScreenPoppedListener(() => {
-        alert('Screen popped event');
+        showAlert('Screen popped event');
         unregister.remove();
         resolve();
       });

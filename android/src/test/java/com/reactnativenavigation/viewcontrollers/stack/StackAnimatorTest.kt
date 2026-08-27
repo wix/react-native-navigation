@@ -97,6 +97,21 @@ class StackAnimatorTest : BaseTest() {
     }
 
     @Test
+    fun popCancelsAPushThatHasNotRenderedYet() {
+        child2.options.animations.push.waitForRender = Bool(true)
+        val pushed = mock<Runnable>()
+        val popped = mock<Runnable>()
+        uut.push(child2, child1, child2.options, emptyList(), pushed)
+        uut.pop(child1, child2, child2.options, emptyList(), popped)
+        child2.onViewWillAppear()
+        idleMainLooper()
+        assertThat(commandAnimator.isStarted).isFalse()
+        assertThat(uut.runningPushAnimations).isEmpty()
+        verify(pushed).run()
+        verify(popped).run()
+    }
+
+    @Test
     fun pop_onlyExitAnimationIsPlayedByDefault() {
         val onAnimationEnd = mock<Runnable>()
         uut.pop(child1, child2, child2.options, emptyList(), onAnimationEnd)

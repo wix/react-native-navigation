@@ -1,6 +1,5 @@
 #import "RNNViewLocation.h"
 #import "RNNReactView.h"
-#import <React/RCTSafeAreaView.h>
 
 @implementation RNNViewLocation
 

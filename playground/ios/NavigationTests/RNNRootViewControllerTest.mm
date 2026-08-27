@@ -635,9 +635,11 @@
     self.options.topBar.noBorder = [[Bool alloc] initWithValue:topBarNoBorderInput];
     __unused RNNStackController *nav = [self createNavigationController];
     [self.uut viewWillAppear:false];
-    XCTAssertTrue(CGColorEqualToColor(
-        self.uut.navigationController.navigationBar.standardAppearance.shadowColor.CGColor,
-        [UINavigationBarAppearance new].shadowColor.CGColor));
+    // RNN applies the border to the screen's appearance, as in testTopBarNoBorderOn.
+    // UIKit can represent its default shadow with nil.
+    XCTAssertEqualObjects(
+        self.uut.navigationItem.standardAppearance.shadowColor,
+        [UINavigationBarAppearance new].shadowColor);
 }
 
 - (void)testStatusBarBlurOn {

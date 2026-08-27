@@ -6,10 +6,11 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
+import com.facebook.react.devsupport.interfaces.DevSupportManager
 import org.mockito.Mockito
 
 class TestApplication : Application(), ReactApplication {
-    override val reactNativeHost: ReactNativeHost = object : ReactNativeHost(this) {
+    override val reactNativeHost: ReactNativeHost = object : ReactNativeHost(this@TestApplication) {
         override fun getUseDeveloperSupport(): Boolean {
             return true
         }
@@ -24,6 +25,9 @@ class TestApplication : Application(), ReactApplication {
         setTheme(R.style.Theme_AppCompat)
     }
 
-    override val reactHost: ReactHost
-        get() = Mockito.mock(ReactHost::class.java)
+    override val reactHost: ReactHost = Mockito.mock(ReactHost::class.java).apply {
+        val manager = Mockito.mock(DevSupportManager::class.java)
+        Mockito.`when`(manager.devSupportEnabled).thenReturn(true)
+        Mockito.`when`(devSupportManager).thenReturn(manager)
+    }
 }

@@ -1,65 +1,69 @@
 package com.reactnativenavigation.views.element.finder
 
-import android.graphics.drawable.Drawable
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ImageView
-import androidx.core.view.doOnPreDraw
 import com.facebook.drawee.generic.RootDrawable
 import com.facebook.react.uimanager.util.ReactFindViewUtil
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
-import kotlin.coroutines.Continuation
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-import kotlin.math.min
 
 class ExistingViewFinder : ViewFinder {
+    override suspend fun find(root: ViewController<*>, nativeId: String): View? {
+        if (root.isDestroyed) return null
+        val view = ReactFindViewUtil.findView(root.view, nativeId)
+        return if (view is ImageView) awaitImage(view) else view
+    }
 
-    override suspend fun find(root: ViewController<*>, nativeId: String) = suspendCoroutine<View?> { cont ->
-        when (val view = ReactFindViewUtil.findView(root.view, nativeId)) {
-            null -> cont.resume(null)
-            is ImageView -> {
-                if (hasMeasuredDrawable(view)) {
-                    resume(view, cont)
+    internal suspend fun awaitImage(view: ImageView): View? = withTimeoutOrNull(IMAGE_LOAD_TIMEOUT_MS) {
+        suspendCancellableCoroutine { cont ->
+            val observer = view.viewTreeObserver
+            lateinit var preDraw: ViewTreeObserver.OnPreDrawListener
+            lateinit var attachment: View.OnAttachStateChangeListener
+            var pendingResume: Runnable? = null
+
+            fun cleanup() {
+                if (observer.isAlive) observer.removeOnPreDrawListener(preDraw)
+                view.removeOnAttachStateChangeListener(attachment)
+                pendingResume?.let(view::removeCallbacks)
+            }
+
+            fun finish(result: View?) {
+                cleanup()
+                if (cont.isActive) cont.resume(result)
+            }
+
+            fun checkImage() {
+                if (!hasMeasuredDrawable(view) || pendingResume != null) return
+                // Fresco updates drawable bounds during drawing; preserve the deferred resume.
+                if (view.drawable is RootDrawable) {
+                    pendingResume = Runnable { finish(view) }.also { view.post(it) }
                 } else {
-                    resumeOnImageLoad(view, cont)
+                    finish(view)
                 }
             }
-            else -> cont.resume(view)
-        }
-    }
 
-    private fun resume(view: ImageView, cont: Continuation<View?>) {
-        if (view.drawable is RootDrawable) {
-            view.post { cont.resume(view) }
-        } else {
-            cont.resume(view)
-        }
-    }
-
-    private fun resumeOnImageLoad(view: ImageView, cont: Continuation<View?>) {
-        view.doOnPreDraw {
-            if (hasMeasuredDrawable(view)) {
-                view.post {
-                    cont.resume(view)
-                }
-            } else {
-                resumeOnImageLoad(view, cont)
+            preDraw = ViewTreeObserver.OnPreDrawListener { checkImage(); true }
+            attachment = object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {}
+                override fun onViewDetachedFromWindow(v: View) { finish(null) }
             }
+            observer.addOnPreDrawListener(preDraw)
+            view.addOnAttachStateChangeListener(attachment)
+            cont.invokeOnCancellation { cleanup() }
+            if (cont.isActive) checkImage()
         }
     }
 
-    private fun hasMeasuredDrawable(view: ImageView) = when (view.drawable) {
-        is RootDrawable -> true
-        else -> checkIfFastImageIsMeasured(view)
+    private fun hasMeasuredDrawable(view: ImageView): Boolean {
+        val drawable = view.drawable ?: return false
+        return drawable is RootDrawable ||
+            (view.width > 0 && view.height > 0 && drawable.intrinsicWidth > 0 && drawable.intrinsicHeight > 0)
     }
 
-    private fun checkIfFastImageIsMeasured(view: ImageView) = with(view.drawable) {
-        this != null && intrinsicWidth != -1 && intrinsicHeight != -1 && isImageScaledToFit(view)
-    }
-
-    private fun Drawable.isImageScaledToFit(view: ImageView): Boolean {
-        val scaleX = view.width / intrinsicWidth.toFloat()
-        val scaleY = view.height / intrinsicHeight.toFloat()
-        return min(scaleX, scaleY) >= 1f
+    companion object {
+        internal const val IMAGE_LOAD_TIMEOUT_MS = 1000L
     }
 }

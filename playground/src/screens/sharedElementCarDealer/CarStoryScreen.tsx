@@ -53,7 +53,6 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
         style={styles.carName}
         nativeID={`story.${car.id}.title.to`}
         numberOfLines={3}
-        lineBreakMode="tail"
         ellipsizeMode="tail"
       >
         {car.name}
@@ -61,7 +60,6 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
       <Text
         style={styles.carDescription}
         numberOfLines={3}
-        lineBreakMode="tail"
         ellipsizeMode="tail"
       >
         {car.description}

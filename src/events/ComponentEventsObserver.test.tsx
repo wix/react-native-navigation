@@ -134,6 +134,19 @@ describe('ComponentEventsObserver', () => {
     uut = new ComponentEventsObserver(mockEventsReceiver, mockStore);
   });
 
+  it('routes native screen-pop events only to screenPopped', () => {
+    uut.registerComponentListener(
+      { screenPopped: screenPoppedFn, previewCompleted: previewCompletedFn },
+      'screen'
+    );
+    uut.registerOnceForAllComponentEvents();
+    const register = mockEventsReceiver.registerScreenPoppedListener as jest.Mock;
+    const event = { componentId: 'screen' };
+    register.mock.calls[0][0](event);
+    expect(screenPoppedFn).toHaveBeenCalledWith(event);
+    expect(previewCompletedFn).not.toHaveBeenCalled();
+  });
+
   it(`bindComponent expects a component with componentId`, () => {
     const screen1 = render(<SimpleScreen />);
     const instance1 = screen1.UNSAFE_getByType(SimpleScreen).instance as any;

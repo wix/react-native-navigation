@@ -46,11 +46,11 @@ export class OptionsProcessor {
         clone(options),
         (key, parentOptions) => {
           this.deprecations.onProcessOptions(key, parentOptions, commandName);
-          this.deprecations.checkForDeprecatedOptions(parentOptions);
         },
         commandName,
         props
       );
+      this.deprecations.checkForDeprecatedOptions(options);
     }
   }
 
@@ -83,6 +83,7 @@ export class OptionsProcessor {
         commandName,
         props
       );
+      value = objectToProcess[key];
 
       this.processColor(key, value, objectToProcess);
 

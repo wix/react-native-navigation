@@ -55,13 +55,13 @@ const config = {
     'ios.release': {
       type: 'ios.app',
       binaryPath: 'ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app',
-      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       start: 'react-native start',
-      build: 'cd android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
+      build: 'cd android && ./gradlew generateCodegenArtifactsFromSchema app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug',
       reversePorts: [
         8081,
       ],
@@ -69,7 +69,7 @@ const config = {
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build: 'cd android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release',
+      build: 'cd android && ./gradlew generateCodegenArtifactsFromSchema app:assembleRelease app:assembleAndroidTest -DtestBuildType=release',
     },
   },
   configurations: {
@@ -121,4 +121,3 @@ const config = {
 };
 
 module.exports = config;
-

@@ -1,0 +1,10 @@
+  - label: ":android: Android (RN 0.87.1)"
+    env:
+      JAVA_HOME: /opt/openjdk/jdk-17.0.9.jdk/Contents/Home/
+      REACT_NATIVE_VERSION: 0.87.1
+    command:
+    - "nvm install"
+    - "./scripts/ci.android.sh"
+    key: "android_rn_87"
+    timeout_in_minutes: 60
+    artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"

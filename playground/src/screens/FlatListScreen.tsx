@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React from 'react';
 import { FlatList, View, Text } from 'react-native';
 import {
@@ -92,7 +93,7 @@ export default class FlatListScreen extends NavigationComponent<NavigationProps,
         this.setState({
           shouldHideOnScroll: !shouldHideOnScroll,
         });
-        alert(`hideOnScroll/drawBehind is now ${!shouldHideOnScroll}`);
+        showAlert(`hideOnScroll/drawBehind is now ${!shouldHideOnScroll}`);
         break;
 
       default:

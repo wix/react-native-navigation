@@ -41,6 +41,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         BehaviourAdapter {
 
     private final List<Runnable> onAppearedListeners = new ArrayList<>();
+    @Nullable private ViewControllerScope coroutineScope;
     private boolean appearEventPosted;
     private boolean isFirstLayout = true;
     private Bool waitForRender = new NullBool();
@@ -83,6 +84,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return isDestroyed;
     }
 
+    public ViewControllerScope getCoroutineScope() {
+        if (coroutineScope == null) {
+            coroutineScope = new ViewControllerScope();
+            if (isDestroyed) coroutineScope.cancel();
+        }
+        return coroutineScope;
+    }
+
     public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions, ViewControllerOverlay overlay) {
         this.activity = activity;
         this.id = id;
@@ -101,6 +110,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void addOnAppearedListener(Runnable onAppearedListener) {
+        if (isDestroyed) return;
         if (isShown) {
             onAppearedListener.run();
         } else {
@@ -283,6 +293,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @CallSuper
     public void onViewWillAppear() {
+        if (isDestroyed) return;
         isShown = true;
         applyOptions(options);
         performOnParentController(parentController -> {
@@ -292,8 +303,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (!onAppearedListeners.isEmpty() && !appearEventPosted) {
             appearEventPosted = true;
             UiThread.post(() -> {
-                forEach(onAppearedListeners, Runnable::run);
+                List<Runnable> listeners = new ArrayList<>(onAppearedListeners);
                 onAppearedListeners.clear();
+                for (Runnable listener : listeners) {
+                    if (isDestroyed) break;
+                    listener.run();
+                }
             });
         }
     }
@@ -313,6 +328,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @CallSuper
     public void destroy() {
+        isDestroyed = true;
+        if (coroutineScope != null) coroutineScope.cancel();
+        onAppearedListeners.clear();
         if (isShown) {
             isShown = false;
             onViewDisappear();
@@ -329,7 +347,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             }
             setParentController(null);
             view = null;
-            isDestroyed = true;
         }
     }
 

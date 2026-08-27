@@ -11,6 +11,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     compileSdkVersion rootProject.ext.get("compileSdkVersion")
+    ndkVersion rootProject.ext.get("ndkVersion")
 
     namespace "com.reactnativenavigation.playground"
 

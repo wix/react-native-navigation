@@ -13,10 +13,8 @@ import com.reactnativenavigation.utils.ScreenAnimationListener
 import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.cancelPendingOrRunning
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 open class ModalAnimator @JvmOverloads constructor(
@@ -48,7 +46,7 @@ open class ModalAnimator @JvmOverloads constructor(
     }
 
     private fun showModalWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, animationOptions: TransitionAnimationOptions, set: AnimatorSet) {
-        GlobalScope.launch(Dispatchers.Main.immediate) {
+        appearing.coroutineScope.launchAnimation(set, { runningAnimators.remove(appearing, set) }) {
             appearing.setWaitForRender(Bool(true))
             appearing.view.alpha = 0f
             appearing.awaitRender()
@@ -62,27 +60,26 @@ open class ModalAnimator @JvmOverloads constructor(
     }
 
     private fun showModalWithoutElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>?, animationOptions: TransitionAnimationOptions, set: AnimatorSet) {
-        GlobalScope.launch(Dispatchers.Main.immediate) {
-            val appearingAnimation = if (animationOptions.enter.hasValue()) {
-                animationOptions.enter.getAnimation(appearing.view)
-            } else getDefaultPushAnimation(appearing.view)
-            val disappearingAnimation = if (disappearing != null && animationOptions.exit.hasValue()) {
-                animationOptions.exit.getAnimation(disappearing.view)
-            } else null
-            disappearingAnimation?.let {
-                set.playTogether(appearingAnimation, disappearingAnimation)
-            } ?: set.playTogether(appearingAnimation)
-            set.start()
-        }
+        val appearingAnimation = if (animationOptions.enter.hasValue()) {
+            animationOptions.enter.getAnimation(appearing.view)
+        } else getDefaultPushAnimation(appearing.view)
+        val disappearingAnimation = if (disappearing != null && animationOptions.exit.hasValue()) {
+            animationOptions.exit.getAnimation(disappearing.view)
+        } else null
+        disappearingAnimation?.let {
+            set.playTogether(appearingAnimation, disappearingAnimation)
+        } ?: set.playTogether(appearingAnimation)
+        set.start()
     }
 
     open fun dismiss(appearing: ViewController<*>?, disappearing: ViewController<*>, animationOptions: TransitionAnimationOptions, listener: ScreenAnimationListener) {
-        GlobalScope.launch(Dispatchers.Main.immediate) {
-            if (runningAnimators.containsKey(disappearing)) {
-                runningAnimators[disappearing]?.cancel()
-                listener.onEnd()
-            } else {
-                val set = createDismissAnimator(disappearing, listener)
+        if (runningAnimators.containsKey(disappearing)) {
+            runningAnimators[disappearing]?.cancelPendingOrRunning()
+            listener.onEnd()
+        } else {
+            val set = createDismissAnimator(disappearing, listener)
+            runningAnimators[disappearing] = set
+            disappearing.coroutineScope.launchAnimation(set, { runningAnimators.remove(disappearing, set) }) {
                 if (animationOptions.hasElementTransitions() && appearing != null) {
                     setupDismissAnimationWithSharedElementTransition(disappearing, appearing, animationOptions, set)
                 } else {

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import android.os.Looper;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -23,7 +22,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.robolectric.Shadows;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -88,7 +86,7 @@ public class ModalPresenterTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                Shadows.shadowOf(Looper.getMainLooper()).idle();
+                idleMainLooper();
                 assertThat(modal1.getView().getParent()).isEqualTo(modalsLayout);
                 verify(modal1).onViewWillAppear();
             }
@@ -223,7 +221,7 @@ public class ModalPresenterTest extends BaseTest {
         disableModalAnimations(modal1);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());
-        Shadows.shadowOf(Looper.getMainLooper()).idle();
+        idleMainLooper();
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
         verify(modal1).onViewDisappear();
         verify(modal1).destroy();
@@ -243,7 +241,7 @@ public class ModalPresenterTest extends BaseTest {
         idleMainLooper();
         assertThat(modal1.getView().getParent()).isNull();
 
-        Shadows.shadowOf(Looper.getMainLooper()).idle();
+        idleMainLooper();
         uut.dismissModal(modal2, modal1, root, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNotNull();
         idleMainLooper();

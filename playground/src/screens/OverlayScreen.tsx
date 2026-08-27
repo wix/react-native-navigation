@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React from 'react';
 import { NavigationProps } from 'react-native-navigation';
 import Root from '../components/Root';
@@ -64,7 +65,7 @@ export default class OverlayScreen extends React.Component<Props, State> {
       <Root componentId={this.props.componentId}>
         <Text testID={OVERLAY_DISMISSED_COUNT}>{this.state?.overlayDismissedCount || ''}</Text>
         <Button label="Toast" testID={TOAST_BTN} onPress={this.toast} />
-        <Button label="Alert" testID={ALERT_BUTTON} onPress={() => alert('Alert displayed')} />
+        <Button label="Alert" testID={ALERT_BUTTON} onPress={() => showAlert('Alert displayed')} />
         <Button
           label="Show overlay"
           testID={SHOW_OVERLAY_BTN}

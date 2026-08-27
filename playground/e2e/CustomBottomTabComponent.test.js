@@ -1,3 +1,4 @@
+import { device, waitFor } from 'detox';
 import Utils from './Utils';
 import TestIDs from '../src/testIDs';
 
@@ -26,6 +27,18 @@ describe.e2e('Custom BottomTab Component', () => {
     await expect(elementById(TestIDs.CUSTOM_BOTTOM_TAB_ITEM_0)).toBeVisible();
     await expect(elementById(TestIDs.CUSTOM_BOTTOM_TAB_ITEM_1)).toBeVisible();
     await expect(elementById(TestIDs.CUSTOM_BOTTOM_TAB_ITEM_2)).toBeVisible();
+  });
+
+  it(':android: removes the row with its modal and recreates it on the next presentation', async () => {
+    await device.pressBack();
+    await waitFor(elementById(TestIDs.CUSTOM_BOTTOM_TAB_ITEM_0))
+      .not.toExist()
+      .withTimeout(5000);
+    await openCustomBottomTabsModal();
+    await elementById(TestIDs.CUSTOM_BOTTOM_TAB_ITEM_1).tap();
+    await waitFor(elementById(TestIDs.CUSTOM_BOTTOM_TAB_SELECTED_LABEL))
+      .toHaveText('Search content')
+      .withTimeout(3000);
   });
 
   it('mounts the first tab content by default', async () => {

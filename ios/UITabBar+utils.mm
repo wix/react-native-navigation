@@ -4,7 +4,7 @@
 #define BADGE_OFFSET 0.2
 #define IMAGE_VIEW_TAG 1
 
-typedef void (*UITabBarButton_layoutSubviews__IMP)(void);
+typedef void (*UITabBarButton_layoutSubviews__IMP)(id, SEL);
 static UITabBarButton_layoutSubviews__IMP original_UITabBarButton_layoutSubviews;
 
 @implementation UITabBar (utils)
@@ -33,23 +33,27 @@ static UITabBarButton_layoutSubviews__IMP original_UITabBarButton_layoutSubviews
 
 + (void)swizzleUITabBarButtonLayoutSubviews {
     Class UITabBarButtonClass = NSClassFromString(@"UITabBarButton");
+    if (!UITabBarButtonClass) return;
 
     SEL layoutSubviewsSEL = @selector(layoutSubviews);
     Method layoutSubviewsMethod = class_getInstanceMethod(UITabBarButtonClass, layoutSubviewsSEL);
-    IMP layoutSubviewsIMP = method_getImplementation(layoutSubviewsMethod);
-
-    original_UITabBarButton_layoutSubviews = layoutSubviewsIMP;
 
     SEL swizzleUITabBarButton_layoutSubviewsSEL = @selector(swizzleUITabBarButton_layoutSubviews);
     Method swizzleUITabBarButton_layoutSubviewsMethod =
         class_getInstanceMethod(self, swizzleUITabBarButton_layoutSubviewsSEL);
+    if (!layoutSubviewsMethod || !swizzleUITabBarButton_layoutSubviewsMethod) return;
 
-    method_exchangeImplementations(layoutSubviewsMethod,
-                                   swizzleUITabBarButton_layoutSubviewsMethod);
+    original_UITabBarButton_layoutSubviews =
+        (UITabBarButton_layoutSubviews__IMP)method_getImplementation(layoutSubviewsMethod);
+
+    // Replace only the button's method, even if its implementation is inherited.
+    class_replaceMethod(UITabBarButtonClass, layoutSubviewsSEL,
+                        method_getImplementation(swizzleUITabBarButton_layoutSubviewsMethod),
+                        method_getTypeEncoding(layoutSubviewsMethod));
 }
 
 - (void)swizzleUITabBarButton_layoutSubviews {
-    original_UITabBarButton_layoutSubviews();
+    original_UITabBarButton_layoutSubviews(self, @selector(layoutSubviews));
     for (UIView *subView in self.subviews) {
         if ([subView isKindOfClass:NSClassFromString(@"UITabBarSwappableImageView")]) {
             subView.center = CGPointMake(subView.center.x, subView.superview.frame.size.height / 2);

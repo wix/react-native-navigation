@@ -151,4 +151,12 @@ This project uses [Yarn workspaces](https://yarnpkg.com/features/workspaces). Th
 | `yarn test-e2e-android-ci` | runs the android e2e tests using [detox](https://github.com/wix/detox) in CI mode (release, multi-device) |
 | `yarn workspace react-native-navigation-playground test-e2e-ios` | runs the ios e2e tests using [detox](https://github.com/wix/detox) in debug/release <br></br> **Options:** `-- --release` |
 | `yarn workspace react-native-navigation-playground test-e2e-android` | runs the android e2e tests using [detox](https://github.com/wix/detox) in debug/release <br></br> **Options:** `-- --release` |
-| `yarn test-all` | runs all tests in parallel (js, autolink, unit, snapshot, e2e) |
+| `yarn test-all` | runs js, autolink, native unit, snapshot, and E2E tests; iOS unit and snapshot builds run sequentially because they share build output |
+
+The iOS unit and snapshot runners accept `IOS_TEST_DEVICE` and `IOS_TEST_OS`. For example:
+
+```sh
+IOS_TEST_DEVICE="iPhone 17 Pro Max" IOS_TEST_OS="26.5" yarn test-unit-ios --release
+```
+
+Snapshot comparisons must use the same simulator model and OS as the reference images. `RECORD=true yarn test-snapshot-ios` records images locally only: review and commit intentional changes yourself. Recording never changes Git configuration, creates a remote, commits, or pushes, and test failures still produce a nonzero exit status.

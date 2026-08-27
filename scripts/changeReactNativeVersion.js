@@ -16,6 +16,7 @@ const {
     getGradleVersion,
     getJestPresetVersion,
     getReanimatedOverride,
+    getGestureHandlerOverride,
     getWorkletsOverride,
     shouldRemoveWorklets,
     getTestingLibraryOverride,
@@ -123,6 +124,11 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
     const reanimatedOverride = getReanimatedOverride(rnMinor);
     if (reanimatedOverride) {
         packageJson.devDependencies['react-native-reanimated'] = reanimatedOverride;
+    }
+
+    const gestureHandlerOverride = getGestureHandlerOverride(rnMinor);
+    if (gestureHandlerOverride) {
+        packageJson.devDependencies['react-native-gesture-handler'] = gestureHandlerOverride;
     }
 
     const workletsOverride = getWorkletsOverride(rnMinor);

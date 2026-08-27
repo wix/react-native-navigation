@@ -106,15 +106,21 @@ class ApplicationLinker {
   }
 
   _extendNavigationHost(applicationContent) {
+    // Modern templates configure ReactHost directly, without a legacy ReactNativeHost.
+    if (/override\s+val\s+reactHost\s*:\s*ReactHost\s+by\s+lazy/.test(applicationContent) &&
+        !/override\s+val\s+reactNativeHost\s*:/.test(applicationContent)) {
+      return applicationContent;
+    }
+
     if (this._hasAlreadyLinkedNavigationHost(applicationContent)) {
       warnn('   NavigationReactNativeHost is already used, skipping.');
-      return applicationContent;
+      return applicationContent.replace('NavigationReactNativeHost(this)', 'NavigationReactNativeHost(this@MainApplication)');
     }
 
     if (this._doesExtendDefaultReactNativeHost(applicationContent)) {
       debugn('   Changing host implementation to NavigationReactNativeHost');
       return applicationContent
-        .replace('DefaultReactNativeHost(this)', 'NavigationReactNativeHost(this)')
+        .replace(/DefaultReactNativeHost\(this(?:@MainApplication)?\)/, 'NavigationReactNativeHost(this@MainApplication)')
         .replace(
           'import com.facebook.react.defaults.DefaultReactNativeHost',
           'import com.facebook.react.defaults.DefaultReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost'
@@ -122,7 +128,7 @@ class ApplicationLinker {
     } else if (this._doesExtendReactNativeHost(applicationContent)) {
       debugn('   Changing host implementation to NavigationReactNativeHost');
       return applicationContent
-        .replace('ReactNativeHost(this)', 'NavigationReactNativeHost(this)')
+        .replace(/ReactNativeHost\(this(?:@MainApplication)?\)/, 'NavigationReactNativeHost(this@MainApplication)')
         .replace(
           'import com.facebook.react.ReactNativeHost',
           'import com.facebook.react.ReactNativeHost\nimport com.reactnativenavigation.react.NavigationReactNativeHost'
@@ -133,15 +139,15 @@ class ApplicationLinker {
   }
 
   _doesExtendReactNativeHost(applicationContent) {
-    return /\s*ReactNativeHost\(this\)\s*/.test(applicationContent);
+    return /\s*ReactNativeHost\(this(?:@MainApplication)?\)\s*/.test(applicationContent);
   }
 
   _doesExtendDefaultReactNativeHost(applicationContent) {
-    return /\s*DefaultReactNativeHost\(this\)\s*/.test(applicationContent);
+    return /\s*DefaultReactNativeHost\(this(?:@MainApplication)?\)\s*/.test(applicationContent);
   }
 
   _hasAlreadyLinkedNavigationHost(applicationContent) {
-    return /\s*NavigationReactNativeHost\(this\)\s*/.test(applicationContent);
+    return /\s*NavigationReactNativeHost\(this(?:@MainApplication)?\)\s*/.test(applicationContent);
   }
 
   _removeSOLoaderInit(applicationContent) {
@@ -163,6 +169,13 @@ class ApplicationLinker {
   }
 
   _removeNewArchEntryPointLoad(applicationContent) {
+    // NavigationApplication.onCreate already initializes React Native.
+    if (/\bloadReactNative\(this\)/.test(applicationContent)) {
+      return applicationContent
+        .replace(/^import com\.facebook\.react\.ReactNativeApplicationEntryPoint\.loadReactNative\r?\n/m, '')
+        .replace(/^\s*loadReactNative\(this\)\s*;?\s*$/m, '');
+    }
+
     if (this._isNewArchEntryPointLoadCalled(applicationContent)) {
       debugn('   Removing New Architecture entry point load block');
       return applicationContent.replace(

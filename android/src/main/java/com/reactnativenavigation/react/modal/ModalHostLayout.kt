@@ -19,6 +19,7 @@ import java.util.*
 
 @SuppressLint("ViewConstructor")
 open class ModalHostLayout(reactContext: ThemedReactContext) : ViewGroup(reactContext), LifecycleEventListener {
+    var isPresented = false
     val viewController = ModalLayoutController(
         reactContext,
         reactContext.currentActivity, CompatUtils.generateViewId().toString(),

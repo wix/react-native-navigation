@@ -7,8 +7,10 @@ cat .buildkite/jobs/pipeline.android_rn_77.yml
 cat .buildkite/jobs/pipeline.android_rn_78.yml
 cat .buildkite/jobs/pipeline.android_rn_84.yml
 cat .buildkite/jobs/pipeline.android_rn_85.yml
+cat .buildkite/jobs/pipeline.android_rn_87.yml
 cat .buildkite/jobs/pipeline.ios_rn_77.yml
 cat .buildkite/jobs/pipeline.ios_rn_78.yml
 cat .buildkite/jobs/pipeline.ios_rn_84.yml
 cat .buildkite/jobs/pipeline.ios_rn_85.yml
+cat .buildkite/jobs/pipeline.ios_rn_87.yml
 cat .buildkite/jobs/pipeline.publish.yml

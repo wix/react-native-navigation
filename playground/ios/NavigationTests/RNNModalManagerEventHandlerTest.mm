@@ -21,8 +21,7 @@
 - (void)testDismissedModal_shouldEmitEventWithTopMostComponentId {
     RNNLayoutInfo *stackLayoutInfo = [RNNLayoutInfo new];
     stackLayoutInfo.componentId = @"stack";
-    RNNComponentViewController *child = [OCMockObject
-        partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+    RNNComponentViewController *child = [RNNComponentViewController createWithComponentId:@"child"];
     __unused RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo
                                                creator:nil
@@ -40,8 +39,7 @@
 - (void)testAttemptToDismissModal_shouldEmitEventWithTopMostComponentId {
     RNNLayoutInfo *stackLayoutInfo = [RNNLayoutInfo new];
     stackLayoutInfo.componentId = @"stack";
-    RNNComponentViewController *child = [OCMockObject
-        partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+    RNNComponentViewController *child = [RNNComponentViewController createWithComponentId:@"child"];
     __unused RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo
                                                creator:nil
@@ -59,8 +57,7 @@
 - (void)testDismissedMultipleModals_shouldEmitEventWithTopMostComponentId {
     RNNLayoutInfo *stackLayoutInfo = [RNNLayoutInfo new];
     stackLayoutInfo.componentId = @"stack";
-    RNNComponentViewController *child = [OCMockObject
-        partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+    RNNComponentViewController *child = [RNNComponentViewController createWithComponentId:@"child"];
     __unused RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo
                                                creator:nil

@@ -2,6 +2,7 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import <react/featureflags/ReactNativeFeatureFlags.h>
 #import <react/featureflags/ReactNativeFeatureFlagsDefaults.h>
+#import <cxxreact/ReactNativeVersion.h>
 
 #import "RCTAppSetupUtils.h"
 #if __has_include(<React/RCTCxxBridgeDelegate.h>)
@@ -92,9 +93,13 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self.reactNativeDelegate];
     self.reactNativeDelegate.dependencyProvider = [RCTAppDependencyProvider new];
     
+#if !defined(REACT_NATIVE_VERSION_MINOR) || REACT_NATIVE_VERSION_MINOR < 87
     RCTAppSetupPrepareApp(application, YES);
+#endif
     RCTEnableTurboModuleInterop(YES);
+#if !defined(REACT_NATIVE_VERSION_MINOR) || REACT_NATIVE_VERSION_MINOR < 87
     RCTEnableTurboModuleInteropBridgeProxy(YES);
+#endif
     
     self.reactNativeFactory.rootViewFactory.reactHost = [self.reactNativeFactory.rootViewFactory createReactHost:launchOptions];
     

@@ -41,6 +41,15 @@ target 'playground' do
 
   pod 'HMSegmentedControl'
 
+  # The host app already links React Native and the native modules. Test bundles
+  # only need their headers; linking them again loads duplicate Objective-C classes.
+  ['NavigationTests', 'NavigationIOS12Tests', 'SnapshotTests'].each do |test_target|
+    target test_target do
+      inherit! :search_paths
+      pod 'OCMock'
+    end
+  end
+
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
@@ -62,37 +71,4 @@ target 'playground' do
       end
     end
   end
-end
-
-target 'NavigationTests' do
-  config = use_native_modules!
-
-  use_react_native!(
-    :path => config[:reactNativePath],
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
-
-  pod 'OCMock'
-end
-
-target 'NavigationIOS12Tests' do
-  config = use_native_modules!
-
-  use_react_native!(
-    :path => config[:reactNativePath],
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
-
-  pod 'OCMock'
-end
-
-target 'SnapshotTests' do
-  config = use_native_modules!
-
-  use_react_native!(
-    :path => config[:reactNativePath],
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
-
-  pod 'OCMock'
 end

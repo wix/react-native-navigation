@@ -27,4 +27,19 @@ describe('Layout processors Store', () => {
     remove();
     expect(uut.getProcessors()).toEqual([]);
   });
+
+  it('removes only the selected registration, including duplicate callbacks', () => {
+    const first = (value: any) => value;
+    const middle = (value: any) => value;
+    uut.addProcessor(first);
+    const middleSubscription = uut.addProcessor(middle);
+    const duplicateSubscription = uut.addProcessor(first);
+    duplicateSubscription.remove();
+    duplicateSubscription.remove();
+    expect(uut.getProcessors()).toEqual([first, middle]);
+    uut.addProcessor(first);
+    middleSubscription.remove();
+    middleSubscription.remove();
+    expect(uut.getProcessors()).toEqual([first, first]);
+  });
 });

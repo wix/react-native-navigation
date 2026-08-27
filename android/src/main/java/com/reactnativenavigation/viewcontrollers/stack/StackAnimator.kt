@@ -15,10 +15,8 @@ import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
+import com.reactnativenavigation.viewcontrollers.viewcontroller.cancelPendingOrRunning
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 open class StackAnimator @JvmOverloads constructor(
@@ -34,7 +32,7 @@ open class StackAnimator @JvmOverloads constructor(
     @VisibleForTesting
     val runningSetRootAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
 
-    fun cancelPushAnimations() = runningPushAnimations.values.forEach(Animator::cancel)
+    fun cancelPushAnimations() = runningPushAnimations.values.toList().forEach { it.cancelPendingOrRunning() }
 
     open fun isChildInTransition(child: ViewController<*>?): Boolean {
         return runningPushAnimations.containsKey(child) ||
@@ -43,9 +41,11 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     fun cancelAllAnimations() {
+        val animations = (runningPushAnimations.values + runningPopAnimations.values + runningSetRootAnimations.values).toList()
         runningPushAnimations.clear()
         runningPopAnimations.clear()
         runningSetRootAnimations.clear()
+        animations.forEach { it.cancelPendingOrRunning() }
     }
 
     fun setRoot(
@@ -60,7 +60,8 @@ open class StackAnimator @JvmOverloads constructor(
         val setRoot = options.animations.setStackRoot
         if (setRoot.waitForRender.isTrue) {
             appearing.view.alpha = 0f
-            appearing.addOnAppearedListener {
+            appearing.coroutineScope.launchAnimation(set, { runningSetRootAnimations.remove(appearing, set) }) {
+                appearing.awaitRender()
                 appearing.view.alpha = 1f
                 animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
             }
@@ -93,7 +94,7 @@ open class StackAnimator @JvmOverloads constructor(
             onAnimationEnd: Runnable
     ) {
         if (runningPushAnimations.containsKey(disappearing)) {
-            runningPushAnimations[disappearing]!!.cancel()
+            runningPushAnimations[disappearing]!!.cancelPendingOrRunning()
             onAnimationEnd.run()
         } else {
             animatePop(
@@ -113,13 +114,13 @@ open class StackAnimator @JvmOverloads constructor(
             additionalAnimations: List<Animator>,
             onAnimationEnd: Runnable
     ) {
-        GlobalScope.launch(Dispatchers.Main.immediate) {
-            val set = createPopAnimator(disappearing, onAnimationEnd)
-            if (disappearingOptions.animations.pop.sharedElements.hasValue()) {
+        val set = createPopAnimator(disappearing, onAnimationEnd)
+        if (disappearingOptions.animations.pop.sharedElements.hasValue()) {
+            disappearing.coroutineScope.launchAnimation(set, { runningPopAnimations.remove(disappearing, set) }) {
                 popWithElementTransitions(appearing, disappearing, disappearingOptions, set)
-            } else {
-                popWithoutElementTransitions(appearing, disappearing, disappearingOptions, set, additionalAnimations)
             }
+        } else {
+            popWithoutElementTransitions(appearing, disappearing, disappearingOptions, set, additionalAnimations)
         }
     }
 
@@ -220,7 +221,7 @@ open class StackAnimator @JvmOverloads constructor(
             disappearing: ViewController<*>,
             options: Options,
             set: AnimatorSet
-    ) = GlobalScope.launch(Dispatchers.Main.immediate) {
+    ) = appearing.coroutineScope.launchAnimation(set, { runningPushAnimations.remove(appearing, set) }) {
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
@@ -242,7 +243,8 @@ open class StackAnimator @JvmOverloads constructor(
         val push = resolvedOptions.animations.push
         if (push.waitForRender.isTrue) {
             appearing.view.alpha = 0f
-            appearing.addOnAppearedListener {
+            appearing.coroutineScope.launchAnimation(set, { runningPushAnimations.remove(appearing, set) }) {
+                appearing.awaitRender()
                 appearing.view.alpha = 1f
                 animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
             }

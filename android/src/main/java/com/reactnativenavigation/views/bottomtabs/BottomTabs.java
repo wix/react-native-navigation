@@ -17,6 +17,7 @@ import androidx.annotation.IntRange;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.customrow.BottomTabsCustomRowAttacher;
 import com.reactnativenavigation.options.LayoutDirection;
 
 import java.util.ArrayList;
@@ -154,10 +155,21 @@ public class BottomTabs extends AHBottomNavigation {
      */
     public void setCustomItemViews(List<CustomBottomTabItemView> customViews) {
         clearCustomItemViews();
-        if (customViews == null || customViews.isEmpty()) return;
-
-        customItemViews.addAll(customViews);
+        if (customViews != null) customItemViews.addAll(customViews);
+        BottomTabsCustomRowAttacher.onCustomItemsChanged(this);
         attachCustomItemViews();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        BottomTabsCustomRowAttacher.attach(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        BottomTabsCustomRowAttacher.detach(this);
+        super.onDetachedFromWindow();
     }
 
     public void onCustomItemViewSelectionChanged(int selectedIndex) {

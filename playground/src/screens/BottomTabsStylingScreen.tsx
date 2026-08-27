@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { NavigationProps, Options } from 'react-native-navigation';
 import { Text, StyleSheet, View, ScrollView, Platform } from 'react-native';
 
-import Root from '../components/Root';
 import Button from '../components/Button';
 import Navigation from '../services/Navigation';
-import Screens from './Screens';
-import { stack } from '../commons/Layouts';
 
 const isIOS26 = Platform.OS === 'ios' && parseInt(Platform.Version as string, 10) >= 26;
 

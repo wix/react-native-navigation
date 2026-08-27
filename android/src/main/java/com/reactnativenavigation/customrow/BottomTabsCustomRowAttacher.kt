@@ -1,30 +1,25 @@
 package com.reactnativenavigation.customrow
 
 import android.app.Activity
-import android.app.Application
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowInsets
 import android.widget.FrameLayout
-import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 
-/**
- * Activity-lifecycle observer that watches every started activity for
- * `BottomTabs` instances using the existing custom-tab path and injects a
- * [BottomTabsCustomRow] above them, hiding the native chrome via public
- * `View` APIs (`alpha = 0f`).
- *
- * Layout listeners are registered once per activity (on the decor view) and
- * placement updates are deduplicated so Espresso / Detox can reach idle.
- */
-internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallbacks {
-
-    @Volatile private var registered: Boolean = false
-    @Volatile private var lastResumedActivity: Activity? = null
+/** Tracks only custom tabs that are actually attached; never scans an activity's view tree. */
+internal object BottomTabsCustomRowAttacher {
+    private data class Attachment(
+        val row: BottomTabsCustomRow,
+        val observer: ViewTreeObserver,
+        val listener: ViewTreeObserver.OnGlobalLayoutListener,
+        val originalAlpha: Float,
+        val originalElevation: Float,
+    )
 
     private data class LastPlacement(
         val left: Int,
@@ -34,113 +29,70 @@ internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallb
         val safeBottomInsetPx: Int,
     )
 
-    fun registerOnce(application: Application, currentActivity: Activity? = null) {
-        if (!registered) {
-            registered = true
-            application.registerActivityLifecycleCallbacks(this)
-        }
-        if (currentActivity != null && lastResumedActivity == null) {
-            lastResumedActivity = currentActivity
-            ensureLayoutObserver(currentActivity)
-            tryAttach(currentActivity)
-        }
-    }
-
-    fun rescan() {
-        val activity = lastResumedActivity ?: return
-        tryAttach(activity)
-    }
-
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        ensureLayoutObserver(activity)
-        tryAttach(activity)
-    }
-
-    override fun onActivityStarted(activity: Activity) {
-        ensureLayoutObserver(activity)
-        tryAttach(activity)
-    }
-
-    override fun onActivityResumed(activity: Activity) {
-        lastResumedActivity = activity
-        ensureLayoutObserver(activity)
-        tryAttach(activity)
-    }
-
-    override fun onActivityPaused(activity: Activity) {
-        if (lastResumedActivity === activity) lastResumedActivity = null
-    }
-
-    override fun onActivityStopped(activity: Activity) {}
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-    override fun onActivityDestroyed(activity: Activity) {
-        activity.window?.decorView?.setTag(TAG_OBSERVING, null)
-    }
-
-    private fun ensureLayoutObserver(activity: Activity) {
-        // BottomTabs only ever live inside RNN's own NavigationActivity (an
-        // AppCompatActivity). Touching any other activity — e.g. a third-party
-        // relay such as AppAuth's RedirectUriReceiverActivity, whose theme is not
-        // a Theme.AppCompat descendant — forces AppCompat sub-decor inflation and
-        // crashes with "You need to use a Theme.AppCompat theme". Guard here so the
-        // global lifecycle observer never operates on foreign activities.
-        if (activity !is NavigationActivity) return
+    @JvmStatic
+    fun attach(bottomTabs: BottomTabs) {
+        if (!bottomTabs.hasCustomItemViews()) return
+        if (bottomTabs.getTag(TAG_ATTACHMENT) != null) return
+        val activity = activityFrom(bottomTabs.context) ?: return
         val decor = activity.window?.decorView as? ViewGroup ?: return
-        if (decor.getTag(TAG_OBSERVING) == true) return
-        decor.setTag(TAG_OBSERVING, true)
-        decor.viewTreeObserver.addOnGlobalLayoutListener(
-            object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    tryAttach(activity)
-                }
-            }
-        )
-    }
-
-    private fun tryAttach(activity: Activity) {
-        if (activity !is NavigationActivity) return
-        val scanRoot = activity.window?.decorView as? ViewGroup ?: return
-        // Resolve through the view tree: AppCompatActivity.findViewById() forces
-        // createSubDecor(), which throws unless the activity's theme is Theme.AppCompat.
-        val overlayHost = scanRoot.findViewById<View>(android.R.id.content) as? ViewGroup
-            ?: scanRoot
-
-        forEachBottomTabs(scanRoot) { bottomTabs ->
-            if (!bottomTabs.hasCustomItemViews()) return@forEachBottomTabs
-
-            val existing = bottomTabs.getTag(TAG_ATTACHED_ROW_ID) as? BottomTabsCustomRow
-            if (existing != null) {
-                ensureRowHostedOn(existing, overlayHost)
-                positionRow(existing, bottomTabs, overlayHost, activity)
-                return@forEachBottomTabs
-            }
-
-            bottomTabs.setExternalCustomItemViewHost(true)
-            val row = BottomTabsCustomRow(overlayHost.context, bottomTabs)
-            overlayHost.addView(
-                row,
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                )
-            )
-            bottomTabs.setTag(TAG_ATTACHED_ROW_ID, row)
-            bottomTabs.alpha = 0f
-            bottomTabs.elevation = 0f
+        val overlayHost = decor.findViewById<View>(android.R.id.content) as? ViewGroup ?: decor
+        val originalAlpha = bottomTabs.alpha
+        val originalElevation = bottomTabs.elevation
+        bottomTabs.setExternalCustomItemViewHost(true)
+        val row = BottomTabsCustomRow(overlayHost.context, bottomTabs)
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            row.visibility = if (bottomTabs.isShown) View.VISIBLE else View.GONE
             positionRow(row, bottomTabs, overlayHost, activity)
         }
+        val observer = decor.viewTreeObserver
+        bottomTabs.setTag(TAG_ATTACHMENT, Attachment(row, observer, listener, originalAlpha, originalElevation))
+        overlayHost.addView(row, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
+        ))
+        bottomTabs.alpha = 0f
+        bottomTabs.elevation = 0f
+        observer.addOnGlobalLayoutListener(listener)
+        listener.onGlobalLayout()
     }
 
-    private fun ensureRowHostedOn(row: BottomTabsCustomRow, overlayHost: ViewGroup) {
-        if (row.parent === overlayHost) return
-        (row.parent as? ViewGroup)?.removeView(row)
-        overlayHost.addView(
-            row,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
+    @JvmStatic
+    fun detach(bottomTabs: BottomTabs) {
+        val attachment = bottomTabs.getTag(TAG_ATTACHMENT) as? Attachment ?: return
+        // Select View.setTag: AHBottomNavigation also overloads setTag(Int, String?).
+        (bottomTabs as View).setTag(TAG_ATTACHMENT, null)
+        if (attachment.observer.isAlive) {
+            attachment.observer.removeOnGlobalLayoutListener(attachment.listener)
+        }
+        (attachment.row.parent as? ViewGroup)?.removeView(attachment.row)
+        bottomTabs.setExternalCustomItemViewHost(false)
+        bottomTabs.alpha = attachment.originalAlpha
+        bottomTabs.elevation = attachment.originalElevation
+    }
+
+    @JvmStatic
+    fun onCustomItemsChanged(bottomTabs: BottomTabs) {
+        if (!bottomTabs.hasCustomItemViews()) {
+            detach(bottomTabs)
+            return
+        }
+        if (!bottomTabs.isAttachedToWindow) return
+        val attachment = bottomTabs.getTag(TAG_ATTACHMENT) as? Attachment
+        if (attachment == null) attach(bottomTabs)
+        else {
+            attachment.row.rebuildCells()
+            attachment.listener.onGlobalLayout()
+        }
+    }
+
+    private fun activityFrom(context: Context): Activity? {
+        var current = context
+        while (current is ContextWrapper) {
+            if (current is Activity) return current
+            val base = current.baseContext
+            if (base === current) return null
+            current = base
+        }
+        return current as? Activity
     }
 
     private fun positionRow(
@@ -196,19 +148,6 @@ internal object BottomTabsCustomRowAttacher : Application.ActivityLifecycleCallb
         return 0
     }
 
-    private fun forEachBottomTabs(view: View, block: (BottomTabs) -> Unit) {
-        if (view is BottomTabs) {
-            block(view)
-            return
-        }
-        if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                forEachBottomTabs(view.getChildAt(i), block)
-            }
-        }
-    }
-
-    private val TAG_ATTACHED_ROW_ID = "rnnBottomTabsCustomRow".hashCode()
-    private val TAG_OBSERVING = "rnnCustomRowObserving".hashCode()
+    private val TAG_ATTACHMENT = "rnnCustomRowAttachment".hashCode()
     private val TAG_LAST_PLACEMENT = "rnnCustomRowLastPlacement".hashCode()
 }

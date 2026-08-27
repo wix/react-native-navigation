@@ -1,3 +1,4 @@
+/* global device, element, by */
 import Utils from './Utils';
 import TestIDs from '../src/testIDs';
 
@@ -6,24 +7,18 @@ const { elementById } = Utils;
 describe.e2e(':ios: orientation', () => {
   beforeEach(async () => {
     await device.launchApp({ newInstance: true });
-    waitForDeviceToSettleAfterOrientationChangeAndroid = (ms) =>
-      new Promise((res) => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
     await elementById(TestIDs.NAVIGATION_TAB).tap();
     await elementById(TestIDs.SHOW_ORIENTATION_SCREEN).tap();
   });
 
-  afterEach(() => {
-    device.setOrientation('portrait');
-  });
+  afterEach(() => device.setOrientation('portrait'));
 
   it('landscape and portrait array', async () => {
     await elementById(TestIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BTN).tap();
     await expect(element(by.id(TestIDs.PORTRAIT_ELEMENT))).toBeVisible();
     await device.setOrientation('landscape');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(element(by.id(TestIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await device.setOrientation('portrait');
-    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(element(by.id(TestIDs.PORTRAIT_ELEMENT))).toBeVisible();
     await elementById(TestIDs.DISMISS_BTN).tap();
   });

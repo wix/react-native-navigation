@@ -27,14 +27,14 @@ class ReactImageMatrixAnimator(from: View, to: View) : PropertyAnimatorCreator<R
             val parentScalyY = (from.parent as View).scaleY
 
             val fromBounds = calculateBounds(from, parentScaleX, parentScalyY)
-            hierarchy.actualImageScaleType = InterpolatingScaleType(
+            hierarchy.setActualImageScaleType(InterpolatingScaleType(
                     getScaleType(from),
                     getScaleType(to),
                     fromBounds,
                     calculateBounds(to),
                     PointF(from.width * parentScaleX / 2f, from.height * parentScalyY / 2f),
                     PointF(to.width / 2f, to.height / 2f)
-            )
+            ))
 
             to.layoutParams.width = max(from.width, to.width)
             to.layoutParams.height = max(from.height, to.height)

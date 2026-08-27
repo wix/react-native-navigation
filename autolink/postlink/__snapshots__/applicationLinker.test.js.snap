@@ -19,7 +19,7 @@ import com.facebook.soloader.SoLoader
 class MainApplication : NavigationApplication() {
 
   override val reactNativeHost: ReactNativeHost =
-      object : NavigationReactNativeHost(this) {
+      object : NavigationReactNativeHost(this@MainApplication) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:

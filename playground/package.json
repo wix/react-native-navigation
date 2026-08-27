@@ -19,7 +19,6 @@
     "hoist-non-react-statics": "^3.3.2",
     "lodash": "4.18.1",
     "prop-types": "15.x.x",
-    "react-lifecycles-compat": "^3.0.4",
     "react-native-redash": "^12.6.1",
     "react-native-webview": "^13.12.5",
     "reanimated-color-picker": "^3.0.6",

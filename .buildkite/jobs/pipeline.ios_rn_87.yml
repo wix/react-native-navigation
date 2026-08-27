@@ -1,0 +1,11 @@
+  - label: ":ios: iOS (RN 0.87.1)"
+    env:
+      REACT_NATIVE_VERSION: 0.87.1
+      IOS_TEST_DEVICE: iPhone 17 Pro Max
+      IOS_TEST_OS: "26.1"
+    command:
+    - "nvm install"
+    - "./scripts/ci.ios.sh"
+    key: "ios_rn_87"
+    timeout_in_minutes: 60
+    artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"

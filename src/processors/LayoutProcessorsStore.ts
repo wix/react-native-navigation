@@ -2,19 +2,21 @@ import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
 import { LayoutProcessor } from '../interfaces/Processors';
 
 export class LayoutProcessorsStore {
-  private layoutProcessors: LayoutProcessor[] = [];
+  private layoutProcessors: { processor: LayoutProcessor }[] = [];
 
   public addProcessor(processor: LayoutProcessor): ProcessorSubscription {
-    this.layoutProcessors.push(processor);
+    const registration = { processor };
+    this.layoutProcessors.push(registration);
 
-    return { remove: () => this.removeProcessor(processor) };
+    return {
+      remove: () => {
+        const index = this.layoutProcessors.indexOf(registration);
+        if (index !== -1) this.layoutProcessors.splice(index, 1);
+      },
+    };
   }
 
   public getProcessors(): LayoutProcessor[] {
-    return this.layoutProcessors;
-  }
-
-  private removeProcessor(processor: LayoutProcessor) {
-    this.layoutProcessors.splice(this.layoutProcessors.indexOf(processor));
+    return this.layoutProcessors.map(({ processor }) => processor);
   }
 }

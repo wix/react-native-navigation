@@ -7,8 +7,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.uimanager.ViewManager
-import android.app.Application
-import com.reactnativenavigation.customrow.BottomTabsCustomRowAttacher
 import com.reactnativenavigation.customrow.BottomTabsCustomRowModule
 import com.reactnativenavigation.options.LayoutFactory
 import com.reactnativenavigation.react.NavigationTurboModule
@@ -18,9 +16,6 @@ class NavigationPackage() : BaseReactPackage() {
 
     override fun getModule(name: String, context: ReactApplicationContext): NativeModule? {
         val reactApp = context.applicationContext as ReactApplication
-        (context.applicationContext as? Application)?.let {
-            BottomTabsCustomRowAttacher.registerOnce(it, context.currentActivity)
-        }
         return when (name) {
             NavigationTurboModule.NAME -> {
                 NavigationTurboModule(context, LayoutFactory(reactApp.reactHost))
@@ -59,4 +54,3 @@ class NavigationPackage() : BaseReactPackage() {
         return mutableListOf(ModalViewManager(reactContext))
     }
 }
-

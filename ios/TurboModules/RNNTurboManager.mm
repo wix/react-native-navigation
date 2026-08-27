@@ -9,7 +9,7 @@
 #import "RNNReactComponentRegistry.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNTurboCommandsHandler.h"
-#import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#import <ReactCommon/RCTHost.h>
 #import "RNNSplashScreenViewController.h"
 
 @interface RNNTurboManager ()

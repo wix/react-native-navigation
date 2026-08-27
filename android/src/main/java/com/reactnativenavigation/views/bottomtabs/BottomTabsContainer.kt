@@ -10,7 +10,7 @@ import android.view.ViewOutlineProvider
 import android.widget.FrameLayout.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
-import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.updatePadding
 import com.reactnativenavigation.options.params.Fraction
@@ -43,8 +43,8 @@ class BottomTabsContainer(context: Context, val bottomTabs: BottomTabs) : Shadow
     private var blurColor: Int? = null
 
     var topOutLineView = TopOutlineView(context)
-        @RestrictTo(RestrictTo.Scope.TESTS, RestrictTo.Scope.SUBCLASSES) get
-        @RestrictTo(RestrictTo.Scope.TESTS) set(value) {
+        @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) get
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) set(value) {
             this.removeView(field)
             addView(value, LayoutParams(MATCH_PARENT, WRAP_CONTENT))
             field = value

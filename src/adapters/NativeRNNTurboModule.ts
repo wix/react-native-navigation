@@ -1,5 +1,5 @@
 import { TurboModule, TurboModuleRegistry } from 'react-native';
-import { UnsafeObject, Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type { UnsafeObject, Double } from './CodegenTypes';
 
 export interface Spec extends TurboModule {
   readonly getConstants: () => {

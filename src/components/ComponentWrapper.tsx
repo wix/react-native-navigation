@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ComponentProvider } from 'react-native';
-import { polyfill } from 'react-lifecycles-compat';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { Store } from './Store';
@@ -95,7 +94,6 @@ export class ComponentWrapper {
       }
     }
 
-    polyfill(WrappedComponent);
     hoistNonReactStatics(
       WrappedComponent,
       concreteComponentProvider === OriginalComponentGenerator

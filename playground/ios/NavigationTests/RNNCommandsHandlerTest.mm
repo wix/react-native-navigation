@@ -807,8 +807,8 @@
     RNNLayoutInfo *stackLayoutInfo = [RNNLayoutInfo new];
     stackLayoutInfo.componentId = @"stack";
 
-    RNNComponentViewController *child = [OCMockObject
-        partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+    RNNComponentViewController *child = [RNNComponentViewController createWithComponentId:@"child"];
+    id childMock = OCMPartialMock(child);
     __unused RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo
                                                creator:nil
@@ -819,7 +819,7 @@
                                   childViewControllers:@[ child ]];
 
     OCMStub([self.modalManager dismissModal:OCMArg.any animated:NO completion:OCMArg.invokeBlock]);
-    OCMStub(child.isModal).andReturn(YES);
+    OCMStub([childMock isModal]).andReturn(YES);
     OCMStub([self.layoutManager findComponentForId:@"child"]).andReturn(child);
 
     [self.uut dismissModal:@"child"
@@ -838,8 +838,8 @@
     RNNLayoutInfo *stackLayoutInfo = [RNNLayoutInfo new];
     stackLayoutInfo.componentId = @"stack";
 
-    RNNComponentViewController *child = [OCMockObject
-        partialMockForObject:[RNNComponentViewController createWithComponentId:@"child"]];
+    RNNComponentViewController *child = [RNNComponentViewController createWithComponentId:@"child"];
+    id childMock = OCMPartialMock(child);
     __unused RNNStackController *stack =
         [[RNNStackController alloc] initWithLayoutInfo:stackLayoutInfo
                                                creator:nil
@@ -849,7 +849,7 @@
                                           eventEmitter:nil
                                   childViewControllers:@[ child ]];
 
-    OCMStub(child.isModal).andReturn(YES);
+    OCMStub([childMock isModal]).andReturn(YES);
     OCMStub([self.layoutManager findComponentForId:@"child"]).andReturn(child);
 
     [[self.modalManager expect]

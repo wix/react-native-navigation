@@ -63,12 +63,16 @@ class ModalViewManager(val reactContext: ReactContext) : ViewGroupManager<ModalH
 
     override fun onAfterUpdateTransaction(modal: ModalHostLayout) {
         super.onAfterUpdateTransaction(modal)
-        navigator?.showModal(modal.viewController, CommandListenerAdapter(object : CommandListener {
+        if (modal.isPresented) return
+        val currentNavigator = navigator ?: return
+        modal.isPresented = true
+        currentNavigator.showModal(modal.viewController, CommandListenerAdapter(object : CommandListener {
             override fun onSuccess(childId: String?) {
                 modal.viewController.sendShowEvent()
             }
 
             override fun onError(message: String?) {
+                modal.isPresented = false
             }
 
         }))
@@ -141,7 +145,7 @@ private fun getModalHostSize(activity: Activity): Point {
 private class ModalHostShadowNode : LayoutShadowNode() {
     override fun addChildAt(child: ReactShadowNodeImpl, i: Int) {
         super.addChildAt(child, i)
-        themedContext?.currentActivity?.let {
+        getThemedContext()?.currentActivity?.let {
             val modalSize = getModalHostSize(it)
             child.setStyleWidth(modalSize.x.toFloat())
             child.setStyleHeight(modalSize.y.toFloat())

@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationProps } from 'react-native-navigation';
@@ -9,7 +10,7 @@ const { TOAST_OK_BTN_INNER, TOAST_OK_BTN_OUTER } = testIDs;
 
 export default function Toast({ componentId }: NavigationProps) {
   const dismiss = (txt: string) => {
-    alert(txt);
+    showAlert(txt);
     Navigation.dismissOverlay(componentId);
   };
 

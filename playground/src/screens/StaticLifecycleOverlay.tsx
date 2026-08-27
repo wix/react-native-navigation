@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React from 'react';
 import {
   EmitterSubscription,
@@ -59,7 +60,7 @@ export default class StaticLifecycleOverlay extends React.Component<OverlayProps
     this.listeners.forEach((listener) => listener.remove());
     this.listeners = [];
     // eslint-disable-next-line no-alert
-    alert('Overlay Unmounted');
+    showAlert('Overlay Unmounted');
   }
 
   addEvent(event: Event) {

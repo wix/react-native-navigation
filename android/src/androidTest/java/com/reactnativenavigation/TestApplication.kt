@@ -10,7 +10,7 @@ import com.reactnativenavigation.react.NavigationReactNativeHost
 class TestApplication : NavigationApplication() {
 
     override val reactNativeHost: ReactNativeHost
-        get() = object : NavigationReactNativeHost(this) {
+        get() = object : NavigationReactNativeHost(this@TestApplication) {
             override fun getJSMainModuleName(): String {
                 return "index"
             }

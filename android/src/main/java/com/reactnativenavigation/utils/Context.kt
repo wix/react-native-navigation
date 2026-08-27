@@ -7,7 +7,7 @@ import com.facebook.react.ReactApplication
 import com.reactnativenavigation.NavigationApplication
 
 fun Context.isDebug(): Boolean {
-    return (applicationContext as ReactApplication).reactNativeHost.useDeveloperSupport
+    return (applicationContext as ReactApplication).reactHost?.devSupportManager?.devSupportEnabled == true
 }
 fun isDarkMode() = NavigationApplication.instance.isDarkMode()
 fun Context.isDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) {

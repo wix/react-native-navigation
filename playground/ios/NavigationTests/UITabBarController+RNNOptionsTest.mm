@@ -23,6 +23,15 @@
     [(id)self.uut.tabBar verify];
 }
 
+- (void)test_centerTabItemsLaysOutRealTabBarButtons {
+    UITabBar *tabBar = [[UITabBar alloc] initWithFrame:CGRectMake(0, 0, 390, 83)];
+    tabBar.items = @[ [[UITabBarItem alloc] initWithTitle:@"Tab" image:[UIImage systemImageNamed:@"star"] tag:0] ];
+    [tabBar centerTabItems];
+    [tabBar setNeedsLayout];
+    XCTAssertNoThrow([tabBar layoutIfNeeded]);
+    XCTAssertNil(tabBar.items.firstObject.title);
+}
+
 - (void)test_tabBarTranslucent_true {
     [self.uut setTabBarTranslucent:YES];
     XCTAssertTrue(self.uut.tabBar.translucent);

@@ -38,6 +38,8 @@ When a deep link arrives:
 
 Path parameters (`:id`) and query parameters are extracted and passed as `passProps` to each component in the modal.
 
+Reconfiguring linking replaces the previous subscription. The initial launch URL is processed only once per JavaScript runtime; if it is still waiting for readiness, it is routed using the latest configuration. Later URL events are not deduplicated, so opening the same link again still navigates. Initial-URL lookup and automatic modal-presentation failures are reported with a warning.
+
 ## Configuration
 
 ### `prefixes`

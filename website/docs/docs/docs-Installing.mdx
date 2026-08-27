@@ -10,6 +10,22 @@ sidebar_label: Installation
 - react-native ≥ 0.77
 - new architecture enabled
 
+### React Native 0.87
+
+Use the toolchain from the React Native 0.87 template, including Node.js ≥ 22.13.0,
+Android SDK / Build Tools 37, and Android Gradle Plugin 9. Keep the template's
+compatibility settings in `android/gradle.properties`:
+
+```properties
+android.builtInKotlin=false
+android.newDsl=false
+```
+
+TypeScript projects must use a module resolver that understands package exports,
+such as `moduleResolution: "bundler"` with `module: "esnext"`. The React Native
+TypeScript configuration already provides this. React Native Navigation supports
+the strict public types without opting into `react-native-legacy-deep-imports`.
+
 ## npm or yarn
 
 npm:
@@ -318,6 +334,14 @@ If you have any **react-native** related methods, you can safely delete them.
 
 This file is located in `android/app/src/main/java/com/<yourproject>/MainApplication.java`.
 
+For the React Native 0.87 template, keep its `reactHost` property and package list.
+Extend `NavigationApplication()` instead of `Application(), ReactApplication`, import
+`com.reactnativenavigation.NavigationApplication`, and remove the `loadReactNative(this)`
+call and its import: `NavigationApplication.onCreate()` initializes React Native.
+There is no need to introduce a `reactNativeHost` property.
+
+For applications that still declare `reactNativeHost`, use the following configuration:
+
 ```diff
 // ...
 
@@ -333,7 +357,7 @@ import com.reactnativenavigation.react.NavigationReactNativeHost
 class MainApplication : NavigationApplication() {
     override val reactNativeHost: ReactNativeHost =
 -        object : DefaultReactNativeHost(this) {
-+        object : NavigationReactNativeHost(this) {
++        object : NavigationReactNativeHost(this@MainApplication) {
 
            override fun getPackages(): List<ReactPackage> =
                PackageList(this).packages.apply {

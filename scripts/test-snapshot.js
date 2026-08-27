@@ -1,80 +1,59 @@
-const includes = require('lodash/includes');
-const exec = require('shell-utils').exec;
-
-const android = includes(process.argv, '--android');
-const release = includes(process.argv, '--release');
-const BRANCH = process.env.BUILDKITE_BRANCH;
-const RECORD = process.env.RECORD === 'true';
+const { execFileSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 function run() {
-  if (android) {
-    runAndroidSnapshotTests();
-  } else {
-    runIosSnapshotTests();
+  if (process.argv.includes('--android')) {
+    throw new Error('Android snapshots are verified by the Detox E2E suites.');
   }
-}
+  const root = path.resolve(__dirname, '..');
+  const ios = path.join(root, 'playground/ios');
+  const record = process.env.RECORD === 'true';
+  const options = { cwd: root, stdio: 'inherit' };
+  execFileSync('yarn', ['prepare'], options);
+  execFileSync('yarn', ['pod-install'], options);
 
-function runAndroidSnapshotTests() { }
-
-function runIosSnapshotTests() {
-  exec.execSync('yarn build');
-  exec.execSync('yarn pod-install');
-  testTarget(RECORD ? 'SnapshotRecordTests' : 'SnapshotTests', 'iPhone 13', '15.5');
-}
-
-function testTarget(scheme, device, OS = 'latest') {
-  const conf = release ? `Release` : `Debug`;
-  exec.execSync(`cd ./playground/ios &&
-  RCT_NO_LAUNCH_PACKAGER=true
-  xcodebuild build build-for-testing
-  -scheme "${scheme}"
-  -workspace playground.xcworkspace
-  -sdk iphonesimulator
-  -configuration ${conf}
-  -derivedDataPath ./DerivedData/playground
-  -quiet
-  -UseModernBuildSystem=YES
-  ONLY_ACTIVE_ARCH=YES`);
-
+  const args = [
+    '-scheme',
+    record ? 'SnapshotRecordTests' : 'SnapshotTests',
+    '-workspace',
+    'playground.xcworkspace',
+    '-sdk',
+    'iphonesimulator',
+    '-configuration',
+    process.argv.includes('--release') ? 'Release' : 'Debug',
+    '-destination',
+    `platform=iOS Simulator,name=${process.env.IOS_TEST_DEVICE || 'iPhone 13'},OS=${
+      process.env.IOS_TEST_OS || 'latest'
+    }`,
+    '-derivedDataPath',
+    './DerivedData/playground',
+    'DEAD_CODE_STRIPPING=NO',
+    'ONLY_ACTIVE_ARCH=YES',
+  ];
+  const buildOptions = {
+    cwd: ios,
+    stdio: 'inherit',
+    env: { ...process.env, RCT_NO_LAUNCH_PACKAGER: 'true' },
+  };
   try {
-    exec.execSync(`cd ./playground/ios &&
-    RCT_NO_LAUNCH_PACKAGER=true
-    xcodebuild test-without-building
-    -scheme "${scheme}"
-    -workspace playground.xcworkspace
-    -sdk iphonesimulator
-    -configuration ${conf}
-    -destination 'platform=iOS Simulator,name=${device},OS=${OS}'
-    -derivedDataPath ./DerivedData/playground
-    ONLY_ACTIVE_ARCH=YES`);
+    execFileSync('xcodebuild', ['build-for-testing', ...args], buildOptions);
+    execFileSync('xcodebuild', ['test-without-building', ...args], buildOptions);
   } catch (error) {
-    exec.execSync('cp -R playground/ios/SnapshotTests/FailureDiffs ./artifacts');
-    if (!RECORD) {
-      throw 'Snapshot tests failed';
+    const diffs = path.join(ios, 'SnapshotTests/FailureDiffs');
+    if (fs.existsSync(diffs)) {
+      fs.cpSync(diffs, path.join(root, 'artifacts/ios-snapshot-diffs'), { recursive: true });
     }
+    throw error;
   } finally {
-    if (RECORD) {
-      pushSnapshots();
+    if (record) {
+      console.log(
+        'Recorded snapshots remain local. Review the image changes before committing them.'
+      );
     }
   }
 }
 
-function pushSnapshots() {
-  setupGit();
-  exec.execSync(`git checkout ${BRANCH}`);
-  exec.execSync(`git add ./playground/ios/SnapshotTests/ReferenceImages_64`);
-  exec.execSync(`git commit -m "Update snapshots [ci skip]"`);
-  exec.execSync(`git push deploy ${BRANCH}`);
-}
+if (require.main === module) run();
 
-function setupGit() {
-  exec.execSyncSilent(`git config --global push.default simple`);
-  exec.execSyncSilent(`git config --global user.email "${process.env.GIT_EMAIL}"`);
-  exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
-  const remoteUrl = new RegExp(`https?://(\\S+)`).exec(exec.execSyncRead(`git remote -v`))[1];
-  exec.execSyncSilent(
-    `git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`
-  );
-}
-
-run();
+module.exports = { run };

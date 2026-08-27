@@ -17,7 +17,7 @@ const { mockDetox } = require('detox-testing-library-rnn-adapter');
 
 jest.mock('react-native-gesture-handler', () => {
   return {
-    gestureHandlerRootHOC: jest.fn(),
+    GestureHandlerRootView: require('react-native').View,
   };
 });
 

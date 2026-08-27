@@ -4,12 +4,11 @@ buildscript {
     apply from: './rninfo.gradle'
 
     ext {
-        // RN 0.79+ uses Kotlin 2.1.x, older versions use 2.0.21
-        kotlinVersion = ext.rnInfo.isRN79OrHigher ? '2.1.20' : '2.0.21'
+        kotlinVersion = ext.rnInfo.minorVersion >= 87 ? '2.2.0' : (ext.rnInfo.isRN79OrHigher ? '2.1.20' : '2.0.21')
         RNNKotlinVersion = kotlinVersion
         detoxKotlinVersion = kotlinVersion
-        compileSdkVersion = 36
-        buildToolsVersion = "36.0.0"
+        compileSdkVersion = ext.rnInfo.minorVersion >= 87 ? 37 : 36
+        buildToolsVersion = ext.rnInfo.minorVersion >= 87 ? "37.0.0" : "36.0.0"
         minSdkVersion = 24
         targetSdkVersion = 36
         ndkVersion = "27.1.12297006"

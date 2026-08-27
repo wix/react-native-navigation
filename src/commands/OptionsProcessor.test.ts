@@ -346,6 +346,52 @@ describe('navigation options', () => {
     });
   });
 
+  it.each(['android', 'ios'] as const)('normalizes custom colors on %s', (platform) => {
+    Platform.OS = platform;
+    optionProcessorsRegistry.addProcessor('topBar.background.color', () => 'blue');
+    const options: Options = { topBar: { background: { color: 'red' } } };
+    uut.processOptions(CommandName.MergeOptions, options);
+    expect(options.topBar?.background?.color).toEqual(
+      platform === 'ios' ? 0xff0000ff : { light: 0xff0000ff, dark: 0xff0000ff }
+    );
+  });
+
+  it('normalizes a replacement image returned by a custom processor', () => {
+    optionProcessorsRegistry.addProcessor('backgroundImage', () => 42);
+    const options: Options = { backgroundImage: 'original' };
+    uut.processOptions(CommandName.MergeOptions, options);
+    expect(options.backgroundImage).toEqual({
+      height: 100,
+      scale: 1,
+      uri: 'lol',
+      width: 100,
+    });
+  });
+
+  it('keeps last-result-wins semantics with the original input for each processor', () => {
+    const first = jest.fn(() => 'green');
+    const second = jest.fn(() => 'blue');
+    optionProcessorsRegistry.addProcessor('topBar.background.color', first);
+    optionProcessorsRegistry.addProcessor('topBar.background.color', second);
+    uut.processOptions(CommandName.MergeOptions, { topBar: { background: { color: 'red' } } });
+    expect(first).toHaveBeenCalledWith('red', CommandName.MergeOptions, undefined);
+    expect(second).toHaveBeenCalledWith('red', CommandName.MergeOptions, undefined);
+  });
+
+  it('checks deprecated paths once after custom options have been processed', () => {
+    const check = jest.spyOn(Deprecations.prototype, 'checkForDeprecatedOptions');
+    optionProcessorsRegistry.addProcessor('topBar', () => ({ searchBarPlaceholder: 'Find' }));
+    const warning = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      uut.processOptions(CommandName.MergeOptions, { topBar: { visible: true } });
+      expect(check).toHaveBeenCalledTimes(1);
+      expect(warning.mock.calls[0][0]).toContain('searchBarPlaceholder');
+    } finally {
+      check.mockRestore();
+      warning.mockRestore();
+    }
+  });
+
   it('process options object with multiple values using registered processor', () => {
     const options: Options = {
       topBar: {

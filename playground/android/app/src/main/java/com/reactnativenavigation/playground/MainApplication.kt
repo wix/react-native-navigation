@@ -15,7 +15,7 @@ class MainApplication : NavigationApplication(mapOf(
     RNNToggles.TOP_BAR_COLOR_ANIMATION__TABS to true,
     RNNToggles.TAB_BAR_TRANSLUCENCE to true,
 )) {
-    override val reactNativeHost: ReactNativeHost = object : NavigationReactNativeHost(this) {
+    override val reactNativeHost: ReactNativeHost = object : NavigationReactNativeHost(this@MainApplication) {
         override fun getJSMainModuleName(): String {
             return "index"
         }

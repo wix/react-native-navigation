@@ -69,6 +69,7 @@
 		E58D26532385888C003F36BA /* RNNSideMenuPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */; };
 		E58D26542385888C003F36BA /* RNNSideMenuControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */; };
 		E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */; };
+		C08727010000000000000001 /* DisplayLinkAnimatorTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = C08727010000000000000002 /* DisplayLinkAnimatorTest.mm */; };
 		E58D26582385888C003F36BA /* UITabBarController+RNNOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */; };
 		E58D26592385888C003F36BA /* RNNNavigationStackManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */; };
 		E58D265A2385888C003F36BA /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
@@ -197,6 +198,7 @@
 		E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSideMenuPresenterTest.mm; sourceTree = "<group>"; };
 		E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSideMenuControllerTest.mm; sourceTree = "<group>"; };
 		E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNTransitionStateHolderTest.mm; sourceTree = "<group>"; };
+		C08727010000000000000002 /* DisplayLinkAnimatorTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DisplayLinkAnimatorTest.mm; sourceTree = "<group>"; };
 		E58D263A2385888C003F36BA /* RNNBottomTabsPresenterTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNBottomTabsPresenterTest.mm; sourceTree = "<group>"; };
 		E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UITabBarController+RNNOptionsTest.mm"; sourceTree = "<group>"; };
 		E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNNavigationStackManagerTest.mm; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 				E58D26342385888B003F36BA /* RNNTestRootViewCreator.h */,
 				E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */,
 				E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */,
+				C08727010000000000000002 /* DisplayLinkAnimatorTest.mm */,
 				E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */,
 				E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */,
 				E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.mm */,
@@ -494,8 +497,6 @@
 				507C80D62429111F00F765F7 /* Sources */,
 				507C80D72429111F00F765F7 /* Frameworks */,
 				507C80D82429111F00F765F7 /* Resources */,
-				AB86EBB5F0AF15B43F3472FD /* [CP] Copy Pods Resources */,
-				D85A6267FC9FE5A55766B261 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -515,8 +516,6 @@
 				50996C5923AA46DD00008F89 /* Sources */,
 				50996C5A23AA46DD00008F89 /* Frameworks */,
 				50996C5B23AA46DD00008F89 /* Resources */,
-				EB65541BD6775B84E7C8AEDD /* [CP] Copy Pods Resources */,
-				72BA3B0BE92EC7CD48134759 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -536,8 +535,6 @@
 				E58D2617238587F4003F36BA /* Sources */,
 				E58D2618238587F4003F36BA /* Frameworks */,
 				E58D2619238587F4003F36BA /* Resources */,
-				8A0391DE1BA0B3DE9D40DE96 /* [CP] Copy Pods Resources */,
-				AB7C03026562E29128D8F500 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -760,90 +757,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		72BA3B0BE92EC7CD48134759 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8A0391DE1BA0B3DE9D40DE96 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AB7C03026562E29128D8F500 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AB86EBB5F0AF15B43F3472FD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D80DD80E880A67F5575078C4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -864,48 +777,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D85A6267FC9FE5A55766B261 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EB65541BD6775B84E7C8AEDD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -980,6 +851,7 @@
 				E58D265A2385888C003F36BA /* RNNTestRootViewCreator.mm in Sources */,
 				E58D26492385888C003F36BA /* RNNFontAttributesCreatorTest.mm in Sources */,
 				E58D26552385888C003F36BA /* RNNTransitionStateHolderTest.mm in Sources */,
+				C08727010000000000000001 /* DisplayLinkAnimatorTest.mm in Sources */,
 				E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.mm in Sources */,
 				E58D26512385888C003F36BA /* RNNExternalComponentStoreTest.mm in Sources */,
 				E58D265E2385888C003F36BA /* RNNCommandsHandlerTest.mm in Sources */,
@@ -1244,6 +1116,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../../ios/**",
 					"$(SRCROOT)/NavigationTests",
+					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1276,6 +1149,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../../ios/**",
 					"$(SRCROOT)/NavigationTests",
+					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

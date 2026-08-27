@@ -2,13 +2,15 @@ package com.reactnativenavigation.utils
 
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-suspend fun ViewController<*>.awaitRender() = suspendCoroutine<Unit> { cont ->
-    addOnAppearedListener(object : Runnable {
+suspend fun ViewController<*>.awaitRender() = suspendCancellableCoroutine<Unit> { cont ->
+    val listener = object : Runnable {
         override fun run() {
             removeOnAppearedListener(this)
-            cont.resume(Unit)
+            if (cont.isActive) cont.resume(Unit)
         }
-    })
+    }
+    cont.invokeOnCancellation { removeOnAppearedListener(listener) }
+    if (cont.isActive) addOnAppearedListener(listener)
 }

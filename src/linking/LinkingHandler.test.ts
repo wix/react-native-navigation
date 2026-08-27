@@ -39,6 +39,70 @@ describe('LinkingHandler', () => {
     uut.teardown();
   });
 
+  it('ignores stale initial-URL callbacks and consumes the launch URL only once', async () => {
+    let resolveURL!: (url: string) => void;
+    mockLinking.getInitialURL.mockReturnValue(
+      new Promise((resolve) => {
+        resolveURL = resolve;
+      })
+    );
+    const oldOnLink = jest.fn();
+    const onLink = jest.fn();
+    uut.setRootReady();
+    uut.configure({ ...baseConfig, onLink: oldOnLink });
+    uut.configure({ ...baseConfig, onLink });
+    resolveURL('myapp://home');
+    await Promise.resolve();
+    expect(oldOnLink).not.toHaveBeenCalled();
+    expect(onLink).toHaveBeenCalledTimes(1);
+    uut.configure({ ...baseConfig, onLink });
+    await Promise.resolve();
+    expect(onLink).toHaveBeenCalledTimes(1);
+    urlListener!({ url: 'myapp://home' });
+    expect(onLink).toHaveBeenCalledTimes(2);
+    expect(mockLinking.getInitialURL).toHaveBeenCalledTimes(1);
+  });
+
+  it('requeues an unconsumed initial URL after reconfiguration', async () => {
+    mockLinking.getInitialURL.mockResolvedValue('myapp://home');
+    const onLink = jest.fn();
+    uut.configure({ ...baseConfig, onLink });
+    await Promise.resolve();
+    uut.configure({ ...baseConfig, onLink });
+    await Promise.resolve();
+    expect(onLink).not.toHaveBeenCalled();
+    uut.setRootReady();
+    expect(onLink).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not deliver a pending initial URL after teardown', async () => {
+    mockLinking.getInitialURL.mockResolvedValue('myapp://home');
+    const onLink = jest.fn();
+    uut.setRootReady();
+    uut.configure({ ...baseConfig, onLink });
+    uut.teardown();
+    await Promise.resolve();
+    expect(onLink).not.toHaveBeenCalled();
+  });
+
+  it('reports initial URL and modal promise failures without unhandled rejections', async () => {
+    const warning = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      mockLinking.getInitialURL.mockRejectedValue(new Error('initial URL failure'));
+      uut.configure(baseConfig);
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(warning.mock.calls[0][0]).toBe('[RNN] Failed to retrieve the initial URL');
+      mockShowModal.mockRejectedValue(new Error('modal failure'));
+      uut.setRootReady();
+      uut.handleURL('myapp://home');
+      await Promise.resolve();
+      expect(warning.mock.calls[1][0]).toBe('[RNN] Failed to present a deep link');
+    } finally {
+      warning.mockRestore();
+    }
+  });
+
   describe('resolve', () => {
     beforeEach(() => uut.configure(baseConfig));
 

@@ -28,7 +28,8 @@ import org.assertj.android.api.Assertions;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.robolectric.Shadows;
+import org.robolectric.shadow.api.Shadow;
+import org.robolectric.shadows.ShadowView;
 
 import java.lang.reflect.Field;
 
@@ -188,7 +189,7 @@ public class ViewControllerTest extends BaseTest {
         Assertions.assertThat(spy.getView()).isNotShown();
         verify(spy, times(0)).onViewWillAppear();
 
-        Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(spy.getView()).setMyParent(mock(ViewParent.class));
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         Assertions.assertThat(spy.getView()).isShown();
 
@@ -198,7 +199,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void onAppear_CalledAtMostOnce() {
         ViewController spy = spy(uut);
-        Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
@@ -216,7 +217,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void onDisappear_WhenNotShown_AfterOnAppearWasCalled() {
         ViewController spy = spy(uut);
-        Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         verify(spy, times(1)).onViewWillAppear();
@@ -231,7 +232,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void onDisappear_CalledAtMostOnce() {
         ViewController spy = spy(uut);
-        Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         spy.getView().setVisibility(View.GONE);
@@ -247,7 +248,7 @@ public class ViewControllerTest extends BaseTest {
 
         ViewController spy = spy(uut);
         View view = spy.getView();
-        Shadows.shadowOf(view).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(view).setMyParent(mock(ViewParent.class));
 
         spy.destroy();
 
@@ -264,7 +265,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void onDestroy_CallsOnDisappearIfNeeded() {
         ViewController spy = spy(uut);
-        Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
+        Shadow.<ShadowView>extract(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         verify(spy, times(1)).onViewWillAppear();
@@ -352,4 +353,3 @@ public class ViewControllerTest extends BaseTest {
         verify(spy).applyTopInset();
     }
 }
-

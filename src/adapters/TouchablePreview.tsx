@@ -25,7 +25,8 @@ export interface Props {
     | typeof TouchableHighlight
     | typeof TouchableOpacity
     | TouchableNativeFeedback
-    | TouchableWithoutFeedback
+    | typeof TouchableWithoutFeedback
+    | React.ComponentType<any>
     | React.ReactNode;
   onPress?: () => void;
   onPressIn?: (payload: { reactTag: number | null }) => void;
@@ -75,7 +76,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
         return;
       }
 
-      const reactTag = findNodeHandle(this.onRef.current);
+      const reactTag = findNodeHandle(this.onRef.current) ?? null;
 
       return onPressIn({ reactTag });
     }

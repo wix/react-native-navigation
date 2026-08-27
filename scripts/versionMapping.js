@@ -29,6 +29,9 @@ function getCliVersion(rnMinor) {
 }
 
 function getGradleVersion(rnMinor) {
+    if (rnMinor >= 87) {
+        return '9.4.1';
+    }
     if (rnMinor >= 85) {
         return '9.3.1';
     }
@@ -40,13 +43,23 @@ function getJestPresetVersion(rnMinor, rnVersion) {
 }
 
 function getReanimatedOverride(rnMinor) {
+    if (rnMinor >= 87) {
+        return '4.6.0';
+    }
     if (rnMinor >= 85) {
         return '4.3.0';
     }
     return rnMinor <= 78 ? '3.18.0' : null;
 }
 
+function getGestureHandlerOverride(rnMinor) {
+    return rnMinor >= 87 ? '3.2.1' : '^2.29.1';
+}
+
 function getWorkletsOverride(rnMinor) {
+    if (rnMinor >= 87) {
+        return '0.12.1';
+    }
     return rnMinor >= 85 ? '0.8.1' : null;
 }
 
@@ -65,6 +78,7 @@ module.exports = {
     getGradleVersion,
     getJestPresetVersion,
     getReanimatedOverride,
+    getGestureHandlerOverride,
     getWorkletsOverride,
     shouldRemoveWorklets,
     getTestingLibraryOverride,

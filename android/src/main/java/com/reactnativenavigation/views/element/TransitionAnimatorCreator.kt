@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
-import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.LayoutAnimation
@@ -61,7 +60,9 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
 
     private fun reparentViews(transitions: TransitionSet) {
         transitions.transitions
-                .sortedBy { getZIndex(it.view) }
+                // Sort before detaching any views: Fabric's native hierarchy is the
+                // source of truth for z-order, including transitions in nested parents.
+                .sortedWith { first, second -> ViewHierarchyComparator.compare(first.view, second.view) }
                 .forEach { reparent(it) }
         transitions.validSharedElementTransitions
                 .forEach { it.view.visibility = View.INVISIBLE }
@@ -99,7 +100,6 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         mutableListOf<Transition>().apply {
             addAll(transitions.validSharedElementTransitions)
             addAll(transitions.validElementTransitions)
-            sortBy { getZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
                 removeFromOverlay(it.viewController, it.view)
@@ -124,7 +124,6 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             view.setTag(R.id.original_left, view.left)
             view.setTag(R.id.original_pivot_x, view.pivotX)
             view.setTag(R.id.original_pivot_y, view.pivotY)
-            view.setTag(R.id.original_z_index, getZIndex(view))
 
             biologicalParent.removeView(view)
 
@@ -151,10 +150,6 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
         parent.addView(element, index, lp)
     }
-
-    private fun getZIndex(view: View) = ViewGroupManager.getViewZIndex(view)
-            ?: ViewTags.get(view, R.id.original_z_index)
-            ?: 0
 
     private fun addToOverlay(vc: ViewController<*>, element: View, lp: FrameLayout.LayoutParams) {
         val viewController = vc.parentController ?: vc

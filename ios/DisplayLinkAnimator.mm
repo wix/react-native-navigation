@@ -1,10 +1,11 @@
 #import "DisplayLinkAnimator.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation DisplayLinkAnimator {
     NSArray<id<DisplayLinkAnimatorDelegate>> *_animators;
     NSMutableArray<id<DisplayLinkAnimatorDelegate>> *_activeAnimators;
     CADisplayLink *_displayLink;
-    NSDate *_startDate;
+    CFTimeInterval _startTime;
     CGFloat _duration;
 }
 
@@ -25,7 +26,7 @@
 }
 
 - (void)start {
-    _startDate = NSDate.date;
+    _startTime = CACurrentMediaTime();
     _displayLink = [CADisplayLink displayLinkWithTarget:self
                                                selector:@selector(_displayLinkDidTick:)];
     [_displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSDefaultRunLoopMode];
@@ -47,7 +48,7 @@
         _onStart();
         _onStart = nil;
     }
-    NSTimeInterval elapsed = [NSDate.date timeIntervalSinceDate:_startDate];
+    NSTimeInterval elapsed = MAX(0, displayLink.timestamp - _startTime);
     if (elapsed > _duration) {
         [self updateAnimators:_duration];
         [self end];
@@ -63,10 +64,11 @@
 }
 
 - (void)updateAnimators:(NSTimeInterval)elapsed {
-    for (int i = 0; i < _activeAnimators.count; i++) {
+    for (NSUInteger i = 0; i < _activeAnimators.count;) {
         id<DisplayLinkAnimatorDelegate> animator = _activeAnimators[i];
         if (elapsed < animator.maxDuration) {
             [animator updateAnimations:elapsed];
+            i++;
         } else {
             [self deactivateAnimator:animator];
         }

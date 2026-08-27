@@ -57,6 +57,7 @@
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean",
     "prepare": "bob build",
+    "prepack": "bob build",
     "start": "node ./scripts/start",
     "pod-install": "yarn workspace react-native-navigation-playground pod-install",
     "test-js": "node ./scripts/test-js",
@@ -84,7 +85,6 @@
     "hoist-non-react-statics": "3.3.2",
     "lodash": "4.18.1",
     "prop-types": "15.x.x",
-    "react-lifecycles-compat": "^3.0.4",
     "tslib": "1.9.3"
   },
   "devDependencies": {

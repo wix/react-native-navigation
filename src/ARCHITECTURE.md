@@ -316,7 +316,6 @@ class MyScreen extends NavigationComponent<Props> {
 **Production**:
 - `lodash` - utility functions
 - `hoist-non-react-statics` - HOC support
-- `react-lifecycles-compat` - lifecycle polyfill
 - `tslib` - TypeScript helpers
 
 **Peer**:

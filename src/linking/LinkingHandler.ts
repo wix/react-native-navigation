@@ -14,10 +14,7 @@ export type ShowModal = (layout: Layout) => Promise<string>;
  * can be tested without touching native bindings.
  */
 export interface LinkingAPI {
-  addEventListener(
-    type: 'url',
-    handler: (event: { url: string }) => void
-  ): { remove: () => void };
+  addEventListener(type: 'url', handler: (event: { url: string }) => void): { remove: () => void };
   getInitialURL(): Promise<string | null>;
 }
 
@@ -48,6 +45,10 @@ export class LinkingHandler {
   private linkingSubscription: { remove: () => void } | null = null;
   private rootReady = false;
   private userReadyOverride: boolean | null = null;
+  private subscriptionGeneration = 0;
+  private initialURLPromise?: Promise<string | null>;
+  private initialURL: string | null = null;
+  private initialURLConsumed = false;
 
   constructor(showModal: ShowModal, linkingAPI?: LinkingAPI) {
     this.urlParser = new URLParser();
@@ -114,6 +115,7 @@ export class LinkingHandler {
   }
 
   public teardown(): void {
+    this.subscriptionGeneration++;
     if (this.linkingSubscription) {
       this.linkingSubscription.remove();
       this.linkingSubscription = null;
@@ -124,17 +126,30 @@ export class LinkingHandler {
   }
 
   private subscribe(): void {
+    const generation = this.subscriptionGeneration;
     this.linkingSubscription = this.linkingAPI.addEventListener('url', (event) => {
-      this.handleURL(event.url);
+      if (generation === this.subscriptionGeneration) this.handleURL(event.url);
     });
 
-    this.linkingAPI.getInitialURL().then((url) => {
-      if (url) this.handleURL(url);
-    });
+    this.initialURLPromise ??= this.linkingAPI.getInitialURL();
+    this.initialURLPromise
+      .then((url) => {
+        if (generation !== this.subscriptionGeneration || this.initialURLConsumed) return;
+        this.initialURL = url;
+        if (url) this.handleURL(url);
+      })
+      .catch((error) => {
+        if (generation !== this.subscriptionGeneration) return;
+        this.initialURLPromise = undefined;
+        console.warn('[RNN] Failed to retrieve the initial URL', error);
+      });
   }
 
   private processURL(url: string): void {
     if (!this.config) return;
+    // A queued initial URL survives reconfiguration until it is actually processed.
+    // Live URL events are never deduplicated, even when they match the launch URL.
+    if (url === this.initialURL) this.initialURLConsumed = true;
 
     const match = this.resolve(url);
     if (!match) {
@@ -152,7 +167,9 @@ export class LinkingHandler {
       : this.modalLayoutBuilder.build(match);
 
     if (layout) {
-      this.showModal(layout);
+      this.showModal(layout).catch((error) => {
+        console.warn('[RNN] Failed to present a deep link', error);
+      });
     }
   }
 

@@ -1,3 +1,4 @@
+import showAlert from '../services/Alert';
 import React, { Component } from 'react';
 import { EmitterSubscription, Platform, Text } from 'react-native';
 import { NavigationProps, Options } from 'react-native-navigation';
@@ -80,7 +81,7 @@ export default class FirstBottomTabScreen extends Component<NavigationProps, Nav
   registerBottomTabListener = () => {
     return Navigation.events().registerBottomTabPressedListener((event) => {
       if (event.tabIndex == 2) {
-        alert('BottomTabPressed');
+        showAlert('BottomTabPressed');
       }
     });
   };
