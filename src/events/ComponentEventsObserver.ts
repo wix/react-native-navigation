@@ -2,7 +2,6 @@ import type { Component } from 'react';
 import isString from 'lodash/isString';
 import isNil from 'lodash/isNil';
 import uniqueId from 'lodash/uniqueId';
-import unset from 'lodash/unset';
 import forEach from 'lodash/forEach';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { NavigationComponentListener } from '../interfaces/NavigationComponentListener';
@@ -23,7 +22,9 @@ import { Store } from '../components/Store';
 type ReactComponentWithIndexing = NavigationComponentListener & Record<string, any>;
 
 export class ComponentEventsObserver {
-  private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = {};
+  private listeners: Record<string, Record<string, ReactComponentWithIndexing>> = Object.create(
+    null
+  );
   private alreadyRegistered = false;
 
   constructor(
@@ -92,11 +93,11 @@ export class ComponentEventsObserver {
     const key = uniqueId();
     this.listeners[componentId][key] = listener;
 
-    return { remove: () => unset(this.listeners[componentId], key) };
+    return { remove: () => delete this.listeners[componentId]?.[key] };
   }
 
   public unmounted(componentId: string) {
-    unset(this.listeners, componentId);
+    delete this.listeners[componentId];
   }
 
   notifyComponentWillAppear(event: ComponentWillAppearEvent) {
