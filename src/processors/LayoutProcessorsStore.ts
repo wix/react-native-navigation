@@ -6,8 +6,16 @@ export class LayoutProcessorsStore {
 
   public addProcessor(processor: LayoutProcessor): ProcessorSubscription {
     this.layoutProcessors.push(processor);
+    let removed = false;
 
-    return { remove: () => this.removeProcessor(processor) };
+    return {
+      remove: () => {
+        if (!removed) {
+          this.removeProcessor(processor);
+          removed = true;
+        }
+      },
+    };
   }
 
   public getProcessors(): LayoutProcessor[] {
@@ -15,6 +23,7 @@ export class LayoutProcessorsStore {
   }
 
   private removeProcessor(processor: LayoutProcessor) {
-    this.layoutProcessors.splice(this.layoutProcessors.indexOf(processor));
+    const index = this.layoutProcessors.indexOf(processor);
+    if (index !== -1) this.layoutProcessors.splice(index, 1);
   }
 }
