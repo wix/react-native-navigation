@@ -35,6 +35,7 @@ import java.util.Objects;
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
 import android.app.Activity;
+import android.util.Log;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
     private static final String NAME = "RNNBridgeModule";
@@ -58,21 +59,25 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             public void onHostPause() {
                 super.onHostPause();
                 UiUtils.runOnMainThread(() -> {
-                    if (activity() != null) navigator().onHostPause();
+                    final NavigationActivity activity = activity();
+                    if (activity != null) activity.getNavigator().onHostPause();
                 });
             }
 
             @Override
             public void onHostResume() {
+                final NavigationActivity activity = activity();
+                if (activity == null) return;
+                final Navigator navigator = activity.getNavigator();
                 eventEmitter = new EventEmitter(reactContext);
-                navigator().setEventEmitter(eventEmitter);
+                navigator.setEventEmitter(eventEmitter);
                 layoutFactory.init(
-                        activity(),
+                        activity,
                         eventEmitter,
-                        navigator().getChildRegistry(),
-                        ((NavigationApplication) activity().getApplication()).getExternalComponents()
+                        navigator.getChildRegistry(),
+                        ((NavigationApplication) activity.getApplication()).getExternalComponents()
                 );
-                UiUtils.runOnMainThread(() -> navigator().onHostResume());
+                UiUtils.runOnMainThread(navigator::onHostResume);
             }
         });
     }
@@ -221,14 +226,21 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     protected void handle(Runnable task) {
         UiThread.post(() -> {
-            if (getCurrentActivity() != null && !activity().isFinishing()) {
+            final NavigationActivity activity = activity();
+            if (activity != null && !activity.isFinishing()) {
                 task.run();
             }
         });
     }
 
+    @Nullable
     protected NavigationActivity activity() {
-        return (NavigationActivity) getCurrentActivity();
+        final Activity activity = getReactApplicationContext().getCurrentActivity();
+        if (!(activity instanceof NavigationActivity)) {
+            Log.e("NavigationModule", "current activity is not a NavigationActivity");
+            return null;
+        }
+        return (NavigationActivity) activity;
     }
 
     @Override

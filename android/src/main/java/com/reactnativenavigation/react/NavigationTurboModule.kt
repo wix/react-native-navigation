@@ -65,7 +65,10 @@ class NavigationTurboModule(
                 UiUtils.getBottomTabsHeight(reactApplicationContext).toFloat()
             ).toDouble()
         constants[Constants.STATUS_BAR_HEIGHT_KEY] =
-            UiUtils.pxToDp(reactApplicationContext, getStatusBarHeight(currentActivity).toFloat())
+            UiUtils.pxToDp(
+                reactApplicationContext,
+                getStatusBarHeight(reactApplicationContext.getCurrentActivity()).toFloat()
+            )
                 .toDouble()
         constants[Constants.TOP_BAR_HEIGHT_KEY] = UiUtils.pxToDp(
             reactApplicationContext,
@@ -84,11 +87,6 @@ class NavigationTurboModule(
         handle {
             Log.d("NavigationTurboModule", "setRoot handle ${Thread.currentThread()}")
             val viewController = layoutFactory.create(layoutTree)
-            val activity = currentActivity
-            if (activity == null) {
-                promise.reject("ACTIVITY_NULL", "Activity is null")
-                return@handle
-            }
             navigator()?.setRoot(
                 viewController,
                 NativeCommandListener("setRoot", commandId, promise, eventEmitter, now)
@@ -295,11 +293,11 @@ class NavigationTurboModule(
     }
 
     private fun activity(): NavigationActivity? {
-        val activity = reactApplicationContext.currentActivity as NavigationActivity?
+        val activity = reactApplicationContext.getCurrentActivity() as? NavigationActivity
         if (activity == null) {
-            Log.e("NavigationTurboModule", "current activity is null!")
+            Log.e("NavigationTurboModule", "current activity is not a NavigationActivity")
         }
-        return currentActivity as NavigationActivity?
+        return activity
     }
 
     companion object {
