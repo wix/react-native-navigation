@@ -213,6 +213,32 @@ class StackAnimatorTest : BaseTest() {
         assertThat(uut.isChildInTransition(child3)).isTrue()
     }
 
+    @Test
+    fun cancelAllAnimations_cancelsRunningAnimatorsWithoutCompletingCommands() {
+        val onAnimationEnd = mock<Runnable>()
+        uut.push(child2, child1, Options.EMPTY, emptyList(), onAnimationEnd)
+
+        uut.cancelAllAnimations()
+
+        verify(commandAnimator).cancel()
+        verify(onAnimationEnd, never()).run()
+        assertThat(uut.isChildInTransition(child2)).isFalse()
+    }
+
+    @Test
+    fun cancelPushAnimations_cancelsEveryRunningAnimator() {
+        uut.push(child2, child1, Options.EMPTY, emptyList(), mock())
+        val firstAnimator = uut.runningPushAnimations[child2]!!
+        val child3 = SimpleViewController(activity, mock(), "child3", Options())
+        uut.push(child3, child2, Options.EMPTY, emptyList(), mock())
+        val secondAnimator = uut.runningPushAnimations[child3]!!
+
+        uut.cancelPushAnimations()
+
+        verify(firstAnimator).cancel()
+        verify(secondAnimator).cancel()
+    }
+
     private fun mockViewController(): ViewController<*> {
         val vc = mock<ViewController<*>>()
         val view = FrameLayout(activity)
