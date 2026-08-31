@@ -103,6 +103,18 @@ class BaseViewAppearanceAnimatorTest : BaseTest() {
         assertThat(uut.hideAnimator).isEqualTo(defaultHideAnimator)
     }
 
+    @Test
+    fun hide_completesAfterPreviousHideWasCancelled() {
+        uut.hide()
+        uut.show()
+        uut.showAnimator.end()
+
+        uut.hide()
+        uut.hideAnimator.end()
+
+        assertThat(view.visibility).isEqualTo(View.GONE)
+    }
+
     private fun assertNotAnimating() = assertThat(uut.isAnimatingHide() && uut.isAnimatingShow()).isFalse()
     private fun assertAnimatingShow() = assertThat(uut.isAnimatingShow() && !uut.isAnimatingHide()).isTrue()
     private fun assertAnimatingHide() = assertThat(uut.isAnimatingHide() && !uut.isAnimatingShow()).isTrue()
