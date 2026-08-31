@@ -6,6 +6,13 @@
 #import <ReactNativeNavigation/RNNStackPresenter.h>
 #import <XCTest/XCTest.h>
 
+@interface RNNStackPresenter (Testing)
+
+- (void)setCustomNavigationComponentBackground:(RNNNavigationOptions *)options
+                                       perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+
+@end
+
 @interface RNNStackPresenterTest : XCTestCase
 
 @property(nonatomic, strong) RNNStackPresenter *uut;
@@ -121,6 +128,21 @@
     [self.uut applyOptions:self.options];
     UIColor *expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
     XCTAssertTrue([self.boundViewController.view.backgroundColor isEqual:expectedColor]);
+}
+
+- (void)testRenderComponentsCompletesOnMainThread {
+    id presenter = [OCMockObject partialMockForObject:self.uut];
+    OCMStub([presenter setCustomNavigationComponentBackground:OCMArg.any
+                                                      perform:OCMArg.invokeBlock]);
+    XCTestExpectation *completion = [self expectationWithDescription:@"render completion"];
+
+    [presenter renderComponents:self.options
+                        perform:^{
+                          XCTAssertTrue(NSThread.isMainThread);
+                          [completion fulfill];
+                        }];
+
+    [self waitForExpectations:@[ completion ] timeout:1];
 }
 
 @end
