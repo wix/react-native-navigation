@@ -121,7 +121,11 @@ private fun getModalHostSize(activity: Activity): Point {
     val attrs = intArrayOf(android.R.attr.windowFullscreen)
     val theme = activity.theme
     val ta = theme.obtainStyledAttributes(attrs)
-    val windowFullscreen = ta.getBoolean(0, false)
+    val windowFullscreen = try {
+        ta.getBoolean(0, false)
+    } finally {
+        ta.recycle()
+    }
 
     // We need to add the status bar height to the height if we have a fullscreen window,
     // because Display.getCurrentSizeRange doesn't include it.

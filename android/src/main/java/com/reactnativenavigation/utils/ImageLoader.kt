@@ -77,10 +77,15 @@ open class ImageLoader {
     @Throws(IOException::class)
     private fun readJsDevImage(context: Context, source: String): Drawable {
         val threadPolicy = adjustThreadPolicyDebug(context)
-        val `is` = openStream(context, source)
-        val bitmap = BitmapFactory.decodeStream(`is`)
-        restoreThreadPolicyDebug(context, threadPolicy)
-        return BitmapDrawable(context.resources, bitmap)
+        try {
+            val stream = openStream(context, source)
+                ?: throw FileNotFoundException("Could not open image $source")
+            val bitmap = stream.use(BitmapFactory::decodeStream)
+                ?: throw IOException("Could not decode image $source")
+            return BitmapDrawable(context.resources, bitmap)
+        } finally {
+            restoreThreadPolicyDebug(context, threadPolicy)
+        }
     }
 
     private fun isLocalFile(uri: Uri): Boolean {
