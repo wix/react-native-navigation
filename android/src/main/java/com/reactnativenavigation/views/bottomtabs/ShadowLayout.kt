@@ -36,8 +36,8 @@ open class ShadowLayout(context: Context) : FrameLayout(context) {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        bitmap?.recycle()
-        bitmap = null
+        recycleShadowBitmap()
+        invalidateShadow = true
     }
 
     var isShadowed: Boolean = false
@@ -108,6 +108,7 @@ open class ShadowLayout(context: Context) : FrameLayout(context) {
         if (isShadowed) {
             if (invalidateShadow) {
                 if (bounds.width() != 0 && bounds.height() != 0) {
+                    recycleShadowBitmap()
                     bitmap = Bitmap.createBitmap(bounds.width(), bounds.height(), Bitmap.Config.ARGB_8888).also {
                         mainCanvas.setBitmap(it)
                         invalidateShadow = false
@@ -131,5 +132,11 @@ open class ShadowLayout(context: Context) : FrameLayout(context) {
         }
 
         super.dispatchDraw(canvas)
+    }
+
+    private fun recycleShadowBitmap() {
+        mainCanvas.setBitmap(null)
+        bitmap?.recycle()
+        bitmap = null
     }
 }
