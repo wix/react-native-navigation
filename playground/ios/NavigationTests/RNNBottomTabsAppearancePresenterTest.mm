@@ -98,6 +98,18 @@
     [self.boundViewController verify];
 }
 
+- (void)testApplyOptionsOnInit_shouldApplyInitialVisibilityOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
+        initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
+        [[self.boundViewController expect] setTabBarHidden:YES animated:NO];
+
+        [self.uut applyOptionsOnInit:initialOptions];
+
+        [self.boundViewController verify];
+    }
+}
+
 - (void)testApplyOptions_shouldApplyOptionsOnInit_alwaysHide_shouldCenterTabImages {
     RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysHide"];

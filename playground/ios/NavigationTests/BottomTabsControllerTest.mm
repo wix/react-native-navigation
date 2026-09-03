@@ -161,6 +161,33 @@
                    [(RNNBottomTabsController *)self.uut selectedViewController]);
 }
 
+- (void)testSetTabBarVisible_shouldUseActiveTabBarVisibilityOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        [self.originalUut setTabBarVisible:NO];
+        XCTAssertTrue(self.originalUut.tabBarHidden);
+
+        [self.originalUut setTabBarVisible:YES];
+        XCTAssertFalse(self.originalUut.tabBarHidden);
+    }
+}
+
+- (void)testSetTabBarVisible_shouldNotOverrideStackChildVisibilityOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        UIViewController *component =
+            [RNNComponentViewController createWithComponentId:@"componentId"
+                                               initialOptions:[RNNNavigationOptions emptyOptions]];
+        UINavigationController *stack =
+            [[UINavigationController alloc] initWithRootViewController:component];
+        RNNBottomTabsController *uut =
+            [RNNBottomTabsController createWithChildren:@[ stack ]];
+
+        [uut setTabBarHidden:NO animated:NO];
+        [uut setTabBarVisible:NO];
+
+        XCTAssertFalse(uut.tabBarHidden);
+    }
+}
+
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
     [[self.mockTabBarPresenter expect] getStatusBarStyle];
     [self.uut preferredStatusBarStyle];

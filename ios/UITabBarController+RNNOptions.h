@@ -20,6 +20,8 @@
 
 - (void)hideTabBar:(BOOL)animated;
 
+- (BOOL)rnn_isTabBarHidden;
+
 - (void)syncTabBarItemTestIDs;
 
 @end

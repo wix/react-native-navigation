@@ -9,6 +9,11 @@
     [super applyOptionsOnInit:options];
     UITabBarController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    if (@available(iOS 18.0, *)) {
+        [bottomTabs
+            setTabBarHidden:![withDefault.bottomTabs.visible withDefault:YES]
+                  animated:NO];
+    }
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex withDefault:0]];
     if (withDefault.bottomTabs.currentTabId.hasValue) {
         [bottomTabs setCurrentTabID:withDefault.bottomTabs.currentTabId.get];

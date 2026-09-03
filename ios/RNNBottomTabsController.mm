@@ -290,7 +290,7 @@
                                  tabBarInView.size.width, desiredHeight);
 
     _customRow.frame = rowFrame;
-    _customRow.hidden = self.tabBar.hidden;
+    _customRow.hidden = [self rnn_isTabBarHidden];
     [_customRow setSelectedIndex:_currentTabIndex];
 }
 
