@@ -3,7 +3,21 @@
 #import "RNNConvert.h"
 #import "UIImage+utils.h"
 
-@implementation BottomTabsBasePresenter
+@implementation BottomTabsBasePresenter {
+    BOOL _didApplyInitialTabBarVisibility;
+}
+
+- (BOOL)tabBarVisibilityAnimation:(BOOL)animated {
+    if (@available(iOS 18.0, *)) {
+        return animated;
+    }
+    if (_didApplyInitialTabBarVisibility) {
+        return animated;
+    }
+
+    _didApplyInitialTabBarVisibility = YES;
+    return NO;
+}
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];
@@ -30,7 +44,8 @@
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID withDefault:nil]];
     [bottomTabs reconcileTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]
-                              animated:[withDefault.bottomTabs.animate withDefault:YES]];
+                              animated:[self tabBarVisibilityAnimation:
+                                                 [withDefault.bottomTabs.animate withDefault:YES]]];
 
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];

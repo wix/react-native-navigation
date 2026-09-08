@@ -102,6 +102,23 @@
     [self.boundViewController verify];
 }
 
+- (void)testApplyOptions_shouldAnimateVisibilityAfterInitialApplicationBeforeIOS18 {
+    if (@available(iOS 18.0, *)) {
+        return;
+    }
+
+    [self.uut setValue:@NO forKey:@"didApplyInitialTabBarVisibility"];
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:NO];
+    [self.uut applyOptions:options];
+    [self.boundViewController verify];
+
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:YES];
+    [self.uut applyOptions:options];
+    [self.boundViewController verify];
+}
+
 - (void)testApplyOptions_shouldDisableExplicitAnimation {
     RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
     options.bottomTabs.visible = [Bool withValue:NO];
