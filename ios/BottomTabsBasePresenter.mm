@@ -81,7 +81,7 @@
 
     if (mergeOptions.bottomTabs.visible.hasValue) {
         [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
-                            animated:[mergeOptions.bottomTabs.animate withDefault:YES]];
+                            animated:[withDefault.bottomTabs.animate withDefault:YES]];
     }
 
     if (mergeOptions.layout.backgroundColor.hasValue) {

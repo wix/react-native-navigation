@@ -147,6 +147,19 @@
     [self.boundViewController verify];
 }
 
+- (void)testMergeOptions_shouldUseConfiguredDefaultAnimation {
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
+    defaultOptions.bottomTabs.animate = [Bool withValue:NO];
+    self.uut.defaultOptions = defaultOptions;
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    [[self.boundViewController expect] setTabBarVisible:NO animated:NO];
+
+    [self.uut mergeOptions:options resolvedOptions:nil];
+
+    [self.boundViewController verify];
+}
+
 - (void)testApplyOptionsOnInit_alwaysShow_shouldNotCenterTabImages {
     RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.titleDisplayMode = [[Text alloc] initWithValue:@"alwaysShow"];
