@@ -29,7 +29,8 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID withDefault:nil]];
-    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]];
+    [bottomTabs reconcileTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]
+                              animated:[withDefault.bottomTabs.animate withDefault:YES]];
 
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
@@ -79,12 +80,8 @@
     }
 
     if (mergeOptions.bottomTabs.visible.hasValue) {
-        if (mergeOptions.bottomTabs.animate.hasValue) {
-            [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
-                                animated:[mergeOptions.bottomTabs.animate withDefault:NO]];
-        } else {
-            [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get animated:NO];
-        }
+        [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
+                            animated:[mergeOptions.bottomTabs.animate withDefault:YES]];
     }
 
     if (mergeOptions.layout.backgroundColor.hasValue) {

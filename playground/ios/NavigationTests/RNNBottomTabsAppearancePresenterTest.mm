@@ -57,7 +57,7 @@
     [[self.boundViewController expect] setTabBarTestID:nil];
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:NO];
     [[self.boundViewController expect] setTabBarHideShadow:NO];
-    [[self.boundViewController expect] setTabBarVisible:YES];
+    [[self.boundViewController expect] reconcileTabBarVisible:YES animated:YES];
     [self.uut applyOptions:emptyOptions];
     [self.boundViewController verify];
 }
@@ -75,6 +75,7 @@
     [[(id)self.uut expect] applyBackgroundColor:nil translucent:[UIColor redColor]];
     [[self.boundViewController expect] setTabBarHideShadow:YES];
     [[self.boundViewController expect] setTabBarStyle:UIBarStyleBlack];
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:YES];
 
     [self.uut applyOptions:initialOptions];
     [self.boundViewController verify];
@@ -84,9 +85,65 @@
     RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
     initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
 
-    [[self.boundViewController expect] setTabBarVisible:YES];
+    [[self.boundViewController expect] reconcileTabBarVisible:YES animated:YES];
 
     [self.uut applyOptions:initialOptions];
+    [self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldUseExplicitAnimation {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    options.bottomTabs.animate = [Bool withValue:YES];
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:YES];
+
+    [self.uut applyOptions:options];
+
+    [self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldDisableExplicitAnimation {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    options.bottomTabs.animate = [Bool withValue:NO];
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:NO];
+
+    [self.uut applyOptions:options];
+
+    [self.boundViewController verify];
+}
+
+- (void)testApplyOptions_shouldUseConfiguredDefaultAnimation {
+    RNNNavigationOptions *defaultOptions = [RNNNavigationOptions emptyOptions];
+    defaultOptions.bottomTabs.animate = [Bool withValue:NO];
+    self.uut.defaultOptions = defaultOptions;
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    [[self.boundViewController expect] reconcileTabBarVisible:NO animated:NO];
+
+    [self.uut applyOptions:options];
+
+    [self.boundViewController verify];
+}
+
+- (void)testMergeOptions_shouldAnimateVisibilityByDefault {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    [[self.boundViewController expect] setTabBarVisible:NO animated:YES];
+
+    [self.uut mergeOptions:options resolvedOptions:nil];
+
+    [self.boundViewController verify];
+}
+
+- (void)testMergeOptions_shouldDisableExplicitAnimation {
+    RNNNavigationOptions *options = [RNNNavigationOptions emptyOptions];
+    options.bottomTabs.visible = [Bool withValue:NO];
+    options.bottomTabs.animate = [Bool withValue:NO];
+    [[self.boundViewController expect] setTabBarVisible:NO animated:NO];
+
+    [self.uut mergeOptions:options resolvedOptions:nil];
+
     [self.boundViewController verify];
 }
 

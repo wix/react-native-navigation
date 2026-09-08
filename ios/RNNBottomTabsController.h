@@ -28,6 +28,8 @@
 
 - (void)setTabBarVisible:(BOOL)visible;
 
+- (void)reconcileTabBarVisible:(BOOL)visible animated:(BOOL)animated;
+
 - (void)handleTabBarLongPress:(CGPoint)locationInTabBar;
 
 @end

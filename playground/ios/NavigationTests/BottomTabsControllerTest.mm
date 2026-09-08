@@ -171,7 +171,23 @@
     }
 }
 
-- (void)testSetTabBarVisible_shouldNotOverrideStackChildVisibilityOnIOS18 {
+- (void)testSetTabBarVisible_shouldShowHiddenTabBarForStackChildOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        UIViewController *component =
+            [RNNComponentViewController createWithComponentId:@"componentId"
+                                               initialOptions:[RNNNavigationOptions emptyOptions]];
+        UINavigationController *stack =
+            [[UINavigationController alloc] initWithRootViewController:component];
+        RNNBottomTabsController *uut =
+            [RNNBottomTabsController createWithChildren:@[ stack ]];
+
+        [uut setTabBarHidden:YES animated:NO];
+        [uut setTabBarVisible:YES];
+        XCTAssertFalse(uut.tabBarHidden);
+    }
+}
+
+- (void)testSetTabBarVisible_shouldHideVisibleTabBarForStackChildOnIOS18 {
     if (@available(iOS 18.0, *)) {
         UIViewController *component =
             [RNNComponentViewController createWithComponentId:@"componentId"
@@ -183,9 +199,87 @@
 
         [uut setTabBarHidden:NO animated:NO];
         [uut setTabBarVisible:NO];
-
-        XCTAssertFalse(uut.tabBarHidden);
+        XCTAssertTrue(uut.tabBarHidden);
     }
+}
+
+- (void)testSetTabBarVisible_shouldNotUpdateMatchingVisibilityOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        [self.originalUut setTabBarHidden:YES animated:NO];
+        id uutMock = self.uut;
+        [[uutMock reject] setTabBarVisible:NO animated:NO];
+        [[uutMock reject] setTabBarVisible:NO animated:YES];
+
+        [uutMock reconcileTabBarVisible:NO animated:YES];
+
+        [uutMock verify];
+        XCTAssertTrue(self.originalUut.tabBarHidden);
+    }
+}
+
+- (void)testReconcileTabBarVisible_shouldUseRequestedAnimationOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        [self.originalUut setTabBarHidden:YES animated:NO];
+        id uutMock = self.uut;
+        [[uutMock expect] setTabBarVisible:YES animated:YES];
+
+        [uutMock reconcileTabBarVisible:YES animated:YES];
+
+        [uutMock verify];
+    }
+}
+
+- (void)testReconcileTabBarVisible_shouldUseRequestedHideAnimationOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        [self.originalUut setTabBarHidden:NO animated:NO];
+        id uutMock = self.uut;
+        [[uutMock expect] setTabBarVisible:NO animated:YES];
+
+        [uutMock reconcileTabBarVisible:NO animated:YES];
+
+        [uutMock verify];
+    }
+}
+
+- (void)testReconcileTabBarVisible_shouldClearRestoreBookkeepingOnIOS18 {
+    if (@available(iOS 18.0, *)) {
+        [self.originalUut setTabBarVisible:NO animated:NO];
+        XCTAssertTrue([[self.originalUut valueForKey:@"tabBarNeedsRestore"] boolValue]);
+
+        [self.originalUut reconcileTabBarVisible:NO animated:NO];
+
+        XCTAssertFalse([[self.originalUut valueForKey:@"tabBarNeedsRestore"] boolValue]);
+    }
+}
+
+- (void)testReconcileTabBarVisible_shouldPreserveStackVisibilityBeforeIOS18 {
+    if (@available(iOS 18.0, *)) {
+        return;
+    }
+
+    UIViewController *component =
+        [RNNComponentViewController createWithComponentId:@"componentId"
+                                           initialOptions:[RNNNavigationOptions emptyOptions]];
+    UINavigationController *stack =
+        [[UINavigationController alloc] initWithRootViewController:component];
+    RNNBottomTabsController *uut = [RNNBottomTabsController createWithChildren:@[ stack ]];
+
+    [uut reconcileTabBarVisible:NO animated:YES];
+
+    XCTAssertFalse(uut.tabBar.hidden);
+}
+
+- (void)testReconcileTabBarVisible_shouldUseRequestedAnimationWithoutStackBeforeIOS18 {
+    if (@available(iOS 18.0, *)) {
+        return;
+    }
+
+    id uutMock = self.uut;
+    [[uutMock expect] setTabBarVisible:NO animated:YES];
+
+    [uutMock reconcileTabBarVisible:NO animated:YES];
+
+    [uutMock verify];
 }
 
 - (void)testPreferredStatusBarStyle_shouldInvokeSelectedViewControllerPreferredStatusBarStyle {
