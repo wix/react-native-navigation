@@ -3,12 +3,30 @@
 #import "RNNConvert.h"
 #import "UIImage+utils.h"
 
-@implementation BottomTabsBasePresenter
+@implementation BottomTabsBasePresenter {
+    BOOL _didApplyInitialTabBarVisibility;
+}
+
+- (BOOL)tabBarVisibilityAnimation:(BOOL)animated {
+    if (@available(iOS 18.0, *)) {
+        return animated;
+    }
+    if (_didApplyInitialTabBarVisibility) {
+        return animated;
+    }
+
+    _didApplyInitialTabBarVisibility = YES;
+    return NO;
+}
 
 - (void)applyOptionsOnInit:(RNNNavigationOptions *)options {
     [super applyOptionsOnInit:options];
-    UITabBarController *bottomTabs = self.tabBarController;
+    RNNBottomTabsController *bottomTabs = self.tabBarController;
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    if (@available(iOS 18.0, *)) {
+        [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]
+                            animated:NO];
+    }
     [bottomTabs setCurrentTabIndex:[withDefault.bottomTabs.currentTabIndex withDefault:0]];
     if (withDefault.bottomTabs.currentTabId.hasValue) {
         [bottomTabs setCurrentTabID:withDefault.bottomTabs.currentTabId.get];
@@ -24,7 +42,9 @@
     RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
 
     [bottomTabs setTabBarTestID:[withDefault.bottomTabs.testID withDefault:nil]];
-    [bottomTabs setTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]];
+    [bottomTabs reconcileTabBarVisible:[withDefault.bottomTabs.visible withDefault:YES]
+                              animated:[self tabBarVisibilityAnimation:
+                                                 [withDefault.bottomTabs.animate withDefault:YES]]];
 
     [bottomTabs.view setBackgroundColor:[withDefault.layout.backgroundColor withDefault:nil]];
     [bottomTabs setTabBarHideShadow:[withDefault.bottomTabs.hideShadow withDefault:NO]];
@@ -74,12 +94,8 @@
     }
 
     if (mergeOptions.bottomTabs.visible.hasValue) {
-        if (mergeOptions.bottomTabs.animate.hasValue) {
-            [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
-                                animated:[mergeOptions.bottomTabs.animate withDefault:NO]];
-        } else {
-            [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get animated:NO];
-        }
+        [bottomTabs setTabBarVisible:mergeOptions.bottomTabs.visible.get
+                            animated:[withDefault.bottomTabs.animate withDefault:YES]];
     }
 
     if (mergeOptions.layout.backgroundColor.hasValue) {

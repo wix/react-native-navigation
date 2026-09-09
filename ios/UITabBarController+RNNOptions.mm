@@ -141,6 +141,11 @@ static const void *RNNOriginalTabBarViewAccessibilityIdentifierKey =
 }
 
 - (void)showTabBar:(BOOL)animated {
+    if (@available(iOS 18.0, *)) {
+        [self setTabBarHidden:NO animated:animated];
+        return;
+    }
+
     static const CGFloat animationDuration = 0.15;
     const CGRect tabBarVisibleFrame = CGRectMake(
         self.tabBar.frame.origin.x, self.view.frame.size.height - self.tabBar.frame.size.height,
@@ -161,6 +166,11 @@ static const void *RNNOriginalTabBarViewAccessibilityIdentifierKey =
 }
 
 - (void)hideTabBar:(BOOL)animated {
+    if (@available(iOS 18.0, *)) {
+        [self setTabBarHidden:YES animated:animated];
+        return;
+    }
+
     static const CGFloat animationDuration = 0.15;
     const CGRect tabBarHiddenFrame =
         CGRectMake(self.tabBar.frame.origin.x, self.view.frame.size.height,
@@ -180,6 +190,14 @@ static const void *RNNOriginalTabBarViewAccessibilityIdentifierKey =
               self.tabBar.hidden = YES;
             }];
     }
+}
+
+- (BOOL)rnn_isTabBarHidden {
+    if (@available(iOS 18.0, *)) {
+        return self.tabBarHidden;
+    }
+
+    return self.tabBar.hidden;
 }
 
 - (void)forEachTab:(void (^)(UIView *, UIViewController *tabViewController,

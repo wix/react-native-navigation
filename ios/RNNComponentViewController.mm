@@ -1,5 +1,6 @@
 #import "RNNComponentViewController.h"
 #import "AnimationObserver.h"
+#import "UITabBarController+RNNOptions.h"
 
 @implementation RNNComponentViewController {
     NSArray *_reactViewConstraints;
@@ -126,7 +127,7 @@
 }
 
 - (BOOL)shouldDrawBehindBottomTabs {
-    return !self.tabBarController.tabBar || self.tabBarController.tabBar.isHidden ||
+    return !self.tabBarController.tabBar || [self.tabBarController rnn_isTabBarHidden] ||
            _drawBehindBottomTabs;
 }
 
