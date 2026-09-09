@@ -189,7 +189,7 @@
     if (@available(iOS 18.0, *)) {
         RNNNavigationOptions *initialOptions = [RNNNavigationOptions emptyOptions];
         initialOptions.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
-        [[self.boundViewController expect] setTabBarHidden:YES animated:NO];
+        [[self.boundViewController expect] setTabBarVisible:NO animated:NO];
 
         [self.uut applyOptionsOnInit:initialOptions];
 
