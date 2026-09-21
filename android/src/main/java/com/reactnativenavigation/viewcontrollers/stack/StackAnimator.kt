@@ -34,7 +34,7 @@ open class StackAnimator @JvmOverloads constructor(
     @VisibleForTesting
     val runningSetRootAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
 
-    fun cancelPushAnimations() = runningPushAnimations.values.forEach(Animator::cancel)
+    fun cancelPushAnimations() = runningPushAnimations.values.toList().forEach(Animator::cancel)
 
     open fun isChildInTransition(child: ViewController<*>?): Boolean {
         return runningPushAnimations.containsKey(child) ||
@@ -43,9 +43,13 @@ open class StackAnimator @JvmOverloads constructor(
     }
 
     fun cancelAllAnimations() {
+        val animations = runningPushAnimations.values +
+            runningPopAnimations.values +
+            runningSetRootAnimations.values
         runningPushAnimations.clear()
         runningPopAnimations.clear()
         runningSetRootAnimations.clear()
+        animations.forEach(Animator::cancel)
     }
 
     fun setRoot(
