@@ -18,6 +18,7 @@ module.exports = {
     ],
     Layouts: [
       'docs/stack',
+      'docs/stack-backNavigation',
       'docs/bottomTabs',
       'docs/customBottomTabs',
       'docs/sideMenu',
