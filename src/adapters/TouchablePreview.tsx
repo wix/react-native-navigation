@@ -4,8 +4,6 @@ import {
   View,
   Platform,
   findNodeHandle,
-  TouchableOpacity,
-  TouchableHighlight,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
   GestureResponderEvent,
@@ -21,12 +19,7 @@ interface GestureResponderEventWithForce extends NativeSyntheticEvent<NativeTouc
 
 export interface Props {
   children?: React.ReactNode;
-  touchableComponent?:
-    | typeof TouchableHighlight
-    | typeof TouchableOpacity
-    | TouchableNativeFeedback
-    | TouchableWithoutFeedback
-    | React.ReactNode;
+  touchableComponent?: React.ElementType;
   onPress?: () => void;
   onPressIn?: (payload: { reactTag: number | null }) => void;
   onPeekIn?: () => void;
@@ -40,7 +33,7 @@ const PREVIEW_TIMEOUT = 1250;
 export class TouchablePreview extends React.PureComponent<Props> {
   static propTypes = {
     children: PropTypes.node,
-    touchableComponent: PropTypes.func,
+    touchableComponent: PropTypes.elementType,
     onPress: PropTypes.func,
     onPressIn: PropTypes.func,
     onPeekIn: PropTypes.func,
@@ -53,10 +46,17 @@ export class TouchablePreview extends React.PureComponent<Props> {
   };
 
   static peeking = false;
+  private static peekOwner: TouchablePreview | undefined;
 
   private timeout: number | undefined;
   private touchStartedAt: number = 0;
   private onRef = React.createRef<any>();
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+    this.releasePeekOwnership();
+  }
+
   onPress = () => {
     const { onPress } = this.props;
 
@@ -96,6 +96,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
 
     if (force > PREVIEW_MIN_FORCE && diff > PREVIEW_DELAY) {
       TouchablePreview.peeking = true;
+      TouchablePreview.peekOwner = this;
 
       if (typeof this.props.onPeekIn === 'function') {
         this.props.onPeekIn();
@@ -107,7 +108,7 @@ export class TouchablePreview extends React.PureComponent<Props> {
 
   onTouchEnd = () => {
     clearTimeout(this.timeout);
-    TouchablePreview.peeking = false;
+    this.releasePeekOwnership();
 
     if (typeof this.props.onPeekOut === 'function') {
       this.props.onPeekOut();
@@ -116,21 +117,17 @@ export class TouchablePreview extends React.PureComponent<Props> {
 
   render() {
     const { children, touchableComponent, ...props } = this.props;
+    const requestedTouchable = touchableComponent ?? TouchableWithoutFeedback;
 
     // Default to TouchableWithoutFeedback for iOS if set to TouchableNativeFeedback
     const Touchable =
-      Platform.OS === 'ios' && touchableComponent instanceof TouchableNativeFeedback
+      Platform.OS === 'ios' && requestedTouchable === TouchableNativeFeedback
         ? TouchableWithoutFeedback
-        : (touchableComponent as React.Component);
+        : requestedTouchable;
 
     // Wrap component with Touchable for handling platform touches
     // and a single react View for detecting force and timing.
     return (
-      /**
-       * @TODO (Jin Shin 25 June 2020)
-       * Ignoring this for now so that it builds.
-       */
-      // @ts-ignore
       <Touchable {...props} ref={this.onRef} onPress={this.onPress} onPressIn={this.onPressIn}>
         <View
           onTouchStart={this.onTouchStart}
@@ -141,5 +138,12 @@ export class TouchablePreview extends React.PureComponent<Props> {
         </View>
       </Touchable>
     );
+  }
+
+  private releasePeekOwnership() {
+    if (TouchablePreview.peekOwner === this) {
+      TouchablePreview.peekOwner = undefined;
+      TouchablePreview.peeking = false;
+    }
   }
 }
