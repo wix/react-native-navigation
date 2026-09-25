@@ -27,4 +27,31 @@ describe('Layout processors Store', () => {
     remove();
     expect(uut.getProcessors()).toEqual([]);
   });
+
+  it('should unregister only the subscribed processor', () => {
+    const firstProcessor = (value: any, _commandName: string) => value;
+    const secondProcessor = (value: any, _commandName: string) => value;
+    const thirdProcessor = (value: any, _commandName: string) => value;
+    uut.addProcessor(firstProcessor);
+    const { remove } = uut.addProcessor(secondProcessor);
+    uut.addProcessor(thirdProcessor);
+
+    remove();
+
+    expect(uut.getProcessors()).toEqual([firstProcessor, thirdProcessor]);
+  });
+
+  it('should ignore repeated subscription removal', () => {
+    const processor = (value: any, _commandName: string) => value;
+    const firstSubscription = uut.addProcessor(processor);
+    const secondSubscription = uut.addProcessor(processor);
+
+    firstSubscription.remove();
+    firstSubscription.remove();
+
+    expect(uut.getProcessors()).toEqual([processor]);
+
+    secondSubscription.remove();
+    expect(uut.getProcessors()).toEqual([]);
+  });
 });
