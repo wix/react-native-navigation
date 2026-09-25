@@ -48,6 +48,28 @@ describe('Store', () => {
     expect(uut.getComponentClassForName('example.mycomponent')).toEqual(MyWrappedComponent);
   });
 
+  it.each(['toString', '__proto__'])('treats %s as a regular store key', (key) => {
+    expect(uut.getPropsForId(key)).toEqual({});
+    expect(uut.getComponentClassForName(key)).toBeUndefined();
+    expect(uut.getComponentInstance(key)).toBeUndefined();
+    expect(uut.hasRegisteredWrappedComponent(key)).toBe(false);
+
+    const ComponentClass = () => class MyComponent extends React.Component {};
+    const componentInstance = {} as IWrappedComponent;
+    class WrappedComponent extends React.Component {}
+
+    uut.updateProps(key, { foo: 'bar' });
+    uut.setComponentClassForName(key, ComponentClass);
+    uut.setComponentInstance(key, componentInstance);
+    uut.setWrappedComponent(key, WrappedComponent);
+
+    expect(uut.getPropsForId(key)).toEqual({ foo: 'bar' });
+    expect(uut.getComponentClassForName(key)).toBe(ComponentClass);
+    expect(uut.getComponentInstance(key)).toBe(componentInstance);
+    expect(uut.hasRegisteredWrappedComponent(key)).toBe(true);
+    expect(uut.getWrappedComponent(key)).toBe(WrappedComponent);
+  });
+
   it('clear props by component id when clear component', () => {
     uut.updateProps('refUniqueId', { foo: 'bar' });
     uut.clearComponent('refUniqueId');
