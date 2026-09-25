@@ -55,8 +55,9 @@ class ModalViewManager(val reactContext: ReactContext) : ViewGroupManager<ModalH
 
     override fun onDropViewInstance(modal: ModalHostLayout) {
         super.onDropViewInstance(modal)
-        navigator?.let {
-            it.dismissModal(modal.viewController.id, CommandListenerAdapter())
+        try {
+            navigator?.dismissModal(modal.viewController.id, CommandListenerAdapter())
+        } finally {
             modal.onDropInstance()
         }
     }
