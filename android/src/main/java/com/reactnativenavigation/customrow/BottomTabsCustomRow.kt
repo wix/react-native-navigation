@@ -69,9 +69,14 @@ class BottomTabsCustomRow(
         clipChildren = false
         clipToPadding = false
         addView(backgroundView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        BottomTabsCustomRowConfigStore.addListener(configListener)
         applyOptions(currentOptions)
         rebuildCells()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        BottomTabsCustomRowConfigStore.addListener(configListener)
+        applyOptions(BottomTabsCustomRowConfigStore.get())
     }
 
     override fun onDetachedFromWindow() {
