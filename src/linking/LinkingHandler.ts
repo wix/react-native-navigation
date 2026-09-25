@@ -46,6 +46,7 @@ export class LinkingHandler {
 
   private config: LinkingConfig | null = null;
   private linkingSubscription: { remove: () => void } | null = null;
+  private subscriptionGeneration = 0;
   private rootReady = false;
   private userReadyOverride: boolean | null = null;
 
@@ -114,6 +115,7 @@ export class LinkingHandler {
   }
 
   public teardown(): void {
+    this.subscriptionGeneration++;
     if (this.linkingSubscription) {
       this.linkingSubscription.remove();
       this.linkingSubscription = null;
@@ -124,13 +126,19 @@ export class LinkingHandler {
   }
 
   private subscribe(): void {
+    const subscriptionGeneration = this.subscriptionGeneration;
     this.linkingSubscription = this.linkingAPI.addEventListener('url', (event) => {
       this.handleURL(event.url);
     });
 
-    this.linkingAPI.getInitialURL().then((url) => {
-      if (url) this.handleURL(url);
-    });
+    this.linkingAPI
+      .getInitialURL()
+      .then((url) => {
+        if (url && subscriptionGeneration === this.subscriptionGeneration) {
+          this.handleURL(url);
+        }
+      })
+      .catch(() => {});
   }
 
   private processURL(url: string): void {

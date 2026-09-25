@@ -292,6 +292,41 @@ describe('LinkingHandler', () => {
       uut.configure(baseConfig);
       expect(remove).toHaveBeenCalled();
     });
+
+    it('ignores an initial URL resolved by a previous configuration', async () => {
+      let resolveInitialURL!: (url: string | null) => void;
+      mockLinking.getInitialURL
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              resolveInitialURL = resolve;
+            })
+        )
+        .mockResolvedValueOnce(null);
+      const firstOnLink = jest.fn();
+      const secondOnLink = jest.fn();
+
+      uut.configure({ ...baseConfig, onLink: firstOnLink });
+      uut.setRootReady();
+      uut.configure({ ...baseConfig, onLink: secondOnLink });
+      resolveInitialURL('myapp://home');
+      await Promise.resolve();
+
+      expect(firstOnLink).not.toHaveBeenCalled();
+      expect(secondOnLink).not.toHaveBeenCalled();
+    });
+
+    it('continues handling URL events when the initial URL lookup fails', async () => {
+      mockLinking.getInitialURL.mockRejectedValueOnce(new Error('lookup failed'));
+      uut.configure(baseConfig);
+      uut.setRootReady();
+
+      await Promise.resolve();
+      await Promise.resolve();
+      urlListener?.({ url: 'myapp://home' });
+
+      expect(mockShowModal).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('setRootReady', () => {
