@@ -106,6 +106,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val titleComponent = getTitleComponent()
         val isCenter = titleComponentAlignment == Alignment.Center
+        val isFill = titleComponentAlignment == Alignment.Fill
         val containerWidth = r - l
         val containerHeight = b - t
         val isRTL = isRTL()
@@ -114,7 +115,7 @@ class TitleAndButtonsContainer(context: Context) : ViewGroup(context) {
         val leftBarWidth = leftButtonBar.measuredWidth
         val rightBarWidth = rightButtonBar.measuredWidth
 
-        val (titleLeft, titleRight) = resolveHorizontalTitleBoundsLimit(containerWidth, titleWidth, leftBarWidth, rightBarWidth, isCenter, isRTL)
+        val (titleLeft, titleRight) = resolveHorizontalTitleBoundsLimit(containerWidth, titleWidth, leftBarWidth, rightBarWidth, isCenter, isRTL, isFill)
         val (titleTop, titleBottom) = resolveVerticalTitleBoundsLimit(containerHeight, titleHeight)
         val (leftButtonsLeft, leftButtonsRight) = resolveLeftButtonsBounds(containerWidth, leftBarWidth, isRTL)
         val (rightButtonsLeft, rightButtonsRight) = resolveRightButtonsBounds(containerWidth, rightButtonBar.measuredWidth, isRTL)

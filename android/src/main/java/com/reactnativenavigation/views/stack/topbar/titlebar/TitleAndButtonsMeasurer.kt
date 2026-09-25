@@ -19,12 +19,14 @@ fun makeTitleAtMostWidthMeasureSpec(containerWidth: Int, rightBarWidth: Int, lef
     return if (isCenter) {
         val availableWidth = containerWidth - rightBarWidth - leftBarWidth
         View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
+    } else if (isFill) {
+        // Fill alignment must span the entire space between left and right button bars,
+        // so do not reserve the DEFAULT_LEFT_MARGIN_PX padding used for left-aligned titles.
+        val availableWidth = containerWidth - rightBarWidth - leftBarWidth
+        View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.EXACTLY)
     } else {
         val availableWidth = containerWidth - rightBarWidth - leftBarWidth - 2 * DEFAULT_LEFT_MARGIN_PX
-        View.MeasureSpec.makeMeasureSpec(
-            availableWidth,
-            if (isFill) View.MeasureSpec.EXACTLY else View.MeasureSpec.AT_MOST
-        )
+        View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.AT_MOST)
     }
 }
 
@@ -41,7 +43,8 @@ fun resolveHorizontalTitleBoundsLimit(
         leftBarWidth: Int,
         rightBarWidth: Int,
         isCenter: Boolean,
-        isRTL: Boolean
+        isRTL: Boolean,
+        isFill: Boolean = false
 ): Pair<TitleLeft, TitleRight> {
     val resolvedLeftBarWidth = if (isRTL) rightBarWidth else leftBarWidth
     val resolvedRightBarWidth = if (isRTL) leftBarWidth else rightBarWidth
@@ -49,6 +52,13 @@ fun resolveHorizontalTitleBoundsLimit(
     var suggestedRight: TitleRight
 
     val rightLimit = parentWidth - resolvedRightBarWidth
+    if (isFill) {
+        // Fill alignment must span the entire space between the left and right
+        // button bars without the DEFAULT_LEFT_MARGIN_PX reservation used for
+        // left-aligned titles. Mirrors the measure spec produced by
+        // makeTitleAtMostWidthMeasureSpec when isFill = true.
+        return resolvedLeftBarWidth to rightLimit
+    }
     if (isCenter) {
         val availableSpace = parentWidth - resolvedLeftBarWidth - resolvedRightBarWidth
         if (titleWidth >= availableSpace) {
