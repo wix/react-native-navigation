@@ -21,4 +21,14 @@ public class ReloadListenerTest extends BaseTest {
         uut.onSuccess();
         Mockito.verify(handler).run();
     }
+
+    @Test
+    public void onSuccess_afterDestroyIsIgnored() {
+        uut.setOnReloadListener(handler);
+        uut.destroy();
+
+        uut.onSuccess();
+
+        Mockito.verifyNoInteractions(handler);
+    }
 }

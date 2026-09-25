@@ -2,7 +2,8 @@ package com.reactnativenavigation.react;
 
 public class ReloadHandler extends ReloadHandlerFacade implements JsDevReloadHandler.ReloadListener {
 
-    private Runnable onReloadListener = () -> {};
+    private static final Runnable NO_OP_RELOAD_LISTENER = () -> {};
+    private Runnable onReloadListener = NO_OP_RELOAD_LISTENER;
 
     public void setOnReloadListener(Runnable onReload) {
         this.onReloadListener = onReload;
@@ -19,6 +20,6 @@ public class ReloadHandler extends ReloadHandlerFacade implements JsDevReloadHan
     }
 
     public void destroy() {
-        onReloadListener = null;
+        onReloadListener = NO_OP_RELOAD_LISTENER;
     }
 }

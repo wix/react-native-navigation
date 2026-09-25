@@ -19,6 +19,8 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
         void onReload();
     }
 
+    private static final ReloadListener NO_OP_RELOAD_LISTENER = () -> {};
+
 	private final BroadcastReceiver reloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(final Context context, final Intent intent) {
@@ -28,7 +30,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
     private final DevSupportManager devSupportManager;
 
     private long firstRTimestamp = 0;
-    private ReloadListener reloadListener = () -> {};
+    private ReloadListener reloadListener = NO_OP_RELOAD_LISTENER;
 
     JsDevReloadHandler(DevSupportManager devSupportManager) {
         this.devSupportManager = devSupportManager;
@@ -45,7 +47,7 @@ public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
 
     public void removeReloadListener(ReloadListener listener) {
         if (reloadListener == listener) {
-            reloadListener = null;
+            reloadListener = NO_OP_RELOAD_LISTENER;
         }
     }
 
