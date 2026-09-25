@@ -355,6 +355,28 @@ describe('ComponentEventsObserver', () => {
     expect(didAppearFn).not.toHaveBeenCalled();
   });
 
+  it.each(['component.with.dots', 'toString', '__proto__'])(
+    'removes all listeners for the %s component id',
+    (componentId) => {
+      const listener = jest.fn();
+      const registered = uut.registerComponentListener(
+        { componentDidDisappear: listener },
+        componentId
+      );
+
+      uut.unmounted(componentId);
+      uut.notifyComponentDidDisappear({
+        componentId,
+        componentName: 'doesnt matter',
+        componentType: 'Component',
+      });
+      const callCount = listener.mock.calls.length;
+      registered.remove();
+
+      expect(callCount).toBe(0);
+    }
+  );
+
   it(`supports multiple listeners with same componentId`, () => {
     const screen1 = render(<SimpleScreen componentId={'myCompId'} />);
     const screen2 = render(<SimpleScreen componentId={'myCompId'} />);
