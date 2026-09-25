@@ -15,6 +15,9 @@
     BOOL _pendingDidAppear;
     BOOL _didAppear;
     BOOL _willAppear;
+#ifdef RCT_NEW_ARCH_ENABLED
+    __weak RCTSurfacePresenter *_surfacePresenter;
+#endif
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -38,17 +41,23 @@
     self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
 #endif
 
-    _reactViewReadyBlock = reactViewReadyBlock;
-    _eventEmitter = eventEmitter;
+    if (self) {
+#ifdef RCT_NEW_ARCH_ENABLED
+        _surfacePresenter = (RCTSurfacePresenter *)bridge.surfacePresenter;
+        [_surfacePresenter addObserver:self];
+#endif
+        _reactViewReadyBlock = reactViewReadyBlock;
+        _eventEmitter = eventEmitter;
 
 #ifdef RCT_NEW_ARCH_ENABLED
-    [surface start];
+        [surface start];
 #else
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDidAppear:)
-                                                 name:RCTContentDidAppearNotification
-                                               object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contentDidAppear:)
+                                                     name:RCTContentDidAppearNotification
+                                                   object:nil];
 #endif
+    }
 
     return self;
 }
@@ -63,15 +72,24 @@
     
     RCTFabricSurface *surface = [host createSurfaceWithModuleName:moduleName
                                                 initialProperties:initialProperties];
-    [host.surfacePresenter addObserver:self];
     self = [super initWithSurface:surface sizeMeasureMode:sizeMeasureMode];
-    
-    _reactViewReadyBlock = reactViewReadyBlock;
-    _eventEmitter = eventEmitter;
-    
+    if (self) {
+        _surfacePresenter = host.surfacePresenter;
+        [_surfacePresenter addObserver:self];
+
+        _reactViewReadyBlock = reactViewReadyBlock;
+        _eventEmitter = eventEmitter;
+    }
+
     return self;
 }
 #endif
+
+- (void)dealloc {
+#ifdef RCT_NEW_ARCH_ENABLED
+    [_surfacePresenter removeObserver:self];
+#endif
+}
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #pragma mark - RCTSurfaceDelegate

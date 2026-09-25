@@ -17,7 +17,6 @@ static const CGFloat kMinBarButtonSlotSize = 44.0;
              sizeMeasureMode:(RCTSurfaceSizeMeasureMode)sizeMeasureMode
          reactViewReadyBlock:(RNNReactViewReadyCompletionBlock)reactViewReadyBlock {
     self = [super initWithHost:host moduleName:moduleName initialProperties:initialProperties eventEmitter:eventEmitter sizeMeasureMode:convertToSurfaceSizeMeasureMode(RCTRootViewSizeFlexibilityWidthAndHeight) reactViewReadyBlock:reactViewReadyBlock];
-    [host.surfacePresenter addObserver:self];
     self.backgroundColor = [UIColor clearColor];
 
     if (@available(iOS 26.0, *)) {
