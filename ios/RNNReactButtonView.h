@@ -6,6 +6,7 @@
 
 @interface RNNReactButtonView : RNNComponentView
 
+@property(nonatomic, strong) UIColor *buttonBackgroundColor;
 @property(nonatomic, copy) void (^intrinsicSizeDidChangeHandler)(CGSize intrinsicSize);
 
 @end

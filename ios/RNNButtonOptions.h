@@ -24,6 +24,7 @@
 @property(nonatomic, strong) RNNIconBackgroundOptions *iconBackground;
 @property(nonatomic, strong) Bool *disableIconTint;
 @property(nonatomic, strong) Bool *hideSharedBackground;
+@property(nonatomic, strong) Color *backgroundColor;
 
 - (RNNButtonOptions *)withDefault:(RNNButtonOptions *)defaultOptions;
 
