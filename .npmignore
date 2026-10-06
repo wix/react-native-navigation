@@ -260,6 +260,5 @@ jsconfig.json
 babel.config.js
 .watchmanconfig
 .logo.png
-.grenrc.js
 .clang-format
 .prettierrc

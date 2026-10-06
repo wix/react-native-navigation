@@ -63,7 +63,7 @@ Also check the full peer dependency tree: `npm info react-native@<version> peerD
 
 ## Phase 2: CI Infrastructure Setup
 
-### 2a. Create Buildkite Pipeline Jobs
+### 2a. Maintain Buildkite CI Jobs
 
 Copy an existing job file and update the version:
 
@@ -88,7 +88,7 @@ cat .buildkite/jobs/pipeline.android_rn_84.yml
 cat .buildkite/jobs/pipeline.ios_rn_84.yml
 ```
 
-Insert them in version order, before `pipeline.publish.yml`.
+Insert them in version order alongside the other platform jobs. Release publishing is dispatched separately through the GitHub Actions release workflow.
 
 ### 2c. Optionally Drop Old Versions
 
