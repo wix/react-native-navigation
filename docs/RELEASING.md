@@ -29,7 +29,7 @@ enabling publication. Creating or merging the workflow does not configure npm tr
    workflow. Standalone `npm dist-tag` permission is not needed. See
    [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
-3. Check Wix's Actions policy permits the pinned checkout, setup-node, upload-artifact,
+3. Enable GitHub Actions for this repository. Check Wix's Actions policy permits the pinned checkout, setup-node, upload-artifact,
    and download-artifact actions. Allow workflow-created pull requests. Ensure existing
    repository rules permit version branches and release tags without a bypass.
 4. Check the GitHub commit status `buildkite/react-native-navigation` represents all
