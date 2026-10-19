@@ -228,3 +228,14 @@ test('ensureRelease does not move latest backward when recovering an older stabl
   const newer = await ensureRelease(newerGitHub, manifest('8.11.0'), 'notes');
   assert.equal(newer.make_latest, 'true');
 });
+
+test('ensureRelease targets the source commit, not the release commit that only the version PR contains', async () => {
+  const github = mockGitHub((method, path, body) => {
+    if (path.endsWith('/releases/tags/8.9.0')) return undefined;
+    if (path.endsWith('/releases/latest')) return undefined;
+    if (method === 'POST' && path.endsWith('/releases')) return body;
+    throw new Error(`unexpected request ${path}`);
+  });
+  const release = await ensureRelease(github, manifest('8.9.0', { releaseSha: 'b'.repeat(40) }), 'notes');
+  assert.equal(release.target_commitish, sourceSha);
+});

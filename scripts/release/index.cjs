@@ -331,7 +331,8 @@ async function finalize(github) {
     return;
   }
   const pkg = manifest.packages[0];
-  await ensureTag(github, pkg.version, manifest.releaseSha);
+  // The release commit exists only on the squash-merged version PR branch; tag the master commit that was built and published.
+  await ensureTag(github, pkg.version, manifest.sourceSha);
   const release = await ensureRelease(
     github,
     manifest,
