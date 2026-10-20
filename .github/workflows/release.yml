@@ -1,0 +1,218 @@
+name: Release
+run-name: ${{ inputs.operation }} RNN ${{ inputs.version || inputs.kind }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Dry run, publish, or resume an interrupted publishing run'
+        type: choice
+        options: [dry-run, publish, resume]
+        default: dry-run
+      kind:
+        description: 'Release or on-demand snapshot (ignored for resume)'
+        type: choice
+        options: [release, snapshot]
+        default: release
+      version:
+        description: 'Exact semver for release; leave empty for snapshots and resume'
+        type: string
+      npm_tag:
+        description: 'latest for stable, next for prerelease, snapshot for snapshots'
+        type: choice
+        options: [latest, next, snapshot]
+        default: latest
+      documentation_version:
+        description: 'Optional documentation version to create (x.y.z)'
+        type: string
+      remove_documentation_version:
+        description: 'Optional existing documentation version to replace/remove'
+        type: string
+      source_run_id:
+        description: 'Original publish run ID, required only for resume'
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: rnn-npm-release
+  cancel-in-progress: false
+
+env:
+  RELEASE_OPERATION: ${{ inputs.operation }}
+  RELEASE_KIND: ${{ inputs.kind }}
+  RELEASE_VERSION: ${{ inputs.version }}
+  RELEASE_NPM_TAG: ${{ inputs.npm_tag }}
+  RELEASE_DOCUMENTATION_VERSION: ${{ inputs.documentation_version }}
+  RELEASE_REMOVE_DOCUMENTATION_VERSION: ${{ inputs.remove_documentation_version }}
+  RELEASE_SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+  RELEASE_PUBLISH_ENABLED: ${{ vars.RELEASE_PUBLISH_ENABLED }}
+  RELEASE_DIR: ${{ github.workspace }}/../release-artifacts
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  prepare:
+    if: github.repository == 'wix/react-native-navigation' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      statuses: read
+      pull-requests: read
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id || steps.resume.outputs.artifact_id }}
+      source_run_id: ${{ steps.resume.outputs.source_run_id || github.run_id }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
+        with:
+          node-version: '24.19.0'
+          package-manager-cache: false
+      - name: Check admin authorization
+        run: node scripts/release/index.cjs authorize
+      - name: Locate original release artifact
+        if: inputs.operation == 'resume'
+        id: resume
+        run: node scripts/release/index.cjs resume-info
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.operation == 'resume'
+        with:
+          artifact-ids: ${{ steps.resume.outputs.artifact_id }}
+          run-id: ${{ steps.resume.outputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ env.RELEASE_DIR }}
+          merge-multiple: true
+      - name: Verify recovery identity and native CI
+        if: inputs.operation == 'resume'
+        run: node scripts/release/index.cjs verify-resume
+      - name: Plan exact version and check native CI
+        if: inputs.operation != 'resume'
+        id: plan
+        run: node scripts/release/index.cjs plan
+      - name: Install locked dependencies
+        if: inputs.operation != 'resume'
+        run: node .yarn/releases/yarn-4.12.0.cjs install --immutable
+      - name: Install locked documentation dependencies
+        if: inputs.operation != 'resume' && steps.plan.outputs.documentation_version != ''
+        working-directory: website
+        run: npm ci --legacy-peer-deps
+      - name: Set version and generate optional documentation
+        if: inputs.operation != 'resume'
+        run: node scripts/release/index.cjs set-version
+      - name: Build and test
+        if: inputs.operation != 'resume'
+        run: |
+          node .yarn/releases/yarn-4.12.0.cjs prepare
+          node .yarn/releases/yarn-4.12.0.cjs test-js
+          node --test scripts/release/*.test.cjs
+      - name: Validate versioned documentation
+        if: inputs.operation != 'resume' && steps.plan.outputs.documentation_version != ''
+        working-directory: website
+        run: npm run build
+      - name: Pack and record immutable release inputs
+        if: inputs.operation != 'resume'
+        run: node scripts/release/index.cjs prepare-artifact
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: inputs.operation != 'resume'
+        id: upload
+        with:
+          name: release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.RELEASE_DIR }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  record:
+    needs: prepare
+    if: inputs.operation != 'dry-run'
+    environment: npm-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+      statuses: read
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
+        with:
+          node-version: '24.19.0'
+          package-manager-cache: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.prepare.outputs.artifact_id }}
+          run-id: ${{ needs.prepare.outputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ env.RELEASE_DIR }}
+          merge-multiple: true
+      - name: Persist the release commit
+        run: node scripts/release/index.cjs record
+
+  publish:
+    needs: [prepare, record]
+    environment: npm-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      statuses: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
+        with:
+          node-version: '24.19.0'
+          package-manager-cache: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.prepare.outputs.artifact_id }}
+          run-id: ${{ needs.prepare.outputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ env.RELEASE_DIR }}
+          merge-multiple: true
+      - name: Publish verified tarball using npm trusted publishing
+        run: node scripts/release/index.cjs publish
+
+  finalize:
+    needs: [prepare, publish]
+    environment: npm-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+      statuses: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
+        with:
+          node-version: '24.19.0'
+          package-manager-cache: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.prepare.outputs.artifact_id }}
+          run-id: ${{ needs.prepare.outputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ env.RELEASE_DIR }}
+          merge-multiple: true
+      - name: Verify npm publication and finish GitHub release
+        run: node scripts/release/index.cjs finalize
