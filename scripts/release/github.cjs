@@ -117,7 +117,7 @@ async function ensureRelease(github, manifest, notes) {
   }
   return github.request('POST', `${prefix}/releases`, {
     tag_name: pkg.version,
-    target_commitish: manifest.releaseSha,
+    target_commitish: manifest.sourceSha,
     name: pkg.version,
     body: notes,
     draft: false,

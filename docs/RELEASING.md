@@ -66,7 +66,7 @@ Open **Actions → Release → Run workflow**, select `master`, and supply:
 
 Examples:
 
-- Stable: `kind=release`, `version=8.8.10`, `npm_tag=latest`.
+- Stable: `kind=release`, `version=8.9.1`, `npm_tag=latest`.
 - Prerelease: `kind=release`, `version=8.9.0-rc.1`, `npm_tag=next`.
 - Snapshot: `kind=snapshot`, leave version empty, `npm_tag=snapshot`.
 
@@ -95,8 +95,8 @@ The workflow rechecks authorization before every job that changes external state
    `release-<run_id>-<run_attempt>`. A dry run ends here with no external release mutations.
 6. For real releases, persists `ci/update-version-<version>`, then publishes the verified
    tarball using OIDC. The publisher does not install project dependencies or rebuild it.
-7. Verifies npm integrity, tags the release commit with the bare version (for example
-   `8.8.10`), creates a GitHub release, and opens a version/documentation PR with the
+7. Verifies npm integrity, tags the source commit on `master` with the bare version (for example
+   `8.9.1`), creates a GitHub release, and opens a version/documentation PR with the
    `release` label. An existing PR template is included with its checkboxes left for review.
 
 Release notes include merged PRs from the preceding reachable stable tag through the
@@ -104,8 +104,9 @@ source commit. They preserve feature/enhancement/fix categories, platform groups
 `skip-changelog` exclusions. No second `gren` invocation or timed retry is involved.
 
 Review and merge the version PR after publication. Documentation deploys through the
-existing documentation workflow after that merge. GitHub may require approval for checks
-on an Actions-created PR; inspect the PR's checks before merging. The release workflow
+existing documentation workflow after that merge. Events created with `GITHUB_TOKEN` do not
+start Actions workflows, so Release checks will not run on the version PR; Buildkite still
+builds it through its webhook. Inspect the PR's checks before merging. The release workflow
 does not invoke engine notification.
 
 ## Resume a partial release
