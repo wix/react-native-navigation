@@ -47,7 +47,7 @@ enabling publication. Creating or merging the workflow does not configure npm tr
 
 No npm write token is needed in GitHub. `GITHUB_TOKEN` performs repository bookkeeping;
 only the publish job has `id-token: write`. Publishing runs on a GitHub-hosted Ubuntu
-runner. The workflow uses Node 24.19.0, including npm 11.17.0; update this tested pair
+runner. The workflow uses Node 24.22.1, including npm 11.19.1; update this tested pair
 together. Older npm releases can execute `prepare` during `npm pack --ignore-scripts`.
 
 ## Start a release
@@ -146,7 +146,7 @@ state rather than assuming every click is queued indefinitely.
 
 ## Validate changes to the release tooling
 
-With Node 24.19.0 and npm 11.17.0:
+With Node 24.22.1 and npm 11.19.1:
 
 ```sh
 node --test scripts/release/*.test.cjs
