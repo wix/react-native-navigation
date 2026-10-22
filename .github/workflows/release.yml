@@ -117,7 +117,7 @@ jobs:
       - name: Pack and record immutable release inputs
         if: inputs.operation != 'resume'
         run: node scripts/release/index.cjs prepare-artifact
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: inputs.operation != 'resume'
         id: upload
         with:
