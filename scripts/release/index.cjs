@@ -7,7 +7,6 @@ const {
   compareVersions,
   createPlan,
   isReleaseRunPath,
-  publicationState,
 } = require('./policy.cjs');
 const { githubClient, registryVersion } = require('./http.cjs');
 const {
@@ -21,7 +20,7 @@ const {
 } = require('./github.cjs');
 const { exec, integrity, pack, readManifest, verifyReleaseCommit } = require('./artifact.cjs');
 const { renderNotes } = require('./notes.cjs');
-const { publishPackages } = require('./publication.cjs');
+const { publishPackages, waitUntilVisible } = require('./publication.cjs');
 
 const directory = path.resolve(process.env.RELEASE_DIR || '.release-artifacts');
 const context = {
@@ -321,8 +320,9 @@ async function finalize(github) {
   const manifest = await verifiedArtifact(github);
   for (const pkg of manifest.packages) {
     check(
-      publicationState(pkg, await registryVersion(pkg.name, pkg.version, { allow404: true })) ===
-        'complete',
+      (await waitUntilVisible(pkg, (name, selected) =>
+        registryVersion(name, selected, { allow404: true })
+      )) === 'complete',
       'Cannot finalize an unpublished package'
     );
   }

@@ -160,7 +160,7 @@ jobs:
     needs: [prepare, record]
     environment: npm-release
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 40
     permissions:
       contents: read
       actions: read
@@ -190,7 +190,7 @@ jobs:
     needs: [prepare, publish]
     environment: npm-release
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 40
     permissions:
       contents: write
       actions: read
