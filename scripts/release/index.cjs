@@ -1,13 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const adapter = require('./rnn.cjs');
-const {
-  check,
-  version,
-  compareVersions,
-  createPlan,
-  isReleaseRunPath,
-} = require('./policy.cjs');
+const { check, version, compareVersions, createPlan, isReleaseRunPath } = require('./policy.cjs');
 const { githubClient, registryVersion } = require('./http.cjs');
 const {
   prefix,
