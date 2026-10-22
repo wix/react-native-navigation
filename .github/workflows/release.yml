@@ -47,7 +47,7 @@ env:
   RELEASE_REMOVE_DOCUMENTATION_VERSION: ${{ inputs.remove_documentation_version }}
   RELEASE_SOURCE_RUN_ID: ${{ inputs.source_run_id }}
   RELEASE_PUBLISH_ENABLED: ${{ vars.RELEASE_PUBLISH_ENABLED }}
-  RELEASE_DIR: ${{ github.workspace }}/../release-artifacts
+  RELEASE_DIR: /home/runner/work/_temp/release-artifacts
   GH_TOKEN: ${{ github.token }}
 
 jobs:
