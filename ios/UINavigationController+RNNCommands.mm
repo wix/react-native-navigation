@@ -117,14 +117,27 @@ typedef void (^RNNAnimationBlock)(void);
         return;
     }
 
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
+    __block BOOL completed = NO;
+    RNNTransitionCompletionBlock completeOnce = ^{
+      if (completed) {
+          return;
+      }
+      completed = YES;
       if (completion) {
           completion();
       }
-    }];
+    };
+
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completeOnce];
 
     animationBlock();
+
+    [self.transitionCoordinator
+        animateAlongsideTransition:nil
+                        completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                          completeOnce();
+                        }];
 
     [CATransaction commit];
 }
