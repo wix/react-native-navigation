@@ -9,7 +9,7 @@
   <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/dw/react-native-navigation.svg?style=flat-square" alt="NPM downloads"></a>
   <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/latest.svg?style=flat-square" alt="NPM latest version"></a>
   <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/snapshot.svg?style=flat-square" alt="NPM snapshot version"></a>
-  <a href="https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/"><img src="https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg?style=flat-square" alt="NPM snapshot version"></a>
+  <a href="https://github.com/wix/react-native-navigation/actions/workflows/release.yml"><img src="https://img.shields.io/badge/release-GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white" alt="GitHub Release workflow"></a>
 
 </p>
 <p align="center">
@@ -35,3 +35,8 @@ Apps using React Native Navigation may target iOS 11 and Android 5.0 (API 21). Y
 # Installation
 
 As `react-native-navigation` is a native navigation library - integrating it into your app will require editing native files. Follow the installation guides in the [documentation](https://wix.github.io/react-native-navigation/).
+
+## Releases
+
+Repository administrators: see the [release runbook](docs/RELEASING.md) for manual releases,
+npm trusted publishing setup, and recovery.

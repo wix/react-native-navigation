@@ -290,7 +290,7 @@
                                  tabBarInView.size.width, desiredHeight);
 
     _customRow.frame = rowFrame;
-    _customRow.hidden = self.tabBar.hidden;
+    _customRow.hidden = [self rnn_isTabBarHidden];
     [_customRow setSelectedIndex:_currentTabIndex];
 }
 
@@ -414,8 +414,21 @@
 }
 
 - (void)setTabBarVisible:(BOOL)visible {
+    [self reconcileTabBarVisible:visible animated:NO];
+}
+
+- (void)reconcileTabBarVisible:(BOOL)visible animated:(BOOL)animated {
+    if (@available(iOS 18.0, *)) {
+        BOOL shouldHide = !visible;
+        if (self.tabBarHidden != shouldHide) {
+            [self setTabBarVisible:visible animated:animated];
+        }
+        _tabBarNeedsRestore = NO;
+        return;
+    }
+
     if (_tabBarNeedsRestore || !self.presentedComponentViewController.navigationController) {
-        [self setTabBarVisible:visible animated:NO];
+        [self setTabBarVisible:visible animated:animated];
         _tabBarNeedsRestore = NO;
     }
 }

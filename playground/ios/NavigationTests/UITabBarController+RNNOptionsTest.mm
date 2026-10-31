@@ -47,4 +47,31 @@
     XCTAssertFalse(self.uut.tabBar.clipsToBounds);
 }
 
+- (void)test_hideTabBar {
+    if (@available(iOS 18.0, *)) {
+        [self.uut hideTabBar:NO];
+        XCTAssertTrue(self.uut.tabBarHidden);
+        XCTAssertTrue([self.uut rnn_isTabBarHidden]);
+    }
+}
+
+- (void)test_showTabBar {
+    if (@available(iOS 18.0, *)) {
+        self.uut.tabBarHidden = YES;
+        [self.uut showTabBar:NO];
+        XCTAssertFalse(self.uut.tabBarHidden);
+        XCTAssertFalse([self.uut rnn_isTabBarHidden]);
+    }
+}
+
+- (void)test_rnnIsTabBarHidden_shouldUseAvailableVisibilityState {
+    if (@available(iOS 18.0, *)) {
+        self.uut.tabBarHidden = YES;
+    } else {
+        self.uut.tabBar.hidden = YES;
+    }
+
+    XCTAssertTrue([self.uut rnn_isTabBarHidden]);
+}
+
 @end

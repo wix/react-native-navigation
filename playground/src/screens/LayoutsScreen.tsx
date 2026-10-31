@@ -19,6 +19,7 @@ const {
   WELCOME_SCREEN_HEADER,
   STACK_BTN,
   BOTTOM_TABS_BTN,
+  SINGLE_BOTTOM_TAB_MODAL_BTN,
   BOTTOM_TABS,
   SIDE_MENU_BTN,
   KEYBOARD_SCREEN_BTN,
@@ -78,6 +79,11 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
       <Root componentId={this.props.componentId}>
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+        <Button
+          label="Single BottomTab Modal"
+          testID={SINGLE_BOTTOM_TAB_MODAL_BTN}
+          onPress={this.singleBottomTabModal}
+        />
         <Button label="BottomTabs Styling" onPress={this.bottomTabsStyling} />
         <Button
           label="BottomTabs with Role"
@@ -116,6 +122,19 @@ export default class LayoutsScreen extends NavigationComponent<NavigationProps, 
           },
           bottomTabs: {
             testID: BOTTOM_TABS,
+          },
+        },
+      },
+    });
+  };
+
+  singleBottomTabModal = () => {
+    Navigation.showModal({
+      bottomTabs: {
+        children: [stack(Screens.FirstBottomTabsScreen)],
+        options: {
+          bottomTabs: {
+            visible: false,
           },
         },
       },
