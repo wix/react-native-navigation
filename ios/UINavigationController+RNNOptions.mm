@@ -1,4 +1,5 @@
 #import "RNNFontAttributesCreator.h"
+#import "RNNSceneUtils.h"
 #import "UINavigationController+RNNOptions.h"
 #import "UIView+Utils.h"
 
@@ -40,7 +41,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
         self.navigationBar.shadowImage = [UIImage new];
         UIVisualEffectView *blur = [[UIVisualEffectView alloc]
             initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-        CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+        CGRect statusBarFrame = RNNStatusBarFrame();
         blur.frame =
             CGRectMake(0, -1 * statusBarFrame.size.height, self.navigationBar.frame.size.width,
                        self.navigationBar.frame.size.height + statusBarFrame.size.height);

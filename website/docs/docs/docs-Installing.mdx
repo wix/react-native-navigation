@@ -369,6 +369,91 @@ class MainApplication : NavigationApplication() {
 
 Now that you're done, don't forget to update the `index.js` file, as [shown above](#update-indexjs-file).
 
+## Adopting UIScene (iOS)
+
+Apps built with the iOS 27 SDK (Xcode 27) must adopt the UIScene life cycle. Otherwise UIKit refuses to launch the app ("UIScene life cycle is required for apps built with this SDK"). Apps that don't declare a scene manifest keep working exactly as before, so you only need this section when you move to the new SDK or want scenes earlier. It works with React Native 0.77 and above.
+
+With RNN, keep your `RNNAppDelegate` subclass (it still creates the React host in `application:didFinishLaunchingWithOptions:`), add a subclass of `RNNSceneDelegate`, and declare it in `Info.plist`.
+
+### 1. Add the scene manifest to `Info.plist`
+
+RNN supports a single scene, so `UIApplicationSupportsMultipleScenes` must be `false`:
+
+```xml
+<key>UIApplicationSceneManifest</key>
+<dict>
+  <key>UIApplicationSupportsMultipleScenes</key>
+  <false/>
+  <key>UISceneConfigurations</key>
+  <dict>
+    <key>UIWindowSceneSessionRoleApplication</key>
+    <array>
+      <dict>
+        <key>UISceneConfigurationName</key>
+        <string>Default Configuration</string>
+        <key>UISceneDelegateClassName</key>
+        <string>SceneDelegate</string>
+      </dict>
+    </array>
+  </dict>
+</dict>
+```
+
+For a Swift scene delegate, prefix the class name with the module name: `$(PRODUCT_MODULE_NAME).SceneDelegate`.
+
+### 2. Subclass `RNNSceneDelegate`
+
+##### For Objective-C projects
+
+`SceneDelegate.h`
+```objc
+#import <UIKit/UIKit.h>
+#import "RNNSceneDelegate.h"
+
+@interface SceneDelegate : RNNSceneDelegate
+@end
+```
+
+`SceneDelegate.mm`
+```objc
+#import "SceneDelegate.h"
+
+@implementation SceneDelegate
+@end
+```
+
+##### For Swift projects
+
+`SceneDelegate.swift`
+```swift
+import UIKit
+import ReactNativeNavigation
+
+class SceneDelegate: RNNSceneDelegate {
+}
+```
+
+If you override any `RNNSceneDelegate` method, call `super`. For example:
+
+```swift
+override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+  super.scene(scene, willConnectTo: session, options: connectionOptions)
+  // your own scene setup
+}
+```
+
+### What to expect
+
+- **Keep `RNNAppDelegate`.** It still creates the React host and bootstraps RNN. Don't add scene code to it; the window and links are handled by the scene delegate.
+- **Call `super`** in every method you override in your `RNNSceneDelegate` subclass (`scene:willConnectToSession:options:`, `scene:openURLContexts:`, `scene:continueUserActivity:`).
+- **Main window.** `RNNSceneDelegate` attaches RNN's main window to the scene when it connects. `delegate.window` still points to the same window, so libraries that read `UIApplication.shared.delegate?.window` keep working. Overlays and bottom-tab preload windows are created in the same scene, so they appear under the scene life cycle.
+- **Deep links** are forwarded to React Native's `Linking` by `RNNSceneDelegate`. See [Deep Linking → UIScene life cycle](deep-linking#uiscene-life-cycle) for the cold-start behavior and a limitation on React Native 0.88 and above.
+- **Single scene only.** `UIApplicationSupportsMultipleScenes` must be `false`.
+
+### Apps created from the React Native 0.88 template
+
+The React Native 0.88 template ships its own `SceneDelegate` that starts React Native itself (`startReactNativeWithModuleName:inWindow:connectionOptions:`). RNN does not use that API: the React host is still created in `RNNAppDelegate`. Replace the template's `SceneDelegate` with a subclass of `RNNSceneDelegate` as shown above, and don't start React Native from it.
+
 ## Troubleshooting
 
 ### Build app with gradle command

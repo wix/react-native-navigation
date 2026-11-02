@@ -5,6 +5,7 @@
 #import "RNNConvert.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "RNNErrorHandler.h"
+#import "RNNSceneUtils.h"
 #import "React/RCTI18nUtil.h"
 #import "UINavigationController+RNNCommands.h"
 #import "UIViewController+RNNOptions.h"
@@ -140,8 +141,7 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *defaultOptions = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
     [_controllerFactory setDefaultOptions:defaultOptions];
 
-    UIViewController *rootViewController =
-        UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *rootViewController = _mainWindow.rootViewController;
     [RNNDefaultOptionsHelper recursivelySetDefaultOptions:defaultOptions
                                      onRootViewController:rootViewController];
 
@@ -478,8 +478,9 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
 
     __weak UIViewController *weakOverlayVC = overlayVC;
     [overlayVC setReactViewReadyCallback:^{
-      UIWindow *overlayWindow =
-          [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+      UIWindowScene *scene = RNNMainWindowScene();
+      CGRect frame = scene ? scene.coordinateSpace.bounds : [[UIScreen mainScreen] bounds];
+      UIWindow *overlayWindow = [RNNOverlayWindow rnn_windowWithFrame:frame windowScene:scene];
       overlayWindow.rootViewController = weakOverlayVC;
       if ([weakOverlayVC.resolveOptionsWithDefault.overlay.handleKeyboardEvents withDefault:NO]) {
           [self->_overlayManager showOverlayWindowAsKeyWindow:overlayWindow];

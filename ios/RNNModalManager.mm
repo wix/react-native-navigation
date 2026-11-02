@@ -1,6 +1,7 @@
 #import "RNNModalManager.h"
 #import "RNNComponentViewController.h"
 #import "RNNConvert.h"
+#import "ReactNativeNavigation.h"
 #import "ScreenAnimationController.h"
 #import "ScreenReversedAnimationController.h"
 #import "UIViewController+LayoutProtocol.h"
@@ -255,7 +256,7 @@
 }
 
 - (UIViewController *)rootViewController {
-    return UIApplication.sharedApplication.delegate.window.rootViewController;
+    return [ReactNativeNavigation mainWindow].rootViewController;
 }
 
 - (UIViewController *)topPresentedVC {

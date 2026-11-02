@@ -1,4 +1,5 @@
 #import "RNNBackButtonOptions.h"
+#import "RNNSceneUtils.h"
 #import "RNNBottomTabOptions.h"
 #import "RNNNavigationOptions.h"
 #import "UIViewController+RNNOptions.h"
@@ -164,7 +165,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
         if (!curBlurView) {
             UIVisualEffectView *blur = [[UIVisualEffectView alloc]
                 initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
-            blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+            blur.frame = RNNStatusBarFrame();
             blur.tag = BLUR_STATUS_TAG;
             [self.view addSubview:blur];
         }

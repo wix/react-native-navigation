@@ -1,6 +1,8 @@
 #import "RNNReactView.h"
 #import "RNNAppDelegate.h"
+#if __has_include(<React/RCTRootContentView.h>)
 #import <React/RCTRootContentView.h>
+#endif
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React-RuntimeApple/ReactCommon/RCTHost.h>

@@ -1,7 +1,12 @@
 import Utils from './Utils';
 import TestIDs from '../src/testIDs';
 
-const { elementById, sleep } = Utils;
+const { elementById, openURL, sleep } = Utils;
+
+// OS-delivered links and notification taps reach the app asynchronously, outside Detox's
+// synchronization, so wait for the modal instead of expecting it immediately.
+const expectDeepLinkModal = () =>
+  waitFor(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible().withTimeout(10000);
 
 const NOTIFICATION_PAYLOAD = {
   trigger: { type: 'push' },
@@ -27,8 +32,8 @@ describe.e2e('Deep linking', () => {
   });
 
   it('deep-link modal can be dismissed via the close button', async () => {
-    await device.openURL({ url: 'rnnplayground://pushed/42' });
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await openURL('rnnplayground://pushed/42');
+    await expectDeepLinkModal();
     await elementById(TestIDs.DEEP_LINK_CLOSE_BTN).tap();
     await expect(elementById(TestIDs.NAVIGATION_SCREEN)).toBeVisible();
   });
@@ -41,20 +46,20 @@ describe.e2e('Deep linking', () => {
   });
 
   it('unmatched URL does not present a modal and does not crash', async () => {
-    await device.openURL({ url: 'rnnplayground://nope' });
+    await openURL('rnnplayground://nope');
     await sleep(500);
     await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
     await expect(elementById(TestIDs.NAVIGATION_SCREEN)).toBeVisible();
   });
 
   it('OS-delivered URL while running opens the modal', async () => {
-    await device.openURL({ url: 'rnnplayground://pushed/77' });
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await openURL('rnnplayground://pushed/77');
+    await expectDeepLinkModal();
   });
 
   it('OS-delivered URL with query params opens the modal (reserved keys filtered)', async () => {
-    await device.openURL({ url: 'rnnplayground://pushed/77?ref=test&source=push' });
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await openURL('rnnplayground://pushed/77?ref=test&source=push');
+    await expectDeepLinkModal();
   });
 
   it('cold-start deep link presents the modal after root mounts', async () => {
@@ -70,7 +75,7 @@ describe.e2e('Deep linking', () => {
       return;
     }
     await device.sendUserNotification(NOTIFICATION_PAYLOAD);
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await expectDeepLinkModal();
   });
 
   it('tapping a notification with a nested url payload builds a multi-screen modal', async () => {
@@ -78,7 +83,7 @@ describe.e2e('Deep linking', () => {
       return;
     }
     await device.sendUserNotification(NESTED_NOTIFICATION_PAYLOAD);
-    await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await expectDeepLinkModal();
   });
 
   it('cold-start notification tap presents the modal after root mounts', async () => {

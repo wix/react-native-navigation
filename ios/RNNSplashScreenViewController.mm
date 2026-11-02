@@ -7,9 +7,8 @@
 + (void)showOnWindow:(UIWindow *)window {
     UIViewController *viewController = [self getSplashScreenVC];
     if (viewController != nil) {
-        id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-        appDelegate.window.rootViewController = viewController;
-        [appDelegate.window makeKeyAndVisible];
+        window.rootViewController = viewController;
+        [window makeKeyAndVisible];
     }
 }
 

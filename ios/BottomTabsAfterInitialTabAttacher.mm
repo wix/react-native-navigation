@@ -1,4 +1,5 @@
 #import "BottomTabsAfterInitialTabAttacher.h"
+#import "RNNSceneUtils.h"
 #import "UITabBarController+RNNUtils.h"
 
 @implementation BottomTabsAfterInitialTabAttacher
@@ -8,7 +9,7 @@
       [bottomTabsController readyForPresentation];
       for (UIViewController *viewController in bottomTabsController.deselectedViewControllers) {
         dispatch_async(dispatch_get_main_queue(), ^{
-          UIWindow *preloadWindow = [[UIWindow alloc] initWithFrame:CGRectZero];
+          UIWindow *preloadWindow = [UIWindow rnn_windowInMainWindowSceneWithFrame:CGRectZero];
           // Clip the preload window so the deselected tab's full-screen reactView,
           // which is briefly hosted here while it renders, can't draw outside the
           // zero-frame window and flicker over the already-visible selected tab.

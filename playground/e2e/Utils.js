@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { config as detoxConfig } from 'detox/internals';
 import { PNG } from 'pngjs';
 import { ssim } from 'ssim.js';
 
@@ -56,7 +57,33 @@ async function retry({ tries = 3, delay = 1000 }, func) {
   throw new Error(`Failed even after ${tries} attempts`);
 }
 
+// The `*.scene` configurations run the playgroundScene app (UIScene life cycle).
+const isSceneLifecycle = () => /\.scene$/.test(detoxConfig.configurationName || '');
+
 const utils = {
+  isSceneLifecycle,
+  /**
+   * Opens a URL in the running app. Detox's `device.openURL` calls the app delegate's
+   * `application:openURL:options:` directly, which UIKit never does under the UIScene life
+   * cycle. Scene runs instead tap a notification carrying the URL: the playground re-opens its
+   * own scheme, so iOS delivers it to `scene:openURLContexts:` with a real `UIOpenURLContext`.
+   * (`xcrun simctl openurl` takes the same path but shows an "Open in ...?" system prompt that
+   * Detox can't accept.)
+   */
+  openURL: async (url) => {
+    if (device.getPlatform() === 'ios' && isSceneLifecycle()) {
+      await device.sendUserNotification({
+        trigger: { type: 'push' },
+        title: 'Open URL',
+        body: url,
+        payload: { url },
+        'content-available': 0,
+        'action-identifier': 'default',
+      });
+      return;
+    }
+    await device.openURL({ url });
+  },
   elementByLabel: (label) => {
     // uncomment for running tests with rn's new arch
     // return element(by.label(label)).atIndex(0);

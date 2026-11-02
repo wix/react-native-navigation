@@ -1,4 +1,5 @@
 #import "RNNLayoutOptions.h"
+#import "ReactNativeNavigation.h"
 #import "UIViewController+RNNOptions.h"
 #import <React/RCTConvert.h>
 
@@ -38,7 +39,7 @@
     NSUInteger supportedOrientationsMask = 0;
     if (!orientationsArray || [self.orientation isEqual:@"default"]) {
         return [[UIApplication sharedApplication]
-            supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
+            supportedInterfaceOrientationsForWindow:[ReactNativeNavigation mainWindow]];
     } else {
         for (NSString *orientation in orientationsArray) {
             if ([orientation isEqualToString:@"all"]) {

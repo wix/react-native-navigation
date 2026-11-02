@@ -92,7 +92,16 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	NSString *urlString = userInfo[@"url"];
 	if ([urlString isKindOfClass:[NSString class]]) {
 		NSURL *url = [NSURL URLWithString:urlString];
-		[self dispatchDeepLinkURL:url];
+		if ([NSBundle.mainBundle objectForInfoDictionaryKey:@"UIApplicationSceneManifest"]) {
+			// UIScene life cycle (`playgroundScene` target): React Native >= 0.88 only
+			// accepts links that iOS delivered to the scene delegate, so
+			// `dispatchDeepLinkURL:` can't deliver this app-generated URL. Opening our
+			// own custom scheme makes iOS deliver it to
+			// `-[RNNSceneDelegate scene:openURLContexts:]` like any other link.
+			[UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+		} else {
+			[self dispatchDeepLinkURL:url];
+		}
 	}
 	completionHandler();
 }

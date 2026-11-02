@@ -8,7 +8,6 @@
 #import <React/RCTCxxBridgeDelegate.h>
 #endif
 #import <React/RCTLegacyViewManagerInteropComponentView.h>
-#import <React/RCTLinkingManager.h>
 #import <React/RCTRootView.h>
 #import <React/RCTSurfacePresenter.h>
 #if __has_include(<React/RCTSurfacePresenterStub.h>)
@@ -38,13 +37,8 @@
 
 #import <React/RCTComponentViewFactory.h>
 
-// Deep-link URLs that arrive (openURL, universal link, or external dispatch)
-// before the React runtime is ready are queued here and flushed when Fabric
-// posts `RCTContentDidAppearNotification` — by which point
-// `RCTLinkingManager` is instantiated and JS subscribers are listening.
-static NSMutableArray<NSURL *> *gRNNPendingDeepLinkURLs = nil;
-static BOOL gRNNReactRuntimeReady = NO;
-
+#import "RNNDeepLinkDispatcher.h"
+#import "RNNReactNativeVersion.h"
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
@@ -92,16 +86,29 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self.reactNativeDelegate];
     self.reactNativeDelegate.dependencyProvider = [RCTAppDependencyProvider new];
     
+#if !RNN_RN_VERSION_88_OR_NEWER
     RCTAppSetupPrepareApp(application, YES);
     RCTEnableTurboModuleInterop(YES);
     RCTEnableTurboModuleInteropBridgeProxy(YES);
+#else
+    // RN 0.88 removed RCTAppSetupPrepareApp (TurboModules are always on) and the interop bridge
+    // proxy. Keep the rest of what RCTAppSetupPrepareApp did.
+#if DEBUG
+    application.idleTimerDisabled = YES;
+#endif
+#ifndef RCT_REMOVE_LEGACY_MODULE_INTEROP
+    RCTEnableTurboModuleInterop(YES);
+#endif
+#endif
     
     self.reactNativeFactory.rootViewFactory.reactHost = [self.reactNativeFactory.rootViewFactory createReactHost:launchOptions];
     
     [ReactNativeNavigation bootstrapWithHost:self.reactNativeFactory.rootViewFactory.reactHost];
 #endif
     
-    [self rnn_installDeepLinkObservers];
+    // Created now so it observes the first `RCTContentDidAppearNotification` and can flush links
+    // that arrive before the React runtime is ready.
+    [RNNDeepLinkDispatcher sharedDispatcher];
     
     return YES;
 }
@@ -131,41 +138,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 - (void)dispatchDeepLinkURL:(NSURL *)url {
-    if (url == nil) {
-        return;
-    }
-    if (gRNNReactRuntimeReady) {
-        [RCTLinkingManager application:[UIApplication sharedApplication]
-                               openURL:url
-                               options:@{}];
-        return;
-    }
-    if (gRNNPendingDeepLinkURLs == nil) {
-        gRNNPendingDeepLinkURLs = [NSMutableArray array];
-    }
-    [gRNNPendingDeepLinkURLs addObject:url];
-}
-
-- (void)rnn_installDeepLinkObservers {
-    // `RCTContentDidAppearNotification` is posted by Fabric's root view
-    // once content has rendered. RNN forces bridgeless/new-arch, so the
-    // legacy `RCTJavaScriptDidLoadNotification` never fires; we rely on
-    // this Fabric signal exclusively.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(rnn_handleReactRuntimeReady:)
-                                                 name:RCTContentDidAppearNotification
-                                               object:nil];
-}
-
-- (void)rnn_handleReactRuntimeReady:(NSNotification *)notification {
-    gRNNReactRuntimeReady = YES;
-    NSArray<NSURL *> *pending = [gRNNPendingDeepLinkURLs copy];
-    [gRNNPendingDeepLinkURLs removeAllObjects];
-    for (NSURL *url in pending) {
-        [RCTLinkingManager application:[UIApplication sharedApplication]
-                               openURL:url
-                               options:@{}];
-    }
+    [ReactNativeNavigation dispatchDeepLinkURL:url];
 }
 
 
