@@ -51,8 +51,7 @@
     if (options.bottomTabs.barStyle.hasValue) {
         [bottomTabs setTabBarStyle:[RNNConvert UIBarStyle:options.bottomTabs.barStyle.get]];
     }
-    [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor withDefault:nil]
-                   translucent:[withDefault.bottomTabs.translucent withDefault:NO]];
+    [self applyBackgroundOptions:options];
     [self applyTabBarBorder:withDefault.bottomTabs];
     [self applyTabBarShadow:withDefault.bottomTabs.shadow];
 }
@@ -137,6 +136,12 @@
             .CGColor;
     self.tabBar.layer.shadowOpacity =
         [options.opacity withDefault:@(self.tabBar.layer.shadowOpacity)].floatValue;
+}
+
+- (void)applyBackgroundOptions:(RNNNavigationOptions *)options {
+    RNNNavigationOptions *withDefault = [options withDefault:[self defaultOptions]];
+    [self applyBackgroundColor:[withDefault.bottomTabs.backgroundColor withDefault:nil]
+                   translucent:[withDefault.bottomTabs.translucent withDefault:NO]];
 }
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent {

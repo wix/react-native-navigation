@@ -60,6 +60,15 @@ static const void *RNNOriginalTabBarViewAccessibilityIdentifierKey =
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (BOOL)rnn_isTabBarVertical {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+    if (@available(iOS 27.1, *)) {
+        return self.traitCollection.verticalBarEdge != UIVerticalBarEdgeUnspecified;
+    }
+#endif
+    return NO;
+}
+
 - (BOOL)rnn_applyTabBarItemTestIDs {
     NSArray<UITabBarItem *> *items = self.tabBar.items ?: @[];
     BOOL appliedAllKnownTestIDs = YES;

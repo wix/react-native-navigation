@@ -22,6 +22,12 @@
 
 - (BOOL)rnn_isTabBarHidden;
 
+/**
+ * YES when UIKit renders the tab bar in the vertical bar (iPhone Duo, iOS 27.1+). `tabBar` is then
+ * an empty placeholder along the leading or trailing edge, and the tabs are drawn by the system.
+ */
+- (BOOL)rnn_isTabBarVertical;
+
 - (void)syncTabBarItemTestIDs;
 
 @end

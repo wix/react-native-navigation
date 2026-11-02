@@ -85,9 +85,24 @@
         [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                       action:@selector(handleLongPressGesture:)];
     [self.tabBar addGestureRecognizer:self.longPressRecognizer];
+    [self registerForVerticalBarChanges];
 
     _didFinishSetup = YES;
     return self;
+}
+
+// iPhone Duo: the tab bar moves to the vertical bar and back as the scene's size changes.
+- (void)registerForVerticalBarChanges {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+    if (@available(iOS 27.1, *)) {
+        [self registerForTraitChanges:UITraitCollection.systemTraitsAffectingVerticalBarEdge
+                          withHandler:^(RNNBottomTabsController *controller,
+                                        UITraitCollection *previousCollection) {
+                            [(BottomTabsBasePresenter *)controller.presenter
+                                applyBackgroundOptions:controller.resolveOptions];
+                          }];
+    }
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -146,6 +161,11 @@
 - (void)createTabBarItems:(NSArray<UIViewController *> *)childViewControllers {
     _bottomTabPresenter.tabCreator.searchRoleUsed = NO;
     [self resolveCustomItemViewMode:childViewControllers];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+    if (@available(iOS 27.1, *)) {
+        [self setNeedsUpdateOfVerticalBarConfiguration];
+    }
+#endif
     _bottomTabPresenter.useCustomItemViews = _useCustomItemViews;
     for (UIViewController *child in childViewControllers) {
         [_bottomTabPresenter applyOptions:child.resolveOptions child:child];
@@ -204,6 +224,19 @@
 
     _useCustomItemViews = YES;
 }
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+// The custom row is a horizontal bar laid out over the native one, which the vertical bar can't
+// host, so keep the tab bar horizontal while it's in use.
+- (UIVerticalBarBehavior)preferredVerticalBarBehavior API_AVAILABLE(ios(27.1)) {
+    return _useCustomItemViews ? UIVerticalBarBehaviorDisabled
+                               : [super preferredVerticalBarBehavior];
+}
+
+- (UIViewController *)childViewControllerForPreferredVerticalBarBehavior API_AVAILABLE(ios(27.1)) {
+    return _useCustomItemViews ? nil : [super childViewControllerForPreferredVerticalBarBehavior];
+}
+#endif
 
 - (void)buildCustomTabItemViews:(NSArray<UIViewController *> *)childViewControllers {
     [self destroyCustomTabItemViews];
@@ -367,6 +400,10 @@
 }
 
 - (CGFloat)getBottomTabsHeight {
+    // A vertical tab bar runs along the side and takes no height from the bottom of the screen.
+    if ([self rnn_isTabBarVertical]) {
+        return 0;
+    }
     return self.tabBar.frame.size.height;
 }
 
