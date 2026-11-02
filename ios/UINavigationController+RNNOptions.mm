@@ -64,6 +64,33 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 }
 
 - (UIView *)rnn_findBackButtonView {
+    return [self rnn_findNavigationBarBackButtonView] ?: [self rnn_findVerticalBarBackButtonView];
+}
+
+- (BOOL)rnn_isInVerticalBar {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+    if (@available(iOS 27.1, *)) {
+        return self.traitCollection.verticalBarEdge != UIVerticalBarEdgeUnspecified;
+    }
+#endif
+    return NO;
+}
+
+// iPhone Duo: the vertical bar hosts the back button outside the navigation bar, and shows only
+// the top stack's back button.
+- (UIView *)rnn_findVerticalBarBackButtonView {
+    if (![self rnn_isInVerticalBar] || self.viewControllers.count < 2)
+        return nil;
+
+    SEL isBackButtonSelector = NSSelectorFromString(@"isBackButton");
+    return [self.view.window findDescendantByClass:NSClassFromString(@"_UIButtonBarButton")
+                                       passingTest:^BOOL(UIView *view) {
+                                         return [view respondsToSelector:isBackButtonSelector] &&
+                                                [[view valueForKey:@"backButton"] boolValue];
+                                       }];
+}
+
+- (UIView *)rnn_findNavigationBarBackButtonView {
     UIView *contentView =
         [self.navigationBar findChildByClass:NSClassFromString(@"_UINavigationBarContentView")];
     if (!contentView) {
