@@ -17,6 +17,7 @@ const {
     getJestPresetVersion,
     getReanimatedOverride,
     getWorkletsOverride,
+    getGestureHandlerOverride,
     shouldRemoveWorklets,
     getTestingLibraryOverride,
 } = require('./versionMapping');
@@ -38,7 +39,12 @@ const CLI_PACKAGES = [
  * Fetch and compute the versions we need in order to update package.json files.
  */
 async function extractVersions(rnVersion) {
-    const registryUrl = `https://registry.npmjs.org/react-native/${rnVersion}`;
+    const registry = (
+        process.env.YARN_NPM_REGISTRY_SERVER ||
+        process.env.npm_config_registry ||
+        'https://registry.npmjs.org'
+    ).replace(/\/+$/, '');
+    const registryUrl = `${registry}/react-native/${rnVersion}`;
     const res = await fetch(registryUrl);
     if (!res.ok) {
         throw new Error(`Failed to fetch ${registryUrl}: ${res.status} ${res.statusText}`);
@@ -128,6 +134,11 @@ async function updatePackageJsonAt(packageJsonPath, versions) {
     const workletsOverride = getWorkletsOverride(rnMinor);
     if (workletsOverride && packageJson.devDependencies['react-native-worklets'] !== undefined) {
         packageJson.devDependencies['react-native-worklets'] = workletsOverride;
+    }
+
+    const gestureHandlerOverride = getGestureHandlerOverride(rnMinor);
+    if (gestureHandlerOverride && packageJson.devDependencies['react-native-gesture-handler'] !== undefined) {
+        packageJson.devDependencies['react-native-gesture-handler'] = gestureHandlerOverride;
     }
 
     if (shouldRemoveWorklets(rnMinor)) {

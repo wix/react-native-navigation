@@ -69,6 +69,15 @@
  * when your app receives a deep link from a source RNN can't intercept
  * (e.g. a custom `UNUserNotificationCenterDelegate`, a third-party push
  * SDK callback, etc.).
+ *
+ * Forwards to `+[ReactNativeNavigation dispatchDeepLinkURL:]`, the queue
+ * `RNNSceneDelegate` shares.
+ *
+ * UIScene life cycle on React Native >= 0.88: React Native only accepts
+ * links that come with the `UIOpenURLContext` / `NSUserActivity` iOS
+ * delivered, so URLs passed here are logged and dropped. OS-delivered links
+ * keep working through `RNNSceneDelegate`. See "Adopting UIScene" in the
+ * installation docs.
  */
 - (void)dispatchDeepLinkURL:(NSURL *)url;
 

@@ -3,6 +3,8 @@ const exec = require('shell-utils').exec;
 
 const android = includes(process.argv, '--android');
 const release = includes(process.argv, '--release');
+// Run the unit tests hosted by `playgroundScene` (UIScene life cycle).
+const scene = includes(process.argv, '--scene');
 
 function run() {
   if (android) {
@@ -25,7 +27,7 @@ function runAndroidUnitTests() {
 
 function runIosUnitTests() {
   exec.execSync('yarn run pod-install');
-  testTarget('playground', 'iPhone 13', '15.5');
+  testTarget(scene ? 'playgroundScene' : 'playground', 'iPhone 13', '15.5');
 }
 
 function testTarget(scheme, device, OS = 'latest') {

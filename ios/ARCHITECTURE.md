@@ -30,9 +30,41 @@ Base class that user's AppDelegate must extend. Handles React Native and navigat
 - Handles RN version differences (0.77, 0.78, 0.79+) via compile-time macros
 - **Deep linking plumbing**:
   - Implements `application:openURL:options:` and `application:continueUserActivity:restorationHandler:`; both call `-dispatchDeepLinkURL:`.
-  - `-dispatchDeepLinkURL:` posts `RCTOpenURLNotification` directly if the React runtime is ready, otherwise enqueues the URL.
-  - Observes `RCTContentDidAppearNotification` (the Fabric/bridgeless signal) to flush the queue. This solves the cold-start race where URLs (push notifications, OS link launches) arrive before `RCTLinkingManager` is listening.
-  - Subclasses can call `-dispatchDeepLinkURL:` manually from notification delegates or any other URL source; the queueing behavior is reused automatically.
+  - `-dispatchDeepLinkURL:` forwards to `+[ReactNativeNavigation dispatchDeepLinkURL:]`, which hands the URL to the shared `RNNDeepLinkDispatcher` queue (see below). If the React runtime is ready the link is delivered to `RCTLinkingManager` right away, otherwise it is enqueued.
+  - `RNNDeepLinkDispatcher` observes `RCTContentDidAppearNotification` (the Fabric/bridgeless signal) to flush the queue. This solves the cold-start race where URLs (push notifications, OS link launches) arrive before `RCTLinkingManager` is listening. `RNNAppDelegate` instantiates it in `application:didFinishLaunchingWithOptions:` so the first notification is observed.
+  - Subclasses can call `-dispatchDeepLinkURL:` manually from notification delegates or any other URL source; the queueing behavior is reused automatically. Under the UIScene life cycle on RN >= 0.88 this does not work for app-generated URLs, see the limitation below.
+
+### RNNDeepLinkDispatcher
+**Files**: `RNNDeepLinkDispatcher.h/mm`
+
+The single deep-link queue shared by `RNNAppDelegate` and `RNNSceneDelegate`. It is used through the `ReactNativeNavigation` class methods `+dispatchDeepLinkURL:`, `+dispatchOpenURLContexts:inScene:` and `+dispatchUserActivity:inScene:`.
+
+- Each entry keeps what iOS delivered: an `NSURL`, a set of `UIOpenURLContext`s (with the scene), or a browsing-web `NSUserActivity` (with the scene). Non-browsing-web activities are ignored.
+- Replay rules (`deliver:`):
+  - RN >= 0.88 (`RNN_RN_VERSION_88_OR_NEWER`, from `RNNReactNativeVersion.h`) in a scene app (`RCTIsSceneDelegateApp()`): `+[RCTLinkingManager scene:openURLContexts:]` (one context per call, since RN only forwards the first) and `+[RCTLinkingManager scene:continueUserActivity:]`, with the original objects.
+  - Otherwise: `+[RCTLinkingManager application:openURL:options:]`.
+- **Limitation**: on RN >= 0.88 in a scene app, a bare `NSURL` (from `-dispatchDeepLinkURL:`) has no `UIOpenURLContext`. React Native's app-delegate entry points return `NO` and drop it; the dispatcher logs a warning (`RCTLogWarn`). On RN < 0.88 the same call keeps working under scenes.
+
+### RNNSceneDelegate / UIScene life cycle
+**Files**: `RNNSceneDelegate.h/mm`, `RNNSceneUtils.h/mm`, `RNNReactNativeVersion.h`
+
+Apps built with the iOS 27 SDK must adopt the UIScene life cycle. `RNNSceneDelegate` is the scene counterpart of `RNNAppDelegate`; apps subclass both. The app delegate still creates the React host (`RNNAppDelegate` is unchanged in that respect); RN 0.88's `startReactNativeWithModuleName:inWindow:connectionOptions:` is not used. Apps without `UIApplicationSceneManifest` in `Info.plist` are unaffected (`RNNUsesSceneLifecycle()`).
+
+```objc
+// SceneDelegate.h - User extends RNNSceneDelegate
+#import <ReactNativeNavigation/RNNSceneDelegate.h>
+@interface SceneDelegate : RNNSceneDelegate
+@end
+```
+
+**What RNNSceneDelegate does** (single scene only; overrides must call `super`):
+- `scene:willConnectToSession:options:` calls `+[ReactNativeNavigation attachMainWindowToScene:]`, sets `self.window` to `+[ReactNativeNavigation mainWindow]`, records `launchURLContexts` / `launchUserActivities` (`launchURL` is derived from them) and calls `-dispatchLaunchLinksFromConnectionOptions:scene:`.
+- `scene:openURLContexts:` and `scene:continueUserActivity:` forward to `RNNDeepLinkDispatcher` through the `ReactNativeNavigation` class methods.
+- `-dispatchLaunchLinksFromConnectionOptions:scene:` handles cold start: under scenes iOS delivers the launch link only in the connection options, not through `scene:openURLContexts:`. The default implementation queues the URL contexts and browsing-web activities, so JS receives them as `Linking` `url` events. It is overridable. Note that `Linking.getInitialURL()` returns `null` under scenes, because the React host is created before the scene connects.
+
+**Main window**: `+[ReactNativeNavigation mainWindow]` returns `delegate.window` (creating and assigning one if needed), so libraries that read `delegate.window` keep working. `attachMainWindowToScene:` moves that window to the scene (or creates it with `initWithWindowScene:`) and makes it key and visible.
+
+**Scene-aware windows** (`RNNSceneUtils`): `RNNMainWindowScene()`, `RNNKeyWindow()`, `RNNStatusBarFrame()` and `+[UIWindow rnn_windowInMainWindowSceneWithFrame:]`. Overlay windows (`RNNOverlayManager`) and bottom-tab preload windows are created in the main window's scene; a window created with `initWithFrame:` never appears under scenes.
 
 ### ReactNativeNavigation Bootstrap
 **File**: `ReactNativeNavigation.h/mm`
@@ -88,6 +120,10 @@ ios/
 ├── RNNSplitViewController.h/mm  # Split view (iPad)
 ├── RNNModalManager.h/mm         # Modal presentation
 ├── RNNOverlayManager.h/mm       # Overlay management
+├── RNNSceneDelegate.h/mm        # Base scene delegate (UIScene life cycle)
+├── RNNSceneUtils.h/mm           # Scene-aware window creation and key window helpers
+├── RNNDeepLinkDispatcher.h/mm   # Shared deep-link queue and replay into RCTLinkingManager
+├── RNNReactNativeVersion.h      # Compile-time RN >= 0.88 gate
 ├── TurboModules/                # New architecture entry points
 │   ├── RNNTurboModule.h/mm      # TurboModule spec implementation
 │   ├── RNNTurboManager.h/mm     # Manager for host, window, external components

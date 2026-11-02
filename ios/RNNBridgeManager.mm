@@ -118,7 +118,7 @@
 	dispatch_async(dispatch_get_main_queue(), ^{
 	  [self->_overlayManager dismissAllOverlays];
 	  [self->_componentRegistry clear];
-	  UIApplication.sharedApplication.delegate.window.rootViewController = nil;
+	  self->_mainWindow.rootViewController = nil;
 	});
 }
 

@@ -1,4 +1,6 @@
 #import "Constants.h"
+#import "RNNSceneUtils.h"
+#import "ReactNativeNavigation.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation Constants
@@ -29,11 +31,11 @@
 }
 
 + (CGFloat)statusBarHeight {
-    return [UIApplication sharedApplication].statusBarFrame.size.height;
+    return RNNStatusBarFrame().size.height;
 }
 
 + (CGFloat)bottomTabsHeight {
-    return [UIApplication.sharedApplication.delegate.window.rootViewController getBottomTabsHeight];
+    return [[ReactNativeNavigation mainWindow].rootViewController getBottomTabsHeight];
 }
 
 + (NSString*)backButtonId {

@@ -50,6 +50,17 @@ target 'playground' do
       # :ccache_enabled => true
     )
     
+    # Xcode 27 rejects deployment targets below iOS 15.0; some pods (e.g. SDWebImage) still
+    # declare older ones. Raise them to React Native's minimum.
+    installer.pods_project.targets.each do |pod_target|
+      pod_target.build_configurations.each do |build_config|
+        deployment_target = build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if deployment_target && Gem::Version.new(deployment_target) < Gem::Version.new(min_ios_version_supported)
+          build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios_version_supported
+        end
+      end
+    end
+
     # Add Folly compiler flags to aggregate targets (app targets)
     # This is needed because Folly headers check for FOLLY_CFG_NO_COROUTINES to disable coroutines
     folly_compiler_flags = folly_flags()
@@ -62,6 +73,18 @@ target 'playground' do
       end
     end
   end
+end
+
+# Same app on the UIScene life cycle (Info-Scene.plist declares a scene manifest).
+target 'playgroundScene' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  pod 'HMSegmentedControl'
 end
 
 target 'NavigationTests' do
@@ -87,6 +110,18 @@ target 'NavigationIOS12Tests' do
 end
 
 target 'SnapshotTests' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  pod 'OCMock'
+end
+
+# NavigationTests hosted by playgroundScene, so the unit tests also run under the UIScene life cycle.
+target 'NavigationSceneTests' do
   config = use_native_modules!
 
   use_react_native!(

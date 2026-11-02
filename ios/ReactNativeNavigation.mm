@@ -3,6 +3,7 @@
 #import <React/RCTUIManager.h>
 
 #import "RNNBridgeManager.h"
+#import "RNNDeepLinkDispatcher.h"
 #import "RNNLayoutManager.h"
 #import "RNNSplashScreenViewController.h"
 
@@ -13,6 +14,8 @@
 #endif
 
 @property(nonatomic, strong) RNNBridgeManager *bridgeManager;
+
+@property(nonatomic, strong) UIWindow *window;
 
 @end
 
@@ -35,6 +38,30 @@
 #else
 	return [[ReactNativeNavigation sharedInstance].bridgeManager findComponentForId:componentId];
 #endif
+}
+
+#pragma mark - window
+
++ (UIWindow *)mainWindow {
+    return [[ReactNativeNavigation sharedInstance] mainWindow];
+}
+
++ (void)attachMainWindowToScene:(UIWindowScene *)scene {
+    [[ReactNativeNavigation sharedInstance] attachMainWindowToScene:scene];
+}
+
+#pragma mark - deep linking
+
++ (void)dispatchDeepLinkURL:(NSURL *)url {
+    [[RNNDeepLinkDispatcher sharedDispatcher] dispatchURL:url];
+}
+
++ (void)dispatchOpenURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts inScene:(UIScene *)scene {
+    [[RNNDeepLinkDispatcher sharedDispatcher] dispatchOpenURLContexts:URLContexts scene:scene];
+}
+
++ (void)dispatchUserActivity:(NSUserActivity *)userActivity inScene:(UIScene *)scene {
+    [[RNNDeepLinkDispatcher sharedDispatcher] dispatchUserActivity:userActivity scene:scene];
 }
 
 #pragma mark - turbomodules
@@ -106,12 +133,41 @@
 }
 
 - (UIWindow *)mainWindow {
-    UIWindow *keyWindow = UIApplication.sharedApplication.delegate.window;
-    if (!keyWindow) {
-        keyWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        UIApplication.sharedApplication.delegate.window = keyWindow;
+    UIWindow *window = [self appDelegateWindow];
+    if (window) {
+        self.window = window;
+        return window;
     }
-    return keyWindow;
+    if (!self.window) {
+        self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    }
+    [self assignWindowToAppDelegate:self.window];
+    return self.window;
+}
+
+- (void)attachMainWindowToScene:(UIWindowScene *)scene {
+    UIWindow *window = [self appDelegateWindow] ?: self.window;
+    if (window) {
+        window.windowScene = scene;
+        window.frame = scene.coordinateSpace.bounds;
+    } else {
+        window = [[UIWindow alloc] initWithWindowScene:scene];
+    }
+    self.window = window;
+    [self assignWindowToAppDelegate:window];
+    [window makeKeyAndVisible];
+}
+
+- (UIWindow *)appDelegateWindow {
+    id<UIApplicationDelegate> appDelegate = UIApplication.sharedApplication.delegate;
+    return [appDelegate respondsToSelector:@selector(window)] ? appDelegate.window : nil;
+}
+
+- (void)assignWindowToAppDelegate:(UIWindow *)window {
+    id<UIApplicationDelegate> appDelegate = UIApplication.sharedApplication.delegate;
+    if ([appDelegate respondsToSelector:@selector(setWindow:)]) {
+        appDelegate.window = window;
+    }
 }
 
 @end

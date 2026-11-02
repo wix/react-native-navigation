@@ -1,0 +1,10 @@
+  - label: ":ios: iOS (RN 0.88.0)"
+    env:
+      REACT_NATIVE_VERSION: 0.88.0
+    command:
+    - "nvm install"
+    - "./scripts/ci.ios.sh"
+    key: "ios_rn_88"
+    timeout_in_minutes: 60
+    artifact_paths: "/Users/builder/uibuilder/work/playground/artifacts/**/*"
+

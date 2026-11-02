@@ -1,6 +1,8 @@
 #import "RNNViewLocation.h"
 #import "RNNReactView.h"
+#if __has_include(<React/RCTSafeAreaView.h>)
 #import <React/RCTSafeAreaView.h>
+#endif
 
 @implementation RNNViewLocation
 

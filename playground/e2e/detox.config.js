@@ -1,3 +1,16 @@
+// `playground` runs on the app-delegate life cycle, `playgroundScene` (Info-Scene.plist) on the
+// UIScene life cycle. Same sources, same bundle id, so only one of them is installed at a time.
+// DETOX_IOS_DERIVED_DATA lets a second Xcode keep its own build products.
+const derivedDataPath = process.env.DETOX_IOS_DERIVED_DATA || 'ios/DerivedData/playground';
+const iosApp = (scheme, configuration) => {
+  const product = scheme.replace('_release', '');
+  return {
+    type: 'ios.app',
+    binaryPath: `${derivedDataPath}/Build/Products/${configuration}-iphonesimulator/${product}.app`,
+    build: `RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme ${scheme} -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration ${configuration} -derivedDataPath ${derivedDataPath} ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES`,
+  };
+};
+
 /** @type {Detox.DetoxConfig} */
 const config = {
   testRunner: {
@@ -21,8 +34,8 @@ const config = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 17 Pro Max',
-        os: '26.1',
+        type: process.env.DETOX_IOS_DEVICE || 'iPhone 17 Pro Max',
+        os: process.env.DETOX_IOS_OS || '26.1',
       },
     },
     emulator: {
@@ -47,16 +60,15 @@ const config = {
   },
   apps: {
     'ios.debug': {
-      type: 'ios.app',
-      binaryPath: 'ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app',
+      ...iosApp('playground', 'Debug'),
       start: 'react-native start',
-      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Debug -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
     },
-    'ios.release': {
-      type: 'ios.app',
-      binaryPath: 'ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app',
-      build: 'RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=YES',
+    'ios.release': iosApp('playground_release', 'Release'),
+    'ios.debug.scene': {
+      ...iosApp('playgroundScene', 'Debug'),
+      start: 'react-native start',
     },
+    'ios.release.scene': iosApp('playgroundScene_release', 'Release'),
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
@@ -88,6 +100,14 @@ const config = {
     },
     'ios.sim.release': {
       app: 'ios.release',
+      device: 'simulator',
+    },
+    'ios.sim.debug.scene': {
+      app: 'ios.debug.scene',
+      device: 'simulator',
+    },
+    'ios.sim.release.scene': {
+      app: 'ios.release.scene',
       device: 'simulator',
     },
     'android.emu.debug': {

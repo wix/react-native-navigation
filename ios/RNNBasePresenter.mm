@@ -2,6 +2,7 @@
 #import "DotIndicatorOptions.h"
 #import "RNNReactComponentRegistry.h"
 #import "RNNTabBarItemCreator.h"
+#import "ReactNativeNavigation.h"
 #import "UIViewController+LayoutProtocol.h"
 #import "UIViewController+RNNOptions.h"
 
@@ -49,8 +50,7 @@
     }
 
     if (withDefault.window.backgroundColor.hasValue) {
-        UIApplication.sharedApplication.delegate.window.backgroundColor =
-            withDefault.window.backgroundColor.get;
+        [ReactNativeNavigation mainWindow].backgroundColor = withDefault.window.backgroundColor.get;
     }
 }
 
@@ -79,8 +79,7 @@
     }
 
     if (mergeOptions.window.backgroundColor.hasValue) {
-        UIApplication.sharedApplication.delegate.window.backgroundColor =
-            withDefault.window.backgroundColor.get;
+        [ReactNativeNavigation mainWindow].backgroundColor = withDefault.window.backgroundColor.get;
     }
 
     if (mergeOptions.statusBar.visible.hasValue) {

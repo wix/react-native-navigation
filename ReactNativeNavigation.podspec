@@ -23,7 +23,8 @@ Pod::Spec.new do |s|
   s.exclude_files = "ios/ReactNativeNavigationTests/**/*.*", "ios/OCMock/**/*.*"
 
   s.public_header_files = [
-    'ios/RNNAppDelegate.h'
+    'ios/RNNAppDelegate.h',
+    'ios/RNNSceneDelegate.h'
   ]
 
   # Add Folly compiler flags to prevent coroutines header issues

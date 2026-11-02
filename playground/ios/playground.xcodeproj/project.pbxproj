@@ -7,9 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B7E15F7A42B60BCA7A623FC /* RNNDeepLinkDispatcherTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7AF9FF7CA561A88B24E6801 /* RNNDeepLinkDispatcherTest.mm */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		181AE5221FD3D152268AFCFA /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
+		19F79AE5CE69DFB61F528D87 /* BottomTabPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500E9FE62406A4E200C61231 /* BottomTabPresenterTest.mm */; };
+		2017BED719A12C97BADF9A7E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		204C9849BE879B1BAF40888D /* RNNModalHostViewManagerHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm */; };
+		22CC5468DAECC734EFFFF202 /* BottomTabsControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26292385888B003F36BA /* BottomTabsControllerTest.mm */; };
+		22F52260321031B26FD89333 /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B86D16415FBFD46405F72C83 /* SceneDelegate.mm */; };
+		2CE30C61925FC5D705E3E562 /* RNNBottomTabsAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5022EDCB240551EE00852BA6 /* RNNBottomTabsAppearancePresenterTest.mm */; };
+		2E8B0B23D923410BF75D66FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		2E8DD0E0CF11E260D5CA8A62 /* RNNComponentViewController+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */; };
+		301F33805DA221CFD8FA4646 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */; };
+		30329742FBF17C73C24CF412 /* RNNCommandsHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26412385888C003F36BA /* RNNCommandsHandlerTest.mm */; };
+		3706D410FFADE54410A315A6 /* TopBarAppearancePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50BCB27523F1A26600D6C8E5 /* TopBarAppearancePresenterTest.mm */; };
+		39203AAAAC27E380A18C009F /* RNNDotIndicatorPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.mm */; };
+		4192A085985676DCA7F3561E /* RNNBottomTabsController+Helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */; };
+		45604AED59DA89982DE94DA4 /* UIViewController+LayoutProtocolTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */; };
+		4A247E241B8A07E07593627B /* RNNSideMenuControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26372385888B003F36BA /* RNNSideMenuControllerTest.mm */; };
+		4D730A04031C2D2ADADD24D2 /* RNNComponentPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26352385888B003F36BA /* RNNComponentPresenterTest.mm */; };
+		4D888E11CB7B48C46F4294AA /* RNNUIBarButtonItemTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E52591341600B0502C /* RNNUIBarButtonItemTest.mm */; };
 		5006E16627974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5006E16527974DEA00D106A6 /* RNNModalHostViewManagerHandlerTest.mm */; };
 		5007B4312472CA390002AA4E /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
 		5007B4342472CBD40002AA4E /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
@@ -48,11 +67,41 @@
 		50C9A8D4240FB9D000BD699F /* RNNComponentViewController+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C9A8D3240FB9D000BD699F /* RNNComponentViewController+Utils.mm */; };
 		50CF233D240695B10098042D /* RNNBottomTabsController+Helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */; };
 		50FDEFBC258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */; };
+		5229B095E4EFB1F29160632A /* RNNRootViewControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.mm */; };
+		5A31B22A8FE7AC3D55626B54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		5AB2EF28AD5DA03A140D20D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 323095228F740613FD9372D1 /* PrivacyInfo.xcprivacy */; };
+		5B584C2419C872D593F4A55C /* RNNNativeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4302472CA390002AA4E /* RNNNativeViewController.mm */; };
+		5EBD470EB5C97A6DF170FDE3 /* RNNViewControllerFactoryTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26402385888C003F36BA /* RNNViewControllerFactoryTest.mm */; };
+		5F78719071E3891BE05B78E1 /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
+		63E2FD5105BA4F6DE63A827A /* RNNFontAttributesCreatorTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26282385888B003F36BA /* RNNFontAttributesCreatorTest.mm */; };
 		6B102251DCC578519C2DC6A4 /* libPods-NavigationIOS12Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */; };
+		7324C3CCF553FF7D1D386E87 /* RNNStackPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26312385888B003F36BA /* RNNStackPresenterTest.mm */; };
+		732C51F32BF9EBCAEA706920 /* RNNButtonsPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50C085E7259141E200B0502C /* RNNButtonsPresenterTest.mm */; };
+		743DBE335AAF4AA5821DFFF0 /* RNNModalManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26432385888C003F36BA /* RNNModalManagerTest.mm */; };
+		7918E5E94EA5A60586ED9F6C /* RNNCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5007B4322472CBD30002AA4E /* RNNCustomViewController.mm */; };
+		7C6B1102D8B81FEB7BA4705F /* TestingAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5078DF38242BE8AA007B0B4F /* TestingAppDelegate.mm */; };
+		87E3CFBF7A8474F2443BD9F0 /* UITabBarController+RNNOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263B2385888C003F36BA /* UITabBarController+RNNOptionsTest.mm */; };
+		8E35282AFC5953333D5C4021 /* RNNTestRootViewCreator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263D2385888C003F36BA /* RNNTestRootViewCreator.mm */; };
 		8EB60A6CB93C527CC6A870A2 /* libPods-SnapshotTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */; };
+		9866E38032BA57D76AC83176 /* RNNSideMenuParserTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262B2385888B003F36BA /* RNNSideMenuParserTest.mm */; };
+		998DB4E26CD97407A67E6F4D /* UIViewController+RNNOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263E2385888C003F36BA /* UIViewController+RNNOptionsTest.mm */; };
+		9CE0FEC2CACFC07C6CE60F78 /* libPods-playgroundScene.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3372AF0984E9482C6E0E6DAF /* libPods-playgroundScene.a */; };
 		9F9A3A9625260DA900AAAF37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */; };
 		A55BD66DD6404C20A23DA948 /* libPods-NavigationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */; };
+		A8A9713FC30CECBC85CB69AF /* RNNExternalComponentStoreTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26332385888B003F36BA /* RNNExternalComponentStoreTest.mm */; };
+		AB3BCD77D29BB1DD363F2753 /* RNNOverlayManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262D2385888B003F36BA /* RNNOverlayManagerTest.mm */; };
+		ACCEA27CBD142B1F66D97F5E /* RNNLayoutManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262A2385888B003F36BA /* RNNLayoutManagerTest.mm */; };
+		ACE684D5DC23DAABF19BE063 /* RNNExternalViewControllerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */; };
+		BF7A90BD0717FAB284DD2BF7 /* RNNSceneUtilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13E150C7CA26EDCE6B357730 /* RNNSceneUtilsTest.mm */; };
+		C3C7C0C4320C722329FA8BAC /* RNNSideMenuPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26362385888B003F36BA /* RNNSideMenuPresenterTest.mm */; };
+		C43A821B5A9DDFDA54A09E54 /* RNNNavigationOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26322385888B003F36BA /* RNNNavigationOptionsTest.mm */; };
+		CB08F68F66A3A30279A8348D /* RNNTransitionStateHolderTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26382385888B003F36BA /* RNNTransitionStateHolderTest.mm */; };
 		CC58376A9F3639711BDD0562 /* libPods-playground.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE713009EFB937EA4BF877 /* libPods-playground.a */; };
+		D2C93FD96055751929AB486B /* RNNTestBase.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D262F2385888B003F36BA /* RNNTestBase.mm */; };
+		D393FF19C2DA46210CFFA883 /* ColorParserTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 502734AE24F3E9110022163C /* ColorParserTest.mm */; };
+		D5EDF001DEAF7607EB34F846 /* RNNBasePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */; };
+		DB7E558BF41B893BE37FD7C2 /* RNNDeepLinkDispatcherTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7AF9FF7CA561A88B24E6801 /* RNNDeepLinkDispatcherTest.mm */; };
+		E27005F1DD8F61BB45B5583A /* RNNStackControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263F2385888C003F36BA /* RNNStackControllerTest.mm */; };
 		E58D26462385888C003F36BA /* UIViewController+LayoutProtocolTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26252385888B003F36BA /* UIViewController+LayoutProtocolTest.mm */; };
 		E58D26472385888C003F36BA /* RNNRootViewControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26262385888B003F36BA /* RNNRootViewControllerTest.mm */; };
 		E58D26482385888C003F36BA /* RNNDotIndicatorPresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26272385888B003F36BA /* RNNDotIndicatorPresenterTest.mm */; };
@@ -79,7 +128,15 @@
 		E58D265F2385888C003F36BA /* RNNBasePresenterTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */; };
 		E58D26602385888C003F36BA /* RNNModalManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26432385888C003F36BA /* RNNModalManagerTest.mm */; };
 		E58D26612385888C003F36BA /* RNNTestNoColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26452385888C003F36BA /* RNNTestNoColor.mm */; };
+		E8A6C112FCE2CB539DA67F26 /* RNNSearchBarOptionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */; };
+		E8F6D2080CED2DAEE2C3FA93 /* RNNTestNoColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D26452385888C003F36BA /* RNNTestNoColor.mm */; };
+		EA5F591F97E307D5030DB70E /* libPods-NavigationSceneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92026260B88C0D08435F764B /* libPods-NavigationSceneTests.a */; };
+		F028041BFCD037F6D70BBC44 /* RNNNavigationStackManagerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E58D263C2385888C003F36BA /* RNNNavigationStackManagerTest.mm */; };
 		F37104B81B0A0360736BF06D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 323095228F740613FD9372D1 /* PrivacyInfo.xcprivacy */; };
+		F82E6A0DE1CB6BC06BD2629A /* UIImage+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 501C86B8239FE9C400E0B631 /* UIImage+Utils.mm */; };
+		FC72607B31E37473C6EDA5FA /* RNNModalManagerEventHandlerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503F775B24D19D96005E596D /* RNNModalManagerEventHandlerTest.mm */; };
+		FE93CACC418AB05E451D7EF1 /* NSArray+utilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5064A387256A85EB00D7AC84 /* NSArray+utilsTest.mm */; };
+		FF679CD0E6C4564BACBE2F8A /* RNNSceneUtilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13E150C7CA26EDCE6B357730 /* RNNSceneUtilsTest.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,17 +161,30 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = playground;
 		};
+		E76BD13668554734AE239692 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A6C7B4C8B87FD75FBC2ED03;
+			remoteInfo = playgroundScene;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		018166CA278875468AC9373D /* Info-Scene.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Info-Scene.plist"; sourceTree = "<group>"; };
+		0338A243FD5C257B86EC70F3 /* Pods-NavigationSceneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationSceneTests.release.xcconfig"; path = "Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests.release.xcconfig"; sourceTree = "<group>"; };
+		0990C8764736E4D107C906AF /* SceneDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		0B4BB24A01F934B7CA581C95 /* Pods-NavigationSceneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationSceneTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		13E150C7CA26EDCE6B357730 /* RNNSceneUtilsTest.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = RNNSceneUtilsTest.mm; sourceTree = "<group>"; };
 		18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavigationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		323095228F740613FD9372D1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3372AF0984E9482C6E0E6DAF /* libPods-playgroundScene.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-playgroundScene.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33BE713009EFB937EA4BF877 /* libPods-playground.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-playground.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4259AF43A23D928FE78B4A3A /* Pods-NavigationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.release.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -166,14 +236,21 @@
 		50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RNNBottomTabsController+Helpers.mm"; sourceTree = "<group>"; };
 		50E4888A2427DA4800B11A8E /* StackOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StackOptionsTest.mm; sourceTree = "<group>"; };
 		50FDEFBB258F5C5D008C9C3C /* RNNSearchBarOptionsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RNNSearchBarOptionsTest.mm; sourceTree = "<group>"; };
+		514987135CB974CD61E05B3A /* NavigationSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		54D8091D3D6B3E0651451D8A /* playgroundScene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playgroundScene.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BCFCC02B7F812F00FCDB38 /* libLLVM.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLLVM.dylib; path = usr/lib/libLLVM.dylib; sourceTree = SDKROOT; };
 		60BCFCCA2B7F817400FCDB38 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F8E255E2E08F6ECE7DF6FE3 /* Pods-playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.release.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.release.xcconfig"; sourceTree = "<group>"; };
+		92026260B88C0D08435F764B /* libPods-NavigationSceneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavigationSceneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AF259D894F9BDAF24C11EE0F /* Pods-playgroundScene.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playgroundScene.debug.xcconfig"; path = "Target Support Files/Pods-playgroundScene/Pods-playgroundScene.debug.xcconfig"; sourceTree = "<group>"; };
 		B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playground.debug.xcconfig"; path = "Target Support Files/Pods-playground/Pods-playground.debug.xcconfig"; sourceTree = "<group>"; };
+		B7AF9FF7CA561A88B24E6801 /* RNNDeepLinkDispatcherTest.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = RNNDeepLinkDispatcherTest.mm; sourceTree = "<group>"; };
+		B86D16415FBFD46405F72C83 /* SceneDelegate.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = SceneDelegate.mm; sourceTree = "<group>"; };
 		C10F72071A488F801E1F1116 /* libPods-NavigationIOS12Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavigationIOS12Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E7FB91365E7BEF959ADB5F /* Pods-NavigationIOS12Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationIOS12Tests.debug.xcconfig"; path = "Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D95A99C17C65D674BA9DF26B /* Pods-NavigationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigationTests.release.xcconfig"; path = "Target Support Files/Pods-NavigationTests/Pods-NavigationTests.release.xcconfig"; sourceTree = "<group>"; };
+		DB6D07E3C061FFEC5C2D8466 /* Pods-playgroundScene.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playgroundScene.release.xcconfig"; path = "Target Support Files/Pods-playgroundScene/Pods-playgroundScene.release.xcconfig"; sourceTree = "<group>"; };
 		DC6478E8C795582800285530 /* Pods-SnapshotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.release.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.release.xcconfig"; sourceTree = "<group>"; };
 		E504607F227748EA00212BD8 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		E58D261B238587F4003F36BA /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +313,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6E6471D03AABDA3FF75C952B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA5F591F97E307D5030DB70E /* libPods-NavigationSceneTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4BD1C26FB260A433DD75AAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CE0FEC2CACFC07C6CE60F78 /* libPods-playgroundScene.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E58D2618238587F4003F36BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,6 +356,9 @@
 				9F9A3A9525260DA900AAAF37 /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				323095228F740613FD9372D1 /* PrivacyInfo.xcprivacy */,
+				0990C8764736E4D107C906AF /* SceneDelegate.h */,
+				B86D16415FBFD46405F72C83 /* SceneDelegate.mm */,
+				018166CA278875468AC9373D /* Info-Scene.plist */,
 			);
 			path = playground;
 			sourceTree = "<group>";
@@ -278,6 +374,10 @@
 				4AE37ACF6BFBAB211EE8E7E9 /* Pods-NavigationIOS12Tests.release.xcconfig */,
 				4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */,
 				DC6478E8C795582800285530 /* Pods-SnapshotTests.release.xcconfig */,
+				0B4BB24A01F934B7CA581C95 /* Pods-NavigationSceneTests.debug.xcconfig */,
+				0338A243FD5C257B86EC70F3 /* Pods-NavigationSceneTests.release.xcconfig */,
+				AF259D894F9BDAF24C11EE0F /* Pods-playgroundScene.debug.xcconfig */,
+				DB6D07E3C061FFEC5C2D8466 /* Pods-playgroundScene.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -373,6 +473,8 @@
 				E58D261B238587F4003F36BA /* NavigationTests.xctest */,
 				50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */,
 				507C80DA2429111F00F765F7 /* SnapshotTests.xctest */,
+				54D8091D3D6B3E0651451D8A /* playgroundScene.app */,
+				514987135CB974CD61E05B3A /* NavigationSceneTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -388,6 +490,8 @@
 				18EFC85255DC04E4B557855F /* libPods-NavigationTests.a */,
 				33BE713009EFB937EA4BF877 /* libPods-playground.a */,
 				E8B4CFA18A5ACE953124E129 /* libPods-SnapshotTests.a */,
+				92026260B88C0D08435F764B /* libPods-NavigationSceneTests.a */,
+				3372AF0984E9482C6E0E6DAF /* libPods-playgroundScene.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -437,6 +541,8 @@
 				50CF233C240695B10098042D /* RNNBottomTabsController+Helpers.mm */,
 				50647FE223E3196800B92025 /* RNNExternalViewControllerTests.mm */,
 				E58D261F238587F4003F36BA /* Info.plist */,
+				13E150C7CA26EDCE6B357730 /* RNNSceneUtilsTest.mm */,
+				B7AF9FF7CA561A88B24E6801 /* RNNDeepLinkDispatcherTest.mm */,
 			);
 			path = NavigationTests;
 			sourceTree = "<group>";
@@ -486,6 +592,27 @@
 			productReference = 13B07F961A680F5B00A75B9A /* playground.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2A6C7B4C8B87FD75FBC2ED03 /* playgroundScene */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B34DE66C8F09957F94E67D5D /* Build configuration list for PBXNativeTarget "playgroundScene" */;
+			buildPhases = (
+				106F5CA24E3FC74D843F01B8 /* [CP] Check Pods Manifest.lock */,
+				A9DC637132E8437CBCE0DCD7 /* Sources */,
+				26226D0CA01E63502125569A /* Resources */,
+				AB0D0A34F06D980A22A63CC7 /* Bundle React Native code and images */,
+				D4BD1C26FB260A433DD75AAA /* Frameworks */,
+				EE8CEB2E963845A490436332 /* [CP] Embed Pods Frameworks */,
+				1466438CA42C63E89C088F58 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = playgroundScene;
+			productName = playgroundScene;
+			productReference = 54D8091D3D6B3E0651451D8A /* playgroundScene.app */;
+			productType = "com.apple.product-type.application";
+		};
 		507C80D92429111F00F765F7 /* SnapshotTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 507C80E12429111F00F765F7 /* Build configuration list for PBXNativeTarget "SnapshotTests" */;
@@ -526,6 +653,26 @@
 			name = NavigationIOS12Tests;
 			productName = NavigationIOS12Tests;
 			productReference = 50996C5D23AA46DD00008F89 /* NavigationIOS12Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5D29559F5506BD13942C0103 /* NavigationSceneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC3B67285B4D28DFB5FDF469 /* Build configuration list for PBXNativeTarget "NavigationSceneTests" */;
+			buildPhases = (
+				F798B1F2CFC42E429FAA372C /* [CP] Check Pods Manifest.lock */,
+				05AF84683CFC643ADCC9DA37 /* Sources */,
+				6E6471D03AABDA3FF75C952B /* Frameworks */,
+				E60614EE86FDC67613FA20CF /* [CP] Embed Pods Frameworks */,
+				335F193034585CEB9B29D269 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B632EE5D4676575B033C6601 /* PBXTargetDependency */,
+			);
+			name = NavigationSceneTests;
+			productName = NavigationSceneTests;
+			productReference = 514987135CB974CD61E05B3A /* NavigationSceneTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E58D261A238587F4003F36BA /* NavigationTests */ = {
@@ -573,6 +720,9 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					5D29559F5506BD13942C0103 = {
+						TestTargetID = 2A6C7B4C8B87FD75FBC2ED03;
+					};
 					E58D261A238587F4003F36BA = {
 						CreatedOnToolsVersion = 11.2.1;
 						ProvisioningStyle = Automatic;
@@ -598,6 +748,8 @@
 				E58D261A238587F4003F36BA /* NavigationTests */,
 				50996C5C23AA46DD00008F89 /* NavigationIOS12Tests */,
 				507C80D92429111F00F765F7 /* SnapshotTests */,
+				2A6C7B4C8B87FD75FBC2ED03 /* playgroundScene */,
+				5D29559F5506BD13942C0103 /* NavigationSceneTests */,
 			);
 		};
 /* End PBXProject section */
@@ -610,6 +762,16 @@
 				9F9A3A9625260DA900AAAF37 /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				F37104B81B0A0360736BF06D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26226D0CA01E63502125569A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				301F33805DA221CFD8FA4646 /* LaunchScreen.storyboard in Resources */,
+				2E8B0B23D923410BF75D66FC /* Images.xcassets in Resources */,
+				5AB2EF28AD5DA03A140D20D0 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,6 +836,50 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		106F5CA24E3FC74D843F01B8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-playgroundScene-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1466438CA42C63E89C088F58 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-playgroundScene/Pods-playgroundScene-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playgroundScene/Pods-playgroundScene-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		27B55A5BA99FC03251B4E559 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -692,6 +898,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playground/Pods-playground-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		335F193034585CEB9B29D269 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4B4DD2714D02BEBC8F96EAD1 /* [CP] Copy Pods Resources */ = {
@@ -802,6 +1030,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationTests/Pods-NavigationTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AB0D0A34F06D980A22A63CC7 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../../node_modules/react-native/scripts/react-native-xcode.sh ./index.js\n";
+		};
 		AB7C03026562E29128D8F500 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -886,6 +1132,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E60614EE86FDC67613FA20CF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationSceneTests/Pods-NavigationSceneTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		EB65541BD6775B84E7C8AEDD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -908,9 +1174,102 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NavigationIOS12Tests/Pods-NavigationIOS12Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EE8CEB2E963845A490436332 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-playgroundScene/Pods-playgroundScene-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playgroundScene/Pods-playgroundScene-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F798B1F2CFC42E429FAA372C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NavigationSceneTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		05AF84683CFC643ADCC9DA37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B584C2419C872D593F4A55C /* RNNNativeViewController.mm in Sources */,
+				7918E5E94EA5A60586ED9F6C /* RNNCustomViewController.mm in Sources */,
+				998DB4E26CD97407A67E6F4D /* UIViewController+RNNOptionsTest.mm in Sources */,
+				C3C7C0C4320C722329FA8BAC /* RNNSideMenuPresenterTest.mm in Sources */,
+				D393FF19C2DA46210CFFA883 /* ColorParserTest.mm in Sources */,
+				3706D410FFADE54410A315A6 /* TopBarAppearancePresenterTest.mm in Sources */,
+				2E8DD0E0CF11E260D5CA8A62 /* RNNComponentViewController+Utils.mm in Sources */,
+				ACE684D5DC23DAABF19BE063 /* RNNExternalViewControllerTests.mm in Sources */,
+				E8A6C112FCE2CB539DA67F26 /* RNNSearchBarOptionsTest.mm in Sources */,
+				AB3BCD77D29BB1DD363F2753 /* RNNOverlayManagerTest.mm in Sources */,
+				F82E6A0DE1CB6BC06BD2629A /* UIImage+Utils.mm in Sources */,
+				D5EDF001DEAF7607EB34F846 /* RNNBasePresenterTest.mm in Sources */,
+				4A247E241B8A07E07593627B /* RNNSideMenuControllerTest.mm in Sources */,
+				22CC5468DAECC734EFFFF202 /* BottomTabsControllerTest.mm in Sources */,
+				204C9849BE879B1BAF40888D /* RNNModalHostViewManagerHandlerTest.mm in Sources */,
+				5229B095E4EFB1F29160632A /* RNNRootViewControllerTest.mm in Sources */,
+				732C51F32BF9EBCAEA706920 /* RNNButtonsPresenterTest.mm in Sources */,
+				87E3CFBF7A8474F2443BD9F0 /* UITabBarController+RNNOptionsTest.mm in Sources */,
+				8E35282AFC5953333D5C4021 /* RNNTestRootViewCreator.mm in Sources */,
+				63E2FD5105BA4F6DE63A827A /* RNNFontAttributesCreatorTest.mm in Sources */,
+				CB08F68F66A3A30279A8348D /* RNNTransitionStateHolderTest.mm in Sources */,
+				45604AED59DA89982DE94DA4 /* UIViewController+LayoutProtocolTest.mm in Sources */,
+				A8A9713FC30CECBC85CB69AF /* RNNExternalComponentStoreTest.mm in Sources */,
+				30329742FBF17C73C24CF412 /* RNNCommandsHandlerTest.mm in Sources */,
+				ACCEA27CBD142B1F66D97F5E /* RNNLayoutManagerTest.mm in Sources */,
+				4D888E11CB7B48C46F4294AA /* RNNUIBarButtonItemTest.mm in Sources */,
+				F028041BFCD037F6D70BBC44 /* RNNNavigationStackManagerTest.mm in Sources */,
+				743DBE335AAF4AA5821DFFF0 /* RNNModalManagerTest.mm in Sources */,
+				C43A821B5A9DDFDA54A09E54 /* RNNNavigationOptionsTest.mm in Sources */,
+				D2C93FD96055751929AB486B /* RNNTestBase.mm in Sources */,
+				FE93CACC418AB05E451D7EF1 /* NSArray+utilsTest.mm in Sources */,
+				2CE30C61925FC5D705E3E562 /* RNNBottomTabsAppearancePresenterTest.mm in Sources */,
+				FC72607B31E37473C6EDA5FA /* RNNModalManagerEventHandlerTest.mm in Sources */,
+				19F79AE5CE69DFB61F528D87 /* BottomTabPresenterTest.mm in Sources */,
+				E8F6D2080CED2DAEE2C3FA93 /* RNNTestNoColor.mm in Sources */,
+				4192A085985676DCA7F3561E /* RNNBottomTabsController+Helpers.mm in Sources */,
+				5EBD470EB5C97A6DF170FDE3 /* RNNViewControllerFactoryTest.mm in Sources */,
+				E27005F1DD8F61BB45B5583A /* RNNStackControllerTest.mm in Sources */,
+				39203AAAAC27E380A18C009F /* RNNDotIndicatorPresenterTest.mm in Sources */,
+				4D730A04031C2D2ADADD24D2 /* RNNComponentPresenterTest.mm in Sources */,
+				9866E38032BA57D76AC83176 /* RNNSideMenuParserTest.mm in Sources */,
+				7324C3CCF553FF7D1D386E87 /* RNNStackPresenterTest.mm in Sources */,
+				BF7A90BD0717FAB284DD2BF7 /* RNNSceneUtilsTest.mm in Sources */,
+				DB7E558BF41B893BE37FD7C2 /* RNNDeepLinkDispatcherTest.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		13B07F871A680F5B00A75B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -952,6 +1311,19 @@
 				50C9A8D1240EB95F00BD699F /* RNNBottomTabsController+Helpers.mm in Sources */,
 				50996C6923AA487800008F89 /* RNNTestRootViewCreator.mm in Sources */,
 				50996C6823AA477400008F89 /* RNNRootViewControllerTest.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9DC637132E8437CBCE0DCD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				181AE5221FD3D152268AFCFA /* RNNNativeViewController.mm in Sources */,
+				7C6B1102D8B81FEB7BA4705F /* TestingAppDelegate.mm in Sources */,
+				5F78719071E3891BE05B78E1 /* RNNCustomViewController.mm in Sources */,
+				2017BED719A12C97BADF9A7E /* AppDelegate.mm in Sources */,
+				5A31B22A8FE7AC3D55626B54 /* main.m in Sources */,
+				22F52260321031B26FD89333 /* SceneDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1001,6 +1373,8 @@
 				E58D26522385888C003F36BA /* RNNComponentPresenterTest.mm in Sources */,
 				E58D264C2385888C003F36BA /* RNNSideMenuParserTest.mm in Sources */,
 				E58D264F2385888C003F36BA /* RNNStackPresenterTest.mm in Sources */,
+				FF679CD0E6C4564BACBE2F8A /* RNNSceneUtilsTest.mm in Sources */,
+				0B7E15F7A42B60BCA7A623FC /* RNNDeepLinkDispatcherTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,6 +1391,12 @@
 			target = 13B07F861A680F5B00A75B9A /* playground */;
 			targetProxy = 50996C6223AA46DD00008F89 /* PBXContainerItemProxy */;
 		};
+		B632EE5D4676575B033C6601 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = playgroundScene;
+			target = 2A6C7B4C8B87FD75FBC2ED03 /* playgroundScene */;
+			targetProxy = E76BD13668554734AE239692 /* PBXContainerItemProxy */;
+		};
 		E58D2621238587F4003F36BA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* playground */;
@@ -1025,6 +1405,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0A998C66B94BFDB0ED08C42B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B4BB24A01F934B7CA581C95 /* Pods-NavigationSceneTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../ios/**",
+					"${PODS_ROOT}/Headers/Private",
+				);
+				INFOPLIST_FILE = NavigationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wix.NavigationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/playgroundScene.app/playgroundScene";
+			};
+			name = Debug;
+		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B484A10A046B0046B98A76B5 /* Pods-playground.debug.xcconfig */;
@@ -1066,7 +1478,7 @@
 					"$(PODS_ROOT)/Headers/Private",
 				);
 				INFOPLIST_FILE = playground/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -1167,7 +1579,7 @@
 					"$(PODS_ROOT)/Headers/Private",
 				);
 				INFOPLIST_FILE = playground/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -1226,6 +1638,105 @@
 			};
 			name = Release;
 		};
+		35CCD75919E5BC8712C7BF3B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB6D07E3C061FFEC5C2D8466 /* Pods-playgroundScene.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = c17;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/playground\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-DevSupport\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTActionSheet\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTLinking\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTNetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTSettings\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTVibration\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTWebSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-fishhook\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(PODS_ROOT)/Headers/Private",
+				);
+				INFOPLIST_FILE = "playground/Info-Scene.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/HMSegmentedControl\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFastImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNReanimated\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-bridging\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeNavigation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImageWebPCoder\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SocketRocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libwebp\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-blur\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo\"",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnn.playground;
+				PRODUCT_NAME = playgroundScene;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "playground/playground-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		507C80E22429111F00F765F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4C14E49C47AA48BEDE90A218 /* Pods-SnapshotTests.debug.xcconfig */;
@@ -1246,7 +1757,7 @@
 					"$(SRCROOT)/NavigationTests",
 				);
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1278,7 +1789,7 @@
 					"$(SRCROOT)/NavigationTests",
 				);
 				INFOPLIST_FILE = SnapshotTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -1346,7 +1857,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = NavigationIOS12Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1372,7 +1883,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = NavigationIOS12Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -1475,7 +1986,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -1489,6 +2000,7 @@
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
 				OTHER_LDFLAGS = "";
+				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -1539,7 +2051,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -1552,6 +2064,7 @@
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
 				OTHER_LDFLAGS = "";
+				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
@@ -1559,6 +2072,185 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
+		};
+		847E28619478DED136792912 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0338A243FD5C257B86EC70F3 /* Pods-NavigationSceneTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../ios/**",
+					"${PODS_ROOT}/Headers/Private",
+				);
+				INFOPLIST_FILE = NavigationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/HMSegmentedControl\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/OCMock\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFastImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNReanimated\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-bridging\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeNavigation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImageWebPCoder\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SocketRocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libwebp\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-blur\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo\"",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wix.NavigationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/playgroundScene.app/playgroundScene";
+			};
+			name = Release;
+		};
+		A07F1520A39694B157889E0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF259D894F9BDAF24C11EE0F /* Pods-playgroundScene.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = c17;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/playground\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-DevSupport\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTActionSheet\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTLinking\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTNetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTSettings\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTVibration\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTWebSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-fishhook\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(PODS_ROOT)/Headers/Private",
+				);
+				INFOPLIST_FILE = "playground/Info-Scene.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/HMSegmentedControl\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFastImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNReanimated\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-bridging\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeNavigation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImageWebPCoder\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SocketRocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libwebp\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-blur\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo\"",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnn.playground;
+				PRODUCT_NAME = playgroundScene;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "playground/playground-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		E58D2622238587F4003F36BA /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1581,7 +2273,7 @@
 					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = NavigationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1614,7 +2306,7 @@
 					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = NavigationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -1708,11 +2400,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		B34DE66C8F09957F94E67D5D /* Build configuration list for PBXNativeTarget "playgroundScene" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A07F1520A39694B157889E0E /* Debug */,
+				35CCD75919E5BC8712C7BF3B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		E58D2624238587F4003F36BA /* Build configuration list for PBXNativeTarget "NavigationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E58D2622238587F4003F36BA /* Debug */,
 				E58D2623238587F4003F36BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FC3B67285B4D28DFB5FDF469 /* Build configuration list for PBXNativeTarget "NavigationSceneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A998C66B94BFDB0ED08C42B /* Debug */,
+				847E28619478DED136792912 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

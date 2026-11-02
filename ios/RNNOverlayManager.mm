@@ -1,5 +1,6 @@
 #import "RNNOverlayManager.h"
 #import "RNNOverlayWindow.h"
+#import "RNNSceneUtils.h"
 
 @implementation RNNOverlayManager
 
@@ -12,7 +13,7 @@
 #pragma mark - public
 
 - (void)showOverlayWindow:(RNNOverlayWindow *)overlayWindow {
-    overlayWindow.previousWindow = [UIApplication sharedApplication].keyWindow;
+    overlayWindow.previousWindow = RNNKeyWindow();
     [_overlayWindows addObject:overlayWindow];
     overlayWindow.rootViewController.view.backgroundColor = [UIColor clearColor];
     [overlayWindow setWindowLevel:UIWindowLevelNormal];

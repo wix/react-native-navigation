@@ -369,6 +369,36 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 The JS equivalent is `Navigation.handleDeepLink(url)`; use whichever fits the layer you're working at.
 
+> **Using the UIScene life cycle?** On React Native 0.88 and above, `dispatchDeepLinkURL:` can't deliver URLs your app generates itself (such as a notification payload), because React Native drops links that did not come from iOS. See [UIScene life cycle](#uiscene-life-cycle) below for the workaround.
+
+#### UIScene life cycle
+
+If your app adopts the UIScene life cycle (see [Adopting UIScene](installing#adopting-uiscene-ios)), links are delivered to the scene delegate instead of the app delegate. Subclass `RNNSceneDelegate` and RNN does the rest:
+
+- **Forwarding.** `RNNSceneDelegate` implements `scene:openURLContexts:` (custom schemes) and `scene:continueUserActivity:` (universal links) and passes what iOS delivered to the same queue `RNNAppDelegate` uses. JS receives the links as `Linking` `url` events, and RNN's linking handler routes them as described above. If you override these methods, call `super`.
+- **Cold start.** When the app is launched by a link, iOS delivers it only in the scene's connection options. `RNNSceneDelegate` dispatches it through the queue from `dispatchLaunchLinksFromConnectionOptions:scene:`, so it is replayed once the React runtime is ready. Override that method (without calling `super`) only if you deliver the initial link yourself; `launchURL`, `launchURLContexts` and `launchUserActivities` expose what the scene was launched with. Under scenes `Linking.getInitialURL()` returns `null`, because the React host is created before the scene connects. The link still reaches `Navigation.setLinking()` through the `url` event, so you only need to care if you read the initial URL yourself.
+- **React Native 0.88 and above.** RNN replays OS-delivered links through React Native's scene entry points (`scene:openURLContexts:` and `scene:continueUserActivity:`) with the original objects. On older versions it uses the app-delegate entry points.
+
+**Limitation: URLs your app generates.** On React Native 0.88 and above, in an app that uses scenes, React Native only accepts links that come with a `UIOpenURLContext` or `NSUserActivity` delivered by iOS. A URL you build yourself and pass to `dispatchDeepLinkURL:` (notification handlers, push SDKs, deferred-deep-link SDKs) has neither, so React Native drops it and RNN logs a warning. On React Native below 0.88, `dispatchDeepLinkURL:` keeps working under scenes.
+
+**Workaround.** If the URL uses your app's own custom scheme, ask iOS to open it. iOS then delivers it to `scene:openURLContexts:` like any other link:
+
+```objc
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+  NSString *urlString = response.notification.request.content.userInfo[@"url"];
+  if ([urlString isKindOfClass:[NSString class]]) {
+    NSURL *url = [NSURL URLWithString:urlString];
+    // UIScene life cycle on React Native >= 0.88: let iOS deliver the link to the scene delegate.
+    [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+  }
+  completionHandler();
+}
+```
+
+This only works for URLs in a scheme registered in your `Info.plist` (`CFBundleURLTypes`). For anything else, such as an `https://` URL, call `Navigation.handleDeepLink(url)` from JS instead.
+
 ### Android
 
 Add an intent filter to your `MainActivity` in `AndroidManifest.xml`:

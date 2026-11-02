@@ -1,4 +1,5 @@
 #import "BottomTabsTogetherAttacher.h"
+#import "RNNSceneUtils.h"
 #import "RNNBottomTabsController.h"
 
 @implementation BottomTabsTogetherAttacher
@@ -6,7 +7,7 @@
 - (void)attach:(RNNBottomTabsController *)bottomTabsController {
     dispatch_group_t ready = dispatch_group_create();
     
-    UIWindow *preloadWindow = [[UIWindow alloc] initWithFrame:CGRectZero];
+    UIWindow *preloadWindow = [UIWindow rnn_windowInMainWindowSceneWithFrame:CGRectZero];
     // Clip the preload window so the full-screen reactViews hosted here while
     // they render can't draw outside the zero-frame window. Today the splash
     // screen masks this, but without clipping it's a latent flicker.

@@ -8,13 +8,15 @@ const headless = includes(process.argv, '--headless');
 const multi = includes(process.argv, '--multi');
 const verbose = includes(process.argv, '--verbose');
 const CI = includes(process.argv, '--ci');
+// iOS only: run the `playgroundScene` app (UIScene life cycle) instead of `playground`.
+const scene = includes(process.argv, '--scene');
 
 run();
 
 function run() {
   const prefix = android ? 'android.emu' : 'ios.sim';
   const suffix = release ? 'release' : 'debug';
-  const configuration = `${prefix}.${suffix}`;
+  const configuration = `${prefix}.${suffix}${!android && scene ? '.scene' : ''}`;
   const headless$ = android ? (headless ? '--headless' : '') : '';
   const workers = multi ? 3 : 1;
   const loglevel = verbose ? '--loglevel verbose' : '';
