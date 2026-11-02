@@ -189,6 +189,7 @@ Options apply on **`setRoot`**, **`showModal`**, **`mergeOptions`**, and **`setD
 - Custom row: `RNNBottomTabsCustomRow` — hosts cells, applies `customRow` options, handles layout and taps.
 - iOS 26+: defaults match the floating tab bar (glass, 28pt radius, 16pt horizontal margin).
 - `tabBarMinimizeBehavior` is forced to `never` when custom item views are active.
+- iPhone Duo (iOS 27.1+): the system can move tab bars into a vertical bar along the side of the screen. The custom row is a horizontal bar, so bottom tabs with custom item views opt out of the vertical bar (`preferredVerticalBarBehavior` is `disabled`) and keep their bar at the bottom.
 
 ### Android implementation notes
 

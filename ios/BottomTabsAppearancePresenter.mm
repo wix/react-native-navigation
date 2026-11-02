@@ -52,7 +52,10 @@
     self.tabBar.barTintColor = backgroundColor;
     self.tabBar.translucent = NO;
     if (@available(iOS 26.0, *)) {
-        self.tabBar.backgroundColor = backgroundColor;
+        // In the vertical bar the tab bar view is drawn above the system tabs, so a view
+        // background would hide them. The appearance background above still applies.
+        self.tabBar.backgroundColor =
+            [self.tabBarController rnn_isTabBarVertical] ? nil : backgroundColor;
     }
 }
 

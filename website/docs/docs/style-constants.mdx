@@ -15,6 +15,10 @@ For example, if you need to get the height of the BottomTabs, you'll first need 
 We recommend you don't cache the actual constants object returned by `await Navigation.constants()` or `Navigation.constantsSync()` as it might not be accurate later on when, for example, a new root is set or orientation changes.
 :::
 
+:::note iPhone Duo
+On iPhone Duo (iOS 27.1+) the system can show the bottom tabs in a vertical bar along the side of the screen. `bottomTabsHeight` is `0` while it does, because the tabs take no height from the bottom of the screen. The status bar can be vertical as well, so `statusBarHeight` can be close to `0`. Read the safe area insets for layout instead of these constants where you can.
+:::
+
 ## API
 As explained above, constants are evaluated in native each time the API is invoked. There are two methods for accessing constants:
 

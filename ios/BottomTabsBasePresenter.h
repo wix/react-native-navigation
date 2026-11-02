@@ -9,6 +9,8 @@
 
 - (void)applyBackgroundColor:(UIColor *)backgroundColor translucent:(BOOL)translucent;
 
+- (void)applyBackgroundOptions:(RNNNavigationOptions *)options;
+
 - (void)setTabBarBackgroundColor:(UIColor *)backgroundColor;
 
 - (void)setTabBarTranslucent:(BOOL)translucent;

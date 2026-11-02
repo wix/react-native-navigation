@@ -70,6 +70,10 @@
     return [self.presenter getOrientation];
 }
 
+- (UIViewController *)childViewControllerForPreferredVerticalBarBehavior {
+    return self.child;
+}
+
 - (BOOL)hidesBottomBarWhenPushed {
     return [self.presenter hidesBottomBarWhenPushed];
 }

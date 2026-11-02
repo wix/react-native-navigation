@@ -1889,10 +1889,19 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     return [self childViewControllerForSide:self.openSide];
 }
 
+- (UIViewController *)childViewControllerForPreferredVerticalBarBehavior {
+    return [self childViewControllerForSide:self.openSide];
+}
+
 - (void)setNeedsStatusBarAppearanceUpdateIfSupported {
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
         [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
     }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 270100
+    if (@available(iOS 27.1, *)) {
+        [self setNeedsUpdateOfVerticalBarConfiguration];
+    }
+#endif
 }
 
 #pragma mark - iOS 8 Rotation Helpers
