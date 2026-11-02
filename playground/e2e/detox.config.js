@@ -11,6 +11,12 @@ const iosApp = (scheme, configuration) => {
   };
 };
 
+// DETOX_IOS_DEVICE_ID pins one simulator by UDID when several match the device type and OS.
+const iosSimulator = (type, os) => ({
+  type: 'ios.simulator',
+  device: process.env.DETOX_IOS_DEVICE_ID ? { id: process.env.DETOX_IOS_DEVICE_ID } : { type, os },
+});
+
 /** @type {Detox.DetoxConfig} */
 const config = {
   testRunner: {
@@ -31,13 +37,12 @@ const config = {
     },
   },
   devices: {
-    simulator: {
-      type: 'ios.simulator',
-      device: {
-        type: process.env.DETOX_IOS_DEVICE || 'iPhone 17 Pro Max',
-        os: process.env.DETOX_IOS_OS || '26.1',
-      },
-    },
+    simulator: iosSimulator(
+      process.env.DETOX_IOS_DEVICE || 'iPhone 17 Pro Max',
+      process.env.DETOX_IOS_OS || '26.1'
+    ),
+    // iPhone Duo (foldable, iOS 27.1+) ships in its own simulator runtime.
+    simulatorDuo: iosSimulator('iPhone Duo', process.env.DETOX_IOS_OS || '27.2'),
     emulator: {
       type: 'android.emulator',
       device: {
@@ -109,6 +114,10 @@ const config = {
     'ios.sim.release.scene': {
       app: 'ios.release.scene',
       device: 'simulator',
+    },
+    'ios.sim.release.scene.duo': {
+      app: 'ios.release.scene',
+      device: 'simulatorDuo',
     },
     'android.emu.debug': {
       app: 'android.debug',
