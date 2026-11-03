@@ -29,6 +29,14 @@ enabling publication. Creating or merging the workflow does not configure npm tr
    workflow. Standalone `npm dist-tag` permission is not needed. See
    [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
+   From the CLI, this needs an npm with `--allow-publish` (11.17.0 has it, 11.12.1 does not
+   and fails with an unexplained `E400`):
+
+   ```sh
+   npm trust github react-native-navigation --file release.yml \
+     --repo wix/react-native-navigation --env npm-release --allow-publish
+   ```
+
 3. Enable GitHub Actions for this repository. Check Wix's Actions policy permits the pinned checkout, setup-node, upload-artifact,
    and download-artifact actions. Allow workflow-created pull requests. Ensure existing
    repository rules permit version branches and release tags without a bypass.
@@ -129,6 +137,7 @@ resume dispatch may finish GitHub bookkeeping for an already published matching 
 | Same version and same integrity already published | Skip publication and finish GitHub steps                                   |
 | Same version with different integrity             | Stop; investigate the conflicting publication                              |
 | Registry failure or lost response                 | Fail without choosing another version; resume when healthy                 |
+| `E409 Cannot publish over previously staged`      | npm still hides that upload; wait until the version is visible and resume  |
 | Existing branch/tag/PR matches                    | Reuse it                                                                   |
 | Existing branch/tag/PR conflicts                  | Stop; never force-push or move a tag                                       |
 | Dry-run artifact selected                         | Reject; start a fresh publish run                                          |
