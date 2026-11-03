@@ -3,11 +3,11 @@ import { ComponentProvider } from 'react-native';
 import { IWrappedComponent } from './ComponentWrapper';
 
 export class Store {
-  private componentsByName: Record<string, ComponentProvider> = {};
-  private propsById: Record<string, any> = {};
-  private pendingPropsById: Record<string, any> = {};
-  private componentsInstancesById: Record<string, IWrappedComponent> = {};
-  private wrappedComponents: Record<string, React.ComponentClass<any>> = {};
+  private componentsByName: Record<string, ComponentProvider> = Object.create(null);
+  private propsById: Record<string, any> = Object.create(null);
+  private pendingPropsById: Record<string, any> = Object.create(null);
+  private componentsInstancesById: Record<string, IWrappedComponent> = Object.create(null);
+  private wrappedComponents: Record<string, React.ComponentClass<any>> = Object.create(null);
   private lazyRegistratorFn: ((lazyComponentRequest: string | number) => void) | undefined;
 
   updateProps(componentId: string, props: any, callback?: () => void) {
