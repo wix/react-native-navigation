@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A8B9C0D1E2F304152637485 /* ScreenAnimationControllerTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B9C0D1E2F304152637486 /* ScreenAnimationControllerTest.mm */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -107,6 +108,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7A8B9C0D1E2F304152637486 /* ScreenAnimationControllerTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ScreenAnimationControllerTest.mm; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 		E58D261C238587F4003F36BA /* NavigationTests */ = {
 			isa = PBXGroup;
 			children = (
+				7A8B9C0D1E2F304152637486 /* ScreenAnimationControllerTest.mm */,
 				E58D26442385888C003F36BA /* Options */,
 				E58D262E2385888B003F36BA /* utils */,
 				E58D26422385888C003F36BA /* RNNBasePresenterTest.mm */,
@@ -959,6 +962,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A8B9C0D1E2F304152637485 /* ScreenAnimationControllerTest.mm in Sources */,
 				5007B4392472D9A70002AA4E /* RNNNativeViewController.mm in Sources */,
 				5007B4382472D9A20002AA4E /* RNNCustomViewController.mm in Sources */,
 				E58D265B2385888C003F36BA /* UIViewController+RNNOptionsTest.mm in Sources */,

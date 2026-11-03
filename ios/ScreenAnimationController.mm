@@ -17,7 +17,40 @@
 	id<UIViewControllerContextTransitioning> _transitionContext;
 	SharedElementAnimator *_sharedElementAnimator;
 	BOOL _animate;
-	CGFloat _duration;
+        BOOL _observingMounts;
+        CGFloat _duration;
+}
+
+- (void)startObservingMounts {
+    if (_observingMounts) {
+        return;
+    }
+    _observingMounts = YES;
+#ifdef RCT_NEW_ARCH_ENABLED
+    if (_host != nil) {
+        [_host.surfacePresenter addObserver:self];
+    } else {
+        [_bridge.uiManager.observerCoordinator addObserver:self];
+    }
+#else
+    [_bridge.uiManager.observerCoordinator addObserver:self];
+#endif
+}
+
+- (void)stopObservingMounts {
+    if (!_observingMounts) {
+        return;
+    }
+    _observingMounts = NO;
+#ifdef RCT_NEW_ARCH_ENABLED
+    if (_host != nil) {
+        [_host.surfacePresenter removeObserver:self];
+    } else {
+        [_bridge.uiManager.observerCoordinator removeObserver:self];
+    }
+#else
+    [_bridge.uiManager.observerCoordinator removeObserver:self];
+#endif
 }
 
 - (instancetype)initWithContentTransition:(RNNEnterExitAnimation *)contentTransition
@@ -53,25 +86,17 @@
 #endif
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-#ifdef RCT_NEW_ARCH_ENABLED
-	if (_host != nil) {
-		[_host.surfacePresenter addObserver:self];
-	} else {
-		[_bridge.uiManager.observerCoordinator addObserver:self];
-	}
-#else
-	[_bridge.uiManager.observerCoordinator addObserver:self];
-#endif
-	
-	_animate = YES;
-	_transitionContext = transitionContext;
-	[self prepareTransitionContext:transitionContext];
+    _animate = YES;
+    _transitionContext = transitionContext;
+    [self prepareTransitionContext:transitionContext];
 
-	UIViewController *fromVC =
-		[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-	if (![fromVC.navigationController.childViewControllers containsObject:fromVC]) {
-		[self performAnimationOnce];
-	}
+    UIViewController *fromVC =
+        [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    if (![fromVC.navigationController.childViewControllers containsObject:fromVC]) {
+        [self performAnimationOnce];
+    } else {
+        [self startObservingMounts];
+    }
 }
 
 - (void)prepareTransitionContext:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -112,8 +137,9 @@
 - (void)performAnimationOnce {
 	if (_animate) {
 		_animate = NO;
-		RCTExecuteOnMainQueue(^{
-		  id<UIViewControllerContextTransitioning> transitionContext = self->_transitionContext;
+                [self stopObservingMounts];
+                RCTExecuteOnMainQueue(^{
+                  id<UIViewControllerContextTransitioning> transitionContext = self->_transitionContext;
 		  UIViewController *fromVC =
 			  [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 		  UIViewController *toVC =
@@ -122,8 +148,8 @@
 														  toVC:toVC
 												 containerView:transitionContext.containerView];
 		  [self animateTransitions:transitions andTransitioningContext:transitionContext];
-		});
-	}
+                });
+        }
 }
 
 - (void)animateTransitions:(NSArray<id<DisplayLinkAnimatorDelegate>> *)animators
@@ -192,9 +218,10 @@
 }
 
 - (void)animationEnded:(BOOL)transitionCompleted {
-	UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
-	UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
-	[_sharedElementAnimator animationEnded];
+    [self stopObservingMounts];
+    UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
+    UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
+    [_sharedElementAnimator animationEnded];
     if (toView) {
         toView.layer.transform = CATransform3DIdentity;
         toView.alpha = 1.f;
@@ -204,6 +231,10 @@
     }
 	_transitionContext = nil;
 	_sharedElementAnimator = nil;
+}
+
+- (void)dealloc {
+    [self stopObservingMounts];
 }
 
 @end
