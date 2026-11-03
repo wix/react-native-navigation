@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.BaseTest;
@@ -22,6 +23,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowLooper;
 
@@ -76,6 +78,23 @@ public class NavigationModuleTest extends BaseTest {
         spy.handle(dontRun);
         ShadowLooper.idleMainLooper();
         verify(dontRun, times(0)).run();
+    }
+
+    @Test
+    public void foreignActivity_isIgnoredByCommandsLifecycleAndInvalidate() {
+        when(reactApplicationContext.getCurrentActivity()).thenReturn(newActivity());
+        Runnable command = mock(Runnable.class);
+
+        uut.handle(command);
+        ShadowLooper.idleMainLooper();
+        verify(command, times(0)).run();
+
+        ArgumentCaptor<LifecycleEventListener> listener = ArgumentCaptor.forClass(LifecycleEventListener.class);
+        verify(reactApplicationContext).addLifecycleEventListener(listener.capture());
+        listener.getValue().onHostResume();
+        listener.getValue().onHostPause();
+        ShadowLooper.idleMainLooper();
+        uut.invalidate();
     }
 
     private NavigationActivity mockActivity() {
