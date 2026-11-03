@@ -2,7 +2,9 @@ import { ProcessorSubscription } from '../interfaces/ProcessorSubscription';
 import { OptionsProcessor } from '../interfaces/Processors';
 
 export class OptionProcessorsStore {
-  private optionsProcessorsByObjectPath: Record<string, OptionsProcessor<any>[]> = {};
+  private optionsProcessorsByObjectPath: Record<string, OptionsProcessor<any>[]> = Object.create(
+    null
+  );
 
   public addProcessor<T>(
     optionPath: string,
@@ -12,8 +14,16 @@ export class OptionProcessorsStore {
       this.optionsProcessorsByObjectPath[optionPath] = [];
 
     this.optionsProcessorsByObjectPath[optionPath].push(processor);
+    let removed = false;
 
-    return { remove: () => this.removeProcessor(optionPath, processor) };
+    return {
+      remove: () => {
+        if (!removed) {
+          this.removeProcessor(optionPath, processor);
+          removed = true;
+        }
+      },
+    };
   }
 
   public getProcessors(optionPath: string) {
@@ -21,8 +31,8 @@ export class OptionProcessorsStore {
   }
 
   private removeProcessor(optionPath: string, processor: OptionsProcessor<any>) {
-    this.optionsProcessorsByObjectPath[optionPath].splice(
-      this.optionsProcessorsByObjectPath[optionPath].indexOf(processor)
-    );
+    const processors = this.optionsProcessorsByObjectPath[optionPath];
+    const index = processors.indexOf(processor);
+    if (index !== -1) processors.splice(index, 1);
   }
 }
