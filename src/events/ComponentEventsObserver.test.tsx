@@ -415,4 +415,16 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
   });
+
+  it(`registers notifyScreenPopped for the ScreenPopped native event`, () => {
+    uut.registerOnceForAllComponentEvents();
+
+    expect(mockEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerScreenPoppedListener).toHaveBeenCalledWith(
+      uut.notifyScreenPopped
+    );
+    expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledWith(
+      uut.notifyPreviewCompleted
+    );
+  });
 });

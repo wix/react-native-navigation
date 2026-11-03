@@ -58,7 +58,7 @@ export class ComponentEventsObserver {
       this.notifySearchBarCancelPressed
     );
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
-    this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyPreviewCompleted);
+    this.nativeEventsReceiver.registerScreenPoppedListener(this.notifyScreenPopped);
   }
 
   public bindComponent(
