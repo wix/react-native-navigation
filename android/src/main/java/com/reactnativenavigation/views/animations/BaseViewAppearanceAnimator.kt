@@ -26,22 +26,19 @@ open class BaseViewAppearanceAnimator<T : View>(
     var showAnimator: Animator = AnimatorSet()
         private set(value) {
             field = value
-            field.addListener(showAnimatorListener)
+            field.addListener(AnimatorListener(AnimationState.AnimatingEnter, View.VISIBLE))
             field.doOnEnd { onShowAnimationEnd() }
         }
     @VisibleForTesting
     var hideAnimator: Animator = AnimatorSet()
         set(value) {
             field = value
-            field.addListener(hideAnimatorListener)
+            field.addListener(AnimatorListener(AnimationState.AnimatingExit, View.GONE))
             field.doOnEnd { onHideAnimationEnd() }
         }
 
-    private val showAnimatorListener = AnimatorListener(AnimationState.AnimatingEnter, View.VISIBLE)
-    private val hideAnimatorListener = AnimatorListener(AnimationState.AnimatingExit, View.GONE)
-
     private inner class AnimatorListener(private val startState: AnimationState, private val endVisibility: Int) : AnimatorListenerAdapter() {
-        var isCancelled = false
+        private var isCancelled = false
 
         override fun onAnimationStart(animation: Animator) {
             view.resetViewProperties()
