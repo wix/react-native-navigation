@@ -24,6 +24,15 @@
         image = [RCTConvert UIImage:data];
     }
 
+    if (image && [data isKindOfClass:[NSDictionary class]] && data[@"scale"]) {
+        CGFloat scale = [data[@"scale"] doubleValue];
+        if (scale > 0) {
+            image = [UIImage imageWithCGImage:image.CGImage
+                                       scale:scale
+                                 orientation:image.imageOrientation];
+        }
+    }
+
     return [[Image alloc] initWithValue:image];
 }
 
