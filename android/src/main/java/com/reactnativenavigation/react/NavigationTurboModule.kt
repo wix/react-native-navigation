@@ -41,19 +41,24 @@ class NavigationTurboModule(
             }
 
             override fun onHostResume() {
-                eventEmitter = EventEmitter(reactContext)
-                navigator()?.let { navigator: Navigator ->
-                    navigator.setEventEmitter(eventEmitter)
-                    layoutFactory.init(
-                        activity(),
-                        eventEmitter,
-                        navigator.childRegistry,
-                        (reactApplicationContext.applicationContext as NavigationApplication).externalComponents
-                    )
+                initLayoutFactory()?.let { navigator: Navigator ->
                     UiUtils.runOnMainThread { navigator.onHostResume() }
                 }
             }
         })
+    }
+
+    private fun initLayoutFactory(): Navigator? {
+        eventEmitter = EventEmitter(reactApplicationContext)
+        return navigator()?.also { navigator: Navigator ->
+            navigator.setEventEmitter(eventEmitter)
+            layoutFactory.init(
+                activity(),
+                eventEmitter,
+                navigator.childRegistry,
+                (reactApplicationContext.applicationContext as NavigationApplication).externalComponents
+            )
+        }
     }
 
     override fun getTypedExportedConstants(): MutableMap<String, Any> {
@@ -288,6 +293,9 @@ class NavigationTurboModule(
             activity()?.let {
                 if (it.isFinishing) {
                     return@let
+                }
+                if (!layoutFactory.hasActivity()) {
+                    initLayoutFactory()
                 }
                 task.run()
             }
