@@ -75,6 +75,10 @@ public class LayoutFactory {
 		typefaceManager = new TypefaceLoader(activity);
 	}
 
+	public boolean hasActivity() {
+		return activity != null;
+	}
+
 	public ViewController<?> create(final LayoutNode node) {
 		final ReactContext context = reactHost.getCurrentReactContext();
 		switch (node.type) {
